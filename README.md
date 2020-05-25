@@ -1,17 +1,32 @@
 # FluentAvalonia
 
-Just a little project to extend Microsoft's Fluent Design system & some WinUI controls into the Avalonia world. 
+Just a little project to extend Microsoft's Fluent Design system & some WinUI controls into the Avalonia world. This is all a work in progress so bear with me as I get it all sorted out. 
 
-Things I'd like to implement and/or am working on:
-- [x] SplitView [WIP]
-- [ ] NavigationView [WIP]
-- [ ] Flyouts [WIP]
-- [ ] CommandBar [WIP]
-- [ ] ContentDialog [WIP]
-- [ ] Reveal Effects
-- [ ] CalendarView [WIP]
-- [ ] Date/Time Pickers [WIP]
-- [ ] WinUI look & feel for core Avalonia Controls [WIP]
+Important notes:
+FluentAvalonia has dependencies on two fonts:  
+Segoe UI and Segoe MDL2 Assets  
+These are already installed on Windows 10 by default  
+
+Currently the project targets Avalonia CI Build 0.9.999-cibuild0007716-beta, and .net core 3.1. In the future, after 0.10, I'll stick to normal release versions =D
+
+What's included so far?
+- Styles for
+   Button
+   RadioButton
+   CheckBox
+   Base Colors
+- Content Dialog
+- Basic Flyout for Button
+- IconElements
+- SplitView
+
+Thing's I'm working on (from WinUI):
+- Navigation View
+- Calendar View
+- Date Picker
+- Calendar Date Picker
+- Time Picker
+- Styles for other base Avalonia Controls where needed
 
 
 
