@@ -3,9 +3,8 @@
 Just a little project to extend Microsoft's Fluent Design system & some WinUI controls into the Avalonia world. This is all a work in progress so bear with me as I get it all sorted out. 
 
 Important notes:
-FluentAvalonia has dependencies on two fonts:  
-Segoe UI and Segoe MDL2 Assets  
-These are already installed on Windows 10 by default  
+FluentAvalonia has a dependency on the Segoe MDL2 Assets font for symbols (affects FontIcon and CheckBox)    
+These are already installed on Windows 10 by default, I'm currently looking into fall back methods for when Segoe MDL2 isn't available, as MS font licences prohibit redistribution. Project still runs, you'll just get the unknown character glyph.  
 
 Currently the project targets Avalonia CI Build 0.9.999-cibuild0007716-beta, and .net core 3.1. In the future, after 0.10, I'll stick to normal release versions =D
 
@@ -27,6 +26,7 @@ Thing's I'm working on (from WinUI):
 - Calendar Date Picker
 - Time Picker
 - Styles for other base Avalonia Controls where needed
+- Color Spectrum/Color picker
 
 
 
