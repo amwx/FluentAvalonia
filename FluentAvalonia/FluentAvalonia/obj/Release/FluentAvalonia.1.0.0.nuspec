@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>FluentAvalonia</id>
+    <version>1.0.0</version>
+    <authors>FluentAvalonia</authors>
+    <owners>FluentAvalonia</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Avalonia" version="0.9.999-cibuild0007716-beta" exclude="Build,Analyzers" />
+        <dependency id="Avalonia.Desktop" version="0.9.999-cibuild0007716-beta" exclude="Build,Analyzers" />
+        <dependency id="Avalonia.ReactiveUI" version="0.9.999-cibuild0007716-beta" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Release\netcoreapp3.1\linux-x64\FluentAvalonia.dll" target="lib\netcoreapp3.1\FluentAvalonia.dll" />
+  </files>
+</package>

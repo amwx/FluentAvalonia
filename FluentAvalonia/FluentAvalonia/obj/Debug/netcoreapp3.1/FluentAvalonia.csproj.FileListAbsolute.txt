@@ -1,0 +1,12 @@
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Debug\netcoreapp3.1\FluentAvalonia.deps.json
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Debug\netcoreapp3.1\FluentAvalonia.dll
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Debug\netcoreapp3.1\FluentAvalonia.csprojAssemblyReference.cache
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Debug\netcoreapp3.1\FluentAvalonia.AssemblyInfoInputs.cache
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Debug\netcoreapp3.1\FluentAvalonia.AssemblyInfo.cs
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Debug\netcoreapp3.1\System.Reactive.dll
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Debug\netcoreapp3.1\System.Reactive.xml
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Debug\netcoreapp3.1\FluentAvalonia.csproj.CopyComplete
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Debug\netcoreapp3.1\FluentAvalonia.csproj.CoreCompileInputs.cache
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Debug\netcoreapp3.1\FluentAvalonia.pdb
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Debug\netcoreapp3.1\FluentAvalonia.dll
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Debug\netcoreapp3.1\FluentAvalonia.pdb
