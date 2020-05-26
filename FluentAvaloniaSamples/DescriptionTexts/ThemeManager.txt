@@ -1,0 +1,36 @@
+﻿To assist with changing themes, I've also written a Theme Manager
+On Win10, and if desired, the Theme Manager will automatically retreive the user's Theme Color and mark it as the theme color for the app. You can still set it manually, if desired, or if not on Win10. Accent color defaults to SlateBlue, if unmodified. 
+To use the theme manager, you declare it once in the MainWindow, view model, or where ever code, and it will inject the requested theme to the end of the App.xaml
+*High Contrast theme is experimental, and appears to just be DarkTheme
+
+For Example:
+public class MainWindowViewModel : ViewModelBase
+{
+    private ThemeManager themeManager;
+    public MainWindowViewModel()
+    {
+        themeManager = new ThemeManager(); //Default, LightTheme, use SystemAccentColor on Windows10
+        themeManager = new ThemeManager(AppThemeMode.Dark, false); //Set startup theme, (DarkMode, user defined AccentColor)
+    }
+}
+
+To change the theme, just call
+themeManager.SetTheme(AppThemeMode mode);
+AppThemeMode can be Light, Dark, or HighContrast. The Unset enum value is only used for initialization & shouldn't be used
+
+To set a user defined SystemAccentColor, call
+themeManger.SetThemeAccentColors(...)
+This takes 7 colors, the accent color desired, and 3 light and 3 dark variants.
+
+Want to use the ThemeManager with your own styles? You can call
+themeManager.SetLightThemeSource(Styles newStyle)
+themeManager.SetDarkThemeSource(Styles newStyle)
+themeManager.SetHCThemeSource(Styles newStyle)
+
+These will replace the default Fluent design styles. Note they must be of type Styles.
+You may be able to load via StyleInclude([src here]).Loaded;
+
+Notes: 
+>Known issue, when switching themes, binding errors are thrown, they don't affect the switching of themes though.
+>If using the ThemeManager, don't modify the last StyleInclude in the App.xaml file, as the ThemeManager defaults to Add the file initially, then just replace the last entry for a theme change.
+>Replacing the default themes hasn't been tested

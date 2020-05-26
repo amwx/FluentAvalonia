@@ -1,0 +1,11 @@
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Release\netcoreapp3.1\linux-x64\FluentAvalonia.deps.json
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Release\netcoreapp3.1\linux-x64\FluentAvalonia.dll
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Release\netcoreapp3.1\linux-x64\FluentAvalonia.pdb
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Release\netcoreapp3.1\linux-x64\System.Reactive.dll
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\bin\Release\netcoreapp3.1\linux-x64\System.Reactive.xml
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Release\netcoreapp3.1\linux-x64\FluentAvalonia.AssemblyInfoInputs.cache
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Release\netcoreapp3.1\linux-x64\FluentAvalonia.AssemblyInfo.cs
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Release\netcoreapp3.1\linux-x64\FluentAvalonia.csproj.CoreCompileInputs.cache
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Release\netcoreapp3.1\linux-x64\FluentAvalonia.csproj.CopyComplete
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Release\netcoreapp3.1\linux-x64\FluentAvalonia.dll
+D:\repos\FluentAvalonia\FluentAvalonia\FluentAvalonia\obj\Release\netcoreapp3.1\linux-x64\FluentAvalonia.pdb

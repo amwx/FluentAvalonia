@@ -1,0 +1,68 @@
+﻿<!--STILL TO DO: Refactor this to break up view models & views, clean up UI, etc.-->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:FluentAvaloniaSamples.ViewModels;assembly=FluentAvaloniaSamples"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:local="clr-namespace:FluentAvaloniaSamples.ViewModels;assembly=FluentAvaloniaSamples"
+        xmlns:pg="clr-namespace:FluentAvaloniaSamples.Pages;assembly=FluentAvaloniaSamples"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="FluentAvaloniaSamples.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="FluentAvalonia Samples">
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <Grid RowDefinitions="*,Auto">
+        <TabControl>
+            <TabItem Header="Home">
+                <Grid RowDefinitions="Auto,*" Margin="10" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+                    <TextBlock FontSize="20" FontWeight="700" Text="FluentAvalonia Control and Styles Samples" TextAlignment="Center" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                    <StackPanel Orientation="Vertical" Grid.Row="1" TextBlock.FontSize="{StaticResource ControlContentThemeFontSize}">
+                        <StackPanel.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="Margin" Value="2"/>
+                            </Style>
+                        </StackPanel.Styles>
+                        <TextBlock Text="How to Use" FontSize="16" FontWeight="700"/>
+                        <TextBlock Text="To just use the styles, reference FluentAvalonia in your project and add a StyleInclude into your App.xaml file" />
+                        <TextBlock Text="     Source for StyleInclude: avares://FluentAvalonia/Styles/ControlStyles.xaml" />
+                        <TextBlock Text="Dont want to include the reference?" />
+                        <TextBlock Text="There are four theme files with all the styles. If not using the ThemeManager, you must include the ThemeStyles*.xaml file before the ControlStyles. " />
+                        <TextBlock Text="     Light Theme: ThemeStylesLight.xaml" />
+                        <TextBlock Text="     Dark Theme: ThemeStylesDark.xaml" />
+                        <TextBlock Text="     High Contrast Theme: ThemeStylesHighContrast.xaml*" />
+                        <TextBlock Text="     Control Styles: ControlStyles.xaml" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Styles" IsSelected="True">
+                <Grid RowDefinitions="Auto,*,40" Margin="10" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+                    <TextBlock FontSize="20" FontWeight="700" Text="FluentAvalonia Styles" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                    <TextBox Text="{Binding StylesDescription}" FontSize="{StaticResource ControlContentThemeFontSize}" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="1" BorderBrush="Transparent" Margin="10" Background="Transparent" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Theme Manager">
+                <Grid RowDefinitions="Auto,*,40" Margin="10" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+                    <TextBlock FontSize="20" FontWeight="700" Text="Theme Manager" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                    <TextBox Text="{Binding ThemeManagerDescription}" FontSize="{StaticResource ControlContentThemeFontSize}" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="1" BorderBrush="Transparent" Margin="10" Background="Transparent" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Basic Controls">
+                <pg:BasicControls />
+            </TabItem>
+            <TabItem Header="Popups/Dialogs">
+                <pg:Dialogs />
+            </TabItem>
+            <TabItem Header="Containers">
+                <pg:Containers />
+            </TabItem>
+        </TabControl>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" Margin="10 0">
+            <Button Content="Set Light Theme" Command="{Binding SetLightTheme}" Margin="3 10" />
+            <Button Content="Set Dark Theme" Command="{Binding SetDarkTheme}" Margin="3 10"/>
+            <Button Content="Set HC Theme" Command="{Binding SetHCTheme}" Margin="3 10"/>
+        </StackPanel>
+    </Grid>
+</Window>

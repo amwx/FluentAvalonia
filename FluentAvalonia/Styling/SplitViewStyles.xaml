@@ -1,0 +1,57 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+    <Styles.Resources>
+        <x:Double x:Key="SplitViewOpenPaneThemeLength">320</x:Double>
+        <x:Double x:Key="SplitViewCompactPaneThemeLength">48</x:Double>
+    </Styles.Resources>
+
+    <!--
+    SplitView is actually more complex than it seems, 
+    >Open/Close state
+    >4 Display Modes
+    >Left or Right
+    Since Avalonia doesn't have a VisualStateManager, and some things
+    dont work the same way in UWP/WinUI, the basic template is declared here
+    but all the animations & changes are handled in code
+    -->
+    <Style Selector="ui|SplitView">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="OpenPaneLength" Value="{DynamicResource SplitViewOpenPaneThemeLength}" />
+        <Setter Property="CompactPaneLength" Value="{DynamicResource SplitViewCompactPaneThemeLength}" />
+        <Setter Property="PaneBackground" Value="{DynamicResource SystemControlPageBackgroundChromeLowBrush}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Name="Container" Background="{TemplateBinding Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Name="PaneRoot" Background="{TemplateBinding PaneBackground}" HorizontalAlignment="Left" ClipToBounds="False" Grid.ColumnSpan="2" ZIndex="100"
+                          Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OpenPaneLength}" RenderTransformOrigin="0,0">
+
+                        <Border Child="{TemplateBinding Pane}"/>
+                        <Rectangle Name="HCPaneBorder" Fill="{DynamicResource SystemControlForegroundTransparentBrush}" Width="1" HorizontalAlignment="Right"  />
+                    </Grid>
+
+                    <Grid Name="ContentRoot" Grid.ColumnSpan="2">
+                        <Border Child="{TemplateBinding Content}" />
+                        <Rectangle Name="LightDismissLayer" Fill="Transparent" IsVisible="False"/>
+                    </Grid>
+
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+
+   
+    
+   
+    
+</Styles>
