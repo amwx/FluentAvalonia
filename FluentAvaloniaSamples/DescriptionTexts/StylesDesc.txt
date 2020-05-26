@@ -1,0 +1,56 @@
+﻿Targeting Fluent design & WinUI
+Styles are being implemented based on WinUI3, where possible. You can find the WinUI3 templates at:
+https://github.com/microsoft/microsoft-ui-xaml
+If you want the UWP (currently WinUI2.x) styles, or want to see more in one place and have the Windows SDK installed:
+C:\Program Files (x86)\Windows Kits\10\DesignTime\CommonConfiguration\Neutral\UAP\{version#}\Generic
+
+Fonts **Important for non-Windows 10**
+WinUI/Fluent relies on the Segoe MDL2 Assets font for symbols. However, MS licences prevents redistribution. For now, this impacts use of the FontIcon control and the CheckBox, which relies on the FontIcon. I am looking into alternatives when Segoe MDL2 isn't present.
+The font resource 'ContentControlThemeFontFamily' uses the FontManager Default Font Family, which should be Segoe UI on Windows.
+
+NOTE: Not all base Avalonia controls have supported styles in FluentAvalonia (yet). You can still blend the two resource sets together, but beware there may be some oddities. For example, if you leave the Window background the default white, insert a Button, and then switch to Dark Mode, the button will disappear. But it's still there, it's just now white in color with transparency to adapt to the light theme and blends in. (This got me multiple times when testing)
+This is what I use for Background to align with the Black Background for dark theme: SystemControlBackgroundAltHighBrush
+Currently the ControlStyles.xaml file replaces:
+Button
+CheckBox
+RadioButton
+Window - The change to the Window template is to allow ContentDialogs to work properly, it's not required though
+
+ALSO NOTE: Standalone TextBlocks will need to have the Foreground explicitly set to be themed. If you try to declare a default TextBlock style, it becomes impossible to restyle that in other control templates for things like :pointerover. You can use SystemControlForegroundBaseHighBrush, it will be Black text in light theme and White text in dark theme.
+
+
+Not everything can be directly ported from WinUI/Fluent into Avalonia. For example, Acrylic Brushes aren't possible (at least yet), as MS leverages their compositor in the WinRT framework to achieve this through the Desktop Window Manager (DWM). An attempt to fake it may be possible, but no plans to do this, ATM. A true Reveal style also isn't possible as that is again done through the compositor and uses lights and other neat 2D image tricks not capable in Avalonia. However, I've created a pseudo-Reveal using a RadialGradientBrush, currently only for borders.  Effects like the 3D warp when clicking a button also are not present. Where changes are required, I try to make a note in the source files.
+
+
+Styles in more detail...
+
+If you look at that, you'll see MS declares EVERYTHING a resource and these files become quite lengthy and overwhelming. But there's hope!
+If you look closely, everything is based around the same basic color set names:
+>SystemBase [Low, MediumLow, Medium, MediumHigh, High]
+>SystemAlt [Low, MediumLow, Medium, MediumHigh, High]
+>SystemChrome [AltLow, BlackHigh, BlackLow, BlackMediumLow, BlackMedium, DisabledLow, Low, Medium, MediumLow, White, Gray]
+>SystemList [Low, Medium]
+
+Then basic brushes are created for those in various categories: 
+SystemControlBackground
+SystemControlDisabled
+SystemControlFocusVisual
+SystemControlForeground
+SystemControlHighlight
+SystemControlHyperlink
+SystemControlPageBackground
+SystemControlPageText
+
+There's also a couple special brushes:
+SystemControlTransparentBrush (just transparent)
+SystemControlErrorTextForegroundBrush
+SystemControlTransientBorderBrush (Acrylic Brush)
+SystemControlTransientBackgroundBrush (Acrylic Brush)
+SystemAccentColor [Light1, Light2, Light3, Dark1, Dark2, Dark3]
+
+From there, it's just a bunch of <StaticResource x:Key="" ResourceKey="" /> that reroute a brush/color resource to a name that relates to the control being styled:
+<StaticResource x:Key="ButtonBackground" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+WinUI3 templates provide control colors, brushes, resources in the resource file for the given control.
+    
+Because I didn't want to have 5 million brushes active with a bunch of DynamicResources, I apply the base brush name directly as the StaticResource method doesn't exist in Avalonia, e.g. 
+<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />

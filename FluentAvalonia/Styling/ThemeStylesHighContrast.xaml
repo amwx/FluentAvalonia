@@ -1,0 +1,196 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             x:Class="FluentAvalonia.Styling.ThemeStylesHighContrast">
+    <Styles.Resources>
+        <!-- May still need work? Appears HC theme is just dark theme mode -->
+        
+        
+        <!-- Not sure how reveal works with HC mode -->
+        <GradientStops x:Key="RevealBorderGradientStops">
+            <GradientStop Color="#66000000" Offset="0"/>
+            <GradientStop Color="#25000000" Offset="0.8"/>
+            <GradientStop Color="#00000000" Offset="1"/>
+        </GradientStops>
+
+        
+        <!--
+        Base Colors
+        Most colors are based on these
+        -->
+        <Color x:Key="SystemAltHighColor">#FF000000</Color>
+        <Color x:Key="SystemAltLowColor">#33000000</Color>
+        <Color x:Key="SystemAltMediumColor">#99000000</Color>
+        <Color x:Key="SystemAltMediumHighColor">#CC000000</Color>
+        <Color x:Key="SystemAltMediumLowColor">#66000000</Color>
+        <Color x:Key="SystemBaseHighColor">#FFFFFFFF</Color>
+        <Color x:Key="SystemBaseLowColor">#33FFFFFF</Color>
+        <Color x:Key="SystemBaseMediumColor">#99FFFFFF</Color>
+        <Color x:Key="SystemBaseMediumHighColor">#CCFFFFFF</Color>
+        <Color x:Key="SystemBaseMediumLowColor">#66FFFFFF</Color>
+        <Color x:Key="SystemChromeAltLowColor">#FFF9F9F9</Color>
+        <Color x:Key="SystemChromeBlackHighColor">#FF000000</Color>
+        <Color x:Key="SystemChromeBlackLowColor">#33000000</Color>
+        <Color x:Key="SystemChromeBlackMediumLowColor">#66000000</Color>
+        <Color x:Key="SystemChromeBlackMediumColor">#CC000000</Color>
+        <Color x:Key="SystemChromeDisabledHighColor">#FF333333</Color>
+        <Color x:Key="SystemChromeDisabledLowColor">#FF7A7A7A</Color>
+        <Color x:Key="SystemChromeHighColor">#FF767676</Color>
+        <Color x:Key="SystemChromeLowColor">#FF1F1F1F</Color>
+        <Color x:Key="SystemChromeMediumColor">#FF393939</Color>
+        <Color x:Key="SystemChromeMediumLowColor">#FF2B2B2B</Color>
+        <Color x:Key="SystemChromeWhiteColor">#FFFFFFFF</Color>
+        <Color x:Key="SystemChromeGrayColor">#FF767676</Color>
+        <Color x:Key="SystemListLowColor">#19FFFFFF</Color>
+        <Color x:Key="SystemListMediumColor">#33FFFFFF</Color>
+        <Color x:Key="SystemErrorTextColor">#FFF000</Color>
+
+        <Color x:Key="SystemControlTransparentColor">#00FFFFFF</Color>
+
+<!--
+        ThemeAccent Colors, defaults to SlateBlue (my pref)
+        TODO: set from code using SystemAccent
+        -->
+        <Color x:Key="SystemAccentColor">SlateBlue</Color>
+        <Color x:Key="SystemAccentColorLight1">#7f69ff</Color>
+        <Color x:Key="SystemAccentColorLight2">#9b8aff</Color>
+        <Color x:Key="SystemAccentColorLight3">#b9adff</Color>
+        <Color x:Key="SystemAccentColorDark1">#43339c</Color>
+        <Color x:Key="SystemAccentColorDark2">#33238c</Color>
+        <Color x:Key="SystemAccentColorDark3">#1d115c</Color>
+        
+        <!--<Color x:Key="SystemAccentForeground">White</Color>-->
+
+                    
+        <!--<Color x:Key="TextControlSelectionHighlightColor">#FF2997CC</Color>-->
+
+
+        <!--Corresponding Base Brushes
+        These correspond to the base colors above, but in brush form
+        
+        -->
+        <SolidColorBrush x:Key="SystemAccentBrush" Color="{DynamicResource SystemAccentColor}"/>
+        <SolidColorBrush x:Key="SystemAccentBrushLight1" Color="{DynamicResource SystemAccentColorLight1}"/>
+        <SolidColorBrush x:Key="SystemAccentBrushLight2" Color="{DynamicResource SystemAccentColorLight2}"/>
+        <SolidColorBrush x:Key="SystemAccentBrushLight3" Color="{DynamicResource SystemAccentColorLight3}"/>
+        <SolidColorBrush x:Key="SystemAccentBrushDark1" Color="{DynamicResource SystemAccentColorDark1}"/>
+        <SolidColorBrush x:Key="SystemAccentBrushDark2" Color="{DynamicResource SystemAccentColorDark2}"/>
+        <SolidColorBrush x:Key="SystemAccentBrushDark3" Color="{DynamicResource SystemAccentColorDark3}"/>
+        <!--<SolidColorBrush x:Key="SystemAccentForegroundBrush" Color="{DynamicResource SystemAccentForeground}"/>-->
+
+        <SolidColorBrush x:Key="SystemControlBackgroundAccentBrush" Color="{DynamicResource SystemAccentColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundAltHighBrush" Color="{DynamicResource SystemAltHighColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundAltMediumHighBrush" Color="{DynamicResource SystemAltMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundAltMediumBrush" Color="{DynamicResource SystemAltMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundAltMediumLowBrush" Color="{DynamicResource SystemAltMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundBaseHighBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundBaseLowBrush" Color="{DynamicResource SystemBaseLowColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundBaseMediumBrush" Color="{DynamicResource SystemBaseMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundBaseMediumHighBrush" Color="{DynamicResource SystemBaseMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundBaseMediumLowBrush" Color="{DynamicResource SystemBaseMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundChromeBlackHighBrush" Color="{DynamicResource SystemChromeBlackHighColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundChromeBlackMediumBrush" Color="{DynamicResource SystemChromeBlackMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundChromeBlackLowBrush" Color="{DynamicResource SystemChromeBlackLowColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundChromeBlackMediumLowBrush" Color="{DynamicResource SystemChromeBlackMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundChromeMediumBrush" Color="{DynamicResource SystemChromeMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundChromeMediumLowBrush" Color="{DynamicResource SystemChromeMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundChromeWhiteBrush" Color="{DynamicResource SystemChromeWhiteColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundListLowBrush" Color="{DynamicResource SystemListLowColor}" />
+        <SolidColorBrush x:Key="SystemControlBackgroundListMediumBrush" Color="{DynamicResource SystemListMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledAccentBrush" Color="{DynamicResource SystemAccentColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledBaseHighBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledBaseLowBrush" Color="{DynamicResource SystemBaseLowColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledBaseMediumLowBrush" Color="{DynamicResource SystemBaseMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledChromeDisabledHighBrush" Color="{DynamicResource SystemChromeDisabledHighColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledChromeDisabledLowBrush" Color="{DynamicResource SystemChromeDisabledLowColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledChromeHighBrush" Color="{DynamicResource SystemChromeHighColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledChromeMediumLowBrush" Color="{DynamicResource SystemChromeMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledListMediumBrush" Color="{DynamicResource SystemListMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlDisabledTransparentBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="SystemControlFocusVisualPrimaryBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush" Color="{DynamicResource SystemAltMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlRevealFocusVisualBrush" Color="{DynamicResource SystemAccentColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundAccentBrush" Color="{DynamicResource SystemAccentColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundAltHighBrush" Color="{DynamicResource SystemAltHighColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundAltMediumHighBrush" Color="{DynamicResource SystemAltMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundBaseHighBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundBaseLowBrush" Color="{DynamicResource SystemBaseLowColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundBaseMediumBrush" Color="{DynamicResource SystemBaseMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundBaseMediumHighBrush" Color="{DynamicResource SystemBaseMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundBaseMediumLowBrush" Color="{DynamicResource SystemBaseMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeBlackHighBrush" Color="{DynamicResource SystemChromeBlackHighColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeHighBrush" Color="{DynamicResource SystemChromeHighColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeMediumBrush" Color="{DynamicResource SystemChromeMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeDisabledLowBrush" Color="{DynamicResource SystemChromeDisabledLowColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeWhiteBrush" Color="{DynamicResource SystemChromeWhiteColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeBlackMediumBrush" Color="{DynamicResource SystemChromeBlackMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeBlackMediumLowBrush" Color="{DynamicResource SystemChromeBlackMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundChromeGrayBrush" Color="{DynamicResource SystemChromeGrayColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundListLowBrush" Color="{DynamicResource SystemListLowColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundListMediumBrush" Color="{DynamicResource SystemListMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlForegroundTransparentBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="{DynamicResource SystemAccentColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltAccentBrush" Color="{DynamicResource SystemAccentColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltAltHighBrush" Color="{DynamicResource SystemAltHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltBaseHighBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltBaseLowBrush" Color="{DynamicResource SystemBaseLowColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltBaseMediumBrush" Color="{DynamicResource SystemBaseMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltBaseMediumHighBrush" Color="{DynamicResource SystemBaseMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltAltMediumHighBrush" Color="{DynamicResource SystemAltMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltBaseMediumLowBrush" Color="{DynamicResource SystemBaseMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltListAccentHighBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.7" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltListAccentLowBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.4" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltListAccentMediumBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.6" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltChromeWhiteBrush" Color="{DynamicResource SystemChromeWhiteColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightAltTransparentBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="SystemControlHighlightBaseHighBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightBaseLowBrush" Color="{DynamicResource SystemBaseLowColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightBaseMediumBrush" Color="{DynamicResource SystemBaseMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightBaseMediumHighBrush" Color="{DynamicResource SystemBaseMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightBaseMediumLowBrush" Color="{DynamicResource SystemBaseMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightChromeAltLowBrush" Color="{DynamicResource SystemChromeAltLowColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightChromeHighBrush" Color="{DynamicResource SystemChromeHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightListAccentHighBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.7" />
+        <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.4" />
+        <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.6" />
+        <SolidColorBrush x:Key="SystemControlHighlightListMediumBrush" Color="{DynamicResource SystemListMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{DynamicResource SystemListLowColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightChromeWhiteBrush" Color="{DynamicResource SystemChromeWhiteColor}" />
+        <SolidColorBrush x:Key="SystemControlHighlightTransparentBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="SystemControlHyperlinkTextBrush" Color="{DynamicResource SystemAccentColor}" />
+        <SolidColorBrush x:Key="SystemControlHyperlinkBaseHighBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlHyperlinkBaseMediumBrush" Color="{DynamicResource SystemBaseMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlHyperlinkBaseMediumHighBrush" Color="{DynamicResource SystemBaseMediumHighColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundAltMediumBrush" Color="{DynamicResource SystemAltMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundAltHighBrush" Color="{DynamicResource SystemAltHighColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundMediumAltMediumBrush" Color="{DynamicResource SystemAltMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundBaseLowBrush" Color="{DynamicResource SystemBaseLowColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundBaseMediumBrush" Color="{DynamicResource SystemBaseMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundListLowBrush" Color="{DynamicResource SystemListLowColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundChromeLowBrush" Color="{DynamicResource SystemChromeLowColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundChromeMediumLowBrush" Color="{DynamicResource SystemChromeMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlPageBackgroundTransparentBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="SystemControlPageTextBaseHighBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        <SolidColorBrush x:Key="SystemControlPageTextBaseMediumBrush" Color="{DynamicResource SystemBaseMediumColor}" />
+        <SolidColorBrush x:Key="SystemControlPageTextChromeBlackMediumLowBrush" Color="{DynamicResource SystemChromeBlackMediumLowColor}" />
+        <SolidColorBrush x:Key="SystemControlTransparentBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="{DynamicResource SystemErrorTextColor}" />
+        <SolidColorBrush x:Key="SystemControlTransientBorderBrush" Color="#000000" Opacity="0.14" />
+        <SolidColorBrush x:Key="SystemControlTransientBackgroundBrush" Color="{DynamicResource SystemChromeMediumLowColor}" />
+
+
+
+
+
+
+
+
+
+    </Styles.Resources>
+
+    
+    
+</Styles>
