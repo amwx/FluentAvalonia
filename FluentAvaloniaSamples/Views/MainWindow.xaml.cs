@@ -10,11 +10,6 @@ namespace FluentAvaloniaSamples.Views
     {
         public MainWindow()
         {
-
-            //var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            
-           // var sty = assets.Open(new System.Uri("resm:FluentAvalonia.Styling.ControlStyles.xaml?assembly=FluentAvalonia"));
-
             InitializeComponent();
 
 #if DEBUG

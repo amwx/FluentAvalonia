@@ -1,4 +1,8 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Media;
+using Avalonia.Styling;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using ReactiveUI;
@@ -21,6 +25,12 @@ namespace FluentAvaloniaSamples.ViewModels
 
             ThemeManagerDescription = GetAssemblyResource("ThemeManager.txt");
             StylesDescription = GetAssemblyResource("StylesDesc.txt");
+
+            Symbols = new List<string>();
+            foreach (var item in Enum.GetValues(typeof(Symbol)))
+            {
+                Symbols.Add(item.ToString());
+            }
         }
 
         private string GetAssemblyResource(string name)
@@ -57,6 +67,26 @@ namespace FluentAvaloniaSamples.ViewModels
             get => _ClickMeReveal;
             set => this.RaiseAndSetIfChanged(ref _ClickMeReveal, value);
         }
+
+        public string CurrentSymbolThemeName
+        {
+            get
+            {
+                foreach (var item in Application.Current.Styles)
+                {
+                    if (item is StyleInclude si && si.Source.AbsolutePath.Contains("ControlStyles.xaml"))
+                    {
+                        Styles cstyles = si.Loaded as Styles;
+
+                        var ff = (cstyles.Resources["SymbolThemeFontFamily"] as FontFamily);
+                        return ff.Name;
+                    }
+                }
+                return "NOT FOUND";
+            }
+        }
+
+        public List<string> Symbols { get; set; }
 
 
         public void SetLightTheme()

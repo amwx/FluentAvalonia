@@ -22,7 +22,6 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.999-cibuild0007716-beta" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.999-cibuild0007716-beta" />
   </ItemGroup>
-    
-    
+   
 
 </Project>

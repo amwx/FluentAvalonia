@@ -4,7 +4,7 @@ Just a little project to extend Microsoft's Fluent Design system & some WinUI co
 
 Important notes:
 FluentAvalonia has a dependency on the Segoe MDL2 Assets font for symbols (affects FontIcon and CheckBox)    
-These are already installed on Windows 10 by default, I'm currently looking into fall back methods for when Segoe MDL2 isn't available, as MS font licences prohibit redistribution. Project still runs, you'll just get the unknown character glyph.  
+These are already installed on Windows 10 by default. If Segoe MDL2 Assets is not available, SymbolThemeFontFamily will fall back (if using the ThemeManager) to the included Symbols font. There are differences, but they shouldn't be substantial.
 
 Currently the project targets Avalonia CI Build 0.9.999-cibuild0007716-beta, and .net core 3.1. In the future, after 0.10, I'll stick to normal release versions =D
 
