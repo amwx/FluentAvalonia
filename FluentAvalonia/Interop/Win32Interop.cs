@@ -39,6 +39,9 @@ namespace FluentAvalonia.Interop
         }
 
 
+        [DllImport("dwmapi.dll", SetLastError = true)]
+        public static extern int DwmIsCompositionEnabled(out bool enabled);
+
         [DllImport("uxtheme.dll", EntryPoint = "#95")]
         public static extern uint GetImmersiveColorFromColorSetEx(uint dwImmersiveColorSet, uint dwImmersiveColorType, bool bIgnoreHighContrast, uint dwHighContrastCacheMode);
         [DllImport("uxtheme.dll", EntryPoint = "#96")]

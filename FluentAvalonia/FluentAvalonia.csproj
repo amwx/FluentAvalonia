@@ -22,7 +22,13 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.999-cibuild0007716-beta" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.999-cibuild0007716-beta" />
   </ItemGroup>
-    
+
+  <ItemGroup>
+    <None Update="Styling\IconElementStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+  
     
 
 </Project>

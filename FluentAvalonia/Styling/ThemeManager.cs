@@ -3,7 +3,6 @@ using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
 using Avalonia.Styling;
 using FluentAvalonia.Interop;
-using ReactiveUI;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -25,39 +24,35 @@ namespace FluentAvalonia.Styling
         /// <param name="useSystemAccentOnWindows"></param>
         public ThemeManager(AppThemeMode desiredTheme, bool useSystemAccentOnWindows)
         {
-            //Unknown break point? if user heavily modified Win10 look, is DWM still enabled
-            //and will the SystemAccentColor still return something?
-            //May be worth a call to check if DWM is enabled
-
             //Set the Default themes
             LightThemeSource = new ThemeStylesLight();
             DarkThemeSource = new ThemeStylesDark();
             HCThemeSource = new ThemeStylesHighContrast();
-            
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
+                Win32Interop.DwmIsCompositionEnabled(out bool isDwmActive);
+
                 OSVERSIONINFOEX osInfo = new OSVERSIONINFOEX();
                 WindowsVersionInterop.RtlGetVersion(ref osInfo);
                 IsOSWindows = true;
                 WindowsMajorVersion = osInfo.MajorVersion;
                 WindowsBuildVersion = osInfo.BuildNumber;
 
-                if (WindowsMajorVersion >= 10 && useSystemAccentOnWindows)
+                if (WindowsMajorVersion >= 10)
                 {
-                    if (useSystemAccentOnWindows)
+                    if (useSystemAccentOnWindows && isDwmActive)
                     {
                         SetSystemAccentColorsFromSystem();
                         UseSystemAccentColor = true;
                     }
                     else
                         UseSystemAccentColor = false;
-
-                    HandleSymbolFontFallBack();
                 }
                 else
                 {
                     HandleSymbolFontFallBack();
-                }  
+                }
             }
             else
             {
@@ -67,7 +62,7 @@ namespace FluentAvalonia.Styling
                 HandleSymbolFontFallBack();
             }
 
-            SetTheme(AppThemeMode.Light);
+            SetTheme(desiredTheme);
         }
 
         public bool IsOSWindows { get; private set; }
@@ -94,7 +89,7 @@ namespace FluentAvalonia.Styling
         /// Gets the active theme mode
         /// </summary>
         public AppThemeMode AppTheme => _AppTheme;
-                
+
         /// <summary>
         /// Sets the system accent colors from the users settings
         /// </summary>
@@ -212,7 +207,7 @@ namespace FluentAvalonia.Styling
             HCThemeSource = newStyle;
         }
 
-       
+
         private void HandleSymbolFontFallBack()
         {
             //Since MS Fonts can't be redistributed, per licence terms, we need to
@@ -221,15 +216,17 @@ namespace FluentAvalonia.Styling
             //closely this matches, it appears to be the replacment/alternative
             //Just check the App.xaml file to find the StyleInclude referencing 
             //ControlStyles.xaml & replace the Resource
-            if (FontManager.Current.GetInstalledFontFamilyNames().Contains("Segoe MDL2 Assets"))
+            if (!FontManager.Current.GetInstalledFontFamilyNames().Contains("Segoe MDL2 Assets"))
             {
                 foreach (var item in Application.Current.Styles)
                 {
                     if (item is StyleInclude si && si.Source.AbsolutePath.Contains("ControlStyles.xaml"))
                     {
                         Styles cstyles = si.Loaded as Styles;
-                        cstyles.Resources["SymbolThemeFontFamily"] = new FontFamily(new Uri("resm:FluentAvalonia.Fonts.?assembly=FluentAvalonia#winjs-symbols"), "winjs-symbols");
-                        var res = cstyles.Resources["SymbolThemeFontFamily"];
+
+                        var res = cstyles.Resources;
+                        res["SymbolThemeFontFamily"] = res["SymbolThemeFontFamilyFallback"];
+
                     }
                 }
             }

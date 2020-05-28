@@ -3,9 +3,11 @@
 //Adapted from the WinUI project, MIT Licence, https://github.com/microsoft/microsoft-ui-xaml
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
+using Avalonia.Platform;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +16,7 @@ using System.Globalization;
 namespace FluentAvalonia.UI.Controls
 {
     /*
-     * Microsoft has updated this to also include an IconElementSource, [Class]Source
+     * Microsoft also includes an IconElementSource, [Class]Source
      * in WinUI, which is just a DependencyObject with a reference to the Glyph, Symbol, etc.
      * used for display...which because its not a FrameworkElement, can be shared
      * Then the actual rendering still relies on classes below, see WinUI3 SharedHelpers.cpp file
@@ -31,10 +33,9 @@ namespace FluentAvalonia.UI.Controls
     }
 
     /// <summary>
-    /// Creates an icon from a glyph in a specific font
-    /// The default is to find SymbolThemeFontFamily in resources, or Segoe MDL2 Assets, the
-    /// default symbol font on Win10. Either include this font, or change it, if supporting
-    /// other than Win10
+    /// Creates an icon from a glyph in a specific font. This no longer has a default font, specified here
+    /// and inherits like normal. If you want a symbol, either specify the font yourself or use a
+    /// <see cref="SymbolIcon"/> to ensure its platform-independent
     /// </summary>
     public class FontIcon : IconElement
     {
@@ -46,6 +47,8 @@ namespace FluentAvalonia.UI.Controls
         {
             //Ensures textlayout is changed after Font characteristic change
             GlyphProperty.Changed.AddClassHandler<FontIcon>((x, e) => x.OnGlyphChanged(e));
+            FontFamilyProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
+            //We have AffectsRender<>(ForegroundProperty) set in parent IconElement class, but this is still necessary...
             ForegroundProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
             FontSizeProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
             FontWeightProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
@@ -59,49 +62,7 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(GlyphProperty, value);
         }
 
-        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e)
-        {
-            base.OnApplyTemplate(e);
-
-            //Set the default symbol font only if the user didn't specify one when creating the FontIcon
-            //if(!_userSetFont)
-            //{
-                //On Windows, SymbolThemeFontFamily corresponds to Segoe MDL2 Assets
-            var ff = this.TryFindResource("SymbolThemeFontFamily", out object value);
-            if (ff)
-            {
-                FontFamily = (FontFamily)value;
-            }
-            else
-            {
-                FontFamily = new FontFamily("Segoe MDL2 Assets");
-            }
-           // }            
-        }
-
-        private void OnGlyphChanged(AvaloniaPropertyChangedEventArgs e)
-        {
-            GenerateText();
-            InvalidateVisual();
-        }
-        private void OnFontChanged(AvaloniaPropertyChangedEventArgs e)
-        {
-            //_userSetFont = true;
-            
-            InvalidateVisual();
-        }
-
-
-        private TextLayout _textlayout;
-        private void GenerateText()
-        {
-            //TO DO: Issue where using FontFamily property will override the default setting
-            //For now, hard code the symbol font
-            _textlayout = new TextLayout(Glyph,
-                FontManager.Current?.GetOrAddTypeface(new FontFamily("Segoe MDL2 Assets"), FontWeight, FontStyle),
-                FontSize, Foreground, TextAlignment.Left);
-
-        }
+        #region Override Methods
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -109,7 +70,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (_textlayout == null)
                     GenerateText();
-                
+
                 return new Size(_textlayout.Bounds.Width, _textlayout.Bounds.Height);
             }
             catch
@@ -143,11 +104,29 @@ namespace FluentAvalonia.UI.Controls
                 pt = new Point(Bounds.Width / 2.0 - _textlayout.Bounds.Width / 2.0, Bounds.Height / 2.0 - _textlayout.Bounds.Height / 2.0);
             _textlayout.Draw(context.PlatformImpl, pt);
 
-            // context.DrawText(Foreground, pt, _formattedText);
-            
         }
 
-        //private bool _userSetFont = false;
+        #endregion
+
+        #region private methods
+
+        private void OnGlyphChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            GenerateText();
+            InvalidateVisual();
+        }
+
+        private void GenerateText()
+        {
+            _textlayout = new TextLayout(Glyph,
+                FontManager.Current?.GetOrAddTypeface(FontFamily, FontWeight, FontStyle),
+                FontSize, Foreground, TextAlignment.Left);
+        }
+
+        #endregion
+
+
+        private TextLayout _textlayout;
     }
 
     /// <summary>
@@ -159,7 +138,7 @@ namespace FluentAvalonia.UI.Controls
     {
         public PathIcon()
         {
-            
+
         }
         static PathIcon()
         {
@@ -174,14 +153,27 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(DataProperty, value);
         }
 
+        #region Override Methods
+
         protected override Size MeasureOverride(Size availableSize)
         {
             try
             {
                 if (Data == null)
                     return base.MeasureOverride(availableSize);
-                
-                return new Size(Data.Bounds.Width + Padding.Left + Padding.Right, Data.Bounds.Height + Padding.Top + Padding.Bottom);
+
+                var wid = 0.0;
+                var hei = 0.0;
+                var bounds = Data.PlatformImpl.GetRenderBounds(null);
+
+                //If the geometry itself doesn't start at (0,0), the actual bounding rect calculated
+                //doesn't account for this, so we need to extend the path by the (Left,Top) offset
+                //to ensure the bounding box of the PathIcon is large enough to display the icon
+                //This fixes the previous issue where the right/bottom would get cut off
+                wid = bounds.Left > 0 ? bounds.Width + (bounds.Left * 2) : bounds.Width;
+                hei = bounds.Top > 0 ? bounds.Height + (bounds.Top * 2) : bounds.Height;
+
+                return new Size(wid + Padding.Left + Padding.Right, hei + Padding.Top + Padding.Bottom);
             }
             catch
             {
@@ -196,7 +188,18 @@ namespace FluentAvalonia.UI.Controls
                 if (Data == null)
                     return base.ArrangeOverride(finalSize);
 
-                return new Size(Data.Bounds.Width + Padding.Left + Padding.Right, Data.Bounds.Height + Padding.Top + Padding.Bottom);
+                var wid = 0.0;
+                var hei = 0.0;
+                var bounds = Data.PlatformImpl.GetRenderBounds(null);
+
+                //If the geometry itself doesn't start at (0,0), the actual bounding rect calculated
+                //doesn't account for this, so we need to extend the path by the (Left,Top) offset
+                //to ensure the bounding box of the PathIcon is large enough to display the icon
+                //This fixes the previous issue where the right/bottom would get cut off
+                wid = bounds.Left > 0 ? bounds.Width + (bounds.Left * 2) : bounds.Width;
+                hei = bounds.Top > 0 ? bounds.Height + (bounds.Top * 2) : bounds.Height;
+
+                return new Size(wid + Padding.Left + Padding.Right, hei + Padding.Top + Padding.Bottom);
             }
             catch
             {
@@ -212,12 +215,21 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
+        #endregion
+
+
+
+        /// <summary>
+        /// Quick and dirty check if we have a valid PathGeometry. This probably needs to be
+        /// more robust, but this is better than a bunch of InvalidDataExceptions becase we 
+        /// don't have a Path.TryParse() method. This does still fail sometimes, but its better
+        /// than nothing. Its really only meant to be called from the StringToIconElementConverter
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="g"></param>
+        /// <returns></returns>
         public static bool IsDataValid(string data, out Geometry g)
         {
-            //Simple test for now, probably should make this more robust
-            //or get AvaloniaUI team to implement TryParse...
-            //This still seems to fail tho so...
-
             if (data.Length == 0)
             {
                 g = null;
@@ -261,14 +273,15 @@ namespace FluentAvalonia.UI.Controls
         }
 
         public static readonly DirectProperty<BitmapIcon, Uri> UriSourceProperty =
-            AvaloniaProperty.RegisterDirect<BitmapIcon, Uri>("UriSource", 
-                x => x.UriSource, (x,v) => x.UriSource = v);
+            AvaloniaProperty.RegisterDirect<BitmapIcon, Uri>("UriSource",
+                x => x.UriSource, (x, v) => x.UriSource = v);
+
         public Uri UriSource
         {
             get => _source;
-            set 
-            { 
-                if(SetAndRaise(UriSourceProperty, ref _source, value))
+            set
+            {
+                if (SetAndRaise(UriSourceProperty, ref _source, value))
                 {
                     _ = RecreateBitmap();
                     InvalidateVisual();
@@ -276,9 +289,61 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
+
+        #region override methods
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (UriSource == null || _internalBitmap == null)
+                return base.MeasureOverride(availableSize);
+
+            //If we have a width or height, we want to respect that and draw to that Rect,
+            //otherwise we draw the raw image size 
+            var wid = Width;
+            var hei = Height;
+
+            return new Size(double.IsInfinity(wid) || double.IsNaN(wid) ? _internalBitmap.Size.Width : wid,
+                double.IsInfinity(hei) || double.IsNaN(hei) ? _internalBitmap.Size.Height : hei);
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (UriSource == null || _internalBitmap == null)
+                return base.ArrangeOverride(finalSize);
+
+            //If we have a width or height, we want to respect that and draw to that Rect,
+            //otherwise we draw the raw image size 
+            var wid = Width;
+            var hei = Height;
+
+            return new Size(double.IsInfinity(wid) || double.IsNaN(wid) ? _internalBitmap.Size.Width : wid,
+                double.IsInfinity(hei) || double.IsNaN(hei) ? _internalBitmap.Size.Height : hei);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+            if (UriSource == null || _internalBitmap == null)
+                return;
+
+            var wid = Width;
+            var hei = Height;
+
+            //If we have a width or height, we want to respect that and draw to that Rect,
+            //otherwise we draw the raw image size 
+            Rect r = new Rect(new Size(double.IsInfinity(wid) || double.IsNaN(wid) ? _internalBitmap.Size.Width : wid,
+                double.IsInfinity(hei) || double.IsNaN(hei) ? _internalBitmap.Size.Height : hei));
+
+            context.DrawImage(_internalBitmap, r);
+        }
+
+        #endregion
+
+        #region Private methods
+
         private bool RecreateBitmap()
         {
-            if(_internalBitmap != null)
+            if (_internalBitmap != null)
             {
                 _internalBitmap.Dispose();
                 _internalBitmap = null;
@@ -289,43 +354,167 @@ namespace FluentAvalonia.UI.Controls
 
             try
             {
-                _internalBitmap = new Bitmap(UriSource.LocalPath);
-                return true;
+                if (UriSource.IsAbsoluteUri && UriSource.IsFile)
+                {
+                    _internalBitmap = new Bitmap(UriSource.LocalPath);
+                    return true;
+                }
+                else
+                {
+                    //If it's not a physical file, we attempt to pull it from the assembly resources
+                    var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                    _internalBitmap = new Bitmap(assets.Open(UriSource));
+                    return true;
+                }
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
-            
+
+        }
+
+        #endregion
+
+
+        private Bitmap _internalBitmap;
+        private Uri _source;
+    }
+
+
+    /// <summary>
+    /// Creates an Icon from one of the Symbols in the <see cref="Symbol"/> enum
+    /// This is safer to use cross-platform as the symbol character code isn't tied to
+    /// only one font. SymbolThemeFontFamily, assuming it's not overridden, can either be
+    /// Segoe MDL2 Assets or winjs-symbols, which is included in our Assembly.
+    /// //Rendering logic is otherwise identical to FontIcon
+    /// While FontSize can be changed, it's best to place this in a Viewbox and let scaling
+    /// occur automatically
+    /// </summary>
+    public class SymbolIcon : IconElement
+    {
+        public SymbolIcon()
+        {
+
+        }
+
+        static SymbolIcon()
+        {
+            SymbolProperty.Changed.AddClassHandler<SymbolIcon>((x, v) => x.OnSymbolChanged());
+            FontSizeProperty.Changed.AddClassHandler<SymbolIcon>((x, v) => x.OnSymbolChanged());
+            ForegroundProperty.Changed.AddClassHandler<SymbolIcon>((x, v) => x.OnSymbolChanged());
+        }
+
+        public static readonly StyledProperty<Symbol> SymbolProperty =
+            AvaloniaProperty.Register<SymbolIcon, Symbol>("Symbol");
+
+        public Symbol Symbol
+        {
+            get => GetValue(SymbolProperty);
+            set => SetValue(SymbolProperty, value);
+        }
+
+        #region Override Methods
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+            var ff = this.TryFindResource("SymbolThemeFontFamily", out object value);
+            var fs = this.TryFindResource("ControlContentThemeFontSize", out object size);
+            //We don't want to override the FontFamily property, as that at least provides
+            //us a final fallback if SymbolThemeFontFamily doesn't exist or isn't found
+            //it won't render the glyph properly, but its better than an NRE
+
+            if (ff)
+            {
+                var tf = FontManager.Current.GetOrAddTypeface((FontFamily)value);
+
+                _SymbolFontFamily = tf.FontFamily;
+                OnSymbolChanged(); //Call to ensure glyph is created...
+            }
+
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if(UriSource == null || _internalBitmap == null)
-                return base.MeasureOverride(availableSize);
+            try
+            {
+                if (_textLayout == null)
+                    RecreateSymbolText();
 
-            return _internalBitmap.Size;
+                return new Size(_textLayout?.Bounds.Width ?? 0, _textLayout?.Bounds.Height ?? 0);
+            }
+            catch
+            {
+                return base.MeasureOverride(availableSize);
+            }
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            if (UriSource == null || _internalBitmap == null)
-                return base.ArrangeOverride(finalSize);
-
-            return _internalBitmap.Size;
+            try
+            {
+                return new Size(_textLayout?.Bounds.Width ?? 0, _textLayout?.Bounds.Height ?? 0);
+            }
+            catch
+            {
+                return base.MeasureOverride(finalSize);
+            }
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
-            if (UriSource == null || _internalBitmap == null)
+            //if (_textLayout == null)//Shouldn't be the case, but...
+            //    RecreateSymbolText();
+
+            if (_textLayout == null)
                 return;
-            context.DrawImage(_internalBitmap, new Rect(_internalBitmap.Size));
+
+            Point pt;
+            if (double.IsNaN(Bounds.Width) || double.IsNaN(Bounds.Height))
+                pt = new Point(0, 0);
+            else
+                pt = new Point(Bounds.Width / 2.0 - _textLayout.Bounds.Width / 2.0, Bounds.Height / 2.0 - _textLayout.Bounds.Height / 2.0);
+            _textLayout.Draw(context.PlatformImpl, pt);
+
         }
 
+        #endregion
 
-        private Bitmap _internalBitmap;
-        private Uri _source;
+
+        #region private methods
+
+        private void OnSymbolChanged()
+        {
+            bool useSegoe = false;
+            if (_SymbolFontFamily != null && _SymbolFontFamily.Name == "Segoe MDL2 Assets")
+                useSegoe = true;
+            //Here we know whether or not we're using Segoe MDL2 Assets or winjs-symbols,
+            //so we don't need SymbolHelper to check for us
+            symbolGlyph = SymbolHelper.GetCharacterForSymbol(Symbol, useSegoe, false);
+
+            RecreateSymbolText();
+        }
+
+        private void RecreateSymbolText()
+        {
+            if (_SymbolFontFamily == null)
+                return;
+            //Create the symbol text, hopefully using the SymbolFontFamily, but jic fall back to the 
+            //FontFamily property, we force Normal FontWeight & FontStyle as those wouldn't normally
+            //apply to the symbol anyway
+            _textLayout = new TextLayout(symbolGlyph,
+                FontManager.Current?.GetOrAddTypeface(_SymbolFontFamily != null ? _SymbolFontFamily : FontFamily,
+                FontWeight.Normal, FontStyle.Normal),
+                FontSize, Foreground, TextAlignment.Left);
+        }
+
+        #endregion
+
+        private string symbolGlyph;
+        private TextLayout _textLayout;
+        private FontFamily _SymbolFontFamily;
     }
 
 
@@ -344,6 +533,12 @@ namespace FluentAvalonia.UI.Controls
             if (value is string)
             {
                 var val = value.ToString();
+
+                //First we try if the text is a valid Symbol
+                if (Enum.TryParse(typeof(Symbol), val, out object sym))
+                {
+                    return new SymbolIcon() { Symbol = (Symbol)sym };
+                }
 
                 //Try a PathIcon
                 if (PathIcon.IsDataValid(val, out Geometry g))
