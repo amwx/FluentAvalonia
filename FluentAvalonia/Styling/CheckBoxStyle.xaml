@@ -6,7 +6,7 @@
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
-    <!-- Note about Sytling in FluentAvalonia
+    <!-- Note about Styling in FluentAvalonia
     MS creates a set of base colors/brushes (see ThemeStylesLight/ThemeStylesDark) and resuses
     them everywhere. To be specific, they use StaticResource with a refernce to the base
     brushes to use, eg:
@@ -16,6 +16,12 @@
     
     see https://github.com/microsoft/microsoft-ui-xaml/blob/master/dev/CheckBox/CheckBox_themeresources.xaml
     There's a lot of them...
+   
+   NOTE: With Font fallback update for symbols, there will be an appearance change for checkboxes in
+   an indeterminate state. Since winjs-symbols doesn't have an indeterminate check, I just used the 
+   Stop symbol, which is just a little larger than would be nice. It fills almost the entire check 
+   area, but still leaves a little border, enough to see its doing something. This is the best I can
+   do to support a fallback.
    
     -->
 
@@ -53,11 +59,12 @@
                                     Height="20"
                                     Width="20"
                                     CornerRadius="{DynamicResource ControlCornerRadius}"/>
-                            
-                            <ui:FontIcon Name="CheckGlyph" 
+
+                            <ui:SymbolIcon Name="CheckGlyph" FontSize="16" />
+                            <!--<ui:FontIcon Name="CheckGlyph" 
                                          FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                          FontSize="16"
-                                         />
+                                         />-->
                         </Grid>
                         <ContentPresenter x:Name="ContentPresenter"
                             ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -72,8 +79,9 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="CheckBox /template/ ui|FontIcon#CheckGlyph">
-        <Setter Property="Glyph" Value="&#xE001;"/>
+    <Style Selector="CheckBox /template/ ui|SymbolIcon#CheckGlyph">
+        <!--<Setter Property="Glyph" Value="&#xE001;"/>-->
+        <Setter Property="Symbol" Value="Checkmark"/>
         <Setter Property="Opacity" Value="0"/>
         <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltChromeWhiteBrush}"/>
     </Style>
@@ -115,7 +123,7 @@
     </Style>
 
     <!--Skip all pressed states from WinUI, not impld in Avalonia-->
-    
+
     <!-- DISABLED -->
     <Style Selector="CheckBox:disabled /template/ Border#Root">
         <Setter Property="Background" Value="{DynamicResource SystemControlTransparentBrush}"/>
@@ -144,11 +152,12 @@
         <Setter Property="Background" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemControlHighlightTransparentBrush}"/>
     </Style>
-    <Style Selector="CheckBox:checked /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:checked /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltChromeWhiteBrush}"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
-        <Setter Property="Glyph" Value="&#xE001;"/>
+        <!--<Setter Property="Glyph" Value="&#xE001;"/>-->
+        <Setter Property="Symbol" Value="Checkmark"/>
     </Style>
 
     <!-- CHECKED POINTEROVER -->
@@ -163,11 +172,12 @@
         <Setter Property="Background" Value="{DynamicResource SystemAccentBrushDark1}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentBrushLight1}"/>
     </Style>
-    <Style Selector="CheckBox:checked:pointerover /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:checked:pointerover /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltChromeWhiteBrush}"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
-        <Setter Property="Glyph" Value="&#xE001;"/>
+        <!--<Setter Property="Glyph" Value="&#xE001;"/>-->
+        <Setter Property="Symbol" Value="Checkmark"/>
     </Style>
 
     <!-- CHECKED PRESSED -->
@@ -182,13 +192,14 @@
         <Setter Property="Background" Value="{DynamicResource SystemAccentBrushLight1}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentBrushDark1}"/>
     </Style>
-    <Style Selector="CheckBox:checked:pointerover /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:checked:pointerover /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltChromeWhiteBrush}"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
-        <Setter Property="Glyph" Value="&#xE001;"/>
+        <!--<Setter Property="Glyph" Value="&#xE001;"/>-->
+        <Setter Property="Symbol" Value="Checkmark"/>
     </Style>
-    
+
     <!-- CHECKED DISABLED -->
     <Style Selector="CheckBox:checked:disabled /template/ Border#Root">
         <Setter Property="Background" Value="{DynamicResource SystemControlTransparentBrush}"/>
@@ -201,11 +212,12 @@
         <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseMediumLowBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/>
     </Style>
-    <Style Selector="CheckBox:checked:disabled /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:checked:disabled /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
-        <Setter Property="Glyph" Value="&#xE001;"/>
+        <!--<Setter Property="Glyph" Value="&#xE001;"/>-->
+        <Setter Property="Symbol" Value="Checkmark"/>
     </Style>
 
     <!-- INDETERMINATE -->
@@ -220,9 +232,10 @@
         <Setter Property="Background" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemControlTransparentBrush}"/>
     </Style>
-    <Style Selector="CheckBox:indeterminate /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:indeterminate /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltChromeWhiteBrush}"/>
-        <Setter Property="Glyph" Value="&#xE73C;"/>
+        <!--<Setter Property="Glyph" Value="&#xE73C;"/>-->
+        <Setter Property="Symbol" Value="IndeterminateCheck"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
     </Style>
@@ -239,9 +252,10 @@
         <Setter Property="Background" Value="{DynamicResource SystemAccentBrushLight1}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentBrushLight1}"/>
     </Style>
-    <Style Selector="CheckBox:indeterminate:pointerover /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:indeterminate:pointerover /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundChromeWhiteBrush}"/>
-        <Setter Property="Glyph" Value="&#xE73C;"/>
+        <!--<Setter Property="Glyph" Value="&#xE73C;"/>-->
+        <Setter Property="Symbol" Value="IndeterminateCheck"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
     </Style>
@@ -258,9 +272,10 @@
         <Setter Property="Background" Value="{DynamicResource SystemAccentBrushDark1}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentBrushDark1}"/>
     </Style>
-    <Style Selector="CheckBox:indeterminate:pressed /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:indeterminate:pressed /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundChromeWhiteBrush}"/>
-        <Setter Property="Glyph" Value="&#xE73C;"/>
+        <!--<Setter Property="Glyph" Value="&#xE73C;"/>-->
+        <Setter Property="Symbol" Value="IndeterminateCheck"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
     </Style>
@@ -277,11 +292,13 @@
         <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseMediumLowBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/>
     </Style>
-    <Style Selector="CheckBox:indeterminate:disabled /template/ ui|FontIcon#CheckGlyph">
+    <Style Selector="CheckBox:indeterminate:disabled /template/ ui|SymbolIcon#CheckGlyph">
         <Setter Property="Foreground" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/>
-        <Setter Property="Glyph" Value="&#xE73C;"/>
+        <!--<Setter Property="Glyph" Value="&#xE73C;"/>-->
+        <Setter Property="Symbol" Value="IndeterminateCheck"/>
         <!--Technically animated, but a duration of zero, so just set it-->
         <Setter Property="Opacity" Value="1" />
     </Style>
-    
+
+
 </Styles>
