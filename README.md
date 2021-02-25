@@ -1,32 +1,36 @@
 # FluentAvalonia
 
-Just a little project to extend Microsoft's Fluent Design system & some WinUI controls into the Avalonia world. This is all a work in progress so bear with me as I get it all sorted out. 
+Just a little project to extend some additional WinUI and Fluent design in to the Avalonia world.
 
-Important notes:
-FluentAvalonia has a dependency on the Segoe MDL2 Assets font for symbols (affects FontIcon and CheckBox)    
-These are already installed on Windows 10 by default. If Segoe MDL2 Assets is not available, SymbolThemeFontFamily will fall back (if using the ThemeManager) to the included Symbols font. There are differences, but they shouldn't be substantial.
-
-Currently the project targets Avalonia CI Build 0.9.999-cibuild0007716-beta, and .net core 3.1. In the future, after 0.10, I'll stick to normal release versions =D
+Targets: Avalonia 0.10 & .net core 3.1
 
 What's included so far?
-- Styles for
-   Button
-   RadioButton
-   CheckBox
-   Base Colors
-- Content Dialog
-- Basic Flyout for Button
-- IconElements
-- SplitView
+- New WinUI styles (currently being rolled out) for some controls
+- Support for new FluentUI Icons
+- NEW - NavigationView Control (the full thing ported from WinUI, in testing)
+- Partial support for Flyouts
+- SplitButton, ToggleSplitButton
+- DropDownButton
+- Editable ComboBox (experimental)
+- ContentDialog
+- FontIcon & FontIconSource
+- PathIcon & PathIconSource
+- BitmapIcon & BitmapIconSource (requires Skia renderer, which is default)
+- SymbolIcon & SymbolIconSource (Symbols from new FluentUI Icons)
+- ColorPicker & ColorPickerButton (in testing)
+- Frame control for navigation (in testing)
+- NumberBox (in testing)
+- Theme Manager with support for runtime theme changing, getting Windows system accent color & dark mode preferences (including the Native titlebar on supported Win10 systems, 1809+)
 
-Thing's I'm working on (from WinUI):
-- Navigation View
-- Calendar View
-- Date Picker
-- Calendar Date Picker
-- Time Picker
-- Styles for other base Avalonia Controls where needed
-- Color Spectrum/Color picker
+Future goals:
+- Finish adapting new WinUI styles as they're rolled out
+- Port other WinUI controls
+
+LightTheme 
+![image](https://user-images.githubusercontent.com/40413319/109102163-db175c00-76ed-11eb-8d94-a6fbc1b4e5cc.png)
+
+DarkTheme
+![image](https://user-images.githubusercontent.com/40413319/109102203-f7b39400-76ed-11eb-9fc1-35ed6273be86.png)
 
 
 
@@ -41,5 +45,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
