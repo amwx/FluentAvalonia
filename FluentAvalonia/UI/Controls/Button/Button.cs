@@ -1,8 +1,5 @@
-﻿//This file is a part of FluentAvalonia
-//AvaloniaUI - Licenced under MIT Licence, https://github.com/AvaloniaUI/Avalonia
-//Adapted from the WinUI project, MIT Licence, https://github.com/microsoft/microsoft-ui-xaml
-
-using Avalonia;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Styling;
 using FluentAvalonia.UI.Controls.Primitives;
@@ -19,7 +16,8 @@ namespace FluentAvalonia.UI.Controls
 
         #region AvaloniaProperties
         
-        public static readonly DirectProperty<Button, FlyoutBase> FlyoutProperty = AvaloniaProperty.RegisterDirect<Button, FlyoutBase>("Flyout",
+        public static readonly DirectProperty<Button, FlyoutBase> FlyoutProperty = 
+            AvaloniaProperty.RegisterDirect<Button, FlyoutBase>("Flyout",
             (s) => s.Flyout, (s, v) => s.Flyout = v);
 
         #endregion
@@ -31,8 +29,8 @@ namespace FluentAvalonia.UI.Controls
 
         public FlyoutBase Flyout
         {
-            get => _Flyout;
-            set => SetAndRaise(FlyoutProperty, ref _Flyout, value);
+            get => _flyout;
+            set => SetAndRaise(FlyoutProperty, ref _flyout, value);
         }
 
         #endregion
@@ -49,7 +47,8 @@ namespace FluentAvalonia.UI.Controls
                 {
                     OnClick();
                     if (Flyout != null)
-                        Flyout.ShowAt(this);
+                        OpenFlyout();
+
                     e.Handled = true;
                 }
                 else
@@ -65,11 +64,14 @@ namespace FluentAvalonia.UI.Controls
             if (e.Key == Key.Enter | e.Key == Key.Space)
             {
                 SetValue(IsPressedProperty, false);
+                PseudoClasses.Set(":pressed", false);
+                PseudoClasses.Set(":pointerover", false);
                 if (ClickMode == Avalonia.Controls.ClickMode.Release)
                 {
                     OnClick();
                     if (Flyout != null)
-                        Flyout.ShowAt(this);
+                        OpenFlyout();
+
                     e.Handled = true;
                 }
                 else
@@ -87,7 +89,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (ClickMode == Avalonia.Controls.ClickMode.Press)
                     if (Flyout != null)
-                        Flyout.ShowAt(this);
+                        OpenFlyout();
             }
             base.OnPointerPressed(e);
         }
@@ -99,7 +101,7 @@ namespace FluentAvalonia.UI.Controls
                 if(ClickMode == Avalonia.Controls.ClickMode.Release)
                 {
                     if (Flyout != null)
-                        Flyout.ShowAt(this);
+                        OpenFlyout();
                 }
             }
             base.OnPointerReleased(e);
@@ -107,6 +109,16 @@ namespace FluentAvalonia.UI.Controls
 
         #endregion
 
-        private FlyoutBase _Flyout;
+        #region Private Methods
+
+        protected virtual void OpenFlyout()
+        {
+            _flyout.ShowAt(this);
+        }
+
+        #endregion
+
+
+        private FlyoutBase _flyout;
     }
 }

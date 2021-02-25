@@ -1,0 +1,15 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluentAvaloniaSamples.Pages.SettingsPage">
+    <Grid>
+        <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Stretch" Margin="10 0">
+            <TextBlock Text="App Theme" FontSize="16" FontWeight="700" Margin="5" />
+            <Button Content="Set Light Theme" Command="{Binding SetLightTheme}" Margin="3 10" />
+            <Button Content="Set Dark Theme" Command="{Binding SetDarkTheme}" Margin="3 10"/>
+            <Button Content="Set HC Theme (not supported)" Command="{Binding SetHCTheme}" Margin="3 10" IsEnabled="False"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

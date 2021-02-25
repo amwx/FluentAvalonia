@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using FluentAvaloniaSamples.ViewModels;
 
 namespace FluentAvaloniaSamples.Pages
 {
@@ -9,6 +10,8 @@ namespace FluentAvaloniaSamples.Pages
         public BasicControls()
         {
             this.InitializeComponent();
+
+            DataContext = new BasicControlsViewModel();
         }
 
         private void InitializeComponent()

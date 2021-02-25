@@ -15,6 +15,8 @@ namespace FluentAvalonia.UI.Controls
             Owner = owner;
         }
 
+        internal bool IsDeferred { get; set; }
+
         public void Complete() 
         {
             Owner.CompleteButtonClickDeferral();

@@ -1,29 +1,27 @@
-﻿//This file is a part of FluentAvalonia
-//AvaloniaUI - Licenced under MIT Licence, https://github.com/AvaloniaUI/Avalonia
-//Adapted from the WinUI project, MIT Licence, https://github.com/microsoft/microsoft-ui-xaml
-
-using Avalonia;
+﻿using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Metadata;
+using Avalonia.Styling;
+using Avalonia.Threading;
 using FluentAvalonia.UI.Controls.Primitives;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
-    /// <summary>
-    /// Just an ordinary Flyout, content can be anything
-    /// Basically just a simple wrapper around a Popup
-    /// Not in WinUI, so impl is my own
-    /// </summary>
     public class Flyout : FlyoutBase
     {
         public Flyout()
         {
-
+            
         }
 
         static Flyout()
         {
-            ContentProperty.Changed.AddClassHandler<Flyout>((s, v) => s.OnContentChanged(v));
+            //ContentProperty.Changed.AddClassHandler<Flyout>((s, v) => s.OnContentChanged(v));
         }
 
         #region AvaloniaProperties
@@ -42,26 +40,32 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(ContentProperty, value);
         }
 
+        public Styles FlyoutPresenterStyle => _styles ??= new Styles();
+
         #endregion
-
-        #region Methods
-
-        private void OnContentChanged(AvaloniaPropertyChangedEventArgs e)
-        {
-            if (_presenter == null)
-                _presenter = CreatePresenter() as FlyoutPresenter;
-            _presenter.Content = e.NewValue;
-
-            FlyoutRoot.Child = _presenter;
-        }
 
         protected override Control CreatePresenter()
         {
-            return new FlyoutPresenter();
+            return new FlyoutPresenter
+            {
+                [!ContentControl.ContentProperty] = this[!Flyout.ContentProperty]
+            };
         }
 
-        #endregion
+        protected override void OnOpening()
+        {
+            //Pass the FlyoutPresenterStyle into the Popup
+            //Since that's internal, we can control the Styles on it
+            GetPresenter?.Styles.Clear();
+            GetPresenter?.Styles.Add(FlyoutPresenterStyle);
+            base.OnOpening();
+        }
 
-        private FlyoutPresenter _presenter;
+        protected override void OnOpened()
+        {
+            base.OnOpened();
+        }
+
+        private Styles _styles;
     }
 }

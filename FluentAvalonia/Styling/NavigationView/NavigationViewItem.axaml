@@ -1,0 +1,112 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia">
+
+    <Design.PreviewWith>
+        <Border Padding="50" Background="#F3F3F3">
+            <StackPanel Spacing="4">
+                <ui:NavigationViewItem />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <!--
+    [PseudoClasses(":leftnav", ":topnav", ":topoverflow")]
+    -->
+
+    <Style Selector="ui|NavigationViewItem">
+        <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
+        <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{StaticResource NavigationViewItemBorderThickness}" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="Margin" Value="{DynamicResource NavigationViewItemMargin}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Name="NVIRootGrid" RowDefinitions="*,Auto">
+                    
+                    <uip:NavigationViewItemPresenter Name="NVIPresenter"                    
+                                                     Icon="{TemplateBinding Icon}"
+                                                     ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                     Padding="{TemplateBinding Padding}"
+                                                     Foreground="{TemplateBinding Foreground}"
+                                                     Background="{TemplateBinding Background}"
+                                                     BorderBrush="{TemplateBinding BorderBrush}"
+                                                     BorderThickness="{TemplateBinding BorderThickness}"
+                                                     VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                                     HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                     Content="{TemplateBinding Content}"
+                                                     TemplatedControl.IsTemplateFocusTarget="True" />
+                    
+                    <ItemsRepeater Grid.Row="1"
+                                   IsVisible="False"
+                                   Name="NVIMenuItemsHost"
+                                   KeyboardNavigation.TabNavigation="Continue" />
+
+                    <uip:FlyoutBase.AttachedFlyout>
+                        <!--Placement="RightEdgeAlignedTop"-->
+                        <ui:Flyout>
+                            <ui:Flyout.FlyoutPresenterStyle>
+                                <Styles>
+                                    <Style Selector="ui|FlyoutPresenter">
+                                        <Setter Property="Padding" Value="{DynamicResource NavigationViewItemChildrenMenuFlyoutPadding}" />
+                                        <Setter Property="Margin" Value="0,-4,0,0" />
+                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+                                        <Setter Property="Template">
+                                            <ControlTemplate>
+                                                <Border Name="Root"
+                                                        CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                                    <ScrollViewer Name="ScrollViewer"
+                                                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                                        <ContentPresenter Name="ContentPresenter"
+                                                                          Background="{TemplateBinding Background}"
+                                                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                                                          Content="{TemplateBinding Content}"
+                                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                          Padding="{TemplateBinding Padding}"
+                                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                    </ScrollViewer>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter>
+                                    </Style>
+                                </Styles>
+                            </ui:Flyout.FlyoutPresenterStyle>
+                            
+                            <Panel Name="FlyoutRootGrid">
+                                <Panel Name="FlyoutContentGrid" />
+                            </Panel>
+                            
+                        </ui:Flyout>
+                    </uip:FlyoutBase.AttachedFlyout>
+
+                    
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ui|NavigationViewItem:topprimary /template/ uip|NavigationViewItemPresenter">
+        <Setter Property="Margin" Value="{DynamicResource TopNavigationViewItemMargin}" />
+        <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForeground}" />
+    </Style>
+    
+    
+    
+
+</Styles>

@@ -4,40 +4,13 @@ using System;
 using System.Text;
 using System.Runtime.InteropServices;
 using Avalonia;
+using System.Security;
 
 namespace FluentAvalonia.Interop
 {
-    internal static class Win32Interop
+    public static class Win32Interop
     {
 #pragma warning disable CA1401
-
-        public const int CW_USEDEFAULT = unchecked((int)0x80000000);
-
-        [DllImport("Shell32.dll")]
-        public static extern int SHGetKnownFolderPath(
-        [MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken,
-        out IntPtr ppszPath);
-               
-        /// <summary>
-        /// This is BAD practice, but may be the easiest way to do this
-        /// Note that changes to *.lnk files may break this code
-        /// </summary>
-        /// <param name="fileLink"></param>
-        /// <returns></returns>
-        public static string LnkToFile(string fileLink)
-        {
-            string link = System.IO.File.ReadAllText(fileLink);
-            int i1 = link.IndexOf("DATA\0");
-            if (i1 < 0)
-                return null;
-            i1 += 5;
-            int i2 = link.IndexOf("\0", i1);
-            if (i2 < 0)
-                return link.Substring(i1);
-            else
-                return link.Substring(i1, i2 - i1);
-        }
-
 
         [DllImport("dwmapi.dll", SetLastError = true)]
         public static extern int DwmIsCompositionEnabled(out bool enabled);
@@ -79,10 +52,142 @@ namespace FluentAvalonia.Interop
             return colour;
         }
 
+
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static unsafe extern int SetWindowCompositionAttribute(IntPtr hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
+
+        [DllImport("uxtheme.dll", EntryPoint = "#104", SetLastError = true)]
+        public static extern void fnRefreshImmersiveColorPolicyState();
+
+        [DllImport("uxtheme.dll", EntryPoint = "#137")]
+        public static extern bool fnIsDarkModeAllowedForWindow(IntPtr hWnd);
+
+        [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true)]
+        public static extern PreferredAppMode fnSetPreferredAppMode(IntPtr hwnd, PreferredAppMode appMode);
+
+        [DllImport("uxtheme.dll", EntryPoint = "#135")]
+        public static extern bool fnAllowDarkModeForApp(IntPtr hwnd, bool allow);
+
         [DllImport("uxtheme.dll", EntryPoint = "#132")]
-        public static extern bool fnShouldAppsUseDarkMode();
+        public static extern bool fnShouldAppsUseDarkMode(); //1809
         [DllImport("uxtheme.dll", EntryPoint = "#138")]
-        public static extern bool fnShouldSystemUseDarkMode();
+        public static extern bool fnShouldSystemUseDarkMode(); //Use on 1903+
+
+        [DllImport("dwmapi.dll", PreserveSig = true, SetLastError = true)]
+        public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE attr, ref int value, int attrSize);
+
+
+        public static bool GetSystemTheme(OSVERSIONINFOEX osInfo)
+        {
+            if (osInfo.MajorVersion < 10 || osInfo.BuildNumber < 17763) //1809
+                return false;
+
+            if (osInfo.BuildNumber < 18362) //1903
+                return fnShouldAppsUseDarkMode();
+
+            return fnShouldSystemUseDarkMode();
+        }
+
+        public static bool ApplyTheme(IntPtr hwnd, bool useDark, OSVERSIONINFOEX osInfo)
+        {
+            if (osInfo.MajorVersion < 10 || osInfo.BuildNumber < 17763) //1809
+                return false;
+
+            if (osInfo.BuildNumber < 18362) //1903
+            {
+                var res = fnAllowDarkModeForApp(hwnd, useDark);
+                if (res == false)
+                    return res;
+
+                int dark = useDark ? 1 : 0;
+                DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.UseImmersiveDarkMode, ref dark, Marshal.SizeOf<int>());
+            }
+            else
+            {
+                //Not sure what a successful return value is on this one
+                fnSetPreferredAppMode(hwnd, useDark ? PreferredAppMode.AllowDark : PreferredAppMode.Default);
+                fnRefreshImmersiveColorPolicyState();
+
+                int success = 0;
+                unsafe
+                {
+                    WINDOWCOMPOSITIONATTRIBDATA data = new WINDOWCOMPOSITIONATTRIBDATA
+                    {
+                        attrib = WINDOWCOMPOSITIONATTRIB.WCA_USEDARKMODECOLORS,
+                        data = &useDark,
+                        sizeOfData = sizeof(int)
+                    };
+
+                    success = SetWindowCompositionAttribute(hwnd, &data);
+                }
+                if (success == 0)
+                    return false;
+            }                       
+
+            return true;
+        }
+
+        [SecurityCritical]
+        [DllImport("ntdll.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct OSVERSIONINFOEX
+        {
+            // The OSVersionInfoSize field must be set
+            public int OSVersionInfoSize;
+            public int MajorVersion;
+            public int MinorVersion;
+            public int BuildNumber;
+            public int PlatformId;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string CSDVersion;
+            public ushort ServicePackMajor;
+            public ushort ServicePackMinor;
+            public short SuiteMask;
+            public byte ProductType;
+            public byte Reserved;
+        }
+
+
+
+
+
+
+
+        public const int CW_USEDEFAULT = unchecked((int)0x80000000);
+
+        [DllImport("Shell32.dll")]
+        public static extern int SHGetKnownFolderPath(
+        [MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken,
+        out IntPtr ppszPath);
+
+        /// <summary>
+        /// This is BAD practice, but may be the easiest way to do this
+        /// Note that changes to *.lnk files may break this code
+        /// </summary>
+        /// <param name="fileLink"></param>
+        /// <returns></returns>
+        public static string LnkToFile(string fileLink)
+        {
+            string link = System.IO.File.ReadAllText(fileLink);
+            int i1 = link.IndexOf("DATA\0");
+            if (i1 < 0)
+                return null;
+            i1 += 5;
+            int i2 = link.IndexOf("\0", i1);
+            if (i2 < 0)
+                return link.Substring(i1);
+            else
+                return link.Substring(i1, i2 - i1);
+        }
+
+
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref Win32Interop.WINDOWPLACMENT lpwndpl);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
@@ -97,9 +202,7 @@ namespace FluentAvalonia.Interop
         [DllImport("user32.dll", CharSet=CharSet.Auto)]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [DllImport("dwmapi.dll", PreserveSig = true, SetLastError = true)]
-        public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE attr, ref int value, int attrSize);
-
+        
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
@@ -228,14 +331,61 @@ namespace FluentAvalonia.Interop
             }
         }
 
-#pragma warning enable CA1401
-
         public const int TPM_LEFTBUTTON = 0x0;
         public const int TPM_RIGHTBUTTON = 0x2;
         public const int TPM_RETURNCMD = 0x100;
         
 
     }
+
+
+    public unsafe struct WINDOWCOMPOSITIONATTRIBDATA
+    {
+        public WINDOWCOMPOSITIONATTRIB attrib;
+        public void* data;
+        public int sizeOfData;
+    }
+
+    public enum PreferredAppMode
+    {
+        Default,
+        AllowDark,
+        ForceDark,
+        ForceLight,
+        Max
+    }
+
+    public enum WINDOWCOMPOSITIONATTRIB
+    {
+        WCA_UNDEFINED = 0,
+        WCA_NCRENDERING_ENABLED = 1,
+        WCA_NCRENDERING_POLICY = 2,
+        WCA_TRANSITIONS_FORCEDISABLED = 3,
+        WCA_ALLOW_NCPAINT = 4,
+        WCA_CAPTION_BUTTON_BOUNDS = 5,
+        WCA_NONCLIENT_RTL_LAYOUT = 6,
+        WCA_FORCE_ICONIC_REPRESENTATION = 7,
+        WCA_EXTENDED_FRAME_BOUNDS = 8,
+        WCA_HAS_ICONIC_BITMAP = 9,
+        WCA_THEME_ATTRIBUTES = 10,
+        WCA_NCRENDERING_EXILED = 11,
+        WCA_NCADORNMENTINFO = 12,
+        WCA_EXCLUDED_FROM_LIVEPREVIEW = 13,
+        WCA_VIDEO_OVERLAY_ACTIVE = 14,
+        WCA_FORCE_ACTIVEWINDOW_APPEARANCE = 15,
+        WCA_DISALLOW_PEEK = 16,
+        WCA_CLOAK = 17,
+        WCA_CLOAKED = 18,
+        WCA_ACCENT_POLICY = 19,
+        WCA_FREEZE_REPRESENTATION = 20,
+        WCA_EVER_UNCLOAKED = 21,
+        WCA_VISUAL_OWNER = 22,
+        WCA_HOLOGRAPHIC = 23,
+        WCA_EXCLUDED_FROM_DDA = 24,
+        WCA_PASSIVEUPDATEMODE = 25,
+        WCA_USEDARKMODECOLORS = 26,
+        WCA_LAST = 27
+    };
 
     [Flags]
     public enum ClassStyles : uint
@@ -325,7 +475,8 @@ namespace FluentAvalonia.Interop
         ExcludedFromPeek,
         Cloak,
         Cloaked,
-        FreezeRepresentation
+        FreezeRepresentation,
+        UseImmersiveDarkMode = 20
     }
 
     public struct POINT
@@ -419,7 +570,7 @@ namespace FluentAvalonia.Interop
         }
     }
 
-
+    
 
     [Flags]
     public enum WindowStyles : uint

@@ -3,8 +3,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -12,31 +14,12 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="DescriptionTexts\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="DescriptionTexts\StylesDesc.txt" />
-    <None Remove="DescriptionTexts\ThemeManager.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DescriptionTexts\StylesDesc.txt" />
-    <EmbeddedResource Include="DescriptionTexts\ThemeManager.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.999-cibuild0007716-beta" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.999-cibuild0007716-beta" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.9.999-cibuild0007716-beta" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.999-cibuild0007716-beta" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Pages\BasicControls.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Containers.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Dialogs.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <PackageReference Include="Avalonia" Version="0.10.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />

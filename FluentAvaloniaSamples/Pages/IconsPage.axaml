@@ -1,0 +1,89 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:local="using:FluentAvaloniaSamples"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="2000"
+             x:Class="FluentAvaloniaSamples.Pages.IconsPage">
+    <UserControl.Resources>
+        <ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save" />
+        <ui:FontIconSource x:Key="FontIcon" Glyph="F" />
+        <ui:PathIconSource x:Key="PathIcon" Data="M0,0 L 50,0 L 25,50Z" />
+        <ui:BitmapIconSource x:Key="BmpIcon" UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" />
+    </UserControl.Resources>
+    
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <TextBlock Text="{Binding Header}" TextWrapping="Wrap" />
+            
+            <local:ControlExample Header="SymbolIcon"
+                                  XamlSource="{Binding SymbolIconXaml}"
+                                  UsageNotes="{Binding SymbolIconNotes}">
+                <ui:SymbolIcon Symbol="Navigation" />                
+            </local:ControlExample>
+            
+            <Expander Header="Symbol Enum" HorizontalAlignment="Stretch" MaxWidth="2000">
+                <ListBox Items="{Binding Symbols}" Height="200">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Width="150">
+                                <ui:SymbolIcon Symbol="{Binding}"
+                                               FontSize="20"
+                                               DockPanel.Dock="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="10,4"/>
+
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Expander>
+
+            <local:ControlExample Header="FontIcon"
+                                  XamlSource="{Binding FontIconXaml}"
+                                  UsageNotes="{Binding FontIconNotes}">
+                <ui:FontIcon FontSize="18" Glyph="A" />
+            </local:ControlExample>
+
+
+            <local:ControlExample Header="PathIcon"
+                                  XamlSource="{Binding PathIconXaml}">
+                <ui:PathIcon Data="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </local:ControlExample>
+
+            <local:ControlExample Header="BitmapIcon"
+                                  XamlSource="{Binding BitmapIconXaml}"
+                                  UsageNotes="{Binding BitmapIconNotes}">
+                <ui:BitmapIcon UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center"
+                               Width="50" Height="50"/>
+            </local:ControlExample>
+
+            <local:ControlExample Header="FontIconSource">
+                <ui:IconSourceElement IconSource="{StaticResource FontIcon}" />
+            </local:ControlExample>
+
+            <local:ControlExample Header="SymbolIconSource">
+                <ui:IconSourceElement IconSource="{StaticResource SaveIcon}" />
+            </local:ControlExample>
+
+            <local:ControlExample Header="PathIconSource">
+                <ui:IconSourceElement IconSource="{StaticResource PathIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </local:ControlExample>
+
+            <local:ControlExample Header="BitmapIconSource">
+                <ui:IconSourceElement IconSource="{StaticResource BmpIcon}" Width="55" Height="55" />
+            </local:ControlExample>
+            
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

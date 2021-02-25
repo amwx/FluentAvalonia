@@ -10,10 +10,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
+using Avalonia.LogicalTree;
 using FluentAvalonia.Core;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -24,15 +23,8 @@ namespace FluentAvalonia.UI.Controls
     /// Presents a asyncronous dialog to the user.
     /// Note, Tab navigation currently doesn't work
     /// </summary>
-    public class ContentDialog : ContentControl
+    public class ContentDialog : ContentControl//, INavigableContainer
     {
-        public ContentDialog()
-        {
-            PseudoClasses.Set(":hidden", true);
-            IsVisible = false;
-            AddHandler(Control.KeyUpEvent, OnDialogKeyUp, RoutingStrategies.Bubble);
-        }
-
         static ContentDialog()
         {
             FullSizeDesiredProperty.Changed.AddClassHandler<ContentDialog>((x, v) => x.OnFullSizedDesiredChanged(v));
@@ -40,46 +32,46 @@ namespace FluentAvalonia.UI.Controls
 
         #region AvaloniaProperties
 
-        public static readonly StyledProperty<ICommand> CloseButtonCommandProperty = 
+        public static readonly StyledProperty<ICommand> CloseButtonCommandProperty =
             AvaloniaProperty.Register<ContentDialog, ICommand>("CloseButtonCommand");
 
-        public static readonly StyledProperty<object> CloseButtonCommandParameterProperty = 
+        public static readonly StyledProperty<object> CloseButtonCommandParameterProperty =
             AvaloniaProperty.Register<ContentDialog, object>("CloseButtonCommandParameter");
 
-        public static readonly StyledProperty<string> CloseButtonTextProperty = 
+        public static readonly StyledProperty<string> CloseButtonTextProperty =
             AvaloniaProperty.Register<ContentDialog, string>("CloseButtonText");
 
-        public static readonly StyledProperty<ContentDialogButton> DefaultButtonProperty = 
+        public static readonly StyledProperty<ContentDialogButton> DefaultButtonProperty =
             AvaloniaProperty.Register<ContentDialog, ContentDialogButton>("DefaultButton", ContentDialogButton.None);
 
-        public static readonly StyledProperty<bool> IsPrimaryButtonEnabledProperty = 
+        public static readonly StyledProperty<bool> IsPrimaryButtonEnabledProperty =
             AvaloniaProperty.Register<ContentDialog, bool>("IsPrimaryButtonEnabled", true);
 
-        public static readonly StyledProperty<bool> IsSecondaryButtonEnabledProperty = 
+        public static readonly StyledProperty<bool> IsSecondaryButtonEnabledProperty =
             AvaloniaProperty.Register<ContentDialog, bool>("IsSecondaryButtonEnabled", true);
 
-        public static readonly StyledProperty<ICommand> PrimaryButtonCommandProperty = 
+        public static readonly StyledProperty<ICommand> PrimaryButtonCommandProperty =
             AvaloniaProperty.Register<ContentDialog, ICommand>("PrimaryButtonCommand");
 
-        public static readonly StyledProperty<object> PrimaryButtonCommandParameterProperty = 
+        public static readonly StyledProperty<object> PrimaryButtonCommandParameterProperty =
             AvaloniaProperty.Register<ContentDialog, object>("PrimaryButtonCommandParameter");
 
-        public static readonly StyledProperty<string> PrimaryButtonTextProperty = 
+        public static readonly StyledProperty<string> PrimaryButtonTextProperty =
             AvaloniaProperty.Register<ContentDialog, string>("PrimaryButtonText");
 
-        public static readonly StyledProperty<ICommand> SecondaryButtonCommandProperty = 
+        public static readonly StyledProperty<ICommand> SecondaryButtonCommandProperty =
             AvaloniaProperty.Register<ContentDialog, ICommand>("SecondaryButtonCommand");
 
-        public static readonly StyledProperty<object> SecondaryButtonCommandParameterProperty = 
+        public static readonly StyledProperty<object> SecondaryButtonCommandParameterProperty =
             AvaloniaProperty.Register<ContentDialog, object>("SecondaryButtonCommandParameter");
 
-        public static readonly StyledProperty<string> SecondaryButtonTextProperty = 
+        public static readonly StyledProperty<string> SecondaryButtonTextProperty =
             AvaloniaProperty.Register<ContentDialog, string>("SecondaryButtonText");
 
-        public static readonly StyledProperty<object> TitleProperty = 
+        public static readonly StyledProperty<object> TitleProperty =
             AvaloniaProperty.Register<ContentDialog, object>("Title", "");
 
-        public static readonly StyledProperty<IDataTemplate> TitleTemplateProperty = 
+        public static readonly StyledProperty<IDataTemplate> TitleTemplateProperty =
             AvaloniaProperty.Register<ContentDialog, IDataTemplate>("TitleTemplate");
 
         public static readonly StyledProperty<bool> FullSizeDesiredProperty =
@@ -88,6 +80,7 @@ namespace FluentAvalonia.UI.Controls
         #endregion
 
         #region CLR Properties
+
         /// <summary>
         /// Command to execute when the close button is clicked
         /// </summary>
@@ -308,14 +301,15 @@ namespace FluentAvalonia.UI.Controls
             get => GetValue(FullSizeDesiredProperty);
             set => SetValue(FullSizeDesiredProperty, value);
         }
+
         #endregion
 
-        #region Events
+        #region Events 
 
-        public event TypedEventHandler<ContentDialog, ContentDialogClosedEventArgs> Closed;
-        public event TypedEventHandler<ContentDialog, ContentDialogClosingEventArgs> Closing;
-        //Change here, ContentDialogOpenedEventArgs is empty (at least publically), so just use null object
+        public event TypedEventHandler<ContentDialog, object> Opening;
         public event TypedEventHandler<ContentDialog, object> Opened;
+        public event TypedEventHandler<ContentDialog, ContentDialogClosingEventArgs> Closing;
+        public event TypedEventHandler<ContentDialog, ContentDialogClosedEventArgs> Closed;
         public event TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs> PrimaryButtonClick;
         public event TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs> SecondaryButtonClick;
         public event TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs> CloseButtonClick;
@@ -327,205 +321,203 @@ namespace FluentAvalonia.UI.Controls
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
-            PrimaryButton = e.NameScope.Find<Button>("PrimaryButton");
-            SecondaryButton = e.NameScope.Find<Button>("SecondaryButton");
-            CloseButton = e.NameScope.Find<Button>("CloseButton");
-                       
-            PrimaryButton.Click += Button_Click;
-            SecondaryButton.Click += Button_Click;
-            CloseButton.Click += Button_Click;
-                       
-            SetupDialog();
+
+            _primaryButton = e.NameScope.Get<Button>("PrimaryButton");
+            _primaryButton.Click += OnButtonClick;
+            _secondaryButton = e.NameScope.Get<Button>("SecondaryButton");
+            _secondaryButton.Click += OnButtonClick;
+            _closeButton = e.NameScope.Get<Button>("CloseButton");
+            _closeButton.Click += OnButtonClick;
+        }
+                
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Handled)
+            {
+                base.OnKeyUp(e);
+                return;
+            }
+
+            switch (e.Key)
+            {
+                case Key.Escape:
+                    HideCore();
+                    e.Handled = true;
+                    break;
+
+                case Key.Enter:
+                    var curFocus = FocusManager.Instance?.Current;
+                    if (curFocus != null)
+                    {
+                        if (curFocus == _primaryButton)
+                        {
+                            OnButtonClick(_primaryButton, null);
+                        }
+                        else if (curFocus == _secondaryButton)
+                        {
+                            OnButtonClick(_secondaryButton, null);
+                        }
+                        else if (curFocus == _closeButton)
+                        {
+                            OnButtonClick(_closeButton, null);
+                        }
+                        else if (Content is IControl c && c.Focusable && c.IsFocused)
+                        {
+                            //Assume primary button is "OK"
+                            OnButtonClick(_primaryButton, null);
+                        }
+                        e.Handled = true;
+                    }
+                    break;
+            }
+            base.OnKeyUp(e);
         }
 
         #endregion
 
         #region Public Methods
 
-        public async Task<ContentDialogResult> ShowAsync()
+        public async Task<ContentDialogResult> ShowAsync(ContentDialogPlacement placement = ContentDialogPlacement.Popup)
         {
-            return await ShowAsync(ContentDialogPlacement.Popup);
-        }
-
-        public async Task<ContentDialogResult> ShowAsync(ContentDialogPlacement placement)
-        {
-            //There are several steps to getting a ContentDialog to work properly
-            //When using the "popup" placement, we need to find the active window of the application
-            //or fallback to the main window. Once we have the host window, the ContentDialog
-            //is injected into the xaml root. Basically, we'll walk down the visual tree until
-            //we find a control that allows multiple children (i.e. Grid or Panel, etc.)
-            //if using the default window template, a Panel is the first template child, 
-            //Also, this will be above the VisualLayerManager, and will also be above any
-            //adorners.
-            //Running the dialog async will keep the window responsive (you can still resize, move,
-            //process events in the background etc.) Part of the template is a semi-transparent background
-            //that fills window & prevents the user from interacting with the content behind.
-            //If user wants placement "InPlace", then the dialog is placed where the user placed it in
-            //their xaml code. It still runs async, but the rest of the window isn't blocked
-            
-            //We also need check if a Parent exists, and we want popup mode. In which case we need to store the
-            //original parent, move it to the top level, show it, then replace it when we close.
-
             tcs = new TaskCompletionSource<ContentDialogResult>();
-            
 
-            if(placement == ContentDialogPlacement.InPlace)
+            OnOpening();
+
+            //Fall back to popup mode if not in tree when launched
+            if(placement == ContentDialogPlacement.InPlace && Parent != null)
             {
-                //We'll check if its InPlace mode first. We check to see if we have a 
-                //Parent. If we do, great, we don't do anything, just show the dialog
-                //If not, we fall back to popup mode
-                if(Parent != null)
-                {
-                    //If we reuse the dialog, make sure we reset it
-                    if (PrimaryButton != null)
-                    {
-                        SetupDialog();
-                    }
-
-                    PseudoClasses.Set(":hidden", false);
-                    PseudoClasses.Set(":open", true);
-
-                    OnOpened(null);
-
-                    this.Focus();
-
-                    return await tcs.Task;
-                }
+                IsVisible = true;
             }
-
-
-            if(placement == ContentDialogPlacement.Popup)
+            else
             {
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime al)
-                {
-                    //Find the active window
-                    Window activeWindow = null;
-                    foreach (var item in al.Windows)
-                    {
-                        if (item.IsActive)
-                            activeWindow = item;
-                        break;
-                    }
-                    //Assumes MainWindow != null
-                    if (activeWindow == null)
-                    {
-                        activeWindow = al.MainWindow;
-                    }
-                    host = activeWindow;
-                }
-                else
-                    throw new NotSupportedException("Only supports IClassicDesktopStyleApplicationLifetime");
-
-                //Now we need to find the first container supporting multiple children in the window
-                //We don't know the template of the Window, so we find the first Panel or Grid, since they
-                //Allow multiple visual children, we need to do this AFTER the VisualLayerManager, so that
-                //we can still draw focus adorners
-                //The Window template provided with FluentAvalonia, wraps the window's ContentPresenter in a 
-                //panel to allow us an injection point. 
-                //If another template is used, we'll have to alter it to make it work:
-                //>>>Check the VisualLayerManager's child
-                //>>>If its a grid or panel, great, we'll just use that (same as our template)
-                //>>>If its not, we'll create a Panel, and make a slight alteration to the template
-                //NOTE: Custom window frames: This may also cover Caption Buttons & titlebar
-                //If this happens, and you don't want it, you should be able to set the Top Margin of the dialog
-                //to your titlebar height & prevent it from covering it:
-                //<Style Selector="ui|ContentDialog">
-                //  <Setter Property="Margin" Value="0 30 0 0" />
-                //</Style>
-                var vlm = (VisualLayerManager)host.GetVisualDescendants().FirstOrDefault(x => x is VisualLayerManager);
-                var child = vlm.Child;
-
-                //Before we add it, we need to make sure we don't already have a parent.
                 if(Parent != null)
                 {
-                    //Since we don't know what the Parent Type is, we manually check & hope it works...
-                    if(Parent is Panel prntP)
+                    //If declared in xaml, we'll need to temporarily remove the dialog from the tree
+                    //to show it, then place it back...
+                    _originalHost = Parent;
+                    if(_originalHost is Panel p)
                     {
-                        originalHostIndex = prntP.Children.IndexOf(this);
-                        prntP.Children.Remove(this);
-                        originalHost = prntP;
+                        _originalHostIndex = p.Children.IndexOf(this);
+                        p.Children.Remove(this);
                     }
-                    else if (Parent is Grid prntG)
-                    {
-                        originalHostIndex = prntG.Children.IndexOf(this);
-                        prntG.Children.Remove(this);
-                        originalHost = prntG;
-                    }
-                    else if(Parent is Decorator d)
+                    else if(_originalHost is Decorator d)
                     {
                         d.Child = null;
-                        originalHost = d;
                     }
-                    else if(Parent is ContentControl cp)
+                    else if(_originalHost is IContentControl cc)
                     {
-                        cp.Content = null;
-                        originalHost = cp;
+                        cc.Content = null;
                     }
-                    else if (Parent is ContentPresenter cpp)
+                }
+
+                if(Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime al)
+                {
+                    Window activeWindow = null;
+                    foreach(var item in al.Windows)
                     {
-                        cpp.Content = null;
-                        originalHost = cpp;
+                        if (item.IsActive)
+                        {
+                            activeWindow = item;
+                            break;
+                        }
                     }
+
+                    //Fallback, just in case
+                    if (activeWindow == null)
+                        activeWindow = al.MainWindow;
+
+                    //Because of the differences between UWP/WinUI/WinRT ContentDialog needs to function
+                    //and be built slighly differently to accomodate
+                    //WinUI's PopupRoot is built into the Window & has a more direct connection thus allowing
+                    //the ContentDialog to host the dialog & the "smoke screen" background that dims the 
+                    //window contents
+                    //Avalonia does not have this, so we need to adapt (INVESTIGATING)
+                    //1 - ContentDialog will launch in its own window (was going to use a popup, but you can't
+                    //    easily manipulate size/location of Popup, we we'll use its own Window
+                    //    The downside, is that the main window will still deactivate when focus is placed in the 
+                    //    Dialog, but the main window will still be interactable in terms of moving & resizing, like WinUI
+                    //2 - We'll subscribe to the owner window so that as it resizes/moves around/minimizes/etc, the dialog
+                    //    will also follow suit
+
+                   
+                    Window w = new Window();
+                    w.Background = null; //Don't waste by drawing background
+                    w.SystemDecorations = SystemDecorations.None;
+                    w.ShowInTaskbar = false;
+                    w.TransparencyLevelHint = WindowTransparencyLevel.Transparent;
+                    w.Content = this;
+                    this.IsVisible = true;
+                    w.Topmost = true;
+                    w.ShowActivated = false;
+                    
+
+                    
+                    //Make it an owned window, but don't show as dialog to keep this async
+                    w.Show(activeWindow);
+
+                    SetupDialog();
+
+                    w.Position = activeWindow.PointToScreen(new Point(0, 0));
+                    w.Width = activeWindow.Width;
+                    w.Height = activeWindow.Height;
+
+                    w.KeyDown += (s, e) =>
+                    {
+                        if (e.Key == Key.Escape && ((e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt))
+                        {
+                            e.Handled = false;
+                        }
+                    };
+
+                    //TODO: dispose these...
+                    activeWindow.PlatformImpl.PositionChanged += (pt) =>
+                    {
+                        w.Position = activeWindow.PointToScreen(new Point(0, 0)); 
+                    };                    
+                    activeWindow.GetObservable(BoundsProperty).Subscribe(s =>
+                    {
+                        w.Width = s.Width;
+                        w.Height = s.Height;
+                        w.Position = activeWindow.PointToScreen(new Point(0, 0));
+                    });
+                    activeWindow.Closed += (s, e) =>
+                    {
+                        w?.Close();
+                    };
+
                 }
-
-
-                if(child is Panel p)
+                else if(Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
                 {
-                    RootPanel = p;
-                    RootPanel.Children.Add(this);
+                    //Have MainView property here, need to figure out how to work with that...
+                    throw new NotSupportedException("Only supports classic desktop mode right now");
                 }
-                else if (child is Grid g)
+                else if (Application.Current.ApplicationLifetime is IControlledApplicationLifetime cl)
                 {
-                    RootGrid = g;
-                    RootGrid.Children.Add(this);
+                    //Not sure how this works...
+                    throw new NotSupportedException("Only supports classic desktop mode right now");
                 }
-                else
-                {
-                    Panel cont = new Panel();
-                    vlm.Child = cont;
-                    cont.Children.Add(child);
-                    RootPanel = cont;
-                    RootPanel.Children.Add(this);
-                }
-                
-                //If we reuse the dialog, make sure we reset it
-                if(PrimaryButton != null)
-                {
-                    SetupDialog(); 
-                }
-
-                IsVisible = true;
-                PseudoClasses.Set(":hidden", false);
-                PseudoClasses.Set(":open", true);
-
-                OnOpened(null);
-
-                this.Focus();
-
-                return await tcs.Task;
-
             }
-            throw new Exception("Something went wrong with showing the Dialog");
+
+            ShowCore();
+
+            return await tcs.Task;
+        }
+
+        internal void CompleteButtonClickDeferral()
+        {
+            IsEnabled = true;
+            HideCore();
+        }
+
+        internal void CompleteClosingDeferral()
+        {
+            IsEnabled = true;
+            HideCore();
         }
 
         #endregion
 
-        #region protected methods
-
-        protected virtual void OnOpened(object args)
-        {
-            Opened?.Invoke(this, args);
-        }
-
-        protected virtual void OnClosing(ContentDialogClosingEventArgs args)
-        {
-            Closing?.Invoke(this, args);
-        }
-
-        protected virtual void OnClosed(ContentDialogClosedEventArgs args)
-        {
-            Closed?.Invoke(this, args);
-        }
+        #region Protected Methods
 
         protected virtual void OnPrimaryButtonClick(ContentDialogButtonClickEventArgs args)
         {
@@ -542,31 +534,77 @@ namespace FluentAvalonia.UI.Controls
             CloseButtonClick?.Invoke(this, args);
         }
 
+        protected virtual void OnOpening()
+        {
+            Opening?.Invoke(this, null);
+        }
+
+        protected virtual void OnOpened() 
+        {
+            Opened?.Invoke(this, null);
+        }
+
+        protected virtual void OnClosing(ContentDialogClosingEventArgs args)
+        {
+            Closing?.Invoke(this, args);
+        }
+
+        protected virtual void OnClosed(ContentDialogClosedEventArgs args)
+        {
+            Closed?.Invoke(this, args);
+        }
 
         #endregion
 
         #region Private Methods
 
+        private void ShowCore()
+        {
+            IsVisible = true;
+            PseudoClasses.Set(":hidden", false);
+            PseudoClasses.Set(":open", true);
+
+            OnOpened();
+        }
+
+        private void HideCore()
+        {
+            var ea = new ContentDialogClosingEventArgs(this, result);
+            OnClosing(ea);
+
+            if (ea.Cancel)
+                return;
+
+            if (!ea.IsDeferred)
+            {
+                FinalCloseDialog();
+            }
+            else
+            {
+                IsEnabled = false;
+            }
+        }
+
+
         private void SetupDialog()
         {
-            if (PrimaryButton == null | SecondaryButton == null | CloseButton == null)
-                throw new Exception("Can't find Dialog Buttons");
+            if (_primaryButton == null)
+                ApplyTemplate();
 
-            Classes.Clear();//Clear any classes set, incase we're reusing it
-            
-            //Only show the button if its text has been set
-            bool hasPrimary = true, hasSecondary = true, hasClose = true;
-            if(PrimaryButtonText == "" || string.IsNullOrEmpty(PrimaryButtonText) || string.IsNullOrWhiteSpace(PrimaryButtonText))
+            Classes.Clear();
+
+            bool hasPrimary = false, hasSecondary = false, hasClose = false;
+            if(!string.IsNullOrEmpty(PrimaryButtonText))
             {
-                hasPrimary = false;
+                hasPrimary = true;
             }
-            if (SecondaryButtonText == "" || string.IsNullOrEmpty(SecondaryButtonText) || string.IsNullOrWhiteSpace(SecondaryButtonText))
+            if (!string.IsNullOrEmpty(SecondaryButtonText))
             {
-                hasSecondary = false;
+                hasSecondary = true;
             }
-            if (CloseButtonText == "" || string.IsNullOrEmpty(CloseButtonText) || string.IsNullOrWhiteSpace(CloseButtonText))
+            if (!string.IsNullOrEmpty(CloseButtonText))
             {
-                hasClose = false;
+                hasClose = true;
             }
 
             if (hasPrimary && hasSecondary && hasClose)
@@ -603,185 +641,218 @@ namespace FluentAvalonia.UI.Controls
             }
 
 
-            //The default button, we apply an Accent style to
-            var defButton = DefaultButton;
-            switch (defButton)
+            PseudoClasses.Set(":nobuttons", !hasPrimary && !hasSecondary && !hasClose);
+
+
+            switch (DefaultButton)
             {
                 case ContentDialogButton.Primary:
                     if (!hasPrimary)
                         break;
-                    PrimaryButton.Classes.Add("Accent");
-                    SecondaryButton.Classes.Remove("Accent");
-                    CloseButton.Classes.Remove("Accent");
+
+                    _primaryButton.Classes.Add("accent");
+                    _secondaryButton.Classes.Remove("accent");
+                    _closeButton.Classes.Remove("accent");
+                    if (Content is IControl cp && cp.Focusable)
+                    {
+                        cp.Focus();
+                    }
+                    else
+                    {
+                        _primaryButton.Focus();
+                    }
+                    
                     break;
+
                 case ContentDialogButton.Secondary:
                     if (!hasSecondary)
                         break;
-                    PrimaryButton.Classes.Remove("Accent");
-                    SecondaryButton.Classes.Add("Accent");
-                    CloseButton.Classes.Remove("Accent");
+
+                    _secondaryButton.Classes.Add("accent");
+                    _primaryButton.Classes.Remove("accent");
+                    _closeButton.Classes.Remove("accent");
+                    if (Content is IControl cs && cs.Focusable)
+                    {
+                        cs.Focus();
+                    }
+                    else
+                    {
+                        _secondaryButton.Focus();
+                    }
+                    
                     break;
+
                 case ContentDialogButton.Close:
                     if (!hasClose)
                         break;
-                    PrimaryButton.Classes.Remove("Accent");
-                    SecondaryButton.Classes.Remove("Accent");
-                    CloseButton.Classes.Add("Accent");
+
+                    _closeButton.Classes.Add("accent");
+                    _primaryButton.Classes.Remove("accent");
+                    _secondaryButton.Classes.Remove("accent");
+                    if (Content is IControl cc && cc.Focusable)
+                    {
+                        cc.Focus();
+                    }
+                    else
+                    {
+                        _closeButton.Focus();
+                    }
+                    
                     break;
+
                 default:
-                    PrimaryButton.Classes.Remove("Accent");
-                    SecondaryButton.Classes.Remove("Accent");
-                    CloseButton.Classes.Remove("Accent");
+                    _closeButton.Classes.Remove("accent");
+                    _primaryButton.Classes.Remove("accent");
+                    _secondaryButton.Classes.Remove("accent");
+
+                    if (Content is IControl cd && cd.Focusable)
+                    {
+                        cd.Focus();
+                    }
+                    else if (hasPrimary)
+                    {
+                        _primaryButton.Focus();
+                    }
+                    else if (hasSecondary)
+                    {
+                        _secondaryButton.Focus();
+                    }
+                    else if(hasClose)
+                    {
+                        _closeButton.Focus();
+                    }
+                    else
+                    {
+                        Focus();
+                    }
+
                     break;
             }
-
-            if (hasPrimary)
-                PrimaryButton.Focus();
-            else if (hasSecondary)
-                SecondaryButton.Focus();
-            else if (hasClose)
-                CloseButton.Focus();
-            else
-                this.Focus();
 
         }
 
-        /// <summary>
-        /// Handles closing of the Dialog, usually through the buttons,
-        /// but all exit points go through here
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        //This is the exit point for the ContentDialog
+        //This method MUST be called to finalize everything
+        private async void FinalCloseDialog()
         {
-            if (sender == CloseButton)
-            {
-                result = ContentDialogResult.None;
-            }
-            else if (sender == PrimaryButton)
-            {
-                result = ContentDialogResult.Primary;
-            }
-            else if (sender == SecondaryButton)
-            {
-                result = ContentDialogResult.Secondary;
-            }
-
-            //Fire the ButtonClick events first
-            //Note, The ContentDialogDeferral is not sourced,
-            //so this is my own impl, based on observed behavior
-            ContentDialogButtonClickEventArgs buttonArgs = new ContentDialogButtonClickEventArgs(false, this); 
-            switch (result)
-            {
-                case ContentDialogResult.Primary:
-                    PrimaryButtonClick?.Invoke(this, buttonArgs);
-                    if (buttonArgs.Cancel)
-                        return;
-
-                    //Wait for the user to run their async code
-                    while(deferral != null)
-                    {
-                        await Task.Delay(1);
-                    }
-                    break;
-                case ContentDialogResult.Secondary:
-                    SecondaryButtonClick?.Invoke(this, buttonArgs);
-                    if (buttonArgs.Cancel)
-                        return;
-
-                    //Wait for the user to run their async code
-                    while (deferral != null)
-                    {
-                        await Task.Delay(1);
-                    }
-                    break;
-                case ContentDialogResult.None:
-                    CloseButtonClick?.Invoke(this, buttonArgs);
-                    if (buttonArgs.Cancel)
-                        return;
-
-                    //Wait for the user to run their async code
-                    while (deferral != null)
-                    {
-                        await Task.Delay(1);
-                    }
-                    break;
-            }
-
-            //Now we can close the dialog
-            ContentDialogClosingEventArgs args = new ContentDialogClosingEventArgs(false, result);
-            //Alert that we're closing
-            OnClosing(args);
-
-            //If user canceled the closing, return
-            if (args.Cancel)
-                return;
-
-            PseudoClasses.Set("open", false);
             PseudoClasses.Set(":hidden", true);
+            PseudoClasses.Set(":open", false);
 
-            //Finally set the result to return to normal...
-            tcs.TrySetResult(result);
-
-            //We await here to let any animations for fade out to complete
-            //before removing the dialog from the parent container (if in Popup mode)
-            //Animation is 0.5s in total
+            //Let the close animation finish
             await Task.Delay(500);
 
-            //Remove the dialog from the grid
-            if (RootPanel != null)
+            IsVisible = false;
+
+            //Close the host window
+            if(this.VisualRoot is Window w && w.Content == this)
             {
-                RootPanel.Children.Remove(this);
-            }
-            else if (RootGrid != null)
-            {
-                RootGrid.Children.Remove(this);
+                w.Close();
+                w.Content = null;
             }
 
-            //If we originally had a parent, restore us back
-            if(originalHost != null)
+            if(_originalHost != null)
             {
-                //Since we don't know what the Parent Type is, we manually check & hope it works...
-                //Hopefully no changes to the UI were made while the dialog was showing other than
-                //what we do to show the dialog, since we insert it back in its original index
-                if (Parent is Panel prntP)
+                if(_originalHost is Panel p)
                 {
-                    prntP.Children.Insert(originalHostIndex, this);
+                    p.Children.Insert(_originalHostIndex, this);
                 }
-                else if (Parent is Grid prntG)
-                {
-                    prntG.Children.Insert(originalHostIndex, this);
-                }
-                else if (Parent is Decorator d)
+                else if(_originalHost is Decorator d)
                 {
                     d.Child = this;
                 }
-                else if (Parent is ContentControl cp)
+                else if(_originalHost is IContentControl cc)
                 {
-                    cp.Content = this;
+                    cc.Content = this;
                 }
-                else if (Parent is ContentPresenter cpp)
-                {
-                    cpp.Content = this;
-                }
-                originalHost = null;
-                originalHostIndex = -1;
-                IsVisible = false;
             }
 
+            OnClosed(new ContentDialogClosedEventArgs(result));
+            tcs.TrySetResult(result);
         }
 
-        internal ContentDialogButtonClickDeferral GetButtonClickDeferral()
+        private void OnButtonClick(object sender, RoutedEventArgs e)
         {
-            deferral = new ContentDialogButtonClickDeferral(this);
-            IsEnabled = false; //Disable dialog when user has deferral
-            return deferral;
+            if(sender == _primaryButton)
+            {
+                HandlePrimaryClick();
+            }
+            else if(sender == _secondaryButton)
+            {
+                HandleSecondaryClick();
+            }
+            else if(sender == _closeButton)
+            {
+                HandleCloseClick();
+            }
         }
 
-        internal void CompleteButtonClickDeferral()
+        private void HandlePrimaryClick() 
         {
-            deferral = null;
-            IsEnabled = true;
+            var ea = new ContentDialogButtonClickEventArgs(this);
+            OnPrimaryButtonClick(ea);
+
+            if (ea.Cancel)
+                return;
+
+            result = ContentDialogResult.Primary;
+            if (!ea.IsDeferred)
+            {
+                if(PrimaryButtonCommand != null && PrimaryButtonCommand.CanExecute(PrimaryButtonCommandParameter))
+                {
+                    PrimaryButtonCommand.Execute(PrimaryButtonCommandParameter);                    
+                }
+                HideCore();
+            }
+            else
+            {
+                IsEnabled = false;
+            }
+        }
+
+        private void HandleSecondaryClick() 
+        {
+            var ea = new ContentDialogButtonClickEventArgs(this);
+            OnSecondaryButtonClick(ea);
+
+            if (ea.Cancel)
+                return;
+
+            result = ContentDialogResult.Secondary;
+            if (!ea.IsDeferred)
+            {
+                if (SecondaryButtonCommand != null && SecondaryButtonCommand.CanExecute(SecondaryButtonCommandParameter))
+                {
+                    SecondaryButtonCommand.Execute(SecondaryButtonCommandParameter);
+                }
+                HideCore();
+            }
+            else
+            {
+                IsEnabled = false;
+            }
+        }
+
+        private void HandleCloseClick() 
+        {
+            var ea = new ContentDialogButtonClickEventArgs(this);
+            OnCloseButtonClick(ea);
+
+            if (ea.Cancel)
+                return;
+
+            result = ContentDialogResult.None;
+            if (!ea.IsDeferred)
+            {
+                if (CloseButtonCommand != null && CloseButtonCommand.CanExecute(CloseButtonCommandParameter))
+                {
+                    CloseButtonCommand.Execute(CloseButtonCommandParameter);
+                }
+                HideCore();
+            }
+            else
+            {
+                IsEnabled = false;
+            }
         }
 
         private void OnFullSizedDesiredChanged(AvaloniaPropertyChangedEventArgs e)
@@ -790,32 +861,51 @@ namespace FluentAvalonia.UI.Controls
             PseudoClasses.Set(":fullsize", newVal);
         }
 
-
-        private void OnDialogKeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Escape)
-            {
-                //Cancel the dialog by using the close button,
-                //We don't use the RoutedEventArgs param on Button_Click
-                //So we can safely pass null here
-                Button_Click(CloseButton, null);
-                e.Handled = true;
-            }
-        }
-
         #endregion
 
-
-        private ContentDialogButtonClickDeferral deferral;
+        //private Window _activeWindow;
+        private IControl _originalHost;
+        private int _originalHostIndex;
+        //private Popup _host;
         private ContentDialogResult result;
         private TaskCompletionSource<ContentDialogResult> tcs;
-        private Grid RootGrid;
-        private Panel RootPanel;
-        private Button PrimaryButton;
-        private Button SecondaryButton;
-        private Button CloseButton;
-        private Window host;
-        private IControl originalHost;
-        private int originalHostIndex = -1;
+        private Button _primaryButton;
+        private Button _secondaryButton;
+        private Button _closeButton;
     }
+
+    //internal class ContentDialogManager
+    //{
+    //    public static ContentDialogManager Instance { get; private set; }
+
+    //    private Dictionary<IControl, Queue<ContentDialog>> ActiveDialogs { get; } = new Dictionary<IControl, Queue<ContentDialog>>();
+
+    //    static ContentDialogManager()
+    //    {
+    //        Instance = new ContentDialogManager();
+    //    }
+
+    //    public void RegisterAndShowDialog(IControl topLevelHost, ContentDialog dialog)
+    //    {
+
+    //    }
+
+    //    public void AddDialog(IControl topLevelHost, ContentDialog dialog)
+    //    {
+    //        if (ActiveDialogs.ContainsKey(topLevelHost))
+    //        {
+    //            ActiveDialogs[topLevelHost].Enqueue(dialog);
+    //        }
+    //        else
+    //        {
+    //            ActiveDialogs.Add(topLevelHost, new Queue<ContentDialog>());
+    //            ActiveDialogs[topLevelHost].Enqueue(dialog);
+    //        }
+    //    }
+
+    //    public void ClearDialog(IControl topLevelHost)
+    //    {
+
+    //    }
+    //}
 }

@@ -1,101 +1,157 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
-using Avalonia.Styling;
+using Avalonia.Themes.Fluent;
 using FluentAvalonia.Interop;
-using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.Styling
 {
     public class ThemeManager : AvaloniaObject
     {
-        /// <summary>
-        /// Initializes the ThemeManager, default values (Light theme, use SystemAccentColor on Windows10)
-        /// </summary>
-        public ThemeManager()
-            : this(AppThemeMode.Light, true) { }
-
-        /// <summary>
-        /// Initializes the ThemeManager with a specific settings
-        /// </summary>
-        /// <param name="desiredTheme"></param>
-        /// <param name="useSystemAccentOnWindows"></param>
-        public ThemeManager(AppThemeMode desiredTheme, bool useSystemAccentOnWindows)
+        public ThemeManager(bool useWinSysAccent, bool useWinDefFont, bool includeWindowsTitleBar)
         {
-            //Set the Default themes
-            LightThemeSource = new ThemeStylesLight();
-            DarkThemeSource = new ThemeStylesDark();
-            HCThemeSource = new ThemeStylesHighContrast();
+            UseSegoeUIOnWindows = useWinDefFont;
+            UseSystemAccentOnWindows = useWinSysAccent;
+            IncludeWindowsTitleBarInThemeChange = includeWindowsTitleBar;
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+            if (_isWindows)
             {
-                Win32Interop.DwmIsCompositionEnabled(out bool isDwmActive);
+                Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
+                Win32Interop.RtlGetVersion(ref osInfo);
 
-                OSVERSIONINFOEX osInfo = new OSVERSIONINFOEX();
-                WindowsVersionInterop.RtlGetVersion(ref osInfo);
-                IsOSWindows = true;
-                WindowsMajorVersion = osInfo.MajorVersion;
-                WindowsBuildVersion = osInfo.BuildNumber;
-
-                if (WindowsMajorVersion >= 10)
-                {
-                    if (useSystemAccentOnWindows && isDwmActive)
-                    {
-                        SetSystemAccentColorsFromSystem();
-                        UseSystemAccentColor = true;
-                    }
-                    else
-                        UseSystemAccentColor = false;
-                }
-                else
-                {
-                    HandleSymbolFontFallBack();
-                }
+                bool useDark = Win32Interop.GetSystemTheme(osInfo);
+                PreferredTheme = useDark ? FluentThemeMode.Dark : FluentThemeMode.Light;
             }
             else
             {
-                IsOSWindows = false;
-                UseSystemAccentColor = false;
-
-                HandleSymbolFontFallBack();
+                PreferredTheme = FluentThemeMode.Light;
             }
-
-            SetTheme(desiredTheme);
         }
 
-        public bool IsOSWindows { get; private set; }
-        public int WindowsMajorVersion { get; private set; }
-        public int WindowsBuildVersion { get; private set; }
-
-        /// <summary>
-        /// If true, on Windows 10 (and probably 8), the user's system accent
-        /// color will be used, and set here. If not on Win10, or false, the
-        /// ThemeAccentColor & variants can be set manually. By default, they
-        /// are set as SlateBlue
-        /// </summary>
-        private bool UseSystemAccentColor
+        public ThemeManager(FluentThemeMode prefMode, bool useWinSysAccent, bool useWinDefFont, 
+            bool includeWindowsTitleBar)
         {
-            get => _useSystemAccent;
-            set
-            {
-                _useSystemAccent = value;
-            }
+            _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+            UseSystemAccentOnWindows = useWinSysAccent;
+            UseSegoeUIOnWindows = useWinDefFont;
+            PreferredTheme = prefMode;
+            IncludeWindowsTitleBarInThemeChange = includeWindowsTitleBar;
         }
-        //To Do, check fnShouldAppsUseDarkMode & fnShouldSystemUseDarkMode
+
+
+        public FluentThemeMode PreferredTheme { get; set; }
+
+        public bool UseSystemAccentOnWindows { get; set; }
+
+        public bool UseSegoeUIOnWindows { get; set; }
+
+        public bool IncludeWindowsTitleBarInThemeChange { get; set; }
 
         /// <summary>
-        /// Gets the active theme mode
+        /// Gets/Sets an array of 7 colors representing
+        /// SystemAccentColor,Light1,Light2,Light3,Dark1,Dark2,Dark3
+        /// Call Refresh() & set UseSystemAccentOnWindows = false to apply
         /// </summary>
-        public AppThemeMode AppTheme => _AppTheme;
+        public Color[] CustomAccentColors { get; set; }
+
+        public FontFamily DefaultFontFamily { get; set; }
+
+
+        public void Refresh()
+        {
+            var appStyles = Application.Current.Styles;
+            for (int i = 0; i < appStyles.Count; i++)
+            {
+                if (appStyles[i] is FluentTheme ft)
+                {
+                    ft.Mode = PreferredTheme;
+                }
+                else if (appStyles[i] is FluentAvaloniaTheme fa)
+                {
+                    fa.Mode = PreferredTheme;
+
+                    if (UseSystemAccentOnWindows && _isWindows)
+                    {
+                        SetSystemAccentColorsFromSystem(fa.ThemeStyles.CommonResources);
+                    }
+                    else if (CustomAccentColors != null && CustomAccentColors.Length == 7)
+                    {
+                        SetCustomAccentColor(fa.ThemeStyles.CommonResources);
+                    }
+
+                    if (UseSegoeUIOnWindows && _isWindows)
+                    {
+                        fa.ThemeStyles.CommonResources["ContentControlThemeFontFamily"] = new FontFamily("Segoe UI");
+                    }
+                }
+                else if (appStyles[i] is ThemeStyles thmSty)
+                {
+                    thmSty.CurrentTheme = PreferredTheme;
+
+                    if (UseSystemAccentOnWindows && _isWindows)
+                    {
+                        SetSystemAccentColorsFromSystem(thmSty.CommonResources);
+                    }
+                    else if (CustomAccentColors != null && CustomAccentColors.Length == 7)
+                    {
+                        SetCustomAccentColor(thmSty.CommonResources);
+                    }
+
+                    if (UseSegoeUIOnWindows && _isWindows)
+                    {
+                        thmSty.CommonResources["ContentControlThemeFontFamily"] = new FontFamily("Segoe UI");
+                    }
+                }
+                else if (appStyles[i] is StyleInclude si)
+                {
+                    if (si.Loaded != null && si.Loaded is ThemeStyles ts)
+                    {
+                        ts.CurrentTheme = PreferredTheme == FluentThemeMode.Light ? "Light" : "Dark";
+
+                        if (UseSystemAccentOnWindows && _isWindows)
+                        {
+                            SetSystemAccentColorsFromSystem(ts.CommonResources);
+                        }
+                        else if (CustomAccentColors != null && CustomAccentColors.Length == 7)
+                        {
+                            SetCustomAccentColor(ts.CommonResources);
+                        }
+
+                        if (UseSegoeUIOnWindows && _isWindows)
+                        {
+                            ts.CommonResources["ContentControlThemeFontFamily"] = new FontFamily("Segoe UI");
+                        }
+                    }
+                }
+            }
+
+            if (IncludeWindowsTitleBarInThemeChange && _isWindows)
+            {
+                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime cd)
+                {
+                    Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
+                    Win32Interop.RtlGetVersion(ref osInfo);
+
+                    for (int i = 0; i < cd.Windows.Count; i++)
+                    {
+                        Win32Interop.ApplyTheme(cd.Windows[i].PlatformImpl.Handle.Handle, PreferredTheme == FluentThemeMode.Dark, osInfo);
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Sets the system accent colors from the users settings
         /// </summary>
-        private void SetSystemAccentColorsFromSystem()
+        private void SetSystemAccentColorsFromSystem(IResourceDictionary resources)
         {
-            //TO DO ALLOW HIGH CONTRAST MODE
             var themeAccent = Win32Interop.GetThemeColorRef("ImmersiveSystemAccent");
             var themeAccentLight1 = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentLight1");
             var themeAccentLight2 = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentLight2");
@@ -104,152 +160,28 @@ namespace FluentAvalonia.Styling
             var themeAccentDark2 = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentDark2");
             var themeAccentDark3 = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentDark3");
 
-            SetThemeAccentColors(themeAccent, themeAccentLight1, themeAccentLight2, themeAccentLight3,
-                themeAccentDark1, themeAccentDark2, themeAccentDark3);
-
+            resources["SystemAccentColor"] = themeAccent;
+            resources["SystemAccentColorLight1"] = themeAccentLight1;
+            resources["SystemAccentColorLight2"] = themeAccentLight2;
+            resources["SystemAccentColorLight3"] = themeAccentLight3;
+            resources["SystemAccentColorDark1"] = themeAccentDark1;
+            resources["SystemAccentColorDark2"] = themeAccentDark2;
+            resources["SystemAccentColorDark3"] = themeAccentDark3;
         }
 
-        /// <summary>
-        /// Sets the ThemeAccentColors to a user defined color scheme. If on Win10 with UseSystemAccentColor,
-        /// this will turn that setting off
-        /// </summary>
-        /// <param name="theme"></param>
-        /// <param name="light1"></param>
-        /// <param name="light2"></param>
-        /// <param name="light3"></param>
-        /// <param name="dark1"></param>
-        /// <param name="dark2"></param>
-        /// <param name="dark3"></param>
-        public void SetThemeAccentColors(Color theme, Color light1, Color light2, Color light3, Color dark1, Color dark2, Color dark3)
+        private void SetCustomAccentColor(IResourceDictionary resources)
         {
-            if (UseSystemAccentColor)
-                UseSystemAccentColor = false;
-
-            LightThemeSource.Resources["SystemAccentColor"] = theme;
-            LightThemeSource.Resources["SystemAccentColorLight1"] = light1;
-            LightThemeSource.Resources["SystemAccentColorLight2"] = light2;
-            LightThemeSource.Resources["SystemAccentColorLight3"] = light3;
-            LightThemeSource.Resources["SystemAccentColorDark1"] = dark1;
-            LightThemeSource.Resources["SystemAccentColorDark2"] = dark2;
-            LightThemeSource.Resources["SystemAccentColorDark3"] = dark3;
-
-            DarkThemeSource.Resources["SystemAccentColor"] = theme;
-            DarkThemeSource.Resources["SystemAccentColorLight1"] = light1;
-            DarkThemeSource.Resources["SystemAccentColorLight2"] = light2;
-            DarkThemeSource.Resources["SystemAccentColorLight3"] = light3;
-            DarkThemeSource.Resources["SystemAccentColorDark1"] = dark1;
-            DarkThemeSource.Resources["SystemAccentColorDark2"] = dark2;
-            DarkThemeSource.Resources["SystemAccentColorDark3"] = dark3;
-
-            HCThemeSource.Resources["SystemAccentColor"] = theme;
-            HCThemeSource.Resources["SystemAccentColorLight1"] = light1;
-            HCThemeSource.Resources["SystemAccentColorLight2"] = light2;
-            HCThemeSource.Resources["SystemAccentColorLight3"] = light3;
-            HCThemeSource.Resources["SystemAccentColorDark1"] = dark1;
-            HCThemeSource.Resources["SystemAccentColorDark2"] = dark2;
-            HCThemeSource.Resources["SystemAccentColorDark3"] = dark3;
-        }
-
-        /// <summary>
-        /// Sets the desired AppThemeMode
-        /// </summary>
-        /// <param name="mode"></param>
-        public void SetTheme(AppThemeMode mode)
-        {
-            if (AppTheme == mode)
-                return;
-            if (mode == AppThemeMode.Unset)
-                throw new InvalidOperationException("Invalid AppThemeMode");
-
-            //Binding Errors are thrown when switching themes, 
-            //don't know how to avoid that
-
-            if (_AppTheme == AppThemeMode.Unset)
-            {
-                Application.Current.Styles.Add(mode == AppThemeMode.Light ? LightThemeSource :
-                    mode == AppThemeMode.Dark ? DarkThemeSource : HCThemeSource);
-                _AppTheme = mode;
-            }
-            else
-            {
-                Application.Current.Styles[^1] = mode == AppThemeMode.Light ? LightThemeSource :
-                    mode == AppThemeMode.Dark ? DarkThemeSource : HCThemeSource;
-
-                _AppTheme = mode;
-            }
-
-        }
-
-        /// <summary>
-        /// Sets the Source for the LightTheme resources & styles
-        /// </summary>
-        /// <param name="newStyle"></param>
-        public void SetLightThemeSource(Styles newStyle)
-        {
-            LightThemeSource = newStyle;
-        }
-
-        /// <summary>
-        /// Sets the Source for the DarkTheme resources & styles
-        /// </summary>
-        /// <param name="newStyle"></param>
-        public void SetDarkThemeSource(Styles newStyle)
-        {
-            DarkThemeSource = newStyle;
-        }
-
-        /// <summary>
-        /// Sets the Source for the HighContrastTheme resources & styles
-        /// </summary>
-        /// <param name="newStyle"></param>
-        public void SetHCThemeSource(Styles newStyle)
-        {
-            HCThemeSource = newStyle;
+            resources["SystemAccentColor"] = CustomAccentColors[0];
+            resources["SystemAccentColorLight1"] = CustomAccentColors[1];
+            resources["SystemAccentColorLight2"] = CustomAccentColors[2];
+            resources["SystemAccentColorLight3"] = CustomAccentColors[3];
+            resources["SystemAccentColorDark1"] = CustomAccentColors[4];
+            resources["SystemAccentColorDark2"] = CustomAccentColors[5];
+            resources["SystemAccentColorDark3"] = CustomAccentColors[6];
         }
 
 
-        private void HandleSymbolFontFallBack()
-        {
-            //Since MS Fonts can't be redistributed, per licence terms, we need to
-            //Provide opportunity to fall back to not Segoe MDL2 Assets on non-Win10
-            //This is the open source MS symbol font made for web use, not sure how
-            //closely this matches, it appears to be the replacment/alternative
-            //Just check the App.xaml file to find the StyleInclude referencing 
-            //ControlStyles.xaml & replace the Resource
-            if (!FontManager.Current.GetInstalledFontFamilyNames().Contains("Segoe MDL2 Assets"))
-            {
-                foreach (var item in Application.Current.Styles)
-                {
-                    if (item is StyleInclude si && si.Source.AbsolutePath.Contains("ControlStyles.xaml"))
-                    {
-                        Styles cstyles = si.Loaded as Styles;
-
-                        var res = cstyles.Resources;
-                        res["SymbolThemeFontFamily"] = res["SymbolThemeFontFamilyFallback"];
-
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the source for LightThemeStyles. To set, call SetLightThemeSource
-        /// </summary>
-        public Styles LightThemeSource { get; private set; }
-
-        /// <summary>
-        /// Gets the source for DarkThemeStyles. To set, call SetDarkThemeSource
-        /// </summary>
-        public Styles DarkThemeSource { get; private set; }
-
-        /// <summary>
-        /// Gets the source for HighConstrastStyles. To set, call SetHCThemeSource
-        /// </summary>
-        public Styles HCThemeSource { get; private set; }
-
-        private bool _useSystemAccent;
-        private AppThemeMode _AppTheme;
+        private bool _isWindows;
     }
 
     public enum AppThemeMode

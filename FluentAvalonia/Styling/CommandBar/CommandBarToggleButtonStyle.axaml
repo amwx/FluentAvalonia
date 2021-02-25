@@ -1,0 +1,453 @@
+<Styles xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:conv="using:Avalonia.Controls.Converters"
+             mc:Ignorable="d">
+
+    <Design.PreviewWith>
+        <Border Padding="20">
+
+            <StackPanel Orientation="Vertical" Spacing="5">
+                <Panel Height="40">
+                    <ui:CommandBarToggleButton Icon="Save" Label="Test" />
+                </Panel>
+
+                <Border Height="1" Background="Black" />
+
+                <Panel Height="40">
+                    <ui:CommandBarToggleButton Label="Test" />
+                </Panel>
+                
+                <Border Height="1" Background="Black" />
+
+                <Panel Height="40">
+                    <ui:CommandBarToggleButton Icon="Save" KeyboardAccelerator="Ctrl+S" />
+                </Panel>
+                
+                <Border Height="1" Background="Black" />
+
+                <Panel Height="40">
+                    <ui:CommandBarToggleButton Icon="Save" Label="Testaskdl" LabelPosition="Bottom" />
+                </Panel>
+                
+                <Border Height="1" Background="Black" />
+
+                <Panel Height="40">
+                    <ui:CommandBarToggleButton Icon="Save" Label="Test" LabelPosition="Collapsed" />
+                </Panel>
+            </StackPanel>
+            
+        </Border>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <Thickness x:Key="AppBarToggleButtonOverflowCheckMargin">12,4,12,4</Thickness>
+        <!--<Thickness x:Key="AppBarToggleButtonOverflowTextTouchMargin">0,9,0,12</Thickness>
+        <Thickness x:Key="AppBarToggleButtonOverflowCheckTouchMargin">12,10,12,10</Thickness>
+        <Thickness x:Key="AppBarToggleButtonOverflowCheckMargin">12,4,12,4</Thickness>
+        <Thickness x:Key="AppBarToggleButtonTextLabelMargin">2,0,2,8</Thickness>
+        <Thickness x:Key="AppBarToggleButtonTextLabelOnRightMargin">8,16,12,10</Thickness>
+        <Thickness x:Key="AppBarToggleButtonOverflowTextLabelPadding">0,5,0,8</Thickness>-->
+
+
+        <!-- These resources are defined in AppBarButtonStyle.axaml -->
+        <!--<Thickness x:Key="AppBarButtonContentViewboxCompactMargin">4,12</Thickness>
+        <Thickness x:Key="AppBarButtonOverflowTextTouchMargin">0,9,0,12</Thickness>
+        <Thickness x:Key="AppBarButtonOverflowTextLabelPadding">0,5,0,8</Thickness>
+        <Thickness x:Key="AppBarButtonTextLabelMargin">8,2</Thickness>
+        <Thickness x:Key="AppBarButtonTextLabelOnRightMargin">8</Thickness>
+        <x:Double x:Key="AppBarButtonContentHeight">18</x:Double>-->
+        <conv:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
+    </Styles.Resources>
+
+    <Style Selector="ui|CommandBarToggleButton">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="LayoutRoot"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{DynamicResource ControlCornerRadius}">
+
+                    <Grid Name="Container" 
+                          RowDefinitions="*,Auto" 
+                          ColumnDefinitions="*,Auto">
+                        
+                        <ui:FontIcon Name="OverflowCheckGlyph"
+                                     Glyph="&#xF296;"
+                                     FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                     FontSize="18" 
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Margin="{DynamicResource AppBarToggleButtonOverflowCheckMargin}"
+                                     />                        
+
+                        <Viewbox Name="IconHost"
+                                 VerticalAlignment="Center">
+                            <ContentPresenter Name="Icon"
+                                              Content="{TemplateBinding Icon}" />
+                        </Viewbox>
+
+                        <TextBlock Name="LabelText"
+                                   Text="{TemplateBinding Label}"
+                                   Foreground="{TemplateBinding Foreground}"/>
+
+                        <TextBlock Name="KeyboardAcceleratorText"
+                                   Classes="CaptionTextBlockStyle"
+                                   Text="{TemplateBinding KeyboardAccelerator, Converter={StaticResource KeyGestureConverter}}"
+                                   Foreground="{TemplateBinding Foreground}" />
+
+                    </Grid>
+
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton /template/ Viewbox#IconHost">
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="Margin" Value="{DynamicResource AppBarButtonContentViewboxCompactMargin}" />
+        <Setter Property="Height" Value="{DynamicResource AppBarButtonContentHeight}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton /template/ TextBlock#LabelText">
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="{DynamicResource AppBarButtonTextLabelOnRightMargin}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="Padding" Value="{DynamicResource AppBarButtonOverflowTextLabelPadding}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton /template/ ui|FontIcon#OverflowCheckGlyph">
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+
+    <!-- POINTEROVER -->
+    <Style Selector="ui|CommandBarToggleButton:pointerover /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPointerOver}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:pointerover /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPointerOver}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:pointerover /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPointerOver}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:pointerover /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPointerOver}" />
+    </Style>
+
+    <!-- PRESSED -->
+    <Style Selector="ui|CommandBarToggleButton:pressed /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPressed}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:pressed /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:pressed /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:pressed /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
+    </Style>
+
+    <!-- CHECKED -->
+    <Style Selector="ui|CommandBarToggleButton:checked /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundChecked}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushChecked}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundChecked}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundChecked}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundChecked}" />
+    </Style>
+
+    <!-- CHECKED POINTEROVER -->
+    <Style Selector="ui|CommandBarToggleButton:checked:pointerover /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundCheckedPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedPointerOver}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:pointerover /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPointerOver}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:pointerover /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPointerOver}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:pointerover /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPointerOver}" />
+    </Style>
+
+    <!-- CHECKED PRESSED -->
+    <Style Selector="ui|CommandBarToggleButton:checked:pressed /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundCheckedPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedPressed}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:pressed /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPressed}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:pressed /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPressed}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:pressed /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPressed}" />
+    </Style>
+    
+    <!-- DISABLED -->
+    <Style Selector="ui|CommandBarToggleButton:disabled /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushDisabled}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:disabled /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundDisabled}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:disabled /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundDisabled}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:disabled /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundDisabled}" />
+    </Style>
+
+    <!-- CHECKED DISABLED -->
+    <Style Selector="ui|CommandBarToggleButton:checked:disabled /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundCheckedDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedDisabled}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:disabled /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedDisabled}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:disabled /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedDisabled}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:checked:disabled /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedDisabled}" />
+    </Style>
+
+    <!-- ICON -->
+    <Style Selector="ui|CommandBarToggleButton:icon /template/ Viewbox#IconHost">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:icon">
+        <Setter Property="MinWidth" Value="40" />
+    </Style>
+
+    <!-- LABEL / LABEL POSITION -->
+    <Style Selector="ui|CommandBarToggleButton:label /template/ TextBlock#LabelText">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:label:labelcollapsed /template/ TextBlock#LabelText">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:label:labelcollapsed">
+        <Setter Property="MinWidth" Value="40" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:label:labelright /template/ TextBlock#LabelText">
+        <Setter Property="Grid.Column" Value="1" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:label:labelbottom /template/ TextBlock#LabelText">
+        <Setter Property="Grid.Row" Value="1" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="Margin" Value="{DynamicResource AppBarButtonTextLabelMargin}" />
+    </Style>
+    <Style Selector="ui|CommandBarToggleButton:label:labelbottom /template/ Viewbox#IconHost">
+        <Setter Property="Margin" Value="{DynamicResource AppBarButtonContentViewboxMargin}" />
+        <Setter Property="Height" Value="16" />
+    </Style>
+
+
+    <!-- OVERFLOW STYLES... -->
+    <Style Selector="Popup ui|CommandBarToggleButton">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="MinHeight" Value="{DynamicResource AppBarThemeCompactHeight}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton /template/ Viewbox#IconHost">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="Grid.Column" Value="0" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton /template/ TextBlock#LabelText">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Grid.Column" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="Padding" Value="{DynamicResource AppBarButtonOverflowTextLabelPadding}" />
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton /template/ ui|FontIcon#SubItemChevron">
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="Grid.Column" Value="2" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+    </Style>
+
+    <!-- Make sure we override the :labelright style when in overflow to set the elements correctly -->
+    <Style Selector="Popup ui|CommandBarToggleButton Button:label:labelright /template/ TextBlock#LabelText">
+        <Setter Property="Grid.Column" Value="0" />
+    </Style>
+
+    <!-- OVERFLOW w/ ICONS-->
+    <Style Selector="ui|CommandBar:overflowicons Popup ui|CommandBarToggleButton:icon /template/ Viewbox#IconHost">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="Margin" Value="12 0" />
+        <Setter Property="Grid.Column" Value="0"/>
+    </Style>
+    <Style Selector="ui|CommandBar:overflowicons Popup ui|CommandBarToggleButton:icon /template/ TextBlock#LabelText">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="38 0 12 0" />
+        <Setter Property="Grid.Column" Value="0"/>
+    </Style>
+
+    <!-- OVERFLOW w/ TOGGLE-->
+    <Style Selector="ui|CommandBar:overflowtoggle Popup ui|CommandBarToggleButton /template/ TextBlock#LabelText">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ui|CommandBar:overflowtoggle Popup ui|CommandBarToggleButton /template/ TextBlock#LabelText">
+        <Setter Property="Margin" Value="38 0 12 0" />
+    </Style>
+
+    <!--OVERFLOW w/ ICONS & TOGGLE-->
+    <Style Selector="ui|CommandBar:overflowicons:overflowtoggle Popup ui|CommandBarToggleButton /template/ Viewbox#IconHost">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="Margin" Value="38 0 12 0" />
+    </Style>
+    <Style Selector="ui|CommandBar:overflowicons:overflowtoggle Popup ui|CommandBarToggleButton /template/ TextBlock#LabelText">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ui|CommandBar:overflowicons:overflowtoggle Popup ui|CommandBarToggleButton /template/ TextBlock#LabelText">
+        <Setter Property="Margin" Value="76 0 12 0" />
+    </Style>
+
+
+    <!-- OVERFLOW INTERACTION -->
+    <!-- POINTER OVER -->
+    <Style Selector="Popup ui|CommandBarToggleButton:pointerover /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundHighLightOverlayPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pointerover /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pointerover /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pointerover /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonKeyboardAcceleratorTextForegroundPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pointerover /template/ ui|FontIcon#OverflowCheckGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonCheckGlyphForegroundPointerOver}" />
+    </Style>
+
+    <!-- PRESSED -->
+    <Style Selector="Popup ui|CommandBarToggleButton:pressed /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundHighLightOverlayPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pressed /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pressed /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pressed /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonKeyboardAcceleratorTextForegroundPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:pressed /template/ ui|FontIcon#OverflowCheckGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonCheckGlyphForegroundPressed}" />
+    </Style>
+
+    <!-- CHECKED -->
+    <Style Selector="Popup ui|CommandBarToggleButton:checked /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushChecked}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked /template/ ui|FontIcon#OverflowCheckGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonKeyboardAcceleratorTextForeground}" />
+    </Style>
+    
+
+    <!-- CHECKED POINTEROVER -->
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pointerover /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundHighLightOverlayCheckedPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pointerover /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pointerover /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pointerover /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonKeyboardAcceleratorTextForegroundPointerOver}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pointerover /template/ ui|FontIcon#OverflowCheckGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPointerOver}" />
+    </Style>
+
+    <!-- CHECKED PRESSED -->
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pressed /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackgroundHighLightOverlayCheckedPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pressed /template/ ContentPresenter#Icon">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pressed /template/ TextBlock#LabelText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pressed /template/ TextBlock#KeyboardAcceleratorText">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonKeyboardAcceleratorTextForegroundPressed}" />
+    </Style>
+    <Style Selector="Popup ui|CommandBarToggleButton:checked:pressed /template/ ui|FontIcon#OverflowCheckGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPressed}" />
+    </Style>
+    
+</Styles>

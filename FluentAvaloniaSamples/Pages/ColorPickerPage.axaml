@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:FluentAvaloniaSamples"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:uiconv="using:FluentAvalonia.Converters"
+             mc:Ignorable="d" 
+             x:Class="FluentAvaloniaSamples.Pages.ColorPickerPage">
+    <UserControl.Resources>
+        <uiconv:ColorToBrushConv x:Key="ColorToBrushConv" />
+    </UserControl.Resources>
+    
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <local:ControlExample Header="Standard ColorPicker"
+                                  XamlSource="{Binding ColorPickerXaml}"
+                                  UsageNotes="{Binding ColorPickerNotes}">
+                <ui:ColorPicker Name="Picker" />
+
+                <local:ControlExample.Options>
+                    <StackPanel Spacing="3">
+                        <TextBlock Text="Set Color to..." />
+                        <StackPanel Orientation="Horizontal" Spacing="3">
+                            <ui:Button Content="White" Command="{Binding SetColorToWhite}" CommandParameter="{Binding #Picker}" />
+                            <ui:Button Content="Red" Command="{Binding SetColorToRed}" CommandParameter="{Binding #Picker}" />
+                            <ui:Button Content="Green" Command="{Binding SetColorToGreen}" CommandParameter="{Binding #Picker}" />
+                            <ui:Button Content="Blue" Command="{Binding SetColorToBlue}" CommandParameter="{Binding #Picker}" />
+                        </StackPanel>
+                        <CheckBox IsChecked="{Binding #Picker.IsAlphaEnabled}" Content="Is Alpha Enabled" />
+                        <CheckBox IsChecked="{Binding #Picker.IsMoreButtonVisible}" Content="Is More Button Visible" />
+                        <CheckBox IsChecked="{Binding #Picker.IsTextInputVisible}" Content="Is Text Input Visible" />
+                        <TextBlock Text="Spectrum Shape" />
+                        <ComboBox SelectedItem="{Binding #Picker.SpectrumShape}" Items="{Binding SpectrumShapes}" />
+                        <TextBlock Text="Third Component"/>
+                        <TextBlock Text="    Only applies to spectrum shape" FontSize="12"/>
+                        <ComboBox SelectedItem="{Binding #Picker.Component}" Items="{Binding Components}" />
+                    </StackPanel>
+                </local:ControlExample.Options>
+            </local:ControlExample>
+
+            <local:ControlExample Header="ColorPicker Button"
+                                  XamlSource="{Binding ColorButtonXaml}"
+                                  UsageNotes="{Binding ColorButtonNotes}">
+                <ui:ColorPickerButton Name="PickerButton" Color="Lime" />
+
+                <local:ControlExample.Options>
+                    <StackPanel Spacing="3">
+                        <TextBlock Text="Change color" />
+                        <Border Background="{Binding #PickerButton.Color, Converter={StaticResource ColorToBrushConv}}"
+                                Width="50" Height="30" />
+                    </StackPanel>
+                </local:ControlExample.Options>
+            </local:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

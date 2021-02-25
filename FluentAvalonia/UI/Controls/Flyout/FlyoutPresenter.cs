@@ -3,6 +3,7 @@
 //Adapted from the WinUI project, MIT Licence, https://github.com/microsoft/microsoft-ui-xaml
 
 using Avalonia.Controls;
+using Avalonia.Input;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -12,5 +13,11 @@ namespace FluentAvalonia.UI.Controls
     /// </summary>
     public class FlyoutPresenter : ContentControl
     {
+        //Prevent MouseWheel from propagating into the MainWindow
+        protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+        {
+            base.OnPointerWheelChanged(e);
+            e.Handled = true;
+        }
     }
 }

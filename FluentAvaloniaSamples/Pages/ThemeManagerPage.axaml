@@ -1,0 +1,13 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluentAvaloniaSamples.Pages.ThemeManagerPage">
+   
+    <Grid RowDefinitions="Auto,*,40" Margin="10" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+        <TextBlock FontSize="20" FontWeight="700" Text="Theme Manager" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+        <TextBox Text="{Binding ThemeManagerDescription}" FontSize="{StaticResource ControlContentThemeFontSize}" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" IsReadOnly="False" Grid.Row="1" BorderBrush="Transparent" Margin="10" Background="Transparent" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+    </Grid>
+    
+</UserControl>

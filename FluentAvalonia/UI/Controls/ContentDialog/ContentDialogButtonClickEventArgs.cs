@@ -7,22 +7,26 @@ namespace FluentAvalonia.UI.Controls
 {
     public class ContentDialogButtonClickEventArgs
     {
+        internal ContentDialogButtonClickEventArgs(ContentDialog owner)
+        {
+            _owner = owner;
+        }
+
         public bool Cancel { get; set; }
+
+        internal bool IsDeferred => _deferral != null;
+
         /// <summary>
         /// Gets a ContentDialogButtonClickDeferral the app can use to respond
         /// asyncronously to a button click event
         /// </summary>
         public ContentDialogButtonClickDeferral GetDeferral()
         {
-            return Owner.GetButtonClickDeferral();
+            _deferral = new ContentDialogButtonClickDeferral(_owner);
+            return _deferral;
         }
 
-        public ContentDialogButtonClickEventArgs(bool cancel, ContentDialog owner)
-        {
-            Cancel = cancel;
-            Owner = owner;
-        }
-
-        private ContentDialog Owner;
+        private ContentDialog _owner;
+        private ContentDialogButtonClickDeferral _deferral;
     }
 }

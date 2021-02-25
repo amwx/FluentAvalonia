@@ -1,0 +1,96 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+
+    <Design.PreviewWith>
+        <Border Padding="50" Background="#F3F3f3">
+            <DatePicker />
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- General template doesn't need to change, just update a few hard coded resources...
+    These are also just guesses, will need to review when WinUI3 is fully available
+    
+    SystemControlHighlightAltBaseHighBrush >> TextFillColorPrimaryBrush
+    SystemControlBackgroundChromeMediumLowBrush >> SolidBackgroundFillColorBase
+    -->
+    
+    <Style Selector="ListBoxItem.DateTimePickerItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+    </Style>
+
+    <!-- This is used for both the accept/dismiss & repeatbuttons in the presenter-->
+    <Style Selector=":is(Button).DateTimeFlyoutButtonStyle">
+        <Setter Property="Background" Value="{DynamicResource DateTimePickerFlyoutButtonBackground}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <!-- 
+                The background is doubled here for the loopingselector up/down repeat buttons 
+                that appear opaque. Not sure how MS does it though I suspect this is it
+                but source isn't MIT yet, so this is my solution -->
+                <Border Background="{TemplateBinding Background}">
+                    <ContentPresenter x:Name="ContentPresenter"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{DynamicResource DateTimePickerFlyoutButtonBorderBrush}"
+                            BorderThickness="{DynamicResource DateTimeFlyoutButtonBorderThickness}"
+                            Content="{TemplateBinding Content}"
+                            TextBlock.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            CornerRadius="{DynamicResource ControlCornerRadius}"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="RepeatButton.UpButton">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Height" Value="22" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBase}" />
+        <Setter Property="Content">
+            <Template>
+                <Viewbox Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path Stroke="{Binding $parent[RepeatButton].Foreground}" StrokeThickness="1" Data="M 0,9 L 9,0 L 18,9"/>
+                </Viewbox>
+            </Template>
+        </Setter>
+    </Style>
+    <Style Selector="RepeatButton.DownButton">
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Height" Value="22" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBase}" />
+        <Setter Property="Content">
+            <Template>
+                <Viewbox Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path Stroke="{Binding $parent[RepeatButton].Foreground}" StrokeThickness="1" Data="M 0,0 L 9,9 L 18,0"/>
+                </Viewbox>
+            </Template>
+        </Setter>
+    </Style>
+
+    <Style Selector="DatePicker:error /template/ Button#FlyoutButton /template/ ContentPresenter">
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
+    </Style>
+
+
+
+
+
+
+
+
+
+</Styles>

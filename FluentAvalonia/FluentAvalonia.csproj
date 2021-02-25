@@ -4,24 +4,27 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Fonts\winjs-symbols.ttf" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
     <ItemGroup>
-        <Compile Update="**\*.xaml.cs">
+        <Compile Update="**\*.axaml.cs">
             <DependentUpon>%(Filename)</DependentUpon>
         </Compile>
-        <AvaloniaResource Include="**\*.xaml">
+        <AvaloniaResource Include="**\*.axaml">
             <SubType>Designer</SubType>
         </AvaloniaResource>
+        <AvaloniaResource Include="Assets\*.*" />
+	    <AvaloniaResource Include="Fonts\*.*" />
     </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.999-cibuild0007716-beta" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.999-cibuild0007716-beta" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.999-cibuild0007716-beta" />
-  </ItemGroup>
-   
-
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="0.10.0" />
+      <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
+      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
+      <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
+    </ItemGroup>
 </Project>

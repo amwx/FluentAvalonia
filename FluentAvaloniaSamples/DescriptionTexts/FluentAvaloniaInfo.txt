@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<ControlInfos>
+    <ControlPage Name="Basic Controls">
+        <Header>
+            <![CDATA[
+A few improvements/features to base controls along with the new Fluent styling applied. NOTE: Not all controls have had the new styling applied.            
+NOTE: FluentAvalonia.UI.Controls.Button targets Avalonia.Controls.Button as its StyleKey, thus are identical in styling.
+            ]]>
+        </Header>
+        <Control Name="ButtonFlyout">
+           <XamlSource>
+                <![CDATA[
+<ui:Button Content="Launch Flyout">
+    <ui:Button.Flyout>
+        <ui:Flyout>
+            <Grid Width="100" Height="100">
+                <TextBlock Text="Button Flyout!" />
+            </Grid>
+        </ui:Flyout>
+    </ui:Button.Flyout>
+</ui:Button>
+]]>
+           </XamlSource>
+           <UsageNotes>
+                <![CDATA[
+The Flyout controls have been given a drop shadow, which requires transparency. If DWM is disabled or window transparency is disabled, the shadow can be disabled via IsThemeShadowDisabled="True" on the Flyout directly. 
+Flyout Placement has also been expanded to the full WinUI options and accounts for whether or not the shadow is enabled (as some adjustments are made in if its to ensure the underlying popup still shows in the right location).
+]]>
+           </UsageNotes>
+            
+        </Control>
+        <Control Name="SplitButton">
+            <XamlSource>
+                 <![CDATA[
+<ui:SplitButton Content="Toggle">
+    <ui:SplitButton.Flyout>
+        <ui:Flyout Placement="Bottom">
+            <Grid Width="200" Height="100">
+                <TextBlock Text="SplitButton Flyout!" />
+            </Grid>
+        </ui:Flyout>
+    </ui:SplitButton.Flyout>
+</ui:SplitButton>
+]]>
+            </XamlSource>
+        </Control>
+        <Control Name="ToggleSplitButton">
+            <XamlSource>
+                 <![CDATA[
+<ui:SplitButton Content="Toggle">
+    <ui:SplitButton.Flyout>
+        <ui:Flyout Placement="Bottom">
+            <Grid Width="200" Height="100">
+                <TextBlock Text="ToggleSplitButton Flyout!" />
+            </Grid>
+        </ui:Flyout>
+    </ui:SplitButton.Flyout>
+</ui:SplitButton>
+]]>
+            </XamlSource>
+        </Control>
+        <Control Name="DropDownButton">
+            <XamlSource>
+                 <![CDATA[
+<ui:DropDownButton Content="Open DropDown">
+    <ui:DropDownButton.Flyout>
+        <ui:MenuFlyout Placement="Bottom" IsThemeShadowDisabled="False">
+            <ui:MenuFlyoutItem Text="Item1" Icon="Save" InputGesture="Ctrl+A" />
+            <ui:ToggleMenuFlyoutItem Text="ToggleItem!" />
+            <ui:MenuFlyoutSubItem Text="Item2>" Icon="Globe">
+                <ui:MenuFlyoutItem Text="SubItem1" />
+                <ui:MenuFlyoutItem Text="SubItem2" />
+                <ui:MenuFlyoutItem Text="SubItem3" />
+                <ui:MenuFlyoutItem Text="SubItem4" />
+            </ui:MenuFlyoutSubItem>
+            <ui:MenuFlyoutSeparator />
+            <ui:MenuFlyoutSubItem Text="Item3" Icon="Copy">
+                <ui:MenuFlyoutItem Text="Item3SubItem1" />
+                <ui:MenuFlyoutItem Text="Item3SubItem2" />
+            /ui:MenuFlyoutSubItem>
+       </ui:MenuFlyout>
+    </ui:DropDownButton.Flyout>
+</ui:DropDownButton>
+]]>
+            </XamlSource>
+        </Control>
+        <Control Name="ComboBox">
+            <XamlSource>
+                 <![CDATA[
+<ui:ComboBox Name="EditableCB" Items="{Binding ComboBoxItems}" IsEditable="True" Width="150" />
+]]>
+            </XamlSource>
+            <UsageNotes>
+                Control is still in testing. Editable functionality was based on the AutoCompleteBox. To bind to a specific property using the ValueMemberBinding property on the ComboBox (ValueMemberBinding="{Binding PropertyName}")
+            </UsageNotes>
+        </Control>
+        <Control Name="Expander">
+            <UsageNotes>
+                Only ExpandDirection=Down and ExpandDirection=Up have been implemented as of now.
+            </UsageNotes>
+        </Control>
+    </ControlPage>
+    
+    <ControlPage Name="Icons">
+        <Header>
+<![CDATA[
+IconElements and IconSources based on the WinUI versions. Unlike UWP/WinUI, which inserts additional FrameworkElements (TextBlock/Path/etc) to render, the versions in FluentAvalonia render themselves
+IconSources can be declared once as a resource, then reused anywhere, which is ideal for when you need to use the same icon in multiple places. Each use of the icon will point to the same memory location of the icon, rather than create a new one for each like when using a standard IconElement.
+IconSourceElement derives from IconElement, thus where controls like MenuFlyoutItem, or the NavigationView require an IconElement, IconSources can still be used.
+A string to icon converter exists that allows quick ways to create icons where an IconElement is required. 
+Example:
+<Control Icon="Save" />
+Will automatically create a SymbolIcon with the save icon. If all fails, a FontIcon will be created with the string value.
+]]>                
+        </Header>
+        
+        <Control Name="SymbolIcon">
+            <XamlSource>
+                 <![CDATA[
+<ui:SymbolIcon Symbol="Navigation" />
+]]>
+            </XamlSource>
+            <UsageNotes>
+                SymbolIcons are based on the new Fluent Icons from Microsoft. The font itself is embedded directly in the FluentAvalonia assembly and can be referenced by SymbolThemeFontFamily. The glyphs and glyph codes are not the same as the Segoe MDL2 Assets symbol font. 
+A select number of symbols are available via the Symbol enum, which you can preview below. The full list can be obtained from the Fluent Icons github repo, but will require a FontIcon or TextBlock to show.
+Unlike WinUI, I've also added a FontSize property to the SymbolIcon to allow changing size.
+            </UsageNotes>
+        </Control>
+        <Control Name="FontIcon">
+            <XamlSource>
+                 <![CDATA[
+<ui:FontIcon FontSize="18" Glyph="A" />
+]]>
+            </XamlSource>
+            <UsageNotes>
+            FontIcons are basically just special TextBlocks for displaying single characters (although nothing prevents you from displaying a full string).
+            </UsageNotes>
+        </Control>
+        <Control Name="PathIcon">
+            <XamlSource>
+                 <![CDATA[
+<ui:PathIcon Data="M0,50 L 25,0 L 50,50Z" HorizontalAlignment="Center" VerticalAlignment="Center" />
+]]>
+            </XamlSource>
+        </Control>
+        <Control Name="BitmapIcon">
+            <XamlSource>
+                 <![CDATA[
+<ui:BitmapIcon UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" />
+]]>
+            </XamlSource>
+            <UsageNotes>
+                <![CDATA[
+NOTE: BitmapIcons require Skia to be the renderer. In order to allow the property IsMonochrome, rendering of the BitmapIcons is done via Skia.
+BitmapIcon UriSource can be an avares (as in the example) or an actual file name.
+]]>
+            </UsageNotes>
+        </Control>
+    </ControlPage>
+    
+    <ControlPage Name="NavigationView">
+        <Header>
+<![CDATA[
+Ahh yes, the NavigationView. This is a direct port of the WinUI version, and is an absolute nightmare (it's taken me about 6 attempts to get this to actually work). There's about 8000 lines of Xaml & C++ code to this control in WinUI, so if something goes wrong in porting, it's not always easy to track down.
+The NavigationView does work though, and does support Binding (though that hasn't been fully tested. In order to bind, you'll need to set the MenuItemTemplate to wrap in a NavigationViewItem to work properly (see the DataBinding example below).
+Sample pages used here are from the WinUI Xaml Controls Gallery
+The control itself is quite large (the entire template is loaded regardless of the PaneDisplayMode property, and the code is a mess (on account of all the modifications Microsoft keeps doing + keeping it backwards compatible). I'm currently looking at what can be done in this version to help out, without breaking it.
+Known issues:
+>Adjustment for TitleBars is NOT implemented, as balancing Native vs. custom titlebars is quite difficult. This is a TODO though.
+>Keyboard navigation is not fully implemented/may behave weirdly. This is pain to get correct
+>Switching from Top->Left mode may cause the pane to display incorrectly. This likely due to the pane reorganizing before the pane is properly reinvalidated and everything has its correct size. Closing & reopening the pane will fix the issue.
+>Selecting a subitem, then switching from Left->Top or Top->Left will result in the SelectionIndicator not showing. This is a bug in WinUI
+>Items loaded first in TopOverflow or subitems in Flyout when in TopNav will keep the TopOverflow styling if switched to LeftNav mode (though this is minimal). This also occurs in the WinUI version.
+>Binding errors are thrown from the NavigationView (but do not affect its usability). Not sure the issue here. One binding error comes from the SplitView control, and still not sure why that occurs (present since I wrote the control)
+>Any other bugs/oddities in the WinUI version have likely made it too
+]]>            
+        </Header>
+        <Control Name="NavigationViewDefault">
+            <XamlSource>
+<![CDATA[
+<ui:NavigationView x:Name="nvSample" Height="460" PaneDisplayMode="Left">
+    <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play" />
+        <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" Icon="Save" />
+        <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" Icon="Refresh" />
+        <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" Icon="Download" />
+    </ui:NavigationView.MenuItems>
+</ui:NavigationView>
+]]>                 
+            </XamlSource>
+        </Control>
+        <Control Name="NavigationViewAdaptive">
+            <XamlSource>
+<![CDATA[
+<ui:NavigationView x:Name="nvSample2" Height="460" PaneDisplayMode="Auto">
+    <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" />
+        <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" />
+        <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" />
+        <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" />
+    </ui:NavigationView.MenuItems>
+</ui:NavigationView>
+]]>                 
+            </XamlSource>
+            <UsageNotes>
+                When PaneDisplayMode=Auto, the layout of the NavigationView will adapt to the window size. Constraints can be set via the CompactModeThresholdWidth and ExpandedModeThresholdWidth properties. This will NOT switch between Top and Left Navigation modes.
+            </UsageNotes>
+        </Control> 
+        
+        <Control Name="NavigationViewDataBinding">
+            <XamlSource>
+<![CDATA[
+<ui:NavigationView x:Name="nvSample4" Height="460" PaneDisplayMode="LeftCompact" MenuItems="{Binding Categories}" Content="{Binding CurrentPage}" SelectedItem="{Binding SelectedCategory}">
+    <ui:NavigationView.MenuItemTemplate>
+        <DataTemplate DataType="{x:Type vm:Category}">
+            <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+        </DataTemplate>
+    </ui:NavigationView.MenuItemTemplate>
+</ui:NavigationView>
+]]>                 
+            </XamlSource>
+        </Control>       
+        
+        <Control Name="NavigationViewDataHeirarchical">
+            <XamlSource>
+<![CDATA[
+<ui:NavigationView x:Name="nvSample5" PaneDisplayMode="Left" Height="460">
+    <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="Home" Tag="SamplePage1" Icon="Home" />
+        <ui:NavigationViewItem Content="Account" Tag="SamplePage2" Icon="Home">
+            <ui:NavigationViewItem.MenuItems>
+                <ui:NavigationViewItem Content="Mail" Icon="Mail" Tag="SamplePage3" />
+                <ui:NavigationViewItem Content="Calendar" Icon="Calendar" Tag="SamplePage4" />
+            </ui:NavigationViewItem.MenuItems>
+        </ui:NavigationViewItem>
+        <ui:NavigationViewItem Content="Document options" Tag="SamplePage3" Icon="Document" SelectsOnInvoked="False">
+            <ui:NavigationViewItem.MenuItems>
+                <ui:NavigationViewItem Content="Create new" Icon="New" Tag="SamplePage5" />
+                <ui:NavigationViewItem Content="Upload file" Icon="Upload" Tag="SamplePage6" />
+            </ui:NavigationViewItem.MenuItems>
+        </ui:NavigationViewItem>
+    </ui:NavigationView.MenuItems>
+</ui:NavigationView>
+]]>                 
+            </XamlSource>
+        </Control>  
+        
+    </ControlPage>
+    
+    <ControlPage Name="ColorPicker">
+        <Control Name="StandardColorPicker">
+            <XamlSource>
+                <![CDATA[<ui:ColorPicker Name="Picker" />]]>
+            </XamlSource>
+            <UsageNotes>
+<![CDATA[
+Based on the WinUI version, this one has a few modifications. It's rendered entirely differently with optimizations where possible to avoid recreating a bitmap everytime the color changes.
+WinUI only has a ColorSpectrum and ColorWheel. I've also added a ColorTriangle version. There's additional displays for the ColorSpectrum which can be set by the Component property of the ColorPicker (determines which 2 of 3 color components the spectrum displays).
+The Color property of the ColorPicker is of type FluentAvalonia.UI.Media.Color2, to handle the HSV color spectrum. This is implicitly convertible to Avalonia.Media.Color (no cast), though binding may not like the conversion. 
+]]>                  
+            </UsageNotes>
+        </Control>
+        <Control Name="ColorPickerButton">
+            <XamlSource>
+<![CDATA[<ui:ColorPickerButton Name="PickerButton" Color="Lime" />]]>
+            </XamlSource>
+            <UsageNotes>
+<![CDATA[
+The ColorPicker itself is quite large, and can be hard to fit into a nice UX. So, there's also a ColorPickerButton, which will hide the ColorPicker in a Flyout. The Color property on the Button is Avalonia.Media.Color and the conversion to Color2 takes place in code, thus this may be more optimal in binding scenarios.
+]]>                  
+            </UsageNotes>
+        </Control>
+    </ControlPage>
+    <ControlPage Name="Frame">
+        <Header>
+<![CDATA[
+The frame control allows for easy Navigation handling within an app, and works well with the Navigation View. The control is adapted from the WinUI and Uno version, and should operate similarly. Some animation transition effects are available.
+]]>             
+        </Header>
+        <Control Name="Frame">
+            <XamlSource>
+<![CDATA[
+<DockPanel>
+    <StackPanel Spacing="4" Orientation="Horizontal" DockPanel.Dock="Top">
+        <ui:Button Content="Go Back" Command="{Binding #TestFrame.GoBack}" IsEnabled="{Binding #TestFrame.CanGoBack}" />
+        <ui:Button Content="Go Forward" Command="{Binding #TestFrame.GoForward}" IsEnabled="{Binding #TestFrame.CanGoForward}" />
+    </StackPanel>
+
+    <ui:Frame Name="TestFrame" /> 
+</DockPanel>
+]]> 
+            </XamlSource>
+            <CSharpSource>
+<![CDATA[
+//To Navigate to a page, where a page is any derivative of IControl:
+TestFrame.Navigate(typeof(SamplePage));
+
+//To Navigate adding a parameter:
+TestFrame.Navigate(typeof(SamplePage), paramHere);
+
+//To Navigate with a custom animation:
+TestFrame.Navigate(typeof(SamplePage), paramHere, transitionInfo);
+
+// Where transitionInfo is a NavigationTransitionInfo type
+//    SlideNavigationTransitionInfo
+//    EntranceNavigationTranstionInfo (default, Slide up & fade in)
+//    DrillInNavigationTransitionInfo (zoom in like effect)
+//    SuppressNavigationTransitionInfo (no animation)
+
+//To Go Back:
+TestFrame.GoBack();
+TestFrame.GoBack(transitionInfo); //With custom transition info
+
+//To Go Forward:
+TestFrame.GoForward();
+TestFrame.GoForward(transitionInfo); //With custom transtion info
+
+//NOTE: you can also bind Button commands to the frame as in the XamlSource above.
+
+//You can disable the Back & Forward stacks with
+TestFrame.IsNavigationStackEnabled = false;
+
+//And you can change the size of the page cache (defaults to 10)
+//NOTE: pages are kept in the cache until it is filled
+//And an attempt to reuse each internal entry in the cache is made for performance.
+//Having the cache allows pages to reload quicker.
+//Depending on page content, first time load may be slow & the animation may not play correctly
+TestFrame.CacheSize = 10;
+]]>                
+            </CSharpSource>
+        </Control>
+    </ControlPage>
+    <ControlPage Name="NumberBox">
+        <Header>Use NumberBox to allow users to enter algebraic equations and numeric input in your app</Header>
+        <Control Name="NumberBoxExpression">
+            <XamlSource>
+<![CDATA[
+<ui:NumberBox Header="Enter an expression:" PlaceholderText="1 + 2^2" AcceptsExpression="True" />
+]]>                          
+            </XamlSource>
+        </Control>
+        <Control Name="NumberBoxSpin">
+            <XamlSource>
+<![CDATA[
+<ui:NumberBox Header="Enter an integer:" Value="1" SpinButtonPlacementMode="{Binding SpinPlacementMode}" SmallChange="10" LargeChange="100" />
+]]>                          
+            </XamlSource>
+        </Control>
+        <Control Name="NumberBoxFormat">
+            <XamlSource>
+<![CDATA[
+<ui:NumberBox Name="FormattedNB" Header="Enter an amount:" PlaceholderText="0.00" />
+]]>                          
+            </XamlSource>
+            <CSharpSource>
+<![CDATA[
+var nm = this.FindControl<NumberBox>("FormattedNB");
+nm.NumberFormatter = (input) =>
+{
+    double increment = 1/0.25;
+    return (Math.Round(input * increment, MidpointRounding.AwayFromZero) / increment).ToString("F2");
+};
+]]>                  
+            </CSharpSource>
+            <UsageNotes>
+<![CDATA[
+
+.NET doesn't have all of the culture aware formatters in the way WinUI/WinRT/UWP does, thus the NumberFormatter property has been altered to a Func<double, string> to allow custom formatting. If a function is provided, you'll receive the new Value and you return the formatted string to be displayed.
+The example above rounds the number to the nearest 0.25 displayed to 2 decimal places.
+
+NOTE: NumberFormatter is NOT an AvaloniaProperty and therefore does not support Binding.
+NOTE: Returned string must still be numeric in value. No special formatting (e.g., %) is allowed.
+]]>                  
+            </UsageNotes>
+        </Control>
+    </ControlPage>
+</ControlInfos>

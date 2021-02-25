@@ -1,16 +1,130 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FluentAvaloniaSamples"
-             x:Class="FluentAvaloniaSamples.App">
+             x:Class="FluentAvaloniaSamples.App"
+             xmlns:sty="using:FluentAvalonia.Styling">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-
+    
     <Application.Styles>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+        <FluentTheme Mode="Light" />        
+        <sty:FluentAvaloniaTheme Mode="Light" />
         
-        <StyleInclude Source="avares://FluentAvalonia/Styling/ControlStyles.xaml" />
-        
+        <Style Selector="local|ControlExample">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <StackPanel>                        
+                        <ContentPresenter Name="HeaderPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch"
+                                          TextBlock.FontSize="18"
+                                          TextBlock.FontWeight="Bold"
+                                          Margin="0 16"/>
+
+                        <Border Grid.Row="1"
+                                BorderBrush="{DynamicResource ControlStrokeColorSecondary}"
+                                BorderThickness="1">
+                            <DockPanel>
+                                <ContentPresenter Name="OptionPresenter"
+                                                  IsVisible="{Binding Options, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                                  Content="{TemplateBinding Options}"
+                                                  DockPanel.Dock="Right"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  VerticalContentAlignment="Stretch"
+                                                  Margin="12"/>                                
+                                
+                                <ContentPresenter Name="ExamplePresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Padding="12"/>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Grid.Row="2"
+                                Background="{DynamicResource SolidBackgroundFillColorSecondary}"
+                                IsVisible="{TemplateBinding XamlSource, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                >
+                            <DockPanel>
+                                <TextBlock Text="Xaml" FontWeight="700" HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" DockPanel.Dock="Top" />
+                                <ContentPresenter Name="XamlSourcePresenter"
+                                             Content="{TemplateBinding XamlSource}"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             HorizontalContentAlignment="Left"
+                                             VerticalContentAlignment="Top"
+                                             Padding="16,20">
+                                    <ContentPresenter.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </ContentPresenter.Styles>
+                                </ContentPresenter>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Grid.Row="3"
+                                Background="{DynamicResource SolidBackgroundFillColorSecondary}"
+                                IsVisible="{TemplateBinding CSharpSource, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                >
+                            <DockPanel>
+                                <TextBlock Text="C#" FontWeight="700" HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" DockPanel.Dock="Top" />
+                                <ContentPresenter Name="CSharpSourcePresenter"
+                                              Content="{TemplateBinding CSharpSource}"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              HorizontalContentAlignment="Left"
+                                              VerticalContentAlignment="Top"
+                                              Padding="4 5">
+                                    <ContentPresenter.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </ContentPresenter.Styles>
+                                </ContentPresenter>
+                            </DockPanel>
+                            
+                        </Border>
+
+                        <Border Background="{DynamicResource SolidBackgroundFillColorSecondary}"
+                                IsVisible="{TemplateBinding UsageNotes, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                >
+                            <DockPanel>
+                                <TextBlock Text="Usage Notes" FontStyle="Italic"
+                                           FontWeight="SemiBold" HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" DockPanel.Dock="Top" Margin="3" />
+                                <ContentPresenter Name="UsageNotesPresenter"
+                                              Content="{TemplateBinding UsageNotes}"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              HorizontalContentAlignment="Stretch"
+                                              VerticalContentAlignment="Stretch"
+                                              Padding="4 5">
+                                    <ContentPresenter.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </ContentPresenter.Styles>
+                                </ContentPresenter>
+                            </DockPanel>
+                        </Border>
+                        
+                        
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
     </Application.Styles>
 </Application>

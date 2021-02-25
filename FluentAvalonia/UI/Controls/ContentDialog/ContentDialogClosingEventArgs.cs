@@ -6,13 +6,25 @@ namespace FluentAvalonia.UI.Controls
 {
     public class ContentDialogClosingEventArgs
     {
+        internal ContentDialogClosingEventArgs(ContentDialog owner, ContentDialogResult res)
+        {
+            Result = res;
+            _owner = owner;
+        }
+
         public bool Cancel { get; set; }
+
         public ContentDialogResult Result { get; }
 
-        public ContentDialogClosingEventArgs(bool cancel, ContentDialogResult res)
+        internal bool IsDeferred => _deferral != null;
+
+        public ContentDialogClosingDeferral GetDeferral()
         {
-            Cancel = cancel;
-            Result = res;
+            _deferral = new ContentDialogClosingDeferral(_owner);
+            return _deferral;
         }
+
+        private ContentDialog _owner;
+        private ContentDialogClosingDeferral _deferral;
     }
 }

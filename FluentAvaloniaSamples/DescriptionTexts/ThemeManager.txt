@@ -1,36 +1,40 @@
-﻿To assist with changing themes, I've also written a Theme Manager
-On Win10, and if desired, the Theme Manager will automatically retreive the user's Theme Color and mark it as the theme color for the app. You can still set it manually, if desired, or if not on Win10. Accent color defaults to SlateBlue, if unmodified. 
-To use the theme manager, you declare it once in the MainWindow, view model, or where ever code, and it will inject the requested theme to the end of the App.xaml
-*High Contrast theme is experimental, and appears to just be DarkTheme
+﻿The ThemeManager can help in switching themes at runtime. The ThemeManager has no dependency to any window (though it requires application lifetime to be IClassicDesktopApplicationLifetime), thus can be placed in a ViewModel if chosen.
+For optimal results, FluentAvalonia looks best with the system applied accents, and the Segoe UI font, which unfortunately is only available on Windows (by default). The theme manager can help manage this to ensure the Default FontFamily is changed to Segoe UI if the platform in windows.
 
-For Example:
-public class MainWindowViewModel : ViewModelBase
-{
-    private ThemeManager themeManager;
-    public MainWindowViewModel()
-    {
-        themeManager = new ThemeManager(); //Default, LightTheme, use SystemAccentColor on Windows10
-        themeManager = new ThemeManager(AppThemeMode.Dark, false); //Set startup theme, (DarkMode, user defined AccentColor)
-    }
-}
+To use, declare the ThemeManager as with either constructor
+NOTE: App.xaml must be configured as defined on the HomePage for this to work
+//Constructor 1 - Uses a default theme, if on Windows, it asks the system (Windows 10 1809 and later), otherwise defaults to light
 
-To change the theme, just call
-themeManager.SetTheme(AppThemeMode mode);
-AppThemeMode can be Light, Dark, or HighContrast. The Unset enum value is only used for initialization & shouldn't be used
+var tm = new ThemeManager(true /*useWinSysAccent*/, true /*useWinDefFont*/, true /*includeWindowsTitleBar*/);
+tm.Refresh();
 
-To set a user defined SystemAccentColor, call
-themeManger.SetThemeAccentColors(...)
-This takes 7 colors, the accent color desired, and 3 light and 3 dark variants.
+//Constructor 2 - Uses a specified theme
 
-Want to use the ThemeManager with your own styles? You can call
-themeManager.SetLightThemeSource(Styles newStyle)
-themeManager.SetDarkThemeSource(Styles newStyle)
-themeManager.SetHCThemeSource(Styles newStyle)
+var tm = new ThemeManager(FluentThemeMode.Dark /*preferredTheme*/, true /*useWinSysAccent*/, true /*useWinDefFont*/, true /*includeWindowsTitleBar*/);
+tm.Refresh();
 
-These will replace the default Fluent design styles. Note they must be of type Styles.
-You may be able to load via StyleInclude([src here]).Loaded;
+//The parameters are as follows
+PreferredTheme - the desired theme, either Light or Dark
+UseWinSysAccent - True to use and get the Windows System Accent color
+UseWinDefFont - True to replace the primary Font resource ("ContentControlThemeFontFamily") with Segoe UI if on Windows
+IncludeWindowsTitleBar - If using Windows 10 1809 or higher, the native windows titlebar will also be included in the theme change. NOTE: this is experimental, and may not always work
 
-Notes: 
->Known issue, when switching themes, binding errors are thrown, they don't affect the switching of themes though.
->If using the ThemeManager, don't modify the last StyleInclude in the App.xaml file, as the ThemeManager defaults to Add the file initially, then just replace the last entry for a theme change.
->Replacing the default themes hasn't been tested
+Call Refresh to apply the current theme. 
+
+You can also change any property on the ThemeManager, or set custom accent colors if you choose to. Just change the property and call Refresh();
+For example, switch from Light -> Dark
+tm.PreferredTheme = FluentThemeMode.Dark;
+tm.Refresh();
+
+Or to set custom accent colors:
+tm.CustomAccentColors = ... //Set the array of 7 colors: Accent, AccentLight1,2,3, AccentDark1,2,3
+tm.UseSystemAccentOnWindows = false; //set this to false
+tm.Refresh();
+
+How does it work?
+The ThemeManager searches the Application Styles for three things, first an instance of the FluentTheme from Avalonia, to switch the base Avalonia Theme. NOTE: it doesn't appear this works at this time, as it doesn't appear FluentTheme listens for changes to the Mode property.
+
+Then it searches an instance of FluentAvaloniaTheme, which holds a ThemeStyles object containing all the FluentAvalonia styles & resources, which looks similar to UWP's/WinUI's ResourceDictionary. 
+It then will also look for any other instances of ThemeStyles (including via StyleInclude), so it can also be used for custom theming.
+
+

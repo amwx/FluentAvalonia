@@ -5,8 +5,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia"
         xmlns:local="clr-namespace:FluentAvaloniaSamples.ViewModels;assembly=FluentAvaloniaSamples"
         xmlns:pg="clr-namespace:FluentAvaloniaSamples.Pages;assembly=FluentAvaloniaSamples"
+        xmlns:sys="using:System" 
+        xmlns:core="using:FluentAvalonia.Core"
+        Width="1200" Height="700"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FluentAvaloniaSamples.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -14,103 +18,10 @@
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <Grid RowDefinitions="*,Auto">
-        <TabControl>
-            <TabItem Header="Home">
-                <Grid RowDefinitions="Auto,*" Margin="10" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
-                    <TextBlock FontSize="20" FontWeight="700" Text="FluentAvalonia Control and Styles Samples" TextAlignment="Center" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                    <StackPanel Orientation="Vertical" Grid.Row="1" TextBlock.FontSize="{StaticResource ControlContentThemeFontSize}">
-                        <StackPanel.Styles>
-                            <Style Selector="TextBlock">
-                                <Setter Property="Margin" Value="2"/>
-                            </Style>
-                        </StackPanel.Styles>
-                        <TextBlock Text="How to Use" FontSize="16" FontWeight="700"/>
-                        <TextBlock Text="To just use the styles, reference FluentAvalonia in your project and add a StyleInclude into your App.xaml file" />
-                        <TextBlock Text="     Source for StyleInclude: avares://FluentAvalonia/Styles/ControlStyles.xaml" />
-                        <TextBlock Text="Dont want to include the reference?" />
-                        <TextBlock Text="There are four theme files with all the styles. If not using the ThemeManager, you must include the ThemeStyles*.xaml file before the ControlStyles. " />
-                        <TextBlock Text="     Light Theme: ThemeStylesLight.xaml" />
-                        <TextBlock Text="     Dark Theme: ThemeStylesDark.xaml" />
-                        <TextBlock Text="     High Contrast Theme: ThemeStylesHighContrast.xaml*" />
-                        <TextBlock Text="     Control Styles: ControlStyles.xaml" />
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Styles" IsSelected="True">
-                <Grid RowDefinitions="Auto,*,40" Margin="10" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
-                    <TextBlock FontSize="20" FontWeight="700" Text="FluentAvalonia Styles" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                    <TextBox Text="{Binding StylesDescription}" FontSize="{StaticResource ControlContentThemeFontSize}" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="1" BorderBrush="Transparent" Margin="10" Background="Transparent" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Theme Manager">
-                <Grid RowDefinitions="Auto,*,40" Margin="10" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
-                    <TextBlock FontSize="20" FontWeight="700" Text="Theme Manager" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                    <TextBox Text="{Binding ThemeManagerDescription}" FontSize="{StaticResource ControlContentThemeFontSize}" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="1" BorderBrush="Transparent" Margin="10" Background="Transparent" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Basic Controls">
-                <pg:BasicControls />
-            </TabItem>
-            <TabItem Header="Popups/Dialogs">
-                <pg:Dialogs />
-            </TabItem>
-            <TabItem Header="Containers">
-                <pg:Containers />
-            </TabItem>
-            <TabItem Header="IconElements">
-                <Grid Background="{DynamicResource SystemControlBackgroundAltHighBrush}" Margin="10">
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock FontSize="20" FontWeight="700" Text="IconElements" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                            <TextBlock FontSize="14" FontWeight="500" Text="Provide a quick way to display a symbol or icon" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
 
-                            <TextBlock FontSize="16" FontWeight="700" Text="FontIcon" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="10 10 10 5" />
-                            <TextBlock FontSize="14" FontWeight="500" Text="Displays a text icon in a specified font" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="25 0" />
-                            <ui:FontIcon Glyph="A" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Margin="10"/>
-                            <Rectangle Height="1" Fill="{DynamicResource SystemControlBackgroundBaseLowBrush}" Margin="15 3"/>
-
-                            <TextBlock FontSize="16" FontWeight="700" Text="SymbolIcon" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="10 10 10 5" />
-                            <TextBlock FontSize="14" FontWeight="500" Text="Displays a symbol icon like FontIcon, but has fallback method when Segoe MDL2 Assets (default symbol font) is not present" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="25 0" />
-                            <ui:SymbolIcon Symbol="Navigation" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Margin="10" />
-                            <TextBlock FontSize="14" FontWeight="500" Text="{Binding CurrentSymbolThemeName, StringFormat='Current Symbol Font: {0}'}" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="25 0" />
-
-                            <Expander Header="Available Symbols">
-                                <ListBox Items="{Binding Symbols}" Height="300" Background="Transparent">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid ColumnDefinitions="350,*">
-                                                <TextBlock Text="{Binding}" FontSize="16" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                                                <ui:SymbolIcon Symbol="{Binding}" Margin="20 0" FontSize="16"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Expander>
-
-                            <Rectangle Height="1" Fill="{DynamicResource SystemControlBackgroundBaseLowBrush}" Margin="15 3"/>
-
-                            <TextBlock FontSize="16" FontWeight="700" Text="PathIcon" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="10 10 10 5" />
-                            <TextBlock FontSize="14" FontWeight="500" Text="Displays a PathGeometry symbol. Battery icon here from: https://materialdesignicons.com/" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="25 0" />
-                            <ui:PathIcon Data="M16,15H8V6H16M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.67C6,21.4 6.6,22 7.33,22H16.67A1.33,1.33 0 0,0 18,20.67V5.33C18,4.6 17.4,4 16.67,4Z" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Margin="10" />
-
-                            <Rectangle Height="1" Fill="{DynamicResource SystemControlBackgroundBaseLowBrush}" Margin="15 3"/>
-
-                            <TextBlock FontSize="16" FontWeight="700" Text="BitmapIcon" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="10 10 10 5" />
-                            <TextBlock FontSize="14" FontWeight="500" Text="Displays a Bitmap as a symbol." TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" Margin="25 0" />
-                            <ui:BitmapIcon UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Height="50" Width="50" Margin="10" />
-
-                            <Rectangle Height="1" Fill="{DynamicResource SystemControlBackgroundBaseLowBrush}" Margin="15 3"/>
-
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-        </TabControl>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" Margin="10 0">
-            <Button Content="Set Light Theme" Command="{Binding SetLightTheme}" Margin="3 10" />
-            <Button Content="Set Dark Theme" Command="{Binding SetDarkTheme}" Margin="3 10"/>
-            <Button Content="Set HC Theme" Command="{Binding SetHCTheme}" Margin="3 10"/>
-        </StackPanel>
-    </Grid>
+    <ui:NavigationView Name="NavView" PaneDisplayMode="Left"
+                       IsBackButtonVisible="True" AlwaysShowHeader="True"
+                       IsBackEnabled="{Binding #FrameView.CanGoBack}">
+        <ui:Frame Name="FrameView" Margin="5" />
+    </ui:NavigationView>
 </Window>
