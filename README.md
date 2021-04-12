@@ -1,5 +1,7 @@
 # FluentAvalonia
 
+![Nuget](https://img.shields.io/nuget/v/FluentAvalonia)
+
 Just a little project to extend some additional WinUI and Fluent design in to the Avalonia world.
 
 Targets: Avalonia 0.10 & .net core 3.1

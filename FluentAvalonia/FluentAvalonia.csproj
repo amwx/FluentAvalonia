@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://github.com/amwx/FluentAvalonia</PackageProjectUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
-    <PackageReleaseNotes>- Initial Release</PackageReleaseNotes>
+    <PackageReleaseNotes>- Updated to .NET5</PackageReleaseNotes>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
