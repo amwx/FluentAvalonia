@@ -2,13 +2,15 @@
 
 Just a little project to extend some additional WinUI and Fluent design in to the Avalonia world.
 
-Targets: Avalonia 0.10 & .net core 3.1
+NOTE: A major update is currently in progress, part of which will include an official nuget package & release.
+
+Targets: Avalonia 0.10 & .net core 5.0
 
 What's included so far?
 - New WinUI styles (currently being rolled out) for some controls
+-- NOTE: These are still being updated in WinUI and not all controls have been updated yet (here and in WinUI)
 - Support for new FluentUI Icons
-- NEW - NavigationView Control (the full thing ported from WinUI, in testing)
-- Partial support for Flyouts
+- NEW (beta) - NavigationView Control (the full thing ported from WinUI)
 - SplitButton, ToggleSplitButton
 - DropDownButton
 - Editable ComboBox (experimental)
