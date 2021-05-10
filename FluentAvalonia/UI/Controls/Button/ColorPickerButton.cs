@@ -50,7 +50,7 @@ namespace FluentAvalonia.UI.Controls
             _picker = e.NameScope.Get<ColorPicker>("ColorPicker");            
         }
 
-        private void OnFlyoutOpened(Primitives.FlyoutBase sender, object args)
+        private void OnFlyoutOpened(object sender, object args)
         {
             //Binding doesn't work between Color2 & Color, so we have to manually manage this
             //They are implicitly convertible tho, but binding doesn't like that
@@ -59,7 +59,7 @@ namespace FluentAvalonia.UI.Controls
             _picker.Color = Color;
         }
 
-        private void OnFlyoutCancelled(PickerFlyout sender, object args)
+        private void OnFlyoutCancelled(object sender, object args)
         {
             OnCancelled();
         }

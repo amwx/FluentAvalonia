@@ -9,6 +9,7 @@ using FluentAvalonia.UI.Controls.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Avalonia.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -51,13 +52,13 @@ namespace FluentAvalonia.UI.Controls
                 [!ContentControl.ContentProperty] = this[!Flyout.ContentProperty]
             };
         }
-
+        
         protected override void OnOpening()
         {
             //Pass the FlyoutPresenterStyle into the Popup
             //Since that's internal, we can control the Styles on it
-            GetPresenter?.Styles.Clear();
-            GetPresenter?.Styles.Add(FlyoutPresenterStyle);
+            Popup.Child?.Styles.Clear();
+            Popup.Child?.Styles.Add(FlyoutPresenterStyle);
             base.OnOpening();
         }
 

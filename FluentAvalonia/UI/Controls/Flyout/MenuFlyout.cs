@@ -88,8 +88,8 @@ namespace FluentAvalonia.UI.Controls
         protected override void OnOpened()
         {
             base.OnOpened();
-            //_popup.Child?.Focus();
-            FocusManager.Instance.Focus(_popup.Child, NavigationMethod.Unspecified, KeyModifiers.None);
+            //Popup.Child?.Focus();
+            FocusManager.Instance.Focus(Popup.Child, NavigationMethod.Unspecified, KeyModifiers.None);
         }
 
         private IEnumerable _items;

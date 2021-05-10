@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Text;
@@ -605,7 +606,7 @@ namespace FluentAvalonia.UI.Controls
             args.Handled = true;
         }
 
-        private void OnFlyoutClosing(FlyoutBase sender, FlyoutBaseClosingEventArgs args)
+        private void OnFlyoutClosing(object sender, CancelEventArgs args)
         {
             IsExpanded = false;
         }

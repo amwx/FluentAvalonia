@@ -54,7 +54,7 @@
                                    Name="NVIMenuItemsHost"
                                    KeyboardNavigation.TabNavigation="Continue" />
 
-                    <uip:FlyoutBase.AttachedFlyout>
+                    <FlyoutBase.AttachedFlyout>
                         <!--Placement="RightEdgeAlignedTop"-->
                         <ui:Flyout>
                             <ui:Flyout.FlyoutPresenterStyle>
@@ -93,7 +93,7 @@
                             </Panel>
                             
                         </ui:Flyout>
-                    </uip:FlyoutBase.AttachedFlyout>
+                    </FlyoutBase.AttachedFlyout>
 
                     
                 </Grid>

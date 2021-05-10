@@ -56,7 +56,7 @@
                                       XamlSource="{Binding DropDownButtonXaml}">
                     <ui:DropDownButton Content="Open DropDown">
                         <ui:DropDownButton.Flyout>
-                            <ui:MenuFlyout Placement="Bottom" IsThemeShadowDisabled="False">
+                            <ui:MenuFlyout Placement="Bottom">
                                 <ui:MenuFlyoutItem Text="Item1" Icon="Save" InputGesture="Ctrl+A" />
                                 <ui:ToggleMenuFlyoutItem Text="ToggleItem!" />
                                 <ui:MenuFlyoutSubItem Text="Item2>" Icon="Globe">

@@ -28,11 +28,13 @@
         </AvaloniaResource>
         <AvaloniaResource Include="Assets\*.*" />
 	    <AvaloniaResource Include="Fonts\*.*" />
+	    <Compile Remove="UI\Controls\Flyout\FlyoutBase.cs" />
+	    <Compile Remove="UI\Controls\Flyout\FlyoutPlacementMode.cs" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="0.10.0" />
-      <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
-      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
-      <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
+      <PackageReference Include="Avalonia" Version="0.10.3" />
+      <PackageReference Include="Avalonia.Desktop" Version="0.10.3" />
+      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
+      <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
     </ItemGroup>
 </Project>

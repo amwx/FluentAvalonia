@@ -6,6 +6,7 @@ using FluentAvalonia.UI.Controls.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Avalonia.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls
 {

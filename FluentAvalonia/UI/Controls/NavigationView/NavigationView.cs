@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -1025,27 +1026,27 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        private void OnFlyoutClosing(object sender, FlyoutBaseClosingEventArgs args)
-        {
-            // If the user selected an parent item in the overflow flyout then the item has not been moved to top primary yet.
-            // So we need to move it.
-            if (_moveTopNavOverflowItemOnFlyoutClose && !_selectionChangeFromOverflowMenu)
-            {
-                _moveTopNavOverflowItemOnFlyoutClose = false;
-
-                var selIndex = _selectionModel.SelectedIndex;
-                if (selIndex.GetSize() > 0)
-                {
-                    if (GetContainerForIndex(selIndex.GetAt(1), false /*inFooter*/) is NavigationViewItem nvi)
-                    {
-                        // We want to collapse the top level item before we move it
-                        nvi.IsExpanded = false;
-                    }
-
-                    SelectAndMoveOverflowItem(SelectedItem, selIndex, false /*closeFlyout*/);
-                }
-            }
-        }
+        // private void OnFlyoutClosing(object sender, FlyoutBaseClosingEventArgs args)
+        // {
+        //     // If the user selected an parent item in the overflow flyout then the item has not been moved to top primary yet.
+        //     // So we need to move it.
+        //     if (_moveTopNavOverflowItemOnFlyoutClose && !_selectionChangeFromOverflowMenu)
+        //     {
+        //         _moveTopNavOverflowItemOnFlyoutClose = false;
+        //
+        //         var selIndex = _selectionModel.SelectedIndex;
+        //         if (selIndex.GetSize() > 0)
+        //         {
+        //             if (GetContainerForIndex(selIndex.GetAt(1), false /*inFooter*/) is NavigationViewItem nvi)
+        //             {
+        //                 // We want to collapse the top level item before we move it
+        //                 nvi.IsExpanded = false;
+        //             }
+        //
+        //             SelectAndMoveOverflowItem(SelectedItem, selIndex, false /*closeFlyout*/);
+        //         }
+        //     }
+        // }
 
         private void RaiseSelectionChangedEvent(object nextItem, bool isSettings, NavigationRecommendedTransitionDirection recDir)
         {
@@ -3055,7 +3056,7 @@ namespace FluentAvalonia.UI.Controls
             _topNavOverflowButton?.Flyout?.Hide();
         }
 
-        private void OnFlyoutClosing(Primitives.FlyoutBase sender, Primitives.FlyoutBaseClosingEventArgs args)
+        private void OnFlyoutClosing(object sender, CancelEventArgs args)
         {
             // If the user selected an parent item in the overflow flyout then the item has not been moved to top primary yet.
             // So we need to move it.

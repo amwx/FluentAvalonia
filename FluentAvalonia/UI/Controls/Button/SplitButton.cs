@@ -369,13 +369,13 @@ namespace FluentAvalonia.UI.Controls
             UpdateVisualStates();
         }
 
-        private void OnFlyoutOpened(FlyoutBase sender, object args)
+        private void OnFlyoutOpened(object sender, object args)
         {
             _isFlyoutOpen = true;
             UpdateVisualStates();
         }
 
-        private void OnFlyoutClosed(FlyoutBase sender, object args)
+        private void OnFlyoutClosed(object sender, object args)
         {
             _isFlyoutOpen = false;
             UpdateVisualStates();
