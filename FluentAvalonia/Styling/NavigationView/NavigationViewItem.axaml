@@ -54,45 +54,42 @@
                                    Name="NVIMenuItemsHost"
                                    KeyboardNavigation.TabNavigation="Continue" />
 
+                    <Grid.Styles>
+                        <Style Selector="FlyoutPresenter.FlyoutPresenterClasses">
+                            <Setter Property="Padding" Value="{DynamicResource NavigationViewItemChildrenMenuFlyoutPadding}" />
+                            <Setter Property="Margin" Value="0,-4,0,0" />
+                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <Border Name="Root"
+                                            CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                        <ScrollViewer Name="ScrollViewer"
+                                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                            <ContentPresenter Name="ContentPresenter"
+                                                              Background="{TemplateBinding Background}"
+                                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                                              BorderThickness="{TemplateBinding BorderThickness}"
+                                                              Content="{TemplateBinding Content}"
+                                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                              Padding="{TemplateBinding Padding}"
+                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter>
+                        </Style>
+                    </Grid.Styles>
+                    
                     <FlyoutBase.AttachedFlyout>
                         <!--Placement="RightEdgeAlignedTop"-->
-                        <ui:Flyout>
-                            <ui:Flyout.FlyoutPresenterStyle>
-                                <Styles>
-                                    <Style Selector="ui|FlyoutPresenter">
-                                        <Setter Property="Padding" Value="{DynamicResource NavigationViewItemChildrenMenuFlyoutPadding}" />
-                                        <Setter Property="Margin" Value="0,-4,0,0" />
-                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-                                        <Setter Property="Template">
-                                            <ControlTemplate>
-                                                <Border Name="Root"
-                                                        CornerRadius="{DynamicResource OverlayCornerRadius}">
-                                                    <ScrollViewer Name="ScrollViewer"
-                                                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                                                        <ContentPresenter Name="ContentPresenter"
-                                                                          Background="{TemplateBinding Background}"
-                                                                          BorderBrush="{TemplateBinding BorderBrush}"
-                                                                          BorderThickness="{TemplateBinding BorderThickness}"
-                                                                          Content="{TemplateBinding Content}"
-                                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                                          Padding="{TemplateBinding Padding}"
-                                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                                    </ScrollViewer>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter>
-                                    </Style>
-                                </Styles>
-                            </ui:Flyout.FlyoutPresenterStyle>
-                            
+                        <Flyout FlyoutPresenterClasses="FlyoutPresenterClasses">
                             <Panel Name="FlyoutRootGrid">
                                 <Panel Name="FlyoutContentGrid" />
                             </Panel>
-                            
-                        </ui:Flyout>
+                        </Flyout>
                     </FlyoutBase.AttachedFlyout>
 
                     

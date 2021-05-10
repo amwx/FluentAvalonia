@@ -17,11 +17,11 @@
                                       UsageNotes="{Binding ButtonFlyoutNotes}">
                     <ui:Button HorizontalAlignment="Left" VerticalAlignment="Center" Content="Click Me">
                         <ui:Button.Flyout>
-                            <ui:Flyout>
+                            <Flyout>
                                 <Grid Width="100" Height="100">
                                     <TextBlock Text="Button Flyout!" />
                                 </Grid>
-                            </ui:Flyout>
+                            </Flyout>
                         </ui:Button.Flyout>
                     </ui:Button>
                 </local:ControlExample>
@@ -30,11 +30,11 @@
                                       XamlSource="{Binding SplitButtonXaml}">
                     <ui:SplitButton Content="Split!">
                         <ui:SplitButton.Flyout>
-                            <ui:Flyout Placement="Bottom">
+                            <Flyout Placement="Bottom">
                                 <Grid Width="200" Height="100">
                                     <TextBlock Text="SplitButton Flyout!" />
                                 </Grid>
-                            </ui:Flyout>
+                            </Flyout>
                         </ui:SplitButton.Flyout>
                     </ui:SplitButton>
                 </local:ControlExample>
@@ -43,11 +43,11 @@
                                       XamlSource="{Binding ToggleSplitButtonXaml}">
                     <ui:SplitButton Content="Toggle">
                         <ui:SplitButton.Flyout>
-                            <ui:Flyout Placement="Bottom">
+                            <Flyout Placement="Bottom">
                                 <Grid Width="200" Height="100">
                                     <TextBlock Text="ToggleSplitButton Flyout!" />
                                 </Grid>
-                            </ui:Flyout>
+                            </Flyout>
                         </ui:SplitButton.Flyout>
                     </ui:SplitButton>
                 </local:ControlExample>
@@ -56,21 +56,21 @@
                                       XamlSource="{Binding DropDownButtonXaml}">
                     <ui:DropDownButton Content="Open DropDown">
                         <ui:DropDownButton.Flyout>
-                            <ui:MenuFlyout Placement="Bottom">
-                                <ui:MenuFlyoutItem Text="Item1" Icon="Save" InputGesture="Ctrl+A" />
-                                <ui:ToggleMenuFlyoutItem Text="ToggleItem!" />
-                                <ui:MenuFlyoutSubItem Text="Item2>" Icon="Globe">
-                                    <ui:MenuFlyoutItem Text="SubItem1" />
-                                    <ui:MenuFlyoutItem Text="SubItem2" />
-                                    <ui:MenuFlyoutItem Text="SubItem3" />
-                                    <ui:MenuFlyoutItem Text="SubItem4" />
-                                </ui:MenuFlyoutSubItem>
-                                <ui:MenuFlyoutSeparator />
-                                <ui:MenuFlyoutSubItem Text="Item3" Icon="Copy">
-                                    <ui:MenuFlyoutItem Text="Item3SubItem1" />
-                                    <ui:MenuFlyoutItem Text="Item3SubItem2" />
-                                </ui:MenuFlyoutSubItem>
-                            </ui:MenuFlyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuItem Header="Item1" Icon="Save" InputGesture="Ctrl+A" />
+                                <MenuItem Header="ToggleItem!" />
+                                <MenuItem Header="Item2>" Icon="Globe">
+                                    <MenuItem Header="SubItem1" />
+                                    <MenuItem Header="SubItem2" />
+                                    <MenuItem Header="SubItem3" />
+                                    <MenuItem Header="SubItem4" />
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="Item3" Icon="Copy">
+                                    <MenuItem Header="Item3SubItem1" />
+                                    <MenuItem Header="Item3SubItem2" />
+                                </MenuItem>
+                            </MenuFlyout>
                         </ui:DropDownButton.Flyout>
                     </ui:DropDownButton>
                 </local:ControlExample>

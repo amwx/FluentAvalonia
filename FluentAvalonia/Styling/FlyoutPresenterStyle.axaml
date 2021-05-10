@@ -26,7 +26,7 @@
 
  
     <!--Default FlyoutPresenter Style-->
-    <Style Selector="ui|FlyoutPresenter">
+    <Style Selector="FlyoutPresenter">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Background" Value="{DynamicResource FlyoutPresenterBackground}" />
@@ -62,7 +62,7 @@
 
 
     <!-- MenuFlyoutPresenter Style -->
-    <Style Selector="ui|MenuFlyoutPresenter">
+    <Style Selector="MenuFlyoutPresenter">
         <!--<Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />-->
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutPresenterBackground}" />

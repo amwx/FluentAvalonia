@@ -21,15 +21,13 @@
         
     </Styles.Resources>
     
-    <Style Selector="ui|MenuFlyoutItem">
+    <Style Selector="MenuItem">
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource MenuFlyoutItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutItemBorderThickness}" />
         <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePadding}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="LayoutRoot"
@@ -56,18 +54,15 @@
                                               Height="16"
                                               Source="{TemplateBinding Icon}" />-->
                         <TextBlock Name="TextBlock"
-                                   Text="{TemplateBinding Text}"
+                                   Text="{TemplateBinding Header}"
                                    TextTrimming="CharacterEllipsis"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                   Foreground="{TemplateBinding Foreground}" />
                         <TextBlock Name="InputGestureText"
                                    Grid.Column="1"
                                    Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                    Margin="24 0 0 0"
                                    Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                   HorizontalAlignment="Right" />
 
                     </Grid>
                 </Border>
@@ -75,270 +70,40 @@
         </Setter>
     </Style>
 
-    <Style Selector="ui|MenuFlyoutItem /template/ Viewbox#IconRoot">
+    <Style Selector="MenuItem /template/ Viewbox#IconRoot">
         <Setter Property="IsVisible" Value="False" />
     </Style>
-    <Style Selector="ui|MenuFlyoutItem /template/ TextBlock#InputGestureText">
+    <Style Selector="MenuItem /template/ TextBlock#InputGestureText">
         <Setter Property="IsVisible" Value="False" />
     </Style>
 
-    <Style Selector="ui|MenuFlyoutItem:pointerover /template/ Border#LayoutRoot">
+    <Style Selector="MenuItem:pointerover /template/ Border#LayoutRoot">
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
     </Style>
-    <Style Selector="ui|MenuFlyoutItem:pressed /template/ Border#LayoutRoot">
+    <Style Selector="MenuItem:pressed /template/ Border#LayoutRoot">
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPressed}" />
     </Style>
 
-    <Style Selector="ui|MenuFlyoutItem:checkplaceholder /template/ TextBlock#TextBlock">
+    <Style Selector="MenuItem:checkplaceholder /template/ TextBlock#TextBlock">
         <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
     </Style>
-    <Style Selector="ui|MenuFlyoutItem:iconplaceholder /template/ TextBlock#TextBlock">
+    <Style Selector="MenuItem:iconplaceholder /template/ TextBlock#TextBlock">
         <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
     </Style>
-    <Style Selector="ui|MenuFlyoutItem:iconplaceholder /template/ Viewbox#IconRoot">
+    <Style Selector="MenuItem:iconplaceholder /template/ Viewbox#IconRoot">
         <Setter Property="IsVisible" Value="True" />
     </Style>
 
-    <Style Selector="ui|MenuFlyoutItem:checkandiconplaceholder /template/ TextBlock#TextBlock">
+    <Style Selector="MenuItem:checkandiconplaceholder /template/ TextBlock#TextBlock">
         <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemDoublePlaceholderThemeThickness}" />
     </Style>
-    <Style Selector="ui|MenuFlyoutItem:checkandiconplaceholder /template/ Viewbox#IconRoot">
+    <Style Selector="MenuItem:checkandiconplaceholder /template/ Viewbox#IconRoot">
         <Setter Property="IsVisible" Value="True" />
         <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
     </Style>
 
-    <Style Selector="ui|MenuFlyoutItem:gesture /template/ TextBlock#InputGestureText">
+    <Style Selector="MenuItem:gesture /template/ TextBlock#InputGestureText">
         <Setter Property="IsVisible" Value="True" />
-    </Style>
-
-
-    <!-- ToggleMenuFlyoutItem -->
-    <Style Selector="ui|ToggleMenuFlyoutItem">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutItemBorderThickness}" />
-        <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
-        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePadding}" />
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border Name="LayoutRoot"
-                        Padding="{TemplateBinding Padding}"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{DynamicResource ControlCornerRadius}">
-                    <Grid ColumnDefinitions="Auto,*,Auto">
-                        <ui:FontIcon Name="CheckGlyph"
-                                     FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                     Glyph="&#xF296;"
-                                     FontSize="14"
-                                     Foreground="{DynamicResource MenuFlyoutSubItemChevron}"
-                                     Margin="0 0 16 0"
-                                     />
-
-                        <Viewbox Name="IconRoot"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Center"
-                                 Width="16"
-                                 Height="16"
-                                 Grid.Column="1">
-                            <ContentPresenter Name="Icon"
-                                              Content="{TemplateBinding Icon}" />
-                        </Viewbox>
-                        
-                        
-                        <!--<ui:IconSourceElement Name="CheckGlyph"
-                                              Width="16"
-                                              Height="16"
-                                              Margin="0,0,12,0"
-                                              Foreground="{DynamicResource ToggleMenuFlyoutItemCheckGlyphForeground}"
-                                              Source="{StaticResource CheckGlyphIcon}" />
-                        
-                        <ui:IconSourceElement Name="Icon"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              Width="16"
-                                              Height="16"
-                                              Source="{TemplateBinding Icon}" 
-                                              Grid.Column="1" />-->
-                        
-                        <TextBlock Name="TextBlock"
-                                    Text="{TemplateBinding Text}"
-                                    TextTrimming="CharacterEllipsis"
-                                    Foreground="{TemplateBinding Foreground}"
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    Grid.Column="1" />
-                        
-                        <TextBlock Name="InputGestureText"
-                                    Grid.Column="1"
-                                    Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
-                                    Margin="24 0 0 0"
-                                    Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-
-                    </Grid>
-                </Border>
-            </ControlTemplate>
-            </Setter>
-    </Style>
-
-    <Style Selector="ui|ToggleMenuFlyoutItem /template/ ui|FontIcon#CheckGlyph">
-        <Setter Property="Opacity" Value="0" />
-    </Style>
-    <Style Selector="ui|ToggleMenuFlyoutItem /template/ Viewbox#IconRoot">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-    <Style Selector="ui|ToggleMenuFlyoutItem /template/ TextBlock#InputGestureText">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-
-    <Style Selector="ui|ToggleMenuFlyoutItem:pointerover /template/ Border#LayoutRoot">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
-    </Style>
-    <Style Selector="ui|ToggleMenuFlyoutItem:pressed /template/ Border#LayoutRoot">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPressed}" />
-    </Style>
-
-    <Style Selector="ui|ToggleMenuFlyoutItem:checkplaceholder /template/ TextBlock#TextBlock">
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
-    </Style>
-    <Style Selector="ui|ToggleMenuFlyoutItem:iconplaceholder /template/ TextBlock#TextBlock">
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
-    </Style>
-    <Style Selector="ui|ToggleMenuFlyoutItem:iconplaceholder /template/ Viewbox#IconRoot">
-        <Setter Property="IsVisible" Value="True" />
-    </Style>
-
-    <Style Selector="ui|ToggleMenuFlyoutItem:checkandiconplaceholder /template/ TextBlock#TextBlock">
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
-    </Style>
-    <Style Selector="ui|ToggleMenuFlyoutItem:checkandiconplaceholder /template/ Viewbox#IconRoot">
-        <Setter Property="IsVisible" Value="True" />
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
-    </Style>
-
-    <Style Selector="ui|ToggleMenuFlyoutItem:gesture /template/ TextBlock#InputGestureText">
-        <Setter Property="IsVisible" Value="True" />
-    </Style>
-    <Style Selector="ui|ToggleMenuFlyoutItem:checked /template/ ui|FontIcon#CheckGlyph">
-        <Setter Property="Opacity" Value="1" />
-    </Style>
-
-    <!-- MenuFlyoutSubItem -->
-    <Style Selector="ui|MenuFlyoutSubItem">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutSubItemBackground}" />
-        <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForeground}" />
-        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePadding}" />
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border Name="LayoutRoot"
-                        Padding="{TemplateBinding Padding}"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{DynamicResource ControlCornerRadius}">
-                    <Grid ColumnDefinitions="*,Auto,Auto">
-                        <Viewbox Name="IconRoot"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Center"
-                                 Width="16"
-                                 Height="16">
-                            <ContentPresenter Name="Icon"
-                                              Content="{TemplateBinding Icon}" />
-                        </Viewbox>
-                        
-                        <!--<ui:IconSourceElement Name="Icon"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              Width="16"
-                                              Height="16"
-                                              Source="{TemplateBinding Icon}" />-->
-                        <TextBlock Name="TextBlock"
-                                   Text="{TemplateBinding Text}"
-                                   TextTrimming="CharacterEllipsis"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        
-                        <ui:FontIcon Name="Chevron"
-                                     Grid.Column="2"
-                                     FontSize="14"
-                                     FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                     Glyph="&#xF2B3;"
-                                     Foreground="{DynamicResource MenuFlyoutSubItemChevron}"
-                                     Margin="{DynamicResource MenuFlyoutItemChevronMargin}" />
-                        
-                        <!--<ui:IconSourceElement Name="Chevron"
-                                              Grid.Column="2"
-                                              Width="16"
-                                              Height="16"
-                                              Source="{StaticResource MenuFlyoutSubItemChevronIcon}"
-                                              Foreground="{DynamicResource MenuFlyoutSubItemChevron}"
-                                              Margin="{DynamicResource MenuFlyoutItemChevronMargin}" />-->
-
-                    </Grid>
-                </Border>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-    <Style Selector="ui|MenuFlyoutSubItem /template/ Viewbox#IconRoot">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-
-    <Style Selector="ui|MenuFlyoutSubItem:pointerover /template/ Border#LayoutRoot">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
-    </Style>
-    <Style Selector="ui|MenuFlyoutSubItem:pressed /template/ Border#LayoutRoot">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPressed}" />
-    </Style>
-
-    <Style Selector="ui|MenuFlyoutSubItem:checkplaceholder /template/ TextBlock#TextBlock">
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
-    </Style>
-    <Style Selector="ui|MenuFlyoutSubItem:iconplaceholder /template/ TextBlock#TextBlock">
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
-    </Style>
-    <Style Selector="ui|MenuFlyoutSubItem:iconplaceholder /template/ Viewbox#IconRoot">
-        <Setter Property="IsVisible" Value="True" />
-    </Style>
-
-    <Style Selector="ui|MenuFlyoutSubItem:checkandiconplaceholder /template/ TextBlock#TextBlock">
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemDoublePlaceholderThemeThickness}" />
-    </Style>
-    <Style Selector="ui|MenuFlyoutSubItem:checkandiconplaceholder /template/ Viewbox#IconRoot">
-        <Setter Property="IsVisible" Value="True" />
-        <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
-    </Style>
-
-    <!--<Style Selector="ui|MenuFlyoutSubItem:gesture /template/ TextBlock#InputGestureText">
-        <Setter Property="IsVisible" Value="True" />
-    </Style>-->
-
-    <Style Selector="ui|MenuFlyoutSubItem:empty /template/ ui|FontIcon#Chevron">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-    <Style Selector="ui|MenuFlyoutSubItem:open /template/ Border#LayoutRoot">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
-    </Style>
-
-
-    <!-- MenuFlyoutSeparator-->
-    <Style Selector="ui|MenuFlyoutSeparator">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutSeparatorBackground}" />
-        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutSeparatorThemePadding}" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Rectangle Fill="{TemplateBinding Background}" Margin="{TemplateBinding Padding}"
-                           Height="{DynamicResource MenuFlyoutSeparatorThemeHeight}" />
-            </ControlTemplate>
-        </Setter>
     </Style>
     
 </Styles>

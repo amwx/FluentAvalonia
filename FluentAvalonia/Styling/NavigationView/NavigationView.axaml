@@ -144,43 +144,41 @@
                                                Margin="{DynamicResource TopNavigationViewOverflowButtonMargin}"
                                                Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop"
                                                IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OverflowButtonVisibility}">
-
+                                        <ui:Button.Styles>
+                                            <Style Selector="FlyoutPresenter.FlyoutPresenterClasses">
+                                                <Setter Property="Padding" Value="{DynamicResource TopNavigationViewOverflowMenuPadding}" />
+                                                <Setter Property="Margin" Value="0,-4,0,0" />
+                                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+                                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+                                                <Setter Property="Template">
+                                                    <ControlTemplate>
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                                            <ScrollViewer VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                                                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                                                          Name="ScrollViewer">
+                                                                <ContentPresenter
+                                                                                x:Name="ContentPresenter"
+                                                                                Background="{TemplateBinding Background}"
+                                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                                Content="{TemplateBinding Content}"
+                                                                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                                Padding="{TemplateBinding Padding}"
+                                                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                            </ScrollViewer>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter>
+                                            </Style>
+                                        </ui:Button.Styles>
                                         <ui:Button.Flyout>
-                                            <ui:Flyout Placement="BottomEdgeAlignedRight">
-                                                <ui:Flyout.FlyoutPresenterStyle>
-                                                    <Style Selector="ui|FlyoutPresenter">
-                                                        <Setter Property="Padding" Value="{DynamicResource TopNavigationViewOverflowMenuPadding}" />
-                                                        <Setter Property="Margin" Value="0,-4,0,0" />
-                                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-                                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-                                                        <Setter Property="Template">
-                                                            <ControlTemplate>
-                                                                <Border Background="{TemplateBinding Background}"
-                                                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                                        CornerRadius="{DynamicResource OverlayCornerRadius}">
-                                                                    <ScrollViewer VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
-                                                                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                                                                  Name="ScrollViewer">
-                                                                        <ContentPresenter
-                                                                                        x:Name="ContentPresenter"
-                                                                                        Background="{TemplateBinding Background}"
-                                                                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                                                        Content="{TemplateBinding Content}"
-                                                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                                                        Padding="{TemplateBinding Padding}"
-                                                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                                                    </ScrollViewer>
-                                                                </Border>
-                                                            </ControlTemplate>
-                                                        </Setter>
-                                                    </Style>
-                                                </ui:Flyout.FlyoutPresenterStyle>
-
+                                            <Flyout FlyoutPresenterClasses="FlyoutPresenterClasses" Placement="BottomEdgeAlignedRight">
                                                 <ItemsRepeater Name="TopNavMenuItemsOverflowHost" />
-                                            </ui:Flyout>
+                                            </Flyout>
                                         </ui:Button.Flyout>
 
                                     </ui:Button>

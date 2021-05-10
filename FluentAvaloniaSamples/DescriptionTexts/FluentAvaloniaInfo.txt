@@ -12,11 +12,11 @@ NOTE: FluentAvalonia.UI.Controls.Button targets Avalonia.Controls.Button as its 
                 <![CDATA[
 <ui:Button Content="Launch Flyout">
     <ui:Button.Flyout>
-        <ui:Flyout>
+        <Flyout>
             <Grid Width="100" Height="100">
                 <TextBlock Text="Button Flyout!" />
             </Grid>
-        </ui:Flyout>
+        </Flyout>
     </ui:Button.Flyout>
 </ui:Button>
 ]]>
@@ -34,11 +34,11 @@ Flyout Placement has also been expanded to the full WinUI options and accounts f
                  <![CDATA[
 <ui:SplitButton Content="Toggle">
     <ui:SplitButton.Flyout>
-        <ui:Flyout Placement="Bottom">
+        <Flyout Placement="Bottom">
             <Grid Width="200" Height="100">
                 <TextBlock Text="SplitButton Flyout!" />
             </Grid>
-        </ui:Flyout>
+        </Flyout>
     </ui:SplitButton.Flyout>
 </ui:SplitButton>
 ]]>
@@ -49,11 +49,11 @@ Flyout Placement has also been expanded to the full WinUI options and accounts f
                  <![CDATA[
 <ui:SplitButton Content="Toggle">
     <ui:SplitButton.Flyout>
-        <ui:Flyout Placement="Bottom">
+        <Flyout Placement="Bottom">
             <Grid Width="200" Height="100">
                 <TextBlock Text="ToggleSplitButton Flyout!" />
             </Grid>
-        </ui:Flyout>
+        </Flyout>
     </ui:SplitButton.Flyout>
 </ui:SplitButton>
 ]]>
