@@ -60,6 +60,10 @@ namespace FluentAvalonia.UI.Controls
                     return IconHelpers.CreateBitmapIconFromBitmapIconSource(bis);
                 }
             }
+			else if (value is IImage img)
+			{
+				return new ImageIcon { Source = img };
+			}
             else if (value is string val)
             {
                 //First we try if the text is a valid Symbol

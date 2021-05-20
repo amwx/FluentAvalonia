@@ -1,11 +1,9 @@
 ﻿using Avalonia.Controls;
 using FluentAvalonia.UI.Controls;
 using FluentAvaloniaSamples.Pages.NVSamplePages;
-using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FluentAvaloniaSamples.ViewModels
@@ -16,53 +14,32 @@ namespace FluentAvaloniaSamples.ViewModels
         {
             Categories = new List<Category>();
 
-            Categories.Add(new Category { Name = "Category 1", Icon = Symbol.Home, ToolTip = "This is category 1" });
-            Categories.Add(new Category { Name = "Category 2", Icon = Symbol.Keyboard, ToolTip = "This is category 2" });
-            Categories.Add(new Category { Name = "Category 3", Icon = Symbol.Library, ToolTip = "This is category 3" });
-            Categories.Add(new Category { Name = "Category 4", Icon = Symbol.Mail, ToolTip = "This is category 4" });
+			Categories.Add(new Category { Name = "Category 1", Icon = Symbol.Home, ToolTip = "This is category 1" });
+			Categories.Add(new Category { Name = "Category 2", Icon = Symbol.Keyboard, ToolTip = "This is category 2" });
+			Categories.Add(new Category { Name = "Category 3", Icon = Symbol.Library, ToolTip = "This is category 3" });
+			Categories.Add(new Category { Name = "Category 4", Icon = Symbol.Mail, ToolTip = "This is category 4" });
 
-            SelectedCategory = Categories[0];
-
-            XElement xe = XElement.Parse(GetAssemblyResource("FluentAvaloniaInfo.txt"));
-            var pages = xe.Elements("ControlPage").Where(x => x.Attribute("Name").Value == "NavigationView").First();
-
-            Header = pages.Element("Header").Value;
-            var controls = pages.Elements("Control");
-            foreach (var ctrl in controls)
-            {
-                if (ctrl.Attribute("Name").Value == "NavigationViewDefault")
-                {
-                    NavViewDefaultXaml = ctrl.Element("XamlSource").Value;
-                }
-                else if (ctrl.Attribute("Name").Value == "NavigationViewAdaptive")
-                {
-                    NavViewAdaptiveXaml = ctrl.Element("XamlSource").Value;
-                    NavViewAdaptiveNotes = ctrl.Element("UsageNotes").Value;
-                }
-                else if (ctrl.Attribute("Name").Value == "NavigationViewDataBinding")
-                {
-                    NavViewBindingXaml = ctrl.Element("XamlSource").Value;
-                }
-                else if (ctrl.Attribute("Name").Value == "NavigationViewDataHeirarchical")
-                {
-                    NavViewHierarchicalXaml = ctrl.Element("XamlSource").Value;
-                }
-            }
+			SelectedCategory = Categories[0];			
         }
 
-        public string Header { get; }
+		public string Header => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "Header");
 
-        public string NavViewDefaultXaml { get; }
+        public string NavViewDefaultXaml => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewDefault", "XamlSource");
 
-        public string NavViewAdaptiveXaml { get; }
-        public string NavViewAdaptiveNotes { get; }
+		public string NavViewAdaptiveXaml => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewAdaptive", "XamlSource");
+		public string NavViewAdaptiveNotes => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewAdaptive", "UsageNotes");
 
-        public string NavViewBindingXaml { get; }
+		public string NavViewSelectionFocusXaml => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewSelectionFollowsFocus", "XamlSource");
+		public string NavViewSelectionFocusNotes => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewSelectionFollowsFocus", "UsageNotes");
 
-        public string NavViewHierarchicalXaml { get; }
+
+		public string NavViewBindingXaml => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewDataBinding", "XamlSource");
+		public string NavViewBindingNotes => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewDataBinding", "UsageNotes");
+
+		public string NavViewHierarchicalXaml => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewDataHierarchical", "UsageNotes");
 
 
-        public List<Category> Categories { get; }   
+		public List<Category> Categories { get; }   
 
         public NavigationViewPaneDisplayMode APIInActionNavViewPaneMode
         {
@@ -70,7 +47,7 @@ namespace FluentAvaloniaSamples.ViewModels
             set => this.RaiseAndSetIfChanged(ref _paneMode, value);
         }
 
-        public Category SelectedCategory
+        public object SelectedCategory
         {
             get => _selectedCategory;
             set
@@ -111,16 +88,24 @@ namespace FluentAvaloniaSamples.ViewModels
 
         private void SetCurrentPage()
         {
-            //if (SelectedCategory)
-            var index = Categories.IndexOf(SelectedCategory) + 1;
-            var smpPage = $"FluentAvaloniaSamples.Pages.NVSamplePages.NVSamplePage{index}";
-            var pg = Activator.CreateInstance(Type.GetType(smpPage));
-            CurrentPage = (IControl)pg;
+			if (SelectedCategory is Category cat)
+			{
+				var index = Categories.IndexOf(cat) + 1;
+				var smpPage = $"FluentAvaloniaSamples.Pages.NVSamplePages.NVSamplePage{index}";
+				var pg = Activator.CreateInstance(Type.GetType(smpPage));
+				CurrentPage = (IControl)pg;
+			}
+			else if (SelectedCategory is NavigationViewItem nvi)
+			{
+				var smpPage = $"FluentAvaloniaSamples.Pages.NVSamplePages.NVSamplePageSettings";
+				var pg = Activator.CreateInstance(Type.GetType(smpPage));
+				CurrentPage = (IControl)pg;
+			}
         }
 
         private NavigationViewPaneDisplayMode _paneMode = NavigationViewPaneDisplayMode.Left;
         private bool _leftMode = true;
-        private Category _selectedCategory;
+        private object _selectedCategory;
         private IControl _currentPage = new NVSamplePage1();
     }
 

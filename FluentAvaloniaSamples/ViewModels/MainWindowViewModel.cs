@@ -1,46 +1,81 @@
-﻿using FluentAvalonia.Styling;
+﻿using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media;
+using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace FluentAvaloniaSamples.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+	public class MainWindowViewModel : ViewModelBase
     {
-        private ThemeManager themeManager;
         public MainWindowViewModel()
         {
-            themeManager = new ThemeManager(true, true, true);
-            themeManager.Refresh();
+            			
+		}
 
-            ThemeManagerDescription = GetAssemblyResource("ThemeManager.txt");
+		//HomePage
+		public string Header1 => DescriptionServiceProvider.Instance.GetInfo("Home", "Header1");
+		public string SubHeader1 => DescriptionServiceProvider.Instance.GetInfo("Home", "SubHeader1");
+		public string Header2 => DescriptionServiceProvider.Instance.GetInfo("Home", "Header2");
+		public string SubHeader2 => DescriptionServiceProvider.Instance.GetInfo("Home", "SubHeader2");
 
-            HowToUseText = GetAssemblyResource("FluentAvaloniaInfo2.txt");
-        }
+		//Themes Page
+		public string ThemesHeader => DescriptionServiceProvider.Instance.GetInfo("Themes", "Header");
 
+		//Dialogs page
+		public string ContentDialogUsageNotes => DescriptionServiceProvider.Instance.GetInfo("DialogFlyouts", "ContentDialog", "UsageNotes");
+		public string PickerFlyoutBaseUsageNotes => DescriptionServiceProvider.Instance.GetInfo("DialogFlyouts", "PickerFlyoutBase", "UsageNotes");
+		public string PickerFlyoutPresenterUsageNotes => DescriptionServiceProvider.Instance.GetInfo("DialogFlyouts", "PickerFlyoutPresenter", "UsageNotes");
 
-        public string ThemeManagerDescription { get; }
-        
-        public string HowToUseText { get; }
+		public IconsPageViewModel IconsViewModel { get; } = new IconsPageViewModel();
+		          
+		public int ControlsVersion
+		{
+			get => _controlsVersion;
+			set
+			{
+				if (this.RaiseAndSetIfChanged(ref _controlsVersion, value))
+				{
+					AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().ControlsVersion = value;
+				}
+			}
+		}
 
-               
         public void SetLightTheme()
         {
-            themeManager.PreferredTheme = Avalonia.Themes.Fluent.FluentThemeMode.Light;
-            themeManager.Refresh();
-        }
+			AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme = "Light";
+
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && 
+				App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime cdl)
+			{
+				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceNativeTitleBarToTheme(cdl.MainWindow);
+			}
+
+			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#0F000000"));
+			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#B3FFFFFF"));
+		}
 
         public void SetDarkTheme()
         {
-            themeManager.PreferredTheme = Avalonia.Themes.Fluent.FluentThemeMode.Dark;
-            themeManager.Refresh();
-        }
+			AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme = "Dark";
 
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
+				App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime cdl)
+			{
+				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceNativeTitleBarToTheme(cdl.MainWindow);
+			}
+
+			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#12FFFFFF"));
+			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#0FFFFFFF"));
+		}
 
         public async void LaunchContentDialog(object param)
         {
             if (param is ContentDialog cd)
             {
-                var res = await cd.ShowAsync();
+                _ = await cd.ShowAsync();
             }
         }
 
@@ -48,16 +83,19 @@ namespace FluentAvaloniaSamples.ViewModels
         {
             if (param is ContentDialog cd)
             {
-                cd.PrimaryButtonClick += async (s, v) =>
-                {
-                    var def = v.GetDeferral();
-                    await Task.Delay(3000);
-                    def.Complete();
-                };
-
-
-                var res = await cd.ShowAsync();
-            }
+				cd.PrimaryButtonClick += OnPrimaryButtonClick;
+                _ = await cd.ShowAsync();
+				cd.PrimaryButtonClick -= OnPrimaryButtonClick;
+			}
         }
+
+		private async void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		{
+			var def = args.GetDeferral();
+			await Task.Delay(3000);
+			def.Complete();
+		}
+
+		private int _controlsVersion = 2;
     }
 }

@@ -15,9 +15,53 @@ namespace FluentAvalonia.UI.Controls
 {
     public partial class NavigationView : HeaderedContentControl
     {
-        //Helpers
+		//Con't logic for pane arrow key navigation
+		private bool VerifyInPane(IVisual focus, IVisual parent)
+		{
+			if (parent == null)
+				return false;
 
-        private int SelectedItemIndex => _topDataProvider.IndexOf(SelectedItem);
+			//First test the back button, close button, and panetogglebutton
+			//since they don't reside in the content grids
+			if (_backButton != null && focus == _backButton)
+				return true;
+
+			if (_closeButton != null && focus == _closeButton)
+				return true;
+
+			if (_paneToggleButton != null && focus == _paneToggleButton)
+				return true;
+
+			while (focus != null)
+			{
+				if (focus == parent)
+					return true;
+
+				focus = focus.VisualParent;
+			}
+			return false;
+		}
+
+		private IControl SearchTreeForLowestFocusItem(NavigationViewItem start)
+		{
+			if (DoesNavigationViewItemHaveChildren(start) && start.IsExpanded)
+			{
+				var ct = start.GetRepeater.ItemsSourceView.Count;
+				for (int j = ct - 1; j >= 0; j--)
+				{
+					if (start.GetRepeater.TryGetElement(j) is NavigationViewItem nvi)
+					{
+						return SearchTreeForLowestFocusItem(nvi);
+					}
+				}
+			}
+
+			return start;
+		}
+
+		//Helpers
+
+		private int SelectedItemIndex => _topDataProvider.IndexOf(SelectedItem);
 
         internal bool IsTopNavigationView => PaneDisplayMode == NavigationViewPaneDisplayMode.Top;
 
@@ -563,7 +607,9 @@ namespace FluentAvalonia.UI.Controls
 
             _itemsContainerSizeRevoker?.Dispose();
             _itemsContainerSizeRevoker = null;
-        }
+
+			_itemsContainerSizeRevoker?.Dispose();
+		}
 
 
 
@@ -580,7 +626,7 @@ namespace FluentAvalonia.UI.Controls
         //private ColumnDefinition _paneToggleButtonIconGridColumn;
         private Control _paneTitleHolderFrameworkElement;
         private IControl _paneTitleFrameworkElement;
-        private IControl _visualItemsSeparator;
+        //private IControl _visualItemsSeparator;
         private Button _paneSearchButton;
         private Button _backButton;
         private Button _closeButton;
@@ -592,6 +638,7 @@ namespace FluentAvalonia.UI.Controls
         private ItemsRepeater _topNavRepeaterOverflowView;
         private Grid _topNavGrid;
         private Border _topNavContentOverlayAreaGrid;
+		private IControl _itemsContainer;
 
         //Indicator animations
         //private IControl _prevIndicator;
@@ -633,6 +680,7 @@ namespace FluentAvalonia.UI.Controls
         bool _isClosedCompact;
         bool _blockNextClosingEvent;
         bool _initialListSizeStateSet;
+		bool _isLeftPaneTitleEmpty;
 
         private TopNavigationViewDataProvider _topDataProvider;
 
@@ -682,7 +730,7 @@ namespace FluentAvalonia.UI.Controls
 
         private bool _tabKeyPrecedesFocusChange;
 
-        private bool _initialNonForcedModeUpdate; //TODO: default value
+        private bool _initialNonForcedModeUpdate = true;
 
 
         private const int _backButtonHeight = 40;
@@ -691,6 +739,7 @@ namespace FluentAvalonia.UI.Controls
         private const int _paneToggleButtonWidth = 40;
         private const int _backButtonRowDefinition = 1;
         private const float paneElevationTranslationZ = 32;
+		private const int _paneItemsSeparatorHeight = 9;
 
         private const int _mainMenuBlockIndex = 0;
         private const int _footerMenuBlockIndex = 1;

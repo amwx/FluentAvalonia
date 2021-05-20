@@ -1,18 +1,13 @@
 ﻿using Avalonia;
-using Avalonia.LogicalTree;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using FluentAvalonia.Core;
-using FluentAvalonia.UI.Controls.Primitives;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using FluentAvalonia.Core.Attributes;
 
 namespace FluentAvalonia.UI.Controls
@@ -302,7 +297,10 @@ namespace FluentAvalonia.UI.Controls
             }
 
             _popup = e.NameScope.Find<Popup>("UpDownPopup");
-
+			if (_popup != null)
+			{
+				_popup.OverlayInputPassThroughElement = this.VisualRoot as IInputElement;
+			}
 
             UpdateSpinButtonPlacement();
             UpdateSpinButtonEnabled();
@@ -319,7 +317,6 @@ namespace FluentAvalonia.UI.Controls
             {
                 UpdateTextToValue();
             }
-
         }
 
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)

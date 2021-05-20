@@ -1,0 +1,70 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:local="using:FluentAvaloniaSamples"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800"
+             x:Class="FluentAvaloniaSamples.Pages.SymbolIconPage">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel /> 
+    </Design.DataContext>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="{Binding IconsViewModel.Header}" TextWrapping="Wrap" />
+
+            <local:ControlExample Header="SymbolIcon"
+                                  TargetType="SymbolIcon"
+                                  DynamicXamlTarget="{Binding #Icon}"
+                                  DynamicXamlProperties="Symbol"
+                                  UsageNotes="{Binding IconsViewModel.SymbolIconUsageNotes}">
+                <ui:SymbolIcon Name="Icon" Symbol="Navigation" />
+            </local:ControlExample>
+
+            <local:ControlExample Header="SymbolIconSource"
+                                  TargetType="SymbolIconSource"
+                                 XamlSource="{Binding IconsViewModel.SymbolIconSourceXamlSource}">
+                <ui:IconSourceElement  IconSource="{StaticResource SaveIcon}" />
+            </local:ControlExample>
+
+            <Expander Header="Symbol Enum"
+                      HorizontalAlignment="Stretch" 
+                      Margin="0 30"
+                      HorizontalContentAlignment="Stretch">
+                <ListBox Items="{Binding IconsViewModel.Symbols}" Height="400">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Width="200">
+                                <ui:SymbolIcon Symbol="{Binding}"
+                                               FontSize="20"
+                                               DockPanel.Dock="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="10,4"/>
+                                <ui:SymbolIcon Symbol="{Binding}"
+                                               FontSize="20"
+                                               DockPanel.Dock="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="10,4"
+                                               UseFilled="True"/>
+
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Expander>
+
+        </StackPanel>
+    </ScrollViewer>
+    
+</UserControl>

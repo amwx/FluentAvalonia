@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
+        xmlns:sty="using:FluentAvalonia.Styling">
+
 
     <Styles.Resources>
         <x:Double x:Key="MenuBarHeight">40</x:Double>

@@ -1,0 +1,288 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:FluentAvaloniaSamples"
+             x:Class="FluentAvaloniaSamples.App"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:sty="using:FluentAvalonia.Styling">
+    <!--<Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>-->
+    <Application.Resources>
+        <ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save" />
+        <ui:FontIconSource x:Key="FontIcon" Glyph="F" />
+        <ui:PathIconSource x:Key="PathIcon" Data="M0,0 L 50,0 L 25,50Z" />
+        <ui:BitmapIconSource x:Key="BmpIcon" UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" />
+        
+        <SolidColorBrush x:Key="ControlExampleStrokeColor" Color="#0F000000" />
+        <SolidColorBrush x:Key="ControlExampleBackgroundFill" Color="#B3FFFFFF" />
+    </Application.Resources>
+
+    <Application.Styles>
+        <!--<FluentTheme Mode="Light" />-->
+        <sty:FluentAvaloniaTheme ControlsVersion="2" />
+
+
+        <Style Selector="local|ControlExample">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <StackPanel>                        
+                        <ContentPresenter Name="HeaderPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch"
+                                          TextBlock.FontSize="18"
+                                          TextBlock.FontWeight="Bold"
+                                          Margin="0 16"/>
+
+                        <Border Grid.Row="1"
+                                BorderBrush="{DynamicResource ControlExampleStrokeColor}"
+                                BorderThickness="1">
+                            <DockPanel>
+                                <ContentPresenter Name="OptionPresenter"
+                                                  IsVisible="{Binding Options, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                                  Content="{TemplateBinding Options}"
+                                                  DockPanel.Dock="Right"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  VerticalContentAlignment="Stretch"
+                                                  Margin="12"/>                                
+                                
+                                <ContentPresenter Name="ExamplePresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Padding="12"/>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Grid.Row="2"
+                                Background="{DynamicResource ControlExampleBackgroundFill}"
+                                IsVisible="{TemplateBinding XamlSource, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                >
+                            <DockPanel>
+                                <TextBlock Text="Xaml" FontWeight="700" HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" DockPanel.Dock="Top" />
+                                <ContentPresenter Name="XamlSourcePresenter"
+                                             Content="{TemplateBinding XamlSource}"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             HorizontalContentAlignment="Left"
+                                             VerticalContentAlignment="Top"
+                                             Padding="16,20">
+                                    <ContentPresenter.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </ContentPresenter.Styles>
+                                </ContentPresenter>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Grid.Row="3"
+                                Background="{DynamicResource ControlExampleBackgroundFill}"
+                                IsVisible="{TemplateBinding CSharpSource, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                >
+                            <DockPanel>
+                                <TextBlock Text="C#" FontWeight="700" HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" DockPanel.Dock="Top" />
+                                <ContentPresenter Name="CSharpSourcePresenter"
+                                              Content="{TemplateBinding CSharpSource}"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              HorizontalContentAlignment="Left"
+                                              VerticalContentAlignment="Top"
+                                              Padding="4 5">
+                                    <ContentPresenter.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </ContentPresenter.Styles>
+                                </ContentPresenter>
+                            </DockPanel>
+                            
+                        </Border>
+
+                        <Border Background="{DynamicResource ControlExampleBackgroundFill}"
+                                IsVisible="{TemplateBinding UsageNotes, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                >
+                            <DockPanel>
+                                <TextBlock Text="Usage Notes" FontStyle="Italic"
+                                           FontWeight="SemiBold" HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" DockPanel.Dock="Top" Margin="3" />
+                                <ContentPresenter Name="UsageNotesPresenter"
+                                              Content="{TemplateBinding UsageNotes}"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              HorizontalContentAlignment="Stretch"
+                                              VerticalContentAlignment="Stretch"
+                                              Padding="4 5">
+                                    <ContentPresenter.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </ContentPresenter.Styles>
+                                </ContentPresenter>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource ControlExampleBackgroundFill}"
+                                Name="DocsView"
+                                IsVisible="{TemplateBinding ShowDocs}">
+                            <Border.Styles>
+                                <Style Selector="ToggleButton.ExpanderToggleButton">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+                                    <Setter Property="Template">
+                                        <ControlTemplate>
+                                            <Border Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    Name="LayoutRoot">
+                                                <DockPanel>
+                                                    <ui:SymbolIcon Symbol="ChevronDown"
+                                                                   DockPanel.Dock="Right"
+                                                                   FontSize="18"
+                                                                   Margin="10 6" />
+                                                    
+                                                    <ContentPresenter Content="{TemplateBinding Content}"
+                                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                      Margin="{TemplateBinding Padding}"/>
+                                                </DockPanel>
+                                            </Border>
+                                                    
+                                        </ControlTemplate>
+                                    </Setter>
+                                </Style>
+                                <Style Selector="ToggleButton.ExpanderToggleButton:pointerover /template/ Border">
+                                    <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
+                                </Style>
+                                <Style Selector="ToggleButton.ExpanderToggleButton:pressed /template/ Border">
+                                    <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
+                                </Style>
+                                <Style Selector="ToggleButton.ExpanderToggleButton:checked /template/ ui|SymbolIcon">
+                                    <Setter Property="RenderTransform" Value="rotate(180deg)" />
+                                </Style>
+
+                                <Style Selector="Expander[ExpandDirection=Down]">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="{DynamicResource ExpanderContentDownBorderThickness}" />
+                                    <Setter Property="MinWidth" Value="0" />
+                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Template">
+                                        <ControlTemplate>
+                                            <DockPanel>
+                                                <ToggleButton Name="PART_toggle"
+                                                                  MinHeight="{TemplateBinding MinHeight}"
+                                                                  IsEnabled="{TemplateBinding IsEnabled}"
+                                                                  HorizontalAlignment="Stretch"
+                                                                  IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                                                  Content="{TemplateBinding Header}"
+                                                                  Classes="ExpanderToggleButton"
+                                                                  DockPanel.Dock="Top"
+                                                                    />
+
+                                                <Border Name="ExpanderContent"
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        MinHeight="{TemplateBinding MinHeight}"
+                                                        MinWidth="{TemplateBinding MinWidth}">
+                                                    <ContentPresenter Name="PART_ContentPresenter"
+                                                                      Margin="{TemplateBinding Padding}"
+                                                                  IsVisible="{TemplateBinding IsExpanded}"
+                                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                  Content="{TemplateBinding Content}"
+                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                   />
+                                                </Border>
+
+                                            </DockPanel>
+                                        </ControlTemplate>
+                                    </Setter>
+                                </Style>
+                            </Border.Styles>
+                            <DockPanel>
+                                <Expander Header="Definition">
+                                    <ItemsRepeater Name="DocsItemsControl">
+                                        <ItemsRepeater.ItemTemplate>
+                                            <local:DocTypeTemplateSelector>
+                                                <DataTemplate DataType="local:PropertyItemViewModel">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Type, StringFormat='{}{0} '}" Foreground="#4EC999" />
+                                                        <TextBlock Text="{Binding Name, StringFormat='{}{0} '}" />
+                                                        <TextBlock Text="{}{" />
+                                                        <TextBlock Text=" get;" IsVisible="{Binding CanRead}" Foreground="Blue" />
+                                                        <TextBlock Text=" set;" IsVisible="{Binding CanWrite}" Foreground="Blue" />
+                                                        <TextBlock Text=" }" />                                                        
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                                <DataTemplate DataType="local:MethodItemViewModel">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Type, StringFormat='{}{0} '}" Foreground="#4EC999" />
+                                                        <TextBlock Text="abstract" IsVisible="{Binding IsAbstract}" Foreground="#4EC999" />
+                                                        <TextBlock Text="{Binding Name, StringFormat='{}{0}( '}" />
+                                                        <ItemsControl Items="{Binding Params}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding Type, StringFormat='{}{0} '}" Foreground="#4EC999" />
+                                                                        <TextBlock Text="{Binding Name, StringFormat='{}{0} '}" />
+                                                                        <TextBlock Text="{Binding DefaultValue, StringFormat='= {0} '}" IsVisible="{Binding IsOptional}" />
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                        <TextBlock Text=")" Foreground="#4EC999" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                                <DataTemplate DataType="local:ClassItemViewModel">
+                                                    <ItemsControl Items="{Binding InheritChain}" Margin="0 10">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding}" Foreground="#4EC999" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </DataTemplate>
+                                                <DataTemplate DataType="local:EventItemViewModel">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="event " Foreground="#4EC999" />
+                                                        <TextBlock Text="{Binding Type, StringFormat='{}{0} '}" Foreground="#4EC999" />
+                                                        <TextBlock Text="{Binding Name, StringFormat='{}{0} '}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </local:DocTypeTemplateSelector>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                </Expander>
+                            </DockPanel>
+                        </Border>
+                        
+                        
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+    </Application.Styles>
+
+</Application>

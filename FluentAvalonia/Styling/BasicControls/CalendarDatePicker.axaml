@@ -4,18 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
+        xmlns:sty="using:FluentAvalonia.Styling">
 
     <!-- In WinUI, this control doesn't have an editable date field, but in Avalonia it does
          left template mostly alone, though have changed calendar icon button to use a 
          FontIcon using the calendar_month icon from Fluent-Icons -->
     
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3f3">
+        <Border Padding="50" Background="#F3F3F3">
             <CalendarDatePicker />
         </Border>
     </Design.PreviewWith>
 
+ 
     <Styles.Resources>
         <Thickness x:Key="CalendarDatePickerBorderThemeThickness">1</Thickness>
         <Thickness x:Key="CalendarDatePickerTopHeaderMargin">0,0,0,8</Thickness>
@@ -128,6 +130,7 @@
                             Focusable="False"/>
 
                     <Popup Name="PART_Popup"
+                           WindowManagerAddShadowHint="False"
                            PlacementTarget="{TemplateBinding}"
                            IsLightDismissEnabled="True">
                         <Calendar Name="PART_Calendar"

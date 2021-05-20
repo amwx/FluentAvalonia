@@ -42,10 +42,9 @@ namespace FluentAvalonia.UI.Controls
         Send = 0xF69B,
         Crop = 0xF331,
         People = 0xF5AA,
-        World = 0xF45B,
         Flag = 0xF40D,
         PreviewLink = 0xF626,
-        Globe = 0xF45B, //Same as World
+        Globe = 0xF45B, //World removed, since it was the same as Globe
         ZoomIn = 0xF8C5,
         ZoomOut = 0xF8C7,
         Bookmark = 0xF1F7,
@@ -59,8 +58,8 @@ namespace FluentAvalonia.UI.Controls
         MapPin = 0xF601, //fluent_pin
         Phone = 0xF5F0,
         Keyboard = 0xF4B9,
-        //DockLeft = 0xF9C3,  [Incorrect Glyph code]
-        //DockRight = 0xF9C8, [Incorrect Glyph code]
+        DockLeft = 0xFBFB,  
+        DockRight = 0xFC00, 
         Refresh = 0xF13E, //fluent_arrow_clockwise,
         RotateClockwise = 0xF186,
         RotateCounterClockwise = 0xF188,

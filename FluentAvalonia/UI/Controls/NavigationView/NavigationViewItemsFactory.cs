@@ -37,12 +37,13 @@ namespace FluentAvalonia.UI.Controls
             object newContent = args.Data;
             if (_settingsItem != null && _settingsItem == args.Data)
             {
-                newContent = args.Data;
+				//This is the settings item, return it directly
+				return args.Data as NavigationViewItem;
             }
 
             if (_itemTemplateWrapper != null)
             {
-                newContent =  _itemTemplateWrapper.GetElement(args);
+                newContent = _itemTemplateWrapper.GetElement(args);
             }
 
             // Element is already of expected type, just return it
@@ -50,6 +51,11 @@ namespace FluentAvalonia.UI.Controls
             {
                 return nvib;
             }
+
+			//If no template is provided _navViewPool will never initialize
+			//check here in case
+			if (_navViewPool == null)
+				_navViewPool = new List<NavigationViewItem>();
 
             // Get or create a wrapping container for the data
             NavigationViewItem nvi;

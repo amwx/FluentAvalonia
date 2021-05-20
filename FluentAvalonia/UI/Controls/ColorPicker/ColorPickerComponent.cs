@@ -1,11 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using FluentAvalonia.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using FluentAvalonia.UI.Media;
-using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -32,8 +28,6 @@ namespace FluentAvalonia.UI.Controls
             get => _color;
             set
             {
-                if (value == null)
-                    return;
                 var old = _color;
                 if (SetAndRaise(ColorProperty, ref _color, value))
                 {
@@ -105,7 +99,7 @@ namespace FluentAvalonia.UI.Controls
         }
 
         private int _explicitHue = -1;//Rename this
-        private Color2 _color = Color2.FromHSV(71, 0.54f, .5f);
+        private Color2 _color = Color2.FromHSVf(71, 0.54f, .5f);
         private ColorComponent _component;
     }
 

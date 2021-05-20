@@ -16,50 +16,25 @@ namespace FluentAvaloniaSamples.ViewModels
             {
                 Symbols.Add(item.ToString());
             }
-
-            XElement xe = XElement.Parse(GetAssemblyResource("FluentAvaloniaInfo.txt"));
-            var pages = xe.Elements("ControlPage").Where(x => x.Attribute("Name").Value == "Icons").First();
-
-            Header = pages.Element("Header").Value;
-            var controls = pages.Elements("Control");
-            foreach (var ctrl in controls)
-            {
-                if (ctrl.Attribute("Name").Value == "SymbolIcon")
-                {
-                    SymbolIconXaml = ctrl.Element("XamlSource").Value;
-                    SymbolIconNotes = ctrl.Element("UsageNotes").Value;
-                }
-                else if (ctrl.Attribute("Name").Value == "FontIcon")
-                {
-                    FontIconXaml = ctrl.Element("XamlSource").Value;
-                    FontIconNotes = ctrl.Element("UsageNotes").Value;
-                }
-                else if (ctrl.Attribute("Name").Value == "PathIcon")
-                {
-                    PathIconXaml = ctrl.Element("XamlSource").Value;
-                }
-                else if (ctrl.Attribute("Name").Value == "BitmapIcon")
-                {
-                    BitmapIconXaml = ctrl.Element("XamlSource").Value;
-                    BitmapIconNotes = ctrl.Element("UsageNotes").Value;
-                }
-            }
         }
 
         public List<string> Symbols { get; }
 
-        public string Header { get; }
+		public string Header => DescriptionServiceProvider.Instance.GetInfo("Icons", "Header");
+		        
+        public string SymbolIconUsageNotes => DescriptionServiceProvider.Instance.GetInfo("Icons", "SymbolIcon", "UsageNotes");
+		public string SymbolIconSourceXamlSource => DescriptionServiceProvider.Instance.GetInfo("Icons", "SymbolIconSource", "XamlSource");
 
-        public string SymbolIconXaml { get; }
-        public string SymbolIconNotes { get; }
+		public string FontIconUsageNotes => DescriptionServiceProvider.Instance.GetInfo("Icons", "FontIcon", "UsageNotes");
+		public string FontIconSourceXamlSource => DescriptionServiceProvider.Instance.GetInfo("Icons", "FontIconSource", "XamlSource");
 
-        public string FontIconXaml { get; }
-        public string FontIconNotes { get; }
+		public string PathIconXamlSource => DescriptionServiceProvider.Instance.GetInfo("Icons", "PathIcon", "XamlSource");
+		public string PathIconSourceXamlSource => DescriptionServiceProvider.Instance.GetInfo("Icons", "PathIconSource", "XamlSource");
 
-        public string PathIconXaml { get; }
+		public string BitmapIconUsageNotes => DescriptionServiceProvider.Instance.GetInfo("Icons", "BitmapIcon", "UsageNotes");
+		public string BitmapIconSourceXamlSource => DescriptionServiceProvider.Instance.GetInfo("Icons", "BitmapIconSource", "XamlSource");
 
-        public string BitmapIconXaml { get; }
-        public string BitmapIconNotes { get; }
-
-    }
+		public string ImageIconUsageNotes => DescriptionServiceProvider.Instance.GetInfo("Icons", "ImageIcon", "UsageNotes");
+		public string ImageIconSourceXamlSource => DescriptionServiceProvider.Instance.GetInfo("Icons", "ImageIconSource", "XamlSource");
+	}
 }

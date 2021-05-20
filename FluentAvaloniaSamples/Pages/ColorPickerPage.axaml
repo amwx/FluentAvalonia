@@ -5,18 +5,22 @@
              xmlns:local="using:FluentAvaloniaSamples"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:uiconv="using:FluentAvalonia.Converters"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" d:DesignWidth="800"
              x:Class="FluentAvaloniaSamples.Pages.ColorPickerPage">
-    <UserControl.Resources>
+    <UserControl.Resources> 
         <uiconv:ColorToBrushConv x:Key="ColorToBrushConv" />
     </UserControl.Resources>
-    
+
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
             <local:ControlExample Header="Standard ColorPicker"
-                                  XamlSource="{Binding ColorPickerXaml}"
-                                  UsageNotes="{Binding ColorPickerNotes}">
-                <ui:ColorPicker Name="Picker" />
+                                  TargetType="ColorPicker"
+                                  UsageNotes="{Binding ColorPickerNotes}"
+                                  DynamicXamlTarget="{Binding #Picker}"
+                                  DynamicXamlProperties="UseSpectrum;UseColorWheel;UseColorTriangle;IsCompact;IsAlphaEnabled;IsMoreButtonVisible;UseColorPalette;Color;CustomPaletteColors,{Binding PaletteColors};PaletteColumnCount;">
+                <ui:ColorPicker Name="Picker" UseSpectrum="True" UseColorWheel="True"
+                                UseColorTriangle="True" IsCompact="True"
+                                UseColorPalette="True" CustomPaletteColors="{Binding PaletteColors}" />
 
                 <local:ControlExample.Options>
                     <StackPanel Spacing="3">
@@ -27,27 +31,35 @@
                             <ui:Button Content="Green" Command="{Binding SetColorToGreen}" CommandParameter="{Binding #Picker}" />
                             <ui:Button Content="Blue" Command="{Binding SetColorToBlue}" CommandParameter="{Binding #Picker}" />
                         </StackPanel>
-                        <CheckBox IsChecked="{Binding #Picker.IsAlphaEnabled}" Content="Is Alpha Enabled" />
-                        <CheckBox IsChecked="{Binding #Picker.IsMoreButtonVisible}" Content="Is More Button Visible" />
-                        <CheckBox IsChecked="{Binding #Picker.IsTextInputVisible}" Content="Is Text Input Visible" />
-                        <TextBlock Text="Spectrum Shape" />
-                        <ComboBox SelectedItem="{Binding #Picker.SpectrumShape}" Items="{Binding SpectrumShapes}" />
-                        <TextBlock Text="Third Component"/>
-                        <TextBlock Text="    Only applies to spectrum shape" FontSize="12"/>
-                        <ComboBox SelectedItem="{Binding #Picker.Component}" Items="{Binding Components}" />
+                        <CheckBox IsChecked="{Binding #Picker.IsAlphaEnabled}" Content="IsAlphaEnabled" />
+                        <CheckBox IsChecked="{Binding #Picker.IsMoreButtonVisible}" Content="IsMoreButtonVisible" />
+                        <CheckBox IsChecked="{Binding #Picker.IsCompact}" Content="IsCompact" />
+
+                        <CheckBox IsChecked="{Binding #Picker.UseSpectrum}" Content="UseSpectrum" />
+                        <CheckBox IsChecked="{Binding #Picker.UseColorWheel}" Content="UseColorWheel" />
+                        <CheckBox IsChecked="{Binding #Picker.UseColorTriangle}" Content="UseColorTriangle" />
+                        <CheckBox IsChecked="{Binding #Picker.UseColorPalette}" Content="UseColorPalette" />
+                        <ui:NumberBox Header="PaletteColumnCount" Value="{Binding #Picker.PaletteColumnCount, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="20"  />
                     </StackPanel>
                 </local:ControlExample.Options>
             </local:ControlExample>
 
-            <local:ControlExample Header="ColorPicker Button"
+            <local:ControlExample Header="ColorPickerButton"
+                                  TargetType="ColorPickerButton"
                                   XamlSource="{Binding ColorButtonXaml}"
                                   UsageNotes="{Binding ColorButtonNotes}">
-                <ui:ColorPickerButton Name="PickerButton" Color="Lime" />
 
+                <StackPanel Spacing="30" Orientation="Horizontal">
+                    <ui:ColorPickerButton Name="PickerButton" Color="Lime"  />
+
+                    <ui:ColorPickerButton Name="PickerButton2" Color="DarkSlateBlue" ShowAcceptDismissButtons="False" />
+                </StackPanel>
                 <local:ControlExample.Options>
                     <StackPanel Spacing="3">
                         <TextBlock Text="Change color" />
                         <Border Background="{Binding #PickerButton.Color, Converter={StaticResource ColorToBrushConv}}"
+                                Width="50" Height="30" />
+                        <Border Background="{Binding #PickerButton2.Color, Converter={StaticResource ColorToBrushConv}}"
                                 Width="50" Height="30" />
                     </StackPanel>
                 </local:ControlExample.Options>

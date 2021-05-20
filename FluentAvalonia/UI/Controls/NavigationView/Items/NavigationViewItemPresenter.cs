@@ -49,7 +49,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
         internal IControl SelectionIndicator => _selectionIndicator;
 
-        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
 
@@ -110,8 +110,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
             var content = this.Content;
             if (update)
             {
-                TemplateSettings.IconColumnWidth = len;
-                TemplateSettings.LatestIconColumnWidth = len - 8;
+                TemplateSettings.IconWidth = len;
+                TemplateSettings.SmallerIconWidth = len - 8;
             }
         }
 
@@ -141,22 +141,22 @@ namespace FluentAvalonia.UI.Controls.Primitives
     {
         internal NavigationViewItemPresenterTemplateSettings() { }
 
-        public static readonly StyledProperty<double> IconColumnWidthProperty =
-            AvaloniaProperty.Register<NavigationViewItemPresenterTemplateSettings, double>(nameof(IconColumnWidth));
+        public static readonly StyledProperty<double> IconWidthProperty =
+            AvaloniaProperty.Register<NavigationViewItemPresenterTemplateSettings, double>(nameof(IconWidth));
 
-        public static readonly StyledProperty<double> LatestIconColumnWidthProperty =
-            AvaloniaProperty.Register<NavigationViewItemPresenterTemplateSettings, double>(nameof(LatestIconColumnWidth));
+        public static readonly StyledProperty<double> SmallerIconWidthProperty =
+            AvaloniaProperty.Register<NavigationViewItemPresenterTemplateSettings, double>(nameof(SmallerIconWidth));
 
-        public double IconColumnWidth
+        public double IconWidth
         {
-            get => GetValue(IconColumnWidthProperty);
-            internal set => SetValue(IconColumnWidthProperty, value);
+            get => GetValue(IconWidthProperty);
+            internal set => SetValue(IconWidthProperty, value);
         }
 
-        public double LatestIconColumnWidth
+        public double SmallerIconWidth
         {
-            get => GetValue(LatestIconColumnWidthProperty);
-            internal set => SetValue(LatestIconColumnWidthProperty, value);
+            get => GetValue(SmallerIconWidthProperty);
+            internal set => SetValue(SmallerIconWidthProperty, value);
         }
     }
 }

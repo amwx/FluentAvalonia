@@ -5,6 +5,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using FluentAvalonia.UI.Media;
+using System;
 using AvColor = Avalonia.Media.Color;
 
 namespace FluentAvalonia.UI.Controls
@@ -25,7 +26,15 @@ namespace FluentAvalonia.UI.Controls
             AvaloniaProperty.RegisterDirect<ColorRamp, Orientation>("Orientation",
                 x => x.Orientation, (x, v) => x.Orientation = v);
 
+		public static readonly StyledProperty<IBrush> BorderBrushProperty =
+			Border.BorderBrushProperty.AddOwner<ColorRamp>();
 
+		public static readonly StyledProperty<double> BorderThicknessProperty =
+			AvaloniaProperty.Register<ColorRamp, double>("BorderThickness", 1d);
+
+		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
+			Border.CornerRadiusProperty.AddOwner<ColorRamp>();
+			
         public Orientation Orientation
         {
             get => _orientation;
@@ -38,172 +47,81 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        protected override Size MeasureOverride(Size availableSize)
+		public CornerRadius CornerRadius
+		{
+			get => GetValue(CornerRadiusProperty);
+			set => SetValue(CornerRadiusProperty, value);
+		}
+
+		public IBrush BorderBrush
+		{
+			get => GetValue(BorderBrushProperty);
+			set => SetValue(BorderBrushProperty, value);
+		}
+
+		public double BorderThickness
+		{
+			get => GetValue(BorderThicknessProperty);
+			set => SetValue(BorderThicknessProperty, value);
+		}
+
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+			if (change.Property == BorderBrushProperty ||
+				change.Property == BorderThicknessProperty)
+			{
+				RecreateBorderPen();
+				InvalidateVisual();
+			}
+		}
+
+		protected override Size MeasureOverride(Size availableSize)
         {
             return Orientation == Orientation.Horizontal ? new Size(150, 12) : new Size(12, 150);
         }
 
         public override void Render(DrawingContext context)
         {
-            var b = new LinearGradientBrush();
-            //b.SpreadMethod = GradientSpreadMethod.Repeat;
-
-            Rect rect = new Rect(Orientation == Orientation.Horizontal ? _handleRadius : 1,
-                Orientation == Orientation.Vertical ? _handleRadius : 1,
-                Orientation == Orientation.Horizontal ? Bounds.Width - (_handleRadius * 2) : Bounds.Height - 2,
-                Orientation == Orientation.Vertical ? Bounds.Height - (_handleRadius * 2) : Bounds.Height - 2);
+			Rect rect = new Rect(Bounds.Size).Inflate(-1);
 
             if (Orientation == Orientation.Horizontal)
             {
-                b.StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative);
-                b.EndPoint = new RelativePoint(1, 0, RelativeUnit.Relative);
-                //b.StartPoint = new RelativePoint(1, 1, RelativeUnit.Absolute);
-                //b.EndPoint = new RelativePoint(Bounds.Width - 2, 1, RelativeUnit.Absolute);
+                _lgb.StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative);
+				_lgb.EndPoint = new RelativePoint(1, 0, RelativeUnit.Relative);
             }
             else
             {
-                b.StartPoint = new RelativePoint(0, 1, RelativeUnit.Relative);
-                b.EndPoint = new RelativePoint(0, 0, RelativeUnit.Relative);
-                //b.StartPoint = new RelativePoint(1, 1, RelativeUnit.Absolute);
-                //b.EndPoint = new RelativePoint(1, Bounds.Height - 2, RelativeUnit.Absolute);
+				_lgb.StartPoint = new RelativePoint(0, 1, RelativeUnit.Relative);
+				_lgb.EndPoint = new RelativePoint(0, 0, RelativeUnit.Relative);
             }
 
-            var comp = Component;
-            if(comp != ColorComponent.Alpha)
+			var radius = (float)CornerRadius.TopLeft;
+
+			if (Component == ColorComponent.Alpha)
+				context.FillRectangle(CheckeredBrush, rect, radius);
+
+			context.FillRectangle(_lgb, rect, radius);
+
+			if (_borderPen != null)
+				context.DrawRectangle(_borderPen, rect.Inflate(0.5), radius);
+
+			//Render markers
+			if (Orientation == Orientation.Horizontal)
             {
-                static AvColor ColorFromHSV(float hue, float sat, float val)
-                {
-                    var sk = Color2.FromHSV(hue, sat, val);
-                    return new AvColor(255, sk.R, sk.G, sk.B);
-                }
-
-                switch (comp)
-                {
-                    case ColorComponent.Hue:
-                        for(int i = 0; i <= 360; i += 60)
-                        {
-                            b.GradientStops.Add(new GradientStop
-                            {
-                                Color = ColorFromHSV(i, Color.Saturationf, Color.Valuef),
-                                Offset = i / 360.0
-                            });
-                        }
-                        break;
-                    case ColorComponent.Saturation:
-                        b.GradientStops = new GradientStops
-                        {
-                            new GradientStop
-                            {
-                                Color = ColorFromHSV(Color.Huef, 0, Color.Valuef),
-                                Offset = 0
-                            },
-                            new GradientStop
-                            {
-                                Color = ColorFromHSV(Color.Huef, 1, Color.Valuef),
-                                Offset = 1
-                            }
-                        };
-                        break;
-                    case ColorComponent.Value:
-                        b.GradientStops = new GradientStops
-                        {
-                            new GradientStop
-                            {
-                                Color = ColorFromHSV(Color.Huef, Color.Saturationf, 0),
-                                Offset = 0
-                            },
-                            new GradientStop
-                            {
-                                Color = ColorFromHSV(Color.Huef, Color.Saturationf, 1),
-                                Offset = 1
-                            }
-                        };
-                        break;
-
-
-                    case ColorComponent.Red:
-                        b.GradientStops = new GradientStops
-                        {
-                            new GradientStop
-                            {
-                                Color = AvColor.FromRgb(0, Color.G, Color.B),
-                                Offset = 0
-                            },
-                            new GradientStop
-                            {
-                                Color = AvColor.FromRgb(255, Color.G, Color.B),
-                                Offset = 1
-                            }
-                        };
-                        break;
-                    case ColorComponent.Green:
-                        b.GradientStops = new GradientStops
-                        {
-                            new GradientStop
-                            {
-                                Color = AvColor.FromRgb(Color.R, 0, Color.B),
-                                Offset = 0
-                            },
-                            new GradientStop
-                            {
-                                Color = AvColor.FromRgb(Color.R, 255, Color.B),
-                                Offset = 1
-                            }
-                        };
-                        break;
-                    case ColorComponent.Blue:
-                        b.GradientStops = new GradientStops
-                        {
-                            new GradientStop
-                            {
-                                Color = AvColor.FromRgb(Color.R, Color.G, 0),
-                                Offset = 0
-                            },
-                            new GradientStop
-                            {
-                                Color = AvColor.FromRgb(Color.R, Color.G, 255),
-                                Offset = 1
-                            }
-                        };
-                        break;
-                }
-
-                context.FillRectangle(b, rect);
+				var hHgt = rect.Height - 2;
+				var x = GetMarkerPosition(Component, rect.Width - hHgt, false);
+				var y = 1;
+				context.DrawRectangle(GetLightness(Color) >= 0.5 ? BlackPen : WhitePen,
+					new Rect(x, y+1, hHgt, hHgt), radius);
             }
-            else
-            {
-                if(_checkBrush == null)
-                {
-                    CreateCheckBrush();
-                }
-                _checkBrush.DestinationRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
-                context.FillRectangle(_checkBrush, rect);
-
-                b.GradientStops = new GradientStops
-                {
-                    new GradientStop(AvColor.FromArgb(0, Color.R, Color.G, Color.B), 0),
-                    new GradientStop(AvColor.FromArgb(255, Color.R, Color.G, Color.B), 1)
-                };
-
-                context.FillRectangle(b, rect);
-            }
-
-            //Render border
-            using (context.PushClip(new Rect(0, 0, Bounds.Width, Bounds.Height)))
-                context.DrawRectangle(new Pen(Brushes.Gray), rect);
-
-            //Render markers
-            if(Orientation == Orientation.Horizontal)
-            {
-                var x = GetMarkerPosition(comp, rect.Width, false);
-                var y = rect.Height / 2 - _handleRadius+1;
-                context.FillRectangle(Brushes.Black, new Rect(x - _handleRadius, y, _handleRadius*2, _handleRadius*2), _handleRadius*2);
-            }
-            else
-            {
-                var y = GetMarkerPosition(comp, rect.Height, true);
-                var x = rect.Width / 2 - _handleRadius+0.5;
-                context.FillRectangle(Brushes.Black, new Rect(x, y - _handleRadius, _handleRadius * 2, _handleRadius * 2), _handleRadius * 2);
+			else 
+			{ 
+				var hWid = rect.Width - 2;
+                var y = GetMarkerPosition(Component, rect.Height-hWid, true);
+                var x = 1;
+                context.DrawRectangle(GetLightness(Color) >= 0.5 ? BlackPen : WhitePen, 
+					new Rect(x+1, y, hWid, hWid), radius);
             }
         }
 
@@ -268,19 +186,105 @@ namespace FluentAvalonia.UI.Controls
         protected override void OnColorChanged(Color2 oldColor, Color2 newColor)
         {
             base.OnColorChanged(oldColor, newColor);
+			EnsureGradientBrush();
             InvalidateVisual();
         }
+
+		protected override void OnComponentChanged(ColorComponent newValue)
+		{
+			base.OnComponentChanged(newValue);
+			EnsureGradientBrush();
+		}
+
+		private void EnsureGradientBrush()
+		{
+			if (Component == ColorComponent.Hue)
+			{
+				if (_lgb.GradientStops.Count != 7)
+				{
+					_lgb.GradientStops.Clear();
+					for (int i = 0; i <= 360; i += 60)
+					{
+						_lgb.GradientStops.Add(new GradientStop
+						{
+							Color = Color.WithHue(i).WithAlpha(255),
+							Offset = i / 360.0
+						});
+					}
+				}
+			}
+			else
+			{
+				if (_lgb.GradientStops.Count > 2)
+				{
+					_lgb.GradientStops.RemoveRange(2, _lgb.GradientStops.Count - 2);
+				}
+				else if (_lgb.GradientStops.Count < 2)
+				{
+					while (_lgb.GradientStops.Count < 2)
+					{
+						_lgb.GradientStops.Add(new GradientStop());
+					}
+				}
+
+				switch (Component)
+				{
+					case ColorComponent.Saturation:
+						_lgb.GradientStops[0].Color = Color.WithSat(0).WithAlpha(255);
+						_lgb.GradientStops[0].Offset = 0;
+						_lgb.GradientStops[1].Color = Color.WithSatf(1).WithAlpha(255);
+						_lgb.GradientStops[1].Offset = 1;
+						break;
+
+					case ColorComponent.Value:
+						_lgb.GradientStops[0].Color = Color.WithValf(0).WithAlpha(255);
+						_lgb.GradientStops[0].Offset = 0;
+						_lgb.GradientStops[1].Color = Color.WithValf(1).WithAlpha(255);
+						_lgb.GradientStops[1].Offset = 1;
+						break;
+
+					case ColorComponent.Red:
+						_lgb.GradientStops[0].Color = Color.WithRed(0).WithAlpha(255);
+						_lgb.GradientStops[0].Offset = 0;
+						_lgb.GradientStops[1].Color = Color.WithRed(255).WithAlpha(255);
+						_lgb.GradientStops[1].Offset = 1;
+						break;
+
+					case ColorComponent.Green:
+						_lgb.GradientStops[0].Color = Color.WithGreen(0).WithAlpha(255);
+						_lgb.GradientStops[0].Offset = 0;
+						_lgb.GradientStops[1].Color = Color.WithGreen(255).WithAlpha(255);
+						_lgb.GradientStops[1].Offset = 1;
+						break;
+
+					case ColorComponent.Blue:
+						_lgb.GradientStops[0].Color = Color.WithBlue(0).WithAlpha(255);
+						_lgb.GradientStops[0].Offset = 0;
+						_lgb.GradientStops[1].Color = Color.WithBlue(255).WithAlpha(255);
+						_lgb.GradientStops[1].Offset = 1;
+						break;
+
+					case ColorComponent.Alpha:
+						_lgb.GradientStops[0].Color = Color.WithAlpha(0);
+						_lgb.GradientStops[0].Offset = 0;
+						_lgb.GradientStops[1].Color = Color.WithAlpha(255);
+						_lgb.GradientStops[1].Offset = 1;
+						break;
+				}
+			}
+		}
+
 
         private void SetComponentFromPosition(Point pt)
         {
             double perc = 0;
             if (Orientation == Orientation.Horizontal)
             {
-                perc = pt.X / (Bounds.Width - 2);
+                perc = (pt.X-1) / (Bounds.Width - 2);
             }
             else
             {
-                perc = 1 - (pt.Y / (Bounds.Height - 2));
+                perc = 1 - ((pt.Y-1) / (Bounds.Height - 2));
             }
 
             if (perc > 1)
@@ -291,26 +295,26 @@ namespace FluentAvalonia.UI.Controls
             switch (Component)
             {
                 case ColorComponent.Hue:
-                    Color = Color2.FromHSV(359 * (float)perc, Color.Saturationf, Color.Valuef);
+					Color = Color.WithHuef(359 * (float)perc);// Color2.FromHSV(359 * (float)perc, Color.Saturationf, Color.Valuef);
                     break;
                 case ColorComponent.Saturation:
-                    Color = Color2.FromHSV(Hue, (float)perc, Color.Valuef);
+					Color = Color.WithSatf((float)perc);// Color2.FromHSV(Hue, (float)perc, Color.Valuef);
                     break;
                 case ColorComponent.Value:
-                    Color = Color2.FromHSV(Hue, Color.Saturationf, (float)perc);
+					Color = Color.WithValf((float)perc);// Color2.FromHSV(Hue, Color.Saturationf, (float)perc);
                     break;
 
                 case ColorComponent.Red:
-                    Color = Color2.FromRGB((float)perc, Color.Gf, Color.Bf, Color.Af);
+                    Color = Color.WithRedf((float)perc);// Color2.FromRGB((float)perc, Color.Gf, Color.Bf, Color.Af);
                     break;
                 case ColorComponent.Green:
-                    Color = Color2.FromRGB(Color.Rf, (float)perc, Color.Bf, Color.Af);
+					Color = Color.WithGreenf((float)perc);// Color2.FromRGB(Color.Rf, (float)perc, Color.Bf, Color.Af);
                     break;
                 case ColorComponent.Blue:
-                    Color = Color2.FromRGB(Color.Rf, Color.Gf, (float)perc, Color.Af);
+					Color = Color.WithBluef((float)perc);// Color2.FromRGB(Color.Rf, Color.Gf, (float)perc, Color.Af);
                     break;
                 case ColorComponent.Alpha:
-                    Color = Color2.FromRGB(Color.Rf, Color.Gf, Color.Bf, (float)perc);
+					Color = Color.WithAlphaf((float)perc);// Color2.FromRGB(Color.Rf, Color.Gf, Color.Bf, (float)perc);
                     break;
             }
 
@@ -321,64 +325,34 @@ namespace FluentAvalonia.UI.Controls
             switch (Component)
             {
                 case ColorComponent.Hue:
-                    Color = Color2.FromHSV(Hue + (increment ? 1 : -1), Color.Saturation, Color.Value);
+					Color = Color.WithHue(Hue + (increment ? 1 : -1));// Color2.FromHSV(Hue + (increment ? 1 : -1), Color.Saturation, Color.Value);
                     break;
                 case ColorComponent.Saturation:
-                    Color = Color2.FromHSV(Hue, Color.Saturation + (increment ? 0.01f : -0.01f), Color.Value);
+					Color = Color.WithSat(Color.Saturation + (increment ? 1 : -1));
+					//Color = Color2.FromHSV(Hue, Color.Saturation + (increment ? 0.01f : -0.01f), Color.Value);
                     break;
                 case ColorComponent.Value:
-                    Color = Color2.FromHSV(Hue, Color.Saturation, Color.Value + (increment ? 0.01f : -0.01f));
-                    break;
+					Color = Color.WithVal(Color.Value + (increment ? 1 : -1));
+					// Color = Color2.FromHSV(Hue, Color.Saturation, Color.Value + (increment ? 0.01f : -0.01f));
+					break;
 
                 case ColorComponent.Red:
-                    //Color = new EliteColor(Color.A, increment ? (byte)(Color.R + 1) : (byte)(Color.R - 1), Color.G, Color.B);
+					Color = Color.WithRed(Color.R + (increment ? 1 : -1));
+					//Color = Color2.FromRGB(Color.R + (increment ? 1 : -1), Color.G, Color.B);
                     break;
                 case ColorComponent.Green:
-                    //Color = new EliteColor(Color.A, Color.R, increment ? (byte)(Color.G + 1) : (byte)(Color.G - 1), Color.B);
-                    break;
+					Color = Color.WithGreen(Color.G + (increment ? 1 : -1));
+					//Color = Color2.FromRGB(Color.R, Color.G + (increment ? 1 : -1), Color.B);
+					break;
                 case ColorComponent.Blue:
-                    //Color = new EliteColor(Color.A, Color.R, Color.G, increment ? (byte)(Color.B + 1) : (byte)(Color.B - 1));
+					Color = Color.WithBlue(Color.B + (increment ? 1 : -1));
+					//Color = Color2.FromRGB(Color.R, Color.G, Color.B + (increment ? 1 : -1));
                     break;
                 case ColorComponent.Alpha:
-                    //Color = new EliteColor(increment ? (byte)(Color.A + 1) : (byte)(Color.A - 1), Color.R, Color.G, Color.B);
-                    break;
+					Color = Color.WithAlpha(Color.A + (increment ? 1 : -1));
+					//Color = Color2.FromRGB(Color.R, Color.G, Color.B, Color.A + (increment ? 1 : -1));
+					break;
             }
-
-        }
-
-        private void CreateCheckBrush()
-        {
-            //this is only created once
-
-            RenderTargetBitmap rtb = new RenderTargetBitmap(new PixelSize(50, 50));
-            using (var context = rtb.CreateDrawingContext(null))
-            {
-                bool white = true;
-                for (int i = 0; i < 50; i += 5)
-                {
-                    
-                    for (int j = 0; j < 50; j += 5)
-                    {
-                        if (white)
-                        {
-                            context.DrawRectangle(Brushes.White, null, new Rect(i, j, 5, 5));
-                        }
-                        else
-                        {
-                            context.DrawRectangle(Brushes.LightGray, null, new Rect(i, j, 5, 5));
-                        }
-                        white = !white;
-                    }
-                    white = !white;
-                }
-            }
-            //rtb.Save("C:/Users/Andrew/Desktop/Check.png");
-            var b = new ImageBrush(rtb);
-            b.TileMode = TileMode.Tile;
-           // b.SourceRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
-            
-            b.BitmapInterpolationMode = Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality;
-            _checkBrush = b;//.ToImmutable();
 
         }
 
@@ -387,32 +361,103 @@ namespace FluentAvalonia.UI.Controls
             switch (comp)
             {
                 case ColorComponent.Hue:
-                    return vertical ? _handleRadius + (1 - (Hue / 360f)) * length : _handleRadius + (Hue / 360f) * length;
+					return vertical ? 1 + (1 - (Hue / 360f)) * length : 1 + (Hue / 360f) * length;
+					//return vertical ? _handleRadius + (1 - (Hue / 360f)) * length : _handleRadius + (Hue / 360f) * length;
                 case ColorComponent.Saturation:
-                    return vertical ? _handleRadius + (1 - Color.Saturationf) * length : _handleRadius + Color.Saturationf * length;
+					return vertical ? 1 + (1 - Color.Saturationf) * length : 1 + Color.Saturationf * length;
+                    //return vertical ? _handleRadius + (1 - Color.Saturationf) * length : _handleRadius + Color.Saturationf * length;
                 case ColorComponent.Value:
-                    return vertical ? _handleRadius + (1 - Color.Valuef) * length : _handleRadius + Color.Valuef * length;
+					return vertical ? 1 + (1 - Color.Valuef) * length : 1 + Color.Valuef * length;
+					//return vertical ? _handleRadius + (1 - Color.Valuef) * length : _handleRadius + Color.Valuef * length;
 
                 case ColorComponent.Red:
-                    return vertical ? _handleRadius + (1 - Color.Rf) * length : _handleRadius + Color.Rf * length;
+					return vertical ? 1 + (1 - Color.Rf) * length : 1 + Color.Rf * length;
+                    //return vertical ? _handleRadius + (1 - Color.Rf) * length : _handleRadius + Color.Rf * length;
                 case ColorComponent.Green:
-                    return vertical ? _handleRadius + (1 - Color.Gf) * length : _handleRadius + Color.Gf * length;
+					return vertical ? 1 + (1 - Color.Gf) * length : 1 + Color.Gf * length;
+					//return vertical ? _handleRadius + (1 - Color.Gf) * length : _handleRadius + Color.Gf * length;
                 case ColorComponent.Blue:
-                    return vertical ? _handleRadius + (1 - Color.Bf) * length : _handleRadius + Color.Bf * length;
+					return vertical ? 1 + (1 - Color.Bf) * length : 1 + Color.Bf * length;
+					//return vertical ? _handleRadius + (1 - Color.Bf) * length : _handleRadius + Color.Bf * length;
                 case ColorComponent.Alpha:
-                    return vertical ? _handleRadius + (1 - Color.Af) * length : _handleRadius + Color.Af * length;
+					return vertical ? 1 + (1 - Color.Af) * length : 1 + Color.Af * length;
+					//return vertical ? _handleRadius + (1 - Color.Af) * length : _handleRadius + Color.Af * length;
 
                 default:
                     return 0.0;
             }
         }
 
-        //private LinearGradientBrush _gradBrush;
-        private TileBrush _checkBrush;
-        private bool _isDown;
-        private readonly int _handleRadius = 9;
+		private double GetLightness(AvColor col)
+		{
+			var rg = col.R <= 10 ? col.R / 3294.0 : Math.Pow(col.R / 269.0 + 0.0513, 2.4);
+			var gg = col.G <= 10 ? col.G / 3294.0 : Math.Pow(col.G / 269.0 + 0.0513, 2.4);
+			var bg = col.B <= 10 ? col.B / 3294.0 : Math.Pow(col.B / 269.0 + 0.0513, 2.4);
+			return 0.2126 * rg + 0.7152 * gg + 0.0722 * bg;
+		}
 
-        private Orientation _orientation;
+		private void RecreateBorderPen()
+		{
+			if (BorderBrush == null || BorderThickness == 0)
+			{
+				_borderPen = null;
+				return;
+			}
+
+			_borderPen = new Pen(BorderBrush, BorderThickness);
+		}
+
+
+		public static IBrush CheckeredBrush { get; } = CreateCheckeredBrush();
+
+		private static IBrush CreateCheckeredBrush()
+		{
+			//this is only created once
+
+			RenderTargetBitmap rtb = new RenderTargetBitmap(new PixelSize(50, 50));
+			using (var context = rtb.CreateDrawingContext(null))
+			{
+				bool white = true;
+				for (int i = 0; i < 50; i += 5)
+				{
+
+					for (int j = 0; j < 50; j += 5)
+					{
+						if (white)
+						{
+							context.DrawRectangle(Brushes.White, null, new Rect(i, j, 5, 5));
+						}
+						else
+						{
+							context.DrawRectangle(Brushes.LightGray, null, new Rect(i, j, 5, 5));
+						}
+						white = !white;
+					}
+					white = !white;
+				}
+			}
+
+			var b = new ImageBrush(rtb);
+			b.TileMode = TileMode.Tile;
+			// b.SourceRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
+			b.DestinationRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
+			b.BitmapInterpolationMode = Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality;
+			return b.ToImmutable();
+			
+			//_checkBrush = b;//.ToImmutable();
+
+		}
+		        
+		private static readonly Pen BlackPen = new Pen(Brushes.Black, 3);
+		private static readonly Pen WhitePen = new Pen(Brushes.White, 3);
+
+		//This is the brush for the background
+		//Create once here & recycle
+		private LinearGradientBrush _lgb = new LinearGradientBrush();
+
+		private bool _isDown;
+		private Orientation _orientation;
+		private Pen _borderPen;		
     }
 
     public enum ColorComponent

@@ -11,11 +11,9 @@ using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Reactive.Disposables;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -147,7 +145,7 @@ namespace FluentAvalonia.UI.Controls
 
         protected override void OnNavigationViewItemBaseIsSelectedChanged()
         {
-            //
+			UpdateVisualState();
         }
 
         protected override void OnNavigationViewItemBasePositionChanged()
@@ -164,7 +162,7 @@ namespace FluentAvalonia.UI.Controls
                     flyout.Placement = (Position == NavigationViewRepeaterPosition.TopPrimary ||
                         Position == NavigationViewRepeaterPosition.TopFooter) ?
                         FlyoutPlacementMode.BottomEdgeAlignedLeft :
-                        FlyoutPlacementMode.TopEdgeAlignedRight;
+                        FlyoutPlacementMode.RightEdgeAlignedTop;
 
                 }
             }
@@ -177,7 +175,7 @@ namespace FluentAvalonia.UI.Controls
             UnhookEventsAndClearFields();
 
             base.OnApplyTemplate(e);
-
+			var x = this.Content;
             _presenter = e.NameScope.Get<NavigationViewItemPresenter>("NVIPresenter");
 
             _rootGrid = e.NameScope.Get<Grid>("NVIRootGrid");
@@ -316,14 +314,17 @@ namespace FluentAvalonia.UI.Controls
                 _isClosedCompact = !splitView.IsPaneOpen &&
                     (splitView.DisplayMode == SplitViewDisplayMode.CompactOverlay || splitView.DisplayMode == SplitViewDisplayMode.CompactInline);
 
-                UpdateVisualState();
-
-                if (_presenter != null)
-                {
-                    _presenter.UpdateClosedCompactVisualState(IsTopLevelItem, _isClosedCompact);
-                }
+                UpdateVisualState();                
             }
         }
+
+		private void UpdateVisualStateForClosedCompact()
+		{
+			if (_presenter != null)
+			{
+				_presenter.UpdateClosedCompactVisualState(IsTopLevelItem, _isClosedCompact);
+			}
+		}
 
         private void UpdateNavigationViewItemToolTip()
         {
@@ -333,7 +334,8 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (ShouldEnableToolTip)
                 {
-                    ToolTip.SetTip(this, _suggestedToolTipContent);
+					if (tip != _suggestedToolTipContent)
+						ToolTip.SetTip(this, _suggestedToolTipContent);
                 }
                 else
                 {
@@ -467,6 +469,8 @@ namespace FluentAvalonia.UI.Controls
                     }
                     break;
             }
+
+			UpdateVisualStateForClosedCompact();
         }
 
         private void UpdateVisualStateForToolTip()
@@ -479,7 +483,9 @@ namespace FluentAvalonia.UI.Controls
             if (!_appliedTemplate)
                 return;
 
-            UpdateVisualStateForNavigationViewPositionChange();
+			((IPseudoClasses)_presenter.Classes).Set(":selected", IsSelected);
+
+			UpdateVisualStateForNavigationViewPositionChange();
 
             bool showIcon = ShouldShowIcon;
             bool showContent = ShouldShowContent;
@@ -605,7 +611,7 @@ namespace FluentAvalonia.UI.Controls
             args.Handled = true;
         }
 
-        private void OnFlyoutClosing(FlyoutBase sender, FlyoutBaseClosingEventArgs args)
+        private void OnFlyoutClosing(object sender, CancelEventArgs args)
         {
             IsExpanded = false;
         }

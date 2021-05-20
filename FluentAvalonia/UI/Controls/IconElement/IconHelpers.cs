@@ -46,6 +46,14 @@ namespace FluentAvalonia.UI.Controls
             return bi;
         }
 
+		internal static ImageIcon CreateImageIconFromImageIconSource(ImageIconSource iis)
+		{
+			return new ImageIcon
+			{
+				[!ImageIcon.SourceProperty] = iis[!ImageIconSource.SourceProperty]
+			};
+		}
+
         internal static IconElement CreateFromUnknown(IconSource src)
         {
             if (src is BitmapIconSource bis)
@@ -64,6 +72,10 @@ namespace FluentAvalonia.UI.Controls
             {
                 return CreateSymbolIconFromSymbolIconSource(sis);
             }
+			else if (src is ImageIconSource iis)
+			{
+				return CreateImageIconFromImageIconSource(iis);
+			}
 
             return null;
         }

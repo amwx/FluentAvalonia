@@ -17,33 +17,33 @@ namespace FluentAvaloniaSamples.Pages
 
             DataContext = new NavViewPageViewModel();
 
-            //NavigationView w/ default PaneDisplayMode
-            var nv = this.FindControl<NavigationView>("nvSample");
-            nv.SelectedItem = nv.MenuItems.ElementAt(0);
-            nv.SelectionChanged += OnNVSample1SelectionChanged;
+			//NavigationView w/ default PaneDisplayMode
+			var nv = this.FindControl<NavigationView>("nvSample");
+			nv.SelectedItem = nv.MenuItems.ElementAt(0);
+			nv.SelectionChanged += OnNVSample1SelectionChanged;
 
-            //NavigationView w/ PaneDisplayMode set to Top
-            nv = this.FindControl<NavigationView>("nvSample2");
-            nv.SelectedItem = nv.MenuItems.ElementAt(0);
-            nv.SelectionChanged += OnNVSample2SelectionChanged;
+			//NavigationView w/ PaneDisplayMode set to Top
+			nv = this.FindControl<NavigationView>("nvSample2");
+			nv.SelectedItem = nv.MenuItems.ElementAt(0);
+			nv.SelectionChanged += OnNVSample2SelectionChanged;
 
-            //Adaptive
-            nv = this.FindControl<NavigationView>("nvSample3");
-            nv.SelectedItem = nv.MenuItems.ElementAt(0);
-            nv.SelectionChanged += OnNVSample3SelectionChanged;
+			//Adaptive
+			nv = this.FindControl<NavigationView>("nvSample3");
+			nv.SelectedItem = nv.MenuItems.ElementAt(0);
+			nv.SelectionChanged += OnNVSample3SelectionChanged;
 
-            //Tying selection and focus - Tabs
-            nv = this.FindControl<NavigationView>("nvSample5");
-            nv.SelectedItem = nv.MenuItems.ElementAt(0);
-            nv.SelectionChanged += OnNVSample5SelectionChanged;
+			//Tying selection and focus - Tabs
+			nv = this.FindControl<NavigationView>("nvSample5");
+			nv.SelectedItem = nv.MenuItems.ElementAt(0);
+			nv.SelectionChanged += OnNVSample5SelectionChanged;
 
-            //Databinding one is handled in ViewModel
+			//Databinding one is handled in ViewModel
 
-            //API in action
-            nv = this.FindControl<NavigationView>("nvSample6");
-            nv.SelectedItem = nv.MenuItems.ElementAt(0);
-            nv.SelectionChanged += OnNVSample6SelectionChanged;
-        }
+			//API in action
+			nv = this.FindControl<NavigationView>("nvSample6");
+			nv.SelectedItem = nv.MenuItems.ElementAt(0);
+			nv.SelectionChanged += OnNVSample6SelectionChanged;
+		}
 
         private void OnNVSample1SelectionChanged(object sender, NavigationViewSelectionChangedEventArgs e)
         {

@@ -1,0 +1,61 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="using:FluentAvalonia.UI.Controls">
+
+    <Styles.Resources>
+        <x:Double x:Key="AutoCompleteListMaxHeight">374</x:Double>
+        <Thickness x:Key="AutoCompleteListMargin">0,2,0,2</Thickness>
+        <Thickness x:Key="AutoCompleteListBorderThemeThickness">1</Thickness>
+        <Thickness x:Key="AutoCompleteListPadding">-1,0,-1,0</Thickness>
+    </Styles.Resources>
+
+    <Style Selector="AutoCompleteBox">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
+        <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThickness}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="Padding" Value="{DynamicResource TextControlThemePadding}" />
+        <Setter Property="MaxDropDownHeight" Value="{DynamicResource AutoCompleteListMaxHeight}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Name="PART_LayoutRoot">
+                    <TextBox Name="PART_TextBox"
+                                Watermark="{TemplateBinding Watermark}"
+                                Width="{TemplateBinding Width}"
+                                Foreground="{TemplateBinding Foreground}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                FontSize="{TemplateBinding FontSize}"
+                                FontFamily="{TemplateBinding FontFamily}"
+                                FontWeight="{TemplateBinding FontWeight}"
+                                Padding="{TemplateBinding Padding}"
+                                Margin="0"
+                                DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}" />
+
+                    <Popup Name="PART_Popup"
+                            WindowManagerAddShadowHint="False"
+                            MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                            IsLightDismissEnabled="True"
+                            PlacementTarget="{TemplateBinding}">
+                        <Border Name="PART_SuggestionsContainer"
+                                Padding="{DynamicResource AutoCompleteListMargin}"
+                                BorderThickness="{DynamicResource AutoCompleteListBorderThemeThickness}"
+                                BorderBrush="{DynamicResource AutoCompleteBoxSuggestionsListBorderBrush}"
+                                Background="{DynamicResource AutoCompleteBoxSuggestionsListBackground}"
+                                CornerRadius="{DynamicResource OverlayCornerRadius}">
+                            <ListBox Name="PART_SelectingItemsControl"
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        ItemTemplate="{TemplateBinding ItemTemplate}"
+                                        Margin="{DynamicResource AutoCompleteListPadding}" />
+                        </Border>
+                    </Popup>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

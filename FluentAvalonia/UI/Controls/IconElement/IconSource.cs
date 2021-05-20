@@ -40,6 +40,10 @@ namespace FluentAvalonia.UI.Controls
             {
                 return new SymbolIconSource { Symbol = symbol };
             }
+			else if (value is IImage img)
+			{
+				return new ImageIconSource { Source = img };
+			}
             else if (value is string val)
             {
                 //First we try if the text is a valid Symbol

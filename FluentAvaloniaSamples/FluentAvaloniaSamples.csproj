@@ -1,32 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+      <TargetFramework>net5.0</TargetFramework>
+      <StartupObject></StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <AvaloniaResource Include="**\*.xaml">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Include="DescriptionTexts\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
+    <PackageReference Include="Avalonia" Version="0.10.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.4" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="FluentAvalonia">
-      <HintPath>..\FluentAvalonia\bin\Debug\netcoreapp3.1\FluentAvalonia.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>

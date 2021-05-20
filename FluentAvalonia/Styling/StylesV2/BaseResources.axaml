@@ -1,0 +1,35 @@
+<Styles xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <!-- New FluentUI Icons from Microsoft, embedded in assembly
+             NOTE: Changing this font, will break design of most FluentAvalonia controls-->
+        <FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular</FontFamily>
+        <FontFamily x:Key="SymbolThemeFontFamilyFilled">avares://FluentAvalonia/Fonts/FluentSystemIcons-Filled.ttf#FluentSystemIcons-Filled</FontFamily>
+        <FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>
+
+        <!--Updated to new corner radius -->
+        <CornerRadius x:Key="ControlCornerRadius">5</CornerRadius>
+        <CornerRadius x:Key="OverlayCornerRadius">9</CornerRadius>
+
+        <x:Double x:Key="ControlContentThemeFontSize">14</x:Double>
+        <Thickness x:Key="FlyoutContentThemePadding">12,11,12,12</Thickness>
+        <x:Double x:Key="FlyoutThemeMaxHeight">758</x:Double>
+        <x:Double x:Key="FlyoutThemeMaxWidth">456</x:Double>
+        <x:Double x:Key="FlyoutThemeMinHeight">40</x:Double>
+        <x:Double x:Key="FlyoutThemeMinWidth">96</x:Double>
+
+        <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
+        <Thickness x:Key="TextControlBorderThemeThicknessFocused">2</Thickness>
+        <Thickness x:Key="TextControlThemePadding">10,6,6,5</Thickness>
+        <x:Double x:Key="TextControlThemeMinHeight">32</x:Double>
+        <x:Double x:Key="TextControlThemeMinWidth">64</x:Double>
+        
+        <!--
+        Preserving for reference:
+        <x:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</x:String>
+        <x:String x:Key="ControlNormalAnimationDuration">00:00:00.250</x:String>
+        <x:String x:Key="ControlFastAnimationDuration">00:00:00.167</x:String>
+        <x:String x:Key="ControlFastAnimationAfterDuration">00:00:00.168</x:String>
+        <x:String x:Key="ControlFasterAnimationDuration">00:00:00.083</x:String>-->
+    </Styles.Resources>
+</Styles>

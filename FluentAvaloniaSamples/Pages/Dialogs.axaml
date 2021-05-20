@@ -1,0 +1,80 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:local="using:FluentAvaloniaSamples"
+             d:DesignWidth="800"
+             mc:Ignorable="d" x:Class="FluentAvaloniaSamples.Pages.Dialogs">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="10">            
+            <ui:ContentDialog Name="PreviewContentDialog" 
+                              IsVisible="False"
+                              Title="Content Dialog" 
+                              Content="Content here" 
+                              PrimaryButtonText="Primary" 
+                              SecondaryButtonText="Secondary" 
+                              CloseButtonText="Close" 
+                              DefaultButton="{Binding #DefButtonSelector.SelectedItem.Content}"/>
+
+            <local:ControlExample Header="ContentDialog" 
+                                  TargetType="ContentDialog"
+                                  UsageNotes="{Binding ContentDialogUsageNotes}"
+                                  DynamicXamlTarget="{Binding #PreviewContentDialog}"
+                                  DynamicXamlProperties="Title;Content;PrimaryButtonText;SecondaryButtonText;CloseButtonText;IsPrimaryButtonEnabled;IsSecondaryButtonEnabled;IsFullSizeDesired">
+                <StackPanel Orientation="Vertical" Margin="0 20 0 0" Grid.Row="1">
+                    <Button Content="Launch ContentDialog" Command="{Binding LaunchContentDialog}" CommandParameter="{Binding ElementName=PreviewContentDialog}" Margin="10 3"/>
+                    <Button Content="Launch ContentDialog with Primary Button Deferral" Command="{Binding LaunchContentDialogWithDeferral}" CommandParameter="{Binding ElementName=PreviewContentDialog}" Margin="10 3" ToolTip.ShowDelay="50" ToolTip.Tip="A deferral is a way to block closing of the content dialog while you run async code. &#x0a; Handle the click event of one of the buttons, get the deferral, run your code, then call Complete() when you're done. &#x0a; Here, we just wait 3 seconds before closing.">
+                        <Button.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                                <Setter Property="TextAlignment" Value="Center" />
+                            </Style>
+                        </Button.Styles>
+                    </Button>
+                </StackPanel>
+
+                <local:ControlExample.Options>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Enabled Buttons"/>
+                            <CheckBox Content="Primary" IsChecked="{Binding ElementName=PreviewContentDialog, Path=IsPrimaryButtonEnabled}"/>
+                            <CheckBox Content="Secondary" IsChecked="{Binding ElementName=PreviewContentDialog, Path=IsSecondaryButtonEnabled}"/>
+                            <TextBlock Text="Default Button"/>
+                            <ComboBox Name="DefButtonSelector" MinWidth="90" SelectedIndex="0">
+                                <ComboBoxItem Content="None" />
+                                <ComboBoxItem Content="Primary" />
+                                <ComboBoxItem Content="Secondary" />
+                                <ComboBoxItem Content="Close" />
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Width="150">
+                            <TextBlock Text="Title"/>
+                            <TextBox Text="{Binding ElementName=PreviewContentDialog, Path=Title}" />
+                            <TextBlock Text="Content"/>
+                            <TextBox Text="{Binding ElementName=PreviewContentDialog, Path=Content}" />
+                            <TextBlock Text="PrimaryButtonText"/>
+                            <TextBox Text="{Binding ElementName=PreviewContentDialog, Path=PrimaryButtonText}" />
+                            <TextBlock Text="SecondaryButtonText"/>
+                            <TextBox Text="{Binding ElementName=PreviewContentDialog, Path=SecondaryButtonText}" />
+                            <TextBlock Text="CloseButtonText"/>
+                            <TextBox Text="{Binding ElementName=PreviewContentDialog, Path=CloseButtonText}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="20 0">
+                            <CheckBox Content="Full Size" IsChecked="{Binding ElementName=PreviewContentDialog, Path=FullSizeDesired}" ToolTip.ShowDelay="100" ToolTip.Tip="Full size stretches the dialog to &quot;full screen&quot;. &#x0a; Though, it just stretches it to the height size of a Content Dialog. &#x0a; This is consistent with WinUI3 ATM"/>
+                        </StackPanel>
+                    </StackPanel>
+                </local:ControlExample.Options>
+                
+            </local:ControlExample>
+
+            <local:ControlExample Header="PickerFlyoutBase" TargetType="PickerFlyoutBase"
+                                  UsageNotes="{Binding PickerFlyoutBaseUsageNotes}"/>
+
+            <local:ControlExample Header="PickerFlyoutPresenter" TargetType="PickerFlyoutPresenter"
+                                  UsageNotes="{Binding PickerFlyoutPresenterUsageNotes}">
+                <ui:PickerFlyoutPresenter Width="200" Height="150" Content="Content for flyout goes here"/>
+            </local:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

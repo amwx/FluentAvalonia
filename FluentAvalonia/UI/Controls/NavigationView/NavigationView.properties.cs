@@ -204,7 +204,12 @@ namespace FluentAvalonia.UI.Controls
                         InvalidateTopNavPrimaryLayout();
                     }
 
-                    //Update backbutton layout
+					// Enabling back button shifts grid instead of resizing, so let's update the layout.
+					if (_backButton != null)
+					{
+						//Don't have update layout, so
+						_backButton.InvalidateMeasure();
+					}
                     UpdatePaneLayout();
                 }
             }
@@ -321,11 +326,7 @@ namespace FluentAvalonia.UI.Controls
             get => _selectedItem;
             set
             {
-                var old = _selectedItem;
-                if (SetAndRaise(SelectedItemProperty, ref _selectedItem, value))
-                {
-                    OnSelectedItemPropertyChanged(old, value);
-                }
+				SetAndRaise(SelectedItemProperty, ref _selectedItem, value);
             }
         }
 

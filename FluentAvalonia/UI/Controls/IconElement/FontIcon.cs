@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Text;

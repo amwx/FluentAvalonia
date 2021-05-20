@@ -1,14 +1,17 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using System;
-using System.Runtime.InteropServices;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.Core;
+using System.Collections.Generic;
+using AvColor = Avalonia.Media.Color;
+using Avalonia.Interactivity;
+using Avalonia.VisualTree;
+using System.Linq;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -16,11 +19,58 @@ namespace FluentAvalonia.UI.Controls
     {
         public ColorPicker()
         {
-            Color = Colors.Red;
-        }
 
-        public static readonly StyledProperty<Color2> ColorProperty =
-            AvaloniaProperty.Register<ColorPicker, Color2>("Color", Colors.Red, defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
+		}
+
+		public static readonly StyledProperty<Color2> PreviousColorProperty =
+			AvaloniaProperty.Register<ColorPicker, Color2>("PreviousColor", Colors.Red, defaultBindingMode: BindingMode.TwoWay);
+
+		public static readonly StyledProperty<Color2> ColorProperty =
+			AvaloniaProperty.Register<ColorPicker, Color2>("Color", Colors.Red, defaultBindingMode: BindingMode.TwoWay);
+
+		public static readonly DirectProperty<ColorPicker, ColorTextType> ColorTextTypeProperty =
+			AvaloniaProperty.RegisterDirect<ColorPicker, ColorTextType>("ColorTextType",
+				x => x.ColorTextType, (x, v) => x.ColorTextType = v);
+
+		public static readonly DirectProperty<ColorPicker, ColorSpectrumComponents> ComponentProperty =
+			AvaloniaProperty.RegisterDirect<ColorPicker, ColorSpectrumComponents>("Component",
+				x => x.Component, (x, v) => x.Component = v);
+
+		public static readonly StyledProperty<bool> IsMoreButtonVisibleProperty =
+			AvaloniaProperty.Register<ColorPicker, bool>("IsMoreButtonVisible");
+
+		public static readonly DirectProperty<ColorPicker, bool> IsCompactProperty =
+			AvaloniaProperty.RegisterDirect<ColorPicker, bool>("IsCompact",
+				x => x.IsCompact, (x, v) => x.IsCompact = v);
+
+		public static readonly DirectProperty<ColorPicker, bool> IsAlphaEnabledProperty =
+			AvaloniaProperty.RegisterDirect<ColorPicker, bool>("IsAlphaEnabled",
+				x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
+
+		public static readonly StyledProperty<bool> UseSpectrumProperty =
+			AvaloniaProperty.Register<ColorPicker, bool>("UseSpectrum", defaultValue: true);
+
+		public static readonly StyledProperty<bool> UseColorWheelProperty =
+			AvaloniaProperty.Register<ColorPicker, bool>("UseColorWheel");
+
+		public static readonly StyledProperty<bool> UseColorTriangleProperty =
+			AvaloniaProperty.Register<ColorPicker, bool>("UseColorTriangle");
+
+		public static readonly StyledProperty<bool> UseColorPaletteProperty =
+			AvaloniaProperty.Register<ColorPicker, bool>("UseColorPalette");
+
+		public static readonly DirectProperty<ColorPicker, IEnumerable<AvColor>> CustomPaletteColorsProperty =
+			AvaloniaProperty.RegisterDirect<ColorPicker, IEnumerable<AvColor>>("CustomPaletteColors", x => x.CustomPaletteColors, (x, v) => x.CustomPaletteColors = v);
+
+		public static readonly StyledProperty<int> PaletteColumnCountProperty =
+			AvaloniaProperty.Register<ColorPicker, int>("PaletteColumnCount", defaultValue:10);
+
+
+		public Color2 PreviousColor
+		{
+			get => GetValue(PreviousColorProperty);
+			set => SetValue(PreviousColorProperty, value);
+		}
 
         public Color2 Color
         {
@@ -28,86 +78,46 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(ColorProperty, value);
         }
 
-        public static readonly DirectProperty<ColorPicker, ColorTextType> ColorTextTypeProperty =
-            AvaloniaProperty.RegisterDirect<ColorPicker, ColorTextType>("ColorTextType",
-                x => x.ColorTextType, (x,v) => x.ColorTextType = v);
+		public ColorTextType ColorTextType
+		{
+			get => _textType;
+			set
+			{
+				if (SetAndRaise(ColorTextTypeProperty, ref _textType, value))
+				{
+					SetHexBoxHeader();
+					UpdateHexBox(Color);
+				}
+			}
+		}
 
-        public static readonly DirectProperty<ColorPicker, ColorSpectrumShape> SpectrumShapeProperty =
-            AvaloniaProperty.RegisterDirect<ColorPicker, ColorSpectrumShape>("SpectrumShape",
-                x => x.SpectrumShape, (x, v) => x.SpectrumShape = v);
+		public ColorSpectrumComponents Component
+		{
+			get => _component;
+			set
+			{
+				if (SetAndRaise(ComponentProperty, ref _component, value))
+				{
+					UpdatePickerComponents();
+				}
+			}
+		}
 
-        public static readonly DirectProperty<ColorPicker, ColorSpectrumComponents> ComponentProperty =
-            AvaloniaProperty.RegisterDirect<ColorPicker, ColorSpectrumComponents>("Component",
-                x => x.Component, (x, v) => x.Component = v);
+		public bool IsMoreButtonVisible
+		{
+			get => GetValue(IsMoreButtonVisibleProperty);
+			set => SetValue(IsMoreButtonVisibleProperty, value);
+		}
 
-        public static readonly DirectProperty<ColorPicker, bool> IsMoreButtonVisibleProperty =
-            AvaloniaProperty.RegisterDirect<ColorPicker, bool>("IsMoreButtonVisible",
-                x => x.IsMoreButtonVisible, (x, v) => x.IsMoreButtonVisible = v);
-
-        public static readonly DirectProperty<ColorPicker, bool> IsTextInputVisibleProperty =
-            AvaloniaProperty.RegisterDirect<ColorPicker, bool>("IsTextInputVisible",
-                x => x.IsTextInputVisible, (x, v) => x.IsTextInputVisible = v);
-
-        public static readonly DirectProperty<ColorPicker, bool> IsAlphaEnabledProperty =
-            AvaloniaProperty.RegisterDirect<ColorPicker, bool>("IsAlphaEnabled",
-                x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
-
-        public ColorTextType ColorTextType
-        {
-            get => _textType;
+        public bool IsCompact
+		{
+            get => _isCompact;
             set
             {
-                if(SetAndRaise(ColorTextTypeProperty, ref _textType, value))
+                if (SetAndRaise(IsCompactProperty, ref _isCompact, value))
                 {
-                    UpdateHexBox(Color);
-                }
-            }
-        }
-
-        public ColorSpectrumShape SpectrumShape
-        {
-            get => _shape;
-            set
-            {
-                if (SetAndRaise(SpectrumShapeProperty, ref _shape, value))
-                {
-                    UpdateSpectrumShape();
-                }
-            }
-        }
-
-        public ColorSpectrumComponents Component
-        {
-            get => _component;
-            set
-            {
-                if (SetAndRaise(ComponentProperty, ref _component, value))
-                {
-                    UpdatePickerComponents();
-                }
-            }
-        }
-
-        public bool IsMoreButtonVisible
-        {
-            get => _moreVisible;
-            set 
-            {
-                if (SetAndRaise(IsMoreButtonVisibleProperty, ref _moreVisible, value))
-                {
-                    UpdateInputDisplays();
-                }
-            }
-        }
-
-        public bool IsTextInputVisible
-        {
-            get => _isTextInputVisible;
-            set
-            {
-                if (SetAndRaise(IsTextInputVisibleProperty, ref _isTextInputVisible, value))
-                {
-                    UpdateInputDisplays();
+					PseudoClasses.Set(":compact", value);
+					SetAsCompactMode();
                 }
             }
         }
@@ -119,14 +129,49 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (SetAndRaise(IsAlphaEnabledProperty, ref _isAlphaEnabled, value))
                 {
-                    UpdateInputDisplays();
+					PseudoClasses.Set(":alpha", value);
                 }
             }
         }
 
-        public event TypedEventHandler<ColorPicker, ColorChangedEventArgs> ColorChanged;
-        
+		public bool UseSpectrum
+		{
+			get => GetValue(UseSpectrumProperty);
+			set => SetValue(UseSpectrumProperty, value);
+		}
 
+		public bool UseColorWheel
+		{
+			get => GetValue(UseColorWheelProperty);
+			set => SetValue(UseColorWheelProperty, value);
+		}
+
+		public bool UseColorTriangle
+		{
+			get => GetValue(UseColorTriangleProperty);
+			set => SetValue(UseColorTriangleProperty, value);
+		}
+
+		public bool UseColorPalette
+		{
+			get => GetValue(UseColorPaletteProperty);
+			set => SetValue(UseColorPaletteProperty, value);
+		}
+
+		public IEnumerable<AvColor> CustomPaletteColors
+		{
+			get => _customPaletteColors;
+			set => SetAndRaise(CustomPaletteColorsProperty, ref _customPaletteColors, value);
+		}
+
+		public int PaletteColumnCount
+		{
+			get => GetValue(PaletteColumnCountProperty);
+			set => SetValue(PaletteColumnCountProperty, value);
+		}
+
+		public event TypedEventHandler<ColorPicker, ColorChangedEventArgs> ColorChanged;
+        
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             //Disconnect event handlers...
@@ -137,537 +182,874 @@ namespace FluentAvalonia.UI.Controls
 
             base.OnApplyTemplate(e);
 
-            _spectrum = e.NameScope.Find<ColorSpectrum>("ColorSpectrum");
-            _spectrum.ColorChanged += OnSpectrumColorChanged; ;
-
-            _thirdComponentSlider = e.NameScope.Find<ColorRamp>("ThirdComponentSlider");
-            _thirdComponentSlider.ColorChanged += OnThirdComponentColorChanged; ;
-
-            _opacityComponentSlider = e.NameScope.Find<ColorRamp>("AlphaSlider");
-            _opacityComponentSlider.ColorChanged += OnOpacitySliderColorChanged;
-
-            _colorTypeSelector = e.NameScope.Find<Avalonia.Controls.ComboBox>("ColorTypeSelector");
-            _colorTypeSelector.SelectionChanged += OnColorTypeChanged;
-
-            _moreButton = e.NameScope.Find<ToggleButton>("MoreButton");
-            _moreButton.Checked += MoreButtonChecked;
-            _moreButton.Unchecked += MoreButtonChecked;
-
-            var t = e.NameScope.Find<Border>("TransparentBackground");
-            if (t != null)
-            {
-                t.Background = CreateTransparentBackground();
-            }
-
-            _comp1Box = e.NameScope.Find<TextBox>("Comp1TB");
-            _comp1Label = e.NameScope.Find<TextBlock>("Comp1Label");
-
-            _comp2Box = e.NameScope.Find<TextBox>("Comp2TB");
-            _comp2Label = e.NameScope.Find<TextBlock>("Comp2Label");
-
-            _comp3Box = e.NameScope.Find<TextBox>("Comp3TB");
-            _comp3Label = e.NameScope.Find<TextBlock>("Comp3Label");
-
-            _opacityBox = e.NameScope.Find<TextBox>("AlphaTB");
-            _opacityLabel = e.NameScope.Find<TextBlock>("AlphaLabel");
-
-            _comp1Box.AddHandler(TextBox.TextInputEvent, OnCompBoxInput, Avalonia.Interactivity.RoutingStrategies.Tunnel);
-            _comp2Box.AddHandler(TextBox.TextInputEvent, OnCompBoxInput, Avalonia.Interactivity.RoutingStrategies.Tunnel);
-            _comp3Box.AddHandler(TextBox.TextInputEvent, OnCompBoxInput, Avalonia.Interactivity.RoutingStrategies.Tunnel);
-            _opacityBox.AddHandler(TextBox.TextInputEvent, OnCompBoxInput, Avalonia.Interactivity.RoutingStrategies.Tunnel);
-
-            _hexBox = e.NameScope.Find<TextBox>("HexBox");
-            _hexBox.KeyDown += OnHexBoxInput;
-
-            _newColorPreview = e.NameScope.Find<Border>("CurrentColorPreview");
-
-            _textEntryGrid = e.NameScope.Find<Grid>("TextEntryGrid");
-
-            _templateApplied = true;
-            var col = Color;
-            UpdateColorAndControls(col, ColorUpdateReason.Initial);
-                       
-            if (!_previousColor.HasValue)
-            {
-                _previousColor = col;
-
-                e.NameScope.Find<Border>("PreviousColorPreview").Background = new Avalonia.Media.SolidColorBrush(col);
-            }
-
-            
-            UpdateInputDisplays();
-            UpdateSpectrumShape();
-            UpdatePickerComponents();
-        }
-
-
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
-        {
-            base.OnPropertyChanged(change);
-            if (change.Property == ColorProperty)
-            {
-                if (!_ignoreColorChange)
-                {
-                    UpdateColorAndControls(change.NewValue.GetValueOrDefault<Color2>(), ColorUpdateReason.Programmatic);                    
-                }
-            }
-        }
-
-        private void UpdateColorAndControls(Color2 col, ColorUpdateReason reason)
-        {
-            if (!_templateApplied)
-                return;
-
-            _ignoreColorChange = true;
-
-            var old = Color;
-            if (reason != ColorUpdateReason.Programmatic)
-                Color = col;
-
-            switch (reason)
-            {
-                case ColorUpdateReason.Initial:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.Spectrum:
-                    UpdateSpectrum(col, false, true);
-                    UpdateBoxes(col, true, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.ThirdComponent:
-                    UpdateSpectrum(col, true, false);
-
-                    UpdateBoxes(col, true, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.AlphaSlider:
-                    UpdateSpectrum(col, true, true);
-                    //UpdateBoxes(true, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, false, true);
-                    break;
-
-                case ColorUpdateReason.RedBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, false, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.HueBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, false, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.GreenBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, false, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.SaturationBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, false, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.BlueBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, true, false);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.ValueBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, true, false);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.AlphaBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, false);
-                    break;
-
-                case ColorUpdateReason.HexBox:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, true, true);
-                    UpdateOpacity(col, true, true);
-                    break;
-
-                case ColorUpdateReason.Programmatic:
-                    UpdateSpectrum(col, true, true);
-                    UpdateBoxes(col, true, true, true);
-                    UpdateHexBox(col);
-                    UpdateOpacity(col, true, true);
-                    break;
-            }
-
-            _newColorPreview.Background = new SolidColorBrush(col);
-            RaiseColorChangedEvent(old, col);
-            _ignoreColorChange = false;
-        }
-
-        private void OnOpacitySliderColorChanged(ColorPickerComponent sender, ColorChangedEventArgs args)
-        {
-            if (!_templateApplied || _ignoreColorChange)
-                return;
-
-            UpdateColorAndControls(args.NewColor, ColorUpdateReason.AlphaSlider);
-        }
-        
-        private void OnThirdComponentColorChanged(ColorPickerComponent sender, ColorChangedEventArgs args)
-        {
-            if (!_templateApplied || _ignoreColorChange)
-                return;
-
-            UpdateColorAndControls(args.NewColor, ColorUpdateReason.ThirdComponent);
-        }
-
-        private void OnSpectrumColorChanged(ColorPickerComponent sender, ColorChangedEventArgs args)
-        {
-            if (!_templateApplied || _ignoreColorChange)
-                return;
-
-            UpdateColorAndControls(args.NewColor, ColorUpdateReason.Spectrum);
-        }
-
-        private void OnCompBoxInput(object sender, TextInputEventArgs e)
-        {
-            if (!_templateApplied || _ignoreColorChange)
-                return;
-            if (sender == _comp1Box)
-            {
-                var colorType = _colorTypeSelector.SelectedIndex;
-                if (colorType == 0 && float.TryParse(_comp1Box.Text, out float res) && (res >= 0 && res <= 255))
-                {
-                    UpdateColorAndControls(Color.WithRedf(res / 255), ColorUpdateReason.RedBox);
-                }
-                else if(colorType == 1 && float.TryParse(_comp1Box.Text, out float res1) && (res1 >= 0 && res1 <= 100))
-                {
-                    UpdateColorAndControls(Color.WithHuef(res1), ColorUpdateReason.HueBox);
-                }
-            }
-            else if (sender == _comp2Box)
-            {
-                var colorType = _colorTypeSelector.SelectedIndex;
-                if (colorType == 0 && float.TryParse(_comp2Box.Text, out float res) && (res >= 0 && res <= 255))
-                {
-                    UpdateColorAndControls(Color.WithGreenf(res / 255), ColorUpdateReason.GreenBox);
-                }
-                else if (colorType == 1 && float.TryParse(_comp2Box.Text, out float res1) && (res1 >= 0 && res1 <= 100))
-                {
-                    UpdateColorAndControls(Color.WithSatf(res1 / 100), ColorUpdateReason.SaturationBox);
-                }
-            }
-            else if (sender == _comp3Box)
-            {
-                var colorType = _colorTypeSelector.SelectedIndex;
-                if (colorType == 0 && float.TryParse(_comp3Box.Text, out float res) && (res >= 0 && res <= 255))
-                {
-                    UpdateColorAndControls(Color.WithBluef(res / 255), ColorUpdateReason.BlueBox);
-                }
-                else if (colorType == 1 && float.TryParse(_comp3Box.Text, out float res1) && (res1 >= 0 && res1 <= 100))
-                {
-                    UpdateColorAndControls(Color.WithValf(res1 / 100), ColorUpdateReason.ValueBox);
-                }
-            }
-            else if (sender == _opacityBox)
-            {
-                var colorType = _colorTypeSelector.SelectedIndex;
-                if (float.TryParse(_opacityBox.Text, out float res) && (res >= 0 && res <= 255))
-                {
-                    UpdateColorAndControls(Color.WithAlphaf(res / 255), ColorUpdateReason.AlphaBox);
-                }
-            }
-        }
-
-        private void OnColorTypeChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _colorSpace = _colorTypeSelector.SelectedIndex;
-            if (_colorTypeSelector.SelectedIndex == 1) //HSV
-            {
-                _comp1Label.Text = "Hue";
-                _comp2Label.Text = "Saturation";
-                _comp3Label.Text = "Value";
-            }
-            else if (_colorTypeSelector.SelectedIndex == 0) //RGB
-            {
-                _comp1Label.Text = "Red";
-                _comp2Label.Text = "Green";
-                _comp3Label.Text = "Blue";
-            }
-
-            //We need the boxes to update, spectrum is most expensive to invalidate, so
-            //call that as update method
-            UpdateColorAndControls(Color, ColorUpdateReason.Spectrum);
-        }
-
-        private void UpdateSpectrum(Color2 col, bool spectrum, bool third)
-        {
-            if (spectrum)
-                _spectrum.Color = col;
-
-            if(third && _spectrum.Shape != ColorSpectrumShape.Triangle)
-                _thirdComponentSlider.Color = col;
-        }
-
-        private void UpdateBoxes(Color2 col, bool first, bool second, bool third)
-        {
-            if (_colorSpace == 0)
-            {
-                _comp1Box.Text = col.R.ToString();
-                _comp2Box.Text = col.G.ToString();
-                _comp3Box.Text = col.B.ToString();
-            }
-            else if (_colorSpace == 1)
-            {
-                _comp1Box.Text = col.Hue.ToString();
-                _comp2Box.Text = col.Saturation.ToString();
-                _comp3Box.Text = col.Value.ToString();
-            }
-        }
-
-        private void UpdateHexBox(Color2 col)
-        {
-            switch (_textType)
-            {
-                case ColorTextType.Hex:
-                    _hexBox.Text = col.ToHexString(false);
-                    break;
-                case ColorTextType.HexAlpha:
-                    _hexBox.Text = col.ToHexString();
-                    break;
-
-                case ColorTextType.RGB:
-                    _hexBox.Text = col.ToHTML(false);
-                    break;
-                case ColorTextType.RGBA:
-                    _hexBox.Text = col.ToHTML();
-                    break;
-            }
-        }
-
-        private void UpdateOpacity(Color2 col, bool slider, bool box)
-        {
-            if (slider)
-                _opacityComponentSlider.Color = col;
-
-            if (box)
-                _opacityBox.Text = col.A.ToString();
-        }
-
-        private void OnHexBoxInput(object sender, KeyEventArgs args)
-        {
-            if (args.Key == Key.Enter)
-            {
-                if (Color2.TryParse(_hexBox.Text, out Color2 c))
-                {
-                    UpdateColorAndControls(c, ColorUpdateReason.HexBox);
-                    DataValidationErrors.SetError(_hexBox, null);
-                }
-                else
-                {
-                    DataValidationErrors.SetError(_hexBox, new Exception("Invalid input"));
-                }
-
-                args.Handled = true;
-            }
-        }
-
-        private void MoreButtonChecked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            UpdateInputDisplays();
-        }
-
-        private IBrush CreateTransparentBackground()
-        {
-            RenderTargetBitmap rtb = new RenderTargetBitmap(new PixelSize(50, 50));
-            using (var context = rtb.CreateDrawingContext(null))
-            {
-                bool white = true;
-                for (int i = 0; i < 50; i += 5)
-                {
-
-                    for (int j = 0; j < 50; j += 5)
-                    {
-                        if (white)
-                        {
-                            context.DrawRectangle(Brushes.White, null, new Rect(i, j, 5, 5));
-                        }
-                        else
-                        {
-                            context.DrawRectangle(Brushes.LightGray, null, new Rect(i, j, 5, 5));
-                        }
-                        white = !white;
-                    }
-                    white = !white;
-                }
-            }
-            var b = new ImageBrush(rtb);
-            b.TileMode = TileMode.Tile;
-            b.BitmapInterpolationMode = Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality;
-            b.DestinationRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
-            return b.ToImmutable();
-        }
-
-        public void OnHexTextContextMenuItemClick(object param)
-        {
-            if (param != null)
-            {
-                if (param.Equals("#AARRGGBB"))
-                {
-                    ColorTextType = ColorTextType.HexAlpha;
-                }
-                else if (param.Equals("#RRGGBB"))
-                {
-                    ColorTextType = ColorTextType.Hex;
-                }
-                else if (param.ToString().Contains("rgba"))
-                {
-                    ColorTextType = ColorTextType.RGBA;
-                }
-                else if (param.ToString().Contains("rgb"))
-                {
-                    ColorTextType = ColorTextType.RGB;
-                }
-            }
-        }
-
-        private void UpdateSpectrumShape()
-        {
-            if (!_templateApplied)
-                return;
-
-            if (_shape == ColorSpectrumShape.Spectrum || _shape == ColorSpectrumShape.Wheel)
-            {
-                _thirdComponentSlider.IsVisible = true;
-            }
-            else
-            {
-                _thirdComponentSlider.IsVisible = false;
-            }
-            _spectrum.Shape = _shape;
-        }
-
-        private void UpdatePickerComponents()
-        {
-            if (!_templateApplied || _shape == ColorSpectrumShape.Triangle)
-                return;
-
-            if(_shape == ColorSpectrumShape.Wheel) //Wheel is Hue/Saturation
-            {
-                _thirdComponentSlider.Component = ColorComponent.Value;
-                return;
-            }
-
-            switch (_component)
-            {
-                case ColorSpectrumComponents.SaturationValue:
-                    _spectrum.Component = ColorComponent.Hue;
-                    _thirdComponentSlider.Component = ColorComponent.Hue;
-                    break;
-                case ColorSpectrumComponents.SaturationHue:
-                    _spectrum.Component = ColorComponent.Value;
-                    _thirdComponentSlider.Component = ColorComponent.Value;
-                    break;
-                case ColorSpectrumComponents.ValueHue:
-                    _spectrum.Component = ColorComponent.Saturation;
-                    _thirdComponentSlider.Component = ColorComponent.Saturation;
-                    break;
-
-                case ColorSpectrumComponents.BlueGreen:
-                    _spectrum.Component = ColorComponent.Red;
-                    _thirdComponentSlider.Component = ColorComponent.Red;
-                    break;
-                case ColorSpectrumComponents.BlueRed:
-                    _spectrum.Component = ColorComponent.Green;
-                    _thirdComponentSlider.Component = ColorComponent.Green;
-                    break;
-                case ColorSpectrumComponents.GreenRed:
-                    _spectrum.Component = ColorComponent.Blue;
-                    _thirdComponentSlider.Component = ColorComponent.Blue;
-                    break;
-            }
-
-        }
-
-        private void UpdateInputDisplays()
-        {
-            if (!_templateApplied)
-                return;
-
-            _moreButton.IsVisible = _moreVisible;
-
-            _textEntryGrid.IsVisible = _isTextInputVisible && ((_moreVisible && _moreButton.IsChecked.Value) || !_moreVisible);
-
-            _opacityComponentSlider.IsVisible = _isAlphaEnabled;
-            _opacityBox.IsVisible = _isAlphaEnabled;
-            _opacityLabel.IsVisible = _isAlphaEnabled;
-        }
-
-        private void RaiseColorChangedEvent(Color2 oldColor, Color2 newColor)
+			_displayItemTabControl = e.NameScope.Find<TabControl>("DisplayItemTabControl");
+			if (_displayItemTabControl != null)
+			{
+				_displayItemTabControl.SelectionChanged += OnDisplayItemChanged;
+			}
+
+			_textEntryTabHost = e.NameScope.Find<Panel>("TextEntryTabHost");
+			_rootGrid = e.NameScope.Find<Grid>("Root");
+			_textEntryArea = e.NameScope.Find<StackPanel>("TextEntryArea");
+						
+			_spectrum = e.NameScope.Find<ColorSpectrum>("Spectrum");
+			if (_spectrum != null)
+			{
+				_spectrum.ColorChanged += OnSpectrumColorChanged;
+			}
+
+			_thirdComponentSlider = e.NameScope.Find<ColorRamp>("ThirdComponentRamp");
+			if (_thirdComponentSlider != null)
+			{
+				_thirdComponentSlider.ColorChanged += OnThirdComponentColorChanged;
+			}
+
+			_opacityComponentSlider = e.NameScope.Find<ColorRamp>("SpectrumAlphaRamp");
+			if (_opacityComponentSlider != null)
+			{
+				_opacityComponentSlider.ColorChanged += OnSpectrumAlphaChanged;
+			}
+
+			_hueButton = e.NameScope.Find<RadioButton>("HueRadio");
+			if (_hueButton != null)
+			{
+				_hueButton.Checked += OnComponentRBChecked;
+			}
+			_satButton = e.NameScope.Find<RadioButton>("SatRadio");
+			if (_satButton != null)
+			{
+				_satButton.Checked += OnComponentRBChecked;
+			}
+			_valButton = e.NameScope.Find<RadioButton>("ValRadio");
+			if (_valButton != null)
+			{
+				_valButton.Checked += OnComponentRBChecked;
+			}
+			_redButton = e.NameScope.Find<RadioButton>("RedRadio");
+			if (_redButton != null)
+			{
+				_redButton.Checked += OnComponentRBChecked;
+			}
+			_greenButton = e.NameScope.Find<RadioButton>("GreenRadio");
+			if (_greenButton != null)
+			{
+				_greenButton.Checked += OnComponentRBChecked;
+			}
+			_blueButton = e.NameScope.Find<RadioButton>("BlueRadio");
+			if (_blueButton != null)
+			{
+				_blueButton.Checked += OnComponentRBChecked;
+			}
+
+			_hueBox = e.NameScope.Find<NumberBox>("HueBox");
+			if (_hueBox != null)
+			{
+				_hueBox.ValueChanged += OnComponentBoxValueChanged;
+			}
+			_satBox = e.NameScope.Find<NumberBox>("SatBox");
+			if (_satBox != null)
+			{
+				_satBox.ValueChanged += OnComponentBoxValueChanged;
+			}
+			_valBox = e.NameScope.Find<NumberBox>("ValBox");
+			if (_valBox != null)
+			{
+				_valBox.ValueChanged += OnComponentBoxValueChanged;
+			}
+			_redBox = e.NameScope.Find<NumberBox>("RedBox");
+			if (_redBox != null)
+			{
+				_redBox.ValueChanged += OnComponentBoxValueChanged;
+			}
+			_greenBox = e.NameScope.Find<NumberBox>("GreenBox");
+			if (_greenBox != null)
+			{
+				_greenBox.ValueChanged += OnComponentBoxValueChanged;
+			}
+			_blueBox = e.NameScope.Find<NumberBox>("BlueBox");
+			if (_blueBox != null)
+			{
+				_blueBox.ValueChanged += OnComponentBoxValueChanged;
+			}
+			_alphaBox = e.NameScope.Find<NumberBox>("AlphaBox");
+			if (_alphaBox != null)
+			{
+				_alphaBox.ValueChanged += OnComponentBoxValueChanged;
+			}
+
+			_hueRamp = e.NameScope.Find<ColorRamp>("HueRamp");
+			if (_hueRamp != null)
+			{
+				_hueRamp.ColorChanged += OnComponentRampColorChanged;
+			}
+			_satRamp = e.NameScope.Find<ColorRamp>("SatRamp");
+			if (_satRamp != null)
+			{
+				_satRamp.ColorChanged += OnComponentRampColorChanged;
+			}
+			_valRamp = e.NameScope.Find<ColorRamp>("ValRamp");
+			if (_valRamp != null)
+			{
+				_valRamp.ColorChanged += OnComponentRampColorChanged;
+			}
+			_redRamp = e.NameScope.Find<ColorRamp>("RedRamp");
+			if (_redRamp != null)
+			{
+				_redRamp.ColorChanged += OnComponentRampColorChanged;
+			}
+			_greenRamp = e.NameScope.Find<ColorRamp>("GreenRamp");
+			if (_greenRamp != null)
+			{
+				_greenRamp.ColorChanged += OnComponentRampColorChanged;
+			}
+			_blueRamp = e.NameScope.Find<ColorRamp>("BlueRamp");
+			if (_blueRamp != null)
+			{
+				_blueRamp.ColorChanged += OnComponentRampColorChanged;
+			}
+			_alphaRamp = e.NameScope.Find<ColorRamp>("AlphaRamp");
+			if (_alphaRamp != null)
+			{
+				_alphaRamp.ColorChanged += OnComponentRampColorChanged;
+			}
+
+			_hexBox = e.NameScope.Find<TextBox>("HexBox");
+			_hexBox.KeyDown += OnHexBoxKeyDown;
+
+			_rgbButton = e.NameScope.Find<ToggleButton>("RGBButton");
+			if (_rgbButton != null)
+			{
+				_rgbButton.Checked += OnColorTypeRBChecked;
+			}
+			_hsvButton = e.NameScope.Find<ToggleButton>("HSVButton");
+			if (_hsvButton != null)
+			{
+				_hsvButton.Checked += OnColorTypeRBChecked;
+			}
+
+			PseudoClasses.Set(":alpha", IsAlphaEnabled);
+			PseudoClasses.Set(":compact", IsCompact);
+			
+			_templateApplied = true;
+
+			if (IsCompact)
+			{
+				SetAsCompactMode();
+			}
+
+			UpdatePickerComponents();
+			OnDisplayItemChanged(null, null);
+
+			UpdateColorAndControls(Color, ColorUpdateReason.Initial);
+		}
+
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+			if (change.Property == ColorProperty)
+			{
+				if (!_ignoreColorChange)
+				{
+					UpdateColorAndControls(change.NewValue.GetValueOrDefault<Color2>(), ColorUpdateReason.Programmatic);
+				}
+			}
+		}
+
+		protected override void OnPointerReleased(PointerReleasedEventArgs e)
+		{
+			base.OnPointerReleased(e);
+			if (!e.Handled && e.InitialPressMouseButton == MouseButton.Left 
+				&& e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
+			{
+				if (e.Source is Border b)
+				{
+					if (b.Name == "Dark2PreviewBorder" || b.Name == "Dark1PreviewBorder"
+						 || b.Name == "Light1PreviewBorder" || b.Name == "Light2PreviewBorder")
+					{
+						Color = (b.Background as ISolidColorBrush)?.Color ?? Color;
+					}
+				}
+			}
+		}
+
+		private void OnDisplayItemChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (!_templateApplied)
+				return;
+
+			int selIndex = _displayItemTabControl.SelectedIndex;
+			if (selIndex == 0)
+			{
+				_spectrum.Shape = ColorSpectrumShape.Spectrum;
+				UpdatePickerComponents();
+
+				PseudoClasses.Set(":spectrum", true);
+				PseudoClasses.Set(":wheel", false);
+				PseudoClasses.Set(":triangle", false);
+				PseudoClasses.Set(":palette", false);
+				PseudoClasses.Set(":textentry", false);
+			}
+			else if (selIndex == 1)
+			{
+				_spectrum.Shape = ColorSpectrumShape.Wheel;
+
+				if (_thirdComponentSlider != null)
+				{
+					_thirdComponentSlider.Component = ColorComponent.Value;
+				}
+
+				PseudoClasses.Set(":spectrum", false);
+				PseudoClasses.Set(":wheel", true);
+				PseudoClasses.Set(":triangle", false);
+				PseudoClasses.Set(":palette", false);
+				PseudoClasses.Set(":textentry", false);
+			}
+			else if (selIndex == 2)
+			{
+				_spectrum.Shape = ColorSpectrumShape.Triangle;
+				PseudoClasses.Set(":spectrum", false);
+				PseudoClasses.Set(":wheel", false);
+				PseudoClasses.Set(":triangle", true);
+				PseudoClasses.Set(":palette", false);
+				PseudoClasses.Set(":textentry", false);
+			}
+			else if (selIndex == 3)
+			{
+				PseudoClasses.Set(":spectrum", false);
+				PseudoClasses.Set(":wheel", false);
+				PseudoClasses.Set(":triangle", false);
+				PseudoClasses.Set(":palette", true);
+				PseudoClasses.Set(":textentry", false);
+			}
+			else if (selIndex == 4)
+			{
+				PseudoClasses.Set(":spectrum", false);
+				PseudoClasses.Set(":wheel", false);
+				PseudoClasses.Set(":triangle", false);
+				PseudoClasses.Set(":palette", false);
+				PseudoClasses.Set(":textentry", true);
+			}
+		}
+
+		private void UpdatePickerComponents()
+		{
+			if (!_templateApplied || _spectrum == null || _thirdComponentSlider == null || !UseSpectrum)
+				return;
+
+			if (IsCompact)
+			{
+				//In Compact mode, we limit the Spectrum to Sat/Val, with the third component showing hue
+				//The radiobuttons are hidden, to keep the minimal UI, and I like this display mode best
+				//But don't override the actual setting, so we can restore if compact mode is turned off
+				_spectrum.Component = ColorComponent.Hue;
+				_thirdComponentSlider.Component = ColorComponent.Hue;
+				return;
+			}
+			
+			try
+			{
+				_ignoreRadioChange = true;
+
+				switch (_component)
+				{
+					case ColorSpectrumComponents.SaturationValue:
+						_spectrum.Component = ColorComponent.Hue;
+						_thirdComponentSlider.Component = ColorComponent.Hue;
+						
+						_hueButton.IsChecked = true;
+						break;
+					case ColorSpectrumComponents.ValueHue:
+						_spectrum.Component = ColorComponent.Saturation;
+						_thirdComponentSlider.Component = ColorComponent.Saturation;
+						_satButton.IsChecked = true;
+						break;
+					case ColorSpectrumComponents.SaturationHue:
+						_spectrum.Component = ColorComponent.Value;
+						_thirdComponentSlider.Component = ColorComponent.Value;
+						_valButton.IsChecked = true;
+						break;
+
+					case ColorSpectrumComponents.BlueGreen:
+						_spectrum.Component = ColorComponent.Red;
+						_thirdComponentSlider.Component = ColorComponent.Red;
+						_redButton.IsChecked = true;
+						break;
+					case ColorSpectrumComponents.BlueRed:
+						_spectrum.Component = ColorComponent.Green;
+						_thirdComponentSlider.Component = ColorComponent.Green;
+						_greenButton.IsChecked = true;
+						break;
+					case ColorSpectrumComponents.GreenRed:
+						_spectrum.Component = ColorComponent.Blue;
+						_thirdComponentSlider.Component = ColorComponent.Blue;
+						_blueButton.IsChecked = true;
+						break;
+				}
+			}
+			finally
+			{
+				_ignoreRadioChange = false;
+			}
+		}
+
+		private void UpdateColorAndControls(Color2 col, ColorUpdateReason reason)
+		{
+			if (!_templateApplied)
+				return;
+
+			try
+			{
+				_ignoreColorChange = true;
+
+				var old = Color;
+				if (reason != ColorUpdateReason.Programmatic)
+					Color = col;
+
+				switch (reason)
+				{
+					case ColorUpdateReason.Initial:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, true, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.Spectrum:
+						UpdateSpectrum(col, false, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.ThirdComponent:
+						UpdateSpectrum(col, true, false);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.SpectrumAlphaRamp:
+						UpdateSpectrum(col, true, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, false, true, true);
+						break;
+
+					case ColorUpdateReason.RedBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, false, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.HueBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, false, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.GreenBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, false, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.SaturationBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, false, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.BlueBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, false);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.ValueBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, false, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.AlphaBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, false, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.HexBox:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateOpacity(col, true, true, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+
+					case ColorUpdateReason.RedRamp:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateRamps(col, true, true, true, false, true, true);
+						UpdateOpacity(col, true, false, true);
+						UpdateHexBox(col);
+						break;
+
+					case ColorUpdateReason.HueSlider:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateRamps(col, false, true, true, true, true, true);
+						UpdateOpacity(col, true, false, true);
+						UpdateHexBox(col);
+						break;
+
+					case ColorUpdateReason.GreenRamp:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateRamps(col, true, true, true, true, false, true);
+						UpdateOpacity(col, true, false, true);
+						UpdateHexBox(col);
+						break;
+
+					case ColorUpdateReason.SaturationSlider:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateRamps(col, true, false, true, true, true, true);
+						UpdateOpacity(col, true, false, true);
+						UpdateHexBox(col);
+						break;
+
+					case ColorUpdateReason.BlueRamp:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateRamps(col, true, true, true, true, true, false);
+						UpdateOpacity(col, true, false, true);
+						UpdateHexBox(col);
+						break;
+
+					case ColorUpdateReason.ValueSlider:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateRamps(col, true, true, false, true, true, true);
+						UpdateOpacity(col, true, false, true);
+						UpdateHexBox(col);
+						break;
+
+					case ColorUpdateReason.AlphaRamp:
+						UpdateSpectrum(col, true, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, true, false);
+						break;
+
+					case ColorUpdateReason.Programmatic:
+						UpdateSpectrum(col, true, true);
+						UpdateBoxes(col, true, true, true, true, true, true);
+						UpdateHexBox(col);
+						UpdateOpacity(col, true, true, true);
+						UpdateRamps(col, true, true, true, true, true, true);
+						break;
+				}
+
+				RaiseColorChangedEvent(old, col);
+			}
+			finally
+			{
+				_ignoreColorChange = false;
+			}
+		}
+
+		private void UpdateSpectrum(Color2 col, bool spectrum, bool third)
+		{
+			if (spectrum && _spectrum != null)
+				_spectrum.Color = col;
+
+			if (third && _thirdComponentSlider != null)
+				_thirdComponentSlider.Color = col;
+		}
+
+		private void UpdateBoxes(Color2 col, bool hue, bool sat, bool val, bool red, bool green, bool blue)
+		{
+			if (hue && _hueBox != null)
+				_hueBox.Value = col.Hue;
+
+			if (sat && _satBox != null)
+				_satBox.Value = col.Saturation;
+
+			if (val && _valBox != null)
+				_valBox.Value = col.Value;
+
+			if (red && _redBox != null)
+				_redBox.Value = col.R;
+
+			if (green && _greenBox != null)
+				_greenBox.Value = col.G;
+
+			if (blue && _blueBox != null)
+				_blueBox.Value = col.B;
+		}
+
+		private void UpdateRamps(Color2 col, bool hue, bool sat, bool val, bool red, bool green, bool blue)
+		{
+			if (hue && _hueBox != null)
+				_hueRamp.Color = col;
+
+			if (sat && _satBox != null)
+				_satRamp.Color = col;
+
+			if (val && _valBox != null)
+				_valRamp.Color = col;
+
+			if (red && _redBox != null)
+				_redRamp.Color = col;
+
+			if (green && _greenBox != null)
+				_greenRamp.Color = col;
+
+			if (blue && _blueBox != null)
+				_blueRamp.Color = col;
+		}
+
+		private void UpdateHexBox(Color2 col)
+		{
+			if (_hexBox == null)
+				return;
+
+			switch (_textType)
+			{
+				case ColorTextType.Hex:
+					_hexBox.Text = col.ToHexString(false);
+					break;
+				case ColorTextType.HexAlpha:
+					_hexBox.Text = col.ToHexString();
+					break;
+
+				case ColorTextType.RGB:
+					_hexBox.Text = col.ToHTML(false);
+					break;
+				case ColorTextType.RGBA:
+					_hexBox.Text = col.ToHTML();
+					break;
+			}
+		}
+
+		private void UpdateOpacity(Color2 col, bool spectrumRamp, bool box, bool ramp)
+		{
+			if (box && _alphaBox != null)
+				_alphaBox.Value = col.A;
+
+			if (ramp && _alphaRamp != null)
+				_alphaRamp.Color = col;
+
+			if (spectrumRamp && _isCompact && _opacityComponentSlider != null)
+				_opacityComponentSlider.Color = col;
+		}
+
+		private void OnHexBoxKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter)
+			{
+				if (Color2.TryParse(_hexBox.Text, out Color2 c))
+				{
+					UpdateColorAndControls(c, ColorUpdateReason.HexBox);
+					DataValidationErrors.SetError(_hexBox, null);
+				}
+				else
+				{
+					DataValidationErrors.SetError(_hexBox, new Exception("Invalid input"));
+				}
+				e.Handled = true;
+			}
+		}
+
+		private void OnComponentRampColorChanged(ColorPickerComponent sender, ColorChangedEventArgs args)
+		{
+			if (!_templateApplied || _ignoreColorChange)
+				return;
+
+			if (sender == _hueRamp)
+				UpdateColorAndControls(args.NewColor, ColorUpdateReason.HueSlider);
+			else if (sender == _satRamp)
+				UpdateColorAndControls(args.NewColor, ColorUpdateReason.SaturationSlider);
+			else if (sender == _valRamp)
+				UpdateColorAndControls(args.NewColor, ColorUpdateReason.ValueSlider);
+			else if (sender == _redRamp)
+				UpdateColorAndControls(args.NewColor, ColorUpdateReason.RedRamp);
+			else if (sender == _greenRamp)
+				UpdateColorAndControls(args.NewColor, ColorUpdateReason.GreenRamp);
+			else if (sender == _blueRamp)
+				UpdateColorAndControls(args.NewColor, ColorUpdateReason.BlueRamp);
+			else if (sender == _alphaRamp)
+				UpdateColorAndControls(args.NewColor, ColorUpdateReason.AlphaRamp);
+		}
+
+		private void OnComponentBoxValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+		{
+			if (!_templateApplied || _ignoreColorChange)
+				return;
+
+			if (sender == _hueBox)
+			{
+				UpdateColorAndControls(Color.WithHuef((float)args.NewValue), ColorUpdateReason.HueBox);
+			}
+			else if (sender == _satBox)
+			{
+				UpdateColorAndControls(Color.WithSatf((float)args.NewValue / 100), ColorUpdateReason.SaturationBox);
+			}
+			else if (sender == _valBox)
+			{
+				UpdateColorAndControls(Color.WithValf((float)args.NewValue / 100), ColorUpdateReason.ValueBox);
+			}
+			else if (sender == _redBox)
+			{
+				UpdateColorAndControls(Color.WithRedf((float)args.NewValue / 255), ColorUpdateReason.RedBox);
+			}
+			else if (sender == _greenBox)
+			{
+				UpdateColorAndControls(Color.WithGreenf((float)args.NewValue / 255), ColorUpdateReason.GreenBox);
+			}
+			else if (sender == _blueBox)
+			{
+				UpdateColorAndControls(Color.WithBluef((float)args.NewValue / 255), ColorUpdateReason.BlueBox);
+			}
+			else if (sender == _alphaBox)
+			{
+				UpdateColorAndControls(Color.WithAlphaf((float)args.NewValue / 255), ColorUpdateReason.AlphaBox);
+			}
+		}
+
+		private void OnComponentRBChecked(object sender, RoutedEventArgs e)
+		{
+			if (!_templateApplied || _ignoreRadioChange)
+				return;
+
+			if (sender == _hueButton)
+			{
+				Component = ColorSpectrumComponents.SaturationValue;
+			}
+			else if (sender == _satButton)
+			{
+				Component = ColorSpectrumComponents.ValueHue;
+			}
+			else if (sender == _valButton)
+			{
+				Component = ColorSpectrumComponents.SaturationHue;
+			}
+			else if (sender == _redButton)
+			{
+				Component = ColorSpectrumComponents.BlueGreen;
+			}
+			else if (sender == _greenButton)
+			{
+				Component = ColorSpectrumComponents.BlueRed;
+			}
+			else if (sender == _blueButton)
+			{
+				Component = ColorSpectrumComponents.GreenRed;
+			}
+		}
+
+		private void OnSpectrumAlphaChanged(ColorPickerComponent sender, ColorChangedEventArgs args)
+		{
+			if (!_templateApplied || _ignoreColorChange)
+				return;
+
+			UpdateColorAndControls(args.NewColor, ColorUpdateReason.SpectrumAlphaRamp);
+		}
+
+		private void OnThirdComponentColorChanged(ColorPickerComponent sender, ColorChangedEventArgs args)
+		{
+			if (!_templateApplied || _ignoreColorChange)
+				return;
+
+			UpdateColorAndControls(args.NewColor, ColorUpdateReason.ThirdComponent);
+		}
+
+		private void OnSpectrumColorChanged(ColorPickerComponent sender, ColorChangedEventArgs args)
+		{
+			if (!_templateApplied || _ignoreColorChange)
+				return;
+
+			UpdateColorAndControls(args.NewColor, ColorUpdateReason.Spectrum);
+		}
+
+		private void RaiseColorChangedEvent(Color2 oldColor, Color2 newColor)
         {
             ColorChanged?.Invoke(this, new ColorChangedEventArgs(oldColor, newColor));
         }
 
+		private void SetAsCompactMode()
+		{
+			if (!_templateApplied || _rootGrid == null || _textEntryTabHost == null || _textEntryArea == null)
+				return;
+
+			if (_isCompact)
+			{
+				_rootGrid.Children.Remove(_textEntryArea);
+				_textEntryTabHost.Children.Add(_textEntryArea);
+			}
+			else
+			{
+				_textEntryTabHost.Children.Remove(_textEntryArea);
+				_rootGrid.Children.Add(_textEntryArea);
+			}
+
+			UpdatePickerComponents();
+
+			if (_rgbButton == null || _hsvButton == null)
+				return;
+
+			if (_rgbButton.IsChecked == true)
+			{
+				PseudoClasses.Set(":rgb", true);
+				PseudoClasses.Set(":hsv", false);
+			}
+			else if (_hsvButton.IsChecked == true)
+			{
+				PseudoClasses.Set(":rgb", false);
+				PseudoClasses.Set(":hsv", true);
+			}
+			else
+			{
+				PseudoClasses.Set(":rgb", true);
+				PseudoClasses.Set(":hsv", false);
+			}
+		}
+
+		private void OnColorTypeRBChecked(object sender, RoutedEventArgs e)
+		{
+			if (sender == _rgbButton)
+			{
+				PseudoClasses.Set(":rgb", true);
+				PseudoClasses.Set(":hsv", false);
+			}
+			else if (sender == _hsvButton)
+			{
+				PseudoClasses.Set(":rgb", false);
+				PseudoClasses.Set(":hsv", true);
+			}
+		}
+
+		public void OnHexTextContextMenuItemClick(object param)
+		{
+			if (param != null)
+			{
+				if (param.Equals("#AARRGGBB"))
+				{
+					ColorTextType = ColorTextType.HexAlpha;
+				}
+				else if (param.Equals("#RRGGBB"))
+				{
+					ColorTextType = ColorTextType.Hex;
+				}
+				else if (param.ToString().Contains("rgba"))
+				{
+					ColorTextType = ColorTextType.RGBA;
+				}
+				else if (param.ToString().Contains("rgb"))
+				{
+					ColorTextType = ColorTextType.RGB;
+				}
+			}
+		}
+
+		private void SetHexBoxHeader()
+		{
+			string val = "";
+			switch (ColorTextType)
+			{
+				case ColorTextType.Hex:
+				case ColorTextType.HexAlpha:
+					val = "#";
+					break;
+
+				case ColorTextType.RGB:
+					val = "rgb";
+					break;
+
+				case ColorTextType.RGBA:
+					val = "rgba";
+					break;
+			}
+
+			if (_hexBox != null)
+			{
+				if (_hexBox.InnerLeftContent is Border b && b.Child is TextBlock tb)
+				{
+					tb.Text = val;
+				}
+			}
+		}
 
 
-        private ColorSpectrum _spectrum;
+		//Template Items
+		private TabControl _displayItemTabControl;
+		
+		private ColorSpectrum _spectrum;
         private ColorRamp _thirdComponentSlider;
         private ColorRamp _opacityComponentSlider;
 
-        private TextBlock _comp1Label;
-        private TextBlock _comp2Label;
-        private TextBlock _comp3Label;
-        private TextBlock _opacityLabel;
+		private RadioButton _hueButton;
+		private RadioButton _satButton;
+		private RadioButton _valButton;
+		private RadioButton _redButton;
+		private RadioButton _greenButton;
+		private RadioButton _blueButton;
 
-        private TextBox _comp1Box;
-        private TextBox _comp2Box;
-        private TextBox _comp3Box;
-        private TextBox _opacityBox;
+		private ColorRamp _hueRamp;
+		private ColorRamp _satRamp;
+		private ColorRamp _valRamp;
+		private ColorRamp _redRamp;
+		private ColorRamp _greenRamp;
+		private ColorRamp _blueRamp;
+		private ColorRamp _alphaRamp;
 
-        //private Border _oldColorPreview;
-        private Border _newColorPreview;
+		private NumberBox _hueBox;
+		private NumberBox _satBox;
+		private NumberBox _valBox;
+		private NumberBox _redBox;
+		private NumberBox _greenBox;
+		private NumberBox _blueBox;
+		private NumberBox _alphaBox;
 
         private TextBox _hexBox;
 
-        private Avalonia.Controls.ComboBox _colorTypeSelector;
+		private Panel _textEntryTabHost;
+		private Grid _rootGrid;
+		private StackPanel _textEntryArea;
 
-        private ToggleButton _moreButton;
-        private Grid _textEntryGrid;
+		private ToggleButton _rgbButton;
+		private ToggleButton _hsvButton;
 
-        private int _colorSpace = 0; //0=RGB, 1=HSV
-                
+		private int _lastDisplayItem = 0;
+		private bool _ignoreRadioChange;
         //fields
         private bool _templateApplied;
         private bool _ignoreColorChange;
-        private Color2? _previousColor;
         private ColorTextType _textType;
         private ColorSpectrumShape _shape = ColorSpectrumShape.Spectrum;
         private ColorSpectrumComponents _component = ColorSpectrumComponents.SaturationValue;
-        private bool _moreVisible = true;
-        private bool _isTextInputVisible = true;
+        private bool _isCompact = false;
         private bool _isAlphaEnabled = true;
+		private IEnumerable<Color> _customPaletteColors;
 
-    }
+	}
 
-    public enum ColorUpdateReason
+	public enum ColorUpdateReason
     {
         Initial,
         Programmatic,
@@ -679,13 +1061,14 @@ namespace FluentAvalonia.UI.Controls
         SaturationBox,
         ValueSlider,
         ValueBox,
-        RedSlider,
+        RedRamp,
         RedBox,
-        GreenSlider,
+        GreenRamp,
         GreenBox,
-        BlueSlider,
+        BlueRamp,
         BlueBox,
-        AlphaSlider,
+        SpectrumAlphaRamp,
+		AlphaRamp,//Part of text entry area
         AlphaBox,
         HexBox
     }

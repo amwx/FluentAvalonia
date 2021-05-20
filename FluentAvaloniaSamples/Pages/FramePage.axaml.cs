@@ -29,32 +29,19 @@ namespace FluentAvaloniaSamples.Pages
             };
 
             var lb = this.FindControl<ListBox>("PageSelection");
-            lb.SelectionChanged += OnListBoxSelectionChanged;
-
-            XElement xe = XElement.Parse(GetAssemblyResource("FluentAvaloniaInfo.txt"));
-            var pages = xe.Elements("ControlPage").Where(x => x.Attribute("Name").Value == "Frame").First();
-
-            Header = pages.Element("Header").Value;
-            var controls = pages.Elements("Control");
-            foreach (var ctrl in controls)
-            {
-                if (ctrl.Attribute("Name").Value == "Frame")
-                {
-                    XamlSource = ctrl.Element("XamlSource").Value;
-                    CSharpSource = ctrl.Element("CSharpSource").Value;
-                }                
-            }
+            lb.SelectionChanged += OnListBoxSelectionChanged;           
 
             DataContext = this;
         }
 
         public List<string> PageOptions { get; }
 
-        public string Header { get; }
-        public string XamlSource { get; }
-        public string CSharpSource { get; }
+		public string Header => DescriptionServiceProvider.Instance.GetInfo("Frame", "Header");
+		public string XamlSource => DescriptionServiceProvider.Instance.GetInfo("Frame", "Frame", "XamlSource");
+        public string CSharpSource => DescriptionServiceProvider.Instance.GetInfo("Frame", "Frame", "CSharpSource");
+		public string UsageNotes => DescriptionServiceProvider.Instance.GetInfo("Frame", "Frame", "UsageNotes");
 
-        private void OnListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void OnListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {        
             switch ((sender as ListBox).SelectedIndex)
             {

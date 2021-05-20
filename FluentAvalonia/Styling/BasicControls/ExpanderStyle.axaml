@@ -7,13 +7,23 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3f3" Width="300" Height="300">
+        <Border Padding="50" Background="#F3F3f3" >
             <StackPanel Spacing="5">
-                <Expander Header="Expand me!" IsExpanded="False">
-                    <TextBox Width="200" Height="100" />
+                <Expander Header="Expand me!" IsExpanded="True">
+                    <Panel>
+                        <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                    </Panel>
                 </Expander>
 
                 <Expander Header="Expand me up!" ExpandDirection="Up">
+                    <TextBox Width="200" Height="100" />
+                </Expander>
+                
+                <Expander Header="Expand me right!" ExpandDirection="Right">
+                    <TextBox Width="200" Height="100" />
+                </Expander>
+                
+                <Expander Header="Expand me Left!" ExpandDirection="Left">
                     <TextBox Width="200" Height="100" />
                 </Expander>
             </StackPanel>
@@ -21,33 +31,38 @@
     </Design.PreviewWith>
 
     <Styles.Resources>
-        <Thickness x:Key="ExpanderBorderThickness">1</Thickness>
-        <Thickness x:Key="ExpanderChevronBorderThickness">0</Thickness>
-        
+        <x:Double x:Key="ExpanderMinHeight">48</x:Double>
+        <Thickness x:Key="ExpanderHeaderPadding">16,0,0,0</Thickness>
         <Thickness x:Key="ExpanderChevronMargin">20,0,8,0</Thickness>
-        
         <x:String x:Key="ExpanderChevronUpGlyph">&#xF2B9;</x:String>
         <x:String x:Key="ExpanderChevronDownGlyph">&#xF2A6;</x:String>
+        <x:String x:Key="ExpanderChevronLeftGlyph">&#xF2AD;</x:String>
+        <x:String x:Key="ExpanderChevronRightGlyph">&#xF2B3;</x:String>
         
         <x:Double x:Key="ExpanderChevronButtonSize">32</x:Double>
-        <x:Double x:Key="ExpanderMinHeight">48</x:Double>
+
         <Thickness x:Key="ExpanderContentPadding">16</Thickness>
-        <Thickness x:Key="ExpanderHeaderPadding">16,0,0,0</Thickness>
-        <Thickness x:Key="ExpanderDropdownDownBorderThickness">1,0,1,1</Thickness>
-        <Thickness x:Key="ExpanderDropdownUpBorderThickness">1,1,1,0</Thickness>
-    </Styles.Resources>
+        <Thickness x:Key="ExpanderContentDownBorderThickness">1,0,1,1</Thickness>
+        <Thickness x:Key="ExpanderContentUpBorderThickness">1,1,1,0</Thickness>
+
+        <Thickness x:Key="ExpanderContentRightBorderThickness">0,1,1,1</Thickness>
+        <Thickness x:Key="ExpanderContentLeftBorderThickness">1,1,0,1</Thickness>
+</Styles.Resources>
 
     <!-- Only ExpandDirection=Up & ExpandDiretion=Down have been implemented -->
 
     <Style Selector="ToggleButton.ExpanderToggleButton">
+        <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderHeaderBorderThickness}" />
         <Setter Property="Padding" Value="{DynamicResource ExpanderHeaderPadding}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="Root"
-                        CornerRadius="{DynamicResource ControlCornerRadius}"
                         Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"                        
                         MinHeight="{TemplateBinding MinHeight}"
                         MinWidth="{TemplateBinding MinWidth}"
                         MaxWidth="{TemplateBinding MaxWidth}"
@@ -75,7 +90,7 @@
                             <TextBlock Name="ExpandCollapseChevron"
                                        Text="{TemplateBinding Tag}"
                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                       FontSize="20"
+                                       FontSize="15"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />                            
                         </Border>
@@ -84,9 +99,7 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ToggleButton.ExpanderToggleButton /template/ Border#Root">
-        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderBrush}" />
-    </Style>
+   
     <Style Selector="ToggleButton.ExpanderToggleButton /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderForeground}" />
     </Style>
@@ -210,16 +223,14 @@
 
 
     <Style Selector="Expander">
-        <Setter Property="Background" Value="{DynamicResource ExpanderBackground}" />
+        <Setter Property="Background" Value="{DynamicResource ExpanderContentBackground}" />
         <Setter Property="MinWidth" Value="{DynamicResource FlyoutThemeMinWidth}" />
-        <Setter Property="MaxWidth" Value="{DynamicResource FlyoutThemeMaxWidth}" />
-        <Setter Property="MinHeight" Value="{DynamicResource ExpanderMinHeight}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderBorderThickness}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderBrush}" />
-        <Setter Property="Padding" Value="{DynamicResource ExpanderHeaderPadding}" />
+        <Setter Property="MinHeight" Value="{DynamicResource ExpanderMinHeight}" />        
+        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderContentBorderBrush}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="{DynamicResource ExpanderContentPadding}" />
         <Setter Property="ContentTransition">
             <Setter.Value>
                 <CrossFade Duration="00:00:00.25" />
@@ -227,19 +238,15 @@
         </Setter>
     </Style>
     
-    <Style Selector="Expander[ExpandDirection=Down]">        
+    <Style Selector="Expander[ExpandDirection=Down]">
+        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderContentDownBorderThickness}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{TemplateBinding Background}">
+                <Border>
                     <Grid RowDefinitions="Auto,*">
-                        <ToggleButton Name="PART_toggle" 
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
+                        <ToggleButton Name="PART_toggle"                                       
                                       MinHeight="{TemplateBinding MinHeight}"
-                                      MaxWidth="{TemplateBinding MaxWidth}"
                                       IsEnabled="{TemplateBinding IsEnabled}"
-                                      Padding="{TemplateBinding Padding}"
                                       HorizontalAlignment="Stretch"
                                       IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
                                       Grid.Row="0"  
@@ -249,18 +256,21 @@
                                       />
 
                         <Border Name="ExpanderContent"
-                                CornerRadius="{DynamicResource ControlCornerRadius}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0 0 4 4"
                                 MinHeight="{TemplateBinding MinHeight}"
                                 MinWidth="{TemplateBinding MinWidth}"
-                                MaxWidth="{TemplateBinding MaxWidth}"
                                 Grid.Row="1">
                             <ContentPresenter Name="PART_ContentPresenter"
+                                              Margin="{TemplateBinding Padding}"
                                           IsVisible="{TemplateBinding IsExpanded}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           Content="{TemplateBinding Content}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Padding="{TemplateBinding Padding}" />
+                                           />
                         </Border>
 
 
@@ -271,20 +281,23 @@
         </Setter>
     </Style>
 
+    <Style Selector="Expander[ExpandDirection=Down] /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+    </Style>
+    <Style Selector="Expander[ExpandDirection=Down]:expanded /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="4 4 0 0" />
+    </Style>
+
     <Style Selector="Expander[ExpandDirection=Up]">
+        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderContentUpBorderThickness}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{TemplateBinding Background}">
+                <Border>
                     <Grid RowDefinitions="*,Auto">
                         <ToggleButton Name="PART_toggle"
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
                                       MinHeight="{TemplateBinding MinHeight}"
-                                      MaxWidth="{TemplateBinding MaxWidth}"
                                       IsEnabled="{TemplateBinding IsEnabled}"
-                                      Padding="{TemplateBinding Padding}"
-                                      HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                      HorizontalAlignment="Stretch"
                                       IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
                                       Grid.Row="1"
                                       Content="{TemplateBinding Header}"
@@ -293,18 +306,21 @@
                                       />
 
                         <Border Name="ExpanderContent"
-                                Grid.Row="0"
-                                CornerRadius="{DynamicResource ControlCornerRadius}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4 4 0 0"
                                 MinHeight="{TemplateBinding MinHeight}"
                                 MinWidth="{TemplateBinding MinWidth}"
-                                MaxWidth="{TemplateBinding MaxWidth}">
+                                Grid.Row="0">
                             <ContentPresenter Name="PART_ContentPresenter"
+                                              Margin="0"
                                           IsVisible="{TemplateBinding IsExpanded}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           Content="{TemplateBinding Content}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Padding="{TemplateBinding Padding}" />
+                                          Padding="0" />
                         </Border>
 
 
@@ -315,22 +331,118 @@
         </Setter>
     </Style>
 
+    <Style Selector="Expander[ExpandDirection=Up] /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+    </Style>
+    <Style Selector="Expander[ExpandDirection=Up]:expanded /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="0 0 4 4" />
+    </Style>
+
+    <Style Selector="Expander[ExpandDirection=Right]">
+        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderContentRightBorderThickness}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border>
+                    <Grid ColumnDefinitions="Auto,*">
+                        <ToggleButton Name="PART_toggle"
+                                      MinHeight="{TemplateBinding MinHeight}"
+                                      IsEnabled="{TemplateBinding IsEnabled}"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                      Grid.Column="0"
+                                      Content="{TemplateBinding Header}"
+                                      Classes="ExpanderToggleButton"
+                                      Tag="{StaticResource ExpanderChevronRightGlyph}"
+                                      />
+
+                        <Border Name="ExpanderContent"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0 4 4 0"
+                                MinHeight="{TemplateBinding MinHeight}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                Grid.Column="1">
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Margin="0"
+                                          IsVisible="{TemplateBinding IsExpanded}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Padding="0" />
+                        </Border>
+
+
+
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Expander[ExpandDirection=Right] /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+    </Style>
+    <Style Selector="Expander[ExpandDirection=Right]:expanded /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="4 0 0 4" />
+    </Style>
+
+    <Style Selector="Expander[ExpandDirection=Left]">
+        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderContentLeftBorderThickness}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <ToggleButton Name="PART_toggle"
+                                      MinHeight="{TemplateBinding MinHeight}"
+                                      IsEnabled="{TemplateBinding IsEnabled}"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                      Grid.Column="1"
+                                      Content="{TemplateBinding Header}"
+                                      Classes="ExpanderToggleButton"
+                                      Tag="{StaticResource ExpanderChevronLeftGlyph}"
+                                      />
+
+                        <Border Name="ExpanderContent"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4 0 0 4"
+                                MinHeight="{TemplateBinding MinHeight}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                Grid.Column="0">
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Margin="0"
+                                          IsVisible="{TemplateBinding IsExpanded}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Padding="0" />
+                        </Border>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Expander[ExpandDirection=Left] /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+    </Style>
+    <Style Selector="Expander[ExpandDirection=Left]:expanded /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="CornerRadius" Value="0 4 4 0" />
+    </Style>
+    
+
     <Style Selector="Expander /template/ Border#ExpanderContent">
-        <Setter Property="Background" Value="{DynamicResource ExpanderDropDownBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDropDownBorderBrush}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderDropBorderThickness}" />
-        <Setter Property="Padding" Value="{DynamicResource ExpanderContentPadding}" />
         <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="Expander:expanded /template/ Border#ExpanderContent">
         <Setter Property="IsVisible" Value="True" />
     </Style>
-    
-    <Style Selector="Expander /template/ Border#ExpanderContent">
-        <Setter Property="Background" Value="{DynamicResource ExpanderDropDownBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDropDownBorderBrush}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource ExpanderDropBorderThickness}" />        
-    </Style>
-
     
 </Styles>

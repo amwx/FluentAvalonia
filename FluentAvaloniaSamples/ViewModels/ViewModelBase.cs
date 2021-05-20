@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
 using Avalonia.Platform;
-using ReactiveUI;
 
 namespace FluentAvaloniaSamples.ViewModels
 {
@@ -36,6 +35,11 @@ namespace FluentAvaloniaSamples.ViewModels
             }
             return false;
         }
+
+		protected void RaisePropertyChanged(string propName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+		}
 
     }
 }

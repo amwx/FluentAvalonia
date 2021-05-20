@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
+        xmlns:sty="using:FluentAvalonia.Styling">
 
     <Design.PreviewWith>
         <Border Padding="50">
@@ -15,8 +16,7 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-    
-    
+
     <Styles.Resources>
         <x:Double x:Key="RadioButtonBorderThemeThickness">1</x:Double>    
     </Styles.Resources>
@@ -85,6 +85,7 @@
         <Setter Property="Stroke" Value="{DynamicResource RadioButtonOuterEllipseCheckedStroke}" />
         <Setter Property="Fill" Value="{DynamicResource RadioButtonOuterEllipseCheckedFill}" />
         <Setter Property="StrokeThickness" Value="{DynamicResource RadioButtonBorderThemeThickness}" />
+        <Setter Property="Opacity" Value="0" />
     </Style>
     <Style Selector="RadioButton /template/ Ellipse#CheckGlyph">
         <Setter Property="Stroke" Value="{DynamicResource RadioButtonCheckGlyphStroke}" />

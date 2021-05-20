@@ -7,10 +7,10 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Style Selector="Window">
-        <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBase}"/>
-        <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource SolidBackgroundFillColorBase}" />
+        <Setter Property="Background" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}"/>
+        <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-        <Setter Property="FontSize" Value="{DynamicResource ContentControlFontSize}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="Template">
             <ControlTemplate>

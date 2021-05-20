@@ -64,6 +64,12 @@ namespace FluentAvalonia.UI.Controls
             bool collapsed = _isClosedCompact && IsTopLevelItem;
             PseudoClasses.Set(":headertextcollapsed", collapsed);
             PseudoClasses.Set(":headertextvisible", !collapsed);
+
+			var navView = GetNavigationView;
+			if (navView != null)
+			{
+				PseudoClasses.Set(":topmode", navView.PaneDisplayMode == NavigationViewPaneDisplayMode.Top);
+			}
         }
 
         private void UpdateItemIndentation()

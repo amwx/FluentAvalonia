@@ -8,56 +8,56 @@ using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class ToggleSplitButton : SplitButton, IStyleable
-    {
-        public static readonly DirectProperty<ToggleSplitButton, bool> IsCheckedProperty =
-            AvaloniaProperty.RegisterDirect<ToggleSplitButton, bool>("IsChecked",
-                x => x.IsChecked, (x, v) => x.IsChecked = v);
+	public class ToggleSplitButton : SplitButton, IStyleable
+	{
+		public static readonly DirectProperty<ToggleSplitButton, bool> IsCheckedProperty =
+			AvaloniaProperty.RegisterDirect<ToggleSplitButton, bool>("IsChecked",
+				x => x.IsChecked, (x, v) => x.IsChecked = v);
 
-        public bool IsChecked
-        {
-            get => _isChecked;
-            set
-            {
-                SetAndRaise(IsCheckedProperty, ref _isChecked, value);
-                OnIsCheckedChanged();
-            }
-        }
+		public bool IsChecked
+		{
+			get => _isChecked;
+			set
+			{
+				SetAndRaise(IsCheckedProperty, ref _isChecked, value);
+				OnIsCheckedChanged();
+			}
+		}
 
-        internal override bool InternalIsChecked => IsChecked;
+		internal override bool InternalIsChecked => IsChecked;
 
-        Type IStyleable.StyleKey => typeof(SplitButton);
+		Type IStyleable.StyleKey => typeof(SplitButton);
 
-        public event TypedEventHandler<ToggleSplitButton, ToggleSplitButtonIsCheckedChangedEventArgs> IsCheckedChanged;
+		public event TypedEventHandler<ToggleSplitButton, ToggleSplitButtonIsCheckedChangedEventArgs> IsCheckedChanged;
 
-        protected override void OnClickPrimary(object sender, RoutedEventArgs e)
-        {
-            Toggle();
+		protected override void OnClickPrimary(object sender, RoutedEventArgs e)
+		{
+			Toggle();
 
-            base.OnClickPrimary(sender, e);
-        }
+			base.OnClickPrimary(sender, e);
+		}
 
-        private void Toggle()
-        {
-            IsChecked = !IsChecked;
-        }
+		private void Toggle()
+		{
+			IsChecked = !IsChecked;
+		}
 
-        private void OnIsCheckedChanged()
-        {
-            if (_hasLoaded)
-            {
-                var ea = new ToggleSplitButtonIsCheckedChangedEventArgs();
-                IsCheckedChanged?.Invoke(this, ea);
-            }
+		private void OnIsCheckedChanged()
+		{
+			if (_hasLoaded)
+			{
+				var ea = new ToggleSplitButtonIsCheckedChangedEventArgs();
+				IsCheckedChanged?.Invoke(this, ea);
+			}
 
-            UpdateVisualStates();
-        }
+			UpdateVisualStates();
+		}
 
-        private bool _isChecked;
-    }
+		private bool _isChecked;
+	}
 
-    public class ToggleSplitButtonIsCheckedChangedEventArgs
-    {
+	public class ToggleSplitButtonIsCheckedChangedEventArgs
+	{
 
-    }
+	}
 }

@@ -86,7 +86,7 @@ namespace FluentAvalonia.UI.Controls
 
 
         // (WinUI) TODO: Constant is a temporary measure. Potentially expose using TemplateSettings.
-        protected readonly int _itemIndentation = 25;
+        protected readonly int _itemIndentation = 31;
 
         private WeakReference<NavigationView> _navView;
         private int _depth;

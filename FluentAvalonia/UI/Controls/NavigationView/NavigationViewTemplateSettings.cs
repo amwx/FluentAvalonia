@@ -12,8 +12,8 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<bool> BackButtonVisibilityProperty =
             AvaloniaProperty.Register<NavigationViewTemplateSettings, bool>(nameof(BackButtonVisibility), false);
 
-        public static readonly StyledProperty<double> LatestPaneButtonWidthProperty =
-            AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(LatestPaneButtonWidth), 0d);
+        //public static readonly StyledProperty<double> LatestPaneButtonWidthProperty =
+        //    AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(LatestPaneButtonWidth), 0d);
 
         public static readonly StyledProperty<bool> LeftPaneVisibilityProperty =
             AvaloniaProperty.Register<NavigationViewTemplateSettings, bool>(nameof(LeftPaneVisibility), true);
@@ -21,16 +21,22 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<bool> OverflowButtonVisibilityProperty =
             AvaloniaProperty.Register<NavigationViewTemplateSettings, bool>(nameof(OverflowButtonVisibility), false);
 
-        public static readonly StyledProperty<double> PaneButtonWidthProperty =
-            AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(PaneButtonWidth), 0d);
+        //public static readonly StyledProperty<double> PaneButtonWidthProperty =
+        //    AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(PaneButtonWidth), 0d);
 
         public static readonly StyledProperty<bool> PaneToggleButtonVisibilityProperty =
             AvaloniaProperty.Register<NavigationViewTemplateSettings, bool>(nameof(PaneToggleButtonVisibility), true);
 
+		public static readonly StyledProperty<double> PaneToggleButtonWidthProperty =
+			AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(PaneToggleButtonWidth));
+
         public static readonly StyledProperty<bool> SingleSelectionFollowsFocusProperty =
             AvaloniaProperty.Register<NavigationViewTemplateSettings, bool>(nameof(SingleSelectionFollowsFocus), false);
 
-        public static readonly StyledProperty<double> TopPaddingProperty =
+		public static readonly StyledProperty<double> SmallerPaneToggleButtonWidthProperty =
+			AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(SmallerPaneToggleButtonWidth));
+
+		public static readonly StyledProperty<double> TopPaddingProperty =
             AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(TopPadding), 0d);
 
         public static readonly StyledProperty<bool> TopPaneVisibilityProperty =
@@ -43,11 +49,11 @@ namespace FluentAvalonia.UI.Controls
             internal set => SetValue(BackButtonVisibilityProperty, value);
         }
 
-        public double LatestPaneButtonWidth
-        {
-            get => GetValue(LatestPaneButtonWidthProperty);
-            internal set => SetValue(LatestPaneButtonWidthProperty, value);
-        } 
+        //public double LatestPaneButtonWidth
+        //{
+        //    get => GetValue(LatestPaneButtonWidthProperty);
+        //    internal set => SetValue(LatestPaneButtonWidthProperty, value);
+        //} 
 
         public bool LeftPaneVisibility
         {
@@ -61,11 +67,11 @@ namespace FluentAvalonia.UI.Controls
             internal set => SetValue(OverflowButtonVisibilityProperty, value);
         }
 
-        public double PaneButtonWidth
-        {
-            get => GetValue(PaneButtonWidthProperty);
-            internal set => SetValue(PaneButtonWidthProperty, value);
-        }
+        //public double PaneButtonWidth
+        //{
+        //    get => GetValue(PaneButtonWidthProperty);
+        //    internal set => SetValue(PaneButtonWidthProperty, value);
+        //}
 
         public bool PaneToggleButtonVisibility
         {
@@ -73,13 +79,25 @@ namespace FluentAvalonia.UI.Controls
             internal set => SetValue(PaneToggleButtonVisibilityProperty, value);
         }
 
-        public bool SingleSelectionFollowsFocus
+		public double PaneToggleButtonWidth
+		{
+			get => GetValue(PaneToggleButtonWidthProperty);
+			internal set => SetValue(PaneToggleButtonWidthProperty, value);
+		}
+
+		public bool SingleSelectionFollowsFocus
         {
             get => GetValue(SingleSelectionFollowsFocusProperty);
             internal set => SetValue(SingleSelectionFollowsFocusProperty, value);
         }
 
-        public double TopPadding
+		public double SmallerPaneToggleButtonWidth
+		{
+			get => GetValue(SmallerPaneToggleButtonWidthProperty);
+			internal set => SetValue(SmallerPaneToggleButtonWidthProperty, value);
+		}
+
+		public double TopPadding
         {
             get => GetValue(TopPaddingProperty);
             internal set => SetValue(TopPaddingProperty, value);

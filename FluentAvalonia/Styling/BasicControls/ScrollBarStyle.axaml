@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
+        xmlns:sty="using:FluentAvalonia.Styling">
 
-    <!-- Another really complex template...TODO... -->
+    <!-- Another really complex template... -->
     
     
     <Design.PreviewWith>
@@ -18,6 +19,8 @@
             </Panel>
         </Border>
     </Design.PreviewWith>
+
+    
 
     <Styles.Resources>
         <Thickness x:Key="ScrollBarTrackBorderThemeThickness">0</Thickness>

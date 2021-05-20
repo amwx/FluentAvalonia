@@ -3,14 +3,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:local="using:FluentAvaloniaSamples"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluentAvaloniaSamples.Pages.HomePage">
     <Grid RowDefinitions="Auto,*">        
         <Grid Grid.Row="1" RowDefinitions="Auto,*" Margin="10" >            
             <StackPanel Orientation="Vertical" Grid.Row="1" TextBlock.FontSize="{StaticResource ControlContentThemeFontSize}">
                 
-                <TextBlock Text="How to Use" FontSize="16" FontWeight="700"/>
-                <TextBlock Text="{Binding HowToUseText}" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Header1}" FontSize="22" FontWeight="700"/>
+                <TextBlock Margin="15 0" Text="{Binding SubHeader1}" TextWrapping="Wrap" />
+
+                <TextBlock Text="{Binding Header2}" FontSize="22" FontWeight="700"/>
+                <TextBlock Margin="15 0" Text="{Binding SubHeader2}" TextWrapping="Wrap" />
             </StackPanel>
         </Grid>
     </Grid>

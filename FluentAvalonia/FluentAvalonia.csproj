@@ -2,17 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>0.0.2-beta</PackageVersion>
-    <Description>Just a little project to extend some additional WinUI and Fluent design in to the Avalonia world.</Description>
-    <PackageProjectUrl>https://github.com/amwx/FluentAvalonia</PackageProjectUrl>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
-    <PackageReleaseNotes>- Initial Release</PackageReleaseNotes>
     <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
+    <PackageId>FluentAvaloniaUI</PackageId>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PropertyGroup>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -20,19 +21,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
     <ItemGroup>
-        <Compile Update="**\*.axaml.cs">
-            <DependentUpon>%(Filename)</DependentUpon>
-        </Compile>
-        <AvaloniaResource Include="**\*.axaml">
-            <SubType>Designer</SubType>
-        </AvaloniaResource>
         <AvaloniaResource Include="Assets\*.*" />
 	    <AvaloniaResource Include="Fonts\*.*" />
     </ItemGroup>
+    
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="0.10.0" />
-      <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
-      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
-      <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
+      <PackageReference Include="Avalonia" Version="0.10.4" />
+      <PackageReference Include="Avalonia.Desktop" Version="0.10.4" />
+      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.4" />
     </ItemGroup>
 </Project>

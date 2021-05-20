@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
+             xmlns:sty="using:FluentAvalonia.Styling">
 
     <Design.PreviewWith>
         <Border Padding="50" Background="#F3F3f3">
@@ -17,10 +18,10 @@
     <Styles.Resources>
         <Thickness x:Key="ToggleSwitchOnStrokeThickness">0</Thickness>
         <Thickness x:Key="ToggleSwitchOuterBorderStrokeThickness">1</Thickness>
-        <Thickness x:Key="ToggleSwitchTopHeaderMargin">0,0,0,0</Thickness>
+        <Thickness x:Key="ToggleSwitchTopHeaderMargin">0,0,0,4</Thickness>
         <!-- Changed to GridLength -->
-        <GridLength x:Key="ToggleSwitchPreContentMargin">6</GridLength>
-        <GridLength x:Key="ToggleSwitchPostContentMargin">6</GridLength>
+        <GridLength x:Key="ToggleSwitchPreContentMargin">10</GridLength>
+        <GridLength x:Key="ToggleSwitchPostContentMargin">10</GridLength>
 
         <x:Double x:Key="ToggleSwitchThemeMinWidth">154</x:Double>
     </Styles.Resources>

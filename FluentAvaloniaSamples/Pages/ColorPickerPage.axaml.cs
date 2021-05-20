@@ -5,18 +5,18 @@ using FluentAvaloniaSamples.ViewModels;
 
 namespace FluentAvaloniaSamples.Pages
 {
-    public class ColorPickerPage : UserControl
-    {
-        public ColorPickerPage()
-        {
-            InitializeComponent();
+	public class ColorPickerPage : UserControl
+	{
+		public ColorPickerPage()
+		{
+			InitializeComponent();
 
-            DataContext = new ColorPickerPageViewModel();
-        }
+			DataContext = new ColorPickerPageViewModel();
+		}
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-    }
+		private void InitializeComponent()
+		{
+			AvaloniaXamlLoader.Load(this);
+		}
+	}
 }

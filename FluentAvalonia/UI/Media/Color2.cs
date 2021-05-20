@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Dynamic;
 using System.Globalization;
-using System.Text;
+using System.Linq;
 
 namespace FluentAvalonia.UI.Media
 {
@@ -13,1254 +12,1702 @@ namespace FluentAvalonia.UI.Media
         Undefined,
         RGB,
         HSV,
-        HSL
+        HSL,
+		CMYK
     }
 
     [TypeConverter(typeof(Color2ToColorConverter))]
     public struct Color2 : IEquatable<Color2>
     {
-        /// <summary>
-        /// Creates a RGB Color2
-        /// </summary>
-        /// <param name="red">Red, range 0 - 255</param>
-        /// <param name="green">Green, range 0 - 255</param>
-        /// <param name="blue">Blue, range 0 - 255</param>
-        /// <param name="alpha">Alpha, range 0 - 255</param>
-        /// <returns></returns>
-        public static Color2 FromRGB(int red, int green, int blue, int alpha = 255)
-        {
-            if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255 ||
-                alpha < 0 || alpha > 255)
-                throw new ArgumentOutOfRangeException();
-
-            Color2 ec = new Color2();
-            ec._cType = ColorType.RGB;
-            ec._c1 = red / 255f;
-            ec._c2 = green / 255f;
-            ec._c3 = blue / 255f;
-            ec._alpha = alpha / 255f;
-            return ec;
-        }
-
-        /// <summary>
-        /// Creates a RGB Color2 using floating point numbers
-        /// </summary>
-        /// <param name="red">Red, range 0 - 1</param>
-        /// <param name="green">Green, range 0 - 1</param>
-        /// <param name="blue">Blue, range 0 - 1</param>
-        /// <param name="alpha">Alpha, range 0 - 1</param>
-        /// <returns></returns>
-        public static Color2 FromRGB(float red, float green, float blue, float alpha = 1.0f)
-        {
-            if (red < 0 || red > 1 || green < 0 || green > 1 || blue < 0 || blue > 1 ||
-                alpha < 0 || alpha > 1)
-                throw new ArgumentOutOfRangeException();
-
-            Color2 ec = new Color2();
-            ec._cType = ColorType.RGB;
-            ec._c1 = red;
-            ec._c2 = green;
-            ec._c3 = blue;
-            ec._alpha = alpha;
-            return ec;
-        }
-
-        /// <summary>
-        /// Creates an HSV Color2
-        /// </summary>
-        /// <param name="hue">Hue, Must be > 0, generally [0,360)</param>
-        /// <param name="sat">HSV Saturation, range 0 - 255</param>
-        /// <param name="val">HSV Value, range 0 - 255</param>
-        /// <param name="alpha">Alpha, 0 - 255</param>
-        /// <returns></returns>
-        public static Color2 FromHSV(int hue, int sat, int val, int alpha = 255)
-        {
-            if (hue < -1 || sat < 0 || sat > 255 || val < 0 || val > 255 || alpha < 0 || alpha > 255)
-                throw new ArgumentOutOfRangeException();
-
-            Color2 ec = new Color2();
-            ec._cType = ColorType.HSV;
-            ec._c1 = hue == -1 ? 0 : hue % 360;
-            ec._c2 = sat / 255f;
-            ec._c3 = val / 255f;
-            ec._alpha = alpha / 255f;
-            return ec;
-        }
-
-        /// <summary>
-        /// Creates a HSV Color2 using floating point numbers
-        /// </summary>
-        /// <param name="hue">Hue, must be > 0, generally [0,360)</param>
-        /// <param name="sat">HSV Saturation, range 0 - 1</param>
-        /// <param name="val">HSV Value, range 0 - 1</param>
-        /// <param name="alpha">Alpha, range 0 - 1</param>
-        /// <returns></returns>
-        public static Color2 FromHSV(float hue, float sat, float val, float alpha = 1.0f)
-        {
-            if (hue < -1 || sat < 0 || sat > 1 || val < 0 || val > 1 || alpha < 0 || alpha > 1)
-                throw new ArgumentOutOfRangeException();
-
-            Color2 ec = new Color2();
-            ec._cType = ColorType.HSV;
-            ec._c1 = hue == -1 ? 0 : hue % 360;
-            ec._c2 = sat;
-            ec._c3 = val;
-            ec._alpha = alpha;
-            return ec;
-        }
-
-
-        public static Color2 FromUInt32(uint value)
-        {
-            byte r = (byte)((value >> 16) & 0xFF);
-            byte g = (byte)((value >> 8) & 0xFF);
-            byte b = (byte)((value) & 0xFF);
-            byte a = (byte)((value >> 24) & 0xFF);
-
-            return Color2.FromRGB(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Gets or sets the alpha of the color
-        /// </summary>
-        public byte A
-        {
-            get => (byte)Math.Round(_alpha * 255);
-            set => _alpha = value / 255f;
-        }
-
-        /// <summary>
-        /// Gets or sets the Red channel of the color. Note: setting this value
-        /// will convert the color to RGB if not already in it
-        /// </summary>
-        public byte R
-        {
-            get
-            {
-                if (_cType != ColorType.RGB)
-                {
-                    ToRGB(out float r, out float _, out float _);
-                    return (byte)Math.Round(r * 255);
-                }
-
-                return (byte)Math.Round(_c1 * 255);
-            }
-            set
-            {
-                if (_cType == ColorType.RGB)
-                {
-                    _c1 = value / 255f;
-                    return;
-                }
-
-                ToRGB(out float r, out float g, out float b);
-                _cType = ColorType.RGB;
-                _c1 = value / 255f;
-                _c2 = g;
-                _c3 = b;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Green channel of the color. Note: setting this value
-        /// will convert the color to RGB if not already in it
-        /// </summary>
-        public byte G
-        {
-            get
-            {
-                if (_cType != ColorType.RGB)
-                {
-                    ToRGB(out float _, out float g, out float _);
-                    return (byte)Math.Round(g * 255);
-                }
-
-                return (byte)Math.Round(_c2 * 255);
-            }
-            set
-            {
-                if (_cType == ColorType.RGB)
-                {
-                    _c2 = value / 255f;
-                    return;
-                }
-
-                ToRGB(out float r, out float g, out float b);
-                _cType = ColorType.RGB;
-                _c1 = r;
-                _c2 = value / 255f;
-                _c3 = b;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Blue channel of the color. Note: setting this value
-        /// will convert the color to RGB if not already in it
-        /// </summary>
-        public byte B
-        {
-            get
-            {
-                if (_cType != ColorType.RGB)
-                {
-                    ToRGB(out float _, out float _, out float b);
-                    return (byte)Math.Round(b * 255);
-                }
-
-                return (byte)Math.Round(_c3 * 255);
-            }
-            set
-            {
-                if (_cType == ColorType.RGB)
-                {
-                    _c3 = value / 255f;
-                    return;
-                }
-
-                ToRGB(out float r, out float g, out float b);
-                _cType = ColorType.RGB;
-                _c1 = r;
-                _c2 = g;
-                _c3 = value / 255f;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Hue of the color. Note: setting this value
-        /// will convert the color to HSV if not already in it
-        /// </summary>
-        public int Hue
-        {
-            get
-            {
-                if (_cType != ColorType.HSV)
-                {
-                    ToHSV(out float hue, out float _, out float _);
-                    return (int)Math.Round(hue);
-                }
-
-                return (int)Math.Round(_c1);
-            }
-            set
-            {
-                if (_cType == ColorType.HSV)
-                {
-                    _c1 = value;
-                    return;
-                }
-
-                ToHSV(out float h, out float s, out float v);
-                _cType = ColorType.HSV;
-                _c1 = value;
-                _c2 = s;
-                _c3 = v;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Saturation of the color. Note: setting this value
-        /// will convert the color to HSV if not already in it
-        /// </summary>
-        public int Saturation
-        {
-            get
-            {
-                if (_cType != ColorType.HSV)
-                {
-                    ToHSV(out float _, out float sat, out float _);
-                    return (int)Math.Round(sat * 255);
-                }
-
-                return (int)Math.Round(_c2 * 255);
-            }
-            set
-            {
-                if (_cType == ColorType.HSV)
-                {
-                    _c2 = value / 255f;
-                    return;
-                }
-
-                ToHSV(out float h, out float s, out float v);
-                _cType = ColorType.HSV;
-                _c1 = h;
-                _c2 = value / 255f;
-                _c3 = v;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Value of the color. Note: setting this value
-        /// will convert the color to HSV if not already in it
-        /// </summary>
-        public int Value
-        {
-            get
-            {
-                if (_cType != ColorType.HSV)
-                {
-                    ToHSV(out float _, out float _, out float val);
-                    return (int)Math.Round(val * 255);
-                }
-
-                return (int)Math.Round(_c3 * 255);
-            }
-            set
-            {
-                if (_cType == ColorType.HSV)
-                {
-                    _c3 = value / 255f;
-                    return;
-                }
-
-                ToHSV(out float h, out float s, out float v);
-                _cType = ColorType.HSV;
-                _c1 = h;
-                _c2 = s;
-                _c3 = value / 255f;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets or sets the Alpha of the color as a floating point number.
-        /// </summary>
-        public float Af
-        {
-            get => _alpha;
-            set => _alpha = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the Red of the color as a floating point number.
-        /// Note: setting this value will convert the color to RGB if not already in it
-        /// </summary>
-        public float Rf
-        {
-            get
-            {
-                if (_cType != ColorType.RGB)
-                {
-                    ToRGB(out float r, out float _, out float _);
-                    return r;
-                }
-
-                return _c1;
-            }
-            set
-            {
-                if (_cType == ColorType.RGB)
-                {
-                    _c1 = value;
-                    return;
-                }
-
-                ToRGB(out float r, out float g, out float b);
-                _cType = ColorType.RGB;
-                _c1 = value;
-                _c2 = g;
-                _c3 = b;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Green of the color as a floating point number.
-        /// Note: setting this value will convert the color to RGB if not already in it
-        /// </summary>
-        public float Gf
-        {
-            get
-            {
-                if (_cType != ColorType.RGB)
-                {
-                    ToRGB(out float _, out float g, out float _);
-                    return g;
-                }
-
-                return _c2;
-            }
-            set
-            {
-                if (_cType == ColorType.RGB)
-                {
-                    _c2 = value;
-                    return;
-                }
-
-                ToRGB(out float r, out float g, out float b);
-                _cType = ColorType.RGB;
-                _c1 = r;
-                _c2 = value;
-                _c3 = b;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Blue of the color as a floating point number.
-        /// Note: setting this value will convert the color to RGB if not already in it
-        /// </summary>
-        public float Bf
-        {
-            get
-            {
-                if (_cType != ColorType.RGB)
-                {
-                    ToRGB(out float _, out float _, out float b);
-                    return b;
-                }
-
-                return _c3;
-            }
-            set
-            {
-                if (_cType == ColorType.RGB)
-                {
-                    _c3 = value;
-                    return;
-                }
-
-                ToRGB(out float r, out float g, out float b);
-                _cType = ColorType.RGB;
-                _c1 = r;
-                _c2 = g;
-                _c3 = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Hue of the color as a floating point number.
-        /// Note: setting this value will convert the color to HSV if not already in it
-        /// </summary>
-        public float Huef
-        {
-            get
-            {
-                if (_cType != ColorType.HSV)
-                {
-                    ToHSV(out float h, out float _, out float _);
-                    return h;
-                }
-
-                return _c1;
-            }
-            set
-            {
-                if (_cType == ColorType.HSV)
-                {
-                    _c1 = value;
-                    return;
-                }
-
-                ToHSV(out float h, out float s, out float v);
-                _cType = ColorType.HSV;
-                _c1 = value;
-                _c2 = s;
-                _c3 = v;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Saturation of the color as a floating point number.
-        /// Note: setting this value will convert the color to HSV if not already in it
-        /// </summary>
-        public float Saturationf
-        {
-            get
-            {
-                if (_cType != ColorType.HSV)
-                {
-                    ToHSV(out float _, out float s, out float _);
-                    return s;
-                }
-
-                return _c2;
-            }
-            set
-            {
-                if (_cType == ColorType.HSV)
-                {
-                    _c2 = value;
-                    return;
-                }
-
-                ToHSV(out float h, out float s, out float v);
-                _cType = ColorType.HSV;
-                _c1 = h;
-                _c2 = value;
-                _c3 = v;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Value of the color as a floating point number.
-        /// Note: setting this value will convert the color to HSV if not already in it
-        /// </summary>
-        public float Valuef
-        {
-            get
-            {
-                if (_cType != ColorType.HSV)
-                {
-                    ToHSV(out float _, out float _, out float v);
-                    return v;
-                }
-
-                return _c3;
-            }
-            set
-            {
-                if (_cType == ColorType.HSV)
-                {
-                    _c3 = value;
-                    return;
-                }
-
-                ToHSV(out float h, out float s, out float v);
-                _cType = ColorType.HSV;
-                _c1 = h;
-                _c2 = s;
-                _c3 = value;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets all ARGB components at once
-        /// </summary>
-        public void GetARGB(out byte red, out byte green, out byte blue, out byte alpha)
-        {
-            alpha = (byte)Math.Round(_alpha * 255);
-            if (_cType != ColorType.RGB)
-            {
-                ToRGB(out float r, out float g, out float b);
-                red = (byte)Math.Round(r * 255);
-                green = (byte)Math.Round(g * 255);
-                blue = (byte)Math.Round(b * 255);
-                return;
-            }
-            red = (byte)Math.Round(_c1 * 255);
-            green = (byte)Math.Round(_c2 * 255);
-            blue = (byte)Math.Round(_c3 * 255);
-        }
-
-        /// <summary>
-        /// Gets all ARGB components at once as floating point numbers
-        /// </summary>
-        public void GetARGBf(out float red, out float green, out float blue, out float alpha)
-        {
-            alpha = _alpha;
-            if (_cType != ColorType.RGB)
-            {
-                ToRGB(out float r, out float g, out float b);
-                red = r;
-                green = g;
-                blue = b;
-                return;
-            }
-            red = _c1;
-            green = _c2;
-            blue = _c3;
-        }
-
-
-        /// <summary>
-        /// Gets all AHSV components at once
-        /// </summary>
-        public void GetAHSV(out int hue, out int saturation, out int value, out int alpha)
-        {
-            alpha = (int)Math.Round(_alpha * 255);
-            if (_cType != ColorType.HSV)
-            {
-                ToHSV(out float f, out float s, out float v);
-                hue = (int)Math.Round(f);
-                saturation = (int)Math.Round(s * 255);
-                value = (int)Math.Round(v * 255);
-                return;
-            }
-            hue = (int)Math.Round(_c1);
-            saturation = (int)Math.Round(_c2 * 255);
-            value = (int)Math.Round(_c3 * 255);
-        }
-
-        /// <summary>
-        /// Gets all AHSV components at once as floating point numbers
-        /// </summary>
-        public void GetAHSVf(out float hue, out float saturation, out float value, out float alpha)
-        {
-            alpha = _alpha;
-            if (_cType != ColorType.HSV)
-            {
-                ToHSV(out float f, out float s, out float v);
-                hue = f;
-                saturation = s;
-                value = v;
-                return;
-            }
-            hue = _c1;
-            saturation = _c2;
-            value = _c3;
-        }
-
-
-        /// <summary>
-        /// Sets the color as a RGB color, setting all channels at once. Arguments range 0 - 255
-        /// </summary>
-        public void SetARGB(byte red, byte green, byte blue, byte alpha = 255)
-        {
-            _alpha = alpha;
-            _c1 = red / 255f;
-            _c2 = green / 255f;
-            _c3 = blue / 255f;
-            _cType = ColorType.RGB;
-        }
-
-        /// <summary>
-        /// Sets the color as an RGB color using floating point numbers, setting all channels
-        /// at once. Arguments range 0 - 1
-        /// </summary>
-        public void SetARGBf(float red, float green, float blue, float alpha = 1.0f)
-        {
-            _alpha = alpha;
-            _c1 = red;
-            _c2 = green;
-            _c3 = blue;
-            _cType = ColorType.HSV;
-        }
-
-        /// <summary>
-        /// Sets the color as a HSV color, setting all channels
-        /// at once. Hue must be > 0, generally [0,360), all other arguments in range 0 - 255
-        /// </summary>
-        public void SetHSV(int hue, int saturation, int value, int alpha = 255)
-        {
-            if (hue < 0 || saturation < 0 || saturation > 255 || value < 0 || value > 255 || alpha < 0 || alpha > 255)
-                throw new ArgumentOutOfRangeException();
-
-            _alpha = alpha;
-            _c1 = hue % 360;
-            _c2 = saturation / 255f;
-            _c3 = value / 255f;
-            _cType = ColorType.HSV;
-        }
-
-        /// <summary>
-        /// Sets the color as a HSV color using floating point numbers, setting all channels
-        /// at once. Hue must be > 0, generally [0,360), all other arguments in range 0 - 1;
-        /// </summary>
-        public void SetHSVf(float hue, float saturation, float value, float alpha = 1.0f)
-        {
-            if (hue < 0 || saturation < 0 || saturation > 1 || value < 0 || value > 1 || alpha < 0 || alpha > 1)
-                throw new ArgumentOutOfRangeException();
-
-            _alpha = alpha;
-            _c1 = hue % 360;
-            _c2 = saturation;
-            _c3 = value;
-            _cType = ColorType.HSV;
-        }
-
-
-        //https://en.wikipedia.org/wiki/HSL_and_HSV
-        private void ToHSV(out float hue, out float saturation, out float value)
-        {
-            if (_cType == ColorType.HSV)
-            {
-                hue = _c1;
-                saturation = _c2;
-                value = _c3;
-                return;
-            }
-
-            var max = MathF.Max(_c1, MathF.Max(_c2, _c3));
-            var min = MathF.Min(_c1, MathF.Min(_c2, _c3));
-            var range = max - min;
-
-            float h = 0.0f;
-            if (range <= EPSILON)
-            {
-                hue = -1; //acromatic or undefined
-                value = max;
-                saturation = max == 0 ? 0 : range / max;
-                return;
-            }
-            else if (max == _c1)
-            {
-                h = ((_c2 - _c3) / range) % 6;
-            }
-            else if (max == _c2)
-            {
-                h = ((_c3 - _c1) / range) + 2;
-            }
-            else if (max == _c3)
-            {
-                h = ((_c1 - _c2) / range) + 4;
-            }
-
-            h *= 60;
-
-            if (h < 0)
-                h += 360.0f;
-
-            hue = h;
-            value = max;
-            saturation = max == 0 ? 0 : range / max;
-        }
-
-        private void ToRGB(out float red, out float green, out float blue)
-        {
-            if (_cType == ColorType.RGB)
-            {
-                red = _c1;
-                green = _c2;
-                blue = _c3;
-                return;
-            }
-            if (_c1 == -1) //Achromatic/Undefined
-            {
-                var ch = _c3 - _c2; //Saturation should be 0 here
-                red = green = blue = ch; //Its a grey color
-                return;
-            }
-
-            var c = _c3 * _c2;
-            var h = _c1 / 60;
-            var x = c * (1 - MathF.Abs(h % 2 - 1));
-
-            float r = 0;
-            float g = 0;
-            float b = 0;
-            if (h <= 1)
-            {
-                r = c;
-                g = x;
-                b = 0;
-            }
-            else if (h > 1 && h <= 2)
-            {
-                r = x;
-                g = c;
-                b = 0;
-            }
-            else if (h > 2 && h <= 3)
-            {
-                r = 0;
-                g = c;
-                b = x;
-            }
-            else if (h > 3 && h <= 4)
-            {
-                r = 0;
-                g = x;
-                b = c;
-            }
-            else if (h > 4 && h <= 5)
-            {
-                r = x;
-                g = 0;
-                b = c;
-            }
-            else if (h > 5 && h <= 6)
-            {
-                r = c;
-                g = 0;
-                b = x;
-            }
-
-            var m = _c3 - c;
-
-            red = r + m;
-            green = g + m;
-            blue = b + m;
-
-
-
-            //uses alternate HSV to RGB algorithm
-            //https://en.wikipedia.org/wiki/HSL_and_HSV
-            //Shouldn't have any issues unless desiring extremely high precision
-            //float hue = _c1;
-            //float saturation = _c2;
-            //float value = _c3;
-            //float comp(int n)
-            //{
-            //    var k = (n + (hue / 60f)) % 6;
-            //    var fn = value - (value * saturation) * MathF.Max(0, MathF.Min(k, MathF.Min(4 - k, 1)));
-            //    return fn;
-            //}
-
-            //red = comp(5);
-            //green = comp(3);
-            //blue = comp(1);
-        }
-
-        /// <summary>
-        /// Helper method to convert between color spaces without creating Color2 instances
-        /// </summary>
-        /// <param name="red">Red [0-255]</param>
-        /// <param name="green">Green [0-255]</param>
-        /// <param name="blue">Blue [0-255]</param>
-        /// <param name="hue">Hue [0-360)</param>
-        /// <param name="saturation">Saturation [0-255]</param>
-        /// <param name="value">Value [0-255]</param>
-        public static void RGBToHSV(byte red, byte green, byte blue, out int hue, out int saturation, out int value)
-        {
-            var r = red / 255f;
-            var g = green / 255f;
-            var b = blue / 255f;
-
-            var max = MathF.Max(r, MathF.Max(g, b));
-            var min = MathF.Min(r, MathF.Min(g, b));
-            var range = max - min;
-
-            float h = 0.0f;
-            if (range <= EPSILON)
-            {
-                h = -1; //acromatic or undefined
-            }
-            else if (max == r)
-            {
-                h = ((g - b) / range) % 6;
-            }
-            else if (max == g)
-            {
-                h = ((b - r) / range) + 2;
-            }
-            else if (max == b)
-            {
-                h = ((r - g) / range) + 4;
-            }
-
-            hue = h == -1 ? -1 : (int)MathF.Round(h * 60);
-            value = (int)MathF.Round(max * 255);
-
-            saturation = max == 0 ? 0 : (int)MathF.Round(range / max * 255);
-        }
-
-        /// <summary>
-        /// Helper method to convert between color spaces without creating Color2 instances
-        /// </summary>
-        /// <param name="red">Red [0-1]</param>
-        /// <param name="green">Green [0-1]</param>
-        /// <param name="blue">Blue [0-1]</param>
-        /// <param name="hue">Hue [0-360)</param>
-        /// <param name="saturation">Saturation [0-1]</param>
-        /// <param name="value">Value [0-1]</param>
-        public static void RGBfToHSVf(float red, float green, float blue, out float hue, out float saturation, out float value)
-        {
-            var max = MathF.Max(red, MathF.Max(green, blue));
-            var min = MathF.Min(red, MathF.Min(green, blue));
-            var range = max - min;
-
-            float h = 0.0f;
-            if (range <= EPSILON)
-            {
-                h = -1; //acredomatic ored undefined
-            }
-            else if (max == red)
-            {
-                h = ((green - blue) / range) % 6;
-            }
-            else if (max == green)
-            {
-                h = ((blue - red) / range) + 2;
-            }
-            else if (max == blue)
-            {
-                h = ((red - green) / range) + 4;
-            }
-
-            hue = h == -1 ? -1 : h * 60;
-            value = max;
-
-            saturation = max == 0 ? 0 : range / max;
-        }
-
-        /// <summary>
-        /// Helper method to convert between color spaces without creating Color2 instances
-        /// </summary>
-        /// <param name="hue">Hue [0,360)</param>
-        /// <param name="saturation">Saturation [0,255]</param>
-        /// <param name="value">Value [0,255]</param>
-        /// <param name="red">Red [0,255]</param>
-        /// <param name="green">Green [0,255]</param>
-        /// <param name="blue">Blue [0,255]</param>
-        public static void HSVToRGB(int hue, int saturation, int value, out byte red, out byte green, out byte blue)
-        {
-            if (hue == -1) //Achromatic/Undefined
-            {
-                var ch = value - saturation; //Saturation should be 0 here
-                red = green = blue = (byte)MathF.Round(ch * 255); //Its a grey color
-                return;
-            }
-
-            var s = saturation / 255f;
-            var v = value / 255f;
-
-            var c = v * s;
-            var h = hue / 60;
-            var x = c * (1 - MathF.Abs(h % 2 - 1));
-
-            float r = 0;
-            float g = 0;
-            float b = 0;
-            if (h <= 1)
-            {
-                r = c;
-                g = x;
-                b = 0;
-            }
-            else if (h > 1 && h <= 2)
-            {
-                r = x;
-                g = c;
-                b = 0;
-            }
-            else if (h > 2 && h <= 3)
-            {
-                r = 0;
-                g = c;
-                b = x;
-            }
-            else if (h > 3 && h <= 4)
-            {
-                r = 0;
-                g = x;
-                b = c;
-            }
-            else if (h > 4 && h <= 5)
-            {
-                r = x;
-                g = 0;
-                b = c;
-            }
-            else if (h > 5 && h <= 6)
-            {
-                r = c;
-                g = 0;
-                b = x;
-            }
-
-            var m = v - c;
-
-            red = (byte)MathF.Round((r + m) * 255);
-            green = (byte)MathF.Round((g + m) * 255);
-            blue = (byte)MathF.Round((b + m) * 255);
-        }
-
-        /// <summary>
-        /// Helper method to convert between color spaces without creating Color2 instances
-        /// </summary>
-        /// <param name="hue">Hue [0,360)</param>
-        /// <param name="saturation">Saturation [0,1]</param>
-        /// <param name="value">Value [0,1]</param>
-        /// <param name="red">Red [0,1]</param>
-        /// <param name="green">Green [0,1]</param>
-        /// <param name="blue">Blue [0,1]</param>
-        public static void HSVfToRGBf(float hue, float saturation, float value, out float red, out float green, out float blue)
-        {
-            if (hue == -1) //Achromatic/Undefined
-            {
-                var ch = value - saturation; //Saturation should be 0 here
-                red = green = blue = ch; //Its a grey color
-                return;
-            }
-
-            var c = value * saturation;
-            var h = hue / 60;
-            var x = c * (1 - MathF.Abs(h % 2 - 1));
-
-            float r = 0;
-            float g = 0;
-            float b = 0;
-            if (h <= 1)
-            {
-                r = c;
-                g = x;
-                b = 0;
-            }
-            else if (h > 1 && h <= 2)
-            {
-                r = x;
-                g = c;
-                b = 0;
-            }
-            else if (h > 2 && h <= 3)
-            {
-                r = 0;
-                g = c;
-                b = x;
-            }
-            else if (h > 3 && h <= 4)
-            {
-                r = 0;
-                g = x;
-                b = c;
-            }
-            else if (h > 4 && h <= 5)
-            {
-                r = x;
-                g = 0;
-                b = c;
-            }
-            else if (h > 5 && h <= 6)
-            {
-                r = c;
-                g = 0;
-                b = x;
-            }
-
-            var m = value - c;
-
-            red = r + m;
-            green = g + m;
-            blue = b + m;
-        }
-
-
-        public static void HSVfToHSLf(float hue, float saturation, float value, out float satL, out float light)
-        {
-            light = value * (1 - saturation / 2f);
-            satL = (MathF.Abs(1 - light) < EPSILON || light < EPSILON) ? 0 : (value - light) / MathF.Min(light, 1 - light);
-        }
-
-
-        public bool Equals(Color2 other)
-        {
-            if (other._cType != _cType)
-                return false;
-
-            if (Math.Abs(other._c1 - _c1) > EPSILON)
-                return false;
-
-            if (Math.Abs(other._c2 - _c2) > EPSILON)
-                return false;
-
-            if (Math.Abs(other._c3 - _c3) > EPSILON)
-                return false;
-
-            if (Math.Abs(other._alpha - _alpha) > EPSILON)
-                return false;
-
-            return true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Color2 ec && ec.Equals(this);
-        }
-
-        public override string ToString()
-        {
-            return $"{ToHexString()}, {ToHTML()}";
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_cType, _alpha, _c1, _c2, _c3);
-        }
-
-        public static bool operator ==(Color2 ec1, Color2 ec2)
-        {
-            return ec1.Equals(ec2);
-        }
-
-        public static bool operator !=(Color2 ec1, Color2 ec2)
-        {
-            return !ec1.Equals(ec2);
-        }
-
-        public string ToHexString(bool includeAlpha = true)
-        {
-            ToRGB(out float r, out float g, out float b);
-            if (includeAlpha)
-                return $"#{A:x2}{(int)(r * 255):x2}{(int)(g * 255):x2}{(int)(b * 255):x2}";
-            else
-                return $"#{(int)(r * 255):x2}{(int)(g * 255):x2}{(int)(b * 255):x2}";
-        }
-
-        public string ToHTML(bool includeAlpha = true)
-        {
-            ToRGB(out float r, out float g, out float b);            
-            if (includeAlpha)
-                return $"rgba( {(int)(r * 255)}, {(int)(g * 255)}, {(int)(b * 255)}, {A} )";
-            else
-                return $"rgb( {(int)(r * 255)}, {(int)(g * 255)}, {(int)(b * 255)} )";
-        }
-
-        public static Color2 Parse(string value)
-        {
-            if (TryParse(value, out Color2 ec))
-                return ec;
-
-            return Empty;
-        }
-
-        public static bool TryParse(ReadOnlySpan<char> value, out Color2 ec)
-        {
-            if (value.Contains("#", StringComparison.Ordinal))
-            {
-                var v = value.Slice(1);
-                if (v.Length == 3 || v.Length == 4)
-                {
-                    Span<char> normal = stackalloc char[v.Length * 2];
-
-                    for (int i = 0; i < v.Length; i++)
-                    {
-                        normal[i * 2] = normal[i * 2 + 1] = v[i];
-                    }
-
-                    if (uint.TryParse(normal, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint result))
-                    {
-                        ec = FromUInt32(result | (v.Length == 3 ? 0xff000000 : 0u));
-                        return true;
-                    }
-                }
-                else if (v.Length == 6 || v.Length == 8)
-                {
-                    if (uint.TryParse(v, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint result))
-                    {
-                        ec = FromUInt32(result | (v.Length == 6 ? 0xff000000 : 0u));
-                        return true;
-                    }
-                }
-            }
-            else if (value.StartsWith("rgb"))
-            {
-                var start = value.IndexOf("(") + 1;
-                var result = value.Slice(start, value.Length - start - 1).Trim().ToString().Split(',');
-
-                if (result.Length != 3 && result.Length != 4)
-                {
-                    ec = Empty;
-                    return false;
-                }
-
-                if (byte.TryParse(result[0].Trim(), out byte r) &&
-                    byte.TryParse(result[1].Trim(), out byte g) &&
-                    byte.TryParse(result[2].Trim(), out byte b))
-                {
-                    if (result.Length == 4 && byte.TryParse(result[3], out byte a))
-                    {
-                        ec = FromRGB(r, g, b, a);
-                        return true;
-                    }
-
-                    ec = FromRGB(r, g, b);
-                    return true;
-                }
-            }
-
-            ec = Empty;
-            return false;
-        }
-
-        public static implicit operator Color(Color2 ec)
-        {
-            ec.GetARGB(out byte r, out byte g, out byte b, out byte a);
-            return Color.FromArgb(a, r, g, b);
-        }
-
-        public static implicit operator Color2(Color c)
-        {
-            return Color2.FromUInt32(c.ToUint32());
-        }
-
-        public Color2 WithHuef(float hue)
-        {
-            hue = MathF.Max(0, hue % 360);
-            if (_cType == ColorType.HSV)
-            {
-                return FromHSV(hue, _c2, _c3, _alpha);
-            }
-            ToHSV(out float _, out float sat, out float val);
-            return FromHSV(hue, sat, val);
-        }
-
-        public Color2 WithSatf(float sat)
-        {
-            sat = MathF.Max(0, MathF.Min(1, sat));
-
-            if (_cType == ColorType.HSV)
-            {
-                return FromHSV(_c1, sat, _c3, _alpha);
-            }
-            ToHSV(out float h, out float _, out float v);
-            return FromHSV(h, sat, v, _alpha);
-        }
-
-        public Color2 WithValf(float val)
-        {
-            val = MathF.Max(0, MathF.Min(1, val));
-
-            if (_cType == ColorType.HSV)
-            {
-                return FromHSV(_c1, _c2, val, _alpha);
-            }
-
-            ToHSV(out float h, out float s, out float _);
-            return FromHSV(h, s, val, _alpha);
-        }
-
-        public Color2 WithRedf(float r)
-        {
-            r = MathF.Max(0, MathF.Min(r, 1));
-            if (_cType == ColorType.RGB)
-            {
-                return FromRGB(r, _c2, _c3, _alpha);
-            }
-            ToRGB(out float _, out float g, out float b);
-            return FromRGB(r, g, b, _alpha);
-        }
-
-        public Color2 WithGreenf(float g)
-        {
-            g = MathF.Max(0, MathF.Min(g, 1));
-            if (_cType == ColorType.RGB)
-            {
-                return FromRGB(_c1, g, _c3, _alpha);
-            }
-            ToRGB(out float r, out float _, out float b);
-            return FromRGB(r, g, b, _alpha);
-        }
-
-        public Color2 WithBluef(float b)
-        {
-            b = MathF.Max(0, MathF.Min(1, b));
-            if (_cType == ColorType.RGB)
-            {
-                return FromRGB(_c1, _c2, b, _alpha);
-            }
-
-            ToRGB(out float r, out float g, out float _);
-            return FromRGB(r, g, b, _alpha);
-        }
-
-        public Color2 WithAlphaf(float a)
-        {
-            a = MathF.Max(0, MathF.Min(a, 1));
-            if (_cType == ColorType.RGB)
-            {
-                return FromRGB(_c1, _c2, _c3, a);
-            }
-            else if (_cType == ColorType.HSV)
-            {
-                return FromHSV(_c1, _c2, _c3, a);
-            }
-            else
-            {
-                return Empty;
-            }
-        }
-
-        private const float EPSILON = 0.001f;
+		/// <summary>
+		/// Creates a RGB color 2 from the given RGBA values
+		/// </summary>
+		/// <param name="r">Red, [0,255]</param>
+		/// <param name="g">Green, [0,255]</param>
+		/// <param name="b">Blue, [0,255]</param>
+		/// <param name="a">Alpha, [0,255]</param>
+		public Color2(byte r, byte g, byte b, byte a = 255)
+		{
+			_cType = ColorType.RGB;
+			_c1 = r / 255f;
+			_c2 = g / 255f;
+			_c3 = b / 255f;
+			_c4 = 0;
+			_alpha = a / 255f;
+		}
+
+		/// <summary>
+		/// Creates a RGB Color2 from an <see cref="Avalonia.Media.Color"/>
+		/// </summary>
+		/// <param name="avColor"></param>
+		public Color2(Color avColor)
+		{
+			_cType = ColorType.RGB;
+			_c1 = avColor.R / 255;
+			_c2 = avColor.G / 255;
+			_c3 = avColor.B / 255;
+			_c4 = 0;
+			_alpha = avColor.A / 255;
+		}
+
+
+		/// <summary>
+		/// Gets the Alpha channel of the color, [0,255]
+		/// </summary>
+		public byte A
+		{
+			get
+			{
+				return (byte)MathF.Round(_alpha * 255);
+			}
+		}
+
+		/// <summary>
+		/// Gets the Red channel of the color. If color is not an RGB color, it is converted to one. [0,255]
+		/// </summary>
+		public byte R
+		{
+			get
+			{
+				if (_cType != ColorType.RGB)
+				{
+					return ToRGB().R;
+				}
+
+				return (byte)MathF.Round(_c1 * 255);
+			}
+		}
+
+		/// <summary>
+		/// Gets the Green channel of the color. If color is not an RGB color, it is converted to one. [0,255]
+		/// </summary>
+		public byte G
+		{
+			get
+			{
+				if (_cType != ColorType.RGB)
+				{
+					return ToRGB().G;
+				}
+
+				return (byte)MathF.Round(_c2 * 255);
+			}
+		}
+
+		/// <summary>
+		/// Gets the Blue channel of the color. If color is not an RGB color, it is converted to one. [0,255]
+		/// </summary>
+		public byte B
+		{
+			get
+			{
+				if (_cType != ColorType.RGB)
+				{
+					return ToRGB().B;
+				}
+
+				return (byte)MathF.Round(_c3 * 255);
+			}
+		}
+
+		/// <summary>
+		/// Gets the Alpha channel of the color. [0,1]
+		/// </summary>
+		public float Af => _alpha;
+
+		/// <summary>
+		/// Gets the Red channel of the color. If color is not an RGB color, it is converted to one. [0,1]
+		/// </summary>
+		public float Rf
+		{
+			get
+			{
+				if (_cType != ColorType.RGB)
+				{
+					return ToRGB().Rf;
+				}
+
+				return _c1;
+			}
+		}
+
+		/// <summary>
+		/// Gets the Green channel of the color. If color is not an RGB color, it is converted to one. [0,1]
+		/// </summary>
+		public float Gf
+		{
+			get
+			{
+				if (_cType != ColorType.RGB)
+				{
+					return ToRGB().Gf;
+				}
+
+				return _c2;
+			}
+		}
+
+		/// <summary>
+		/// Gets the Blue channel of the color. If color is not an RGB color, it is converted to one. [0,1]
+		/// </summary>
+		public float Bf
+		{
+			get
+			{
+				if (_cType != ColorType.RGB)
+				{
+					return ToRGB().Bf;
+				}
+
+				return _c3;
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSL or HSV Hue of the color. HSL and HSV hue is the same, so if the color type is neither HSV
+		/// or HSL, it is converted to HSV first. [0,360)
+		/// </summary>
+		public int Hue
+		{
+			get
+			{
+				//HSL & HSV Hue is the same, so it doesn't matter which we refer to
+				if (_cType != ColorType.HSV && _cType != ColorType.HSL)
+				{
+					return ToHSV().Hue;
+				}
+
+				return (int)MathF.Round(_c1);
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSL or HSV Hue of the color. HSL and HSV hue is the same, so if the color type is neither HSV
+		/// or HSL, it is converted to HSV first. [0,360)
+		/// </summary>
+		public float Huef
+		{
+			get
+			{
+				//HSL & HSV Hue is the same, so it doesn't matter which we refer to
+				if (_cType != ColorType.HSV && _cType != ColorType.HSL)
+				{
+					return ToHSV().Huef;
+				}
+
+				return _c1;
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSV Saturation of the color. If the color is not an HSV color, it is converted first. [0,100]
+		/// </summary>
+		public int Saturation
+		{
+			get
+			{
+				if (_cType != ColorType.HSV)
+				{
+					return ToHSV().Saturation;
+				}
+
+				return (int)MathF.Round(_c2 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSV Saturation of the color. If the color is not an HSV color, it is converted first. [0,1]
+		/// </summary>
+		public float Saturationf
+		{
+			get
+			{
+				if (_cType != ColorType.HSV)
+				{
+					return ToHSV().Saturationf;
+				}
+
+				return _c2;
+			}
+		}
+
+		/// <summary>
+		/// Gets the Value of the color. If the color is not an HSV color, it is converted first. [0,100]
+		/// </summary>
+		public int Value
+		{
+			get
+			{
+				if (_cType != ColorType.HSV)
+				{
+					return ToHSV().Value;
+				}
+
+				return (int)MathF.Round(_c3 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSV Value of the color. If the color is not an HSV color, it is converted first. [0,1]
+		/// </summary>
+		public float Valuef
+		{
+			get
+			{
+				if (_cType != ColorType.HSV)
+				{
+					return ToHSV().Valuef;
+				}
+
+				return _c3;
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSL Saturation of the color. If the color is not an HSL color, it is converted first. [0,100]
+		/// </summary>
+		public int HSLSaturation
+		{
+			get
+			{
+				if (_cType != ColorType.HSL)
+				{
+					return ToHSL().HSLSaturation;
+				}
+
+				return (int)MathF.Round(_c2 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSL Saturation of the color. If the color is not an HSL color, it is converted first. [0,1]
+		/// </summary>
+		public float HSLSaturationf
+		{
+			get
+			{
+				if (_cType != ColorType.HSL)
+				{
+					return ToHSL().HSLSaturationf;
+				}
+
+				return _c2;
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSL Lightness of the color. If the color is not an HSL color, it is converted first. [0,100]
+		/// </summary>
+		public int Lightness
+		{
+			get
+			{
+				if (_cType != ColorType.HSL)
+				{
+					return ToHSL().Lightness;
+				}
+
+				return (int)MathF.Round(_c3 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the HSL Lightness of the color. If the color is not an HSL color, it is converted first. [0,1]
+		/// </summary>
+		public float Lightnessf
+		{
+			get
+			{
+				if (_cType != ColorType.HSL)
+				{
+					return ToHSL().Lightnessf;
+				}
+
+				return _c3;
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Cyan of the color. If the color is not an CMYK color, it is converted first. [0,100]
+		/// </summary>
+		public int CMYKCyan
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKCyan;
+				}
+
+				return (int)MathF.Round(_c1 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Cyan of the color. If the color is not an CMYK color, it is converted first. [0,1]
+		/// </summary>
+		public float CMYKCyanf
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKCyanf;
+				}
+
+				return _c1;
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Magenta of the color. If the color is not an CMYK color, it is converted first. [0,100]
+		/// </summary>
+		public int CMYKMagenta
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKMagenta;
+				}
+
+				return (int)MathF.Round(_c2 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Magenta of the color. If the color is not an CMYK color, it is converted first. [0,1]
+		/// </summary>
+		public float CMYKMagentaf
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKMagentaf;
+				}
+
+				return _c2;
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Yellow of the color. If the color is not an CMYK color, it is converted first. [0,100]
+		/// </summary>
+		public int CMYKYellow
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKYellow;
+				}
+
+				return (int)MathF.Round(_c3 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Yellow of the color. If the color is not an CMYK color, it is converted first. [0,1]
+		/// </summary>
+		public float CMYKYellowf
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKYellowf;
+				}
+
+				return _c3;
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Black of the color. If the color is not an CMYK color, it is converted first. [0,100]
+		/// </summary>
+		public int CMYKBlack
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKBlack;
+				}
+
+				return (int)MathF.Round(_c4 * 100);
+			}
+		}
+
+		/// <summary>
+		/// Gets the CMYK Black of the color. If the color is not an CMYK color, it is converted first. [0,1]
+		/// </summary>
+		public float CMYKBlackf
+		{
+			get
+			{
+				if (_cType != ColorType.CMYK)
+				{
+					return ToCMYK().CMYKBlackf;
+				}
+
+				return _c4;
+			}
+		}
+
+
+		/// <summary>
+		/// Gets all RGBA components of the color. If not RGB, color is converted first
+		/// </summary>
+		/// <param name="r">Red, [0,255]</param>
+		/// <param name="g">Green, [0,255]</param>
+		/// <param name="b">Blue, [0,255]</param>
+		/// <param name="a">Alpha, [0,255]</param>
+		public void GetRGB(out byte r, out byte g, out byte b, out byte a)
+		{
+			if (_cType != ColorType.RGB)
+			{
+				ToRGB().GetRGB(out r, out g, out b, out a);
+				return;
+			}
+
+			r = (byte)MathF.Round(_c1 * 255);
+			g = (byte)MathF.Round(_c2 * 255);
+			b = (byte)MathF.Round(_c3 * 255);
+			a = (byte)MathF.Round(_alpha * 255);
+		}
+
+		/// <summary>
+		/// Gets all RGBA components of the color as floating point numbers. If not RGB, color is converted first
+		/// </summary>
+		/// <param name="r">Red, [0,1]</param>
+		/// <param name="g">Green, [0,1]</param>
+		/// <param name="b">Blue, [0,1]</param>
+		/// <param name="a">Alpha, [0,1]</param>
+		public void GetRGBf(out float r, out float g, out float b, out float a)
+		{
+			if (_cType != ColorType.RGB)
+			{
+				ToRGB().GetRGBf(out r, out g, out b, out a);
+				return;
+			}
+
+			r = _c1;
+			g = _c2;
+			b = _c3;
+			a = _alpha;
+		}
+
+		/// <summary>
+		/// Gets all HSV components of the color as floating point numbers. If not HSV, color is converted first
+		/// </summary>
+		/// <param name="h">Hue, [0,360)</param>
+		/// <param name="s">Saturation, [0,1]</param>
+		/// <param name="v">Value, [0,1]</param>
+		/// <param name="a">Alpha, [0,1]</param>
+		public void GetHSVf(out float h, out float s, out float v, out float a)
+		{
+			if (_cType != ColorType.HSV)
+			{
+				ToHSV().GetHSVf(out h, out s, out v, out a);
+				return;
+			}
+
+			h = _c1;
+			s = _c2;
+			v = _c3;
+			a = _alpha;
+		}
+
+		/// <summary>
+		/// Gets all HSV components of the color. If not HSV, color is converted first
+		/// </summary>
+		/// <param name="h">Hue, [0,360)</param>
+		/// <param name="s">Saturation, [0,100]</param>
+		/// <param name="v">Value, [0,100]</param>
+		/// <param name="a">Alpha, [0,255]</param>
+		public void GetHSV(out int h, out int s, out int v, out int a)
+		{
+			if (_cType != ColorType.HSV)
+			{
+				ToHSV().GetHSV(out h, out s, out v, out a);
+				return;
+			}
+
+			h = (int)MathF.Round(_c1);
+			s = (int)MathF.Round(_c2 * 100);
+			v = (int)MathF.Round(_c3 * 100);
+			a = (int)MathF.Round(_alpha * 255);
+		}
+		
+		/// <summary>
+		/// Gets all HSL components of the color as floating point numbers. If not HSL, color is converted first
+		/// </summary>
+		/// <param name="h">Hue, [0,360)</param>
+		/// <param name="s">Saturation, [0,1]</param>
+		/// <param name="l">Lightness, [0,1]</param>
+		/// <param name="a">Alpha, [0,1]</param>
+		public void GetHSLf(out float h, out float s, out float l, out float a)
+		{
+			if (_cType != ColorType.HSL)
+			{
+				ToHSL().GetHSLf(out h, out s, out l, out a);
+				return;
+			}
+
+			h = _c1;
+			s = _c2;
+			l = _c3;
+			a = _alpha;
+		}
+
+		/// <summary>
+		/// Gets all HSL components of the color. If not HSL, color is converted first
+		/// </summary>
+		/// <param name="h">Hue, [0,360)</param>
+		/// <param name="s">Saturation, [0,100]</param>
+		/// <param name="v">Lightness, [0,100]</param>
+		/// <param name="a">Alpha, [0,255]</param>
+		public void GetHSL(out int h, out int s, out int l, out int a)
+		{
+			if (_cType != ColorType.HSL)
+			{
+				ToHSL().GetHSL(out h, out s, out l, out a);
+				return;
+			}
+
+			h = (int)MathF.Round(_c1);
+			s = (int)MathF.Round(_c2 * 100);
+			l = (int)MathF.Round(_c3 * 100);
+			a = (int)MathF.Round(_alpha * 255);
+		}
+
+		/// <summary>
+		/// Gets all CMYK components of the color as floating point numbers. If not CMYK, color is converted first
+		/// </summary>
+		/// <param name="c">Cyan, [0,1]</param>
+		/// <param name="m">Magenta, [0,1]</param>
+		/// <param name="y">Yellow, [0,1]</param>
+		/// <param name="k">Black, [0,1]</param>
+		/// <param name="a">Alpha, [0,1]</param>
+		public void GetCMYKf(out float c, out float m, out float y, out float k, out float a)
+		{
+			if (_cType != ColorType.CMYK)
+			{
+				ToCMYK().GetCMYKf(out c, out m, out y, out k, out a);
+				return;
+			}
+
+			c = _c1;
+			m = _c2;
+			y = _c3;
+			k = _c4;
+			a = _alpha;
+		}
+
+		/// <summary>
+		/// Gets all CMYK components of the color. If not CMYK, color is converted first
+		/// </summary>
+		/// <param name="c">Cyan, [0,100]</param>
+		/// <param name="m">Magenta, [0,100]</param>
+		/// <param name="y">Yellow, [0,100]</param>
+		/// <param name="k">Black, [0,100]</param>
+		/// <param name="a">Alpha, [0,255]</param>
+		public void GetCMYK(out int c, out int m, out int y, out int k, out int a)
+		{
+			if (_cType != ColorType.CMYK)
+			{
+				ToCMYK().GetCMYK(out c, out m, out y, out k, out a);
+				return;
+			}
+
+			c = (int)MathF.Round(_c1 * 100);
+			m = (int)MathF.Round(_c2 * 100);
+			y = (int)MathF.Round(_c3 * 100);
+			k = (int)MathF.Round(_c4 * 100);
+			a = (int)MathF.Round(_alpha * 255);
+		}
+
+		/// <summary>
+		/// Converts the current color to RGB color space
+		/// </summary>
+		/// <returns>RGB <see cref="Color2"/></returns>
+		public Color2 ToRGB()
+		{
+			if (_cType == ColorType.RGB)
+				return this;
+			
+			float r = 0;
+			float g = 0;
+			float b = 0;
+			switch (_cType)
+			{
+				case ColorType.HSV:
+					HSVToRGB(_c1, _c2, _c3, out r, out g, out b);
+					break;
+
+				case ColorType.HSL:
+					HSLToRGB(_c1, _c2, _c3, out r, out g, out b);
+					break;
+
+				case ColorType.CMYK:
+					CMYKToRGB(_c1, _c2, _c3, _c4, out r, out g, out b);
+					break;
+			}
+
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.RGB;
+			newColor._c1 = r;
+			newColor._c2 = g;
+			newColor._c3 = b;
+			newColor._alpha = _alpha;
+
+			return newColor;
+		}
+
+		/// <summary>
+		/// Converts the current color to HSV color space
+		/// </summary>
+		/// <returns>HSV <see cref="Color2"/></returns>
+		public Color2 ToHSV()
+		{
+			if (_cType == ColorType.HSV)
+				return this;
+
+			float h = 0;
+			float s = 0;
+			float v = 0;
+			switch (_cType)
+			{
+				case ColorType.RGB:
+					RGBToHSV(_c1, _c2, _c3, out h, out s, out v);
+					break;
+
+				case ColorType.HSL:
+					h = _c1;
+					HSLToHSV(_c2, _c3, out s, out v);
+					break;
+
+				case ColorType.CMYK:
+					//Only support RGB <-> CMYK, so convert & return;
+					ToRGB().GetHSVf(out h, out s, out v, out _);
+					break;
+			}
+
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.HSV;
+			newColor._c1 = h;
+			newColor._c2 = s;
+			newColor._c3 = v;
+			newColor._alpha = _alpha;
+
+			return newColor;
+		}
+
+		/// <summary>
+		/// Converts the current color to HSL color space
+		/// </summary>
+		/// <returns>HSL <see cref="Color2"/></returns>
+		public Color2 ToHSL()
+		{
+			if (_cType == ColorType.HSL)
+				return this;
+
+			float h = 0;
+			float s = 0;
+			float l = 0;
+			switch (_cType)
+			{
+				case ColorType.RGB:
+					RGBToHSL(_c1, _c2, _c3, out h, out s, out l);
+					break;
+
+				case ColorType.HSV:
+					h = _c1;
+					HSVToHSL(_c2, _c3, out s, out l);
+					break;
+
+				case ColorType.CMYK:
+					//Only support RGB <-> CMYK, so convert & return;
+					ToRGB().GetHSLf(out h, out s, out l, out _);
+					break;
+			}
+
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.HSL;
+			newColor._c1 = h;
+			newColor._c2 = s;
+			newColor._c3 = l;
+			newColor._alpha = _alpha;
+
+			return newColor;
+		}
+
+		/// <summary>
+		/// Converts the current color to CMYK color space
+		/// </summary>
+		/// <returns>CMYK <see cref="Color2"/></returns>
+		public Color2 ToCMYK()
+		{
+			if (_cType == ColorType.CMYK)
+				return this;
+
+			float c = 0;
+			float m = 0;
+			float y = 0;
+			float k = 0;
+			switch (_cType)
+			{
+				case ColorType.RGB:
+					RGBToCMYK(_c1, _c2, _c3, out c, out m, out y, out k);
+					break;
+
+				//Only support RGB <-> CMYK, so convert & return;
+				case ColorType.HSV:
+				case ColorType.HSL:
+					ToRGB().GetCMYKf(out c, out m, out y, out k, out _);
+					break;
+			}
+
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.CMYK;
+			newColor._c1 = c;
+			newColor._c2 = m;
+			newColor._c3 = y;
+			newColor._c4 = k;
+			newColor._alpha = _alpha;
+
+			return newColor;
+		}
+
+
+		public bool Equals(Color2 other)
+		{
+			if (other._cType != _cType)
+				return false;
+
+			if (Math.Abs(other._c1 - _c1) > EPSILON)
+				return false;
+
+			if (Math.Abs(other._c2 - _c2) > EPSILON)
+				return false;
+
+			if (Math.Abs(other._c3 - _c3) > EPSILON)
+				return false;
+
+			if (_cType == ColorType.CMYK)
+			{
+				if (Math.Abs(other._c4 - _c4) > EPSILON)
+					return false;
+			}
+
+			if (Math.Abs(other._alpha - _alpha) > EPSILON)
+				return false;
+
+			return true;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is Color2 ec && ec.Equals(this);
+		}
+
+		public override string ToString()
+		{
+			return $"{ToHexString()}, {ToHTML()}";
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(_cType, _alpha, _c1, _c2, _c3);
+		}
+
+		public static bool operator ==(Color2 ec1, Color2 ec2)
+		{
+			return ec1.Equals(ec2);
+		}
+
+		public static bool operator !=(Color2 ec1, Color2 ec2)
+		{
+			return !ec1.Equals(ec2);
+		}
+
+		/// <summary>
+		/// Return the equivalent hex string representing the color.
+		/// </summary>
+		/// <param name="includeAlpha">Whether to include the alpha channel or not</param>
+		/// <returns>Hex string of the color</returns>
+		public string ToHexString(bool includeAlpha = true)
+		{
+			GetRGB(out byte r, out byte g, out byte b, out byte a);
+			if (includeAlpha)
+				return $"#{a:x2}{r:x2}{g:x2}{b:x2}";
+			else
+				return $"#{r:x2}{g:x2}{b:x2}";
+		}
+
+		/// <summary>
+		/// Returns the rgb, and a, if specified, of the color in html rgb notation
+		/// </summary>
+		/// <param name="includeAlpha">Whether to include the alpha channel or not</param>
+		/// <returns>HTML formatted rgb(r,g,b) or rgba(r,g,b,a)</returns>
+		public string ToHTML(bool includeAlpha = true)
+		{
+			GetRGB(out byte r, out byte g, out byte b, out byte a);
+			if (includeAlpha)
+				return $"rgba( {r}, {g}, {b}, {a} )";
+			else
+				return $"rgb( {r}, {g}, {b} )";
+		}
+
+		public string GetDisplayName()
+		{
+			return KnownColorTable.GetColorName(this);
+		}
+
+		public static Color2 FromDisplayName(string name)
+		{
+			return KnownColorTable.FromColorName(name);
+		}
+
+		/// <summary>
+		/// Parses the string representing a Hex value or HTML notation to a color. If parsing fails
+		/// <see cref="Color2.Empty"/> is returned
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static Color2 Parse(string value)
+		{
+			if (TryParse(value, out Color2 ec))
+				return ec;
+
+			return Empty;
+		}
+
+		/// <summary>
+		/// Attempts to parse a string as a ReadOnlySpan<char> into a color
+		/// </summary>
+		/// <param name="value">Value to parse</param>
+		/// <param name="ec">The color, if successful</param>
+		/// <returns>True if successful, otherwise false</returns>
+		public static bool TryParse(ReadOnlySpan<char> value, out Color2 ec)
+		{
+			if (value.Contains("#", StringComparison.Ordinal))
+			{
+				var v = value.Slice(1);
+				if (v.Length == 3 || v.Length == 4)
+				{
+					Span<char> normal = stackalloc char[v.Length * 2];
+
+					for (int i = 0; i < v.Length; i++)
+					{
+						normal[i * 2] = normal[i * 2 + 1] = v[i];
+					}
+
+					if (uint.TryParse(normal, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint result))
+					{
+						ec = FromUInt(result | (v.Length == 3 ? 0xff000000 : 0u));
+						return true;
+					}
+				}
+				else if (v.Length == 6 || v.Length == 8)
+				{
+					if (uint.TryParse(v, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint result))
+					{
+						ec = FromUInt(result | (v.Length == 6 ? 0xff000000 : 0u));
+						return true;
+					}
+				}
+			}
+			else if (value.StartsWith("rgb"))
+			{
+				var start = value.IndexOf("(") + 1;
+				var result = value.Slice(start, value.Length - start - 1).Trim().ToString().Split(',');
+
+				if (result.Length != 3 && result.Length != 4)
+				{
+					ec = Empty;
+					return false;
+				}
+
+				if (byte.TryParse(result[0].Trim(), out byte r) &&
+					byte.TryParse(result[1].Trim(), out byte g) &&
+					byte.TryParse(result[2].Trim(), out byte b))
+				{
+					if (result.Length == 4 && byte.TryParse(result[3], out byte a))
+					{
+						ec = FromARGB(a, r, g, b);
+						return true;
+					}
+
+					ec = FromRGB(r, g, b);
+					return true;
+				}
+			}
+
+			ec = Empty;
+			return false;
+		}
+
+		public static implicit operator Color(Color2 ec)
+		{
+			ec.GetRGB(out byte r, out byte g, out byte b, out byte a);
+			return Color.FromArgb(a, r, g, b);
+		}
+
+		public static implicit operator Color2(Color c)
+		{
+			return FromUInt(c.ToUint32());
+		}
+
+		public static bool AreColorsClose(Color2 col1, Color2 col2, float tolerance = 0.03f)
+		{
+			return false;
+			//switch (col1._cType)
+			//{
+			//	case ColorType.RGB:
+			//		{
+			//			if (col2._cType != ColorType.RGB)
+			//				col2 = col2.ToRGB();
+
+			//			if (MathF.Abs(col2._c1 - col1._c1) < tolerance)
+			//				return true;
+
+			//			if (MathF.Abs(col2._c2 - col1._c2) < tolerance)
+			//				return true;
+
+			//			if (MathF.Abs(col2._c3 - col1._c3) < tolerance)
+			//				return true;
+			//		}
+			//		break;
+
+			//	case ColorType.HSV:
+
+			//		break;
+
+			//	case ColorType.HSL:
+
+			//		break;
+
+			//	case ColorType.CMYK:
+
+			//		break;
+
+			//	default:
+			//		return false;
+			//}
+		}
+
+		/// <summary>
+		/// Creates an RGB <see cref="Color2"/> from the specified R,G,B values. The alpha is set to 255
+		/// </summary>
+		/// <param name="r">Red, [0,255]</param>
+		/// <param name="g">Green, [0,255]</param>
+		/// <param name="b">Blue, [0,255]</param>
+		/// <returns>RGB <see cref="Color2"/></returns>
+		public static Color2 FromRGB(byte r, byte g, byte b)
+		{
+			return new Color2(r, g, b);
+		}
+
+		/// <summary>
+		/// Creates an RGB <see cref="Color2"/> from the specified A,R,G,B values.
+		/// </summary>
+		/// <param name="a">Alpha, [0,255]</param>
+		/// <param name="r">Red, [0,255]</param>
+		/// <param name="g">Green, [0,255]</param>
+		/// <param name="b">Blue, [0,255]</param>
+		/// <returns>RGB <see cref="Color2"/></returns>
+		public static Color2 FromARGB(byte a, byte r, byte g, byte b)
+		{
+			return new Color2(r, g, b, a);
+		}
+
+		/// <summary>
+		/// Creates an RGB <see cref="Color2"/> from the specified A,R,G,B float values.
+		/// </summary>
+		/// <param name="r">Red, [0,1]</param>
+		/// <param name="g">Green, [0,1]</param>
+		/// <param name="b">Blue, [0,1]</param>
+		/// /// <param name="a">Alpha, [0,1]</param>
+		/// <returns>RGB <see cref="Color2"/></returns>
+		public static Color2 FromRGBf(float r, float g, float b, float a = 1)
+		{
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.RGB;
+			newColor._c1 = Math.Clamp(r, 0, 1);
+			newColor._c2 = Math.Clamp(g, 0, 1);
+			newColor._c3 = Math.Clamp(b, 0, 1);
+			newColor._alpha = Math.Clamp(a, 0, 1);
+			return newColor;
+		}
+
+		/// <summary>
+		/// Creates an RGB <see cref="Color2"/> from an unsigned integer
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
+		public static Color2 FromUInt(uint num)
+		{
+			byte a = (byte)((num >> 24) & 0xFF);
+			byte r = (byte)((num >> 16) & 0xFF);
+			byte g = (byte)((num >> 8) & 0xFF);
+			byte b = (byte)(num & 0xFF);
+
+			return new Color2(r, g, b, a);
+		}
+
+		/// <summary>
+		/// Creates an HSV <see cref="Color2"/> from the given values
+		/// </summary>
+		/// <param name="hue">Hue, [0,360)</param>
+		/// <param name="sat">Saturation, [0,100]</param>
+		/// <param name="val">Value, [0,100]</param>
+		/// <param name="alpha">Alpha, [0,255]</param>
+		/// <returns>HSV <see cref="Color2"/></returns>
+		public static Color2 FromHSV(int hue, int sat, int val, int alpha = 255)
+		{
+			return FromHSVf(hue, sat / 100f, val / 100f, alpha / 255f);
+		}
+
+		/// <summary>
+		/// Creates an HSV <see cref="Color2"/> from the given float values
+		/// </summary>
+		/// <param name="hue">Hue, [0,360)</param>
+		/// <param name="sat">Saturation, [0,1]</param>
+		/// <param name="val">Value, [0,1]</param>
+		/// <param name="alpha">Alpha, [0,1]</param>
+		/// <returns>HSV <see cref="Color2"/></returns>
+		public static Color2 FromHSVf(float hue, float sat, float val, float alpha = 1)
+		{
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.HSV;
+			newColor._c1 = hue == -1 ? 0 : Math.Clamp(hue % 360, 0, 360);
+			newColor._c2 = Math.Clamp(sat, 0, 1);
+			newColor._c3 = Math.Clamp(val, 0, 1);
+			newColor._alpha = Math.Clamp(alpha, 0, 1);
+			return newColor;
+		}
+
+		/// <summary>
+		/// Creates an HSL <see cref="Color2"/> from the given values
+		/// </summary>
+		/// <param name="hue">Hue, [0,360)</param>
+		/// <param name="sat">Saturation, [0,100]</param>
+		/// <param name="light">Value, [0,100]</param>
+		/// <param name="alpha">Alpha, [0,255]</param>
+		/// <returns>HSL <see cref="Color2"/></returns>
+		public static Color2 FromHSL(int hue, int sat, int light, int alpha = 255)
+		{
+			return FromHSLf(hue, sat / 100f, light / 100f, alpha / 255f);
+		}
+
+		/// <summary>
+		/// Creates an HSL <see cref="Color2"/> from the given float values
+		/// </summary>
+		/// <param name="hue">Hue, [0,360)</param>
+		/// <param name="sat">Saturation, [0,1]</param>
+		/// <param name="light">Value, [0,1]</param>
+		/// <param name="alpha">Alpha, [0,1]</param>
+		/// <returns>HSL <see cref="Color2"/></returns>
+		public static Color2 FromHSLf(float hue, float sat, float light, float alpha = 1)
+		{
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.HSL;
+			newColor._c1 = hue == -1 ? 0 : Math.Clamp(hue % 360, 0, 360);
+			newColor._c2 = Math.Clamp(sat, 0, 1);
+			newColor._c3 = Math.Clamp(light, 0, 1);
+			newColor._alpha = Math.Clamp(alpha, 0, 1);
+			return newColor;
+		}
+
+		/// <summary>
+		/// Creates a CMYK <see cref="Color2"/> from the given values
+		/// </summary>
+		/// <param name="c">Cyan, [0,100]</param>
+		/// <param name="m">Magenta, [0,100]</param>
+		/// <param name="y">Yellow, [0,100]</param>
+		/// <param name="k">Black, [0,100]</param>
+		/// <param name="alpha">Cyan, [0,255]</param>
+		/// <returns>CMYK <see cref="Color2"/></returns>
+		public static Color2 FromCMYK(int c, int m, int y, int k, int alpha = 255)
+		{
+			return FromCMYKf(c / 100f, m / 100f, y / 100f, k / 100f, alpha / 255);
+		}
+
+		/// <summary>
+		/// Creates a CMYK <see cref="Color2"/> from the given float values
+		/// </summary>
+		/// <param name="c">Cyan, [0,1]</param>
+		/// <param name="m">Magenta, [0,1]</param>
+		/// <param name="y">Yellow, [0,1]</param>
+		/// <param name="k">Black, [0,1]</param>
+		/// <param name="alpha">Cyan, [0,1]</param>
+		/// <returns>CMYK <see cref="Color2"/></returns>
+		public static Color2 FromCMYKf(float c, float m, float y, float k, float alpha = 1)
+		{
+			Color2 newColor = new Color2();
+			newColor._cType = ColorType.CMYK;
+			newColor._c1 = Math.Clamp(c, 0, 1);
+			newColor._c2 = Math.Clamp(m, 0, 1);
+			newColor._c3 = Math.Clamp(y, 0, 1);
+			newColor._c4 = Math.Clamp(k, 0, 1);
+			newColor._alpha = Math.Clamp(alpha, 0, 1);
+			return newColor;
+		}
+
+
+		public Color2 WithHue(int h)
+		{
+			GetHSV(out _, out int s, out int v, out int a);
+
+			return Color2.FromHSV(h, s, v, a);
+		}
+
+		public Color2 WithHuef(float h)
+		{
+			GetHSVf(out _, out float s, out float v, out float a);
+
+			return Color2.FromHSVf(h, s, v, a);
+		}
+
+		public Color2 WithSat(int s)
+		{
+			GetHSV(out int h, out _, out int v, out int a);
+
+			return FromHSV(h, s, v, a);
+		}
+
+		public Color2 WithSatf(float s)
+		{
+			GetHSVf(out float h, out _, out float v, out float a);
+
+			return FromHSVf(h, s, v, a);
+		}
+
+		public Color2 WithVal(int v)
+		{
+			GetHSV(out int h, out int s, out _, out int a);
+
+			return FromHSV(h, s, v, a);
+		}
+
+		public Color2 WithValf(float v)
+		{
+			GetHSVf(out float h, out float s, out _, out float a);
+
+			return FromHSVf(h, s, v, a);
+		}
+
+		public Color2 WithRed(int r)
+		{
+			GetRGB(out _, out byte g, out byte b, out byte a);
+
+			return new Color2((byte)r, g, b, a);
+		}
+
+		public Color2 WithRedf(float r)
+		{
+			GetRGBf(out _, out float g, out float b, out float a);
+
+			return FromRGBf(r, g, b, a);
+		}
+
+		public Color2 WithGreen(int g)
+		{
+			GetRGB(out byte r, out _, out byte b, out byte a);
+
+			return new Color2(r, (byte)g, b, a);
+		}
+
+		public Color2 WithGreenf(float g)
+		{
+			GetRGBf(out float r, out _, out float b, out float a);
+
+			return FromRGBf(r, g, b, a);
+		}
+
+		public Color2 WithBlue(int b)
+		{
+			GetRGB(out byte r, out byte g, out _, out byte a);
+
+			return new Color2(r, g, (byte)b, a);
+		}
+
+		public Color2 WithBluef(float b)
+		{
+			GetRGBf(out float r, out float g, out _, out float a);
+
+			return FromRGBf(r, g, b, a);
+		}
+
+		public Color2 WithAlpha(int a)
+		{
+			return WithAlphaf(a / 255f);
+		}
+
+		public Color2 WithAlphaf(float a)
+		{
+			switch (_cType)
+			{
+				case ColorType.RGB:
+					return FromRGBf(Rf, Gf, Bf, a);
+
+				case ColorType.HSV:
+					return FromHSVf(Huef, Saturationf, Valuef, a);
+
+				case ColorType.HSL:
+					return FromHSLf(Huef, HSLSaturationf, Lightnessf, a);
+
+				case ColorType.CMYK:
+					return FromCMYKf(CMYKCyanf, CMYKMagentaf, CMYKYellowf, CMYKBlackf, a);
+
+				default:
+					return Empty;
+			}
+		}
+
+		/// <summary>
+		/// Lightens or darkens a color by a specified lightness, converting to an HSL color if necessary
+		/// </summary>
+		/// <param name="amount">Amount to lighten/darken</param>
+		/// <returns>HSL Color2 with the new lightness (old + amount)</returns>
+		public Color2 Lighten(float amount)
+		{
+			if (_cType != ColorType.HSL)
+				return ToHSL().Lighten(amount);
+
+			var l = _c3 + amount;
+			Math.Clamp(l, 0, 1);
+
+			return FromHSLf(_c1, _c2, l, _alpha);
+		}
+
+		/// <summary>
+		/// Lightens or darkens a color by a percentage of the current lightness
+		/// </summary>
+		/// <param name="percent"></param>
+		/// <returns>HSL Color2 with the new lightness (old + (old * percent))</returns>
+		public Color2 LightenPercent(float percent)
+		{
+			if (_cType != ColorType.HSL)
+				return ToHSL().LightenPercent(percent);
+
+			var l = _c3 + (_c3 * percent);
+			Math.Clamp(l, 0, 1);
+
+			return FromHSLf(_c1, _c2, l, _alpha);
+		}
+
+
+		public static void HSVToRGB(float hue, float sat, float val, out float r, out float g, out float b)
+		{
+			r = g = b = val;
+			
+			if (hue >= 0 && sat >= EPSILON)
+			{
+				hue = (hue / 360f) * 6f;
+				
+				var h = (int)hue;
+				var v1 = val * (1f - sat);
+				var v2 = val * (1f - sat * (hue - h));
+				var v3 = val * (1f - sat * (1f - (hue - h)));
+
+				switch (h)
+				{
+					case 0:
+						r = val;
+						g = v3;
+						b = v1;
+						break;
+
+					case 1:
+						r = v2;
+						g = val;
+						b = v1;
+						break;
+
+					case 2:
+						r = v1;
+						g = val;
+						b = v3;
+						break;
+
+					case 3:
+						r = v1;
+						g = v2;
+						b = val;
+						break;
+
+					case 4:
+						r = v3;
+						g = v1;
+						b = val;
+						break;
+
+					case 5:
+						r = val;
+						g = v1;
+						b = v2;
+						break;
+				}
+			}
+		}
+
+		public static void RGBToHSV(float r, float g, float b, out float h, out float s, out float v)
+		{
+			var min = MathF.Min(r, MathF.Min(g, b));
+			var max = MathF.Max(r, MathF.Max(g, b));
+			var delta = max - min;
+
+			h = 0;
+			s = 0;
+			v = max;
+
+			if (delta > EPSILON)
+			{
+				s = delta / max;
+
+				if (MathF.Abs(r-max) < EPSILON)
+				{
+					h = ((g - b) / delta);
+				}
+				else if (MathF.Abs(g - max) < EPSILON)
+				{
+					h = (2f + (b - r) / delta);
+				}
+				else
+				{
+					h = (4f + (r - g) / delta);
+				}
+
+				h *= 60;
+			}
+
+			if (h < 0)
+				h += 360;
+			else if (h >= 360)
+				h -= 360;
+		}
+
+		public static void HSLToRGB(float h, float s, float l, out float r, out float g, out float b)
+		{
+			h /= 360f;
+
+			r = 1;
+			g = 1;
+			b = 1;
+
+			//Adapted from SkiaSharp
+			if (s > EPSILON)
+			{
+				float v2;
+				if (l < 0.5f)
+					v2 = l * (1 + s);
+				else
+					v2 = (l + s) - (s * l);
+
+				var v1 = 2f * l - v2;
+
+				static float HueToRGB(float v1, float v2, float vH)
+				{
+					if (vH < 0)
+						vH += 1f;
+					if (vH > 1)
+						vH -= 1f;
+
+					if ((6f * vH) < 1f)
+						return (v1 + (v2 - v1) * 6f * vH);
+					if ((2f * vH) < 1f)
+						return (v2);
+					if ((3f * vH) < 2f)
+						return (v1 + (v2 - v1) * ((2f / 3f) - vH) * 6f);
+					return (v1);
+				}
+
+				r = HueToRGB(v1, v2, h + (1f / 3f));
+				g = HueToRGB(v1, v2, h);
+				b = HueToRGB(v1, v2, h - (1f / 3f));
+			}
+		}
+
+		public static void RGBToHSL(float r, float g, float b, out float h, out float s, out float l)
+		{
+			var min = MathF.Min(r, MathF.Min(g, b));
+			var max = MathF.Max(r, MathF.Max(g, b));
+			var delta = max - min;
+
+			h = 0;
+			s = 0;
+			l = (max + min) * 0.5f;
+
+			if (delta > EPSILON)
+			{
+				if (l < 0.5)
+					s = delta / (max + min);
+				else
+					s = delta / (2f - max - min);
+
+				if (MathF.Abs(r - max) < EPSILON)
+					h = ((g - b) / delta);
+				else if (MathF.Abs(g - max) < EPSILON)
+					h = (2 + (b - r) / delta);
+				else if (MathF.Abs(b - max) < EPSILON)
+					h = (4 + (r - g) / delta);
+
+				h *= 60;
+				if (h < 0)
+					h += 360;
+				else if (h >= 360)
+					h -= 360;
+			}
+		}
+
+		public static void HSVToHSL(float hsvSat, float val, out float hslSat, out float l)
+		{
+			l = val * (1 - hsvSat / 2f);
+			hslSat = 0;
+
+			if (l > EPSILON && MathF.Abs(1 - l) > EPSILON)
+			{
+				hslSat = 2 * (1 - (l / val));
+			}
+		}
+
+		public static void HSLToHSV(float hslSat, float l, out float hsvSat, out float v)
+		{
+			v = l + hslSat * MathF.Min(l, 1 - l);
+			hsvSat = v < EPSILON ? 0 : (2 * (1 - l / v));
+		}
+
+		public static void RGBToCMYK(float r, float g, float b, out float c, out float m, out float y, out float k)
+		{
+			c = 1 - r;
+			m = 1 - g;
+			y = 1 - b;
+			k = MathF.Min(c, MathF.Min(m, y));
+
+			c = (c - k) / (1 - k);
+			m = (m - k) / (1 - k);
+			y = (y - k) / (1 - k);
+		}
+
+		public static void CMYKToRGB(float c, float m, float y, float k, out float r, out float g, out float b)
+		{
+			r = (1 - c) * (1 - k);
+			g = (1 - m) * (1 - k);
+			b = (1 - y) * (1 - k);
+		}
+
+		public static void HSVToUInt(float hue, float sat, float val, out uint num)
+		{
+			HSVToRGB(hue, sat, val, out float r, out float g, out float b);
+			
+			num = ((uint)0xFF << 24) | ((uint)(r*255) << 16) | ((uint)(g*255) << 8) | (uint)(b*255);
+		}
+
+		private const float EPSILON = 0.001f;
         private ColorType _cType;
         private float _alpha;
-        private float _c1;//Red or Hue
-        private float _c2;//Green or Saturation
-        private float _c3;//Blue or Value, Lightness
+        private float _c1;//Red, Hue, or CMYK 'C'
+        private float _c2;//Green, Saturation, or CMYK 'M'
+        private float _c3;//Blue, Value, Lightness, or CMYK 'Y'
+		private float _c4;//CMYK 'k' only, unused otherwise
         public static readonly Color2 Empty = new Color2();
     }
 
-    public class Color2ToColorConverter : TypeConverter
+	internal static class KnownColorTable
+	{
+		private static Dictionary<Color2, string> ColorTable;
+
+		public static string GetColorName(Color2 c)
+		{
+			InitColorTable();
+
+			if (ColorTable.TryGetValue(c, out string value))
+			{
+				return value;
+			}
+
+			return "";
+		}
+
+		public static Color2 FromColorName(string name)
+		{
+			foreach(var kvp in ColorTable)
+			{
+				if (name.Equals(kvp.Value, StringComparison.OrdinalIgnoreCase))
+					return kvp.Key;
+			}
+
+			return Color2.Empty;
+		}
+
+		private static void InitColorTable()
+		{
+			if (ColorTable == null)
+			{
+				var kcs = Enum.GetValues<KnownColor>();
+				var names = Enum.GetNames<KnownColor>();
+
+				ColorTable = new Dictionary<Color2, string>(kcs.Length);
+				for (int i = 0; i < kcs.Length; i++)
+				{
+					var c2 = Color2.FromUInt((uint)kcs[i]);
+					if (!ColorTable.ContainsKey(c2))
+						ColorTable.Add(c2, names[i]);
+				}
+			}
+		}
+	}
+
+	internal enum KnownColor : uint
+	{
+		None,
+		AliceBlue = 0xfff0f8ff,
+		AntiqueWhite = 0xfffaebd7,
+		Aqua = 0xff00ffff,
+		Aquamarine = 0xff7fffd4,
+		Azure = 0xfff0ffff,
+		Beige = 0xfff5f5dc,
+		Bisque = 0xffffe4c4,
+		Black = 0xff000000,
+		BlanchedAlmond = 0xffffebcd,
+		Blue = 0xff0000ff,
+		BlueViolet = 0xff8a2be2,
+		Brown = 0xffa52a2a,
+		BurlyWood = 0xffdeb887,
+		CadetBlue = 0xff5f9ea0,
+		Chartreuse = 0xff7fff00,
+		Chocolate = 0xffd2691e,
+		Coral = 0xffff7f50,
+		CornflowerBlue = 0xff6495ed,
+		Cornsilk = 0xfffff8dc,
+		Crimson = 0xffdc143c,
+		Cyan = 0xff00ffff,
+		DarkBlue = 0xff00008b,
+		DarkCyan = 0xff008b8b,
+		DarkGoldenrod = 0xffb8860b,
+		DarkGray = 0xffa9a9a9,
+		DarkGreen = 0xff006400,
+		DarkKhaki = 0xffbdb76b,
+		DarkMagenta = 0xff8b008b,
+		DarkOliveGreen = 0xff556b2f,
+		DarkOrange = 0xffff8c00,
+		DarkOrchid = 0xff9932cc,
+		DarkRed = 0xff8b0000,
+		DarkSalmon = 0xffe9967a,
+		DarkSeaGreen = 0xff8fbc8f,
+		DarkSlateBlue = 0xff483d8b,
+		DarkSlateGray = 0xff2f4f4f,
+		DarkTurquoise = 0xff00ced1,
+		DarkViolet = 0xff9400d3,
+		DeepPink = 0xffff1493,
+		DeepSkyBlue = 0xff00bfff,
+		DimGray = 0xff696969,
+		DodgerBlue = 0xff1e90ff,
+		Firebrick = 0xffb22222,
+		FloralWhite = 0xfffffaf0,
+		ForestGreen = 0xff228b22,
+		Fuchsia = 0xffff00ff,
+		Gainsboro = 0xffdcdcdc,
+		GhostWhite = 0xfff8f8ff,
+		Gold = 0xffffd700,
+		Goldenrod = 0xffdaa520,
+		Gray = 0xff808080,
+		Green = 0xff008000,
+		GreenYellow = 0xffadff2f,
+		Honeydew = 0xfff0fff0,
+		HotPink = 0xffff69b4,
+		IndianRed = 0xffcd5c5c,
+		Indigo = 0xff4b0082,
+		Ivory = 0xfffffff0,
+		Khaki = 0xfff0e68c,
+		Lavender = 0xffe6e6fa,
+		LavenderBlush = 0xfffff0f5,
+		LawnGreen = 0xff7cfc00,
+		LemonChiffon = 0xfffffacd,
+		LightBlue = 0xffadd8e6,
+		LightCoral = 0xfff08080,
+		LightCyan = 0xffe0ffff,
+		LightGoldenrodYellow = 0xfffafad2,
+		LightGreen = 0xff90ee90,
+		LightGray = 0xffd3d3d3,
+		LightPink = 0xffffb6c1,
+		LightSalmon = 0xffffa07a,
+		LightSeaGreen = 0xff20b2aa,
+		LightSkyBlue = 0xff87cefa,
+		LightSlateGray = 0xff778899,
+		LightSteelBlue = 0xffb0c4de,
+		LightYellow = 0xffffffe0,
+		Lime = 0xff00ff00,
+		LimeGreen = 0xff32cd32,
+		Linen = 0xfffaf0e6,
+		Magenta = 0xffff00ff,
+		Maroon = 0xff800000,
+		MediumAquamarine = 0xff66cdaa,
+		MediumBlue = 0xff0000cd,
+		MediumOrchid = 0xffba55d3,
+		MediumPurple = 0xff9370db,
+		MediumSeaGreen = 0xff3cb371,
+		MediumSlateBlue = 0xff7b68ee,
+		MediumSpringGreen = 0xff00fa9a,
+		MediumTurquoise = 0xff48d1cc,
+		MediumVioletRed = 0xffc71585,
+		MidnightBlue = 0xff191970,
+		MintCream = 0xfff5fffa,
+		MistyRose = 0xffffe4e1,
+		Moccasin = 0xffffe4b5,
+		NavajoWhite = 0xffffdead,
+		Navy = 0xff000080,
+		OldLace = 0xfffdf5e6,
+		Olive = 0xff808000,
+		OliveDrab = 0xff6b8e23,
+		Orange = 0xffffa500,
+		OrangeRed = 0xffff4500,
+		Orchid = 0xffda70d6,
+		PaleGoldenrod = 0xffeee8aa,
+		PaleGreen = 0xff98fb98,
+		PaleTurquoise = 0xffafeeee,
+		PaleVioletRed = 0xffdb7093,
+		PapayaWhip = 0xffffefd5,
+		PeachPuff = 0xffffdab9,
+		Peru = 0xffcd853f,
+		Pink = 0xffffc0cb,
+		Plum = 0xffdda0dd,
+		PowderBlue = 0xffb0e0e6,
+		Purple = 0xff800080,
+		Red = 0xffff0000,
+		RosyBrown = 0xffbc8f8f,
+		RoyalBlue = 0xff4169e1,
+		SaddleBrown = 0xff8b4513,
+		Salmon = 0xfffa8072,
+		SandyBrown = 0xfff4a460,
+		SeaGreen = 0xff2e8b57,
+		SeaShell = 0xfffff5ee,
+		Sienna = 0xffa0522d,
+		Silver = 0xffc0c0c0,
+		SkyBlue = 0xff87ceeb,
+		SlateBlue = 0xff6a5acd,
+		SlateGray = 0xff708090,
+		Snow = 0xfffffafa,
+		SpringGreen = 0xff00ff7f,
+		SteelBlue = 0xff4682b4,
+		Tan = 0xffd2b48c,
+		Teal = 0xff008080,
+		Thistle = 0xffd8bfd8,
+		Tomato = 0xffff6347,
+		Transparent = 0x00ffffff,
+		Turquoise = 0xff40e0d0,
+		Violet = 0xffee82ee,
+		Wheat = 0xfff5deb3,
+		White = 0xffffffff,
+		WhiteSmoke = 0xfff5f5f5,
+		Yellow = 0xffffff00,
+		YellowGreen = 0xff9acd32
+	}
+
+	public class Color2ToColorConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -1276,7 +1723,7 @@ namespace FluentAvalonia.UI.Media
         {
             if (value is Color c)
             {
-                return Color2.FromUInt32(c.ToUint32());
+                return Color2.FromUInt(c.ToUint32());
             }
             return base.ConvertFrom(context, culture, value);
         }
@@ -1285,7 +1732,7 @@ namespace FluentAvalonia.UI.Media
         {
             if (value is Color2 c)
             {
-                c.GetARGB(out byte r, out byte g, out byte b, out byte a);
+                c.GetRGB(out byte r, out byte g, out byte b, out byte a);
                 return new Color(a, r, g, b);
             }
             return base.ConvertTo(context, culture, value, destinationType);
