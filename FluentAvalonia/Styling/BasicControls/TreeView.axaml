@@ -74,6 +74,9 @@
             </ControlTemplate>
         </Setter>
     </Style>
+    <Style Selector="ToggleButton.ExpandCollapseChevron:checked">
+        <Setter Property="RenderTransform" Value="rotate(90deg)" />
+    </Style>
 
     <Style Selector="TreeViewItem">
         <Setter Property="Padding" Value="0" />

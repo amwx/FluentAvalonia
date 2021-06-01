@@ -17,7 +17,7 @@ namespace FluentAvalonia.UI.Controls
         Edit = 0xF3DE,
         Save = 0xF67F,
         SaveAsCopy = 0xF683,
-        Delete = 0xF38F,
+        Delete = 0xF34F,
         Add = 0xF10B,
         MoreHorizontal = 0xFC30,
         MoreVertical = 0xF559,

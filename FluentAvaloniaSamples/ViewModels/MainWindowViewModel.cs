@@ -45,28 +45,34 @@ namespace FluentAvaloniaSamples.ViewModels
 
         public void SetLightTheme()
         {
+			// Only line needed to switch to Light Theme
 			AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme = "Light";
 
+			// Optional, if you want the native win32 titlebar to switch themes too (1809+ only)
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && 
 				App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime cdl)
 			{
 				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceNativeTitleBarToTheme(cdl.MainWindow);
 			}
 
+			// Ignore these, these are for the SampleApp only
 			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#0F000000"));
 			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#B3FFFFFF"));
 		}
 
         public void SetDarkTheme()
         {
+			// Only line needed to switch to Dark Theme
 			AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme = "Dark";
 
+			// Optional, if you want the native win32 titlebar to switch themes too (1809+ only)
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
 				App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime cdl)
 			{
 				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceNativeTitleBarToTheme(cdl.MainWindow);
 			}
 
+			// Ignore these, these are for the SampleApp only
 			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#12FFFFFF"));
 			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#0FFFFFFF"));
 		}

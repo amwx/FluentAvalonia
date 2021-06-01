@@ -11,11 +11,8 @@ namespace FluentAvaloniaSamples.ViewModels
     {
         public IconsPageViewModel()
         {
-            Symbols = new List<string>();
-            foreach (var item in Enum.GetValues(typeof(Symbol)))
-            {
-                Symbols.Add(item.ToString());
-            }
+			Symbols = (from item in (Symbol[])Enum.GetValues(typeof(Symbol)) select item.ToString())
+				.OrderBy(x => x.Substring(0, 1).ToUpper()).ToList();
         }
 
         public List<string> Symbols { get; }

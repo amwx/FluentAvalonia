@@ -1293,7 +1293,7 @@ namespace FluentAvalonia.UI.Media
 			if (_cType != ColorType.HSL)
 				return ToHSL().LightenPercent(percent);
 
-			var l = _c3 + (_c3 * percent);
+			var l = _c3 < EPSILON ? percent : _c3 + (_c3 * percent);
 			Math.Clamp(l, 0, 1);
 
 			return FromHSLf(_c1, _c2, l, _alpha);
@@ -1394,9 +1394,9 @@ namespace FluentAvalonia.UI.Media
 		{
 			h /= 360f;
 
-			r = 1;
-			g = 1;
-			b = 1;
+			r = l;
+			g = l;
+			b = l;
 
 			//Adapted from SkiaSharp
 			if (s > EPSILON)

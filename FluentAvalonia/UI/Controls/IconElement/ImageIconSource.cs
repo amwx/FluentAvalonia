@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using Avalonia.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,10 @@ namespace FluentAvalonia.UI.Controls
 {
 	public class ImageIconSource : IconSource
 	{
-		public static readonly DirectProperty<ImageIcon, IImage> SourceProperty =
-			AvaloniaProperty.RegisterDirect<ImageIcon, IImage>("Source", x => x.Source, (x, v) => x.Source = v);
+		public static readonly DirectProperty<ImageIconSource, IImage> SourceProperty =
+			AvaloniaProperty.RegisterDirect<ImageIconSource, IImage>("Source", x => x.Source, (x, v) => x.Source = v);
 
+		[Content]
 		public IImage Source
 		{
 			get => _source;
