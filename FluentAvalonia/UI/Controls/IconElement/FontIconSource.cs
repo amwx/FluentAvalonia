@@ -6,11 +6,6 @@ namespace FluentAvalonia.UI.Controls
 {
     public class FontIconSource : IconSource
     {
-        public FontIconSource()
-        {
-
-        }
-
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
             TextBlock.FontFamilyProperty.AddOwner<FontIconSource>();
 
@@ -23,9 +18,8 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<FontStyle> FontStyleProperty =
             TextBlock.FontStyleProperty.AddOwner<FontIconSource>();
 
-        public static readonly DirectProperty<FontIconSource, string> GlyphProperty =
-            AvaloniaProperty.RegisterDirect<FontIconSource, string>("Glyph",
-                x => x.Glyph, (x,v) => x.Glyph = v);
+        public static readonly StyledProperty<string> GlyphProperty =
+            AvaloniaProperty.Register<FontIconSource, string>("Glyph");
 
         public FontFamily FontFamily
         {
@@ -53,13 +47,8 @@ namespace FluentAvalonia.UI.Controls
 
         public string Glyph
         {
-            get => _glyph;
-            set 
-            { 
-                SetAndRaise(GlyphProperty, ref _glyph, value);
-            }
+			get => GetValue(GlyphProperty);
+			set => SetValue(GlyphProperty, value);
         }
-
-        private string _glyph;
     }
 }

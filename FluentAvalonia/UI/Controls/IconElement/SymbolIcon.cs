@@ -2,11 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using Avalonia.Platform;
-using System;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -15,31 +10,21 @@ namespace FluentAvalonia.UI.Controls
         static SymbolIcon()
         {
             FontSizeProperty.OverrideDefaultValue<SymbolIcon>(18d);
-            TextBlock.ForegroundProperty.Changed.AddClassHandler<SymbolIcon>((x, _) => x.GenerateText());
         }
 
-        public static readonly DirectProperty<SymbolIcon, Symbol> SymbolProperty =
-            AvaloniaProperty.RegisterDirect<SymbolIcon, Symbol>("Symbol",
-                x => x.Symbol, (x,v) => x.Symbol = v);
+        public static readonly StyledProperty<Symbol> SymbolProperty =
+            AvaloniaProperty.Register<SymbolIcon, Symbol>("Symbol");
 
         public static readonly StyledProperty<double> FontSizeProperty =
             TextBlock.FontSizeProperty.AddOwner<SymbolIcon>();
 
-		public static readonly DirectProperty<SymbolIcon, bool> UseFilledProperty =
-			AvaloniaProperty.RegisterDirect<SymbolIcon, bool>("UseFilled",
-				x => x.UseFilled, (x, v) => x.UseFilled = v);
+		public static readonly StyledProperty<bool> UseFilledProperty =
+			AvaloniaProperty.Register<SymbolIcon, bool>("UseFilled");
 
         public Symbol Symbol
         {
-            get => _symbol;
-            set
-            {
-                if (SetAndRaise(SymbolProperty, ref _symbol, value))
-                {
-                    GenerateText();
-                    InvalidateMeasure();
-                }
-            }
+			get => GetValue(SymbolProperty);
+			set => SetValue(SymbolProperty, value);
         }
 
         public double FontSize
@@ -50,18 +35,27 @@ namespace FluentAvalonia.UI.Controls
 
 		public bool UseFilled
 		{
-			get => _useFilled;
-			set
+			get => GetValue(UseFilledProperty);
+			set => SetValue(UseFilledProperty, value);
+		}
+
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+			if (change.Property == TextBlock.FontSizeProperty ||
+				change.Property == SymbolProperty ||
+				change.Property == UseFilledProperty)
 			{
-				if (SetAndRaise(UseFilledProperty, ref _useFilled, value))
-				{
-					GenerateText();
-					InvalidateMeasure();
-				}
+				GenerateText();
+				InvalidateMeasure();
+			}
+			else if (change.Property == TextBlock.ForegroundProperty)
+			{
+				GenerateText();
 			}
 		}
 
-        protected override Size MeasureOverride(Size availableSize)
+		protected override Size MeasureOverride(Size availableSize)
         {
             if (_textLayout == null)
                 GenerateText();
@@ -85,14 +79,17 @@ namespace FluentAvalonia.UI.Controls
 
         private void GenerateText()
         {
-            var code = (int)_symbol;
+			Symbol sym = Symbol;
+            var code = (int)sym;
+
+			bool isFilled = UseFilled;
 
 			// Some *genius* at MS decided that the filled & regular fonts may not have the same code points
 			// for the same icon *SIGH*, Symbol Enum is based on the regular font (unfilled), so we need to
 			// correct some icons where necessary (some match, some don't)
-			if (_useFilled)
+			if (isFilled)
 			{
-				int tmp = VerifySymbolCodePoint();
+				int tmp = VerifySymbolCodePoint(sym);
 				if (tmp != int.MinValue)
 					code = tmp;
 			}
@@ -100,7 +97,7 @@ namespace FluentAvalonia.UI.Controls
             var glyph = char.ConvertFromUtf32(code).ToString();
 
             //Hardcode straight to font file
-            Typeface tf = new Typeface(_useFilled ?
+            Typeface tf = new Typeface(isFilled ?
 				new FontFamily("avares://FluentAvalonia/Fonts#FluentSystemIcons-Filled") : 
 				new FontFamily("avares://FluentAvalonia/Fonts#FluentSystemIcons-Regular"));
 
@@ -108,9 +105,9 @@ namespace FluentAvalonia.UI.Controls
                FontSize, Foreground, TextAlignment.Left);
         }
 
-		private int VerifySymbolCodePoint()
+		private int VerifySymbolCodePoint(Symbol code)
 		{
-			switch (_symbol)
+			switch (code)
 			{
 				case Symbol.Earth:
 					return 0xF3DA;
@@ -519,8 +516,6 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-        private Symbol _symbol;
         private TextLayout _textLayout;
-		private bool _useFilled;
     }
 }
