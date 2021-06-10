@@ -3,7 +3,8 @@
         xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
         xmlns:sty="using:FluentAvalonia.Styling"
-                 xmlns:conv="using:FluentAvalonia.Converters">
+        xmlns:conv="using:FluentAvalonia.Converters"
+        xmlns:avconv="using:Avalonia.Controls.Converters">
     <Design.PreviewWith>
         <Border Padding="0">
             <ui:ColorPicker UseSpectrum="True" UseColorWheel="True" IsCompact="False"
@@ -27,7 +28,7 @@
         <x:Double x:Key="ColorRampBorderThickness">1</x:Double>
 
         <Thickness x:Key="ColorPaletteItemMargin">2</Thickness>
-        
+
         <DataTemplate x:Key="ColorSpectrumTabContent">
             <ui:ColorSpectrum />
         </DataTemplate>
@@ -176,7 +177,8 @@
                                   Padding="{TemplateBinding Padding}"
                                   HorizontalContentAlignment="Center"
                                   VerticalContentAlignment="Center"
-                                  Content="{TemplateBinding Content}" />
+                                  Content="{TemplateBinding Content}"
+                                  CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"/>
             </ControlTemplate>
         </Setter>
     </Style>
@@ -197,7 +199,7 @@
             <ItemsPanelTemplate>
                 <UniformGrid Rows="1" />
             </ItemsPanelTemplate>
-        </Setter>
+        </Setter>        
     </Style>
     <Style Selector="ui|ColorPicker TabItem">
         <Setter Property="Foreground" Value="{DynamicResource ColorPickerTabItemForeground}" /><!--<Setter Property="Padding" Value="0" />-->
@@ -218,7 +220,8 @@
                                       TextBlock.FontFamily="{TemplateBinding FontFamily}"
                                       TextBlock.FontSize="{TemplateBinding FontSize}"
                                       TextBlock.FontWeight="{TemplateBinding FontWeight}"
-                                      TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                                      TextBlock.Foreground="{TemplateBinding Foreground}"
+                                      CornerRadius="{DynamicResource ControlCornerRadius}"/>
                     <Border Name="SelectionIndicator"
                             VerticalAlignment="Bottom"
                             Margin="{DynamicResource ColorPickerTabItemSelectionIndicatorMargin}"
@@ -266,356 +269,360 @@
         <Setter Property="Background" Value="{DynamicResource ColorPickerBackground}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid Name="Root" Background="{TemplateBinding Background}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" MinWidth="300" MaxWidth="500" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="1.25*" />
-                    </Grid.ColumnDefinitions>
+                <Border Name="LayoutRoot"
+                        Background="{TemplateBinding Background}">
+                    <Grid Name="Root">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" MinWidth="300" MaxWidth="500" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1.25*" />
+                        </Grid.ColumnDefinitions>
 
-                    <DockPanel>                        
-                        <!-- ColorPreview Area -->
-                        <Grid RowDefinitions="Auto,*"
-                              ColumnDefinitions="3*,8,*,*,3*,*,*"
-                              Margin="0 5"
-                              DockPanel.Dock="Bottom">
-                            <TextBlock Text="Previous"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                            <TextBlock Text="Current"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Grid.Column="2"
-                                       Grid.ColumnSpan="5"/>
+                        <DockPanel>
+                            <!-- ColorPreview Area -->
+                            <Grid RowDefinitions="Auto,*"
+                                  ColumnDefinitions="3*,8,*,*,3*,*,*"
+                                  Margin="5"
+                                  DockPanel.Dock="Bottom">
+                                <TextBlock Text="Previous"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="Current"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Grid.Column="2"
+                                           Grid.ColumnSpan="5" />
 
-                            <Border Name="PreviousColorPreviewBackground"
-                                    Background="{x:Static ui:ColorRamp.CheckeredBrush}"
-                                    Height="40"
-                                    CornerRadius="{DynamicResource ControlCornerRadius}"
-                                    Grid.Row="1" />
-                            <Border Name="PreviousColorPreviewBorder"
-                                    Height="40"
-                                    CornerRadius="{DynamicResource ControlCornerRadius}"
-                                    Grid.Row="1"
-                                    Background="{TemplateBinding PreviousColor, Converter={StaticResource ColorBrushConv}}"/>
+                                <Border Name="PreviousColorPreviewBackground"
+                                        Background="{x:Static ui:ColorRamp.CheckeredBrush}"
+                                        Height="40"
+                                        CornerRadius="{DynamicResource ControlCornerRadius}"
+                                        Grid.Row="1" />
+                                <Border Name="PreviousColorPreviewBorder"
+                                        Height="40"
+                                        CornerRadius="{DynamicResource ControlCornerRadius}"
+                                        Grid.Row="1"
+                                        Background="{TemplateBinding PreviousColor, Converter={StaticResource ColorBrushConv}}"/>
 
-                            <!-- Current Color & +2 Light/Dark variants -->
-                            <Border Name="DarkVariantBackground"
-                                    Background="{x:Static ui:ColorRamp.CheckeredBrush}"
-                                    Height="40"
-                                    CornerRadius="4 0 0 4"
-                                    Grid.Row="1"
-                                    Grid.Column="2"
-                                    Grid.ColumnSpan="2" />
-                            <Border Name="Dark2PreviewBorder"
-                                    Height="40"
-                                    CornerRadius="4 0 0 4"
-                                    Grid.Row="1"
-                                    Grid.Column="2"
-                                    Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=-0.66}"/>
-                            <Border Name="Dark1PreviewBorder"
-                                    Height="40"
-                                    Grid.Row="1"
-                                    Grid.Column="3"
-                                    Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=-0.33}"/>
-
-
-                            <Border Name="LightVariantBackground"
-                                    Background="{x:Static ui:ColorRamp.CheckeredBrush}"
-                                    Height="40"
-                                    CornerRadius="4 0 0 4"
-                                    Grid.Row="1"
-                                    Grid.Column="5"
-                                    Grid.ColumnSpan="2" />
-                            <Border Name="Light2PreviewBorder"
-                                    Height="40"
-                                    CornerRadius="0 4 4 0"
-                                    Grid.Row="1"
-                                    Grid.Column="6"
-                                    Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=0.66}"/>
-
-                            <Border Name="Light1PreviewBorder"
-                                    Height="40"
-                                    Grid.Row="1"
-                                    Grid.Column="5"
-                                    Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=0.33}"/>
+                                <!-- Current Color & +2 Light/Dark variants -->
+                                <Border Name="DarkVariantBackground"
+                                        Background="{x:Static ui:ColorRamp.CheckeredBrush}"
+                                        Height="40"
+                                        CornerRadius="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Grid.ColumnSpan="2" />
+                                <Border Name="Dark2PreviewBorder"
+                                        Height="40"
+                                        CornerRadius="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=-0.66}"/>
+                                <Border Name="Dark1PreviewBorder"
+                                        Height="40"
+                                        Grid.Row="1"
+                                        Grid.Column="3"
+                                        Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=-0.33}"/>
 
 
-                            <Border Name="CurrentBackground"
-                                    Background="{x:Static ui:ColorRamp.CheckeredBrush}"
-                                    Height="48"
-                                    CornerRadius="4"
-                                    Grid.Row="1"
-                                    Grid.Column="4"/>
-                            <Border Name="CurrentColorPreviewBorder"
-                                   CornerRadius="{DynamicResource ControlCornerRadius}"
-                                   Grid.Row="1"
-                                   Grid.Column="4"
-                                    Background="{TemplateBinding Color, Converter={StaticResource ColorBrushConv}}"/>
+                                <Border Name="LightVariantBackground"
+                                        Background="{x:Static ui:ColorRamp.CheckeredBrush}"
+                                        Height="40"
+                                        CornerRadius="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"
+                                        Grid.Row="1"
+                                        Grid.Column="5"
+                                        Grid.ColumnSpan="2" />
+                                <Border Name="Light2PreviewBorder"
+                                        Height="40"
+                                        CornerRadius="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"
+                                        Grid.Row="1"
+                                        Grid.Column="6"
+                                        Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=0.66}"/>
+
+                                <Border Name="Light1PreviewBorder"
+                                        Height="40"
+                                        Grid.Row="1"
+                                        Grid.Column="5"
+                                        Background="{TemplateBinding Color, Converter={StaticResource ColorShadeBrushConv}, ConverterParameter=0.33}"/>
 
 
-                        </Grid>
+                                <Border Name="CurrentBackground"
+                                        Background="{x:Static ui:ColorRamp.CheckeredBrush}"
+                                        Height="48"
+                                        CornerRadius="4"
+                                        Grid.Row="1"
+                                        Grid.Column="4"/>
+                                <Border Name="CurrentColorPreviewBorder"
+                                       CornerRadius="{DynamicResource ControlCornerRadius}"
+                                       Grid.Row="1"
+                                       Grid.Column="4"
+                                        Background="{TemplateBinding Color, Converter={StaticResource ColorBrushConv}}"/>
 
-                        <!-- Background for tabheader 
+
+                            </Grid>
+
+                            <!-- Background for tabheader 
                          Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
-                        --> 
-                        <Panel> 
-                            <TabControl MinHeight="250"
-                                        SelectedIndex="0"
-                                        Name="DisplayItemTabControl">
-                                <TabItem Name="SpectrumTab"
-                                         IsVisible="{TemplateBinding UseSpectrum}">
-                                    <TabItem.Header>
-                                        <!-- Icon Credit: materialdesignicons.com, Austin Andrews (palette-advanced) -->
-                                        <ui:PathIcon Data="M22,22H10V20H22V22M2,22V20H9V22H2M18,18V10H22V18H18M18,3H22V9H18V3M2,18V3H16V18H2M9,14.56A3,3 0 0,0 12,11.56C12,9.56 9,6.19 9,6.19C9,6.19 6,9.56 6,11.56A3,3 0 0,0 9,14.56Z" />
-                                    </TabItem.Header>
-                                </TabItem>
-                                <TabItem Name="WheelTab"
-                                         IsVisible="{TemplateBinding UseColorWheel}">
-                                    <TabItem.Header>
-                                        <ui:FontIcon Glyph="&#xF2F6;"
-                                                FontSize="20"
-                                                FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"
+                        -->
+                            <Panel>
+                                <Border Name="TabHost">
+                                    <TabControl MinHeight="250"
+                                            SelectedIndex="0"
+                                            Name="DisplayItemTabControl">
+                                        <TabItem Name="SpectrumTab"
+                                                 IsVisible="{TemplateBinding UseSpectrum}">
+                                            <TabItem.Header>
+                                                <!-- Icon Credit: materialdesignicons.com, Austin Andrews (palette-advanced) -->
+                                                <ui:PathIcon Data="M22,22H10V20H22V22M2,22V20H9V22H2M18,18V10H22V18H18M18,3H22V9H18V3M2,18V3H16V18H2M9,14.56A3,3 0 0,0 12,11.56C12,9.56 9,6.19 9,6.19C9,6.19 6,9.56 6,11.56A3,3 0 0,0 9,14.56Z" />
+                                            </TabItem.Header>
+                                        </TabItem>
+                                        <TabItem Name="WheelTab"
+                                                 IsVisible="{TemplateBinding UseColorWheel}">
+                                            <TabItem.Header>
+                                                <ui:FontIcon Glyph="&#xF2F6;"
+                                                        FontSize="20"
+                                                        FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"
                                                      />
-                                    </TabItem.Header>
-                                </TabItem>
-                                <TabItem Name="TriangleTab"
-                                         IsVisible="{TemplateBinding UseColorTriangle}">
-                                    <TabItem.Header>
-                                        <Panel>
-                                            <!-- TODO: probably could make a better icon for this... -->
-                                            <ui:FontIcon Glyph="&#xF645;"
+                                            </TabItem.Header>
+                                        </TabItem>
+                                        <TabItem Name="TriangleTab"
+                                                 IsVisible="{TemplateBinding UseColorTriangle}">
+                                            <TabItem.Header>
+                                                <Panel>
+                                                    <!-- TODO: probably could make a better icon for this... -->
+                                                    <ui:FontIcon Glyph="&#xF645;"
+                                                                 FontSize="20"
+                                                                 FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                     />
+                                                    <ui:PathIcon Data="M1,21H23L12,2"
+                                                                 Width="14" Height="12"
+                                                                 Margin="1 0 0 0"
+                                                                 RenderTransform="rotate(90deg)"/>
+                                                </Panel>
+                                            </TabItem.Header>
+                                        </TabItem>
+                                        <TabItem Name="PaletteTab"
+                                                 IsVisible="{TemplateBinding UseColorPalette}">
+                                            <TabItem.Header>
+                                                <ui:FontIcon Glyph="&#xF780;"
                                                          FontSize="20"
-                                                         FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                     />
-                                            <ui:PathIcon Data="M1,21H23L12,2"
-                                                         Width="14" Height="12"
-                                                         Margin="1 0 0 0"
-                                                         RenderTransform="rotate(90deg)"/>
-                                        </Panel>
-                                    </TabItem.Header>
-                                </TabItem>
-                                <TabItem Name="PaletteTab"
-                                         IsVisible="{TemplateBinding UseColorPalette}">
-                                    <TabItem.Header>
-                                        <ui:FontIcon Glyph="&#xF780;"
-                                                 FontSize="20"
-                                                 FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"/>
+                                                         FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"/>
 
-                                    </TabItem.Header>
-                                    <Panel Name="PaletteContent" IsVisible="True"
-                                           Background="{TemplateBinding Background}">
-                                        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                                                      VerticalScrollBarVisibility="Auto"
-                                                      MaxHeight="450">
-                                            <ItemsRepeater Margin="5" 
-                                                           Items="{TemplateBinding CustomPaletteColors}">
-                                                <ItemsRepeater.Layout>
-                                                    <UniformGridLayout MaximumRowsOrColumns="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PaletteColumnCount}"
-                                                                       Orientation="Horizontal"
-                                                                       ItemsStretch="Fill"/>
-                                                </ItemsRepeater.Layout>
-                                                <ItemsRepeater.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <ui:ColorPaletteItem Color="{Binding}"
-                                                                             BorderBrushPointerOver="{DynamicResource ColorPickerColorPaletteItemBorderBrushPointerOver}"
-                                                                             BorderThicknessPointerOver="1"
-                                                                             Margin="{DynamicResource ColorPaletteItemMargin}"
-                                                                             Height="{Binding $self.Bounds.Width}"/>
-                                                    </DataTemplate>
-                                                </ItemsRepeater.ItemTemplate>
-                                            </ItemsRepeater>
-                                        </ScrollViewer>
-                                    </Panel>
-                                </TabItem>
-                                <TabItem Name="TextEntryTab">
-                                    <TabItem.Header>
-                                        <!-- Icon Credit: materialdesignicons.com, Colton Wiscombe (tune-variant) -->
-                                        <ui:PathIcon
-                                                Data="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z" />
-                                    </TabItem.Header>
-                                    <Panel Name="TextEntryTabHost" />
-                                </TabItem>
-                            </TabControl>
+                                            </TabItem.Header>
+                                            <Panel Name="PaletteContent" IsVisible="True"
+                                                   Background="{TemplateBinding Background}">
+                                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                                              VerticalScrollBarVisibility="Auto"
+                                                              MaxHeight="450">
+                                                    <ItemsRepeater Margin="5"
+                                                                   Items="{TemplateBinding CustomPaletteColors}">
+                                                        <ItemsRepeater.Layout>
+                                                            <UniformGridLayout MaximumRowsOrColumns="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PaletteColumnCount}"
+                                                                               Orientation="Horizontal"
+                                                                               ItemsStretch="Fill"/>
+                                                        </ItemsRepeater.Layout>
+                                                        <ItemsRepeater.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <ui:ColorPaletteItem Color="{Binding}"
+                                                                                     BorderBrushPointerOver="{DynamicResource ColorPickerColorPaletteItemBorderBrushPointerOver}"
+                                                                                     BorderThicknessPointerOver="1"
+                                                                                     Margin="{DynamicResource ColorPaletteItemMargin}"
+                                                                                     Height="{Binding $self.Bounds.Width}"/>
+                                                            </DataTemplate>
+                                                        </ItemsRepeater.ItemTemplate>
+                                                    </ItemsRepeater>
+                                                </ScrollViewer>
+                                            </Panel>
+                                        </TabItem>
+                                        <TabItem Name="TextEntryTab">
+                                            <TabItem.Header>
+                                                <!-- Icon Credit: materialdesignicons.com, Colton Wiscombe (tune-variant) -->
+                                                <ui:PathIcon
+                                                        Data="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z" />
+                                            </TabItem.Header>
+                                            <Panel Name="TextEntryTabHost" />
+                                        </TabItem>
+                                    </TabControl>
+                                </Border>
 
-                            <DockPanel Name="SpectrumContent" Margin="{DynamicResource ColorPickerSpectrumMargin}">
-                                <ui:ColorRamp Orientation="Vertical"
-                                              DockPanel.Dock="Left"
-                                              Name="ThirdComponentRamp"
-                                              Margin="6 0"
-                                              Width="{DynamicResource ColorPickerColorRampSize}"
-                                              CornerRadius="{DynamicResource OverlayCornerRadius}"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}" />
-                                <!--
+                                <DockPanel Name="SpectrumContent" Margin="{DynamicResource ColorPickerSpectrumMargin}">
+                                    <ui:ColorRamp Orientation="Vertical"
+                                                  DockPanel.Dock="Left"
+                                                  Name="ThirdComponentRamp"
+                                                  Margin="6 0"
+                                                  Width="{DynamicResource ColorPickerColorRampSize}"
+                                                  CornerRadius="{DynamicResource OverlayCornerRadius}"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}" />
+                                    <!--
                                     This is ONLY visible if in compact mode b/c
                                     no text entry area & if Alpha is visible
                                 -->
-                                <ui:ColorRamp Orientation="Vertical"
-                                              DockPanel.Dock="Right"
-                                              Component="Alpha"
-                                              Name="SpectrumAlphaRamp"
-                                              Margin="6 0"
-                                              Width="20"
-                                              CornerRadius="8"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
+                                    <ui:ColorRamp Orientation="Vertical"
+                                                  DockPanel.Dock="Right"
+                                                  Component="Alpha"
+                                                  Name="SpectrumAlphaRamp"
+                                                  Margin="6 0"
+                                                  Width="20"
+                                                  CornerRadius="8"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
 
-                                <ui:ColorSpectrum Name="Spectrum"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
-                            </DockPanel>
-                        </Panel>
-                    </DockPanel>
+                                    <ui:ColorSpectrum Name="Spectrum"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
+                                </DockPanel>
+                            </Panel>
+                        </DockPanel>
 
-                    <ToggleButton IsChecked="{TemplateBinding IsCompact, Mode=TwoWay}" 
-                                  Grid.Column="1"
-                                  VerticalAlignment="Stretch"
-                                  IsVisible="{TemplateBinding IsMoreButtonVisible}"
-                                  Name="MoreButton" Classes="ColorPickerMore"
-                                  Padding="3" HorizontalAlignment="Stretch" 
-                                  HorizontalContentAlignment="Center">
-                        <ui:SymbolIcon Name="MoreButtonIcon" VerticalAlignment="Center"
-                                       FontSize="20"/>
-                    </ToggleButton>
+                        <ToggleButton IsChecked="{TemplateBinding IsCompact, Mode=TwoWay}"
+                                      Grid.Column="1"
+                                      VerticalAlignment="Stretch"
+                                      IsVisible="{TemplateBinding IsMoreButtonVisible}"
+                                      Name="MoreButton" Classes="ColorPickerMore"
+                                      Padding="3" HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Center">
+                            <ui:SymbolIcon Name="MoreButtonIcon" VerticalAlignment="Center"
+                                           FontSize="20"/>
+                        </ToggleButton>
 
-                    <StackPanel Name="TextEntryArea"
-                                Background="{TemplateBinding Background}"
-                                Grid.Column="2" Spacing="6">
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    MinHeight="40"
-                                    Width="120"
-                                    Name="RGBHSVSelectorArea"
-                                    IsVisible="{TemplateBinding IsCompact}">
-                            <ToggleButton Content="RGB" Classes="ColorPickerType RGB"
-                                          Width="60"
-                                          Name="RGBButton" IsChecked="True"/>
-                            <ToggleButton Content="HSV" Classes="ColorPickerType HSV"
-                                          Width="60"
-                                          IsChecked="{Binding !#RGBButton.IsChecked, Mode=TwoWay}"
-                                          Name="HSVButton"/>
-                        </StackPanel>
+                        <StackPanel Name="TextEntryArea"
+                                    Grid.Column="2" Spacing="6">
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        MinHeight="40"
+                                        Width="120"
+                                        Name="RGBHSVSelectorArea"
+                                        IsVisible="{TemplateBinding IsCompact}">
+                                <ToggleButton Content="RGB" Classes="ColorPickerType RGB"
+                                              Width="60"
+                                              Name="RGBButton" IsChecked="True"/>
+                                <ToggleButton Content="HSV" Classes="ColorPickerType HSV"
+                                              Width="60"
+                                              IsChecked="{Binding !#RGBButton.IsChecked, Mode=TwoWay}"
+                                              Name="HSVButton"/>
+                            </StackPanel>
 
-                        <Grid ColumnDefinitions="Auto,Auto,*" Margin="8"
-                              Name="TextEntryContainer"
-                              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <Grid ColumnDefinitions="Auto,Auto,*" Margin="8"
+                                  Name="TextEntryContainer"
+                                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
-                            <RadioButton Name="HueRadio" MinWidth="0" Grid.Row="0" />
-                            <RadioButton Name="SatRadio" MinWidth="0" Grid.Row="1" />
-                            <RadioButton Name="ValRadio" MinWidth="0" Grid.Row="2" />
-                            <RadioButton Name="RedRadio" MinWidth="0" Grid.Row="3" />
-                            <RadioButton Name="GreenRadio" MinWidth="0" Grid.Row="4" />
-                            <RadioButton Name="BlueRadio" MinWidth="0" Grid.Row="5" />
+                                <RadioButton Name="HueRadio" MinWidth="0" Grid.Row="0" />
+                                <RadioButton Name="SatRadio" MinWidth="0" Grid.Row="1" />
+                                <RadioButton Name="ValRadio" MinWidth="0" Grid.Row="2" />
+                                <RadioButton Name="RedRadio" MinWidth="0" Grid.Row="3" />
+                                <RadioButton Name="GreenRadio" MinWidth="0" Grid.Row="4" />
+                                <RadioButton Name="BlueRadio" MinWidth="0" Grid.Row="5" />
 
-                            <ui:NumberBox Name="HueBox" Grid.Row="0" Grid.Column="1"
-                                        Header="H" Margin="0 3"
-                                        Classes="ColorPicker"
-                                        Minimum="0"
-                                        Maximum="359" />
-                            <ui:NumberBox Name="SatBox" Grid.Row="1" Grid.Column="1"
-                                        Header="S" Margin="0 3"
-                                        Classes="ColorPicker"
-                                        Minimum="0"
-                                        Maximum="100"/>
-                            <ui:NumberBox Name="ValBox" Grid.Row="2" Grid.Column="1"
-                                          Header="V" Margin="0 3"
-                                          Classes="ColorPicker"
-                                          Minimum="0"
-                                          Maximum="100"/>
-                            <ui:NumberBox Name="RedBox" Grid.Row="3" Grid.Column="1"
-                                          Header="R" Margin="0 3"
-                                          Classes="ColorPicker"
-                                          Minimum="0"
-                                          Maximum="255" />
-                            <ui:NumberBox Name="GreenBox" Grid.Row="4" Grid.Column="1"
-                                            Header="G" Margin="0 3"
+                                <ui:NumberBox Name="HueBox" Grid.Row="0" Grid.Column="1"
+                                            Header="H" Margin="0 3"
                                             Classes="ColorPicker"
                                             Minimum="0"
-                                            Maximum="255"/>
-                            <ui:NumberBox Name="BlueBox" Grid.Row="5" Grid.Column="1"
-                                          Header="B" Margin="0 3"
-                                          Classes="ColorPicker"
-                                          Minimum="0"
-                                          Maximum="255"/>
-                            <ui:NumberBox Name="AlphaBox" Grid.Row="6" Grid.Column="1"
-                                          Header="A" Margin="0 3"
-                                          Minimum="0" Maximum="255"
-                                          Classes="ColorPicker" />
+                                            Maximum="359" />
+                                <ui:NumberBox Name="SatBox" Grid.Row="1" Grid.Column="1"
+                                            Header="S" Margin="0 3"
+                                            Classes="ColorPicker"
+                                            Minimum="0"
+                                            Maximum="100"/>
+                                <ui:NumberBox Name="ValBox" Grid.Row="2" Grid.Column="1"
+                                              Header="V" Margin="0 3"
+                                              Classes="ColorPicker"
+                                              Minimum="0"
+                                              Maximum="100"/>
+                                <ui:NumberBox Name="RedBox" Grid.Row="3" Grid.Column="1"
+                                              Header="R" Margin="0 3"
+                                              Classes="ColorPicker"
+                                              Minimum="0"
+                                              Maximum="255" />
+                                <ui:NumberBox Name="GreenBox" Grid.Row="4" Grid.Column="1"
+                                                Header="G" Margin="0 3"
+                                                Classes="ColorPicker"
+                                                Minimum="0"
+                                                Maximum="255"/>
+                                <ui:NumberBox Name="BlueBox" Grid.Row="5" Grid.Column="1"
+                                              Header="B" Margin="0 3"
+                                              Classes="ColorPicker"
+                                              Minimum="0"
+                                              Maximum="255"/>
+                                <ui:NumberBox Name="AlphaBox" Grid.Row="6" Grid.Column="1"
+                                              Header="A" Margin="0 3"
+                                              Minimum="0" Maximum="255"
+                                              Classes="ColorPicker" />
 
 
-                            <ui:ColorRamp Component="Hue" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
-                                          VerticalAlignment="Center" Margin="5 0"
-                                          Name="HueRamp" Grid.Row="0" Grid.Column="2"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="1"/>
+                                <ui:ColorRamp Component="Hue" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
+                                              VerticalAlignment="Center" Margin="5 0"
+                                              Name="HueRamp" Grid.Row="0" Grid.Column="2"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="1"/>
 
-                            <ui:ColorRamp Component="Saturation" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
-                                          VerticalAlignment="Center" Margin="5 0"
-                                          Name="SatRamp" Grid.Row="1" Grid.Column="2"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
+                                <ui:ColorRamp Component="Saturation" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
+                                              VerticalAlignment="Center" Margin="5 0"
+                                              Name="SatRamp" Grid.Row="1" Grid.Column="2"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
 
-                            <ui:ColorRamp Component="Value" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
-                                          VerticalAlignment="Center" Margin="5 0"
-                                          Name="ValRamp" Grid.Row="2" Grid.Column="2"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
+                                <ui:ColorRamp Component="Value" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
+                                              VerticalAlignment="Center" Margin="5 0"
+                                              Name="ValRamp" Grid.Row="2" Grid.Column="2"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
 
-                            <ui:ColorRamp Component="Red" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
-                                        VerticalAlignment="Center" Margin="5 0"
-                                        Name="RedRamp" Grid.Row="3" Grid.Column="2"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
+                                <ui:ColorRamp Component="Red" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
+                                            VerticalAlignment="Center" Margin="5 0"
+                                            Name="RedRamp" Grid.Row="3" Grid.Column="2"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
 
-                            <ui:ColorRamp Component="Green" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
-                                          VerticalAlignment="Center" Margin="5 0"
-                                          Name="GreenRamp" Grid.Row="4" Grid.Column="2"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
+                                <ui:ColorRamp Component="Green" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
+                                              VerticalAlignment="Center" Margin="5 0"
+                                              Name="GreenRamp" Grid.Row="4" Grid.Column="2"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
 
-                            <ui:ColorRamp Component="Blue" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
-                                        VerticalAlignment="Center" Margin="5 0"
-                                        Name="BlueRamp" Grid.Row="5" Grid.Column="2"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
+                                <ui:ColorRamp Component="Blue" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
+                                            VerticalAlignment="Center" Margin="5 0"
+                                            Name="BlueRamp" Grid.Row="5" Grid.Column="2"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
 
-                            <ui:ColorRamp Component="Alpha" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
-                                        VerticalAlignment="Center" Margin="5 0"
-                                        Name="AlphaRamp" Grid.Row="6" Grid.Column="2"
-                                              BorderBrush="{DynamicResource ColorRampBorderBrush}"
-                                              BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
-                            
-                            <TextBox Name="HexBox" Margin="0 3" ContextMenu="{x:Null}"
-                                 Grid.Row="7" Grid.Column="2">
-                                <TextBox.InnerLeftContent>
-                                    <Border Background="{DynamicResource ColorPickerComponentLabelBackground}">
-                                        <TextBlock Text="#"
-                                                   VerticalAlignment="Center"
-                                                   FontWeight="SemiBold" Margin="9 4"
-                                                   Name="Comp1Label"/>
-                                    </Border>
-                                </TextBox.InnerLeftContent>
-                                <TextBox.ContextFlyout>
-                                    <MenuFlyout>
-                                        <MenuItem Header="#RRGGBB" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"/>
-                                        <MenuItem Header="#AARRGGBB" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
-                                        <MenuItem Header="rgb( r, g, b )" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
-                                        <MenuItem Header="rgba( r, g, b, a )" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
-                                        <MenuItem Header="-" />
-                                        <MenuItem x:Name="TextBoxContextMenuCutItem" Header="Cut" Command="{Binding $parent[TextBox].Cut}" IsEnabled="{Binding $parent[TextBox].CanCut}" InputGesture="{x:Static TextBox.CutGesture}" />
-                                        <MenuItem x:Name="TextBoxContextMenuCopyItem" Header="Copy" Command="{Binding $parent[TextBox].Copy}" IsEnabled="{Binding $parent[TextBox].CanCopy}" InputGesture="{x:Static TextBox.CopyGesture}"/>
-                                        <MenuItem x:Name="TextBoxContextMenuPasteItem" Header="Paste" Command="{Binding $parent[TextBox].Paste}" IsEnabled="{Binding $parent[TextBox].CanPaste}" InputGesture="{x:Static TextBox.PasteGesture}"/>
-                                    </MenuFlyout>
-                                </TextBox.ContextFlyout>
-                            </TextBox>
+                                <ui:ColorRamp Component="Alpha" CornerRadius="8" Height="{DynamicResource ColorPickerColorRampSize}"
+                                            VerticalAlignment="Center" Margin="5 0"
+                                            Name="AlphaRamp" Grid.Row="6" Grid.Column="2"
+                                                  BorderBrush="{DynamicResource ColorRampBorderBrush}"
+                                                  BorderThickness="{DynamicResource ColorRampBorderThickness}"/>
 
-                        </Grid>
+                                <TextBox Name="HexBox" Margin="0 3" ContextMenu="{x:Null}"
+                                     Grid.Row="7" Grid.Column="2">
+                                    <TextBox.InnerLeftContent>
+                                        <Border Background="{DynamicResource ColorPickerComponentLabelBackground}">
+                                            <TextBlock Text="#"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="SemiBold" Margin="9 4"
+                                                       Name="Comp1Label"/>
+                                        </Border>
+                                    </TextBox.InnerLeftContent>
+                                    <TextBox.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuItem Header="#RRGGBB" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"/>
+                                            <MenuItem Header="#AARRGGBB" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
+                                            <MenuItem Header="rgb( r, g, b )" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
+                                            <MenuItem Header="rgba( r, g, b, a )" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
+                                            <MenuItem Header="-" />
+                                            <MenuItem x:Name="TextBoxContextMenuCutItem" Header="Cut" Command="{Binding $parent[TextBox].Cut}" IsEnabled="{Binding $parent[TextBox].CanCut}" InputGesture="{x:Static TextBox.CutGesture}" />
+                                            <MenuItem x:Name="TextBoxContextMenuCopyItem" Header="Copy" Command="{Binding $parent[TextBox].Copy}" IsEnabled="{Binding $parent[TextBox].CanCopy}" InputGesture="{x:Static TextBox.CopyGesture}"/>
+                                            <MenuItem x:Name="TextBoxContextMenuPasteItem" Header="Paste" Command="{Binding $parent[TextBox].Paste}" IsEnabled="{Binding $parent[TextBox].CanPaste}" InputGesture="{x:Static TextBox.PasteGesture}"/>
+                                        </MenuFlyout>
+                                    </TextBox.ContextFlyout>
+                                </TextBox>
 
-                    </StackPanel>
+                            </Grid>
 
-                </Grid>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
             </ControlTemplate>
         </Setter>
     </Style>
@@ -641,6 +648,10 @@
     </Style>
     <Style Selector="ui|ColorPicker /template/ TabItem#TextEntryTab">
         <Setter Property="IsVisible" Value="False"/>
+    </Style>
+    <Style Selector="ui|ColorPicker /template/ Border#LayoutRoot">
+        <!-- Use OverlayCornerRadius here b/c of ColorPickerButton -->
+        <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
     </Style>
     
     <!-- Triangle mode -->

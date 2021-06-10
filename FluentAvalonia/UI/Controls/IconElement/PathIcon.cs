@@ -6,36 +6,39 @@ namespace FluentAvalonia.UI.Controls
 {
     public class PathIcon : IconElement
     {
-        public static DirectProperty<PathIcon, Geometry> DataProperty =
-            AvaloniaProperty.RegisterDirect<PathIcon, Geometry>("Data",
-                x => x.Data, (x, v) => x.Data = v);
+        public static StyledProperty<Geometry> DataProperty =
+            AvaloniaProperty.Register<PathIcon, Geometry>("Data");
 
         public Geometry Data
         {
-            get => _data;
-            set
-            {
-                SetAndRaise(DataProperty, ref _data, value);
-                InvalidateVisual();
-            }
+            get => GetValue(DataProperty);
+			set => SetValue(DataProperty, value);
         }
 
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            if (_data == null)
-                return base.MeasureOverride(availableSize);
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+			if (change.Property == DataProperty)
+			{
+				InvalidateMeasure();
+				InvalidateVisual();
+			}
+		}
 
-            return _data.Bounds.Size;
+		protected override Size MeasureOverride(Size availableSize)
+        {
+            return Data?.Bounds.Size ?? base.MeasureOverride(availableSize);
         }
 
         public override void Render(DrawingContext context)
         {
-            if (_data == null)
+			var data = Data;
+            if (data == null)
                 return;
 
             //Create scale & clip to make sure path is always drawn inside
             //the bounds specified
-            var bounds = _data.Bounds;
+            var bounds = data.Bounds;
             var destRect = new Rect(Bounds.Size);
             var scale = Matrix.CreateScale(
                 destRect.Width / bounds.Width,
@@ -45,7 +48,7 @@ namespace FluentAvalonia.UI.Controls
             using (context.PushClip(destRect))
             using (context.PushPreTransform(translate * scale))
             {
-                context.DrawGeometry(Foreground, null, _data);
+                context.DrawGeometry(Foreground, null, data);
             }
         }
 
@@ -85,7 +88,5 @@ namespace FluentAvalonia.UI.Controls
                 return false;
             }
         }
-
-        private Geometry _data;
     }
 }

@@ -2,24 +2,11 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
     public class FontIcon : IconElement
     {
-        static FontIcon()
-        {
-            AffectsRender<SymbolIcon>(TextBlock.ForegroundProperty);
-            ForegroundProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
-            FontFamilyProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
-            FontSizeProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
-            FontWeightProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
-            FontStyleProperty.Changed.AddClassHandler<FontIcon>((x, v) => x.GenerateText());
-        }
-
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
             TextBlock.FontFamilyProperty.AddOwner<FontIcon>();
 
@@ -32,9 +19,8 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<FontStyle> FontStyleProperty =
             TextBlock.FontStyleProperty.AddOwner<FontIcon>();
 
-        public static readonly DirectProperty<FontIcon, string> GlyphProperty =
-            AvaloniaProperty.RegisterDirect<FontIcon, string>("Glyph",
-                x => x.Glyph, (x, v) => x.Glyph = v);
+        public static readonly StyledProperty<string> GlyphProperty =
+            AvaloniaProperty.Register<FontIcon, string>("Glyph");
 
         public FontFamily FontFamily
         {
@@ -62,15 +48,25 @@ namespace FluentAvalonia.UI.Controls
 
         public string Glyph
         {
-            get => _glyph;
-            set
-            {
-                SetAndRaise(GlyphProperty, ref _glyph, value);
-                GenerateText();
-            }
+            get => GetValue(GlyphProperty);
+			set => SetValue(GlyphProperty, value);
         }
 
-        protected override Size MeasureOverride(Size availableSize)
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+			if (change.Property == TextBlock.ForegroundProperty ||
+				change.Property == TextBlock.FontSizeProperty ||
+				change.Property == TextBlock.FontFamilyProperty ||
+				change.Property == TextBlock.FontWeightProperty ||
+				change.Property == TextBlock.FontStyleProperty ||
+				change.Property == GlyphProperty)
+			{
+				GenerateText();
+			}
+		}
+
+		protected override Size MeasureOverride(Size availableSize)
         {
             if (_suspendCreate || _textLayout == null)
             {
@@ -100,13 +96,12 @@ namespace FluentAvalonia.UI.Controls
             if (_suspendCreate)
                 return;
 
-            _textLayout = new TextLayout(_glyph, new Typeface(FontFamily, FontStyle, FontWeight),
+            _textLayout = new TextLayout(Glyph, new Typeface(FontFamily, FontStyle, FontWeight),
                FontSize, Foreground, TextAlignment.Left);
 
             InvalidateVisual();
         }
 
-        private string _glyph;
         private TextLayout _textLayout;
         bool _suspendCreate = true;
     }

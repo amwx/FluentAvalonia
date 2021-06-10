@@ -3,10 +3,9 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Skia;
+using Avalonia.Visuals.Media.Imaging;
 using SkiaSharp;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -18,42 +17,45 @@ namespace FluentAvalonia.UI.Controls
             UnlinkFromBitmapIconSource();
         }
 
-        public static readonly DirectProperty<BitmapIcon, Uri> UriSourceProperty =
-            AvaloniaProperty.RegisterDirect<BitmapIcon, Uri>("UriSource",
-                x => x.UriSource, (x, v) => x.UriSource = v);
+        public static readonly StyledProperty<Uri> UriSourceProperty =
+            AvaloniaProperty.Register<BitmapIcon, Uri>("UriSource");
 
-        public static readonly DirectProperty<BitmapIcon, bool> ShowAsMonochromeProperty =
-            AvaloniaProperty.RegisterDirect<BitmapIcon, bool>("ShowAsMonochrome",
-                x => x.ShowAsMonochrome, (x, v) => x.ShowAsMonochrome = v);
+        public static readonly StyledProperty<bool> ShowAsMonochromeProperty =
+            AvaloniaProperty.Register<BitmapIcon, bool>("ShowAsMonochrome");
 
         public Uri UriSource
         {
-            get => _source;
-            set
-            {
-                if (_bis != null)
-                    throw new InvalidOperationException("Cannot edit properties of BitmapIcon if BitmapIconSource is linked");
-
-                SetAndRaise(UriSourceProperty, ref _source, value);
-                CreateBitmap();
-                InvalidateVisual();
-            }
+			get => GetValue(UriSourceProperty);
+			set => SetValue(UriSourceProperty, value);
         }
 
         public bool ShowAsMonochrome
         {
-            get => _showAsMonochrome;
-            set
-            {
-                if (_bis != null)
-                    throw new InvalidOperationException("Cannot edit properties of BitmapIcon if BitmapIconSource is linked");
-
-                SetAndRaise(ShowAsMonochromeProperty, ref _showAsMonochrome, value);
-                InvalidateVisual();
-            }
+			get => GetValue(ShowAsMonochromeProperty);
+			set => SetValue(ShowAsMonochromeProperty, value);
         }
 
-        protected override Size MeasureOverride(Size availableSize)
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+			if (change.Property == UriSourceProperty)
+			{
+				if (_bis != null)
+					throw new InvalidOperationException("Cannot edit properties of BitmapIcon if BitmapIconSource is linked");
+
+				CreateBitmap(change.NewValue.GetValueOrDefault<Uri>());
+				InvalidateVisual();
+			}
+			else if (change.Property == ShowAsMonochromeProperty)
+			{
+				if (_bis != null)
+					throw new InvalidOperationException("Cannot edit properties of BitmapIcon if BitmapIconSource is linked");
+
+				InvalidateVisual();
+			}
+		}
+
+		protected override Size MeasureOverride(Size availableSize)
         {
             if (_bis != null)
                 return _originalSize;
@@ -109,30 +111,30 @@ namespace FluentAvalonia.UI.Controls
                 
                 using (context.PushClip(dst))
                 {
-                    context.DrawImage(bmp, new Rect(bmp.Size), dst, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
+                    context.DrawImage(bmp, new Rect(bmp.Size), dst, BitmapInterpolationMode.HighQuality);
                 }
 
             }
         }
 
-        private void CreateBitmap()
+        private void CreateBitmap(Uri src)
         {
             if (_bis != null)
                 return;
 
             Dispose();
 
-            if (_source == null)
+            if (src == null)
                 return;
 
-            if (_source.IsAbsoluteUri && _source.IsFile)
+            if (src.IsAbsoluteUri && src.IsFile)
             {
-                _bitmap = SKBitmap.Decode(_source.LocalPath);
+                _bitmap = SKBitmap.Decode(src.LocalPath);
             }
             else
             {
                 var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-                _bitmap = SKBitmap.Decode(assets.Open(_source));
+                _bitmap = SKBitmap.Decode(assets.Open(src));
             }
             _originalSize = new Size(_bitmap.Width, _bitmap.Height);
         }
@@ -170,7 +172,5 @@ namespace FluentAvalonia.UI.Controls
         private BitmapIconSource _bis;
         protected SKBitmap _bitmap;
         private Size _originalSize;
-        private Uri _source;
-        private bool _showAsMonochrome;
     }
 }
