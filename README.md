@@ -5,10 +5,11 @@ Bringing more of Fluent design and WinUI controls into Avalonia.
 [![Nuget](https://img.shields.io/nuget/v/FluentAvaloniaUI?style=flat-square)](https://www.nuget.org/packages/FluentAvaloniaUI/)
 (NOTE: nuget package is under id FluentAvaloniaUI)
 
-Currently Targets: Avalonia 0.10.4 & .net core 5.0
+Currently Targets: Avalonia 0.10.6 & .net core 5.0
 
 # Getting Started
 Place the following in your App.xaml :
+    
     Namespace for FluentAvalonia.Styling
     xmlns:sty="using:FluentAvalonia.Styling"
     
