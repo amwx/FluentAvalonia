@@ -57,7 +57,8 @@ namespace FluentAvaloniaSamples.ViewModels
 
 			// Ignore these, these are for the SampleApp only
 			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#0F000000"));
-			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#B3FFFFFF"));
+			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#F3F3F3"));
+			App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#F9F9F9"));
 		}
 
         public void SetDarkTheme()
@@ -74,7 +75,8 @@ namespace FluentAvaloniaSamples.ViewModels
 
 			// Ignore these, these are for the SampleApp only
 			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#12FFFFFF"));
-			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#0FFFFFFF"));
+			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#202020"));
+			App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#292929"));
 		}
 
         public async void LaunchContentDialog(object param)

@@ -35,10 +35,10 @@
                                 BorderThickness="{StaticResource ContentDialogBorderWidth}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 CornerRadius="{StaticResource OverlayCornerRadius}"
-                                MinWidth="{StaticResource ContentDialogMinWidth}"
-                                MaxWidth="{StaticResource ContentDialogMaxWidth}"
-                                MinHeight="{StaticResource ContentDialogMinHeight}"
-                                MaxHeight="{StaticResource ContentDialogMaxHeight}"
+                                MinWidth="{DynamicResource ContentDialogMinWidth}"
+                                MaxWidth="{DynamicResource ContentDialogMaxWidth}"
+                                MinHeight="{DynamicResource ContentDialogMinHeight}"
+                                MaxHeight="{DynamicResource ContentDialogMaxHeight}"
                                 HorizontalAlignment="Center" BoxShadow="0 8 32 0 #66000000" >
                             <!-- Even in WinUI, shadow is always black regardless of light/dark mode -->
 

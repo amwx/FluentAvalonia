@@ -148,7 +148,7 @@
                                          IsHitTestVisible="False"
                                          Margin="0 0 14 0"
                                          FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                         FontSize="16"
+                                         FontSize="12"
                                          Glyph="&#xF2A6;"
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Center" />
@@ -221,10 +221,9 @@
     </Style>
     <Style Selector="ComboBox:pointerover /template/ Border#Background">
         <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundPointerOver}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrushPointerOver}" />
     </Style>
     
-    
-
     <!-- Pressed -->
     <Style Selector="ComboBox:pressed /template/ TextBlock#PlaceholderTextBlock">
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundPressed}" />

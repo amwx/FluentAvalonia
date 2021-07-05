@@ -15,12 +15,10 @@
         <Setter Property="IsEnabled" Value="False" />
         <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
         <Setter Property="MinHeight" Value="0" />
-        <Setter Property="Margin" Value="{DynamicResource NavigationViewItemSeparatorMargin}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Name="NVISeparatorRootGrid">
-                    <Rectangle Name="SeparatorLine"
-                               Margin="{TemplateBinding Margin}"/>
+                    <Rectangle Name="SeparatorLine" />
                 </Panel>
             </ControlTemplate>
         </Setter>
@@ -28,6 +26,7 @@
     <Style Selector="ui|NavigationViewItemSeparator /template/ Rectangle#SeparatorLine">
         <Setter Property="Height" Value="{DynamicResource NavigationViewItemSeparatorHeight}" />
         <Setter Property="Fill" Value="{DynamicResource NavigationViewItemSeparatorForeground}" />
+		<Setter Property="Margin" Value="{DynamicResource NavigationViewItemSeparatorMargin}" />
     </Style>
 
     <Style Selector="ui|NavigationViewItemSeparator:horizontalcompact /template/ Rectangle#SeparatorLine">

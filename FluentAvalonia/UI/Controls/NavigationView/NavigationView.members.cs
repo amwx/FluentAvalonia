@@ -739,7 +739,6 @@ namespace FluentAvalonia.UI.Controls
         private const int _paneToggleButtonWidth = 40;
         private const int _backButtonRowDefinition = 1;
         private const float paneElevationTranslationZ = 32;
-		private const int _paneItemsSeparatorHeight = 9;
 
         private const int _mainMenuBlockIndex = 0;
         private const int _footerMenuBlockIndex = 1;

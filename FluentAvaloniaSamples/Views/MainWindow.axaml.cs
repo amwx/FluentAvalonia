@@ -46,7 +46,22 @@ namespace FluentAvaloniaSamples.Views
 			_frame.Navigate(typeof(HomePage));
         }
 
-        protected override void OnPointerReleased(PointerReleasedEventArgs e)
+		protected override void OnOpened(EventArgs e)
+		{
+			base.OnOpened(e);
+
+			// These are hardcoded resources b/c they need to work regardles of which ControlsVersion is set
+			// on FluentAvaloniaTheme, since their backing colors are different, so...
+			// App defaults to light mode, so if requested theme is dark on load, we need to change these now
+			if (AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == "Dark")
+			{
+				App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#12FFFFFF"));
+				App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#202020"));
+				App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#292929"));
+			}			
+		}
+
+		protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             var pt = e.GetCurrentPoint(this);
             if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton1Released)

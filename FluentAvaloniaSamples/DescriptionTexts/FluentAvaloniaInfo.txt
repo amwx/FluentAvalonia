@@ -7,15 +7,11 @@ FluentAvalonia
 ]]>            
         </Header1>
         <SubHeader1>
-<![CDATA[
-Bringing more of Fluent design and WinUI controls into Avalonia.
-]]>             
+<![CDATA[Bringing more of Fluent design and WinUI controls into Avalonia.]]>             
         </SubHeader1>
         <Header2>Getting Started</Header2>
         <SubHeader2>
-<![CDATA[
-The 'Themes' page will explain how to get FluentAvalonia integrated into your app. NOTE: if you used a pre-1.0 release version of FluentAvalonia changes may be required as somethings have changed.
-]]>
+<![CDATA[The 'Themes' page will explain how to get FluentAvalonia integrated into your app. NOTE: if you used a pre-1.0 release version of FluentAvalonia changes may be required as somethings have changed.]]>
         </SubHeader2>
     </ControlPage>
     

@@ -27,7 +27,6 @@
 
                      <!--Button grid--> 
                     <Grid Name="PaneToggleButtonGrid"
-                          Margin="0,0,0,8"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           ZIndex="100"
@@ -183,7 +182,11 @@
                                         <ui:Button.Flyout>
                                             <Flyout Placement="BottomEdgeAlignedRight"
                                                     FlyoutPresenterClasses="NavViewFlyoutStyle">
-                                                <ItemsRepeater Name="TopNavMenuItemsOverflowHost" />
+												<ItemsRepeater Name="TopNavMenuItemsOverflowHost">
+													<ItemsRepeater.Layout>
+														<StackLayout />
+													</ItemsRepeater.Layout>
+												</ItemsRepeater>
                                             </Flyout>
                                         </ui:Button.Flyout>
 
@@ -321,7 +324,11 @@
                                                       VerticalAlignment="Stretch"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       VerticalScrollBarVisibility="Auto">
-                                            <ItemsRepeater Name="MenuItemsHost" />
+											<ItemsRepeater Name="MenuItemsHost">
+												<ItemsRepeater.Layout>
+													<StackLayout />
+												</ItemsRepeater.Layout>
+											</ItemsRepeater>
                                         </ScrollViewer>
 
                                         <ui:NavigationViewItemSeparator Name="VisualItemsSeparator"
@@ -343,7 +350,11 @@
                                                       VerticalScrollBarVisibility="Auto"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Grid.Row="3">
-                                            <ItemsRepeater Name="FooterMenuItemsHost" />
+											<ItemsRepeater Name="FooterMenuItemsHost">
+												<ItemsRepeater.Layout>
+													<StackLayout />
+												</ItemsRepeater.Layout>
+											</ItemsRepeater>
                                         </ScrollViewer>
 
                                     </Grid>
@@ -352,34 +363,40 @@
 
                             <SplitView.Content>
 
-                                <Grid Name="ContentGrid" RowDefinitions="Auto,Auto,*" ColumnDefinitions="Auto,*"
-                                      Background="{DynamicResource NavigationViewContentBackground}"
-                                      Margin="{DynamicResource NavigationViewContentMargin}">
-                                    
-                                    <Rectangle Name="ContentTopPadding"
-                                               Grid.ColumnSpan="2"
-                                               Height="{Binding $parent[ui:NavigationView].TemplateSettings.TopPadding}"
-                                               IsVisible="{Binding $parent[ui:NavigationView].TemplateSettings.LeftPaneVisibility}" />
-                                    
-                                    <Rectangle Name="ContentLeftPadding" Grid.Row="1" />
-                                    
-                                    <ContentControl Name="HeaderContent"
-                                                    Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    MinHeight="{StaticResource PaneToggleButtonHeight}"
-                                                    KeyboardNavigation.IsTabStop="True"
-                                                    Content="{Binding $parent[ui:NavigationView].Header}"
-                                                    ContentTemplate="{Binding $parent[ui:NavigationView].HeaderTemplate}"
-                                                    VerticalContentAlignment="Stretch"
-                                                    HorizontalContentAlignment="Stretch"
-                                                    Classes="NavigationViewTitleHeaderContentControlTextStyle" />
-                                    
-                                    <ContentPresenter Grid.Row="2"
-                                                      Grid.ColumnSpan="2"
-                                                      Content="{Binding $parent[ui:NavigationView].Content}"
-                                                      Margin="{DynamicResource NavigationViewContentPresenterMargin}"/>
-                                    
-                                </Grid>
+								<Border Name="ContentGridBorder">
+									<Grid Name="ContentGrid" 
+										  RowDefinitions="Auto,Auto,*" 
+										  ColumnDefinitions="Auto,*"
+										  Background="{DynamicResource NavigationViewContentBackground}"
+										  Margin="{DynamicResource NavigationViewContentMargin}">
+
+										<Rectangle Name="ContentTopPadding"
+												   Grid.ColumnSpan="2"
+												   Height="{Binding $parent[ui:NavigationView].TemplateSettings.TopPadding}"
+												   IsVisible="{Binding $parent[ui:NavigationView].TemplateSettings.LeftPaneVisibility}" />
+
+										<Rectangle Name="ContentLeftPadding" Grid.Row="1" />
+
+										<ContentControl Name="HeaderContent"
+														Grid.Row="1"
+														Grid.Column="1"
+														MinHeight="{StaticResource PaneToggleButtonHeight}"
+														KeyboardNavigation.IsTabStop="True"
+														Content="{Binding $parent[ui:NavigationView].Header}"
+														ContentTemplate="{Binding $parent[ui:NavigationView].HeaderTemplate}"
+														VerticalContentAlignment="Stretch"
+														HorizontalContentAlignment="Stretch"
+														Classes="NavigationViewTitleHeaderContentControlTextStyle" />
+
+										<ContentPresenter Grid.Row="2"
+														  Grid.ColumnSpan="2"
+														  Content="{Binding $parent[ui:NavigationView].Content}"
+														  Margin="{DynamicResource NavigationViewContentPresenterMargin}"
+														  Name="ContentPresenter" />
+
+									</Grid>
+								</Border>
+										
                                 
                             </SplitView.Content>
                             
@@ -416,7 +433,7 @@
     <Style Selector="ui|NavigationView /template/ SplitView#RootSplitView">
         <Setter Property="PaneBackground" Value="{DynamicResource NavigationViewDefaultPaneBackground}" />    
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemSeparatorForeground}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{DynamicResource NavigationViewBorderThickness}" />
     </Style>
     <Style Selector="ui|NavigationView /template/ SplitView#RootSplitView /template/ Border#PaneLayoutRoot">
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
@@ -424,20 +441,42 @@
     <Style Selector="ui|NavigationView /template/ SplitView ui|Button#PaneAutoSuggestButton">
         <Setter Property="IsVisible" Value="False" />
     </Style>
-    
-    
-    <Style Selector="ui|NavigationView:minimal /template/ SplitView ContentControl#HeaderContent">
+
+	<Style Selector="ui|NavigationView /template/ SplitView Border#ContentGridBorder">
+		<Setter Property="Background" Value="{DynamicResource NavigationViewContentBackground}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource NavigationViewContentGridBorderBrush}" />
+		<Setter Property="BorderThickness" Value="{DynamicResource NavigationViewContentGridBorderThickness}" />
+		<Setter Property="Margin" Value="{DynamicResource NavigationViewContentMargin}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource NavigationViewContentGridCornerRadius}" />
+	</Style>
+	
+
+	<Style Selector="ui|NavigationView:minimal /template/ SplitView ContentControl#HeaderContent">
         <Setter Property="Margin" Value="{DynamicResource NavigationViewMinimalHeaderMargin}" />
     </Style>
-    <Style Selector="ui|NavigationView:minimalwithback /template/ SplitView ContentControl#HeaderContent">
+	<Style Selector="ui|NavigationView:minimal /template/ SplitView Border#ContentGridBorder">
+		<Setter Property="BorderThickness" Value="{DynamicResource NavigationViewMinimalContentGridBorderThickness}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource NavigationViewMinimalContentGridCornerRadius}" />
+	</Style>
+	<!-- TODO: Set back button to small style... -->
+
+
+	<Style Selector="ui|NavigationView:minimalwithback /template/ SplitView ContentControl#HeaderContent">
         <Setter Property="Margin" Value="{DynamicResource NavigationViewMinimalHeaderMargin}" />
     </Style>
+	<Style Selector="ui|NavigationView:minimalwithback /template/ SplitView Border#ContentGridBorder">
+		<Setter Property="BorderThickness" Value="{DynamicResource NavigationViewMinimalContentGridBorderThickness}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource NavigationViewMinimalContentGridCornerRadius}" />
+	</Style>
+	<!-- TODO: Set back button to small style... -->
 
-    <Style Selector="ui|NavigationView:expanded /template/ SplitView">
-        <Setter Property="PaneBackground" Value="{DynamicResource NavigationViewExpandedPaneBackground}" />
-    </Style>
+	<Style Selector="ui|NavigationView:topnavminimal /template/ SplitView Border#ContentGridBorder">
+		<Setter Property="BorderThickness" Value="{DynamicResource TopNavigationViewContentGridBorderThickness}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource TopNavigationViewContentGridCornerRadius}" />
+		<Setter Property="Margin" Value="{DynamicResource TopNavigationViewContentMargin}" />
+	</Style>
 
-
+    
     <Style Selector="ui|NavigationView:headercollapsed /template/ SplitView ContentControl#HeaderContent">
         <Setter Property="IsVisible" Value="False" />
     </Style>
@@ -489,7 +528,7 @@
 
     <!-- PaneOverlayGroup -->
     <Style Selector="ui|NavigationView:panenotoverlaying /template/ SplitView#RootSplitView">
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="PaneBackground" Value="{DynamicResource NavigationViewExpandedPaneBackground}" />
     </Style>
     <Style Selector="ui|NavigationView:panenotoverlaying /template/ Border#ShadowCaster">

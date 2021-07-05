@@ -4,6 +4,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Threading;
 using FluentAvalonia.Core.Attributes;
 using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
@@ -393,7 +394,14 @@ namespace FluentAvalonia.UI.Controls
                 //Default to entrance transition
                 entry.NavigationTransitionInfo = entry.NavigationTransitionInfo ?? new EntranceNavigationTransitionInfo();
 
-                entry.NavigationTransitionInfo.RunAnimation(_presenter);
+				// Very busy pages will delay loading b/c layout & render has to occur first
+				// Posting this helps a little bit, but not much
+				// Not really sure how to get the transition to occur while the page is loading
+				// so speed is comparable to WinUI...this may be an Avalonia limitation???
+				Dispatcher.UIThread.Post(() =>
+				{
+					entry.NavigationTransitionInfo.RunAnimation(_presenter);
+				}, DispatcherPriority.Loaded);
             }
         }
 
