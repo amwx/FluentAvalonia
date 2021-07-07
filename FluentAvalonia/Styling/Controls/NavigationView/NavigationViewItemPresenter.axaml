@@ -45,11 +45,8 @@
                                VerticalAlignment="Center">
                             
                             <Border Name="SelectionIndicator"
-                                       Width="3"
-                                       Height="16"
-                                       Background="{DynamicResource NavigationViewSelectionIndicatorForeground}"
-                                       Opacity="0"
-                                       CornerRadius="2" />                            
+									Background="{DynamicResource NavigationViewSelectionIndicatorForeground}"
+									Opacity="0" />                            
                         </Panel>
 
                         <Grid Name="ContentGrid"
@@ -59,7 +56,8 @@
 
                             <Border Name="IconColumn">
                                 <Viewbox Name="IconBox"
-                                         Height="16"
+                                         Height="{DynamicResource NavigationViewItemOnLeftIconBoxHeight}"
+										 HorizontalAlignment="Center"
                                          Margin="{DynamicResource NavigationViewItemOnLeftIconBoxMargin}">
                                     <ContentPresenter Name="Icon"
                                                       Content="{TemplateBinding Icon}" />
@@ -111,6 +109,11 @@
     <Style Selector="uip|NavigationViewItemPresenter /template/ ContentPresenter#ContentPresenter">
         <Setter Property="Margin" Value="{DynamicResource NavigationViewItemContentPresenterMargin}" />
     </Style>
+	<Style Selector="uip|NavigationViewItemPresenter /template/ Border#SelectionIndicator">
+		<Setter Property="Width" Value="{DynamicResource NavigationViewSelectionIndicatorWidth}" />
+		<Setter Property="Height" Value="{DynamicResource NavigationViewSelectionIndicatorHeight}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource NavigationViewSelectionIndicatorRadius}" />
+	</Style>
 
     <!-- Interaction -->
     <!-- pointerover -->

@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.VisualTree;
 using System;
 using System.Collections.Generic;
@@ -84,7 +85,32 @@ namespace FluentAvalonia.UI.Controls.Primitives
             UpdateMargin();
         }
 
-        internal void RotateExpandCollapseChevron(bool isExpanded)
+		protected override void OnPointerPressed(PointerPressedEventArgs e)
+		{
+			base.OnPointerPressed(e);
+			if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+			{
+				PseudoClasses.Set(":pressed", true);
+			}
+		}
+
+		protected override void OnPointerReleased(PointerReleasedEventArgs e)
+		{
+			base.OnPointerReleased(e);
+			if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased 
+				&& e.InitialPressMouseButton == MouseButton.Left)
+			{
+				PseudoClasses.Set(":pressed", false);
+			}
+		}
+
+		protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+		{
+			base.OnPointerCaptureLost(e);
+			PseudoClasses.Set(":pressed", false);
+		}
+
+		internal void RotateExpandCollapseChevron(bool isExpanded)
         {
             PseudoClasses.Set(":expanded", isExpanded);
         }

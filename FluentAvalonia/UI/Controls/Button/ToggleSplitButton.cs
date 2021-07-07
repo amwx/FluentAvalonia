@@ -3,8 +3,6 @@ using Avalonia.Interactivity;
 using Avalonia.Styling;
 using FluentAvalonia.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {

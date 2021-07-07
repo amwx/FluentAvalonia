@@ -295,7 +295,7 @@ namespace FluentAvalonia.Styling
 
 			//Make sure we don't get an invalid version number
 			var version = ControlsVersion > 2 || ControlsVersion < 1 ? 2 : ControlsVersion;
-			string thm = RequestedTheme == "Light" ? "Light" : "Dark";
+			string thm = GetTheme();
 
 			_loaded = new[]
 			{
@@ -339,16 +339,26 @@ namespace FluentAvalonia.Styling
 					(_loaded[0] as Styles).Resources["SystemAccentColorDark2"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentDark2");
 					(_loaded[0] as Styles).Resources["SystemAccentColorDark3"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentDark3");
 				}
-
-				if (DefaultToUserTheme)
-				{
-					Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
-					Win32Interop.RtlGetVersion(ref osInfo);
-
-					bool useDark = Win32Interop.GetSystemTheme(osInfo);
-					RequestedTheme = useDark ? "Dark" : "Light";
-				}
 			}		
+		}
+
+		private string GetTheme()
+		{
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && DefaultToUserTheme)
+			{
+				Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
+				Win32Interop.RtlGetVersion(ref osInfo);
+
+				bool useDark = Win32Interop.GetSystemTheme(osInfo);
+				_mode = useDark ? "Dark" : "Light";
+				return _mode;
+			}
+
+			if (_mode == "Light" || _mode == "Dark")
+				return _mode;
+
+			_mode = "Light"; // Default to Mode
+			return _mode;
 		}
 
 		private Dictionary<Type, List<IStyle>> _cache;
@@ -356,7 +366,7 @@ namespace FluentAvalonia.Styling
         private readonly Uri _baseUri;
         private IStyle[] _loaded;
         private bool _isLoading;
-        private string _mode = "Light";
+        private string _mode = string.Empty;
 		private int _controlsVersion = 2;
     }
 }

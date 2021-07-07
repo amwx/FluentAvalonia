@@ -73,32 +73,19 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
-                    <!-- This is flipped (scaleY(-1)) for the elevation brush effect -->
-                    <Border
-                      Name="PART_BorderElement"
-                      Background="{TemplateBinding Background}"
-                      BorderBrush="{TemplateBinding BorderBrush}"
-                      BorderThickness="{TemplateBinding BorderThickness}"
-                      CornerRadius="{DynamicResource ControlCornerRadius}"
-                      MinWidth="{TemplateBinding MinWidth}"
-                      MinHeight="{TemplateBinding MinHeight}"
-                      RenderTransform="scaleY(-1)">
-                    </Border>
-
-                    <Border
-                      Margin="{TemplateBinding BorderThickness}">
-                        <Grid ColumnDefinitions="Auto,*,Auto" >
-                            <ContentPresenter Grid.Column="0" Grid.ColumnSpan="1" Content="{TemplateBinding InnerLeftContent}"/>
-                            <DockPanel x:Name="PART_InnerDockPanel" Grid.Column="1" Grid.ColumnSpan="1" Margin="{TemplateBinding Padding}">
-                                <TextBlock Name="PART_FloatingWatermark"
+					<Border Margin="{TemplateBinding BorderThickness}">
+						<Grid ColumnDefinitions="Auto,*,Auto" >
+							<ContentPresenter Grid.Column="0" Grid.ColumnSpan="1" Content="{TemplateBinding InnerLeftContent}"/>
+							<DockPanel x:Name="PART_InnerDockPanel" Grid.Column="1" Grid.ColumnSpan="1" Margin="{TemplateBinding Padding}">
+								<TextBlock Name="PART_FloatingWatermark"
                                            Foreground="{DynamicResource SystemAccentColor}"
                                            FontSize="{TemplateBinding FontSize}"
                                            Text="{TemplateBinding Watermark}"
                                            DockPanel.Dock="Top" />
-                                <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+								<ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                                               VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
-                                    <Panel>
-                                        <TextBlock Name="PART_Watermark"
+									<Panel>
+										<TextBlock Name="PART_Watermark"
                                                 Text="{TemplateBinding Watermark}"
                                                 TextAlignment="{TemplateBinding TextAlignment}"
                                                 TextWrapping="{TemplateBinding TextWrapping}"
@@ -106,7 +93,7 @@
                                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                 IsHitTestVisible="False"/>
-                                        <TextPresenter Name="PART_TextPresenter"
+										<TextPresenter Name="PART_TextPresenter"
                                                       Text="{TemplateBinding Text, Mode=TwoWay}"
                                                       CaretIndex="{TemplateBinding CaretIndex}"
                                                       SelectionStart="{TemplateBinding SelectionStart}"
@@ -120,12 +107,24 @@
                                                       CaretBrush="{TemplateBinding CaretBrush}"
                                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    </Panel>
-                                </ScrollViewer>
-                            </DockPanel>
-                            <ContentPresenter Grid.Column="2" Grid.ColumnSpan="1" Content="{TemplateBinding InnerRightContent}"/>
-                        </Grid>
-                    </Border>
+									</Panel>
+								</ScrollViewer>
+							</DockPanel>
+							<ContentPresenter Grid.Column="2" Grid.ColumnSpan="1" Content="{TemplateBinding InnerRightContent}"/>
+						</Grid>
+					</Border>
+
+					<!-- This is flipped (scaleY(-1)) for the elevation brush effect -->
+					<Border
+                      Name="PART_BorderElement"
+                      Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      CornerRadius="{DynamicResource ControlCornerRadius}"
+                      MinWidth="{TemplateBinding MinWidth}"
+                      MinHeight="{TemplateBinding MinHeight}"
+                      RenderTransform="scaleY(-1)">
+					</Border>
                 </Panel>
             </ControlTemplate>
         </Setter>
@@ -251,9 +250,9 @@
                                  Grid.Row="1"
                                  Grid.Column="1"
                                  IsHitTestVisible="False"
-                                 Margin="0 0 14 0"
+                                 Margin="0 0 12 0"
                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                 FontSize="16"
+                                 FontSize="12"
                                  Glyph="&#xF2A6;"
                                  HorizontalAlignment="Right"
                                  VerticalAlignment="Center" />
@@ -338,6 +337,7 @@
     </Style>
     <Style Selector="ui|ComboBox:pointerover /template/ Border#Background">
         <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundPointerOver}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrushPointerOver}" />
     </Style>
     
     

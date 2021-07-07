@@ -369,6 +369,8 @@ namespace FluentAvalonia.UI.Controls
                 {
                     //TODO: WinUI has SuggestionChosen event handler here, find compatible event...
                 }
+
+				UpdateVisualState();
             }
             //else if (change.Property == SelectionFollowsFocusProperty)
             //{
@@ -2235,26 +2237,28 @@ namespace FluentAvalonia.UI.Controls
 					double itemsContMargin = _itemsContainer?.Margin.Vertical() ?? 0d;
 					var availHgt = _itemsContainerRow.ActualHeight - itemsContMargin;
 
-					// The c_paneItemsSeparatorHeight is to account for the 9px separator height that we need to subtract.
-					if (PaneFooter != null)
-					{
-						availHgt -= _paneItemsSeparatorHeight;
-						if (_leftNavFooterContentBorder != null)
-						{
-							availHgt -= _leftNavFooterContentBorder.Bounds.Height;
-						}
-					}
-					else if (IsSettingsVisible)
-					{
-						availHgt -= _paneItemsSeparatorHeight;
-					}
-					else if (_footerMenuItems != null && _menuItems != null &&
-						_footerMenuItems.Count() * _menuItems.Count() > 0)
-					{
-						availHgt -= _paneItemsSeparatorHeight;
-					}
+					return _itemsContainerRow.ActualHeight - itemsContMargin;
 
-					return availHgt;
+					//// The c_paneItemsSeparatorHeight is to account for the 9px separator height that we need to subtract.
+					//if (PaneFooter != null)
+					//{
+					//	availHgt -= _paneItemsSeparatorHeight;
+					//	if (_leftNavFooterContentBorder != null)
+					//	{
+					//		availHgt -= _leftNavFooterContentBorder.Bounds.Height;
+					//	}
+					//}
+					//else if (IsSettingsVisible)
+					//{
+					//	availHgt -= _paneItemsSeparatorHeight;
+					//}
+					//else if (_footerMenuItems != null && _menuItems != null &&
+					//	_footerMenuItems.Count() * _menuItems.Count() > 0)
+					//{
+					//	availHgt -= _paneItemsSeparatorHeight;
+					//}
+
+					//return availHgt;
                 }
                 return 0;
             }
@@ -2276,9 +2280,31 @@ namespace FluentAvalonia.UI.Controls
                             // We know the actual height of footer items, so use that to determine how to split pane.
                             if (_leftNavRepeater != null)
                             {
-                                var footerActualHeight = _leftNavFooterMenuRepeater.Bounds.Height;
-                                var menuItemsActualHeight = _leftNavRepeater.Bounds.Height;
-                                if ((_footerMenuItems != null && _footerMenuItems.Count() == 0) && !IsSettingsVisible)
+								double footerActualHeight =
+									_leftNavFooterMenuRepeater.Bounds.Height + (_leftNavFooterMenuRepeater.IsVisible ?
+									_leftNavFooterMenuRepeater.Margin.Vertical() : 0);
+								
+								double paneFooterActualHeight =
+									_leftNavFooterContentBorder != null ?
+									(_leftNavFooterContentBorder.Bounds.Height +
+											(_leftNavFooterContentBorder.IsVisible ? _leftNavFooterContentBorder.Margin.Vertical() : 0)) :
+									0.0;
+								
+
+								// This is the value computed during the measure pass of the layout process. This will be the value used to determine
+								// the partition logic between menuItems and footerGroup, since the ActualHeight may be taller if there's more space.
+								var menuItemsDesiredHeight = _leftNavRepeater.DesiredSize.Height;
+
+								// This is what the height ended up being, so will be the value that is used to calculate the partition
+								// between menuItems and footerGroup.
+								double menuItemsActualHeight =
+									_leftNavRepeater.Bounds.Height + (_leftNavRepeater.IsVisible ?
+										_leftNavRepeater.Margin.Vertical() : 0);
+
+								// Footer and PaneFooter are included in the footerGroup to calculate available height for menu items.
+								var footerGroupActualHeight = footerActualHeight + paneFooterActualHeight;
+
+								if ((_footerMenuItems != null && _footerMenuItems.Count() == 0) && !IsSettingsVisible)
 								{
 									PseudoClasses.Set(":separator", false);
 									return totalHeight;
@@ -2289,26 +2315,26 @@ namespace FluentAvalonia.UI.Controls
 									PseudoClasses.Set(":separator", false);
 									return 0d;
 								}
-								else if (totalHeight > menuItemsActualHeight + footerActualHeight)
+								else if (totalHeight >= menuItemsDesiredHeight + footerGroupActualHeight)
 								{
 									// We have enough space for two so let everyone get as much as they need
 									_footerItemsScrollViewer.MaxHeight = footerActualHeight;
 									PseudoClasses.Set(":separator", false);
-									return totalHeight - footerActualHeight;
+									return totalHeight - footerGroupActualHeight;
 								}
-								else if (menuItemsActualHeight < totalHeightHalf)
+								else if (menuItemsDesiredHeight < totalHeightHalf)
 								{
 									// Footer items exceed over the half, so let's limit them.
 									_footerItemsScrollViewer.MaxHeight = (totalHeight - menuItemsActualHeight);
 									PseudoClasses.Set(":separator", true);
 									return menuItemsActualHeight;
 								}
-								else if (footerActualHeight <= totalHeightHalf)
+								else if (footerGroupActualHeight <= totalHeightHalf)
 								{
 									// Menu items exceed over the half, so let's limit them.
 									_footerItemsScrollViewer.MaxHeight = footerActualHeight;
 									PseudoClasses.Set(":separator", true);
-									return totalHeight - footerActualHeight;
+									return totalHeight - footerGroupActualHeight;
 								}
 								else
 								{

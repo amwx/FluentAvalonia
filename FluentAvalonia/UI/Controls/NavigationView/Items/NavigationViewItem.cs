@@ -193,6 +193,8 @@ namespace FluentAvalonia.UI.Controls
             //OnElementPrepared in Avalonia, so NavigationView & SplitView refs don't exist yet. WinUI
             //must do this reversed and not add the item to the tree until AFTER OnElementPrepared
             //To compensate, we'll set the target now
+			//Conveniently, this also means we don't need to impl winui #5039, because we are already
+			//in the visual tree so the splitview reference is made
             if (navView == null)
             {
                 navView = this.FindAncestorOfType<NavigationView>();
@@ -242,7 +244,7 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
             base.OnPropertyChanged(change);
             if (change.Property == IconProperty)
