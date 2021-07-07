@@ -63,15 +63,15 @@
             <local:ControlExample Header="ToggleSplitButton"
                                   TargetType="ToggleSplitButton"
                                   XamlSource="{Binding ToggleSplitButtonXamlSource}">
-                <ui:SplitButton Content="Toggle">
-                    <ui:SplitButton.Flyout>
-                        <Flyout Placement="Bottom">
-                            <Grid Width="200" Height="100">
-                                <TextBlock Text="ToggleSplitButton Flyout!" />
-                            </Grid>
-                        </Flyout>
-                    </ui:SplitButton.Flyout>
-                </ui:SplitButton>
+                <ui:ToggleSplitButton Content="Toggle">
+					<ui:ToggleSplitButton.Flyout>
+						<Flyout Placement="Bottom">
+							<Grid Width="200" Height="100">
+								<TextBlock Text="ToggleSplitButton Flyout!" />
+							</Grid>
+						</Flyout>
+					</ui:ToggleSplitButton.Flyout>
+                </ui:ToggleSplitButton>
             </local:ControlExample>
 
             <local:ControlExample Header="DropDownButton"

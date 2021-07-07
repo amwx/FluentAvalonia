@@ -11,9 +11,6 @@ namespace FluentAvalonia.UI.Controls
 {
 	public class SplitButton : ContentControl
 	{
-
-		#region AvaloniaProperties
-
 		public static readonly DirectProperty<SplitButton, ICommand> CommandProperty =
 			Button.CommandProperty.AddOwner<SplitButton>(x => x.Command, (x, v) => x.Command = v);
 
@@ -23,10 +20,6 @@ namespace FluentAvalonia.UI.Controls
 		public static readonly DirectProperty<SplitButton, FlyoutBase> FlyoutProperty =
 			AvaloniaProperty.RegisterDirect<SplitButton, FlyoutBase>("Flyout",
 				x => x.Flyout, (x, v) => x.Flyout = v);
-
-		#endregion
-
-		#region CLR Properties
 
 		public ICommand Command
 		{
@@ -48,15 +41,7 @@ namespace FluentAvalonia.UI.Controls
 
 		internal virtual bool InternalIsChecked => false;
 
-		#endregion
-
-		#region Events
-
 		public event TypedEventHandler<SplitButton, SplitButtonClickEventArgs> Click;
-
-		#endregion
-
-		#region Override Methods
 
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
@@ -173,10 +158,6 @@ namespace FluentAvalonia.UI.Controls
 			base.OnKeyUp(e);
 		}
 
-		#endregion
-
-		#region Public Methods
-
 		private void OpenFlyout()
 		{
 			if (Flyout != null)
@@ -192,10 +173,6 @@ namespace FluentAvalonia.UI.Controls
 				Flyout.Hide();
 			}
 		}
-
-		#endregion
-
-		#region Private Methods
 
 		private void UnregisterEvents()
 		{
@@ -271,8 +248,10 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		protected void UpdateVisualStates()
+		protected virtual void UpdateVisualStates()
 		{
+			// This is really messy *SIGH*
+
 			if (_lastPointerDeviceType == PointerType.Touch || _isKeyDown)
 			{
 				PseudoClasses.Set(":secondarybuttonspan", true);
@@ -288,79 +267,163 @@ namespace FluentAvalonia.UI.Controls
 			{
 				if (_isFlyoutOpen)
 				{
-					PseudoClasses.Set(":flyoutopen", _isFlyoutOpen);
-				}
-				// SplitButton and ToggleSplitButton share a template -- this section is driving the checked states for ToggleSplitButton.
-				else if (InternalIsChecked)
-				{
-					if (_lastPointerDeviceType == PointerType.Touch || _isKeyDown)
-					{
-						if (_primaryButton.IsPressed || _secondaryButton.IsPressed || _isKeyDown)
-						{
-							TempVisualStateManager.GoToState(this, ":checkedtouchpressed");
-						}
-						else
-						{
-							TempVisualStateManager.GoToState(this, ":checked");
-						}
-					}
-					else if (_primaryButton.IsPressed)
-					{
-						TempVisualStateManager.GoToState(this, ":checkedprimarypressed");
-					}
-					else if (_primaryButton.IsPointerOver)
-					{
-						TempVisualStateManager.GoToState(this, ":checkedprimarypointerover");
-					}
-					else if (_secondaryButton.IsPressed)
-					{
-						TempVisualStateManager.GoToState(this, ":checkedsecondarypressed");
-					}
-					else if (_secondaryButton.IsPointerOver)
-					{
-						TempVisualStateManager.GoToState(this, ":checkedsecondarypointerover");
-					}
-					else
-					{
-						TempVisualStateManager.GoToState(this, ":checked");
-					}
+					PseudoClasses.Set(":flyoutopen", true);
 				}
 				else
 				{
-					if (_lastPointerDeviceType == PointerType.Touch || _isKeyDown)
+					PseudoClasses.Set(":flyoutopen", false);
+		
+					if (InternalIsChecked) //SplitToggleButton only
 					{
-						if (_primaryButton.IsPressed || _secondaryButton.IsPressed || _isKeyDown)
+						// Clear non-checked states
+						PseudoClasses.Set(":touchpressed", false);
+						PseudoClasses.Set(":primarypressed", false);
+						PseudoClasses.Set(":primarypointerover", false);
+						PseudoClasses.Set(":secondarypressed", false);
+						PseudoClasses.Set(":secondarypointerover", false);
+
+						if (_lastPointerDeviceType == PointerType.Touch || _isKeyDown)
 						{
-							TempVisualStateManager.GoToState(this, ":touchpressed");
+							if (_primaryButton.IsPressed || _secondaryButton.IsPressed || _isKeyDown)
+							{
+								PseudoClasses.Set(":checkedtouchpressed", true);
+								PseudoClasses.Set(":checked", false);
+								PseudoClasses.Set(":checkedprimarypressed", false);
+								PseudoClasses.Set(":checkedprimarypointerover", false);
+								PseudoClasses.Set(":checksecondarypressed", false);
+								PseudoClasses.Set(":checkedsecondarypointerover", false);
+							}
+							else
+							{
+								PseudoClasses.Set(":checked", true);
+								PseudoClasses.Set(":checkedtouchpressed", false);
+								PseudoClasses.Set(":checkedprimarypressed", false);
+								PseudoClasses.Set(":checkedprimarypointerover", false);
+								PseudoClasses.Set(":checksecondarypressed", false);
+								PseudoClasses.Set(":checkedsecondarypointerover", false);
+							}
 						}
-						else
+						else if (_primaryButton.IsPressed)
 						{
-							TempVisualStateManager.GoToState(this, null); //"Normal"
+							PseudoClasses.Set(":checkedtouchpressed", false);
+							PseudoClasses.Set(":checked", false);
+							PseudoClasses.Set(":checkedprimarypressed", true);
+							PseudoClasses.Set(":checkedprimarypointerover", false);
+							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypointerover", false);
 						}
-					}
-					else if (_primaryButton.IsPressed)
-					{
-						TempVisualStateManager.GoToState(this, ":primarypressed");
-					}
-					else if (_primaryButton.IsPointerOver)
-					{
-						TempVisualStateManager.GoToState(this, ":primarypointerover");
-					}
-					else if (_secondaryButton.IsPressed)
-					{
-						TempVisualStateManager.GoToState(this, ":secondarypressed");
-					}
-					else if (_secondaryButton.IsPointerOver)
-					{
-						TempVisualStateManager.GoToState(this, ":secondarypointerover");
+						else if (_primaryButton.IsPointerOver)
+						{
+							PseudoClasses.Set(":checkedtouchpressed", false);
+							PseudoClasses.Set(":checked", false);
+							PseudoClasses.Set(":checkedprimarypressed", false);
+							PseudoClasses.Set(":checkedprimarypointerover", true);
+							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypointerover", false);
+						}
+						else if (_secondaryButton.IsPressed)
+						{
+							PseudoClasses.Set(":checkedtouchpressed", false);
+							PseudoClasses.Set(":checked", false);
+							PseudoClasses.Set(":checkedprimarypressed", false);
+							PseudoClasses.Set(":checkedprimarypointerover", false);
+							PseudoClasses.Set(":checksecondarypressed", true);
+							PseudoClasses.Set(":checkedsecondarypointerover", false);
+						}
+						else if (_secondaryButton.IsPointerOver)
+						{
+							PseudoClasses.Set(":checkedtouchpressed", false);
+							PseudoClasses.Set(":checked", false);
+							PseudoClasses.Set(":checkedprimarypressed", false);
+							PseudoClasses.Set(":checkedprimarypointerover", false);
+							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypointerover", true);
+						}
+						else // Checked
+						{
+							PseudoClasses.Set(":checkedtouchpressed", false);
+							PseudoClasses.Set(":checked", true);
+							PseudoClasses.Set(":checkedprimarypressed", false);
+							PseudoClasses.Set(":checkedprimarypointerover", false);
+							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypointerover", false);
+						}
 					}
 					else
 					{
-						TempVisualStateManager.GoToState(this, null); //"Normal"
+						// Clear any checked states, if needed
+						if (this is ToggleSplitButton)
+						{
+							PseudoClasses.Set(":checkedtouchpressed", false);
+							PseudoClasses.Set(":checked", false);
+							PseudoClasses.Set(":checkedprimarypressed", false);
+							PseudoClasses.Set(":checkedprimarypointerover", false);
+							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypointerover", false);
+						}
+
+						if (_lastPointerDeviceType == PointerType.Touch || _isKeyDown)
+						{
+							if (_primaryButton.IsPressed || _secondaryButton.IsPressed || _isKeyDown)
+							{
+								PseudoClasses.Set(":touchpressed", true);
+								PseudoClasses.Set(":primarypressed", false);
+								PseudoClasses.Set(":primarypointerover", false);
+								PseudoClasses.Set(":secondarypressed", false);
+								PseudoClasses.Set(":secondarypointerover", false);
+							}
+							else
+							{
+								PseudoClasses.Set(":touchpressed", false);
+								PseudoClasses.Set(":primarypressed", false);
+								PseudoClasses.Set(":primarypointerover", false);
+								PseudoClasses.Set(":secondarypressed", false);
+								PseudoClasses.Set(":secondarypointerover", false);
+							}
+						}
+						else if (_primaryButton.IsPressed)
+						{
+							PseudoClasses.Set(":touchpressed", false);
+							PseudoClasses.Set(":primarypressed", true);
+							PseudoClasses.Set(":primarypointerover", false);
+							PseudoClasses.Set(":secondarypressed", false);
+							PseudoClasses.Set(":secondarypointerover", false);
+						}
+						else if (_primaryButton.IsPointerOver)
+						{
+							PseudoClasses.Set(":touchpressed", false);
+							PseudoClasses.Set(":primarypressed", false);
+							PseudoClasses.Set(":primarypointerover", true);
+							PseudoClasses.Set(":secondarypressed", false);
+							PseudoClasses.Set(":secondarypointerover", false);
+						}
+						else if (_secondaryButton.IsPressed)
+						{
+							PseudoClasses.Set(":touchpressed", false);
+							PseudoClasses.Set(":primarypressed", false);
+							PseudoClasses.Set(":primarypointerover", false);
+							PseudoClasses.Set(":secondarypressed", true);
+							PseudoClasses.Set(":secondarypointerover", false);
+						}
+						else if (_secondaryButton.IsPointerOver)
+						{
+							PseudoClasses.Set(":touchpressed", false);
+							PseudoClasses.Set(":primarypressed", false);
+							PseudoClasses.Set(":primarypointerover", false);
+							PseudoClasses.Set(":secondarypressed", false);
+							PseudoClasses.Set(":secondarypointerover", true);
+						}
+						else
+						{
+							PseudoClasses.Set(":touchpressed", false);
+							PseudoClasses.Set(":primarypressed", false);
+							PseudoClasses.Set(":primarypointerover", false);
+							PseudoClasses.Set(":secondarypressed", false);
+							PseudoClasses.Set(":secondarypointerover", false);
+						}
 					}
 				}
 			}
-
 		}
 
 		private void OnVisualPropertyChanged(AvaloniaPropertyChangedEventArgs args)
@@ -384,8 +447,6 @@ namespace FluentAvalonia.UI.Controls
 		{
 			UpdateVisualStates();
 		}
-
-		#endregion
 
 		protected bool _hasLoaded;
 		private FlyoutBase _flyout;
