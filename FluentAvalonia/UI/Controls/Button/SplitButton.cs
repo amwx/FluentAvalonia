@@ -309,7 +309,7 @@ namespace FluentAvalonia.UI.Controls
 							PseudoClasses.Set(":checked", false);
 							PseudoClasses.Set(":checkedprimarypressed", true);
 							PseudoClasses.Set(":checkedprimarypointerover", false);
-							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypressed", false);
 							PseudoClasses.Set(":checkedsecondarypointerover", false);
 						}
 						else if (_primaryButton.IsPointerOver)
@@ -318,7 +318,7 @@ namespace FluentAvalonia.UI.Controls
 							PseudoClasses.Set(":checked", false);
 							PseudoClasses.Set(":checkedprimarypressed", false);
 							PseudoClasses.Set(":checkedprimarypointerover", true);
-							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypressed", false);
 							PseudoClasses.Set(":checkedsecondarypointerover", false);
 						}
 						else if (_secondaryButton.IsPressed)
@@ -327,7 +327,7 @@ namespace FluentAvalonia.UI.Controls
 							PseudoClasses.Set(":checked", false);
 							PseudoClasses.Set(":checkedprimarypressed", false);
 							PseudoClasses.Set(":checkedprimarypointerover", false);
-							PseudoClasses.Set(":checksecondarypressed", true);
+							PseudoClasses.Set(":checkedsecondarypressed", true);
 							PseudoClasses.Set(":checkedsecondarypointerover", false);
 						}
 						else if (_secondaryButton.IsPointerOver)
@@ -336,7 +336,7 @@ namespace FluentAvalonia.UI.Controls
 							PseudoClasses.Set(":checked", false);
 							PseudoClasses.Set(":checkedprimarypressed", false);
 							PseudoClasses.Set(":checkedprimarypointerover", false);
-							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypressed", false);
 							PseudoClasses.Set(":checkedsecondarypointerover", true);
 						}
 						else // Checked
@@ -345,7 +345,7 @@ namespace FluentAvalonia.UI.Controls
 							PseudoClasses.Set(":checked", true);
 							PseudoClasses.Set(":checkedprimarypressed", false);
 							PseudoClasses.Set(":checkedprimarypointerover", false);
-							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypressed", false);
 							PseudoClasses.Set(":checkedsecondarypointerover", false);
 						}
 					}
@@ -358,7 +358,7 @@ namespace FluentAvalonia.UI.Controls
 							PseudoClasses.Set(":checked", false);
 							PseudoClasses.Set(":checkedprimarypressed", false);
 							PseudoClasses.Set(":checkedprimarypointerover", false);
-							PseudoClasses.Set(":checksecondarypressed", false);
+							PseudoClasses.Set(":checkedsecondarypressed", false);
 							PseudoClasses.Set(":checkedsecondarypointerover", false);
 						}
 

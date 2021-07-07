@@ -289,7 +289,7 @@
     <Style Selector="ui|SplitButton:checkedprimarypointerover /template/ Rectangle#SecondaryBackgroundGrid">
         <Setter Property="Fill" Value="{DynamicResource SplitButtonBackgroundChecked}" />
     </Style>
-    <Style Selector="ui|SplitButton:checkedtouchpressed /template/ ui|Button#SecondaryButton">
+    <Style Selector="ui|SplitButton:checkedprimarypointerover /template/ ui|Button#SecondaryButton">
         <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundChecked}" />
     </Style>
 
