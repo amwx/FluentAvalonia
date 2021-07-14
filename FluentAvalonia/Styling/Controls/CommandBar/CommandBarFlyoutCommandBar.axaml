@@ -1,0 +1,69 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:ui="using:FluentAvalonia.UI.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- 
+	NOTE: TEMPLATE CHANGED FROM WINUI VERSION
+	WinUI CommandBarFlyoutCommandBar still holds its own Popup for the secondary commands
+	and then aligns them so it looks like only one is present. 
+	That's stupid, but probably something in the legacy, still not opensourced CommandBar,
+	requires that the popup be present.
+	Here, we load everything in and we'll only have one Popup. We'll show/hide the overflow
+	as needed, and everything will still continue to work, we just won't have two Popups	
+	-->
+	
+	<Style Selector="ui|CommandBarFlyoutCommandBar">
+		<Setter Property="Background" Value="{DynamicResource CommandBarFlyoutBackground}" />
+		<Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutForeground}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource CommandBarFlyoutBorderBrush}" />
+		<Setter Property="BorderThickness" Value="{DynamicResource CommandBarFlyoutBorderThemeThickness}" />
+		<Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
+		<!--<Setter Property="HorizontalContentAlignment" Value="Left" />
+		<Setter Property="VerticalContentAlignment" Value="Top" />-->
+		<Setter Property="MaxWidth" Value="440" />
+		<Setter Property="Height" Value="48" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border Name="LayoutRoot"
+						CornerRadius="{DynamicResource ControlCornerRadius}">
+					<StackPanel>
+						<Border Name="PrimaryItemsRoot"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}">
+							<DockPanel>
+								<ui:Button Name="MoreButton"
+										   Foreground="{TemplateBinding Foreground}"
+										   DockPanel.Dock="Right">
+									<ui:SymbolIcon Symbol="MoreHorizontal"
+												   FontSize="18" />
+								</ui:Button>										   
+							</DockPanel>
+						</Border>
+
+						<Border Name="OverflowRoot">
+							<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+										  VerticalScrollBarVisibility="Auto">
+								<ui:CommandBarOverflowPresenter Name="OverflowPresenter" />
+							</ScrollViewer>
+						</Border>
+					</StackPanel>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+
+	<Style Selector="ui|CommandBarFlyoutCommandBar /template/ Border#PrimaryItemsRoot">
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+	</Style>
+	<Style Selector="ui|CommandBarFlyoutCommandBar /template/ Border#OverflowRoot">
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+		<Setter Property="IsVisible" Value="False" />
+	</Style>
+	
+</Styles>

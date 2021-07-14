@@ -57,4 +57,12 @@
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/PickerFlyoutPresenterStyle.axaml" />
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/HyperlinkButtonStyle.axaml" />
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/InfoBar.axaml" />
+
+	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBar.axaml" />
+	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarOverflowPresenter.axaml" />
+	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarButton.axaml" />
+	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarToggleButton.axaml" />
+	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarSeparator.axaml" />
+	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarElementContainer.axaml" />
+	
 </Styles>
