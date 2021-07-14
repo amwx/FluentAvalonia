@@ -25,6 +25,13 @@ namespace FluentAvalonia.UI.Controls
 		Collapsed
 	}
 
+	public enum CommandBarOverflowButtonVisibility
+	{
+		Auto,
+		Visible,
+		Collapsed
+	}
+
 	public class CommandBar : ContentControl
 	{
 		public CommandBar()
@@ -61,8 +68,8 @@ namespace FluentAvalonia.UI.Controls
 			AvaloniaProperty.RegisterDirect<CommandBar, IAvaloniaList<ICommandBarElement>>(nameof(SecondaryCommands), 
 				x => x.SecondaryCommands);
 
-		//public static readonly StyledProperty<bool> OverflowButtonVisibilityProperty =
-		//	AvaloniaProperty.Register<CommandBar, bool>("OverflowButtonVisibility");
+		public static readonly StyledProperty<CommandBarOverflowButtonVisibility> OverflowButtonVisibilityProperty =
+			AvaloniaProperty.Register<CommandBar, CommandBarOverflowButtonVisibility>("OverflowButtonVisibility");
 
 		public static readonly DirectProperty<CommandBar, bool> IsDynamicOverflowEnabledProperty =
 			AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(SecondaryCommands),
@@ -131,11 +138,11 @@ namespace FluentAvalonia.UI.Controls
 			private set => SetAndRaise(SecondaryCommandsProperty, ref _secondaryCommands, value);
 		}
 
-		//public bool OverflowButtonVisibility
-		//{
-		//	get => GetValue(OverflowButtonVisibilityProperty);
-		//	set => SetValue(OverflowButtonVisibilityProperty, value);
-		//}
+		public CommandBarOverflowButtonVisibility OverflowButtonVisibility
+		{
+			get => GetValue(OverflowButtonVisibilityProperty);
+			set => SetValue(OverflowButtonVisibilityProperty, value);
+		}
 
 		public bool IsDynamicOverflowEnabled
 		{
@@ -228,7 +235,9 @@ namespace FluentAvalonia.UI.Controls
 				// a very rare, specific thing, so I'm not gonna worry about that here.
 
 				// 5px is to give us just a little more space
-				var availWidForItems = availableSize.Width - _contentHost.DesiredSize.Width - _moreButton.DesiredSize.Width - 5;
+				var availWidForItems = availableSize.Width - 
+					(_contentHost != null ? _contentHost.DesiredSize.Width : 0) - 
+					_moreButton.DesiredSize.Width - 5;
 
 				if (_minRecoverWidth < availWidForItems && _numInOverflow > 0)
 				{
@@ -294,7 +303,16 @@ namespace FluentAvalonia.UI.Controls
 				_overflowSeparator.IsVisible = _numInOverflow > 0;
 			}
 
-			_moreButton.IsVisible = _overflowItems != null && _overflowItems.Count > 0;			
+			var overflowVis = OverflowButtonVisibility;
+			if (overflowVis == CommandBarOverflowButtonVisibility.Auto)
+			{
+				_moreButton.IsVisible = _overflowItems != null && (_isDynamicOverflowEnabled ? _overflowItems.Count > 1 : _overflowItems.Count > 0);						
+			}
+			else
+			{
+				_moreButton.IsVisible = overflowVis == CommandBarOverflowButtonVisibility.Visible;
+			}
+
 			
 			return base.MeasureOverride(availableSize);
 		}
@@ -312,11 +330,14 @@ namespace FluentAvalonia.UI.Controls
 
 		protected virtual void OnOpened() 
 		{
-			// TODO: Focus via keyboard
-			if (_overflowItems.Count > 0)
+			if (_overflowItems != null)
 			{
-				(_overflowItems[0] as IControl).Focus();
-			}
+				// TODO: Focus via keyboard
+				if (_overflowItems.Count > 0)
+				{
+					(_overflowItems[0] as IControl).Focus();
+				}
+			}	
 
 			Opened?.Invoke(this, null);
 		}
@@ -399,6 +420,8 @@ namespace FluentAvalonia.UI.Controls
 					break;
 			}
 
+			PseudoClasses.Set(":primaryonly", _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
+			PseudoClasses.Set(":secondaryonly", _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
 			InvalidateMeasure();
 		}
 
@@ -441,6 +464,9 @@ namespace FluentAvalonia.UI.Controls
 					}
 					break;
 			}
+
+			PseudoClasses.Set(":primaryonly", _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
+			PseudoClasses.Set(":secondaryonly", _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
 		}
 
 		private void AttachItems()
@@ -471,7 +497,10 @@ namespace FluentAvalonia.UI.Controls
 				_overflowItems.AddRange(_secondaryCommands);
 
 				_overflowItemsHost.Items = _overflowItems;
-			}			
+			}
+
+			PseudoClasses.Set(":primaryonly", _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
+			PseudoClasses.Set(":secondaryonly", _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
 		}
 			
 

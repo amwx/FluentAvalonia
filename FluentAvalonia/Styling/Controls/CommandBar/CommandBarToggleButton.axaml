@@ -460,6 +460,9 @@
 	
 	
 	<!-- LabelOnRight -->
+	<Style Selector="ui|CommandBar:labelright ui|CommandBarToggleButton">
+		<Setter Property="Width" Value="NaN" />
+	</Style>
 	<Style Selector="ui|CommandBar:labelright ui|CommandBarToggleButton /template/ Viewbox#ContentViewbox">
 		<Setter Property="Margin" Value="{DynamicResource AppBarButtonContentViewboxMargin}" />
 	</Style>

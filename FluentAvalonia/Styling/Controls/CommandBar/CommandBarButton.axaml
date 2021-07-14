@@ -339,6 +339,9 @@
 	
 	
 	<!-- LabelOnRight -->
+	<Style Selector="ui|CommandBar:labelright ui|CommandBarButton">
+		<Setter Property="Width" Value="NaN" />
+	</Style>
 	<Style Selector="ui|CommandBar:labelright ui|CommandBarButton /template/ Viewbox#ContentViewbox">
 		<Setter Property="Margin" Value="{DynamicResource AppBarButtonContentViewboxMargin}" />
 	</Style>

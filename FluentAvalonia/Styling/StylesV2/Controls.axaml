@@ -64,5 +64,6 @@
 	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarToggleButton.axaml" />
 	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarSeparator.axaml" />
 	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarElementContainer.axaml" />
-	
+
+	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarFlyoutCommandBar.axaml" />
 </Styles>
