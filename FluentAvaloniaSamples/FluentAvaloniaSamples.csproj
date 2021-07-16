@@ -19,4 +19,12 @@
   <ItemGroup>
     <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\MenusToolbars\CommandBarToggleButtonPage.axaml.cs">
+      <DependentUpon>CommandBarToggleButtonPage.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\DialogsFlyouts\ContentDialogPage.axaml.cs">
+      <DependentUpon>ContentDialogPage.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

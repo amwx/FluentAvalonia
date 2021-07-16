@@ -8,12 +8,15 @@ using Avalonia.Diagnostics;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Metadata;
+using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media;
 using FluentAvaloniaSamples.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using IconElement = FluentAvalonia.UI.Controls.IconElement;
+using PathIcon = FluentAvalonia.UI.Controls.PathIcon;
 
 namespace FluentAvaloniaSamples
 {
@@ -205,24 +208,45 @@ namespace FluentAvaloniaSamples
 			if (DynamicXamlTarget == null || dynamicProps == null || dynamicProps.Count == 0)
 				return;
 
-			string text = $"<ui:{DynamicXamlTarget.GetType().Name} ";
+			var owningType = DynamicXamlTarget.GetType().Name;
+			string complexValues = string.Empty;
+			string text = $"<ui:{owningType} ";
 			for (int i = 0; i < availProps.Length; i++)
 			{
 				var name = availProps[i].Name;
 
 				if (dynamicProps.ContainsKey(name))
 				{
-					if (dynamicProps[name] == string.Empty)
+					var val = DynamicXamlTarget.GetValue(availProps[i]);
+
+					if (IsComplexValue(val))
 					{
-						text += $"{name}=\"{FormatValue(DynamicXamlTarget.GetValue(availProps[i]))}\" ";
+						complexValues += FormatComplexValue(owningType, name, val);
 					}
 					else
 					{
-						text += $"{name}=\"{dynamicProps[name]}\" ";
-					}
+						if (dynamicProps[name] == string.Empty)
+						{
+							text += $"{name}=\"{FormatValue(val)}\" ";
+						}
+						else
+						{
+							text += $"{name}=\"{dynamicProps[name]}\" ";
+						}
+					}					
 				}
 			}
-			XamlSource = text + " />";
+
+			if (string.IsNullOrEmpty(complexValues))
+			{
+				XamlSource = text + " />";
+			}
+			else
+			{
+				text += ">" + "\n" + complexValues + $"\n</ui:{owningType}>";
+				XamlSource = text;
+			}
+			
 		}
 
 		private string FormatValue(object item)
@@ -245,6 +269,52 @@ namespace FluentAvaloniaSamples
 				return t.IsUniform ? t.Left.ToString() : $"{t.Left} {t.Top} {t.Right} {t.Bottom}";
 			}
 			return item.ToString(); 
+		}
+
+		private string FormatComplexValue(string ownerType, string propName, object item)
+		{
+			if (item is IconElement)
+			{
+				if (item is SymbolIcon si)
+				{
+					var txt = $"    <ui:{ownerType}.{propName}>\n";
+					txt += $"        <ui:SymbolIcon Symbol=\"{si.Symbol}\" UseFilled=\"{si.UseFilled}\" />\n";
+					txt += $"    </ui:{ownerType}.{propName}>";
+
+					return txt;
+				}
+				else if (item is BitmapIcon bi)
+				{
+					var txt = $"    <ui:{ownerType}.{propName}>\n";
+					txt += $"        <ui:BitmapIcon UriSource=\"{bi.UriSource}\" />\n";
+					txt += $"    </ui:{ownerType}.{propName}>";
+
+					return txt;
+				}
+				else if (item is FontIcon fi)
+				{
+					var txt = $"    <ui:{ownerType}.{propName}>\n";
+					txt += $"        <ui:FontIcon Glpyh=\"{fi.Glyph}\" />\n";
+					txt += $"    </ui:{ownerType}.{propName}>";
+
+					return txt;
+				}
+				else if (item is PathIcon pi)
+				{
+					// No way to get path data from StreamGeometry so we can't do anything
+					// about PathIcon
+				}
+			}
+
+			return string.Empty;
+		}
+
+		private bool IsComplexValue(object item)
+		{
+			if (item is IconElement)
+				return true;
+
+			return false;
 		}
 
 		private AvaloniaList<DocsItemViewModel> properties;

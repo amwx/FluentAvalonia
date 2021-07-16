@@ -12,6 +12,7 @@
         xmlns:sty="using:FluentAvalonia.Styling"
         xmlns:wnd="using:FluentAvalonia.UI.Core"
         xmlns:media="using:FluentAvalonia.UI.Media"
+		xmlns:input="using:FluentAvalonia.UI.Input"
         Width="1200" Height="700"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FluentAvaloniaSamples.Views.MainWindow"
@@ -20,15 +21,81 @@
     <!--<Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>-->
-    
 
-    <Panel Background="{DynamicResource TestBrush}">
-        <ui:NavigationView Name="NavView"
-                           PaneDisplayMode="Left" 
-                           IsVisible="True"
-                       IsBackButtonVisible="True" AlwaysShowHeader="True"
-                       IsBackEnabled="{Binding #FrameView.CanGoBack}">
-            <ui:Frame Name="FrameView" Margin="5" />
-        </ui:NavigationView>
-    </Panel>
+	<Window.Resources>
+		<input:XamlUICommand x:Key="CustomCommand" Command="{Binding OnXamlCommandExecuted}" 
+							 Label="XamlTest">
+			<input:XamlUICommand.IconSource>
+				<ui:SymbolIconSource Symbol="Previous" />
+			</input:XamlUICommand.IconSource>
+		</input:XamlUICommand>
+		
+		<ui:TextCommandBarFlyout x:Key="TextFlyout" />
+	</Window.Resources>
+	
+	<Panel Background="{DynamicResource TestBrush}">
+		<ui:NavigationView Name="NavView"
+							PaneDisplayMode="Left"
+							IsVisible="True"
+						IsBackButtonVisible="True" AlwaysShowHeader="True"
+						IsBackEnabled="{Binding #FrameView.CanGoBack}">
+			<ui:Frame Name="FrameView" Margin="5" />
+		</ui:NavigationView>
+
+		<!--<ui:CommandBarFlyoutCommandBar IsOpen="True">
+		<ui:CommandBarFlyoutCommandBar.PrimaryCommands>
+			<ui:CommandBarButton Icon="Cut" />
+			<ui:CommandBarButton Icon="Copy" />
+			<ui:CommandBarButton Icon="Paste" />
+		</ui:CommandBarFlyoutCommandBar.PrimaryCommands>
+		<ui:CommandBarFlyoutCommandBar.SecondaryCommands>
+			<ui:CommandBarButton Icon="Save" Label="Save" />
+		</ui:CommandBarFlyoutCommandBar.SecondaryCommands>
+	</ui:CommandBarFlyoutCommandBar>-->
+
+				
+		<!--<TextBox Width="150" ContextFlyout="{StaticResource TextFlyout}" 
+				 VerticalAlignment="Center"/>
+		
+		<TextBlock Text="Try to set a flyout on me" ContextFlyout="{StaticResource TextFlyout}"
+				   VerticalAlignment="Center"/>
+		
+		<ui:CommandBar IsVisible="True" ClosedDisplayMode="Compact" DefaultLabelPosition="Right" IsDynamicOverflowEnabled="False">
+			<ui:CommandBar.PrimaryCommands>
+				<ui:CommandBarButton Label="Save" Icon="Save" IsCompact="True">
+					<ui:CommandBarButton.Flyout>
+						<ui:CommandBarFlyout Placement="Bottom" AlwaysExpanded="True">
+							<ui:CommandBarButton Icon="Cut" />
+							<ui:CommandBarButton Icon="Copy" />
+							<ui:CommandBarButton Icon="Paste" />
+							<ui:CommandBarFlyout.SecondaryCommands>
+								<ui:CommandBarButton Label="Test1" />
+								<ui:CommandBarButton Label="Test2" />
+								<ui:CommandBarButton Label="Test3" />
+							</ui:CommandBarFlyout.SecondaryCommands>
+						</ui:CommandBarFlyout>
+					</ui:CommandBarButton.Flyout>
+				</ui:CommandBarButton>
+
+
+				<ui:CommandBarToggleButton Label="Toggle" Icon="Save" />
+				<ui:CommandBarSeparator />
+				<ui:CommandBarButton Command="{StaticResource CustomCommand}"  CommandParameter="Parameter here"/>
+				<ui:CommandBarButton Label="Save3" Icon="Save" IsCompact="True" />
+				<ui:CommandBarButton Label="Save4" Icon="Save" IsCompact="True" DynamicOverflowOrder="2" />
+				<ui:CommandBarButton Label="Save5" Icon="Save" IsCompact="True" />
+				<ui:CommandBarButton Label="Save6" Icon="Save" IsCompact="True" DynamicOverflowOrder="1" />
+				<ui:CommandBarButton Label="Save7" Icon="Save" IsCompact="True" DynamicOverflowOrder="1" />
+				<ui:CommandBarButton Label="Save8" Icon="Save" IsCompact="True" />
+			</ui:CommandBar.PrimaryCommands>
+
+			<ui:CommandBar.SecondaryCommands>
+				<ui:CommandBarButton Label="Overflow" Icon="Undo" />
+				<ui:CommandBarButton Label="Content" Icon="Cut" />
+				<ui:CommandBarButton Label="Test" Icon="Paste"/>
+				<ui:CommandBarSeparator />
+				<ui:CommandBarToggleButton Label="Toggle" Icon="Redo" />
+			</ui:CommandBar.SecondaryCommands>
+		</ui:CommandBar>-->
+	</Panel>
 </Window>

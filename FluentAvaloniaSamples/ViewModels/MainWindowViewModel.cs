@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -26,11 +27,12 @@ namespace FluentAvaloniaSamples.ViewModels
 
 		//Dialogs page
 		public string ContentDialogUsageNotes => DescriptionServiceProvider.Instance.GetInfo("DialogFlyouts", "ContentDialog", "UsageNotes");
-		public string PickerFlyoutBaseUsageNotes => DescriptionServiceProvider.Instance.GetInfo("DialogFlyouts", "PickerFlyoutBase", "UsageNotes");
-		public string PickerFlyoutPresenterUsageNotes => DescriptionServiceProvider.Instance.GetInfo("DialogFlyouts", "PickerFlyoutPresenter", "UsageNotes");
-
+		
 		public IconsPageViewModel IconsViewModel { get; } = new IconsPageViewModel();
-		          
+
+		public string CommandBarButtonPageHeader => DescriptionServiceProvider.Instance.GetInfo("CommandBarButton", "Header");
+		public string CommandBarToggleButtonPageHeader => DescriptionServiceProvider.Instance.GetInfo("CommandBarToggleButton", "Header");
+
 		public int ControlsVersion
 		{
 			get => _controlsVersion;
@@ -102,6 +104,11 @@ namespace FluentAvaloniaSamples.ViewModels
 			var def = args.GetDeferral();
 			await Task.Delay(3000);
 			def.Complete();
+		}
+
+		public void OnXamlCommandExecuted(object param)
+		{
+			Debug.WriteLine($"HEY IT WORKS!!!! {param}");
 		}
 
 		private int _controlsVersion = 2;

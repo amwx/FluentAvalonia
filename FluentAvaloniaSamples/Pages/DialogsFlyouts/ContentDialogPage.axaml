@@ -5,7 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:local="using:FluentAvaloniaSamples"
              d:DesignWidth="800"
-             mc:Ignorable="d" x:Class="FluentAvaloniaSamples.Pages.Dialogs">
+             mc:Ignorable="d" x:Class="FluentAvaloniaSamples.Pages.ContentDialogPage">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="10">            
             <ui:ContentDialog Name="PreviewContentDialog" 
@@ -66,14 +66,6 @@
                     </StackPanel>
                 </local:ControlExample.Options>
                 
-            </local:ControlExample>
-
-            <local:ControlExample Header="PickerFlyoutBase" TargetType="PickerFlyoutBase"
-                                  UsageNotes="{Binding PickerFlyoutBaseUsageNotes}"/>
-
-            <local:ControlExample Header="PickerFlyoutPresenter" TargetType="PickerFlyoutPresenter"
-                                  UsageNotes="{Binding PickerFlyoutPresenterUsageNotes}">
-                <ui:PickerFlyoutPresenter Width="200" Height="150" Content="Content for flyout goes here"/>
             </local:ControlExample>
         </StackPanel>
     </ScrollViewer>
