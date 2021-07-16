@@ -46,6 +46,12 @@
     </Design.PreviewWith>
 
     <Styles.Resources>
+		<Thickness x:Key="MenuFlyoutPresenterBorderThemeThickness">1</Thickness>
+
+		<Thickness x:Key="MenuFlyoutItemBorderThickness">0</Thickness>
+		<Thickness x:Key="MenuFlyoutSubItemBorderThickness">0</Thickness>
+
+		
         <Thickness x:Key="MenuBarItemBorderThickness">0</Thickness>
         <Thickness x:Key="MenuBarItemButtonPadding">10,4,10,4</Thickness>
         <Thickness x:Key="MenuBarItemMargin">4,4,4,4</Thickness>
