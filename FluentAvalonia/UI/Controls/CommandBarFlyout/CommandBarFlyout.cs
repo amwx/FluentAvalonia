@@ -224,7 +224,7 @@ namespace FluentAvalonia.UI.Controls
 			HideCore(false);
 		}
 
-		private CommandBarFlyoutCommandBar _commandBar;
-		private FlyoutPresenter _presenter;
+		protected CommandBarFlyoutCommandBar _commandBar;
+		protected FlyoutPresenter _presenter;
 	}
 }

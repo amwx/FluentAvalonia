@@ -45,34 +45,41 @@ namespace FluentAvalonia.UI.Controls
 
 				if (commands != null)
 				{
-					if (PrimaryCommands.Count > 0)
+					// post this to the dispatcher so it's delayed, otherwise we'll take focus before we actually open
+					// In case of TextCommandBarFlyout, this will end up clearing the Textbox selection because the 
+					// flyout isn't open yet, but we pulled focus
+					Dispatcher.UIThread.Post(() =>
 					{
-						bool handled = false;
-						for (int i = 0; i < PrimaryCommands.Count; i++)
+						if (PrimaryCommands.Count > 0)
 						{
-							if (IsControlFocusable(PrimaryCommands[i] as IControl, false))
+							bool handled = false;
+							for (int i = 0; i < PrimaryCommands.Count; i++)
 							{
-								FocusManager.Instance.Focus(PrimaryCommands[i] as IInputElement, NavigationMethod.Unspecified);
-								handled = true;
-								break;
+								if (IsControlFocusable(PrimaryCommands[i] as IControl, false))
+								{
+									FocusManager.Instance.Focus(PrimaryCommands[i] as IInputElement, NavigationMethod.Unspecified);
+									handled = true;
+									break;
+								}
+							}
+
+							if (!handled)
+							{
+								if (_moreButton != null && _moreButton.IsVisible)
+								{
+									FocusManager.Instance?.Focus(_moreButton, NavigationMethod.Unspecified);
+								}
 							}
 						}
-
-						if (!handled)
+						else
 						{
 							if (_moreButton != null && _moreButton.IsVisible)
 							{
-								FocusManager.Instance?.Focus(_moreButton, NavigationMethod.Unspecified);								
+								FocusManager.Instance?.Focus(_moreButton, NavigationMethod.Unspecified);
 							}
 						}
-					}
-					else
-					{
-						if (_moreButton != null && _moreButton.IsVisible)
-						{
-							FocusManager.Instance?.Focus(_moreButton, NavigationMethod.Unspecified);
-						}
-					}
+
+					}, DispatcherPriority.Loaded);
 				}
 			};
 

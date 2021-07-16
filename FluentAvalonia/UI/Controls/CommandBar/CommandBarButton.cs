@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.Styling;
+using FluentAvalonia.UI.Input;
 using System;
 
 namespace FluentAvalonia.UI.Controls
@@ -104,9 +105,7 @@ namespace FluentAvalonia.UI.Controls
 				{
 					PseudoClasses.Set(":flyout", false);
 					PseudoClasses.Set(":submenuopen", false);
-				}
-
-				
+				}				
 			}
 			else if (change.Property == HotKeyProperty)
 			{
@@ -115,6 +114,53 @@ namespace FluentAvalonia.UI.Controls
 			else if (change.Property == IsCompactProperty)
 			{
 				PseudoClasses.Set(":compact", change.NewValue.GetValueOrDefault<bool>());
+			}
+			else if (change.Property == CommandProperty)
+			{
+				if (change.OldValue.GetValueOrDefault() is XamlUICommand xamlComOld)
+				{
+					if (Label == xamlComOld.Label)
+					{
+						Label = null;
+					}
+					if (Icon is IconSourceElement ise && ise.IconSource == xamlComOld.IconSource)
+					{
+						Icon = null;
+					}
+
+					if (HotKey == xamlComOld.HotKey)
+					{
+						HotKey = null;
+					}
+
+					if (ToolTip.GetTip(this).ToString() == xamlComOld.Description)
+					{
+						ToolTip.SetTip(this, null);
+					}
+				}
+
+				if (change.NewValue.GetValueOrDefault() is XamlUICommand xamlCom)
+				{
+					if (string.IsNullOrEmpty(Label))
+					{
+						Label = xamlCom.Label;
+					}
+
+					if (Icon == null)
+					{
+						Icon = new IconSourceElement { IconSource = xamlCom.IconSource };
+					}
+
+					if (HotKey == null)
+					{
+						HotKey = xamlCom.HotKey;
+					}
+
+					if (ToolTip.GetTip(this) == null)
+					{
+						ToolTip.SetTip(this, xamlCom.Description);
+					}
+				}
 			}
 		}
 
