@@ -50,7 +50,14 @@
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/Frame.axaml" />
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/SplitButtonStyle.axaml" />
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/DropDownButton.axaml" />
+	
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/MenuFlyoutItem.axaml" />
+	<StyleInclude Source="avares://FluentAvalonia/Styling/Controls/MenuFlyoutSubItem.axaml" />
+	<StyleInclude Source="avares://FluentAvalonia/Styling/Controls/ToggleMenuFlyoutItem.axaml" />
+	<StyleInclude Source="avares://FluentAvalonia/Styling/Controls/RadioMenuFlyoutItem.axaml" />
+	<StyleInclude Source="avares://FluentAvalonia/Styling/Controls/MenuFlyoutSeparator.axaml" />
+	
+	
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/ColorPickerStyles.axaml" />
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/ColorPickerButton.axaml" />
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NumberBoxStyle.axaml" />

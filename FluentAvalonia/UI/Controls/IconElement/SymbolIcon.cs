@@ -510,6 +510,9 @@ namespace FluentAvalonia.UI.Controls
 
 				case Symbol.DockRight:
 					return 0xFC08;
+
+				case Symbol.SelectAll:
+					return 0xFC60;
 										
 				default:
 					return int.MinValue;
