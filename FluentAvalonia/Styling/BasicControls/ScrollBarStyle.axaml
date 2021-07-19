@@ -13,8 +13,8 @@
     <Design.PreviewWith>
         <Border Padding="50" Background="#F3F3f3">
             <Panel Width="150" Height="150">
-                <ScrollBar Orientation="Vertical" HorizontalAlignment="Right" AllowAutoHide="True" Margin="0 0 0 20" />
-                
+                <ScrollBar Orientation="Vertical" HorizontalAlignment="Right" AllowAutoHide="False" Margin="0 0 0 20" />
+                 
                 <ScrollBar Orientation="Horizontal" VerticalAlignment="Bottom" AllowAutoHide="False" />
             </Panel>
         </Border>
@@ -46,7 +46,8 @@
 
         <Thickness x:Key="ScrollBarThumbStrokeThickness">6</Thickness>
 
-        <x:Double x:Key="ScrollBarButtonArrowIconFontSize">8</x:Double>
+		<!-- Upped this from 8-10, Fluent icons are smaller than MDL2 -->
+        <x:Double x:Key="ScrollBarButtonArrowIconFontSize">10</x:Double>
         <!--<x:String x:Key="ScrollBarExpandBeginTime">00:00:00.40</x:String>
         <x:String x:Key="ScrollBarContractBeginTime">00:00:00.50</x:String>-->
         <CornerRadius x:Key="ScrollBarCornerRadius">6</CornerRadius>
@@ -251,18 +252,14 @@
     <Style Selector="ScrollBar /template/ RepeatButton.line">
         <Setter Property="Template">
             <ControlTemplate>
-                <Border x:Name="Root"
+				<Border x:Name="Root"
                         Background="{DynamicResource ScrollBarButtonBackground}"
                         BorderBrush="{DynamicResource ScrollBarButtonBorderBrush}"
                         CornerRadius="{DynamicResource ScrollBarCornerRadius}">
-                    <Viewbox Width="{DynamicResource ScrollBarButtonArrowIconFontSize}"
-                             Height="{DynamicResource ScrollBarButtonArrowIconFontSize}">
-                        <Path x:Name="Arrow"
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Center"
-                          Width="20" Height="20" />
-                    </Viewbox>
-                </Border>
+					<ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamilyFilled}"
+									 Name="ArrowGlyph"
+									 FontSize="{DynamicResource ScrollBarButtonArrowIconFontSize}"/>
+				</Border>
             </ControlTemplate>
         </Setter>
         <Setter Property="Opacity" Value="0" />
@@ -293,43 +290,41 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ScrollBarButtonBorderBrushDisabled}" />
     </Style>
 
-    <Style Selector="ScrollBar /template/ RepeatButton.line /template/ Path#Arrow" >
-        <Setter Property="Fill" Value="{DynamicResource ScrollBarButtonArrowForeground}" />
+    <Style Selector="ScrollBar /template/ RepeatButton.line /template/ ui|FontIcon" >
+        <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForeground}" />
     </Style>
 
-    <Style Selector="ScrollBar /template/ RepeatButton.line:pointerover /template/ Path#Arrow" >
-        <Setter Property="Fill" Value="{DynamicResource ScrollBarButtonArrowForegroundPointerOver}" />
+    <Style Selector="ScrollBar /template/ RepeatButton.line:pointerover /template/ ui|FontIcon" >
+        <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForegroundPointerOver}" />
     </Style>
 
-    <Style Selector="ScrollBar /template/ RepeatButton.line:pressed /template/ Path#Arrow" >
-        <Setter Property="Fill" Value="{DynamicResource ScrollBarButtonArrowForegroundPressed}" />
+    <Style Selector="ScrollBar /template/ RepeatButton.line:pressed /template/ ui|FontIcon" >
+        <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForegroundPressed}" />
     </Style>
 
-    <Style Selector="ScrollBar /template/ RepeatButton.line:disabled /template/ Path#Arrow" >
-        <Setter Property="Fill" Value="{DynamicResource ScrollBarButtonArrowForegroundDisabled}" />
+    <Style Selector="ScrollBar /template/ RepeatButton.line:disabled /template/ ui|FontIcon" >
+        <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForegroundDisabled}" />
     </Style>
 
     <Style Selector="ScrollBar[IsExpanded=true] /template/ RepeatButton.line">
         <Setter Property="Opacity" Value="1" />
     </Style>
 
-    <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.up /template/ Path">
-        <Setter Property="Data"
-                Value="M 19.091797 14.970703 L 10 5.888672 L 0.908203 14.970703 L 0.029297 14.091797 L 10 4.111328 L 19.970703 14.091797 Z" />
+    <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.up /template/ ui|FontIcon">
+        <Setter Property="Glyph" Value="&#xF968;" />
     </Style>
 
-    <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.down /template/ Path">
-        <Setter Property="Data"
-                Value="M 18.935547 4.560547 L 19.814453 5.439453 L 10 15.253906 L 0.185547 5.439453 L 1.064453 4.560547 L 10 13.496094 Z" />
-    </Style>
+    <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.down /template/ ui|FontIcon">
+		<Setter Property="Glyph" Value="&#xF262;" />    
+	</Style>
 
-    <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.up /template/ Path">
-        <Setter Property="Data" Value="M 14.091797 19.970703 L 4.111328 10 L 14.091797 0.029297 L 14.970703 0.908203 L 5.888672 10 L 14.970703 19.091797 Z" />
-    </Style>
+    <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.up /template/ ui|FontIcon">
+		<Setter Property="Glyph" Value="&#xF266;" />
+	</Style>
 
-    <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.down /template/ Path">
-        <Setter Property="Data" Value="M 5.029297 19.091797 L 14.111328 10 L 5.029297 0.908203 L 5.908203 0.029297 L 15.888672 10 L 5.908203 19.970703 Z" />
-    </Style>
+    <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.down /template/ ui|FontIcon">
+		<Setter Property="Glyph" Value="&#xF26A;" />
+	</Style>
 
     <Style Selector="ScrollBar /template/ Border#TrackRect">
         <Setter Property="BorderThickness" Value="{DynamicResource ScrollBarTrackBorderThemeThickness}" />
