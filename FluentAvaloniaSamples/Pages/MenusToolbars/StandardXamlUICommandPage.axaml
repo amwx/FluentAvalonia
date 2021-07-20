@@ -13,7 +13,8 @@
 	</UserControl.Resources>
 	
 
-	<ScrollViewer HorizontalScrollBarVisibility="Disabled">
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
 		<StackPanel Spacing="5">
 			<TextBlock Text="{Binding Header}" TextWrapping="Wrap" />
 

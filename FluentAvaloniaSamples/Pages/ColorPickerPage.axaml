@@ -11,7 +11,8 @@
         <uiconv:ColorToBrushConv x:Key="ColorToBrushConv" />
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
         <StackPanel>
             <local:ControlExample Header="Standard ColorPicker"
                                   TargetType="ColorPicker"

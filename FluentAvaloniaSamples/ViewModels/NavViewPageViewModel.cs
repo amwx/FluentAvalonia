@@ -1,4 +1,6 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Avalonia.Metadata;
 using FluentAvalonia.UI.Controls;
 using FluentAvaloniaSamples.Pages.NVSamplePages;
 using System;
@@ -12,10 +14,11 @@ namespace FluentAvaloniaSamples.ViewModels
     {
         public NavViewPageViewModel()
         {
-            Categories = new List<Category>();
+            Categories = new List<CategoryBase>();
 
 			Categories.Add(new Category { Name = "Category 1", Icon = Symbol.Home, ToolTip = "This is category 1" });
 			Categories.Add(new Category { Name = "Category 2", Icon = Symbol.Keyboard, ToolTip = "This is category 2" });
+			Categories.Add(new Separator());
 			Categories.Add(new Category { Name = "Category 3", Icon = Symbol.Library, ToolTip = "This is category 3" });
 			Categories.Add(new Category { Name = "Category 4", Icon = Symbol.Mail, ToolTip = "This is category 4" });
 
@@ -39,7 +42,7 @@ namespace FluentAvaloniaSamples.ViewModels
 		public string NavViewHierarchicalXaml => DescriptionServiceProvider.Instance.GetInfo("NavigationView", "NavigationViewDataHierarchical", "UsageNotes");
 
 
-		public List<Category> Categories { get; }   
+		public List<CategoryBase> Categories { get; }   
 
         public NavigationViewPaneDisplayMode APIInActionNavViewPaneMode
         {
@@ -122,4 +125,17 @@ namespace FluentAvaloniaSamples.ViewModels
     {
 
     }
+
+	public class MenuItemTemplateSelector : DataTemplateSelector
+	{
+		[Content]
+		public IDataTemplate ItemTemplate { get; set; }
+
+		public IDataTemplate SeparatorTemplate { get; set; }
+
+		protected override IDataTemplate SelectTemplateCore(object item)
+		{
+			return item is Separator ? SeparatorTemplate : ItemTemplate;
+		}
+	}
 }

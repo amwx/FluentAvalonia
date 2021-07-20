@@ -18,8 +18,9 @@
 		</input:XamlUICommand>
 	</UserControl.Resources>
 	
-	<ScrollViewer HorizontalScrollBarVisibility="Disabled">
-		<StackPanel Orientation="Horizontal">
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
+		<StackPanel>
 			<TextBlock Text="{Binding Header}" TextWrapping="Wrap" />
 			
 			<local:ControlExample Header="Creating a reusable command with XamlUICommand"

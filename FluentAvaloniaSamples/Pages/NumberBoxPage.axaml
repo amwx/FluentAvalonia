@@ -12,7 +12,8 @@
         <vm:EnumToBoolConv x:Key="EnumBoolConv" />
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
         <StackPanel>
             <TextBlock Text="{Binding Header}" TextWrapping="Wrap" />
             <local:ControlExample Header="A NumberBox that evaluates expressions"

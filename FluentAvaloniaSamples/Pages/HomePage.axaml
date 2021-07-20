@@ -4,18 +4,139 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:local="using:FluentAvaloniaSamples"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
              x:Class="FluentAvaloniaSamples.Pages.HomePage">
-    <Grid RowDefinitions="Auto,*">        
-        <Grid Grid.Row="1" RowDefinitions="Auto,*" Margin="10" >            
-            <StackPanel Orientation="Vertical" Grid.Row="1" TextBlock.FontSize="{StaticResource ControlContentThemeFontSize}">
-                
-                <TextBlock Text="{Binding Header1}" FontSize="22" FontWeight="700"/>
-                <TextBlock Margin="15 0" Text="{Binding SubHeader1}" TextWrapping="Wrap" />
+	<Design.DataContext>
+		<vm:MainWindowViewModel />
+	</Design.DataContext>
 
-                <TextBlock Text="{Binding Header2}" FontSize="22" FontWeight="700"/>
-                <TextBlock Margin="15 0" Text="{Binding SubHeader2}" TextWrapping="Wrap" />
-            </StackPanel>
-        </Grid>
-    </Grid>
+	<UserControl.Styles>
+		<Style Selector="ListBoxItem">
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="Margin" Value="4" />
+			<Setter Property="Template">
+				<ControlTemplate>
+					<ContentPresenter Content="{TemplateBinding Content}"
+									  ContentTemplate="{TemplateBinding ContentTemplate}"
+									  Padding="{TemplateBinding Padding}"
+									  Background="{TemplateBinding Background}"
+									  BorderBrush="{TemplateBinding BorderBrush}"
+									  BorderThickness="{TemplateBinding BorderThickness}"
+									  CornerRadius="{DynamicResource ControlCornerRadius}"/>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+		<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+			<Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorSecondaryBrush}" />
+		</Style>
+	</UserControl.Styles>
+	
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  VerticalScrollBarVisibility="Auto">
+		<Panel>
+			<Border CornerRadius="{StaticResource ControlCornerRadius}"
+					ClipToBounds="True">
+				<Panel>
+					<Image Source="/Assets/headerimage.jpeg"
+						   Stretch="Uniform"
+						   VerticalAlignment="Top"/>
+					<Rectangle>
+						<Rectangle.Fill>
+							<LinearGradientBrush StartPoint="0,0"
+												 EndPoint="0%,100%">
+								<GradientStop Offset="0" Color="Transparent" />
+								<GradientStop Offset="0.20" Color="{DynamicResource SolidBackgroundFillColorBase}" />
+							</LinearGradientBrush>
+						</Rectangle.Fill>
+					</Rectangle>
+				</Panel>
+			</Border>
+			
+			<StackPanel Orientation="Vertical" 
+						TextBlock.FontSize="{StaticResource ControlContentThemeFontSize}"
+						Spacing="5">
+
+				<TextBlock Text="FluentAvalonia" VerticalAlignment="Top"
+						   Classes="TitleTextBlockStyle" 
+						   Padding="56 44 0 0"/>
+				<TextBlock Margin="15 0" Text="{Binding SubHeader1}" TextWrapping="Wrap" />
+				<TextBlock Text="What's New"
+						   Classes="SubtitleTextBlockStyle"
+						   Margin="15 15 0 0"/>
+
+				<ListBox Items="{Binding UpdateInfos}"
+						 Padding="40 0 12 36"
+						 Name="WhatsNewListBox">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Border Width="360" Height="90"	
+									CornerRadius="{DynamicResource ControlCornerRadius}"
+									Padding="8">
+								<Panel>
+									<RelativePanel Grid.Column="1">
+										<TextBlock Text="{Binding Header}"
+												   Classes="BaseTextBlockStyle"
+												   Name="HeaderTB"/>
+										<TextBlock Text="{Binding Description}"
+												   TextWrapping="Wrap"
+												   RelativePanel.Below="HeaderTB" />
+									</RelativePanel>
+									<StackPanel Orientation="Horizontal"
+												VerticalAlignment="Top"
+												HorizontalAlignment="Right"
+												Spacing="1">
+										<Border Background="{DynamicResource AccentFillColorDefaultBrush}"
+												Padding="4 2"
+												IsVisible="{Binding NewControl}"
+												CornerRadius="{DynamicResource ControlCornerRadius}">
+											<TextBlock Text="New Control"
+													   Classes="CaptionTextBlockStyle"
+													   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+										</Border>
+
+										<Border Background="{DynamicResource AccentFillColorDefaultBrush}"
+												Padding="4 2"
+												IsVisible="{Binding NewFeature}"
+												CornerRadius="{DynamicResource ControlCornerRadius}">
+											<TextBlock Text="New Feature"
+													   Classes="CaptionTextBlockStyle"
+													   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+										</Border>
+
+										<Border Background="{DynamicResource AccentFillColorDefaultBrush}"
+												Padding="4 2"
+												IsVisible="{Binding StyleOnly}"
+												CornerRadius="{DynamicResource ControlCornerRadius}">
+											<TextBlock Text="Style Updated"
+													   Classes="CaptionTextBlockStyle"
+													   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+										</Border>
+									</StackPanel>
+									<Border Background="{DynamicResource SystemFillColorSolidNeutralBrush}"
+											Padding="4 2"
+											IsVisible="{Binding V2Only}"
+											CornerRadius="{DynamicResource ControlCornerRadius}"
+											VerticalAlignment="Bottom"
+											HorizontalAlignment="Right">
+										<TextBlock Text="V2 Styles Only"
+												   Classes="CaptionTextBlockStyle"
+												   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+									</Border>
+								</Panel>
+							</Border>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</StackPanel>
+		</Panel>
+	</ScrollViewer>
 </UserControl>

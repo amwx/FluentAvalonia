@@ -25,7 +25,8 @@
         </Style>
     </UserControl.Styles>
     
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
         <StackPanel Orientation="Vertical" Grid.Row="1">
             <TextBlock Text="{Binding CoreControlsHeader}" TextWrapping="Wrap" />
             

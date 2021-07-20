@@ -21,7 +21,8 @@
 		<ui:TextCommandBarFlyout x:Key="TextCommandBarFlyout1" />
 	</UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
         <StackPanel>
             <TextBlock Text="{Binding Header}" TextWrapping="Wrap" />
             <local:ControlExample Header="CommandBarFlyout"

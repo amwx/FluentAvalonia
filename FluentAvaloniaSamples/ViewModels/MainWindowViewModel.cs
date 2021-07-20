@@ -1,20 +1,64 @@
 ﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
+using Avalonia.Platform;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace FluentAvaloniaSamples.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
     {
         public MainWindowViewModel()
-        {
-            			
+		{
+			var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+			using (var stream = assets.Open(new Uri("avares://FluentAvaloniaSamples/DescriptionTexts/WhatsNew.txt")))
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				var txt = reader.ReadToEnd();
+				var infos = JsonSerializer.Deserialize<List<WhatsNewInfo>>(txt);// reader.ReadToEnd());
+
+				WhatsNewVersions = infos;
+			}
+
+			SelectedWhatsNew = WhatsNewVersions[0];
 		}
+
+		// TODO: Check that all this works in the next version release
+		public List<WhatsNewInfo> WhatsNewVersions { get; set; }
+
+		public WhatsNewInfo SelectedWhatsNew
+		{
+			get => _selectedWhatsNew;
+			set
+			{
+				if (RaiseAndSetIfChanged(ref _selectedWhatsNew, value))
+				{
+					if (UpdateInfos == null)
+					{
+						UpdateInfos = new AvaloniaList<ItemUpdateDescription>();
+						RaisePropertyChanged("UpdateInfos");
+					}
+					else
+					{
+						UpdateInfos.Clear();
+					}
+
+					UpdateInfos.AddRange(value.Changes);
+				}
+			}
+		}
+
+		public AvaloniaList<ItemUpdateDescription> UpdateInfos { get; set; }
 
 		//HomePage
 		public string Header1 => DescriptionServiceProvider.Instance.GetInfo("Home", "Header1");
@@ -112,5 +156,33 @@ namespace FluentAvaloniaSamples.ViewModels
 		}
 
 		private int _controlsVersion = 2;
+		private WhatsNewInfo _selectedWhatsNew;
     }
+
+	public class WhatsNewInfo
+	{
+		public string Version { get; set; }
+		public List<ItemUpdateDescription> Changes { get;set; }
+	}
+
+	public class ItemUpdateDescription
+	{
+		public string Header { get; set; }
+		public string Description { get; set; }
+		public string Icon { get; set; }
+		public string PageType { get; set; }
+
+		// Only uses V2 Styles
+		// This will be obsolete once V1 styles are deprecated
+		public bool V2Only { get; set; }
+
+		// Is this a new control added?
+		public bool NewControl { get; set; }
+
+		// Or is this a new feature to an existing control
+		public bool NewFeature { get; set; }
+
+		// Or is this just a style update
+		public bool StyleOnly { get; set; }
+	}
 }

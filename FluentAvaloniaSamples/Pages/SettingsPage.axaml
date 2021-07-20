@@ -5,7 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluentAvaloniaSamples.Pages.SettingsPage">
-    <ScrollViewer>
+    <ScrollViewer Padding="10">
         <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Stretch" Margin="10 0">
             <TextBlock Text="App Theme" FontSize="16" FontWeight="700" Margin="5" />
             <Button Content="Set Light Theme" Command="{Binding SetLightTheme}" Margin="3 10" />

@@ -6,7 +6,8 @@
 			 xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1200"
              x:Class="FluentAvaloniaSamples.Pages.CommandBarToggleButtonPage">
-	<ScrollViewer HorizontalScrollBarVisibility="Disabled">
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
 		<StackPanel>
 			<TextBlock Text="{Binding CommandBarToggleButtonPageHeader}" TextWrapping="Wrap" />
 			

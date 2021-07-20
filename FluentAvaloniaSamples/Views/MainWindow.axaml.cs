@@ -16,6 +16,7 @@ using FluentAvaloniaSamples.Pages;
 using FluentAvaloniaSamples.ViewModels;
 using SkiaSharp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using IconElement = FluentAvalonia.UI.Controls.IconElement;
@@ -34,17 +35,23 @@ namespace FluentAvaloniaSamples.Views
 #endif
 
 			navView = this.Find<NavigationView>("NavView");
-            _frame = this.Find<Frame>("FrameView");
+			_frame = this.Find<Frame>("FrameView");
 
-            navView.BackRequested += NavView_BackRequested;
-            navView.ItemInvoked += NavView_ItemInvoked;
+			if (navView != null)
+			{
+				navView.BackRequested += NavView_BackRequested;
+				navView.ItemInvoked += NavView_ItemInvoked;
 
-            _frame.Navigated += OnFrameNavigated;
+				AddNavigationViewMenuItems();
+			}
 
-            AddNavigationViewMenuItems();
+			if (_frame != null)
+			{
+				_frame.Navigated += OnFrameNavigated;
 
-			_frame.Navigate(typeof(HomePage));
-        }
+				_frame.Navigate(typeof(HomePage));
+			}
+		}
 
 		protected override void OnOpened(EventArgs e)
 		{
@@ -94,18 +101,51 @@ namespace FluentAvaloniaSamples.Views
 			}
 			else
 			{
-				foreach (var navItem in navView.MenuItems)
+				var nvi = GetNVIFromPageSourceType(navView.MenuItems, e.SourcePageType);
+				if (nvi != null)
 				{
-					if (navItem is NavigationViewItem nvi && nvi.Tag is Type t && t == e.SourcePageType)
-					{
-						navView.SelectedItem = nvi;
+					navView.SelectedItem = nvi;
 
-						navView.Header = nvi.Content;
-						return;
+					if (e.SourcePageType == typeof(HomePage))
+					{
+						navView.AlwaysShowHeader = false;
 					}
+					else
+					{
+						navView.AlwaysShowHeader = true;
+					}
+
+					navView.Header = nvi.Content;
 				}
 			}
         }
+
+		private NavigationViewItem GetNVIFromPageSourceType(IEnumerable items, Type t)
+		{
+			foreach(var item in items)
+			{
+				if (item is NavigationViewItem nvi)
+				{
+					if (nvi.MenuItems != null && nvi.MenuItems.Count() > 0)
+					{
+						var inner = GetNVIFromPageSourceType(nvi.MenuItems, t);
+						if (inner == null)
+							continue;
+
+						return inner;
+					}
+					else
+					{
+						if (nvi.Tag is Type tag && tag == t)
+						{
+							return nvi;
+						}
+					}
+				}
+			}
+
+			return null;
+		}
 
         private void NavView_BackRequested(object sender, NavigationViewBackRequestedEventArgs e)
         {
@@ -142,11 +182,11 @@ namespace FluentAvaloniaSamples.Views
 					SelectsOnInvoked = false, 
 					MenuItems = new List<NavigationViewItem>
 					{
-						new NavigationViewItem { Content = "Symbol", Icon = new SymbolIcon{ Symbol=Symbol.Icons }, Tag = typeof(SymbolIconPage)},
-						new NavigationViewItem { Content = "Font", Icon = new SymbolIcon{ Symbol=Symbol.Font }, Tag = typeof(FontIconPage)},
-						new NavigationViewItem { Content = "Path", Icon = new SymbolIcon{ Symbol=Symbol.ColorLine }, Tag = typeof(PathIconPage)},
-						new NavigationViewItem { Content = "Bitmap", Icon = new SymbolIcon{ Symbol=Symbol.Image }, Tag = typeof(BitmapIconPage)},
-						new NavigationViewItem { Content = "Image", Icon = new SymbolIcon{ Symbol=Symbol.ImageAltText }, Tag = typeof(ImageIconPage)},
+						new NavigationViewItem { Content = "SymbolIcon", Icon = new SymbolIcon{ Symbol=Symbol.Icons }, Tag = typeof(SymbolIconPage)},
+						new NavigationViewItem { Content = "FontIcon", Icon = new SymbolIcon{ Symbol=Symbol.Font }, Tag = typeof(FontIconPage)},
+						new NavigationViewItem { Content = "PathIcon", Icon = new SymbolIcon{ Symbol=Symbol.ColorLine }, Tag = typeof(PathIconPage)},
+						new NavigationViewItem { Content = "BitmapIcon", Icon = new SymbolIcon{ Symbol=Symbol.Image }, Tag = typeof(BitmapIconPage)},
+						new NavigationViewItem { Content = "ImageIcon", Icon = new SymbolIcon{ Symbol=Symbol.ImageAltText }, Tag = typeof(ImageIconPage)},
 					}
 				},
 				new NavigationViewItem { Content = "NavigationView", Icon = new SymbolIcon{ Symbol=Symbol.Navigation }, Tag = typeof(NavViewPage)},
