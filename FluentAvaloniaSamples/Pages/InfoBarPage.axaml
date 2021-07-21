@@ -7,7 +7,8 @@
              xmlns:pg="clr-namespace:FluentAvaloniaSamples.Pages;assembly=FluentAvaloniaSamples"
              mc:Ignorable="d" d:DesignWidth="1000"
              x:Class="FluentAvaloniaSamples.Pages.InfoBarPage">
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
         <StackPanel Spacing="5">
             
             <TextBlock Text="{Binding Header}" TextWrapping="Wrap" />

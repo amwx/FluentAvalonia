@@ -10,7 +10,7 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
     
-    <ScrollViewer>
+    <ScrollViewer Padding="10">
         <TextBlock Text="{Binding ThemesHeader}" TextWrapping="Wrap" />
     </ScrollViewer>
 </UserControl>

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace FluentAvaloniaSamples.Pages
 {
-    public class Dialogs : UserControl
+    public class ContentDialogPage : UserControl
     {
-        public Dialogs()
+        public ContentDialogPage()
         {
             this.InitializeComponent();
         }

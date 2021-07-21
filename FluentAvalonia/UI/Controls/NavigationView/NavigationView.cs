@@ -396,7 +396,8 @@ namespace FluentAvalonia.UI.Controls
                 UpdatePaneButtonWidths();
             }
             //Skip IsTitleBarAutoPaddingEnabledProperty
-            else if (change.Property == MenuItemTemplateProperty)
+            else if (change.Property == MenuItemTemplateProperty ||
+				change.Property == MenuItemTemplateSelectorProperty)
             {
                 //SyncItemTemplates(); [This just calls UpdateNavigationViewItemsFactory, so why not just do that]
                 UpdateNavigationViewItemsFactory();
@@ -941,7 +942,14 @@ namespace FluentAvalonia.UI.Controls
 
         private void UpdateNavigationViewItemsFactory()
         {
-            _itemsFactory.UserElementFactory(MenuItemTemplate);
+			if (MenuItemTemplate == null)
+			{
+				_itemsFactory.UserElementFactory(MenuItemTemplateSelector);
+			}
+			else
+			{
+				_itemsFactory.UserElementFactory(MenuItemTemplate);
+			}
         }
 
 

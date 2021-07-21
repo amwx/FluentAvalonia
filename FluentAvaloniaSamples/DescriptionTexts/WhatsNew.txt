@@ -1,0 +1,127 @@
+﻿[
+  {
+    "Version": "1.1.0",
+    "Changes": [
+      {
+        "Header": "NavigationView",
+        "Description": "Now supports DataTemplateSelector for multiple data templates!",
+        "Icon": null,
+        "V2Only": false,
+        "NewControl": false,
+        "NewFeature": true,
+        "StyleOnly": false,
+        "PageType" : "NavViewPage"
+      },
+      {
+        "Header": "CommandBar",
+        "Description": "A toolbar for displaying application-specific commands that handles layout and resizing of its contents.",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "CommandBarPage"
+      },
+      {
+        "Header": "CommandBarButton",
+        "Description": "A button that's styled for use in a CommandBar",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "CommandBarButtonPage"
+      },
+      {
+        "Header": "CommandBarToggleButton",
+        "Description": "A toggle button that's styled for use in a CommandBar",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "CommandBarToggleButtonPage"
+      },
+      {
+        "Header": "CommandBarSeparator",
+        "Description": "A vertical line that's used to visuall separate groups of commands in an app bar",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "CommandBarPage"
+      },
+      {
+        "Header": "CommandBarElementContainer",
+        "Description": "A container used to display other controls in a CommandBar",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : null
+      },
+      {
+        "Header": "CommandBarFlyout",
+        "Description": "A mini toolbar displaying proactive commands, and an optional menu of commands",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "CommandBarFlyoutPage"
+      },
+      {
+        "Header": "TextCommandBarFlyout",
+        "Description": "A special CommandBarFlyout intended for use with Text based controls",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "CommandBarFlyoutPage"
+      },
+      {
+        "Header": "XamlUICommand",
+        "Description": "An object which is used to define the look and feel of a given command",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "XamlUICommandPage"
+      },
+      {
+        "Header": "StandardUICommand",
+        "Description": "A built-in 'XamlUICommand' which represents a commonly used command, e.g., Save",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "StandardXamlUICommandPage"
+      },
+      {
+        "Header": "MenuFlyout",
+        "Description": "Revamped version to better match WinUI API, with experimental support for binding items",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "MenuFlyoutPage"
+      },
+      {
+        "Header": "ScrollBar",
+        "Description": "Updated carets to use filled carets to match new design spec.",
+        "Icon": null,
+        "V2Only": true,
+        "NewControl": false,
+        "NewFeature": false,
+        "StyleOnly": true,
+        "PageType" : "BasicControls"
+      }
+    ]
+  }
+]

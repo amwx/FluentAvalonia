@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:FluentAvaloniaSamples"        
              mc:Ignorable="d" d:DesignWidth="800"
              x:Class="FluentAvaloniaSamples.Pages.NewBasicControlsPage">
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  Padding="10">
         <StackPanel>
             <TextBlock Text="{Binding Header}" TextWrapping="Wrap" />
             

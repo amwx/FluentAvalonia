@@ -39,7 +39,7 @@ namespace FluentAvaloniaSamples
 
 		public string GetInfo(string pageName, string itemName, string subItemName = null)
 		{
-			var page = Pages.Where(x => x.Attribute("Name").Value == pageName).First();
+			var page = Pages.Where(x => x.Attribute("Name").Value == pageName).FirstOrDefault();
 			if (page != null)
 			{
 				// first check to see if itemName is a tag, such as Header

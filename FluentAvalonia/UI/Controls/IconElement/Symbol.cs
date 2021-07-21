@@ -208,7 +208,8 @@ namespace FluentAvalonia.UI.Controls
         Ruler = 0xF67C,
         Earth = 0xF3DB,
         Games = 0xF451,
-        New = 0xF564
+        New = 0xF564,
+		SelectAll = 0xFC56
     }
 
   

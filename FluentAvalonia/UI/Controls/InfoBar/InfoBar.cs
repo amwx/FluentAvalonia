@@ -3,11 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Controls
@@ -237,6 +232,9 @@ namespace FluentAvalonia.UI.Controls
 
 		private void UpdateSeverity()
 		{
+			if (!_appliedTemplate)
+				return; //Template not applied yet
+
 			switch (Severity)
 			{
 				case InfoBarSeverity.Success:

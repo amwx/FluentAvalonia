@@ -147,38 +147,7 @@
                                                Content="More"
                                                Margin="{DynamicResource TopNavigationViewOverflowButtonMargin}"
                                                Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop"
-                                               IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OverflowButtonVisibility}">
-                                        <!--<ui:Button.Styles>
-                                            <Style Selector="FlyoutPresenter.NavViewFlyoutStyle">
-                                                <Setter Property="Padding" Value="{DynamicResource TopNavigationViewOverflowMenuPadding}" />
-                                                <Setter Property="Margin" Value="0,-4,0,0" />
-                                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-                                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-                                                <Setter Property="Template">
-                                                    <ControlTemplate>
-                                                        <Border Background="{TemplateBinding Background}"
-                                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                                CornerRadius="{DynamicResource OverlayCornerRadius}">
-                                                            <ScrollViewer VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
-                                                                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                                                          Name="ScrollViewer">
-                                                                <ContentPresenter
-                                                                                x:Name="ContentPresenter"
-                                                                                Background="{TemplateBinding Background}"
-                                                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                                                Content="{TemplateBinding Content}"
-                                                                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                                                Padding="{TemplateBinding Padding}"
-                                                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                                            </ScrollViewer>
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </Setter>
-                                            </Style>
-                                        </ui:Button.Styles>-->
+                                               IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OverflowButtonVisibility}">                                        
                                         <ui:Button.Flyout>
                                             <Flyout Placement="BottomEdgeAlignedRight"
                                                     FlyoutPresenterClasses="NavViewFlyoutStyle">
@@ -261,7 +230,7 @@
                                     </Grid.RowDefinitions>
 
                                     <Rectangle Name="ContentPaneTopPadding"
-                                               Height="{Binding $parent[ui:NavigationView].TemplateSettings.TopPadding}" />
+                                               Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.TopPadding}" />
 
                                     <Grid Grid.Row="2" Name="PlaceholderGrid">
                                         <Grid.RowDefinitions>
@@ -372,8 +341,8 @@
 
 										<Rectangle Name="ContentTopPadding"
 												   Grid.ColumnSpan="2"
-												   Height="{Binding $parent[ui:NavigationView].TemplateSettings.TopPadding}"
-												   IsVisible="{Binding $parent[ui:NavigationView].TemplateSettings.LeftPaneVisibility}" />
+												   Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.TopPadding}"
+												   IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.LeftPaneVisibility}" />
 
 										<Rectangle Name="ContentLeftPadding" Grid.Row="1" />
 
@@ -382,15 +351,15 @@
 														Grid.Column="1"
 														MinHeight="{StaticResource PaneToggleButtonHeight}"
 														KeyboardNavigation.IsTabStop="True"
-														Content="{Binding $parent[ui:NavigationView].Header}"
-														ContentTemplate="{Binding $parent[ui:NavigationView].HeaderTemplate}"
+														Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header}"
+														ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HeaderTemplate}"
 														VerticalContentAlignment="Stretch"
 														HorizontalContentAlignment="Stretch"
 														Classes="NavigationViewTitleHeaderContentControlTextStyle" />
 
 										<ContentPresenter Grid.Row="2"
 														  Grid.ColumnSpan="2"
-														  Content="{Binding $parent[ui:NavigationView].Content}"
+														  Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
 														  Margin="{DynamicResource NavigationViewContentPresenterMargin}"
 														  Name="ContentPresenter" />
 

@@ -79,16 +79,16 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<IDataTemplate> MenuItemTemplateProperty =
             AvaloniaProperty.Register<NavigationView, IDataTemplate>("MenuItemTemplate");
 
+		public static readonly StyledProperty<DataTemplateSelector> MenuItemTemplateSelectorProperty =
+			AvaloniaProperty.Register<NavigationView, DataTemplateSelector>("MenuItemTemplateSelector");
+
         public static readonly StyledProperty<double> OpenPaneLengthProperty =
             AvaloniaProperty.Register<NavigationView, double>("OpenPaneLength",
                 320.0, coerce: CoercePropertyValueToGreaterThanZero);
 
-        //Removed?
-        public static readonly StyledProperty<NavigationViewOverflowLabelMode> OverflowLabelModeProperty =
-           AvaloniaProperty.Register<NavigationView, NavigationViewOverflowLabelMode>("OverflowLabelMode",
-               NavigationViewOverflowLabelMode.MoreLabel);
+		//OverflowLabelModeProperty removed, as it was deprecated
 
-        public static readonly StyledProperty<IControl> PaneCustomContentProperty =
+		public static readonly StyledProperty<IControl> PaneCustomContentProperty =
             AvaloniaProperty.Register<NavigationView, IControl>("PaneCustomContent");
 
         public static readonly StyledProperty<NavigationViewPaneDisplayMode> PaneDisplayModeProperty =
@@ -258,6 +258,12 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(MenuItemTemplateProperty, value);
         }
 
+		public DataTemplateSelector MenuItemTemplateSelector
+		{
+			get => GetValue(MenuItemTemplateSelectorProperty);
+			set => SetValue(MenuItemTemplateSelectorProperty, value);
+		}
+
         public IEnumerable MenuItems
         {
             get => _menuItems;
@@ -285,11 +291,7 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(OpenPaneLengthProperty, value);
         }
 
-        public NavigationViewOverflowLabelMode OverflowLabelMode
-        {
-            get => GetValue(OverflowLabelModeProperty);
-            set => SetValue(OverflowLabelModeProperty, value);
-        }
+        //OverflowLabelMode removed, deprecated in WinUI
 
         public IControl PaneCustomContent
         {
