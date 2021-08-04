@@ -291,7 +291,7 @@ namespace FluentAvalonia.UI.Controls
             _textBox = e.NameScope.Find<TextBox>("InputBox");
             if (_textBox != null)
             {
-                _textBox.AddHandler(KeyDownEvent, OnNumberBoxKeyDown, Avalonia.Interactivity.RoutingStrategies.Tunnel);
+                _textBox.AddHandler(KeyDownEvent, OnNumberBoxKeyDown, RoutingStrategies.Tunnel);
 
                 _textBox.KeyUp += OnNumberBoxKeyUp;
             }
@@ -299,10 +299,10 @@ namespace FluentAvalonia.UI.Controls
             _popup = e.NameScope.Find<Popup>("UpDownPopup");
 			if (_popup != null)
 			{
-				_popup.OverlayInputPassThroughElement = this.VisualRoot as IInputElement;
+				_popup.OverlayInputPassThroughElement = this;
 			}
 
-            UpdateSpinButtonPlacement();
+			UpdateSpinButtonPlacement();
             UpdateSpinButtonEnabled();
 
             //UpdateVisualStateForIsEnabledChange();

@@ -71,13 +71,25 @@
 
 	<!-- NumberBox TextBox Style -->
 	<Style Selector="TextBox.NumberBoxTextBoxStyle">
+		<Setter Property="Foreground" Value="Black" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<DataValidationErrors>
 					<Panel>
+						<Border Name="PART_BorderElement"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								MinWidth="{TemplateBinding MinWidth}"
+								MinHeight="{TemplateBinding MinHeight}"
+								RenderTransform="scaleY(-1)" />
+						
 						<Border Margin="{TemplateBinding BorderThickness}">
 							<Grid ColumnDefinitions="Auto,*,Auto" >
-								<DockPanel x:Name="PART_InnerDockPanel" Grid.Column="1" Grid.ColumnSpan="1" Margin="{TemplateBinding Padding}">
+								<DockPanel x:Name="PART_InnerDockPanel" 
+										   Grid.Column="1" 
+										   Grid.ColumnSpan="1" 
+										   Margin="{TemplateBinding Padding}">
 									<ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                                                   VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
 										<Panel>
@@ -120,16 +132,7 @@
 									</Viewbox>
 								</StackPanel>
 							</Grid>
-						</Border>
-
-						<Border Name="PART_BorderElement"
-								Background="{TemplateBinding Background}"
-								BorderBrush="{TemplateBinding BorderBrush}"
-								BorderThickness="{TemplateBinding BorderThickness}"
-								MinWidth="{TemplateBinding MinWidth}"
-								MinHeight="{TemplateBinding MinHeight}"
-								RenderTransform="scaleY(-1)">
-						</Border>
+						</Border>						
 					</Panel>
 				</DataValidationErrors>
 			</ControlTemplate>
@@ -157,11 +160,13 @@
                                     Margin="{DynamicResource TextBoxTopHeaderMargin}"
                                     TextBlock.FontSize="{TemplateBinding FontSize}"
                                     TextBlock.FontFamily="{TemplateBinding FontFamily}"
-                                    VerticalAlignment="Top"/>
+                                    VerticalAlignment="Top"
+									  IsVisible="{TemplateBinding Header, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
 					<TextBox Name="InputBox"
                              Grid.Row="1"
 							 Grid.ColumnSpan="3"
+							 Foreground="{TemplateBinding Foreground}"
                              Watermark="{TemplateBinding PlaceholderText}"
                              SelectionBrush="{TemplateBinding SelectionHighlightColor}"
                              FontSize="{TemplateBinding FontSize}"
