@@ -64,9 +64,22 @@
 						   Classes="TitleTextBlockStyle" 
 						   Padding="56 44 0 0"/>
 				<TextBlock Margin="15 0" Text="{Binding SubHeader1}" TextWrapping="Wrap" />
-				<TextBlock Text="What's New"
-						   Classes="SubtitleTextBlockStyle"
-						   Margin="15 15 0 0"/>
+				<DockPanel LastChildFill="False">
+					<TextBlock Text="What's New"
+							   Classes="SubtitleTextBlockStyle"
+							   Margin="15 15 0 0"
+							   DockPanel.Dock="Left"/>
+					<ComboBox Items="{Binding WhatsNewVersions}"
+							  SelectedItem="{Binding SelectedWhatsNew}"
+							  DockPanel.Dock="Right"
+							  Margin="15 3">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Version, StringFormat='Version {0}'}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</DockPanel>
 
 				<ListBox Items="{Binding UpdateInfos}"
 						 Padding="40 0 12 36"
