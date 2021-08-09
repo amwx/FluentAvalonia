@@ -92,11 +92,7 @@
 								   Classes="CaptionTextBlockStyle"
 								   Text="{TemplateBinding HotKey, Converter={StaticResource KeyConv}}"
 								   HorizontalAlignment="Right"
-								   VerticalAlignment="Center" />
-						
-						<ui:SymbolIcon Name="SubItemChevron"
-									   Grid.Column="2" />
-						
+								   VerticalAlignment="Center" />						
 					</Grid>
 					
 				</Panel>
