@@ -82,9 +82,43 @@ namespace FluentAvaloniaSamples.ViewModels
 			get => _controlsVersion;
 			set
 			{
-				if (this.RaiseAndSetIfChanged(ref _controlsVersion, value))
+				if (RaiseAndSetIfChanged(ref _controlsVersion, value))
 				{
 					AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().ControlsVersion = value;
+				}
+			}
+		}
+
+		public bool UseCustomAccent
+		{
+			get => _useCustomAccentColor;
+			set
+			{
+				if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
+				{
+					if (value)
+					{
+
+						CustomAccentColor = Colors.SlateBlue;
+						AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
+					}
+					else
+					{
+						CustomAccentColor = default;
+						AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
+					}
+				}
+			}
+		}
+
+		public Color CustomAccentColor
+		{
+			get => _customAccentColor;
+			set
+			{
+				if (RaiseAndSetIfChanged(ref _customAccentColor, value))
+				{
+					AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
 				}
 			}
 		}
@@ -157,6 +191,8 @@ namespace FluentAvaloniaSamples.ViewModels
 
 		private int _controlsVersion = 2;
 		private WhatsNewInfo _selectedWhatsNew;
+		private bool _useCustomAccentColor;
+		private Color _customAccentColor;
     }
 
 	public class WhatsNewInfo
