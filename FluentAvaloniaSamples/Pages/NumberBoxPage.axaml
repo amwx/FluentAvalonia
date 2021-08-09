@@ -28,14 +28,11 @@
             <local:ControlExample Header="A NumberBox with a spin button"
                                   ShowDocs="False"
                                   DynamicXamlTarget="{Binding #NumberBox2}"
-                                  DynamicXamlProperties="Header;Value;SpinButtonPlacementMode"
-                                  >
+                                  DynamicXamlProperties="Header;Value;SpinButtonPlacementMode">
+				<ui:NumberBox Name="NumberBox2" Header="Enter an integer:" Value="{Binding Value}" SpinButtonPlacementMode="{Binding SpinPlacementMode}"
+												  SmallChange="10" LargeChange="100" />
 
-                <ui:NumberBox Name="NumberBox2" Header="Enter an integer:" Value="1" SpinButtonPlacementMode="{Binding SpinPlacementMode}"
-                                  SmallChange="10" LargeChange="100" />
-
-
-                <local:ControlExample.Options>
+				<local:ControlExample.Options>
                     <StackPanel Spacing="3">
                         <TextBlock Text="SpinButton placement" />
                         <RadioButton Content="Inline" IsChecked="{Binding SpinPlacementMode, Converter={StaticResource EnumBoolConv}, ConverterParameter=Inline}" />
@@ -44,6 +41,16 @@
                 </local:ControlExample.Options>
                 
             </local:ControlExample>
+
+			<local:ControlExample Header="NEW - A formatted NumberBox using SimpleNumberFormat"
+                                  ShowDocs="False"
+								  DynamicXamlTarget="{Binding #SimpleFormattedNB}"
+								  DynamicXamlProperties="Header;Value;SimpleNumberFormat">
+
+				<ui:NumberBox Name="SimpleFormattedNB" Header="Enter an amount:"
+							  SimpleNumberFormat="F2" Value="3"/>
+
+			</local:ControlExample>
 
             <local:ControlExample Header="A formatted NumberBox that rounds to the nearest 0.25"
                                   ShowDocs="False"
