@@ -4,8 +4,22 @@
 		xmlns:aconv="using:Avalonia.Controls.Converters">
     <Design.PreviewWith>
         <Border Padding="20">
-			<Border Background="SteelBlue">
-				<ui:CommandBarToggleButton Label="Button1" Icon="Save" HotKey="Ctrl+S" IsCompact="True"/>
+			<Border>
+				<StackPanel>
+					<ui:CommandBarToggleButton Label="Button1" Icon="Save" HotKey="Ctrl+S" IsCompact="True"/>
+
+					<ui:CommandBarOverflowPresenter>
+						<ui:CommandBarToggleButton Label="Button1" Icon="Save" />
+						<ui:CommandBarToggleButton Label="Button1" Icon="Save" />
+					</ui:CommandBarOverflowPresenter>
+
+					<ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False"
+							   DefaultLabelPosition="Right">
+						<ui:CommandBar.PrimaryCommands>
+							<ui:CommandBarToggleButton Label="Test" Icon="Save" IsCompact="False" />
+						</ui:CommandBar.PrimaryCommands>
+					</ui:CommandBar>
+				</StackPanel>
 			</Border>            
         </Border>
     </Design.PreviewWith>
@@ -78,11 +92,7 @@
 								   Classes="CaptionTextBlockStyle"
 								   Text="{TemplateBinding HotKey, Converter={StaticResource KeyConv}}"
 								   HorizontalAlignment="Right"
-								   VerticalAlignment="Center" />
-						
-						<ui:SymbolIcon Name="SubItemChevron"
-									   Grid.Column="2" />
-						
+								   VerticalAlignment="Center" />						
 					</Grid>
 					
 				</Panel>

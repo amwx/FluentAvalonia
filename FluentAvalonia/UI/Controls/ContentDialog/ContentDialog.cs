@@ -461,6 +461,12 @@ namespace FluentAvalonia.UI.Controls
 			return await tcs.Task;
 		}
 
+		public void Hide()
+		{
+			result = ContentDialogResult.None;
+			HideCore();
+		}
+
 		internal void CompleteButtonClickDeferral()
 		{
 			IsEnabled = true;
@@ -800,11 +806,11 @@ namespace FluentAvalonia.UI.Controls
 				x.IsEffectivelyVisible && IsEffectivelyEnabled).ToList();
 
 			if (children.Count == 0)
-				return (true, null);
+				return (false, null);
 
 			var current = FocusManager.Instance?.Current;
 			if (current == null)
-				return (true, null);
+				return (false, null);
 
 			if (direction == NavigationDirection.Next)
 			{

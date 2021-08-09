@@ -1,10 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Logging;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using FluentAvalonia.Interop;
+using FluentAvalonia.UI.Media;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -103,6 +105,26 @@ namespace FluentAvalonia.Styling
 		/// This value is only respected on startup
 		/// </summary>
 		public bool DefaultToUserTheme { get; set; } = true;
+
+		public Color? CustomAccentColor
+		{
+			get => _customAccentColor;
+			set
+			{
+				if (_customAccentColor != value)
+				{
+					Logger.TryGet(LogEventLevel.Information, "CustomAccentColor")?
+						.Log("CustomAccentColor", "NOTE: FluentAvaloniaTheme auto generates the 3 light/dark variants. HOWEVER, no checking is done to ensure the accent color or variants meet accessibility standards. That is left for you to decide. Be sure to check your accent colors!");
+					_customAccentColor = value;
+
+					if (_loaded != null && _loaded.Length > 1)
+					{
+						GenerateCustomAccentColor(value);
+						Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
+					}
+				}
+			}
+		}
 
         public IResourceHost Owner
 		{
@@ -317,8 +339,13 @@ namespace FluentAvalonia.Styling
 
 		private void InitIfNecessary()
 		{
-			if (!UseSegoeUIOnWindows && !GetUserAccentColor && !DefaultToUserTheme)
+			if (!UseSegoeUIOnWindows && !GetUserAccentColor && !DefaultToUserTheme && CustomAccentColor == null)
 				return;
+
+			if (CustomAccentColor != null)
+			{
+				GenerateCustomAccentColor(_customAccentColor);
+			}
 
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{				
@@ -328,7 +355,7 @@ namespace FluentAvalonia.Styling
 					(_loaded[1] as Styles).Resources["ContentControlThemeFontFamily"] = new FontFamily("Segoe UI");
 				}
 
-				if (GetUserAccentColor)
+				if (CustomAccentColor == null && GetUserAccentColor)
 				{
 					//These are defined in the AccentColors.axaml file
 					(_loaded[0] as Styles).Resources["SystemAccentColor"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccent");
@@ -361,6 +388,42 @@ namespace FluentAvalonia.Styling
 			return _mode;
 		}
 
+		private void GenerateCustomAccentColor(Color? c)
+		{
+			if (!c.HasValue)
+			{
+				if (GetUserAccentColor && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				{
+					(_loaded[0] as Styles).Resources["SystemAccentColor"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccent");
+					(_loaded[0] as Styles).Resources["SystemAccentColorLight1"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentLight1");
+					(_loaded[0] as Styles).Resources["SystemAccentColorLight2"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentLight2");
+					(_loaded[0] as Styles).Resources["SystemAccentColorLight3"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentLight3");
+					(_loaded[0] as Styles).Resources["SystemAccentColorDark1"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentDark1");
+					(_loaded[0] as Styles).Resources["SystemAccentColorDark2"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentDark2");
+					(_loaded[0] as Styles).Resources["SystemAccentColorDark3"] = Win32Interop.GetThemeColorRef("ImmersiveSystemAccentDark3");
+				}
+				else
+				{
+					_loaded[0] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV{_controlsVersion}/AccentColors.axaml", UriKind.Absolute), _baseUri);
+				}
+
+				return;
+			}
+			else
+			{
+				(_loaded[0] as Styles).Resources["SystemAccentColor"] = c.Value;
+
+				Color2 col = c.Value;
+
+				(_loaded[0] as Styles).Resources["SystemAccentColorLight1"] = (Color)col.LightenPercent(0.15f);
+				(_loaded[0] as Styles).Resources["SystemAccentColorLight2"] = (Color)col.LightenPercent(0.3f);
+				(_loaded[0] as Styles).Resources["SystemAccentColorLight3"] = (Color)col.LightenPercent(0.45f);
+				(_loaded[0] as Styles).Resources["SystemAccentColorDark1"] = (Color)col.LightenPercent(-0.15f);
+				(_loaded[0] as Styles).Resources["SystemAccentColorDark2"] = (Color)col.LightenPercent(-0.30f);
+				(_loaded[0] as Styles).Resources["SystemAccentColorDark3"] = (Color)col.LightenPercent(-0.45f);
+			}	
+		}
+
 		private Dictionary<Type, List<IStyle>> _cache;
 		private IResourceHost _owner;
         private readonly Uri _baseUri;
@@ -368,5 +431,6 @@ namespace FluentAvalonia.Styling
         private bool _isLoading;
         private string _mode = string.Empty;
 		private int _controlsVersion = 2;
+		private Color? _customAccentColor;
     }
 }

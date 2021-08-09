@@ -81,7 +81,8 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}">
+                            CornerRadius="{DynamicResource ControlCornerRadius}"
+							Margin="{StaticResource MenuFlyoutItemMargin}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"
@@ -125,14 +126,6 @@
                                            VerticalAlignment="Center"
                                            Grid.Column="3"
                                            FontSize="18" />
-                            <!--<Path Name="PART_ChevronPath"
-                                  Stretch="Uniform"
-                                  Width="8"
-                                  Height="16"
-                                  Data="{StaticResource MenuItemChevronPathData}"
-                                  Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
-                                  VerticalAlignment="Center"
-                                  Grid.Column="3" />-->
                         </Grid>
                     </Border>
                     <Popup Name="PART_Popup"
@@ -149,7 +142,8 @@
                                 MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
                                 HorizontalAlignment="Stretch"
                                 CornerRadius="{DynamicResource OverlayCornerRadius}">
-                            <ScrollViewer Classes="menuscroller">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
                                 <ItemsPresenter Name="PART_ItemsPresenter"
                                                 Items="{TemplateBinding Items}"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"
@@ -200,7 +194,7 @@
                                     MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
                                     HorizontalAlignment="Stretch"
                                     CornerRadius="{DynamicResource OverlayCornerRadius}">
-                                <ScrollViewer Classes="menuscroller">
+                                <ScrollViewer>
                                     <ItemsPresenter Name="PART_ItemsPresenter"
                                                     Items="{TemplateBinding Items}"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"
@@ -223,7 +217,7 @@
 
     <Style Selector="Menu > MenuItem">
         <!--  Custom padding for Menu > MenuItem  -->
-        <Setter Property="Padding" Value="{DynamicResource MenuBarItemPadding}" />
+        <Setter Property="Padding" Value="{DynamicResource MenuBarItemButtonPadding}" />
     </Style>
 
     <Style Selector="MenuItem /template/ ContentPresenter#PART_IconPresenter">

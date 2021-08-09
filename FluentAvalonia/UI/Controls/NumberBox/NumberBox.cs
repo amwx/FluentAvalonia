@@ -9,6 +9,7 @@ using FluentAvalonia.Core;
 using System;
 using System.Globalization;
 using FluentAvalonia.Core.Attributes;
+using Avalonia.Data;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -70,7 +71,7 @@ namespace FluentAvalonia.UI.Controls
 
         public static readonly DirectProperty<NumberBox, string> TextProperty =
             AvaloniaProperty.RegisterDirect<NumberBox, string>(nameof(Text),
-                x => x.Text, (x, v) => x.Text = v);
+                x => x.Text, (x, v) => x.Text = v, defaultBindingMode: BindingMode.TwoWay);
 
         public static readonly DirectProperty<NumberBox, TextReadingOrder> TextReadingOrderProperty =
             AvaloniaProperty.RegisterDirect<NumberBox, TextReadingOrder>(nameof(TextReadingOrder),
@@ -82,12 +83,16 @@ namespace FluentAvalonia.UI.Controls
 
         public static readonly DirectProperty<NumberBox, double> ValueProperty =
              AvaloniaProperty.RegisterDirect<NumberBox, double>(nameof(Value),
-                 x => x.Value, (x, v) => x.Value = v);
+                 x => x.Value, (x, v) => x.Value = v, defaultBindingMode: BindingMode.TwoWay);
 
         //Skip InputScope
 
         public static readonly StyledProperty<TextAlignment> TextAlignmentProperty =
             TextBlock.TextAlignmentProperty.AddOwner<NumberBox>();
+
+		public static readonly DirectProperty<NumberBox, string> SimpleNumberFormatProperty =
+			AvaloniaProperty.RegisterDirect<NumberBox, string>(nameof(SimpleNumberFormat),
+				x => x.SimpleNumberFormat, (x, v) => x.SimpleNumberFormat = v);
 
 
         public bool AcceptsExpression
@@ -162,8 +167,32 @@ namespace FluentAvalonia.UI.Controls
         /// <remarks>
         /// .NET doesn't have all of the formatting stuff from WinUI/WinRT, thus doing fancy things
         /// requires a bit more manual work, and I'm not about to attempt to replicate the NumberFormatters :D
+		/// NOTE: This cannot be used if <see cref="SimpleNumberFormat"/> is in use
         /// </remarks>
         public Func<double, string> NumberFormatter { get; set; }
+
+		/// <summary>
+		/// Use this for simple number formatting using normal .net formatting. Resulting string must still
+		/// be numeric in value, no special characters, as they are not removed when attempting to convert
+		/// text to value
+		/// </summary>
+		/// <remarks>
+		/// This property cannot be used if <see cref="NumberFormatter"/> is also in use
+		/// </remarks>
+		public string SimpleNumberFormat
+		{
+			get => _simpleFormat;
+			set
+			{
+				if (NumberFormatter != null)
+					throw new InvalidOperationException("NumberFormatter must be null");
+
+				if (SetAndRaise(SimpleNumberFormatProperty, ref _simpleFormat, value))
+				{
+					UpdateTextToValue();
+				}
+			}
+		}
 
         public string PlaceholderText
         {
@@ -240,17 +269,16 @@ namespace FluentAvalonia.UI.Controls
             get => _value;
             set
             {
-                if (!double.IsNaN(value) || !double.IsNaN(_value))
-                {
-                    var old = _value;
-                    value = CoerceValueToRange(value);
-                    if (SetAndRaise(ValueProperty, ref _value, value))
-                    {
-                        OnValueChanged(old, value);
-                    }
-                }
-                
-            }
+				if (!double.IsNaN(value) || !double.IsNaN(_value))
+				{
+					var old = _value;
+					value = CoerceValueToRange(value);
+					if (SetAndRaise(ValueProperty, ref _value, value))
+					{
+						OnValueChanged(old, value);
+					}
+				}
+			}
         }
 
         public TextAlignment TextAlignment
@@ -291,7 +319,7 @@ namespace FluentAvalonia.UI.Controls
             _textBox = e.NameScope.Find<TextBox>("InputBox");
             if (_textBox != null)
             {
-                _textBox.AddHandler(KeyDownEvent, OnNumberBoxKeyDown, Avalonia.Interactivity.RoutingStrategies.Tunnel);
+                _textBox.AddHandler(KeyDownEvent, OnNumberBoxKeyDown, RoutingStrategies.Tunnel);
 
                 _textBox.KeyUp += OnNumberBoxKeyUp;
             }
@@ -299,10 +327,10 @@ namespace FluentAvalonia.UI.Controls
             _popup = e.NameScope.Find<Popup>("UpDownPopup");
 			if (_popup != null)
 			{
-				_popup.OverlayInputPassThroughElement = this.VisualRoot as IInputElement;
+				_popup.OverlayInputPassThroughElement = this;
 			}
 
-            UpdateSpinButtonPlacement();
+			UpdateSpinButtonPlacement();
             UpdateSpinButtonEnabled();
 
             //UpdateVisualStateForIsEnabledChange();
@@ -339,9 +367,10 @@ namespace FluentAvalonia.UI.Controls
         protected override void OnGotFocus(GotFocusEventArgs e)
         {
             base.OnGotFocus(e);
+						
             if (_textBox != null)
             {
-                _textBox.SelectAll();
+				_textBox.SelectAll();
             }
 
             if (SpinButtonPlacementMode == NumberBoxSpinButtonPlacementMode.Compact)
@@ -575,7 +604,11 @@ namespace FluentAvalonia.UI.Controls
                 // Round to 12 digits (standard .net rounding per WinUI in the NumberBox source)
                 // We do this to prevent weirdness from floating point imprecision
                 var newValue = Math.Round(_value, 12);
-                if (NumberFormatter != null)
+				if (SimpleNumberFormat != null)
+				{
+					newText = newValue.ToString(_simpleFormat);
+				}
+                else if (NumberFormatter != null)
                 {
                     newText = NumberFormatter(newValue);
                 }
@@ -734,6 +767,7 @@ namespace FluentAvalonia.UI.Controls
         private TextReadingOrder _textReadingOrder;
         private NumberBoxValidationMode _validationMode;
         private double _value = double.NaN;
+		private string _simpleFormat;
 
         private bool _textUpdating;
         private bool _valueUpdating;

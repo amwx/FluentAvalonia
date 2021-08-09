@@ -48,11 +48,14 @@
     <Style Selector="Thumb.SliderThumbStyle">
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="{DynamicResource SliderThumbBackground}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <!-- Elevation Brush effect really doesn't come through with this... -->
                     <Border Margin="0"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{DynamicResource SliderOuterThumbBackground}"
                             CornerRadius="{DynamicResource SliderThumbCornerRadius}"
                             RenderTransform="scaleY(-1)">
@@ -96,11 +99,13 @@
                             CornerRadius="{DynamicResource SliderTrackCornerRadius}">
                         
                         <Grid Name="grid" Margin="{TemplateBinding Padding}" RowDefinitions="Auto, *">
-                            <ContentPresenter x:Name="HeaderContentPresenter" 
+							<!-- Hide the header b/c property doesn't exist in Avalonia -->
+							<!--<ContentPresenter x:Name="HeaderContentPresenter" 
                                               Grid.Row="0" 
                                               TextBlock.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
                                               TextBlock.Foreground="{DynamicResource SliderHeaderForeground}"
-                                              Margin="{DynamicResource SliderTopHeaderMargin}" />
+                                              Margin="{DynamicResource SliderTopHeaderMargin}"
+											  />-->
                             
                             <Grid x:Name="SliderContainer" Grid.Row="1">
                                 <Grid.Styles>
@@ -198,11 +203,12 @@
                         <Grid Name="grid" 
                               Margin="{TemplateBinding Padding}" 
                               RowDefinitions="Auto, *">
-                            <ContentPresenter x:Name="HeaderContentPresenter" 
+							<!-- Hide the header b/c property doesn't exist in Avalonia -->
+                            <!--<ContentPresenter x:Name="HeaderContentPresenter" 
                                               Grid.Row="0" 
                                               TextBlock.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
                                               TextBlock.Foreground="{DynamicResource SliderHeaderForeground}"
-                                              Margin="{DynamicResource SliderTopHeaderMargin}" />
+                                              Margin="{DynamicResource SliderTopHeaderMargin}" />-->
                             <Grid x:Name="SliderContainer" Grid.Row="1">
                                 <Grid.Styles>
                                     <Style Selector="TickBar">

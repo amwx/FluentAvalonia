@@ -10,9 +10,6 @@
             <ScrollViewer>
                 <Border Height="1000" Background="#ccc"/>
             </ScrollViewer>
-            <ScrollViewer Grid.Column="2" Classes="menuscroller">
-                <Border Height="1000" Background="#ccc"/>
-            </ScrollViewer>
         </Grid>
     </Design.PreviewWith>
 
@@ -82,7 +79,7 @@
         <Setter Property="Opacity" Value="1" />
     </Style>
 
-    <Style Selector="ScrollViewer.menuscroller">
+    <!--<Style Selector="ScrollViewer.menuscroller">
         <Setter Property="Template">
             <ControlTemplate>
                 <DockPanel>
@@ -154,6 +151,6 @@
 
     <Style Selector="ScrollViewer.menuscroller /template/ RepeatButton:pointerover > Viewbox > Path">
         <Setter Property="Fill" Value="{DynamicResource ScrollBarButtonArrowForegroundPointerOver}" />
-    </Style>
+    </Style>-->
 
 </Styles>

@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="FluentAvaloniaSamples.Pages.SettingsPage">
     <ScrollViewer Padding="10">
         <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Stretch" Margin="10 0">
@@ -19,6 +19,68 @@
                           Header="ControlsVersion" SpinButtonPlacementMode="Inline" />
             <TextBlock Text="ControlsVersion=1, use Default Fluent theme styling. New FluentAvalonia controls do not have regressed templates, but colors are remapped." TextWrapping="Wrap" />
             <TextBlock Text="ControlsVersion=2, use new WinUI styling for all controls (default)" TextWrapping="Wrap" />-->
+			
+			<Rectangle Height="1"
+					   Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
+					   Margin="10 3" />
+
+			<TextBlock Text="Custom AccentColor" FontSize="16" FontWeight="700" Margin="5" />
+			<CheckBox IsChecked="{Binding UseCustomAccent}" Content="Use Custom AccentColor" />
+			<ui:ColorPickerButton Color="{Binding CustomAccentColor}"
+								  IsMoreButtonVisible="False"
+								  IsCompact="True"
+								  IsAlphaEnabled="False"
+								  IsEnabled="{Binding UseCustomAccent}"/>
+
+			<TextBlock Text="Current AccentColor" Margin="5 10 0 0" />
+			<Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*"
+				  HorizontalAlignment="Left">
+				<Border Background="{DynamicResource SystemAccentColor}"
+						Height="40" Grid.ColumnSpan="2">
+					<TextBlock Text="SystemAccentColor"
+							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+
+				<Border Background="{DynamicResource SystemAccentColorLight1}"
+						Height="40" Width="90" Grid.Column="0" Grid.Row="1">
+					<TextBlock Text="Light1"
+							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<Border Background="{DynamicResource SystemAccentColorLight2}"
+						Height="40" Width="90" Grid.Column="0" Grid.Row="2">
+					<TextBlock Text="Light2"
+							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<Border Background="{DynamicResource SystemAccentColorLight3}"
+						Height="40" Width="90" Grid.Column="0" Grid.Row="3">
+					<TextBlock Text="Light3"
+							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+
+				<Border Background="{DynamicResource SystemAccentColorDark1}"
+						Height="40" Width="90" Grid.Column="1" Grid.Row="1">
+					<TextBlock Text="Dark1"
+							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<Border Background="{DynamicResource SystemAccentColorDark2}"
+						Height="40" Width="90" Grid.Column="1" Grid.Row="2">
+					<TextBlock Text="Dark2"
+							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<Border Background="{DynamicResource SystemAccentColorDark3}"
+						Height="40" Width="90" Grid.Column="1" Grid.Row="3">
+					<TextBlock Text="Dark3"
+							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+			</Grid>
+			
         </StackPanel>
     </ScrollViewer>
 </UserControl>

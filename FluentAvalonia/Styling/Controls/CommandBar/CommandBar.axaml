@@ -10,7 +10,7 @@
 		<Border Padding="50">
 			<StackPanel>
 				<ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False" 
-							   DefaultLabelPosition="Bottom">
+							   DefaultLabelPosition="Right">
 					<ui:CommandBar.PrimaryCommands>
 						<ui:CommandBarButton Label="Test" Icon="Save" IsCompact="False" />
 					</ui:CommandBar.PrimaryCommands>

@@ -13,6 +13,13 @@
 					<ui:CommandBarButton Label="Button1" Icon="Save" />
 					<ui:CommandBarButton Label="Button1" Icon="Save" />
 				</ui:CommandBarOverflowPresenter>
+
+				<ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False"
+							   DefaultLabelPosition="Right">
+					<ui:CommandBar.PrimaryCommands>
+						<ui:CommandBarButton Label="Test" Icon="Save" IsCompact="False" />
+					</ui:CommandBar.PrimaryCommands>
+				</ui:CommandBar>
 			</StackPanel>          
         </Border>
     </Design.PreviewWith>
@@ -22,7 +29,10 @@
 
 		<!--<Visibility x:Key="AppBarButtonHasFlyoutChevronVisibility">Visible</Visibility>-->
 		<!--<x:String x:Key="AppBarButtonFlyoutGlyph">&#xE974;</x:String>-->
-		<Thickness x:Key="AppBarButtonContentViewboxMargin">12,16,0,10</Thickness>
+
+		<!-- Adjusted margin (top/bottom) -2, to account for height change (see below) -->
+		<Thickness x:Key="AppBarButtonContentViewboxMargin">10,14,0,8</Thickness>
+		
 		<Thickness x:Key="AppBarButtonContentViewboxCompactMargin">0,12,0,12</Thickness>
 		<Thickness x:Key="AppBarButtonContentViewboxCollapsedMargin">0,16,0,2</Thickness>
 		<Thickness x:Key="AppBarButtonOverflowTextTouchMargin">0,9,0,12</Thickness>
