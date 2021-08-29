@@ -813,7 +813,7 @@ namespace FluentAvalonia.UI.Controls
 
                     for (int i = 0; i < size; i++)
                     {
-                        dataSource.Add(_footerItemsSource.GetAt(i));
+                        dataSource.Add(itemsSource.ElementAt(i));
                     }
 
                     if (IsSettingsVisible)
