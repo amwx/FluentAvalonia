@@ -251,6 +251,8 @@ namespace FluentAvalonia.Styling
 
 			if (Owner == owner)
 			{
+				Owner = null;
+
 				for (int i = 0; i < Children.Count; i++)
 				{
 					if (Children[i] is IResourceProvider rp)
