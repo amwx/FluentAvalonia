@@ -14,8 +14,10 @@
                     <ui:ComboBoxItem Content="Item2" />
                     <ui:ComboBoxItem Content="Item3" />
                 </ui:ComboBox>
-                
-                <ui:ComboBox IsEditable="True" />
+
+				<ui:ComboBox IsEditable="True">
+					<ui:ComboBoxItem Content="hello" />
+				</ui:ComboBox>
                 
                 <ui:ComboBox IsEnabled="False" />
             </StackPanel>
@@ -73,6 +75,18 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
+					<!-- This is flipped (scaleY(-1)) for the elevation brush effect -->
+					<Border
+						  Name="PART_BorderElement"
+						  Background="{TemplateBinding Background}"
+						  BorderBrush="{TemplateBinding BorderBrush}"
+						  BorderThickness="{TemplateBinding BorderThickness}"
+						  CornerRadius="{DynamicResource ControlCornerRadius}"
+						  MinWidth="{TemplateBinding MinWidth}"
+						  MinHeight="{TemplateBinding MinHeight}"
+						  RenderTransform="scaleY(-1)">
+					</Border>
+					
 					<Border Margin="{TemplateBinding BorderThickness}">
 						<Grid ColumnDefinitions="Auto,*,Auto" >
 							<ContentPresenter Grid.Column="0" Grid.ColumnSpan="1" Content="{TemplateBinding InnerLeftContent}"/>
@@ -112,19 +126,7 @@
 							</DockPanel>
 							<ContentPresenter Grid.Column="2" Grid.ColumnSpan="1" Content="{TemplateBinding InnerRightContent}"/>
 						</Grid>
-					</Border>
-
-					<!-- This is flipped (scaleY(-1)) for the elevation brush effect -->
-					<Border
-                      Name="PART_BorderElement"
-                      Background="{TemplateBinding Background}"
-                      BorderBrush="{TemplateBinding BorderBrush}"
-                      BorderThickness="{TemplateBinding BorderThickness}"
-                      CornerRadius="{DynamicResource ControlCornerRadius}"
-                      MinWidth="{TemplateBinding MinWidth}"
-                      MinHeight="{TemplateBinding MinHeight}"
-                      RenderTransform="scaleY(-1)">
-					</Border>
+					</Border>					
                 </Panel>
             </ControlTemplate>
         </Setter>
@@ -227,7 +229,7 @@
                     <TextBox Name="EditableText"
                              Grid.Row="1"
                              Grid.Column="0"
-                             Grid.ColumnSpan="2"     
+                             Grid.ColumnSpan="2"
                              Classes="ComboBoxTextBoxStyle"
                              Margin="0"
                              Padding="{DynamicResource ComboBoxEditableTextPadding}"
@@ -409,11 +411,11 @@
     <!-- EDITABLE STYLES -->
     <!-- Alot of this is probably done in code in WinUI, so we'll just do what we can till it looks right -->
     <Style Selector="ui|ComboBox:editable /template/ TextBox#EditableText">
-        <Setter Property="IsVisible" Value="False" />
-        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="IsHitTestVisible" Value="True" />
     </Style>
     <Style Selector="ui|ComboBox:editable /template/ ContentPresenter#ContentPresenter">
-        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="ui|ComboBox:editable /template/ Border#DropDownOverlay">
         <Setter Property="IsVisible" Value="True" />
