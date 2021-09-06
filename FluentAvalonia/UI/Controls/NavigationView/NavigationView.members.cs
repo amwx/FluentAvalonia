@@ -687,8 +687,8 @@ namespace FluentAvalonia.UI.Controls
         private SelectionModel _selectionModel;
         private AvaloniaList<IEnumerable> _selectionModelSource;
 
-        private ItemsSourceView _menuItemsSource;
-        private ItemsSourceView _footerItemsSource;
+        //private ItemsSourceView _menuItemsSource;
+        //private ItemsSourceView _footerItemsSource;
 
         private bool _appliedTemplate;
 

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
+using System.ComponentModel;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -32,9 +33,9 @@ namespace FluentAvalonia.UI.Controls
 			Confirmed?.Invoke(this, null);
 		}
 
-		protected override void OnOpening()
+		protected override void OnOpening(CancelEventArgs args)
 		{
-			base.OnOpening();
+			base.OnOpening(args);
 			(Popup.Child as PickerFlyoutPresenter).ShowHideButtons(ShouldShowConfirmationButtons());
 		}
 

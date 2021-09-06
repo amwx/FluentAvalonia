@@ -71,7 +71,6 @@
 
 	<!-- NumberBox TextBox Style -->
 	<Style Selector="TextBox.NumberBoxTextBoxStyle">
-		<Setter Property="Foreground" Value="Black" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<DataValidationErrors>
