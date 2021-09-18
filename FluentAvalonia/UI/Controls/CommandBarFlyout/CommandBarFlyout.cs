@@ -163,6 +163,9 @@ namespace FluentAvalonia.UI.Controls
 		protected override void OnOpening(CancelEventArgs args)
 		{
 			base.OnOpening(args);
+			if (_commandBar == null)
+				return;
+			
 			if (PrimaryCommands.Count > 0 && _commandBar.PrimaryCommands.Count == 0)
 			{
 				_commandBar.PrimaryCommands.AddRange(PrimaryCommands);
