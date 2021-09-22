@@ -33,6 +33,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="MinWidth" Value="{StaticResource ToggleSwitchThemeMinWidth}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Background="{TemplateBinding Background}"
@@ -45,9 +46,8 @@
                       VerticalAlignment="Top"/>
 
                     <Grid Grid.Row="1"
-                      MinWidth="{DynamicResource ToggleSwitchThemeMinWidth}"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Top">
+						  HorizontalAlignment="Left"
+						  VerticalAlignment="Top">
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="{DynamicResource ToggleSwitchPreContentMargin}" />
