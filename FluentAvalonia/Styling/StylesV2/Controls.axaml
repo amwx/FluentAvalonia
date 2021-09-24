@@ -38,6 +38,7 @@
     <StyleInclude Source="/Styling/BasicControls/NativeMenuBar.axaml" />
     <StyleInclude Source="/Styling/BasicControls/ProgressBar.axaml" />
     <StyleInclude Source="/Styling/BasicControls/ButtonSpinner.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/DataGridStyles.axaml" />
 
 
     <!-- NEW CONTROLS -->
