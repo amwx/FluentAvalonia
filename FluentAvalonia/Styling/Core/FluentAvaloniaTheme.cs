@@ -9,6 +9,8 @@ using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Media;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.Styling
@@ -82,6 +84,10 @@ namespace FluentAvalonia.Styling
 					_controlsVersion = value;
 					Init(true);
 					Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
+					if (value == 1)
+					{
+						Debug.WriteLine("NOTE: Fluent v1 Styles are now considered deprecated, and support will be removed from FluentAvalonia in a future version");						
+					}
 				}
 			}
 		}
