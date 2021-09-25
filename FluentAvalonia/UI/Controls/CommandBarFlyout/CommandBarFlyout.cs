@@ -14,6 +14,10 @@ namespace FluentAvalonia.UI.Controls
 	{
 		public CommandBarFlyout()
 		{
+			// TEMPORARY FIX...REVERT TO CREATEPRESENTER() WHEN NRE ISSUE FIXED
+			_commandBar = new CommandBarFlyoutCommandBar();
+			_commandBar.SetOwningFlyout(this);
+
 			PrimaryCommands = new AvaloniaList<ICommandBarElement>();
 			SecondaryCommands = new AvaloniaList<ICommandBarElement>();
 
@@ -140,9 +144,6 @@ namespace FluentAvalonia.UI.Controls
 
 		protected override Control CreatePresenter()
 		{
-			_commandBar = new CommandBarFlyoutCommandBar();
-			_commandBar.SetOwningFlyout(this);
-
 			_presenter = new FlyoutPresenter
 			{
 				Background = null,
@@ -163,6 +164,7 @@ namespace FluentAvalonia.UI.Controls
 		protected override void OnOpening(CancelEventArgs args)
 		{
 			base.OnOpening(args);
+
 			if (PrimaryCommands.Count > 0 && _commandBar.PrimaryCommands.Count == 0)
 			{
 				_commandBar.PrimaryCommands.AddRange(PrimaryCommands);

@@ -36,6 +36,13 @@ namespace FluentAvalonia.UI.Controls
 		protected override void OnOpening(CancelEventArgs args)
 		{
 			base.OnOpening(args);
+			
+		}
+
+		protected override void OnOpened()
+		{
+			base.OnOpened();
+			// TEMPORARY FIX...REVERT TO ONOPENING AFTER NRE ISSUE FIXED
 			(Popup.Child as PickerFlyoutPresenter).ShowHideButtons(ShouldShowConfirmationButtons());
 		}
 
