@@ -10,8 +10,8 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.1.3</Version>
-        <AssemblyVersion>1.1.3.0</AssemblyVersion>
+        <Version>1.1.5</Version>
+        <AssemblyVersion>1.1.5.0</AssemblyVersion>
     </PropertyGroup>
 
 
