@@ -15,7 +15,7 @@ namespace FluentAvalonia.UI.Controls
                
 
         public static readonly StyledProperty<IconSource> IconSourceProperty =
-             AvaloniaProperty.Register<IconSourceElement, IconSource>("IconSource");
+             AvaloniaProperty.Register<IconSourceElement, IconSource>(nameof(IconSource));
 
         public IconSource IconSource
         {

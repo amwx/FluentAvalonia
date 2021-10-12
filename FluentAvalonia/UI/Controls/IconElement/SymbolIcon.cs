@@ -13,13 +13,13 @@ namespace FluentAvalonia.UI.Controls
         }
 
         public static readonly StyledProperty<Symbol> SymbolProperty =
-            AvaloniaProperty.Register<SymbolIcon, Symbol>("Symbol");
+            AvaloniaProperty.Register<SymbolIcon, Symbol>(nameof(Symbol));
 
         public static readonly StyledProperty<double> FontSizeProperty =
             TextBlock.FontSizeProperty.AddOwner<SymbolIcon>();
 
 		public static readonly StyledProperty<bool> UseFilledProperty =
-			AvaloniaProperty.Register<SymbolIcon, bool>("UseFilled");
+			AvaloniaProperty.Register<SymbolIcon, bool>(nameof(UseFilled));
 
         public Symbol Symbol
         {

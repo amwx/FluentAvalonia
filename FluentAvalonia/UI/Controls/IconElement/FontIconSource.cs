@@ -19,7 +19,7 @@ namespace FluentAvalonia.UI.Controls
             TextBlock.FontStyleProperty.AddOwner<FontIconSource>();
 
         public static readonly StyledProperty<string> GlyphProperty =
-            AvaloniaProperty.Register<FontIconSource, string>("Glyph");
+            FontIcon.GlyphProperty.AddOwner<FontIconSource>();
 
         public FontFamily FontFamily
         {

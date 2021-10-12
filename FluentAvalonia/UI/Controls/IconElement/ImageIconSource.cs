@@ -11,8 +11,8 @@ namespace FluentAvalonia.UI.Controls
 {
 	public class ImageIconSource : IconSource
 	{
-		public static readonly StyledProperty<IImage> SourceProperty =
-			AvaloniaProperty.Register<ImageIconSource, IImage>("Source");
+        public static readonly StyledProperty<IImage> SourceProperty =
+            ImageIcon.SourceProperty.AddOwner<ImageIconSource>();
 
 		[Content]
 		public IImage Source

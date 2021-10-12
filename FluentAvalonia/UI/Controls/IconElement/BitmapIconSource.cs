@@ -13,10 +13,10 @@ namespace FluentAvalonia.UI.Controls
         }
 
         public static readonly StyledProperty<Uri> UriSourceProperty =
-            AvaloniaProperty.Register<BitmapIconSource, Uri>("UriSource");
+            BitmapIcon.UriSourceProperty.AddOwner<BitmapIconSource>();
 
         public static readonly StyledProperty<bool> ShowAsMonochromeProperty =
-            AvaloniaProperty.Register<BitmapIconSource, bool>("ShowAsMonochrome");
+            BitmapIcon.ShowAsMonochromeProperty.AddOwner<BitmapIconSource>();
 
         public Uri UriSource
         {
