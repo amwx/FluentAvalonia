@@ -146,6 +146,16 @@ namespace FluentAvalonia.UI.Controls
                     CurrentEntry = null;
                 }
             }
+            else if (change.Property == SourcePageTypeProperty)
+            {
+                if (!_isNavigating)
+                {
+                    if (change.NewValue.GetValueOrDefault() is null)
+                        throw new InvalidOperationException("SourcePageType cannot be null. Use Content instead.");
+
+                    Navigate(change.NewValue.GetValueOrDefault<Type>());
+                }
+            }
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

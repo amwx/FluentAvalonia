@@ -1035,13 +1035,11 @@ namespace FluentAvalonia.UI.Controls
 		private ToggleButton _rgbButton;
 		private ToggleButton _hsvButton;
 
-		private int _lastDisplayItem = 0;
 		private bool _ignoreRadioChange;
         //fields
         private bool _templateApplied;
         private bool _ignoreColorChange;
         private ColorTextType _textType;
-        private ColorSpectrumShape _shape = ColorSpectrumShape.Spectrum;
         private ColorSpectrumComponents _component = ColorSpectrumComponents.SaturationValue;
         private bool _isCompact = false;
         private bool _isAlphaEnabled = true;

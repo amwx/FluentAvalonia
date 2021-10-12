@@ -25,8 +25,8 @@ namespace FluentAvalonia.UI.Controls
 		/// <summary>
 		/// Defines the <see cref="ItemTemplate"/> property
 		/// </summary>
-		public static readonly DirectProperty<MenuFlyout, IDataTemplate?> ItemTemplateProperty =
-			AvaloniaProperty.RegisterDirect<MenuFlyout, IDataTemplate?>(nameof(ItemTemplate),
+		public static readonly DirectProperty<MenuFlyout, IDataTemplate> ItemTemplateProperty =
+			AvaloniaProperty.RegisterDirect<MenuFlyout, IDataTemplate>(nameof(ItemTemplate),
 				x => x.ItemTemplate, (x, v) => x.ItemTemplate = v);
 
 		/// <summary>

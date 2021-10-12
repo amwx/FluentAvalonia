@@ -155,7 +155,7 @@ namespace FluentAvalonia.UI.Controls
 
         public struct TreeWalkNodeInfo
         {
-            public TreeWalkNodeInfo(SelectionNode node, IndexPath indexPath, SelectionNode? parent)
+            public TreeWalkNodeInfo(SelectionNode node, IndexPath indexPath, SelectionNode parent)
             {
                 node = node ?? throw new ArgumentNullException(nameof(node));
 
@@ -175,7 +175,7 @@ namespace FluentAvalonia.UI.Controls
 
             public SelectionNode Node { get; }
             public IndexPath Path { get; }
-            public SelectionNode? ParentNode { get; }
+            public SelectionNode ParentNode { get; }
         };
 
     }

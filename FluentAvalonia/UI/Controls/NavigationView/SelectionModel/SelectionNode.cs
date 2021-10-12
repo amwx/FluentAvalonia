@@ -18,18 +18,18 @@ namespace FluentAvalonia.UI.Controls
     internal class SelectionNode : IDisposable
     {
         private readonly SelectionModel _manager;
-        private readonly List<SelectionNode?> _childrenNodes = new List<SelectionNode?>();
-        private readonly SelectionNode? _parent;
+        private readonly List<SelectionNode> _childrenNodes = new List<SelectionNode>();
+        private readonly SelectionNode _parent;
         private readonly List<IndexRange> _selected = new List<IndexRange>();
         private readonly List<int> _selectedIndicesCached = new List<int>();
-        private IDisposable? _childrenSubscription;
-        private SelectionNodeOperation? _operation;
-        private object? _source;
+        private IDisposable _childrenSubscription;
+        private SelectionNodeOperation _operation;
+        private object _source;
         private bool _selectedIndicesCacheIsValid;
         private bool _retainSelectionOnReset;
-        private List<object?>? _selectedItems;
+        private List<object> _selectedItems;
 
-        public SelectionNode(SelectionModel manager, SelectionNode? parent)
+        public SelectionNode(SelectionModel manager, SelectionNode parent)
         {
             _manager = manager;
             _parent = parent;
@@ -48,7 +48,7 @@ namespace FluentAvalonia.UI.Controls
 
                     if (_retainSelectionOnReset)
                     {
-                        _selectedItems = new List<object?>();
+                        _selectedItems = new List<object>();
                         PopulateSelectedItemsFromSelectedIndices();
                     }
                     else
@@ -67,7 +67,7 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        public object? Source
+        public object Source
         {
             get => _source;
             set
@@ -121,7 +121,7 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        public ItemsSourceView? ItemsSourceView { get; private set; }
+        public ItemsSourceView ItemsSourceView { get; private set; }
         public int DataCount => ItemsSourceView?.Count ?? 0;
         public int ChildrenNodeCount => _childrenNodes.Count;
         public int RealizedChildrenNodeCount { get; private set; }
@@ -154,9 +154,9 @@ namespace FluentAvalonia.UI.Controls
         // create a bunch of leaf node instances - instead i use the same instance m_leafNode to avoid 
         // an explosion of node objects. However, I'm still creating the m_childrenNodes 
         // collection unfortunately.
-        public SelectionNode? GetAt(int index, bool realizeChild, IndexPath finalIndexPath)
+        public SelectionNode GetAt(int index, bool realizeChild, IndexPath finalIndexPath)
         {
-            SelectionNode? child = null;
+            SelectionNode child = null;
 
             if (realizeChild)
             {
@@ -179,7 +179,7 @@ namespace FluentAvalonia.UI.Controls
                 if (_childrenNodes[index] == null)
                 {
                     var childData = ItemsSourceView!.GetAt(index);
-                    IObservable<object?>? resolver = null;
+                    IObservable<object> resolver = null;
 
                     if (childData != null)
                     {
@@ -226,7 +226,7 @@ namespace FluentAvalonia.UI.Controls
             return child;
         }
 
-        public void SetChildrenObservable(IObservable<object?> resolver)
+        public void SetChildrenObservable(IObservable<object> resolver)
         {
             _childrenSubscription = resolver.Subscribe(x =>
             {
@@ -616,7 +616,7 @@ namespace FluentAvalonia.UI.Controls
         private void OnSourceListChanged(object dataSource, NotifyCollectionChangedEventArgs args)
         {
             bool selectionInvalidated = false;
-            List<object?>? removed = null;
+            List<object> removed = null;
 
             switch (args.Action)
             {
@@ -739,10 +739,10 @@ namespace FluentAvalonia.UI.Controls
             return selectionInvalidated;
         }
 
-        private (bool, List<object?>) OnItemsRemoved(int index, IList items)
+        private (bool, List<object>) OnItemsRemoved(int index, IList items)
         {
             var selectionInvalidated = false;
-            var removed = new List<object?>();
+            var removed = new List<object>();
             var count = items.Count;
             var isSelected = false;
 
@@ -926,9 +926,9 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        private List<object?> RecreateSelectionFromSelectedItems()
+        private List<object> RecreateSelectionFromSelectedItems()
         {
-            var removed = new List<object?>();
+            var removed = new List<object>();
 
             _selected.Clear();
             SelectedCount = 0;

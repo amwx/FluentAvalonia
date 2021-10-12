@@ -14,13 +14,13 @@ namespace FluentAvalonia.UI.Controls
         private bool _autoSelect;
         private int _operationCount;
         private IndexPath _oldAnchorIndex;
-        private IReadOnlyList<IndexPath>? _selectedIndicesCached;
-        private IReadOnlyList<object?>? _selectedItemsCached;
-        private SelectionModelChildrenRequestedEventArgs? _childrenRequestedEventArgs;
+        private IReadOnlyList<IndexPath> _selectedIndicesCached;
+        private IReadOnlyList<object> _selectedItemsCached;
+        private SelectionModelChildrenRequestedEventArgs _childrenRequestedEventArgs;
 
-        public event EventHandler<SelectionModelChildrenRequestedEventArgs>? ChildrenRequested;
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public event EventHandler<SelectionModelSelectionChangedEventArgs>? SelectionChanged;
+        public event EventHandler<SelectionModelChildrenRequestedEventArgs> ChildrenRequested;
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<SelectionModelSelectionChangedEventArgs> SelectionChanged;
 
         public SelectionModel()
         {
@@ -28,7 +28,7 @@ namespace FluentAvalonia.UI.Controls
             SharedLeafNode = new SelectionNode(this, null);
         }
 
-        public object? Source
+        public object Source
         {
             get => _rootNode.Source;
             set
@@ -129,7 +129,7 @@ namespace FluentAvalonia.UI.Controls
                 if (_rootNode.AnchorIndex >= 0)
                 {
                     var path = new List<int>();
-                    SelectionNode? current = _rootNode;
+                    SelectionNode current = _rootNode;
 
                     while (current?.AnchorIndex >= 0)
                     {
@@ -193,11 +193,11 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        public object? SelectedItem
+        public object SelectedItem
         {
             get
             {
-                object? item = null;
+                object item = null;
                 var selectedItems = SelectedItems;
 
                 if (selectedItems?.Count > 0)
@@ -209,7 +209,7 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        public IReadOnlyList<object?> SelectedItems
+        public IReadOnlyList<object> SelectedItems
         {
             get
             {
@@ -238,13 +238,13 @@ namespace FluentAvalonia.UI.Controls
                     // the selected item at a particular index. This avoid having to create the storage and copying
                     // needed in a dumb vector. This also allows us to expose a tree of selected nodes into an 
                     // easier to consume flat vector view of objects.
-                    var selectedItems = new SelectedItems<object?, SelectedItemInfo>(
+                    var selectedItems = new SelectedItems<object, SelectedItemInfo>(
                         selectedInfos,
                         count,
                         (infos, index) =>
                         {
                             var currentIndex = 0;
-                            object? item = null;
+                            object item = null;
 
                             foreach (var info in infos)
                             {
@@ -408,7 +408,7 @@ namespace FluentAvalonia.UI.Controls
         public bool IsSelectedAt(IndexPath index)
         {
             var path = index;
-            SelectionNode? node = _rootNode;
+            SelectionNode node = _rootNode;
 
             for (int i = 0; i < path.GetSize() - 1; i++)
             {
@@ -462,7 +462,7 @@ namespace FluentAvalonia.UI.Controls
         {
             var path = index;
             var isRealized = true;
-            SelectionNode? node = _rootNode;
+            SelectionNode node = _rootNode;
 
             for (int i = 0; i < path.GetSize() - 1; i++)
             {
@@ -578,9 +578,9 @@ namespace FluentAvalonia.UI.Controls
 
         public void OnSelectionInvalidatedDueToCollectionChange(
             bool selectionInvalidated,
-            IReadOnlyList<object?>? removedItems)
+            IReadOnlyList<object> removedItems)
         {
-            SelectionModelSelectionChangedEventArgs? e = null;
+            SelectionModelSelectionChangedEventArgs e = null;
 
             if (selectionInvalidated)
             {
@@ -591,12 +591,12 @@ namespace FluentAvalonia.UI.Controls
             ApplyAutoSelect(true);
         }
 
-        internal IObservable<object?>? ResolvePath(
+        internal IObservable<object> ResolvePath(
             object data,
             IndexPath dataIndexPath,
             IndexPath finalIndexPath)
         {
-            IObservable<object?>? resolved = null;
+            IObservable<object> resolved = null;
 
             // Raise ChildrenRequested event if there is a handler
             if (ChildrenRequested != null)
@@ -639,7 +639,7 @@ namespace FluentAvalonia.UI.Controls
             OnSelectionChanged();
         }
 
-        private void OnSelectionChanged(SelectionModelSelectionChangedEventArgs? e = null)
+        private void OnSelectionChanged(SelectionModelSelectionChangedEventArgs e = null)
         {
             _selectedIndicesCached = null;
             _selectedItemsCached = null;
@@ -818,7 +818,7 @@ namespace FluentAvalonia.UI.Controls
                 throw new InvalidOperationException("No selection operation in progress.");
             }
 
-            SelectionModelSelectionChangedEventArgs? e = null;
+            SelectionModelSelectionChangedEventArgs e = null;
 
             if (--_operationCount == 0)
             {

@@ -40,11 +40,11 @@ namespace FluentAvalonia.UI.Controls
                 _changes,
                 selectedIndexCount,
                 GetSelectedIndexAt);
-            var deselectedItems = new SelectedItems<object?, SelectionNodeOperation>(
+            var deselectedItems = new SelectedItems<object, SelectionNodeOperation>(
                 _changes,
                 deselectedItemCount,
                 GetDeselectedItemAt);
-            var selectedItems = new SelectedItems<object?, SelectionNodeOperation>(
+            var selectedItems = new SelectedItems<object, SelectionNodeOperation>(
                 _changes,
                 selectedItemCount,
                 GetSelectedItemAt);
@@ -61,7 +61,7 @@ namespace FluentAvalonia.UI.Controls
             int index)
         {
             static int GetCount(SelectionNodeOperation info) => info.DeselectedCount;
-            static List<IndexRange>? GetRanges(SelectionNodeOperation info) => info.DeselectedRanges;
+            static List<IndexRange> GetRanges(SelectionNodeOperation info) => info.DeselectedRanges;
             return GetIndexAt(infos, index, x => GetCount(x), x => GetRanges(x));
         }
 
@@ -70,25 +70,25 @@ namespace FluentAvalonia.UI.Controls
             int index)
         {
             static int GetCount(SelectionNodeOperation info) => info.SelectedCount;
-            static List<IndexRange>? GetRanges(SelectionNodeOperation info) => info.SelectedRanges;
+            static List<IndexRange> GetRanges(SelectionNodeOperation info) => info.SelectedRanges;
             return GetIndexAt(infos, index, x => GetCount(x), x => GetRanges(x));
         }
 
-        private object? GetDeselectedItemAt(
+        private object GetDeselectedItemAt(
             List<SelectionNodeOperation> infos,
             int index)
         {
             static int GetCount(SelectionNodeOperation info) => info.Items != null ? info.DeselectedCount : 0;
-            static List<IndexRange>? GetRanges(SelectionNodeOperation info) => info.DeselectedRanges;
+            static List<IndexRange> GetRanges(SelectionNodeOperation info) => info.DeselectedRanges;
             return GetItemAt(infos, index, x => GetCount(x), x => GetRanges(x));
         }
 
-        private object? GetSelectedItemAt(
+        private object GetSelectedItemAt(
             List<SelectionNodeOperation> infos,
             int index)
         {
             static int GetCount(SelectionNodeOperation info) => info.Items != null ? info.SelectedCount : 0;
-            static List<IndexRange>? GetRanges(SelectionNodeOperation info) => info.SelectedRanges;
+            static List<IndexRange> GetRanges(SelectionNodeOperation info) => info.SelectedRanges;
             return GetItemAt(infos, index, x => GetCount(x), x => GetRanges(x));
         }
 
@@ -96,7 +96,7 @@ namespace FluentAvalonia.UI.Controls
             List<SelectionNodeOperation> infos,
             int index,
             Func<SelectionNodeOperation, int> getCount,
-            Func<SelectionNodeOperation, List<IndexRange>?> getRanges)
+            Func<SelectionNodeOperation, List<IndexRange>> getRanges)
         {
             var currentIndex = 0;
             IndexPath path = default;
@@ -118,14 +118,14 @@ namespace FluentAvalonia.UI.Controls
             return path;
         }
 
-        private object? GetItemAt(
+        private object GetItemAt(
             List<SelectionNodeOperation> infos,
             int index,
             Func<SelectionNodeOperation, int> getCount,
-            Func<SelectionNodeOperation, List<IndexRange>?> getRanges)
+            Func<SelectionNodeOperation, List<IndexRange>> getRanges)
         {
             var currentIndex = 0;
-            object? item = null;
+            object item = null;
 
             foreach (var info in infos)
             {
@@ -144,7 +144,7 @@ namespace FluentAvalonia.UI.Controls
             return item;
         }
 
-        private int GetIndexAt(List<IndexRange>? ranges, int index)
+        private int GetIndexAt(List<IndexRange> ranges, int index)
         {
             var currentIndex = 0;
 

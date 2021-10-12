@@ -2176,7 +2176,7 @@ namespace FluentAvalonia.UI.Controls
             // If we decide we want it to animate open/closed when you resize the
             // window we'll have to change how we figure out the initial state
             // instead of this:
-            _initialListSizeStateSet = false; // see UpdateIsClosedCompact
+            //_initialListSizeStateSet = false; // see UpdateIsClosedCompact
 
             NavigationViewDisplayMode dMode = NavigationViewDisplayMode.Compact;
 
@@ -2229,7 +2229,7 @@ namespace FluentAvalonia.UI.Controls
             if (prev == NavigationViewDisplayMode.Expanded &&
                 dMode == NavigationViewDisplayMode.Compact)
             {
-                _initialListSizeStateSet = false;
+                //_initialListSizeStateSet = false;
                 ClosePane();
             }
 
@@ -3329,7 +3329,7 @@ namespace FluentAvalonia.UI.Controls
             //PseudoClasses.Set(":notclosedcompact", !_isClosedCompact); (default)
 
 
-            _initialListSizeStateSet = true;
+            //_initialListSizeStateSet = true;
 
             PseudoClasses.Set(":listsizecompact", _isClosedCompact);
             //PseudoClasses.Set(":listsizefull", !_isClosedCompact); (default)

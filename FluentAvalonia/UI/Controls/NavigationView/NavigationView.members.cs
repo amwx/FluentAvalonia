@@ -679,7 +679,7 @@ namespace FluentAvalonia.UI.Controls
         bool _wasForceClosed;
         bool _isClosedCompact;
         bool _blockNextClosingEvent;
-        bool _initialListSizeStateSet;
+        //bool _initialListSizeStateSet;
 		bool _isLeftPaneTitleEmpty;
 
         private TopNavigationViewDataProvider _topDataProvider;
