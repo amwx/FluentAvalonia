@@ -21,8 +21,6 @@
 		<x:Double x:Key="NumberBoxPopupHorizonalOffset">-21</x:Double>
 		<x:Double x:Key="NumberBoxPopupVerticalOffset">-27</x:Double>
 		<x:Double x:Key="NumberBoxPopupShadowDepth">16</x:Double>
-		<Thickness x:Key="NumberBoxPopupBorderThickness">1</Thickness>
-		<Thickness x:Key="NumberBoxPopupSpinButtonBorderThickness">0</Thickness>
 
 		<Thickness x:Key="NumberBoxPopupIndicatorMargin">0,0,8,0</Thickness>
 	</Styles.Resources>
@@ -36,6 +34,7 @@
 		<Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
 		<Setter Property="BorderThickness" Value="{DynamicResource NumberBoxSpinButtonBorderThickness}"/>
 		<Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<ContentPresenter Background="{TemplateBinding Background}"
@@ -43,7 +42,7 @@
 								  BorderThickness="{TemplateBinding BorderThickness}"
 								  TextBlock.Foreground="{TemplateBinding Foreground}"
 								  Padding="{TemplateBinding Padding}"
-								  CornerRadius="{DynamicResource ControlCornerRadius}"
+								  CornerRadius="{TemplateBinding CornerRadius}"
 								  Content="{TemplateBinding Content}"
 								  HorizontalContentAlignment="Center"
 								  VerticalContentAlignment="Center"/>
@@ -81,7 +80,8 @@
 								BorderThickness="{TemplateBinding BorderThickness}"
 								MinWidth="{TemplateBinding MinWidth}"
 								MinHeight="{TemplateBinding MinHeight}"
-								RenderTransform="scaleY(-1)" />
+								RenderTransform="scaleY(-1)"
+								CornerRadius="{TemplateBinding CornerRadius}" />
 						
 						<Border Margin="{TemplateBinding BorderThickness}">
 							<Grid ColumnDefinitions="Auto,*,Auto" >
@@ -146,6 +146,7 @@
 		<Setter Property="SelectionHighlightColor" Value="{DynamicResource TextControlSelectionHighlightColor}" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<Grid Name="Root" RowDefinitions="Auto,*,Auto"
@@ -172,7 +173,8 @@
                              FontWeight="{TemplateBinding FontWeight}"
                              FontFamily="{TemplateBinding FontFamily}"
                              TextAlignment="{TemplateBinding TextAlignment}"
-							 Classes="NumberBoxTextBoxStyle clearButton"/>
+							 Classes="NumberBoxTextBoxStyle clearButton"
+							 CornerRadius="{TemplateBinding CornerRadius}"/>
 
 					<Popup Name="UpDownPopup" Focusable="False"
                            WindowManagerAddShadowHint="False"

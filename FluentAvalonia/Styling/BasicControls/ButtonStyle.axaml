@@ -13,17 +13,22 @@
                 <Button Content="Button" />
                 <Button Content="Button" Classes="accent" />
                 <Button Content="Button" IsEnabled="False" />
+				<Border Background="Gray" Height="1" />
+				<Button Content="ui|Button" />
+				<Button Content="ui|Button" Classes="accent" />
+				<Button Content="ui|Button" IsEnabled="False" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
 
     <Styles.Resources>
-        <Thickness x:Key="ButtonBorderThemeThickness">1,1,1,1</Thickness>
         <Thickness x:Key="ButtonPadding">11,5,11,6</Thickness>        
     </Styles.Resources>
 
-    <Style Selector="Button">
+	<!-- This style applies to BOTH Avalonia.Controls.Button & FluentAvalonia.UI.Controls -->
+
+    <Style Selector="Button, ui|Button">
         <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
@@ -36,6 +41,7 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -45,7 +51,7 @@
                                   Background="{TemplateBinding Background}"
                                   Content="{TemplateBinding Content}"
                                   ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  CornerRadius="{DynamicResource ControlCornerRadius}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
                                   Padding="{TemplateBinding Padding}"
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -53,7 +59,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             RenderTransform="scaleY(-1)"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             IsHitTestVisible="False"
                             />
                 </Panel>
@@ -61,71 +67,85 @@
         </Setter>
     </Style>
 
-    <Style Selector="Button:pointerover /template/ Border#BorderElement">
+    <Style Selector="Button:pointerover /template/ Border#BorderElement,
+				  ui|Button:pointerover /template/ Border#BorderElement">
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
     </Style>
-    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+				  ui|Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
         <!--<Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />-->
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
     </Style>
 
-    <Style Selector="Button:pressed /template/ Border#BorderElement">
+    <Style Selector="Button:pressed /template/ Border#BorderElement,
+		          ui|Button:pressed /template/ Border#BorderElement">
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
     </Style>
-    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter,
+		          ui|Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
         <!--<Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />-->
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonForegroundPressed}" />
     </Style>
     
-    <Style Selector="Button:disabled /template/ Border#BorderElement">
+    <Style Selector="Button:disabled /template/ Border#BorderElement,
+		          ui|Button:disabled /template/ Border#BorderElement">
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
     </Style>
-    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter,
+		          ui|Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
         <!--<Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />-->
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
     </Style>
 
     <!-- Accent -->
-    <Style Selector="Button.accent /template/ Border#BorderElement">
+    <Style Selector="Button.accent /template/ Border#BorderElement,
+		          ui|Button.accent /template/ Border#BorderElement">
         <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}" />
     </Style>
-    <Style Selector="Button.accent /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.accent /template/ ContentPresenter#PART_ContentPresenter,
+		          ui|Button.accent /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
         <!--<Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}" />-->
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource AccentButtonForeground}" />
     </Style>
 
-    <Style Selector="Button.accent:pointerover /template/ Border#BorderElement">
+    <Style Selector="Button.accent:pointerover /template/ Border#BorderElement,
+		          ui|Button.accent:pointerover /template/ Border#BorderElement">
         <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPointerOver}" />
     </Style>
-    <Style Selector="Button.accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.accent:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+		          ui|Button.accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}" />
         <!--<Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPointerOver}" />-->
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource AccentButtonForegroundPointerOver}" />
     </Style>
 
-    <Style Selector="Button.accent:pressed /template/ Border#BorderElement">
+    <Style Selector="Button.accent:pressed /template/ Border#BorderElement,
+		          ui|Button.accent:pressed /template/ Border#BorderElement">
         <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPressed}" />
     </Style>
-    <Style Selector="Button.accent:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.accent:pressed /template/ ContentPresenter#PART_ContentPresenter,
+		          ui|Button.accent:pressed /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPressed}" />
         <!--<Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPressed}" />-->
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource AccentButtonForegroundPressed}" />
     </Style>
 
-    <Style Selector="Button.accent:disabled /template/ Border#BorderElement">
+    <Style Selector="Button.accent:disabled /template/ Border#BorderElement,
+		          ui|Button.accent:disabled /template/ Border#BorderElement">
         <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushDisabled}" />
     </Style>
-    <Style Selector="Button.accent:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.accent:disabled /template/ ContentPresenter#PART_ContentPresenter,
+		          ui|Button.accent:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundDisabled}" />
         <!--<Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushDisabled}" />-->
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource AccentButtonForegroundDisabled}" />
     </Style>
 
-    <Style Selector="Button:pressed, RepeatButton:pressed, ToggleButton:pressed">
+    <Style Selector="Button:pressed, RepeatButton:pressed, ToggleButton:pressed, ui|Button:pressed">
         <Setter Property="RenderTransform" Value="{x:Null}" />
     </Style>
     

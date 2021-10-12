@@ -11,14 +11,13 @@
     </Design.PreviewWith>
 
     <Styles.Resources>
-        <Thickness x:Key="ListBoxBorderThemeThickness">0</Thickness>
         <Thickness x:Key="ListBoxItemPadding">12,9,12,12</Thickness>
-        <x:Double x:Key="ListViewItemMinWidth">88</x:Double>
-        <x:Double x:Key="ListViewItemMinHeight">40</x:Double>
     </Styles.Resources>
-    
+
+
+    <!-- ListBox comes from WinUI ListBox style -->
     <Style Selector="ListBox">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ListBoxForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource ListBoxForeground}" />
         <Setter Property="Background" Value="{DynamicResource ListBoxBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ListBoxBorder}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ListBoxBorderThemeThickness}" />
@@ -45,17 +44,18 @@
         </Setter>
     </Style>
 
-    <!-- From ListViewItem_21h1 
-    (hasn't been officially updated yet, but pending TreeView PR gives idea
-    what this will look like, and it's based on that for now...
-    TODO when ListView Visual Update occurs)
+    <!-- 
+    ListBoxItem styles use the WinUI ListViewItem style, however, WinUI is missing a bunch of 
+	necessary parts in their public release... (primarily missing ListViewItemPresenter style)
+	So, this is faked to look like what it should
+	Use the 21h1 Styles!
     -->
     <Style Selector="ListBoxItem">
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="Background" Value="{DynamicResource ListViewItemBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource ListViewItemForeground}" />
-        <Setter Property="Padding" Value="16,0,12,0" />
+        <Setter Property="Padding" Value="12,0,12,0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="MinWidth" Value="{DynamicResource ListViewItemMinWidth}" />
@@ -64,26 +64,43 @@
             <ControlTemplate>
                 <Panel>
                     <ContentPresenter Name="PART_ContentPresenter"
-                          Background="{TemplateBinding Background}"
-                          BorderBrush="{TemplateBinding BorderBrush}"
-                          BorderThickness="{TemplateBinding BorderThickness}"
-                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                          Content="{TemplateBinding Content}"
-                          Padding="{TemplateBinding Padding}"
-                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          CornerRadius="{DynamicResource ControlCornerRadius}"/>
-                    
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      CornerRadius="{DynamicResource ControlCornerRadius}"
+									  Margin="2"/>
+
+					<!-- added 1px left margin, otherwise we can get strange artifacts while
+						 animating, I'm guessing from bad invalidation rects? -->
                     <Border Name="SelectionIndicator"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Width="3"
                             Height="16"
-                            CornerRadius="{DynamicResource ControlCornerRadius}" />
+							Margin="1 0 0 0"
+                            CornerRadius="{DynamicResource ControlCornerRadius}"
+							Background="{DynamicResource AccentFillColorDefaultBrush}" />
                 </Panel>
             </ControlTemplate>
         </Setter>
     </Style>
+	<Style Selector="ListBoxItem /template/ Border#SelectionIndicator">
+		<Setter Property="IsVisible" Value="False" />
+		<Setter Property="RenderTransform" Value="scaleY(0)" />
+		<Setter Property="Transitions">
+			<Transitions>
+				<TransformOperationsTransition Duration="00:00:00.167"
+											   Property="RenderTransform"
+											   Easing="0,0 0,1"/>
+			</Transitions>
+		</Setter>
+	</Style>
+	
     <Style Selector="ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="TextBlock.FontWeight" Value="Normal" />
         <Setter Property="TextBlock.FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
@@ -119,7 +136,8 @@
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
     </Style>
     <Style Selector="ListBoxItem:selected /template/ Border#SelectionIndicator">
-        <Setter Property="Background" Value="{DynamicResource ListViewItemSelectionIndicatorBrush}" />
+        <Setter Property="IsVisible" Value="True" />
+		<Setter Property="RenderTransform" Value="scaleY(1)" />
     </Style>
 
     <!--  Selected Unfocused State (not in WinUI, so keep as Selected) -->

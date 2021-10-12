@@ -16,10 +16,6 @@
         </Border>
     </Design.PreviewWith>
 
-    <Styles.Resources>
-        <Thickness x:Key="ToggleButtonBorderThemeThickness">1</Thickness>     
-    </Styles.Resources>
-
     <Style Selector="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource ToggleButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource ToggleButtonForeground}" />
@@ -33,6 +29,7 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -42,7 +39,7 @@
                                   Background="{TemplateBinding Background}"
                                   Content="{TemplateBinding Content}"
                                   ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  CornerRadius="{DynamicResource ControlCornerRadius}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
                                   Padding="{TemplateBinding Padding}"
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -50,7 +47,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             RenderTransform="scaleY(-1)"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             IsHitTestVisible="False"
                             />
                 </Panel>

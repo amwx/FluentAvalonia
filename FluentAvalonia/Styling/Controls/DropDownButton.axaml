@@ -27,13 +27,14 @@
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
                      <!--Elevation brush hack-->
                     <Border Name="Root"
                             Background="{TemplateBinding Background}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="{TemplateBinding Padding}">
                         <Grid Name="InnerGrid"
                               ColumnDefinitions="*,Auto">
@@ -61,7 +62,7 @@
                             IsHitTestVisible="False"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             RenderTransform="scaleY(-1)"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"/>
+                            CornerRadius="{TemplateBinding CornerRadius}"/>
                 </Panel>
             </ControlTemplate>
         </Setter>

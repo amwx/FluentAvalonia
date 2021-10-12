@@ -49,6 +49,7 @@
 		<Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
 		<Setter Property="FontWeight" Value="SemiBold" />
 		<Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<ContentPresenter Name="ContentPresenter"
@@ -61,7 +62,7 @@
 								  Padding="{TemplateBinding Padding}"
 								  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
 								  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-								  CornerRadius="{DynamicResource ControlCornerRadius}"/>
+								  CornerRadius="{TemplateBinding CornerRadius}"/>
 			</ControlTemplate>
 		</Setter>
 	</Style>

@@ -107,12 +107,13 @@
         <Setter Property="Margin" Value="5" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <ContentPresenter Content="{TemplateBinding Content}"
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  CornerRadius="{DynamicResource ControlCornerRadius}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
                                   Background="{TemplateBinding Background}"
                                   BorderBrush="{TemplateBinding BorderBrush}"
                                   BorderThickness="{TemplateBinding BorderThickness}"
@@ -139,13 +140,14 @@
 
     <Style Selector="ui|InfoBar">
         <Setter Property="Background" Value="Transparent" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="ContentRoot"
                         VerticalAlignment="Top"
                         BorderBrush="{DynamicResource InfoBarBorderBrush}"
                         BorderThickness="{DynamicResource InfoBarBorderThickness}"
-                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     
                     <!-- Background is used here so that it overrides the severity status color if set. 
                     Padding="{StaticResource InfoBarContentRootPadding}" applied as margin on grid b/c no Padding
@@ -153,10 +155,9 @@
                     <Panel>
                         <!-- use separate border for Background b/c no margin -->
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="{DynamicResource ControlCornerRadius}"/>
+                                CornerRadius="{TemplateBinding CornerRadius}"/>
                         <Grid HorizontalAlignment="Stretch"
-                              MinHeight="{DynamicResource InfoBarMinHeight}"
-                          
+                              MinHeight="{DynamicResource InfoBarMinHeight}"                          
                               Margin="{StaticResource InfoBarContentRootPadding}"
                               ColumnDefinitions="Auto,*,Auto"
                               RowDefinitions="Auto,Auto">

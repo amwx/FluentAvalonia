@@ -17,10 +17,6 @@
         </Border>
     </Design.PreviewWith>
 
-    <Styles.Resources>
-        <x:Double x:Key="RadioButtonBorderThemeThickness">1</x:Double>    
-    </Styles.Resources>
-
     <Style Selector="RadioButton">
         <Setter Property="Background" Value="{DynamicResource RadioButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource RadioButtonForeground}" />
@@ -33,13 +29,13 @@
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="MinWidth" Value="120" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="Root"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                        BorderThickness="{TemplateBinding BorderThickness}">
 
                     <Grid ColumnDefinitions="20,*">
 

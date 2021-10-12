@@ -35,9 +35,8 @@
     </Styles.Resources>
 
     <!--
-    Since WinUI deprecated 'Pivot'for whatever reason, the brushes here are not
-    lightweight styled and just placed in what seems appropriate to the new
-    WinUI styles
+    This control remains generally unthemed, since MS deprecated, then un-deprecated it
+	but the resources still reference v1 brushes...SIGH
     -->
 
     <Style Selector="TabControl">

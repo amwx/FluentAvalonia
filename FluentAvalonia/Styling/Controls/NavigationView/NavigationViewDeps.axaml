@@ -95,6 +95,7 @@
 		<CornerRadius x:Key="NavigationViewContentGridCornerRadius">8,0,0,0</CornerRadius>
 		<CornerRadius x:Key="TopNavigationViewContentGridCornerRadius">0</CornerRadius>
 		<CornerRadius x:Key="NavigationViewMinimalContentGridCornerRadius">0</CornerRadius>
+		<Thickness x:Key="NavigationViewMinimalContentMargin">0</Thickness>
     </Styles.Resources>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - -->

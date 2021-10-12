@@ -1,10 +1,9 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sys="clr-namespace:System;assembly=netstandard"
-             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=netstandard"
+        xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
         <Border Padding="20"
@@ -46,23 +45,13 @@
     </Design.PreviewWith>
 
     <Styles.Resources>
-		<Thickness x:Key="MenuFlyoutPresenterBorderThemeThickness">1</Thickness>
-
-		<Thickness x:Key="MenuFlyoutItemBorderThickness">0</Thickness>
-		<Thickness x:Key="MenuFlyoutSubItemBorderThickness">0</Thickness>
-
-		
-        <Thickness x:Key="MenuBarItemBorderThickness">0</Thickness>
         <Thickness x:Key="MenuBarItemButtonPadding">10,4,10,4</Thickness>
         <Thickness x:Key="MenuBarItemMargin">4,4,4,4</Thickness>
-
         <x:Double x:Key="MenuFlyoutSeparatorHeight">1</x:Double>
         <Thickness x:Key="MenuFlyoutPresenterThemePadding">0,2,0,2</Thickness>
         <x:Double x:Key="MenuFlyoutThemeMinHeight">32</x:Double>
         <Thickness x:Key="MenuFlyoutItemChevronMargin">24,0,0,0</Thickness>
-        <Thickness x:Key="MenuFlyoutItemPlaceholderThemeThickness">28,0,0,0</Thickness>
         <Thickness x:Key="MenuFlyoutSeparatorThemePadding">-4,1,-4,1</Thickness>
-        <Thickness x:Key="MenuFlyoutItemDoublePlaceholderThemeThickness">56,0,0,0</Thickness>
         <Thickness x:Key="MenuFlyoutItemMargin">4,2,4,2</Thickness>
         <Thickness x:Key="MenuFlyoutItemThemePadding">11,8,11,9</Thickness>
         <Thickness x:Key="MenuFlyoutItemThemePaddingNarrow">11,4,11,5</Thickness>
@@ -73,6 +62,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource MenuBarItemBorderBrush}"/>
         <Setter Property="BorderThickness" Value="{DynamicResource MenuBarItemBorderThickness}"/>
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -81,8 +71,8 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
-							Margin="{StaticResource MenuFlyoutItemMargin}">
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Margin="{StaticResource MenuFlyoutItemMargin}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"
@@ -143,7 +133,7 @@
                                 HorizontalAlignment="Stretch"
                                 CornerRadius="{DynamicResource OverlayCornerRadius}">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Auto">
+                                          VerticalScrollBarVisibility="Auto">
                                 <ItemsPresenter Name="PART_ItemsPresenter"
                                                 Items="{TemplateBinding Items}"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"
@@ -167,7 +157,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <Panel>
                         <ContentPresenter Name="PART_HeaderPresenter"
                                           Content="{TemplateBinding Header}"
