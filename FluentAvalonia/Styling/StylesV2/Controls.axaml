@@ -73,4 +73,6 @@
 	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarElementContainer.axaml" />
 
 	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarFlyoutCommandBar.axaml" />
+	
+	<StyleInclude Source="/Styling/Controls/InfoBadgeStyles.axaml" />
 </Styles>

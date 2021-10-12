@@ -1807,7 +1807,23 @@
 		<x:String x:Key="SplitViewPaneAnimationOpenPreDuration">00:00:00.19999</x:String>
 		<x:String x:Key="SplitViewPaneAnimationCloseDuration">00:00:00.1</x:String>
 		<CornerRadius x:Key="SplitViewPaneRootCornerRadius">0</CornerRadius>
+
 		
+
+		<!-- InfoBadge -->
+		<StaticResource x:Key="InfoBadgeForeground" ResourceKey="TextOnAccentFillColorPrimaryBrush"/>
+		<StaticResource x:Key="InfoBadgeBackground" ResourceKey="AccentFillColorDefaultBrush"/>
+
+		<x:Double x:Key="InfoBadgeMinHeight">4</x:Double>
+		<x:Double x:Key="InfoBadgeMinWidth">4</x:Double>
+		<x:Double x:Key="InfoBadgeMaxHeight">16</x:Double>
+		<x:Double x:Key="InfoBadgeValueFontSize">11</x:Double>
+		<x:Double x:Key="InfoBadgeIconHeight">9</x:Double>
+		<x:Double x:Key="InfoBadgeIconWidth">12</x:Double>
+		<Thickness x:Key="InfoBadgePadding">0,0,0,0</Thickness>
+		<Thickness x:Key="IconInfoBadgeFontIconMargin">4,0,4,2</Thickness>
+		<Thickness x:Key="ValueInfoBadgeTextMargin">4,0,4,2</Thickness>
+		<Thickness x:Key="IconInfoBadgeIconMargin">4,4,4,4</Thickness>
 		
 	</Styles.Resources>
     
