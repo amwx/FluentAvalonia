@@ -40,10 +40,6 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<string> PlaceholderTextProperty =
             AvaloniaProperty.Register<ComboBox, string>(nameof(PlaceholderText));
 
-        public static readonly DirectProperty<ComboBox, bool> IsTextSearchEnabledProperty =
-           AvaloniaProperty.RegisterDirect<ComboBox, bool>("IsTextSearchEnabled",
-               x => x.IsTextSearchEnabled, (x, v) => x.IsTextSearchEnabled = v);
-
         public static readonly StyledProperty<bool> IsLightDismissEnabledProperty =
             AvaloniaProperty.Register<ComboBox, bool>("IsLightDismissEnabled", true);
 
@@ -118,12 +114,6 @@ namespace FluentAvalonia.UI.Controls
         {
             get => GetValue(IsLightDismissEnabledProperty);
             set => SetValue(IsLightDismissEnabledProperty, value);
-        }
-
-        public bool IsTextSearchEnabled
-        {
-            get => _isTextSearchEnabled;
-            set => SetAndRaise(IsTextSearchEnabledProperty, ref _isTextSearchEnabled, value);
         }
 
         [NotImplemented]
@@ -352,7 +342,7 @@ namespace FluentAvalonia.UI.Controls
 
 
             if (e.Key == Key.F4 ||
-                ((e.Key == Key.Down || e.Key == Key.Up) && e.KeyModifiers.HasFlagCustom(KeyModifiers.Alt)))
+                ((e.Key == Key.Down || e.Key == Key.Up) && e.KeyModifiers.HasAllFlags(KeyModifiers.Alt)))
             {
                 _wasDropDownOpenedViaKeyboard = true;
                 IsDropDownOpen = !IsDropDownOpen;
@@ -892,7 +882,7 @@ namespace FluentAvalonia.UI.Controls
 
             if (ItemCount > 0)
             {
-                if (_isTextSearchEnabled && _textBox != null && user)
+                if (IsTextSearchEnabled && _textBox != null && user)
                 {
                     int curLen = _textBox.Text.Length;
                     int selStart = TextBoxSelectionStart;
@@ -1052,7 +1042,6 @@ namespace FluentAvalonia.UI.Controls
 
 
         private bool _isDropDownOpen;
-        private bool _isTextSearchEnabled = true;
         private bool _isSelectionBoxHighlighted = true;
         
         

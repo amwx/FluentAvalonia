@@ -11,15 +11,6 @@ namespace FluentAvalonia.UI.Controls
 	{
 		Type IStyleable.StyleKey => typeof(CommandBarOverflowPresenter);
 
-		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			   Border.CornerRadiusProperty.AddOwner<CommandBarOverflowPresenter>();
-
-		public CornerRadius CornerRadius
-		{
-			get => GetValue(CornerRadiusProperty);
-			set => SetValue(CornerRadiusProperty, value);
-		}
-
 		protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
 		{
 			base.ItemsChanged(e);

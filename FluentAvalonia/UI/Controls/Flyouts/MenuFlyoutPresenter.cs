@@ -21,15 +21,6 @@ namespace FluentAvalonia.UI.Controls
 		public MenuFlyoutPresenter(IMenuInteractionHandler handler)
 			: base(handler) { }
 
-		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			   Border.CornerRadiusProperty.AddOwner<FlyoutPresenter>();
-
-		public CornerRadius CornerRadius
-		{
-			get => GetValue(CornerRadiusProperty);
-			set => SetValue(CornerRadiusProperty, value);
-		}
-
 		Type IStyleable.StyleKey => typeof(Avalonia.Controls.MenuFlyoutPresenter);
 
 		public override void Close()

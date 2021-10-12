@@ -26,9 +26,6 @@ namespace FluentAvalonia.UI.Controls
 			AvaloniaProperty.RegisterDirect<CommandBarButton, int>(nameof(DynamicOverflowOrder),
 				x => x.DynamicOverflowOrder, (x, v) => x.DynamicOverflowOrder = v);
 
-		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			Border.CornerRadiusProperty.AddOwner<CommandBarButton>();
-
 		public static readonly StyledProperty<bool> IsCompactProperty =
 			AvaloniaProperty.Register<CommandBarButton, bool>(nameof(IsCompact));
 
@@ -66,12 +63,6 @@ namespace FluentAvalonia.UI.Controls
 		{
 			get => _dynamicOverflowOrder;
 			set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
-		}
-
-		public CornerRadius CornerRadius
-		{
-			get => GetValue(CornerRadiusProperty);
-			set => SetValue(CornerRadiusProperty, value);
 		}
 
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
