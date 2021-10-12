@@ -273,7 +273,7 @@ namespace FluentAvalonia.UI.Controls
         {
             for (int i = 0; i < indicesInOriginalVector.Count; i++)
             {
-                if (indicesInOriginalVector[i] > indexInOriginalVector)
+                if (indicesInOriginalVector[i] >= indexInOriginalVector) // WinUI #5558
                 {
                     indicesInOriginalVector[i]++;
                 }

@@ -989,6 +989,7 @@ namespace FluentAvalonia.UI.Controls
 
         private void OnSizeChanged(Rect r)
         {
+            UpdateOpenPaneWidth(r.Width);
             UpdateAdaptiveLayout(r.Width);
             UpdateTitleBarPadding();
             UpdateBackAndCloseButtonsVisibility();
@@ -2186,7 +2187,7 @@ namespace FluentAvalonia.UI.Controls
                 {
                     dMode = NavigationViewDisplayMode.Expanded;
                 }
-                else if (width < CompactModeThresholdWidth)
+                else if (width > 0 && width < CompactModeThresholdWidth)
                 {
                     dMode = NavigationViewDisplayMode.Minimal;
                 }
@@ -2229,6 +2230,11 @@ namespace FluentAvalonia.UI.Controls
                 dMode == NavigationViewDisplayMode.Compact)
             {
                 _initialListSizeStateSet = false;
+                ClosePane();
+            }
+
+            if (dMode == NavigationViewDisplayMode.Minimal)
+            {
                 ClosePane();
             }
         }
@@ -3385,7 +3391,8 @@ namespace FluentAvalonia.UI.Controls
 				{ 
 					third();
 
-					_paneTitleOnTopPane.IsVisible = !string.IsNullOrEmpty(PaneTitle) && PaneTitle.Length != 0;
+                    if (_paneTitleOnTopPane != null)
+					    _paneTitleOnTopPane.IsVisible = !string.IsNullOrEmpty(PaneTitle) && PaneTitle.Length != 0;
 				}
             }
         }
@@ -3421,7 +3428,10 @@ namespace FluentAvalonia.UI.Controls
         {
             if (_appliedTemplate)
             {
-                _topDataProvider.InvalidWidthCache();
+                if (MenuItems == null) // WinUI #5558
+                {
+                    _topDataProvider.InvalidWidthCache();
+                }
                 InvalidateMeasure();
             }
         }
@@ -4020,7 +4030,15 @@ namespace FluentAvalonia.UI.Controls
             return null;
         }
 
+        private void UpdateOpenPaneWidth(double width) // WinUI #5800
+        {
+            if (!IsTopNavigationView && _splitView != null)
+            {
+                _openPaneWidth = Math.Max(0, Math.Min(width, OpenPaneLength));
 
+                TemplateSettings.OpenPaneWidth = _openPaneWidth;
+            }
+        }
 
 
     }

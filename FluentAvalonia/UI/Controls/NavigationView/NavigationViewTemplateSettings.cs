@@ -42,6 +42,9 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<bool> TopPaneVisibilityProperty =
             AvaloniaProperty.Register<NavigationViewTemplateSettings, bool>(nameof(TopPaneVisibility), false);
 
+        public static readonly StyledProperty<double> OpenPaneWidthProperty =
+            AvaloniaProperty.Register<NavigationViewTemplateSettings, double>(nameof(OpenPaneWidth), 320d);
+
 
         public bool BackButtonVisibility
         {
@@ -107,6 +110,12 @@ namespace FluentAvalonia.UI.Controls
         {
             get => GetValue(TopPaneVisibilityProperty);
             internal set => SetValue(TopPaneVisibilityProperty, value);
+        }
+
+        public double OpenPaneWidth // WinUI #5800
+        {
+            get => GetValue(OpenPaneWidthProperty);
+            internal set => SetValue(OpenPaneWidthProperty, value);
         }
     }
 }
