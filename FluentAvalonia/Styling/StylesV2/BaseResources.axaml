@@ -18,10 +18,7 @@
         <x:Double x:Key="FlyoutThemeMaxWidth">456</x:Double>
         <x:Double x:Key="FlyoutThemeMinHeight">40</x:Double>
         <x:Double x:Key="FlyoutThemeMinWidth">96</x:Double>
-
-        <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
-        <Thickness x:Key="TextControlBorderThemeThicknessFocused">2</Thickness>
-        <Thickness x:Key="TextControlThemePadding">10,6,6,5</Thickness>
+        
         <x:Double x:Key="TextControlThemeMinHeight">32</x:Double>
         <x:Double x:Key="TextControlThemeMinWidth">64</x:Double>
 

@@ -42,7 +42,6 @@
 
 
     <!-- NEW CONTROLS -->
-    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/ButtonStyle.axaml" />
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationView.axaml" />
 
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/FlyoutPresenterStyle.axaml" />
