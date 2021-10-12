@@ -51,6 +51,9 @@ namespace FluentAvalonia.UI.Controls
             AvaloniaProperty.RegisterDirect<NavigationViewItem, bool>(nameof(SelectsOnInvoked),
                 x => x.SelectsOnInvoked, (x, v) => x.SelectsOnInvoked = v);
 
+        public static readonly StyledProperty<InfoBadge> InfoBadgeProperty =
+            AvaloniaProperty.Register<NavigationViewItem, InfoBadge>(nameof(InfoBadge));
+
 
         public double CompactPaneLength
         {
@@ -110,6 +113,12 @@ namespace FluentAvalonia.UI.Controls
         {
             get => _selectsOnInvoked;
             set => SetAndRaise(SelectsOnInvokedProperty, ref _selectsOnInvoked, value);
+        }
+
+        public InfoBadge InfoBadge
+        {
+            get => GetValue(InfoBadgeProperty);
+            set => SetValue(InfoBadgeProperty, value);
         }
 
         //HELPER PROPERTIES
@@ -254,6 +263,10 @@ namespace FluentAvalonia.UI.Controls
             else if (change.Property == ContentProperty)
             {
                 OnContentChanged(change);
+            }
+            else if (change.Property == InfoBadgeProperty)
+            {
+                UpdateVisualStateForInfoBadge();
             }
         }
 
@@ -511,6 +524,8 @@ namespace FluentAvalonia.UI.Controls
 
             UpdateVisualStateForIconAndContent(showIcon, showContent);
 
+            UpdateVisualStateForInfoBadge();
+
             UpdateVisualStateForChevron();
         }
 
@@ -657,6 +672,12 @@ namespace FluentAvalonia.UI.Controls
 
             _presenter = null;
             _flyoutContentGrid = null;
+        }
+
+        private void UpdateVisualStateForInfoBadge()
+        {
+            if (_presenter != null)
+                ((IPseudoClasses)_presenter.Classes).Set(":infobadge", InfoBadge != null);
         }
 
         public override string ToString()

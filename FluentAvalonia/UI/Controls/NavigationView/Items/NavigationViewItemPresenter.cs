@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
@@ -28,6 +29,9 @@ namespace FluentAvalonia.UI.Controls.Primitives
         public static readonly StyledProperty<NavigationViewItemPresenterTemplateSettings> TemplateSettingsProperty =
             AvaloniaProperty.Register<NavigationViewItemPresenter, NavigationViewItemPresenterTemplateSettings>(nameof(TemplateSettings));
 
+        public static readonly StyledProperty<InfoBadge> InfoBadgeProperty =
+            NavigationViewItem.InfoBadgeProperty.AddOwner<NavigationViewItemPresenter>();
+
         public IconElement Icon
         {
             get => GetValue(IconProperty);
@@ -38,6 +42,12 @@ namespace FluentAvalonia.UI.Controls.Primitives
         {
             get => GetValue(TemplateSettingsProperty);
             set => SetValue(TemplateSettingsProperty, value);
+        }
+
+        public InfoBadge InfoBadge
+        {
+            get => GetValue(InfoBadgeProperty);
+            set => SetValue(InfoBadgeProperty, value);
         }
 
         public NavigationViewItem GetNVI
@@ -59,6 +69,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
             //This doesn't exist in the TopPane template, so use Find and allow it to be null
             _contentGrid = e.NameScope.Find<Panel>("PresenterContentRootGrid");
+
+            _infoBadgePresenter = e.NameScope.Find<ContentPresenter>("InfoBadgePresenter");
 
             var nvi = GetNVI;
             if (nvi != null)
@@ -133,7 +145,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
         internal void UpdateCompactPaneLength(double len, bool update)
         {
             _compactPaneLengthValue = len;
-            var content = this.Content;
+
             if (update)
             {
                 TemplateSettings.IconWidth = len;
@@ -159,6 +171,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
         private Panel _contentGrid;
         private Panel _expandCollapseChevron;
         private IControl _selectionIndicator;
+        private ContentPresenter _infoBadgePresenter;
         private double _compactPaneLengthValue = 40;
         private double _leftIndentation;
     }

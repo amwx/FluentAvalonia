@@ -73,6 +73,7 @@
                 <Grid Name="NVIRootGrid" RowDefinitions="*,Auto">
                     <uip:NavigationViewItemPresenter Name="NVIPresenter"                    
                                                      Icon="{TemplateBinding Icon}"
+													 InfoBadge="{TemplateBinding InfoBadge}"
                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
                                                      Padding="{TemplateBinding Padding}"
                                                      Foreground="{TemplateBinding Foreground}"
@@ -98,9 +99,7 @@
                                 <Panel Name="FlyoutContentGrid" />
                             </Panel>                            
                         </Flyout>
-                    </FlyoutBase.AttachedFlyout>
-
-                    
+                    </FlyoutBase.AttachedFlyout>                    
                 </Grid>
             </ControlTemplate>
         </Setter>
