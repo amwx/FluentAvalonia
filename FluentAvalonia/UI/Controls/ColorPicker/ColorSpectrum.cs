@@ -27,7 +27,7 @@ namespace FluentAvalonia.UI.Controls
         }
 
         public static readonly DirectProperty<ColorSpectrum, ColorSpectrumShape> ShapeProperty =
-            AvaloniaProperty.RegisterDirect<ColorSpectrum, ColorSpectrumShape>("Shape",
+            AvaloniaProperty.RegisterDirect<ColorSpectrum, ColorSpectrumShape>(nameof(Shape),
                 x => x.Shape, (x, v) => x.Shape = v);
 
 		public static readonly StyledProperty<IBrush> BorderBrushProperty =

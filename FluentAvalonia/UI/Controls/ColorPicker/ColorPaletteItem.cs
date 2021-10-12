@@ -25,25 +25,25 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		public static readonly DirectProperty<ColorPaletteItem, Color> ColorProperty =
-			AvaloniaProperty.RegisterDirect<ColorPaletteItem, Color>("Color", x => x.Color, (x, v) => x.Color = v);
+			AvaloniaProperty.RegisterDirect<ColorPaletteItem, Color>(nameof(Color), x => x.Color, (x, v) => x.Color = v);
 
 		public static readonly StyledProperty<IBrush> BorderBrushProperty =
 			Border.BorderBrushProperty.AddOwner<ColorPaletteItem>();
 
 		public static readonly StyledProperty<IBrush> BorderBrushPointerOverProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, IBrush>("BorderBrushPointerOver");
+		 AvaloniaProperty.Register<ColorPaletteItem, IBrush>(nameof(BorderBrushPointerOver));
 
 		public static readonly StyledProperty<IBrush> BorderBrushPressedProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, IBrush>("BorderBrushPressed");
+		 AvaloniaProperty.Register<ColorPaletteItem, IBrush>(nameof(BorderBrushPressed));
 
 		public static readonly StyledProperty<Thickness> BorderThicknessProperty =
 			Border.BorderThicknessProperty.AddOwner<ColorPaletteItem>();
 
 		public static readonly StyledProperty<Thickness> BorderThicknessPointerOverProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, Thickness>("BorderThicknessPointerOver");
+		 AvaloniaProperty.Register<ColorPaletteItem, Thickness>(nameof(BorderThicknessPointerOver));
 
 		public static readonly StyledProperty<Thickness> BorderThicknessPressedProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, Thickness>("BorderThicknessPressed");
+		 AvaloniaProperty.Register<ColorPaletteItem, Thickness>(nameof(BorderThicknessPressed));
 
 		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
 			Border.CornerRadiusProperty.AddOwner<ColorPaletteItem>();

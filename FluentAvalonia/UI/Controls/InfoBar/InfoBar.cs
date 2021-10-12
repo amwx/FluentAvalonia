@@ -10,34 +10,34 @@ namespace FluentAvalonia.UI.Controls
 	public class InfoBar : ContentControl
 	{
 		public static readonly DirectProperty<InfoBar, bool> IsOpenProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, bool>("IsOpen", x => x.IsOpen, (x, v) => x.IsOpen = v);
+			AvaloniaProperty.RegisterDirect<InfoBar, bool>(nameof(IsOpen), x => x.IsOpen, (x, v) => x.IsOpen = v);
 
 		public static readonly StyledProperty<string> TitleProperty =
-			AvaloniaProperty.Register<InfoBar, string>("Title");
+			AvaloniaProperty.Register<InfoBar, string>(nameof(Title));
 
 		public static readonly StyledProperty<string> MessageProperty =
-			AvaloniaProperty.Register<InfoBar, string>("Message");
+			AvaloniaProperty.Register<InfoBar, string>(nameof(Message));
 
 		public static readonly StyledProperty<InfoBarSeverity> SeverityProperty =
-			AvaloniaProperty.Register<InfoBar, InfoBarSeverity>("Severity");
+			AvaloniaProperty.Register<InfoBar, InfoBarSeverity>(nameof(Severity));
 
 		public static readonly StyledProperty<IconSource> IconSourceProperty =
-			AvaloniaProperty.Register<InfoBar, IconSource>("IconSource");
+			AvaloniaProperty.Register<InfoBar, IconSource>(nameof(IconSource));
 
 		public static readonly StyledProperty<bool> IsIconVisibleProperty =
-			AvaloniaProperty.Register<InfoBar, bool>("IsIconVisible", true);
+			AvaloniaProperty.Register<InfoBar, bool>(nameof(IsIconVisible), true);
 
 		public static readonly StyledProperty<bool> IsClosableProperty =
-			AvaloniaProperty.Register<InfoBar, bool>("IsClosable", true);
+			AvaloniaProperty.Register<InfoBar, bool>(nameof(IsClosable), true);
 
 		public static readonly StyledProperty<ICommand> CloseButtonCommandProperty =
-			AvaloniaProperty.Register<InfoBar, ICommand>("CloseButtonCommand");
+			AvaloniaProperty.Register<InfoBar, ICommand>(nameof(CloseButtonCommand));
 
 		public static readonly DirectProperty<InfoBar, object> CloseButtonCommandParameterProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, object>("CloseButtonCommandParameter", x => x.CloseButtonCommandParameter, (x, v) => x.CloseButtonCommandParameter = v);
+			AvaloniaProperty.RegisterDirect<InfoBar, object>(nameof(CloseButtonCommandParameter), x => x.CloseButtonCommandParameter, (x, v) => x.CloseButtonCommandParameter = v);
 
 		public static readonly StyledProperty<IControl> ActionButtonProperty =
-			AvaloniaProperty.Register<InfoBar, IControl>("ActionButton");
+			AvaloniaProperty.Register<InfoBar, IControl>(nameof(ActionButton));
 
 		public bool IsOpen
 		{

@@ -14,11 +14,11 @@ namespace FluentAvalonia.UI.Controls
         }
 
         public static readonly DirectProperty<ColorPickerComponent, Color2> ColorProperty =
-            AvaloniaProperty.RegisterDirect<ColorPickerComponent, Color2>("Color",
+            AvaloniaProperty.RegisterDirect<ColorPickerComponent, Color2>(nameof(Color),
                 x => x.Color, (x, v) => x.Color = v);
 
         public static readonly DirectProperty<ColorPickerComponent, ColorComponent> ComponentProperty =
-            AvaloniaProperty.RegisterDirect<ColorPickerComponent, ColorComponent>("Component",
+            AvaloniaProperty.RegisterDirect<ColorPickerComponent, ColorComponent>(nameof(Component),
                 x => x.Component, (x, v) => x.Component = v);
 
         public event TypedEventHandler<ColorPickerComponent, ColorChangedEventArgs> ColorChanged;

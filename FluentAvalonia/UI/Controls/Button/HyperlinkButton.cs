@@ -12,7 +12,7 @@ namespace FluentAvalonia.UI.Controls
 		Type IStyleable.StyleKey => typeof(HyperlinkButton);
 
 		public static readonly DirectProperty<HyperlinkButton, Uri> NavigateUriProperty =
-			AvaloniaProperty.RegisterDirect<HyperlinkButton, Uri>("NavigateUri", x => x.NavigateUri, (x, v) => x.NavigateUri = v);
+			AvaloniaProperty.RegisterDirect<HyperlinkButton, Uri>(nameof(NavigateUri), x => x.NavigateUri, (x, v) => x.NavigateUri = v);
 
 		public Uri NavigateUri
 		{

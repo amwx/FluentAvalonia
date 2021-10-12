@@ -69,7 +69,7 @@ namespace FluentAvalonia.UI.Controls
 				x => x.SecondaryCommands);
 
 		public static readonly StyledProperty<CommandBarOverflowButtonVisibility> OverflowButtonVisibilityProperty =
-			AvaloniaProperty.Register<CommandBar, CommandBarOverflowButtonVisibility>("OverflowButtonVisibility");
+			AvaloniaProperty.Register<CommandBar, CommandBarOverflowButtonVisibility>(nameof(OverflowButtonVisibility));
 
 		public static readonly DirectProperty<CommandBar, bool> IsDynamicOverflowEnabledProperty =
 			AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(SecondaryCommands),

@@ -5,44 +5,40 @@ using Avalonia.Controls.Templates;
 using FluentAvalonia.Core;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reactive.Disposables;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
     public partial class NavigationView : HeaderedContentControl
     {
-        #region AvaloniaProperties
-
         public static readonly StyledProperty<bool> AlwaysShowHeaderProperty =
-            AvaloniaProperty.Register<NavigationView, bool>("AlwaysShowHeader", true);
+            AvaloniaProperty.Register<NavigationView, bool>(nameof(AlwaysShowHeader), true);
 
         public static readonly StyledProperty<AutoCompleteBox> AutoCompleteBoxProperty =
-            AvaloniaProperty.Register<NavigationView, AutoCompleteBox>("AutoCompleteBox");
+            AvaloniaProperty.Register<NavigationView, AutoCompleteBox>(nameof(AutoCompleteBox));
 
         public static readonly StyledProperty<double> CompactModeThresholdWidthProperty =
-            AvaloniaProperty.Register<NavigationView, double>("CompactModeThresholdWidth",
+            AvaloniaProperty.Register<NavigationView, double>(nameof(CompactModeThresholdWidth),
                 641.0, coerce: CoercePropertyValueToGreaterThanZero);
 
         public static readonly StyledProperty<double> CompactPaneLengthProperty =
-            AvaloniaProperty.Register<NavigationView, double>("CompactPaneLength",
+            AvaloniaProperty.Register<NavigationView, double>(nameof(CompactPaneLength),
                 48.0, coerce: CoercePropertyValueToGreaterThanZero);
 
         public static readonly StyledProperty<IControl> ContentOverlayProperty =
-            AvaloniaProperty.Register<NavigationView, IControl>("ContentOverlay");
+            AvaloniaProperty.Register<NavigationView, IControl>(nameof(ContentOverlay));
 
         public static readonly DirectProperty<NavigationView, NavigationViewDisplayMode> DisplayModeProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, NavigationViewDisplayMode>("DisplayMode",
+            AvaloniaProperty.RegisterDirect<NavigationView, NavigationViewDisplayMode>(nameof(DisplayMode),
                 x => x.DisplayMode);
 
         public static readonly StyledProperty<double> ExpandedModeThresholdWidthProperty =
-            AvaloniaProperty.Register<NavigationView, double>("ExpandedModeThresholdWidth", 1008.0,
+            AvaloniaProperty.Register<NavigationView, double>(nameof(ExpandedModeThresholdWidth), 1008.0,
                 coerce: CoercePropertyValueToGreaterThanZero);
 
         public static readonly DirectProperty<NavigationView, IEnumerable> FooterMenuItemsProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>("FooterMenuItems",
+            AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>(nameof(FooterMenuItems),
                 x => x.FooterMenuItems, (x, v) => x.FooterMenuItems = v);
 
         //In WinUI, this is enum NavigationViewBackButtonVisible
@@ -51,80 +47,76 @@ namespace FluentAvalonia.UI.Controls
         //Auto - depends on form factor, for now, not concern
         //So fall back to bool
         public static readonly DirectProperty<NavigationView, bool> IsBackButtonVisibleProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, bool>("IsBackButtonVisible",
+            AvaloniaProperty.RegisterDirect<NavigationView, bool>(nameof(IsBackButtonVisible),
                 x => x.IsBackButtonVisible, (x,v) => x.IsBackButtonVisible = v);
 
         public static readonly StyledProperty<bool> IsBackEnabledProperty =
-            AvaloniaProperty.Register<NavigationView, bool>("IsBackEnabled", false);
+            AvaloniaProperty.Register<NavigationView, bool>(nameof(IsBackEnabled), false);
 
         public static readonly DirectProperty<NavigationView, bool> IsPaneOpenProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, bool>("IsPaneOpen", 
+            AvaloniaProperty.RegisterDirect<NavigationView, bool>(nameof(IsPaneOpen), 
                 x => x.IsPaneOpen, (x,v) => x.IsPaneOpen = v);
 
         public static readonly StyledProperty<bool> IsPaneToggleButtonVisibleProperty =
-            AvaloniaProperty.Register<NavigationView, bool>("IsPaneToggleButtonVisible", true);
+            AvaloniaProperty.Register<NavigationView, bool>(nameof(IsPaneToggleButtonVisible), true);
 
         public static readonly StyledProperty<bool> IsPaneVisibleProperty =
-            AvaloniaProperty.Register<NavigationView, bool>("IsPaneVisible", true);
+            AvaloniaProperty.Register<NavigationView, bool>(nameof(IsPaneVisible), true);
 
         public static readonly StyledProperty<bool> IsSettingsVisibleProperty =
-            AvaloniaProperty.Register<NavigationView, bool>("IsSettingsVisible", true);
+            AvaloniaProperty.Register<NavigationView, bool>(nameof(IsSettingsVisible), true);
 
         //SKIP for now, IsTitleBarAutoPaddingEnabled...
 
         public static readonly DirectProperty<NavigationView, IEnumerable> MenuItemsProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>("MenuItems",
+            AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>(nameof(MenuItems),
                 o => o.MenuItems, (o, v) => o.MenuItems = v);
 
         public static readonly StyledProperty<IDataTemplate> MenuItemTemplateProperty =
-            AvaloniaProperty.Register<NavigationView, IDataTemplate>("MenuItemTemplate");
+            AvaloniaProperty.Register<NavigationView, IDataTemplate>(nameof(MenuItemTemplate));
 
 		public static readonly StyledProperty<DataTemplateSelector> MenuItemTemplateSelectorProperty =
-			AvaloniaProperty.Register<NavigationView, DataTemplateSelector>("MenuItemTemplateSelector");
+			AvaloniaProperty.Register<NavigationView, DataTemplateSelector>(nameof(MenuItemTemplateSelector));
 
         public static readonly StyledProperty<double> OpenPaneLengthProperty =
-            AvaloniaProperty.Register<NavigationView, double>("OpenPaneLength",
+            AvaloniaProperty.Register<NavigationView, double>(nameof(OpenPaneLength),
                 320.0, coerce: CoercePropertyValueToGreaterThanZero);
 
 		//OverflowLabelModeProperty removed, as it was deprecated
 
 		public static readonly StyledProperty<IControl> PaneCustomContentProperty =
-            AvaloniaProperty.Register<NavigationView, IControl>("PaneCustomContent");
+            AvaloniaProperty.Register<NavigationView, IControl>(nameof(PaneCustomContent));
 
         public static readonly StyledProperty<NavigationViewPaneDisplayMode> PaneDisplayModeProperty =
-            AvaloniaProperty.Register<NavigationView, NavigationViewPaneDisplayMode>("PaneDisplayMode",
+            AvaloniaProperty.Register<NavigationView, NavigationViewPaneDisplayMode>(nameof(PaneDisplayMode),
                 NavigationViewPaneDisplayMode.Auto);
 
         public static readonly StyledProperty<IControl> PaneFooterProperty =
-            AvaloniaProperty.Register<NavigationView, IControl>("PaneFooter");
+            AvaloniaProperty.Register<NavigationView, IControl>(nameof(PaneFooter));
 
         public static readonly StyledProperty<IControl> PaneHeaderProperty =
-            AvaloniaProperty.Register<NavigationView, IControl>("PaneHeader");
+            AvaloniaProperty.Register<NavigationView, IControl>(nameof(PaneHeader));
 
         public static readonly StyledProperty<string> PaneTitleProperty =
-            AvaloniaProperty.Register<NavigationView, string>("PaneTitle");
+            AvaloniaProperty.Register<NavigationView, string>(nameof(PaneTitle));
 
         public static readonly DirectProperty<NavigationView, object> SelectedItemProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, object>("SelectedItem",
+            AvaloniaProperty.RegisterDirect<NavigationView, object>(nameof(SelectedItem),
                 x => x.SelectedItem, (x,v) => x.SelectedItem = v, defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
 
         //WinUI uses an enum here, but only has Disabled/Enabled, so just use bool
         public static readonly DirectProperty<NavigationView, bool> SelectionFollowsFocusProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, bool>("SelectionFollowsFocus",
+            AvaloniaProperty.RegisterDirect<NavigationView, bool>(nameof(SelectionFollowsFocus),
                 x => x.SelectionFollowsFocus, (x,v) => x.SelectionFollowsFocus = v);
 
         public static readonly DirectProperty<NavigationView, NavigationViewItem> SettingsItemProperty =
-            AvaloniaProperty.RegisterDirect<NavigationView, NavigationViewItem>("SettingsItem",
+            AvaloniaProperty.RegisterDirect<NavigationView, NavigationViewItem>(nameof(SettingsItem),
                 x => x.SettingsItem, (x,v) => x.SettingsItem = v);
 
         //Ignore Shoulder Navigation (xbox)
 
         public static readonly StyledProperty<NavigationViewTemplateSettings> TemplateSettingsProperty =
-            AvaloniaProperty.Register<NavigationView, NavigationViewTemplateSettings>("TemplateSettings");
-
-        #endregion
-
-        #region CLR Properties
+            AvaloniaProperty.Register<NavigationView, NavigationViewTemplateSettings>(nameof(TemplateSettings));
 
         public bool AlwaysShowHeader
         {
@@ -351,10 +343,6 @@ namespace FluentAvalonia.UI.Controls
             protected set => SetValue(TemplateSettingsProperty, value);
         }
 
-        #endregion
-
-        #region coerce
-
         /// <summary>
         /// Coerces a double to ensure its valid for use, i.e. >= 0 and not NaN or infinity
         /// Used for: CompactModeThresholdWidthProperty, CompactPaneLengthProperty, 
@@ -367,10 +355,6 @@ namespace FluentAvalonia.UI.Controls
                 return 0;
             return Math.Max(arg2, 0.0);
         }
-
-        #endregion
-
-        #region Events
 
         public event TypedEventHandler<NavigationView, NavigationViewPaneClosingEventArgs> PaneClosing;
         public event TypedEventHandler<NavigationView, object> PaneClosed;
@@ -386,15 +370,8 @@ namespace FluentAvalonia.UI.Controls
         public event EventHandler<NavigationViewItemCollapsedEventArgs> ItemCollapsed;
 
 
-
-        #endregion
-
-        #region Attached NVI properties
-
         public static readonly AttachedProperty<CompositeDisposable> NavigationViewItemRevokersProperty =
             AvaloniaProperty.RegisterAttached<NavigationView, NavigationViewItem, CompositeDisposable>("NavigationViewItemRevokers");
-
-        #endregion
 
         private bool _isPaneOpen = true;
         private object _selectedItem;

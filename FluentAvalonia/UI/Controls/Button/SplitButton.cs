@@ -18,7 +18,7 @@ namespace FluentAvalonia.UI.Controls
 			Button.CommandParameterProperty.AddOwner<SplitButton>();
 
 		public static readonly DirectProperty<SplitButton, FlyoutBase> FlyoutProperty =
-			AvaloniaProperty.RegisterDirect<SplitButton, FlyoutBase>("Flyout",
+			AvaloniaProperty.RegisterDirect<SplitButton, FlyoutBase>(nameof(Flyout),
 				x => x.Flyout, (x, v) => x.Flyout = v);
 
 		public ICommand Command
