@@ -18,7 +18,7 @@ namespace FluentAvalonia.UI.Controls
             _owner = owner;
         }
 
-        public bool HasChanges => _selected.Count > 0 || _deselected.Count > 0;
+        public bool HasChanges => _selected?.Count > 0 || _deselected?.Count > 0;
         public List<IndexRange> SelectedRanges => _selected;
         public List<IndexRange> DeselectedRanges => _deselected;
         public IndexPath Path => _owner.IndexPath;
