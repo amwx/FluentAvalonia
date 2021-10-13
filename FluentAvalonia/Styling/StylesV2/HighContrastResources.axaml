@@ -2,8 +2,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Styles.Resources>
 
-		<!-- TODO: Get the Color resources -->		
-		
+		<!-- TODO: Get the Color resources -->
+		<!-- These defaults are taken from Windows 10 High Contrast theme -->
+		<Color x:Key="SystemColorWindowTextColor">#FFFFFF</Color>
+		<Color x:Key="SystemColorGrayTextColor">#FF3FF23F</Color>
+		<Color x:Key="SystemColorButtonFaceColor">#FF000000</Color>
+		<Color x:Key="SystemColorWindowColor">#FF000000</Color>
+		<Color x:Key="SystemColorButtonTextColor">#FFFFFF</Color>
+		<Color x:Key="SystemColorHighlightColor">#FF1AEBFF</Color>
+		<Color x:Key="SystemColorHighlightTextColor">#FF000000</Color>
+		<!-- This didn't return on Windows 10, so pulled from #4584 on WinUI repo -->
+		<Color x:Key="SystemColorHotlightColor">#FFFE55</Color>
 		
 		<SolidColorBrush x:Key="TextFillColorPrimaryBrush" Color="{DynamicResource SystemColorWindowTextColor}" />
 		<SolidColorBrush x:Key="TextFillColorSecondaryBrush" Color="{DynamicResource SystemColorWindowTextColor}" />
@@ -225,6 +234,68 @@
 		<SolidColorBrush x:Key="AccentAcrylicInAppFillColorBaseBrush" Color="{DynamicResource SystemColorWindowColor}"/>
 
 
+		<!-- Things get even more fun here. Apparently the HighContrast theme still mostly uses the old v1 Styles naming
+			 because Microsoft...
+		-->
+		<SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundAccentBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundBaseMediumLowBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundBaseLowBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightAltAccentBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundChromeWhiteBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightBaseHighBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledBaseMediumLowBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightBaseMediumLowBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightTransparentBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledTransparentBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundTransparentBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundBaseHighBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightAltChromeWhiteBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightAltTransparentBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightAltBaseHighBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightListMediumBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightListAccentHighBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundAltMediumLowBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlPageBackgroundAltMediumBrush" Color="{DynamicResource SystemColorWindowColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundListMediumBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlPageTextBaseMediumBrush" Color="{DynamicResource SystemColorWindowTextColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledChromeDisabledLowBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundBaseMediumBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightBaseMediumHighBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightBaseMediumBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledBaseLowBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundBaseMediumHighBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundChromeMediumLowBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundChromeHighBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlPageBackgroundMediumAltMediumBrush" Color="{StaticResource SystemColorWindowColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundBaseLowBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundListLowBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundBaseMediumLowBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlHighlightAltBaseMediumBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundBaseMediumBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledBaseHighBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundChromeDisabledLowBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+		<SolidColorBrush x:Key="SystemControlPageBackgroundChromeLowBrush" Color="{DynamicResource SystemColorWindowColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledChromeHighBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundAltHighBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledChromeDisabledHighBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundBaseHighBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlBackgroundChromeMediumBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlHyperlinkTextBrush" Color="{DynamicResource SystemColorHotlightColor}" />
+		<SolidColorBrush x:Key="SystemControlPageBackgroundTransparentBrush" Color="{DynamicResource SystemColorWindowColor}" />
+		<SolidColorBrush x:Key="SystemControlHyperlinkBaseHighBrush" Color="{StaticResource SystemColorHotlightColor}" />
+		<SolidColorBrush x:Key="SystemControlDisabledChromeMediumLowBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+		<SolidColorBrush x:Key="SystemControlHyperlinkBaseMediumHighBrush" Color="{StaticResource SystemColorHotlightColor}" />
+		<SolidColorBrush x:Key="SystemControlForegroundChromeMediumBrush" Color="{StaticResource SystemColorButtonTextColor}" />
+		<StaticResource x:Key="SystemControlTransientBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />
+		
+		
+		
+		
+		
 		<!-- BEGIN CONTROL RESOURCES -->
 
 		<!-- Normal Button -->
@@ -943,7 +1014,7 @@
 
 		<LinearGradientBrush x:Key="TextControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,2">
 			<LinearGradientBrush.GradientStops>
-				<GradientStop Offset="0.5" Color="{StaticResource ControlAAStrokeColorDefault}"/>
+				<GradientStop Offset="0.5" Color="{StaticResource ControlStrongStrokeColorDefault}"/>
 				<GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}"/>
 			</LinearGradientBrush.GradientStops>
 		</LinearGradientBrush>
