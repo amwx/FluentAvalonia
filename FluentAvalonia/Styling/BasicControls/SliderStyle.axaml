@@ -8,10 +8,10 @@
              xmlns:sty="using:FluentAvalonia.Styling">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3F3">
-            <DockPanel LastChildFill="True">
-                <StackPanel Spacing="10" DockPanel.Dock="Top">
-                    <Slider Value="50" />
+        <Border Padding="50" ClipToBounds="False">
+            <DockPanel LastChildFill="True" ClipToBounds="False">
+                <StackPanel Spacing="10" DockPanel.Dock="Top" ClipToBounds="False">
+                    <Slider Value="100" />
                     <Slider IsEnabled="False" Value="50" />
                 </StackPanel>
                 <StackPanel Spacing="10" Orientation="Horizontal">
@@ -87,14 +87,17 @@
         <Setter Property="BorderThickness" Value="{DynamicResource SliderBorderThemeThickness}" />
         <Setter Property="Foreground" Value="{DynamicResource SliderTrackValueFill}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="ClipToBounds" Value="False" />
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
                     <Border BorderThickness="{TemplateBinding BorderThickness}" 
                             BorderBrush="{TemplateBinding BorderBrush}" 
-                            CornerRadius="{DynamicResource SliderTrackCornerRadius}">
+                            CornerRadius="{DynamicResource SliderTrackCornerRadius}"
+							ClipToBounds="False">
                         
-                        <Grid Name="grid" Margin="{TemplateBinding Padding}" RowDefinitions="Auto, *">
+                        <Grid Name="grid" Margin="{TemplateBinding Padding}" RowDefinitions="Auto, *"
+							  ClipToBounds="False">
 							<!-- Hide the header b/c property doesn't exist in Avalonia -->
 							<!--<ContentPresenter x:Name="HeaderContentPresenter" 
                                               Grid.Row="0" 
@@ -103,14 +106,14 @@
                                               Margin="{DynamicResource SliderTopHeaderMargin}"
 											  />-->
                             
-                            <Grid x:Name="SliderContainer" Grid.Row="1">
+                            <Grid x:Name="SliderContainer" Grid.Row="1" ClipToBounds="False">
                                 <Grid.Styles>
                                     <Style Selector="TickBar">
                                         <Setter Property="ReservedSpace" Value="{Binding #PART_Track.Thumb.Bounds}" />
                                     </Style>
                                 </Grid.Styles>
                                 
-                                <Grid x:Name="HorizontalTemplate" 
+                                <Grid x:Name="HorizontalTemplate" ClipToBounds="False"
                                       ColumnDefinitions="Auto,Auto,*" 
                                       MinHeight="{DynamicResource SliderHorizontalHeight}">
                                     
@@ -131,8 +134,14 @@
                                              Placement="Bottom" 
                                              Height="{DynamicResource SliderOutsideTickBarThemeHeight}" 
                                              VerticalAlignment="Top" Margin="0,4,0,0" Grid.Row="2" Grid.ColumnSpan="3" />
-                                    
-                                    <Track Name="PART_Track" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal">
+
+									<!-- 
+									Added a 2px Horizontal margin here otherwise the thumb gets clipped
+									Despite EVERY...SINGLE...ITEM having ClipToBounds=False
+									-->
+                                    <Track Name="PART_Track" Grid.Row="1" Margin="2 0"
+										   Grid.ColumnSpan="3" Orientation="Horizontal"
+										   ClipToBounds="False">
                                         <Track.DecreaseButton>
                                             <RepeatButton Name="PART_DecreaseButton" 
                                                           Background="{TemplateBinding Foreground}"
@@ -229,8 +238,14 @@
                                              Width="{DynamicResource SliderOutsideTickBarThemeHeight}" 
                                              HorizontalAlignment="Left" 
                                              Margin="4,0,0,0" Grid.Column="2" Grid.RowSpan="3" />
-                                    
-                                    <Track Name="PART_Track" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="3" Orientation="Vertical">
+
+									<!-- 
+									Added a 2px Vertical margin here otherwise the thumb gets clipped
+									Despite EVERY...SINGLE...ITEM having ClipToBounds=False
+									-->
+                                    <Track Name="PART_Track" Margin="0 2"
+										   Grid.Column="1" Grid.ColumnSpan="1" 
+										   Grid.RowSpan="3" Orientation="Vertical">
                                         <Track.DecreaseButton>
                                             <RepeatButton Name="PART_DecreaseButton" Background="{TemplateBinding Foreground}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                                 <RepeatButton.Template>
