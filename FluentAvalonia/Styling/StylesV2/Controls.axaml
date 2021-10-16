@@ -39,7 +39,18 @@
     <StyleInclude Source="/Styling/BasicControls/ProgressBar.axaml" />
     <StyleInclude Source="/Styling/BasicControls/ButtonSpinner.axaml" />
 	<StyleInclude Source="/Styling/BasicControls/DataGridStyles.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/CaptionButtons.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/Carousel.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/EmbeddableControlRoot.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/Label.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/NotificationCard.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/WindowNotificationManager.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/NumericUpDown.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/TabStrip.axaml" />
+	<StyleInclude Source="/Styling/BasicControls/TabStripItem.axaml" />
 
+	<!-- TODO: When Avalonia 11.0 releases, add this back in -->	
+	<!--<StyleInclude Source="/Styling/BasicControls/ManagedFileChooser.axaml" />-->
 
     <!-- NEW CONTROLS -->
     <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationView.axaml" />
