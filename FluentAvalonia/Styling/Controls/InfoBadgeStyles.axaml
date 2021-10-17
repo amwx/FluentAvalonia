@@ -16,18 +16,23 @@
 					</ui:InfoBadge.IconSource>
 				</ui:InfoBadge>
 
+				<ui:InfoBadge Classes="Attention Dot"/>
 				<ui:InfoBadge Classes="Attention" Value="10" />
 				<ui:InfoBadge Classes="Attention Icon" />
 
+				<ui:InfoBadge Classes="Informational Dot" />
 				<ui:InfoBadge Classes="Informational" Value="10" />
 				<ui:InfoBadge Classes="Informational Icon" />
 
+				<ui:InfoBadge Classes="Success Dot" />
 				<ui:InfoBadge Classes="Success" Value="10" />
 				<ui:InfoBadge Classes="Success Icon" />
 
+				<ui:InfoBadge Classes="Caution Dot" />
 				<ui:InfoBadge Classes="Caution" Value="10" />
 				<ui:InfoBadge Classes="Caution Icon" />
 
+				<ui:InfoBadge Classes="Critical Dot" />
 				<ui:InfoBadge Classes="Critical" Value="10" />
 				<ui:InfoBadge Classes="Critical Icon" />
 			</StackPanel>
@@ -89,6 +94,8 @@
 	<Style Selector="ui|InfoBadge.Attention">
 		<Setter Property="Background" Value="{DynamicResource SystemFillColorAttentionBrush}" />
 	</Style>
+	<Style Selector="ui|InfoBadge.Attention.Dot">
+	</Style>	
 	<Style Selector="ui|InfoBadge.Attention.Icon">
 		<Setter Property="Padding" Value="0 4 0 2" />
 		<Setter Property="IconSource">
@@ -99,6 +106,8 @@
 
 	<Style Selector="ui|InfoBadge.Informational">
 		<Setter Property="Background" Value="{DynamicResource SystemFillColorSolidNeutralBrush}" />
+	</Style>
+	<Style Selector="ui|InfoBadge.Informational.Dot">
 	</Style>
 	<!-- This Icon does not exist in FluentIcons so we'll just take the informational icon & render upsidedown -->
 	<Style Selector="ui|InfoBadge.Informational.Icon">
@@ -114,6 +123,8 @@
 	<Style Selector="ui|InfoBadge.Success">
 		<Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBrush}" />
 	</Style>
+	<Style Selector="ui|InfoBadge.SuccessDot">
+	</Style>
 	<Style Selector="ui|InfoBadge.Success.Icon">
 		<Setter Property="IconSource">
 			<Setter.Value>
@@ -125,6 +136,8 @@
 	<Style Selector="ui|InfoBadge.Caution">
 		<Setter Property="Background" Value="{DynamicResource SystemFillColorCautionBrush}" />
 	</Style>
+	<Style Selector="ui|InfoBadge.Caution.Dot">
+	</Style>
 	<Style Selector="ui|InfoBadge.Caution.Icon">
 		<Setter Property="IconSource">
 			<ui:SymbolIconSource Symbol="Important" UseFilled="True" />
@@ -134,6 +147,8 @@
 
 	<Style Selector="ui|InfoBadge.Critical">
 		<Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+	</Style>
+	<Style Selector="ui|InfoBadge.Critical.Dot">
 	</Style>
 	<Style Selector="ui|InfoBadge.Critical.Icon">
 		<Setter Property="IconSource">

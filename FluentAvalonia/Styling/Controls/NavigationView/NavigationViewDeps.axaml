@@ -9,9 +9,9 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="4">
-                <Button Classes="PaneToggleButtonStyle" />
-                <Button Classes="NavigationViewPaneSearchButtonStyle" />
-                <Button Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop" />
+                <ui:Button Classes="PaneToggleButtonStyle" />
+				<ui:Button Classes="NavigationViewPaneSearchButtonStyle" />
+				<ui:Button Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop" />
                 <TextBlock Text="Header Style" Classes="NavigationViewItemHeaderTextStyle" />
                 <ContentControl Classes="NavigationViewTitleHeaderContentControlTextStyle" Content="Title" />
             </StackPanel>
@@ -255,7 +255,7 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop /template/ Rectangle#PointerRectangle">
+    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop /template/ Rectangle#PointerRectangle">
         <Setter Property="Fill" Value="Transparent" />
         <Setter Property="IsVisible" Value="False" />
     </Style>
@@ -265,7 +265,7 @@
         <Setter Property="Fill" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
     </Style>
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ Panel#RootGrid">
-        <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
+        <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPointerOver}" />
     </Style>
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ ui|FontIcon#Icon">
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundPointerOver}" />
@@ -273,7 +273,7 @@
 
     <!-- pressed -->
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Rectangle#PointerRectangle">
-        <Setter Property="Fill" Value="{DynamicResource TopNavigationViewItemBackgroundPressed}" />
+        <Setter Property="Fill" Value="{DynamicResource NavigationViewItemBackgroundPressed}" />
     </Style>
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Panel#RootGrid">
         <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPressed}" />
