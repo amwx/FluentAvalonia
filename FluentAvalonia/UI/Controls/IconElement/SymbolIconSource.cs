@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using System;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -11,7 +12,8 @@ namespace FluentAvalonia.UI.Controls
         public static readonly StyledProperty<double> FontSizeProperty =
            TextBlock.FontSizeProperty.AddOwner<SymbolIconSource>();
 
-        public static readonly StyledProperty<bool> UseFilledProperty =
+		[Obsolete("This property no longer does anything. Filled Icons are now in the Symbol Enum")]
+		public static readonly StyledProperty<bool> UseFilledProperty =
             SymbolIcon.UseFilledProperty.AddOwner<SymbolIconSource>();
               
         public Symbol Symbol
@@ -26,7 +28,8 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(FontSizeProperty, value);
         }
 
-        public bool UseFilled
+		[Obsolete("This property no longer does anything. Filled Icons are now in the Symbol Enum")]
+		public bool UseFilled
         {
             get => GetValue(UseFilledProperty);
             set => SetValue(UseFilledProperty, value);
