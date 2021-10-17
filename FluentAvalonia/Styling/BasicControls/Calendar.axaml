@@ -420,7 +420,7 @@
 						<Style Selector="Button.CalendarNavigation">
 							<Setter Property="HorizontalAlignment" Value="Stretch" />
 							<Setter Property="VerticalAlignment" Value="Stretch" />
-							<Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamilyFilled}" />
+							<Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
 							<Setter Property="FontSize" Value="14" /> <!-- Changed to 14 (FluentIcons is smaller) -->
 							<Setter Property="Background" Value="{DynamicResource CalendarViewNavigationButtonBackground}" />
 							<Setter Property="Foreground" Value="{DynamicResource CalendarViewNavigationButtonForeground}" />
@@ -461,7 +461,7 @@
 									Margin="{DynamicResource CalendarViewNavigationPreviousButtonMargin}"
 									HorizontalContentAlignment="Center">
                                 <ui:FontIcon Glyph="&#xF968;" 
-											 FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}" />
+											 FontFamily="{DynamicResource SymbolThemeFontFamily}" />
                             </Button>
                             <Button Name="NextButton"
 									Grid.Column="2" 
@@ -469,7 +469,7 @@
 									Foreground="{TemplateBinding Foreground}"
 									Margin="{DynamicResource CalendarViewNavigationNextButtonMargin}" 
 									HorizontalContentAlignment="Center">
-                                <ui:FontIcon Glyph="&#xF262;" FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}" />
+                                <ui:FontIcon Glyph="&#xF262;" FontFamily="{DynamicResource SymbolThemeFontFamily}" />
                             </Button>
                         </Grid>
 						<!-- Changed to Background, using only BorderBrush w/ 1px element doesn't show -->

@@ -386,7 +386,7 @@
                                             <TabItem.Header>
                                                 <ui:FontIcon Glyph="&#xF2F6;"
                                                         FontSize="20"
-                                                        FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"
+                                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                                      />
                                             </TabItem.Header>
                                         </TabItem>
@@ -411,7 +411,7 @@
                                             <TabItem.Header>
                                                 <ui:FontIcon Glyph="&#xF780;"
                                                          FontSize="20"
-                                                         FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"/>
+                                                         FontFamily="{DynamicResource SymbolThemeFontFamily}"/>
 
                                             </TabItem.Header>
                                             <Panel Name="PaletteContent" IsVisible="True"

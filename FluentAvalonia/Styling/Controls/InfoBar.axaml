@@ -167,7 +167,7 @@
                                            VerticalAlignment="Top"
                                            Margin="{StaticResource InfoBarIconMargin}"
                                            FontSize="{StaticResource InfoBarIconFontSize}"
-                                           FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}" />
+                                           FontFamily="{DynamicResource SymbolThemeFontFamily}" />
                                 
                                 <TextBlock Name="StandardIcon"
                                            VerticalAlignment="Top"

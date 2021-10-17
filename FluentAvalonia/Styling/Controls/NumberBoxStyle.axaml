@@ -125,7 +125,7 @@
 											 Width="18" Height="18"
 											 Name="PopupIndicator">
 										<ui:FontIcon Glyph="&#xFE51;"
-													 FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"
+													 FontFamily="{DynamicResource SymbolThemeFontFamily}"
 													 FontSize="24"
 													 Foreground="{DynamicResource NumberBoxPopupIndicatorForeground}" />
 									</Viewbox>

@@ -38,8 +38,8 @@
 
         <Thickness x:Key="ScrollBarThumbStrokeThickness">6</Thickness>
 
-        <!-- Upped this from 8-10, Fluent icons are smaller than MDL2 -->
-        <x:Double x:Key="ScrollBarButtonArrowIconFontSize">10</x:Double>
+        <!-- Upped this from 8-12, Fluent icons are smaller than MDL2 -->
+        <x:Double x:Key="ScrollBarButtonArrowIconFontSize">12</x:Double>
         <!--<x:String x:Key="ScrollBarExpandBeginTime">00:00:00.40</x:String>
         <x:String x:Key="ScrollBarContractBeginTime">00:00:00.50</x:String>-->
         <!-- Doubled this, seems more correct -->
@@ -250,7 +250,7 @@
                         Background="{DynamicResource ScrollBarButtonBackground}"
                         BorderBrush="{DynamicResource ScrollBarButtonBorderBrush}"
                         CornerRadius="{DynamicResource ScrollBarCornerRadius}">
-                    <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamilyFilled}"
+                    <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                      Name="ArrowGlyph"
                                      FontSize="{DynamicResource ScrollBarButtonArrowIconFontSize}"/>
                 </Border>
@@ -311,19 +311,19 @@
     </Style>
 
     <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.up /template/ ui|FontIcon">
-        <Setter Property="Glyph" Value="&#xF968;" />
+        <Setter Property="Glyph" Value="&#xEDDB;" />
     </Style>
 
     <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.down /template/ ui|FontIcon">
-        <Setter Property="Glyph" Value="&#xF262;" />    
+        <Setter Property="Glyph" Value="&#xEDDC;" />    
     </Style>
 
     <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.up /template/ ui|FontIcon">
-        <Setter Property="Glyph" Value="&#xF266;" />
+        <Setter Property="Glyph" Value="&#xEDD9;" />
     </Style>
 
     <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.down /template/ ui|FontIcon">
-        <Setter Property="Glyph" Value="&#xF26A;" />
+        <Setter Property="Glyph" Value="&#xEDDA;" />
     </Style>
 
     <Style Selector="ScrollBar /template/ Border#TrackRect">
