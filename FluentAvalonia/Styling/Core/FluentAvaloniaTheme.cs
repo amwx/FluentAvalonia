@@ -325,52 +325,58 @@ namespace FluentAvalonia.Styling
             _loaded[2] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{thm}Resources.axaml", UriKind.Absolute), _baseUri);
             _loaded[3] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/Controls.axaml", UriKind.Absolute), _baseUri);
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                // Populate HighContrast from System Colors
-                if (string.Equals(thm, HighContrastModeString))
-                {
-                    bool GetSystemColor(SystemColors color, out Color c)
-                    {
-                        try
-                        {
-                            var intCol = Win32Interop.GetSysColor(color);
-                            c = Color2.FromUInt(intCol);
+			// TODO: Figure out how to load HighContrast theme colors from system
+			// This only loads one version of the HC theme & doesn't respect the variants
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				// Populate HighContrast from System Colors
+				if (string.Equals(thm, HighContrastModeString))
+				{
+					bool GetSystemColor(SystemColors color, out Color c)
+					{
+						try
+						{
+							var intCol = Win32Interop.GetSysColor(color);
+							var r = (byte)((intCol >> 16) & 0xFF);
+							var g = (byte)((intCol >> 8) & 0xFF);
+							var b = (byte)(intCol & 0xFF);
 
-                            return true;
-                        }
-                        catch
-                        {
-                            c = Colors.Transparent;
-                            return false;
-                        }
-                    }
+							c = Color.FromRgb(r, g, b);
 
-                    if (GetSystemColor(SystemColors.COLOR_WINDOWTEXT, out Color windowT))
-                        (_loaded[0] as Styles).Resources["SystemColorWindowTextColor"] = windowT;
+							return true;
+						}
+						catch
+						{
+							c = Colors.Transparent;
+							return false;
+						}
+					}
 
-                    if (GetSystemColor(SystemColors.COLOR_GRAYTEXT, out Color grey))
-                        (_loaded[0] as Styles).Resources["SystemColorGrayTextColor"] = grey;
+					if (GetSystemColor(SystemColors.COLOR_WINDOWTEXT, out Color windowT))
+						(_loaded[0] as Styles).Resources["SystemColorWindowTextColor"] = windowT;
 
-                    if (GetSystemColor(SystemColors.COLOR_BTNFACE, out Color btn))
-                        (_loaded[0] as Styles).Resources["SystemColorButtonFaceColor"] = btn;
+					if (GetSystemColor(SystemColors.COLOR_GRAYTEXT, out Color grey))
+						(_loaded[0] as Styles).Resources["SystemColorGrayTextColor"] = grey;
 
-                    if (GetSystemColor(SystemColors.COLOR_WINDOW, out Color window))
-                        (_loaded[0] as Styles).Resources["SystemColorWindowColor"] = window;
+					if (GetSystemColor(SystemColors.COLOR_BTNFACE, out Color btn))
+						(_loaded[0] as Styles).Resources["SystemColorButtonFaceColor"] = btn;
 
-                    if (GetSystemColor(SystemColors.COLOR_BTNTEXT, out Color btnT))
-                        (_loaded[0] as Styles).Resources["SystemColorButtonTextColor"] = btnT;
+					if (GetSystemColor(SystemColors.COLOR_WINDOW, out Color window))
+						(_loaded[0] as Styles).Resources["SystemColorWindowColor"] = window;
 
-                    if (GetSystemColor(SystemColors.COLOR_HIGHLIGHT, out Color highlight))
-                        (_loaded[0] as Styles).Resources["SystemColorHighlightColor"] = highlight;
+					if (GetSystemColor(SystemColors.COLOR_BTNTEXT, out Color btnT))
+						(_loaded[0] as Styles).Resources["SystemColorButtonTextColor"] = btnT;
 
-                    if (GetSystemColor(SystemColors.COLOR_HIGHLIGHTTEXT, out Color highlightT))
-                        (_loaded[0] as Styles).Resources["SystemColorHighlightTextColor"] = highlightT;
+					if (GetSystemColor(SystemColors.COLOR_HIGHLIGHT, out Color highlight))
+						(_loaded[0] as Styles).Resources["SystemColorHighlightColor"] = highlight;
 
-                    if (GetSystemColor(SystemColors.COLOR_HOTLIGHT, out Color hotlight))
-                        (_loaded[0] as Styles).Resources["SystemColorHotlightColor"] = hotlight;
-                }
-            }
+					if (GetSystemColor(SystemColors.COLOR_HIGHLIGHTTEXT, out Color highlightT))
+						(_loaded[0] as Styles).Resources["SystemColorHighlightTextColor"] = highlightT;
+
+					if (GetSystemColor(SystemColors.COLOR_HOTLIGHT, out Color hotlight))
+						(_loaded[0] as Styles).Resources["SystemColorHotlightColor"] = hotlight;
+				}
+			}
 
 			InitIfNecessary();
 		}
