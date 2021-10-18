@@ -39,13 +39,41 @@ namespace FluentAvaloniaSamples.Pages
 
 			//Databinding one is handled in ViewModel
 
+			// With FooterMenuItems
+			nv = this.FindControl<NavigationView>("nvSample9");
+			nv.SelectedItem = nv.MenuItems.ElementAt(0);
+			nv.SelectionChanged += OnNVSample9SelectionChanged;
+
+			var rb = this.FindControl<RadioButton>("NV9Left");
+			rb.Checked += NV9LeftRadioChecked;
+			rb = this.FindControl<RadioButton>("NV9Top");
+			rb.Checked += NV9TopRadioChecked;
+
 			//API in action
 			nv = this.FindControl<NavigationView>("nvSample6");
 			nv.SelectedItem = nv.MenuItems.ElementAt(0);
 			nv.SelectionChanged += OnNVSample6SelectionChanged;
 		}
 
-        private void OnNVSample1SelectionChanged(object sender, NavigationViewSelectionChangedEventArgs e)
+		private void OnNVSample9SelectionChanged(object sender, NavigationViewSelectionChangedEventArgs e)
+		{
+			// Settings is disabled here, so we don't need to check
+			var smpPage = $"FluentAvaloniaSamples.Pages.NVSamplePages.NV{(e.SelectedItem as NavigationViewItem).Tag}";
+			var pg = Activator.CreateInstance(Type.GetType(smpPage));
+			(sender as NavigationView).Content = pg;
+		}
+
+		private void NV9TopRadioChecked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+		{
+			this.FindControl<NavigationView>("nvSample9").PaneDisplayMode = NavigationViewPaneDisplayMode.Top;
+		}
+
+		private void NV9LeftRadioChecked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+		{
+			this.FindControl<NavigationView>("nvSample9").PaneDisplayMode = NavigationViewPaneDisplayMode.Left;
+		}
+
+		private void OnNVSample1SelectionChanged(object sender, NavigationViewSelectionChangedEventArgs e)
         {
             if (e.IsSettingsSelected)
             {

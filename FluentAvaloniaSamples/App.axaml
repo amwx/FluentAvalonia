@@ -10,15 +10,13 @@
         <ui:PathIconSource x:Key="PathIcon" Data="M0,0 L 50,0 L 25,50Z" />
         <ui:BitmapIconSource x:Key="BmpIcon" UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" />
         
-        <SolidColorBrush x:Key="ControlExampleStrokeColor" Color="#0F000000" />
+        <!--<SolidColorBrush x:Key="ControlExampleStrokeColor" Color="#0F000000" />
         <SolidColorBrush x:Key="ControlExampleBackgroundFill" Color="#F3F3F3" />
-		<SolidColorBrush x:Key="ControlExampleBackgroundFill2" Color="#F9F9F9" />
+		<SolidColorBrush x:Key="ControlExampleBackgroundFill2" Color="#F9F9F9" />-->
     </Application.Resources>
 
     <Application.Styles>
-        <!--<FluentTheme Mode="Light" />-->
-        <sty:FluentAvaloniaTheme ControlsVersion="2"/>
-
+        <sty:FluentAvaloniaTheme />
 
         <Style Selector="local|ControlExample">
             <Setter Property="Template">
@@ -35,9 +33,9 @@
                                           TextBlock.FontWeight="Bold"
                                           Margin="0 16"/>
 
-                        <Border BorderBrush="{DynamicResource ControlExampleStrokeColor}"
+                        <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                 BorderThickness="1"
-								Background="{DynamicResource ControlExampleBackgroundFill}"
+								Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
 								CornerRadius="4 4 0 0">
                             <DockPanel>
                                 <ContentPresenter Name="OptionPresenter"
@@ -47,7 +45,9 @@
                                                   VerticalAlignment="Stretch"
                                                   HorizontalContentAlignment="Stretch"
                                                   VerticalContentAlignment="Stretch"
-                                                  Margin="12"/>                                
+												  Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                                  Margin="12"
+												  CornerRadius="8" />                                
                                 
                                 <ContentPresenter Name="ExamplePresenter"
                                               Content="{TemplateBinding Content}"
@@ -60,9 +60,9 @@
                             </DockPanel>
                         </Border>
 
-						<Border BorderBrush="{DynamicResource ControlExampleStrokeColor}"
+						<Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
 								BorderThickness="1 0 1 1"
-								Background="{DynamicResource ControlExampleBackgroundFill2}"
+								Background="{DynamicResource SolidBackgroundFillColorTertiaryBrush}"
 								CornerRadius="0 0 4 4"
 								MinHeight="10">
 							<StackPanel>

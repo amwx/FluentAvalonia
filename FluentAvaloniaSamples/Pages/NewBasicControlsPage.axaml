@@ -11,8 +11,8 @@
         <StackPanel>
             <TextBlock Text="{Binding Header}" TextWrapping="Wrap" />
             
-            <local:ControlExample Header="Button" ShowDocs="False"
-                                  UsageNotes="{Binding ButtonUsageNotes}"/>
+            <!--<local:ControlExample Header="Button" ShowDocs="False"
+                                  UsageNotes="{Binding ButtonUsageNotes}"/>-->
 
             <local:ControlExample Header="HyperlinkButton"
                                   UsageNotes="{Binding HyperlinkButtonUsageNotes}"
@@ -24,7 +24,9 @@
                                     Content="Fluent Avalonia Github repo" />
             </local:ControlExample>
 
-            <local:ControlExample Header="Editable ComboBox (in Testing)"
+            <!--
+			Removed from public preview. At this time, no support will be given for this control
+			<local:ControlExample Header="Editable ComboBox (in Testing)"
                                   XamlSource="{Binding ComboBoxXamlSource}"
                                   UsageNotes="{Binding ComboBoxUsageNotes}"
                                   TargetType="ComboBox">
@@ -45,7 +47,7 @@
                         <TextBlock Text="{Binding #NonEditableCB.Text, StringFormat='{}Non-Editable Text: {0}'}" HorizontalAlignment="Right" />
                     </StackPanel>
                 </local:ControlExample.Options>
-            </local:ControlExample>
+            </local:ControlExample>-->
 
             <local:ControlExample Header="SplitButton"
                                   TargetType="SplitButton"

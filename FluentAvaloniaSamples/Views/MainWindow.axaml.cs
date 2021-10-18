@@ -1,8 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Animators;
+using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Diagnostics;
+using Avalonia.Dialogs;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -19,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using IconElement = FluentAvalonia.UI.Controls.IconElement;
 
 namespace FluentAvaloniaSamples.Views
@@ -51,24 +55,15 @@ namespace FluentAvaloniaSamples.Views
 
 				_frame.Navigate(typeof(HomePage));
 			}
+
 		}
 
 		protected override void OnOpened(EventArgs e)
 		{
-			base.OnOpened(e);
+			base.OnOpened(e);		
+        }
 
-			// These are hardcoded resources b/c they need to work regardles of which ControlsVersion is set
-			// on FluentAvaloniaTheme, since their backing colors are different, so...
-			// App defaults to light mode, so if requested theme is dark on load, we need to change these now
-			if (AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == "Dark")
-			{
-				App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#12FFFFFF"));
-				App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#202020"));
-				App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#292929"));
-			}			
-		}
-
-		protected override void OnPointerReleased(PointerReleasedEventArgs e)
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             var pt = e.GetCurrentPoint(this);
             if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton1Released)
@@ -157,7 +152,7 @@ namespace FluentAvaloniaSamples.Views
 			List<NavigationViewItemBase> items = new List<NavigationViewItemBase>
 			{
 				new NavigationViewItem { Content = "Home", Icon = new SymbolIcon{ Symbol=Symbol.Home }, Tag = typeof(HomePage)},
-				new NavigationViewItem { Content = "Themes", Icon = new SymbolIcon{ Symbol=Symbol.DarkTheme }, Tag = typeof(ThemeManagerPage)},
+				new NavigationViewItem { Content = "How to Use", Icon = new SymbolIcon{ Symbol=Symbol.DarkTheme }, Tag = typeof(ThemeManagerPage)},
 				
 				new NavigationViewItemHeader { Content = "Restyled Core Controls" },
 				new NavigationViewItem { Content = "Core Controls", Icon = new SymbolIcon{ Symbol=Symbol.Checkmark }, Tag = typeof(BasicControls)},
@@ -209,6 +204,7 @@ namespace FluentAvaloniaSamples.Views
 				new NavigationViewItem { Content = "Color Picker", Icon = new SymbolIcon{ Symbol=Symbol.ColorBackground }, Tag = typeof(ColorPickerPage)},
 				new NavigationViewItem { Content = "Frame", Icon = new SymbolIcon{ Symbol=Symbol.Document }, Tag = typeof(FramePage)},
 				new NavigationViewItem { Content = "NumberBox", Icon = new SymbolIcon{ Symbol=Symbol.Calculator }, Tag = typeof(NumberBoxPage)},
+				new NavigationViewItem { Content = "InfoBadge", Icon = new SymbolIcon{ Symbol=Symbol.Help }, Tag = typeof(InfoBadgePage)},
 				new NavigationViewItem { Content = "InfoBar", Icon = new SymbolIcon{ Symbol=Symbol.Help }, Tag = typeof(InfoBarPage)},
 			};
 

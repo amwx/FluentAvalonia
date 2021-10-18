@@ -28,21 +28,31 @@
     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
 				  Padding="10">
         <StackPanel Orientation="Vertical" Grid.Row="1">
-            <TextBlock Text="{Binding CoreControlsHeader}" TextWrapping="Wrap" />
-            
+            <!--<TextBlock Text="{Binding CoreControlsHeader}" TextWrapping="Wrap" />-->
+		
+			
             <local:ControlExample Header="Button" ShowDocs="False">
-                <UniformGrid Columns="4">
-                    <Button Content="Regular Button" Margin="4" />
-                    <Button Content="AccentButton" Classes="accent" Margin="4"/>
-                    <ToggleButton Content="ToggleButton" Margin="4" />
-                    <RepeatButton Content="RepeatButton" Margin="4" />
-                    
-                    <Button Content="Disabled Button" Margin="4" IsEnabled="False" />
-                    <Button Content="Disabled AccentButton" Classes="accent" Margin="4" IsEnabled="False"/>
-                    <ToggleButton Content="Disabled ToggleButton" Margin="4" IsEnabled="False" />
-                    <RepeatButton Content="Disabled RepeatButton" Margin="4"  IsEnabled="False"/>
-                </UniformGrid>
-            </local:ControlExample>
+				<StackPanel>
+					<UniformGrid Columns="5">
+						<Button Content="Regular Button" Margin="4" />
+						<Button Content="AccentButton" Classes="accent" Margin="4"/>
+						<ToggleButton Content="ToggleButton" Margin="4" />
+						<RepeatButton Content="RepeatButton" Margin="4" />
+
+						<Button Content="Disabled Button" Margin="4" IsEnabled="False" />
+						<Button Content="Disabled AccentButton" Classes="accent" Margin="4" IsEnabled="False"/>
+						<ToggleButton Content="Disabled ToggleButton" Margin="4" IsEnabled="False" />
+						<RepeatButton Content="Disabled RepeatButton" Margin="4"  IsEnabled="False"/>
+					</UniformGrid>
+					
+					<Border Background="{DynamicResource DividerStrokeColorDefaultBrush}"
+							Height="1"
+							Margin="6" />
+
+					<Button Content="Button.Classes=AppBarButton" Classes="AppBarButton" />
+					<Button Content="Disabled Classes=AppBarButton" Classes="AppBarButton" IsEnabled="False" />
+				</StackPanel>
+			</local:ControlExample>
 
             <local:ControlExample Header="ComboBox" ShowDocs="False">
                 <WrapPanel Orientation="Horizontal">
@@ -94,13 +104,29 @@
             </local:ControlExample>
 
             <local:ControlExample Header="ProgressBar" ShowDocs="False">
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <ProgressBar Minimum="0" Maximum="100"
-                                 Value="25" />
-                    <ProgressBar Minimum="0" Maximum="100"
-                                Value="25" Orientation="Vertical" MinHeight="75" />
-                    <ProgressBar IsIndeterminate="True" />
-                </StackPanel>
+				<local:ControlExample.Options>
+					<StackPanel>
+						<ComboBox Name="ProgressBarOrientationBox" SelectedIndex="1">
+							<ComboBoxItem Content="Horizontal" />
+							<ComboBoxItem Content="Vertical" />
+						</ComboBox>
+						
+						<CheckBox Name="ProgressBarIndeterminate"
+								  Content="IsIndeterminate"/>
+						
+						<ui:NumberBox Value="50"
+									  Minimum="0" Maximum="100"
+									  Name="ProgressBarValue"
+									  Header="Value" 
+									  SpinButtonPlacementMode="Inline" />
+					</StackPanel>
+				</local:ControlExample.Options>
+				<ProgressBar Minimum="0" Maximum="100"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 Value="{Binding ElementName=ProgressBarValue, Path=Value, Mode=OneWay}"
+							 IsIndeterminate="{Binding ElementName=ProgressBarIndeterminate, Path=IsChecked}"
+							 Orientation="{Binding ElementName=ProgressBarOrientationBox, Path=SelectedItem.Content}" />
             </local:ControlExample>
 
             <local:ControlExample Header="GridSplitter" ShowDocs="False">
@@ -134,9 +160,13 @@
             <local:ControlExample Header="TimePicker" ShowDocs="False">
                 <TimePicker />
             </local:ControlExample>
+
+			<local:ControlExample Header="Calendar" ShowDocs="False">
+				<Calendar />
+			</local:ControlExample>
             
             <local:ControlExample Header="CalendarDatePicker" ShowDocs="False">
-                <CalendarDatePicker />
+				<CalendarDatePicker />
             </local:ControlExample>
 
             <local:ControlExample Header="Menu" ShowDocs="False">
@@ -315,6 +345,12 @@
                     </Expander>
                 </StackPanel>
             </local:ControlExample>
+
+			<local:ControlExample Header="NumericUpDown" ShowDocs="False">
+				<NumericUpDown Value="50" Minimum="0" Maximum="100" HorizontalAlignment="Left" />
+			</local:ControlExample>
+			
+			
         </StackPanel>
     </ScrollViewer>
 </UserControl>

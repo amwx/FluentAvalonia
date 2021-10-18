@@ -1,5 +1,60 @@
 ﻿[
   {
+    "Version": "1.1.5",
+    "Changes": [
+      {
+        "Header": "InfoBadge",
+        "Description": "Added InfoBadge control w/ NavigationView integration",
+        "Icon": null,
+        "V2Only": false,
+        "NewControl": true,
+        "NewFeature": false,
+        "StyleOnly": false,
+        "PageType" : "InfoBadge"
+      },
+      {
+        "Header": "Styling",
+        "Description": "Ensured templates & styles are up to date",
+        "Icon": null,
+        "V2Only": false,
+        "NewControl": false,
+        "NewFeature": false,
+        "StyleOnly": true,
+        "PageType" : null
+      },
+      {
+        "Header": "HighContrast theme",
+        "Description": "Began implementation of HighContrast theme",
+        "Icon": null,
+        "V2Only": false,
+        "NewControl": false,
+        "NewFeature": true,
+        "StyleOnly": true,
+        "PageType" : null
+      },
+      {
+        "Header": "Icons",
+        "Description": "Symbols & SymbolFont changed to better match WinUI/Segoe Fluent Icons",
+        "Icon": null,
+        "V2Only": false,
+        "NewControl": false,
+        "NewFeature": true,
+        "StyleOnly": false,
+        "PageType" : null
+      },
+      {
+        "Header": "v1 Styles Removed",
+        "Description": "Fluent v1 styles have been removed from FluentAvalonia. All controls now support the new theme",
+        "Icon": null,
+        "V2Only": false,
+        "NewControl": false,
+        "NewFeature": true,
+        "StyleOnly": false,
+        "PageType" : null
+      }
+    ]
+  },
+  {
     "Version": "1.1.1",
     "Changes": [
       {
