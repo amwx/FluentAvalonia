@@ -1,8 +1,9 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:ui="using:FluentAvalonia.UI.Controls">
+	
     <Design.PreviewWith>
-        <Border Padding="20">
+        <Border Padding="20"> 
 			<StackPanel Spacing="5">
 				<ui:InfoBadge Value="1" />
 				<ui:InfoBadge>
@@ -38,7 +39,6 @@
 			</StackPanel>
         </Border>
     </Design.PreviewWith>
-
 
 	<Style Selector="ui|InfoBadge">
 		<Setter Property="MinHeight" Value="{DynamicResource InfoBadgeMinHeight}"/>
@@ -99,7 +99,7 @@
 	<Style Selector="ui|InfoBadge.Attention.Icon">
 		<Setter Property="Padding" Value="0 4 0 2" />
 		<Setter Property="IconSource">
-			<ui:FontIconSource Glyph="&#xF7A3;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+			<ui:FontIconSource Glyph="&#xEA38;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
 		</Setter>
 	</Style>
 
@@ -115,7 +115,7 @@
 		<Setter Property="RenderTransform" Value="rotate(180deg)" />
 		<Setter Property="IconSource">
 			<!--<ui:FontIconSource Glyph="&#xF4A5;" FontFamily="{StaticResource SymbolThemeFontFamily}" />-->
-			<ui:SymbolIconSource Symbol="Important" UseFilled="True" />
+			<ui:SymbolIconSource Symbol="ImportantFilled"/>
 		</Setter>
 	</Style>
 
@@ -140,7 +140,7 @@
 	</Style>
 	<Style Selector="ui|InfoBadge.Caution.Icon">
 		<Setter Property="IconSource">
-			<ui:SymbolIconSource Symbol="Important" UseFilled="True" />
+			<ui:SymbolIconSource Symbol="ImportantFilled" />
 		</Setter>
 	</Style>
 

@@ -99,7 +99,7 @@
                                                   Background="{TemplateBinding Background}"
                                                   FontSize="18"
 												  Margin="4"
-												  Content="&#xF2B9;"/>
+												  Content="&#xE70E;"/>
 
                                     <RepeatButton Name="PART_DecreaseButton"
                                                   Classes="ButtonSpinnerRepeatButton"
@@ -109,7 +109,7 @@
                                                   VerticalContentAlignment="Center"
                                                   FontSize="18"
 												  Margin="4"
-												  Content="&#xF2A6;"/>
+												  Content="&#xE70D;"/>
                                 </StackPanel>
                             </Grid>
                         </Border>

@@ -8,7 +8,7 @@
              xmlns:sty="using:FluentAvalonia.Styling">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3f3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <ToggleSwitch Content="Button" />
             </StackPanel>

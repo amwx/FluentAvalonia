@@ -10,7 +10,7 @@
 	<Design.PreviewWith>
 		<Border Padding="30">
 			<!--<TextBox Width="100" Classes="clearButton" />-->
-			<ui:NumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
+			<ui:NumberBox Width="150" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="100" Value="10" />
 		</Border>
 	</Design.PreviewWith>
 
@@ -124,7 +124,7 @@
 											 VerticalAlignment="Center" HorizontalAlignment="Center"
 											 Width="18" Height="18"
 											 Name="PopupIndicator">
-										<ui:FontIcon Glyph="&#xFE51;"
+										<ui:FontIcon Glyph="&#xEC8F;"
 													 FontFamily="{DynamicResource SymbolThemeFontFamily}"
 													 FontSize="24"
 													 Foreground="{DynamicResource NumberBoxPopupIndicatorForeground}" />
@@ -199,13 +199,13 @@
 								<RepeatButton Name="PopupUpSpinButton" Focusable="False"
                                               FontSize="18"
                                               Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
-                                              Content="&#xF2B9;" />
+                                              Content="&#xE70E;" />
 
 								<RepeatButton Name="PopupDownSpinButton" Focusable="False"
                                               FontSize="18"
                                               Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
                                               Grid.Row="1"
-                                              Content="&#xF2A6;" />
+                                              Content="&#xE70D;" />
 							</Grid>
 						</Border>
 					</Popup>
@@ -224,14 +224,14 @@
                                   Grid.Column="1"
                                   FontSize="18"
                                   Classes="NumberBoxSpinButtonStyle"
-                                  Content="&#xF2B9;"
+                                  Content="&#xE70E;"
 								  Margin="4"/>
 
 					<RepeatButton Name="DownSpinButton"
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   FontSize="18"
-                                  Content="&#xF2A6;"
+                                  Content="&#xE70D;"
                                   Classes="NumberBoxSpinButtonStyle"
 								  Margin="0 4 4 4"/>
 

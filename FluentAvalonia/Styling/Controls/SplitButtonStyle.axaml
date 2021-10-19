@@ -7,7 +7,7 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3F3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <ui:SplitButton Content="hello" />
 
@@ -131,7 +131,7 @@
                             <TextBlock Name="ChevronTextBlock"
                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                        FontSize="14"
-                                       Text="&#xF2A6;"
+                                       Text="&#xE70D;"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Right" />
                             

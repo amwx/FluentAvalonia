@@ -38,7 +38,7 @@
 
 					<Panel x:Name="PART_MinimiseButton">
 						<Viewbox>
-							<ui:FontIcon Glyph="&#xFC70;"
+							<ui:FontIcon Glyph="&#xE108;"
 										 FontFamily="{StaticResource SymbolThemeFontFamily}" />
 						</Viewbox>
 					</Panel>
@@ -51,7 +51,7 @@
 
 					<Panel x:Name="PART_CloseButton">
 						<Viewbox Width="16">
-							<ui:FontIcon Glyph="&#xF369;"
+							<ui:FontIcon Glyph="&#xE106;"
 										 FontFamily="{StaticResource SymbolThemeFontFamily}" />
 						</Viewbox>
 					</Panel>
@@ -60,20 +60,20 @@
 		</Setter>
 	</Style>
 	<Style Selector="CaptionButtons Panel#PART_RestoreButton ui|FontIcon">
-		<Setter Property="Glyph" Value="&#xFA3F;" />
+		<Setter Property="Glyph" Value="&#xE15B;" />
 	</Style>
 	<Style Selector="CaptionButtons:maximized Panel#PART_RestoreButton ui|FontIcon">
-		<Setter Property="Glyph" Value="&#xF670;" />
+		<Setter Property="Glyph" Value="&#xF80B9;" />
 	</Style>
 	
 	<Style Selector="CaptionButtons Panel#PART_FullScreenButton">
 		<Setter Property="IsVisible" Value="True" />
 	</Style>
 	<Style Selector="CaptionButtons Panel#PART_FullScreenButton ui|FontIcon">
-		<Setter Property="Glyph" Value="&#xF15F;" />
+		<Setter Property="Glyph" Value="&#xF8073;" />
 	</Style>
 	<Style Selector="CaptionButtons:maximized Panel#PART_FullScreenButton ui|FontIcon">
-		<Setter Property="Glyph" Value="&#xF165;" />
+		<Setter Property="Glyph" Value="&#xF8075;" />
 	</Style>	
 	<Style Selector="CaptionButtons:fullscreen Panel#PART_RestoreButton, CaptionButtons:fullscreen Panel#PART_MinimiseButton">
 		<Setter Property="IsVisible" Value="False" />

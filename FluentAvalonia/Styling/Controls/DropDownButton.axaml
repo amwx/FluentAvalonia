@@ -7,7 +7,7 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3F3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <ui:DropDownButton Content="hello" />
 
@@ -49,7 +49,7 @@
                                        Grid.Column="1"
                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                        FontSize="14"
-                                       Text="&#xF2A6;"
+                                       Text="&#xE70D;"
                                        VerticalAlignment="Center"
                                        Padding="2,4,2,0"
                                        Margin="8,0,0,0" />

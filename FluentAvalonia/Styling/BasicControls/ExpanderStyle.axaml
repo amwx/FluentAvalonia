@@ -7,7 +7,7 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3f3" Width="350">
+        <Border Padding="50" Width="350">
             <StackPanel Spacing="5">
                 <Expander Header="Expand me!" IsExpanded="True">
                     <Panel>
@@ -34,10 +34,10 @@
         <x:Double x:Key="ExpanderMinHeight">48</x:Double>
         <Thickness x:Key="ExpanderHeaderPadding">16,0,0,0</Thickness>
         <Thickness x:Key="ExpanderChevronMargin">20,0,8,0</Thickness>
-        <x:String x:Key="ExpanderChevronUpGlyph">&#xF2B9;</x:String>
-        <x:String x:Key="ExpanderChevronDownGlyph">&#xF2A6;</x:String>
-        <x:String x:Key="ExpanderChevronLeftGlyph">&#xF2AD;</x:String>
-        <x:String x:Key="ExpanderChevronRightGlyph">&#xF2B3;</x:String>
+        <x:String x:Key="ExpanderChevronUpGlyph">&#xE70E;</x:String>
+        <x:String x:Key="ExpanderChevronDownGlyph">&#xE70D;</x:String>
+        <x:String x:Key="ExpanderChevronLeftGlyph">&#xE76B;</x:String>
+        <x:String x:Key="ExpanderChevronRightGlyph">&#xE76C;</x:String>
         
         <x:Double x:Key="ExpanderChevronButtonSize">32</x:Double>
 

@@ -12,7 +12,7 @@
          FontIcon using the calendar_month icon from Fluent-Icons -->
     
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3F3">
+        <Border Padding="50">
             <CalendarDatePicker />
         </Border>
     </Design.PreviewWith>
@@ -49,7 +49,7 @@
                                         <ui:FontIcon Name="CalendarIcon"
                                                      HorizontalAlignment="Center"
                                                      VerticalAlignment="Center"
-                                                     Glyph="&#xFDB0;"
+                                                     Glyph="&#xE787;"
                                                      FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                                      FontSize="16" />
                                     </Panel>

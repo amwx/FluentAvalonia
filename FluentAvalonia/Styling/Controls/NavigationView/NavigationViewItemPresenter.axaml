@@ -7,7 +7,7 @@
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
 
     <Design.PreviewWith>
-        <Border Background="#F3F3F3" Padding="50">
+        <Border Padding="50">
             <StackPanel Spacing="4">
                 <uip:NavigationViewItemPresenter Content="Hello" Icon="Save" />
             </StackPanel>

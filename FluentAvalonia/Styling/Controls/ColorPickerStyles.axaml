@@ -384,7 +384,7 @@
                                         <TabItem Name="WheelTab"
                                                  IsVisible="{TemplateBinding UseColorWheel}">
                                             <TabItem.Header>
-                                                <ui:FontIcon Glyph="&#xF2F6;"
+                                                <ui:FontIcon Glyph="&#xE790;"
                                                         FontSize="20"
                                                         FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                                      />
@@ -395,10 +395,13 @@
                                             <TabItem.Header>
                                                 <Panel>
                                                     <!-- TODO: probably could make a better icon for this... -->
-                                                    <ui:FontIcon Glyph="&#xF645;"
+													<Ellipse Stroke="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}, Path=Foreground}"
+															 StrokeThickness="2"
+															 Width="18" Height="18" Margin="-1 0 0 0" />
+                                                    <!--<ui:FontIcon Glyph="&#xF645;"
                                                                  FontSize="20"
                                                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                     />
+                                                     />-->
                                                     <ui:PathIcon Data="M1,21H23L12,2"
                                                                  Width="14" Height="12"
                                                                  Margin="1 0 0 0"
@@ -409,7 +412,7 @@
                                         <TabItem Name="PaletteTab"
                                                  IsVisible="{TemplateBinding UseColorPalette}">
                                             <TabItem.Header>
-                                                <ui:FontIcon Glyph="&#xF780;"
+                                                <ui:FontIcon Glyph="&#xF0E2;"
                                                          FontSize="20"
                                                          FontFamily="{DynamicResource SymbolThemeFontFamily}"/>
 

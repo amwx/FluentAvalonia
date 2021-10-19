@@ -90,7 +90,7 @@
         <Thickness x:Key="NavigationViewItemChildrenMenuFlyoutPadding">0,8</Thickness>
 
         <x:Double x:Key="NavigationViewItemExpandedGlyphFontSize">18.0</x:Double>
-        <x:String x:Key="NavigationViewItemExpandedGlyph">&#xF2A6;</x:String>
+        <x:String x:Key="NavigationViewItemExpandedGlyph">&#xE70D;</x:String>
 
 		<CornerRadius x:Key="NavigationViewContentGridCornerRadius">8,0,0,0</CornerRadius>
 		<CornerRadius x:Key="TopNavigationViewContentGridCornerRadius">0</CornerRadius>
@@ -136,7 +136,7 @@
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                 <TextBlock Name="Icon"
-                                           Text="&#xF561;"
+                                           Text="&#xE700;"
                                            FontSize="{TemplateBinding FontSize}" />
                             </Viewbox>
                         </Border>
@@ -194,7 +194,7 @@
 
     <Style Selector="ui|Button.NavigationViewPaneSearchButtonStyle">
         <Setter Property="MinHeight" Value="36"/>
-        <Setter Property="Content" Value="&#xF691;"/>
+        <Setter Property="Content" Value="&#xE11A;"/>
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
         <Setter Property="BorderThickness" Value="{DynamicResource NavigationViewToggleBorderThickness}" />
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
@@ -248,7 +248,7 @@
                                  HorizontalAlignment="Center"
                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                  FontSize="20"
-                                 Glyph="&#xFC30;"
+                                 Glyph="&#xE10C;"
                                  Foreground="{TemplateBinding Foreground}"
                                  IsHitTestVisible="False" />
                 </Panel>

@@ -7,7 +7,7 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3f3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <ui:ComboBox PlaceholderText="Test">
                     <ui:ComboBoxItem Content="Item1" />
@@ -224,7 +224,7 @@
                                  Margin="0 0 12 0"
                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                  FontSize="12"
-                                 Glyph="&#xF2A6;"
+                                 Glyph="&#xE70D;"
                                  HorizontalAlignment="Right"
                                  VerticalAlignment="Center" />
                     
