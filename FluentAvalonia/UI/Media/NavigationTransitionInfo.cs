@@ -1,9 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
-using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using System;
 
 namespace FluentAvalonia.UI.Media.Animation
@@ -56,28 +56,41 @@ namespace FluentAvalonia.UI.Media.Animation
                 Easing = new SplineEasing(0.1, 0.9, 0.2, 1.0),
                 Children =
                 {
-                    new Avalonia.Animation.KeyFrame
+                    new KeyFrame
                     {
                         Setters =
                         {
-                            new Setter(isVertical ? TranslateTransform.YProperty : TranslateTransform.XProperty, length)
+                            new Setter(isVertical ? TranslateTransform.YProperty : TranslateTransform.XProperty, length),
+							new Setter(Visual.OpacityProperty, 0d)
                         },
-                        Cue = new Avalonia.Animation.Cue(0d)
+                        Cue = new Cue(0d)
                     },
-                    new Avalonia.Animation.KeyFrame
+					new KeyFrame
+					{
+						Setters=
+						{
+							new Setter(Visual.OpacityProperty, 1d)
+						},
+						Cue = new Cue(0.05d)
+					},
+                    new KeyFrame
                     {
                         Setters =
                         {
-                            new Setter(isVertical ? TranslateTransform.YProperty : TranslateTransform.XProperty, 0.0)
+							new Setter(Visual.OpacityProperty, 1d),
+							new Setter(isVertical ? TranslateTransform.YProperty : TranslateTransform.XProperty, 0.0)
                         },
-                        Cue = new Avalonia.Animation.Cue(1d)
+                        Cue = new Cue(1d)
                     }
                 },
-                Duration = TimeSpan.FromSeconds(0.167)
-            };
+                Duration = TimeSpan.FromSeconds(0.167),
+				FillMode = FillMode.Forward
+			};
 
             await animation.RunAsync(ctrl);
-        }
+
+			(ctrl as IVisual).Opacity = 1;
+		}
     }
 
     public class EntranceNavigationTransitionInfo : NavigationTransitionInfo
@@ -93,36 +106,39 @@ namespace FluentAvalonia.UI.Media.Animation
                 Easing = new SplineEasing(0.1,0.9,0.2,1.0),
                 Children =
                 {
-                    new Avalonia.Animation.KeyFrame
+                    new KeyFrame
                     {
                         Setters =
                         {
-                            new Setter(Control.OpacityProperty, 0.0),
+                            new Setter(Visual.OpacityProperty, 0.0),
                             new Setter(TranslateTransform.XProperty,FromHorizontalOffset),
                             new Setter(TranslateTransform.YProperty, FromVerticalOffset)
                         },
-                        Cue = new Avalonia.Animation.Cue(0d)
+                        Cue = new Cue(0d)
                     },
-                    new Avalonia.Animation.KeyFrame
+					new KeyFrame
                     {
                         Setters =
                         {
-                            new Setter(TranslateTransform.XProperty,0.0),
+							new Setter(Visual.OpacityProperty, 1d),
+							new Setter(TranslateTransform.XProperty,0.0),
                             new Setter(TranslateTransform.YProperty, 0.0)
                         },
-                        Cue = new Avalonia.Animation.Cue(1d)
+                        Cue = new Cue(1d)
                     }
                 },
-                Duration = TimeSpan.FromSeconds(0.67)
+                Duration = TimeSpan.FromSeconds(0.67), 
+				FillMode = FillMode.Forward
             };
 
             await animation.RunAsync(ctrl);
+
+			(ctrl as IVisual).Opacity = 1;
         }
     }
 
     public class DrillInNavigationTransitionInfo : NavigationTransitionInfo
     {
-
         public bool IsReversed { get; set; } = false; //Zoom out if true
 
         //Zoom & Fade
@@ -133,40 +149,44 @@ namespace FluentAvalonia.UI.Media.Animation
                 Easing = new SplineEasing(0.1, 0.9, 0.2, 1.0),
                 Children =
                 {
-                    new Avalonia.Animation.KeyFrame
+                    new KeyFrame
                     {
                         Setters =
                         {
-                            new Setter(Control.OpacityProperty, 0.0),
+                            new Setter(Visual.OpacityProperty, 0.0),
                             new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.5 : 0.0),
                             new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.5 : 0.0)
                         },
-                        Cue = new Avalonia.Animation.Cue(0d)
+                        Cue = new Cue(0d)
                     },
-                    new Avalonia.Animation.KeyFrame
+                    new KeyFrame
                     {
                         Setters =
                         {
-                            new Setter(Control.OpacityProperty, 1.0),
+                            new Setter(Visual.OpacityProperty, 1.0),
                             new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.0 : 1.0),
                             new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.0 : 1.0)
                         },
-                        Cue = new Avalonia.Animation.Cue(1d)
+                        Cue = new Cue(1d)
                     }
                 },
-                Duration = TimeSpan.FromSeconds(0.67)
-            };
+                Duration = TimeSpan.FromSeconds(0.67),
+				FillMode = FillMode.Forward
+			};
 
             await animation.RunAsync(ctrl);
-        }
+
+			(ctrl as IVisual).Opacity = 1;
+		}
     }
 
     public class SuppressNavigationTransitionInfo : NavigationTransitionInfo
     {
         public override void RunAnimation(Animatable ctrl)
         {
-            //Do nothing
-        }
+			//Do nothing
+			(ctrl as IVisual).Opacity = 1;
+		}
     }
 
 }
