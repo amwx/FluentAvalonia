@@ -163,17 +163,14 @@
                               RowDefinitions="Auto,Auto">
 
                             <Panel Name="StandardIconArea">
-                                <TextBlock Name="IconBackground"
-                                           VerticalAlignment="Top"
-                                           Margin="{StaticResource InfoBarIconMargin}"
-                                           FontSize="{StaticResource InfoBarIconFontSize}"
-                                           FontFamily="{DynamicResource SymbolThemeFontFamily}" />
+								<Ellipse Name="IconBackground"
+										 Width="16" Height="16"
+										 VerticalAlignment="Top" 
+										 Margin="{StaticResource InfoBarIconMargin}"/>
                                 
-                                <TextBlock Name="StandardIcon"
-                                           VerticalAlignment="Top"
-                                           Margin="{StaticResource InfoBarIconMargin}"
-                                           FontSize="{StaticResource InfoBarIconFontSize}"
-                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"/>
+								<ui:FontIcon Margin="{StaticResource InfoBarIconMargin}"
+											 FontFamily="{StaticResource SymbolThemeFontFamily}"
+											 Name="StandardIcon"/>
                             </Panel>
 
                             <Viewbox Name="UserIconBox"
@@ -267,54 +264,53 @@
     <Style Selector="ui|InfoBar:informational /template/ Border#ContentRoot">
         <Setter Property="Background" Value="{DynamicResource InfoBarInformationalSeverityBackgroundBrush}" />
     </Style>
-    <Style Selector="ui|InfoBar:informational /template/ TextBlock#IconBackground">
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconBackground}" />
-        <!--<Setter Property="Text" Value="&#xF4AC;" />-->
-    </Style>
-    <Style Selector="ui|InfoBar:informational /template/ TextBlock#StandardIcon">
-        <!--<Setter Property="Text" Value="&#xF4A5;" />-->
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
-    </Style>
+	<Style Selector="ui|InfoBar:informational /template/ Ellipse#IconBackground">
+		<Setter Property="Fill" Value="{DynamicResource InfoBarInformationalSeverityIconBackground}" />
+	</Style>   
+	<Style Selector="ui|InfoBar:informational /template/ ui|FontIcon#StandardIcon">
+		<Setter Property="Glyph" Value="i" />
+		<Setter Property="FontSize" Value="10" />
+		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+	</Style>
     
     <!-- 'Error' severity-->
     <Style Selector="ui|InfoBar:error /template/ Border#ContentRoot">
         <Setter Property="Background" Value="{DynamicResource InfoBarErrorSeverityBackgroundBrush}" />
     </Style>
-    <Style Selector="ui|InfoBar:error /template/ TextBlock#IconBackground">
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarErrorSeverityIconBackground}" />
-        <!--<Setter Property="Text" Value="&#xF3F1;" />-->
-    </Style>
-    <Style Selector="ui|InfoBar:error /template/ TextBlock#StandardIcon">
-        <!--<Setter Property="Text" Value="&#xF3F2;" />-->
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
-    </Style>
+	<Style Selector="ui|InfoBar:error /template/ Ellipse#IconBackground">
+		<Setter Property="Fill" Value="{DynamicResource InfoBarErrorSeverityIconBackground}" />
+	</Style>    
+	<Style Selector="ui|InfoBar:error /template/ ui|FontIcon#StandardIcon">
+		<Setter Property="Glyph" Value="&#xE10A;" />
+		<Setter Property="FontSize" Value="10" />
+		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+	</Style>
 
     <!-- 'Warning' severity -->
     <Style Selector="ui|InfoBar:warning /template/ Border#ContentRoot">
         <Setter Property="Background" Value="{DynamicResource InfoBarWarningSeverityBackgroundBrush}" />
     </Style>
-    <Style Selector="ui|InfoBar:warning /template/ TextBlock#IconBackground">
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarWarningSeverityIconBackground}" />
-        <!--<Setter Property="Text" Value="&#xF882;" />-->
-    </Style>
-    <Style Selector="ui|InfoBar:warning /template/ TextBlock#StandardIcon">
-        <!--<Setter Property="Text" Value="&#xF86A;" />-->
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarWarningSeverityIconForeground}" />
-    </Style>
+	<Style Selector="ui|InfoBar:warning /template/ Ellipse#IconBackground">
+		<Setter Property="Fill" Value="{DynamicResource InfoBarWarningSeverityIconBackground}" />
+	</Style>    
+	<Style Selector="ui|InfoBar:warning /template/ ui|FontIcon#StandardIcon">
+		<Setter Property="Glyph" Value="!" />
+		<Setter Property="FontSize" Value="10" />
+		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+	</Style>
 
     <!-- 'Success' severity -->
     <Style Selector="ui|InfoBar:success /template/ Border#ContentRoot">
         <Setter Property="Background" Value="{DynamicResource InfoBarSuccessSeverityBackgroundBrush}" />
     </Style>
-    <Style Selector="ui|InfoBar:success /template/ TextBlock#IconBackground">
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarSuccessSeverityIconBackground}" />
-        <!--<Setter Property="Text" Value="&#xF29A;" />-->
-    </Style>
-    <Style Selector="ui|InfoBar:success /template/ TextBlock#StandardIcon">
-        <!--<Setter Property="Text" Value="&#xF29A;" />-->
-        <Setter Property="Foreground" Value="{DynamicResource InfoBarSuccessSeverityIconForeground}" />
-    </Style>
-
+	<Style Selector="ui|InfoBar:success /template/ Ellipse#IconBackground">
+		<Setter Property="Fill" Value="{DynamicResource InfoBarSuccessSeverityIconBackground}" />
+	</Style>    
+	<Style Selector="ui|InfoBar:success /template/ ui|FontIcon#StandardIcon">
+		<Setter Property="Glyph" Value="&#xE10B;" />
+		<Setter Property="FontSize" Value="10" />
+		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+	</Style>
 
 
     <!-- Icon States... No Icon is default-->

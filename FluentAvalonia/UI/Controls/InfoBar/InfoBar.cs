@@ -10,7 +10,8 @@ namespace FluentAvalonia.UI.Controls
 	public class InfoBar : ContentControl
 	{
 		public static readonly DirectProperty<InfoBar, bool> IsOpenProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, bool>(nameof(IsOpen), x => x.IsOpen, (x, v) => x.IsOpen = v);
+			AvaloniaProperty.RegisterDirect<InfoBar, bool>(nameof(IsOpen), 
+				x => x.IsOpen, (x, v) => x.IsOpen = v);
 
 		public static readonly StyledProperty<string> TitleProperty =
 			AvaloniaProperty.Register<InfoBar, string>(nameof(Title));
@@ -34,7 +35,8 @@ namespace FluentAvalonia.UI.Controls
 			AvaloniaProperty.Register<InfoBar, ICommand>(nameof(CloseButtonCommand));
 
 		public static readonly DirectProperty<InfoBar, object> CloseButtonCommandParameterProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, object>(nameof(CloseButtonCommandParameter), x => x.CloseButtonCommandParameter, (x, v) => x.CloseButtonCommandParameter = v);
+			AvaloniaProperty.RegisterDirect<InfoBar, object>(nameof(CloseButtonCommandParameter), 
+				x => x.CloseButtonCommandParameter, (x, v) => x.CloseButtonCommandParameter = v);
 
 		public static readonly StyledProperty<IControl> ActionButtonProperty =
 			AvaloniaProperty.Register<InfoBar, IControl>(nameof(ActionButton));
@@ -120,9 +122,6 @@ namespace FluentAvalonia.UI.Controls
 
 				ToolTip.SetTip(_closeButton, "Close");
 			}
-
-			_standardIconTextBlock = e.NameScope.Find<TextBlock>("StandardIcon");
-			_iconBackground = e.NameScope.Find<TextBlock>("IconBackground");
 
 			_appliedTemplate = true;
 
@@ -242,8 +241,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", false);
 					PseudoClasses.Set(":error", false);
 					PseudoClasses.Set(":informational", false);
-					_standardIconTextBlock.Text = "\uF29A";
-					_iconBackground.Text = "\uF29A";
 					break;
 
 				case InfoBarSeverity.Warning:
@@ -251,8 +248,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", true);
 					PseudoClasses.Set(":error", false);
 					PseudoClasses.Set(":informational", false);
-					_standardIconTextBlock.Text = "\uF86A";
-					_iconBackground.Text = "\uF882";
 					break;
 
 				case InfoBarSeverity.Error:
@@ -260,8 +255,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", false);
 					PseudoClasses.Set(":error", true);
 					PseudoClasses.Set(":informational", false);
-					_standardIconTextBlock.Text = "\uF3F2";
-					_iconBackground.Text = "\uF3F1";
 					break;
 
 				default: // default to informational
@@ -269,8 +262,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", false);
 					PseudoClasses.Set(":error", false);
 					PseudoClasses.Set(":informational", true);
-					_standardIconTextBlock.Text = "\uF4A5";
-					_iconBackground.Text = "\uF4AC";
 					break;
 			}
 		}
@@ -308,8 +299,6 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Set(":foregroundset", this.GetValue(TextBlock.ForegroundProperty) != AvaloniaProperty.UnsetValue);
 		}
 
-		private TextBlock _standardIconTextBlock;
-		private TextBlock _iconBackground;
 		private Button _closeButton;
 
 		private bool _appliedTemplate;
