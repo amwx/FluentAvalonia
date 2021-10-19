@@ -46,7 +46,6 @@ namespace FluentAvalonia.UI.Controls
             var si = new SymbolIcon
             {
                 [!SymbolIcon.SymbolProperty] = sis[!SymbolIconSource.SymbolProperty],
-                [!SymbolIcon.UseFilledProperty] = sis[!SymbolIconSource.UseFilledProperty],
                 [!TextBlock.FontSizeProperty] = sis[!TextBlock.FontSizeProperty]
             };
 
