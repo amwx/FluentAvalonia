@@ -1372,7 +1372,26 @@
 
 
 		<!-- COLOR PICKER -->
-		<!-- TODO -->
+		<StaticResource x:Key="ColorPickerBackground" ResourceKey="SolidBackgroundFillColorBaseBrush" />
+		<StaticResource x:Key="ColorRampBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
+		<StaticResource x:Key="ColorPickerComponentLabelBackground" ResourceKey="SolidBackgroundFillColorSecondary" />
+		<StaticResource x:Key="ColorPickerTabItemBackground" ResourceKey="SolidBackgroundFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerTabItemBackgroundPointerOver" ResourceKey="SolidBackgroundFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerTabItemBackgroundSelected" ResourceKey="SolidBackgroundFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerTabItemForeground" ResourceKey="TextFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerTabItemForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerTabItemForegroundSelected" ResourceKey="TextFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerTabItemSelectionIndicatorColor" ResourceKey="AccentFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerTabItemSelectionIndicatorPointerOver" ResourceKey="AccentFillColorTertiaryBrush" />
+		<StaticResource x:Key="ColorPickerColorTypeButtonBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
+		<StaticResource x:Key="ColorPickerColorTypeButtonBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
+		<StaticResource x:Key="ColorPickerMoreButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+		<StaticResource x:Key="ColorPickerMoreButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+		<StaticResource x:Key="ColorPickerColorPaletteItemBorderBrushPointerOver" ResourceKey="ControlStrokeColorDefaultBrush" />
+
+		<!-- COLORPICKER BUTTON -->
+		<StaticResource x:Key="ColorPickerButtonOutline" ResourceKey="ControlStrokeColorDefaultBrush" />
+
 
 
 		<!-- SPLIT BUTTON -->
