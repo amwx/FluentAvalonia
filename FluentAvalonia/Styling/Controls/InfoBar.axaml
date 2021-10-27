@@ -168,7 +168,7 @@
 										 VerticalAlignment="Top" 
 										 Margin="{StaticResource InfoBarIconMargin}"/>
                                 
-								<ui:FontIcon Margin="{StaticResource InfoBarIconMargin}"
+								<ui:FontIcon VerticalAlignment="Top"
 											 FontFamily="{StaticResource SymbolThemeFontFamily}"
 											 Name="StandardIcon"/>
                             </Panel>
@@ -251,6 +251,9 @@
     <Style Selector="ui|InfoBar /template/ Viewbox#UserIconBox">
         <Setter Property="IsVisible" Value="False" />
     </Style>
+	<Style Selector="ui|InfoBar /template/ ui|FontIcon#StandardIcon">
+		<Setter Property="Margin" Value="{StaticResource InfoBarIconMargin}" />
+	</Style>
 
     <Style Selector="ui|InfoBar /template/ TextBlock#Title">
         <Setter Property="Foreground" Value="{DynamicResource InfoBarTitleForeground}" />
@@ -268,7 +271,7 @@
 		<Setter Property="Fill" Value="{DynamicResource InfoBarInformationalSeverityIconBackground}" />
 	</Style>   
 	<Style Selector="ui|InfoBar:informational /template/ ui|FontIcon#StandardIcon">
-		<Setter Property="Glyph" Value="i" />
+		<Setter Property="Glyph" Value="&#x0069;" />
 		<Setter Property="FontSize" Value="10" />
 		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
 	</Style>
@@ -284,6 +287,7 @@
 		<Setter Property="Glyph" Value="&#xE10A;" />
 		<Setter Property="FontSize" Value="10" />
 		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+		<Setter Property="Margin" Value="0,19,14,0" />
 	</Style>
 
     <!-- 'Warning' severity -->
@@ -294,7 +298,7 @@
 		<Setter Property="Fill" Value="{DynamicResource InfoBarWarningSeverityIconBackground}" />
 	</Style>    
 	<Style Selector="ui|InfoBar:warning /template/ ui|FontIcon#StandardIcon">
-		<Setter Property="Glyph" Value="!" />
+		<Setter Property="Glyph" Value="&#x0021;" />
 		<Setter Property="FontSize" Value="10" />
 		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
 	</Style>
@@ -310,6 +314,7 @@
 		<Setter Property="Glyph" Value="&#xE10B;" />
 		<Setter Property="FontSize" Value="10" />
 		<Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+		<Setter Property="Margin" Value="0,19,14,0" />
 	</Style>
 
 
