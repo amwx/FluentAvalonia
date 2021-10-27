@@ -18,9 +18,6 @@
         x:Class="FluentAvaloniaSamples.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="FluentAvalonia Samples">
-	<Window.Background>
-		<SolidColorBrush Color="{DynamicResource SolidBackgroundFillColorTertiary}" Opacity="0.945" />
-	</Window.Background>
 	
     <!--<Design.DataContext>
         <vm:MainWindowViewModel/>

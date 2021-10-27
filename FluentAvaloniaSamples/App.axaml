@@ -279,6 +279,9 @@
             </Setter>
         </Style>
 
+
+		<!-- All Related to the Custom Window Frame stuff for the Sample App, not intended for outside use -->
+		
 		<Style Selector="Button.SystemCaption">
 			<Setter Property="Background" Value="Transparent" />
 			<Setter Property="BorderBrush" Value="{x:Null}" />
@@ -367,8 +370,7 @@
 		</Style>
 
 
-		<Style Selector="Window:windows">
-			<Setter Property="Background" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}"/>
+		<Style Selector="Window:windows">			
 			<Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
 			<Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
 			<Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
@@ -378,7 +380,8 @@
 					<VisualLayerManager>
 						<!-- Because we use the System Border, we don't specify anything like that here.-->
 						<Border Background="{TemplateBinding Background}"
-								Padding="{TemplateBinding Padding}">
+								Padding="{TemplateBinding Padding}"
+								Name="RootBorder">
 							<Panel>
 								<Panel Name="DefaultTitleBar"
 									   Background="Transparent"
@@ -411,6 +414,33 @@
 				</ControlTemplate>
 			</Setter>
 		</Style>
+		<Style Selector="Window:windows:windows11">
+			<Setter Property="Background">
+				<SolidColorBrush Color="{DynamicResource SolidBackgroundFillColorTertiary}" Opacity="0.945" />
+			</Setter>
+		</Style>
+		<!-- Windows 10 doesn't have Mica, so we use a solid background color, which matches what WinUI does too -->
+		<Style Selector="Window:windows:windows10">
+			<Setter Property="Background" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
+		</Style>
+		<!-- 
+		Windows 10 is really a pain in the ass with custom window frames
+		For whatever reason, the top border of the window frame hides under WinUI Comp, so we have to 
+		fake it or else it looks weird. This isn't perfect, but better than nothing
+		-->
+		<Style Selector="Window:windows:windows10 /template/ Border#RootBorder">
+			<!-- This will show if custom accent color setting is used in Settings page-->
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+			<Setter Property="BorderThickness" Value="0 0.5 0 0" />
+		</Style>
+		<Style Selector="Window[IsActive=False]:windows:windows10 /template/ Border#RootBorder">
+			<Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultSolid}" />
+			<Setter Property="BorderThickness" Value="0 0.5 0 0" />
+		</Style>
+		<Style Selector="Window[WindowState=Maximized]:windows:windows10 /template/ Border#RootBorder">
+			<Setter Property="BorderThickness" Value="0 0 0 0" />
+		</Style>
+
 		<Style Selector="wnd|CoreWindow:windows:extended /template/ TextBlock#TitleText">
 			<Setter Property="IsVisible" Value="False" />
 		</Style>

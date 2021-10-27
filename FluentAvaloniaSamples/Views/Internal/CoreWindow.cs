@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Platform;
 using Avalonia.Controls.Primitives;
 using Avalonia.Platform;
@@ -12,6 +11,9 @@ using System.Runtime.InteropServices;
 
 namespace FluentAvaloniaSamples.Views.Internal
 {
+	// Special Win32 window impl for a better extended window frame.
+	// Not intended for outside use
+
 	public static class WindowImplSolver
 	{
 		public static IWindowImpl GetWindowImpl()
@@ -209,13 +211,25 @@ namespace FluentAvaloniaSamples.Views.Internal
 						_owner.FakeMaximizeClick();
 						return IntPtr.Zero;
 					}
-					break;										
+					break;
 			}
 
 			return base.WndProc(hWnd, msg, wParam, lParam);
 		}
 
-		internal void SetOwner(CoreWindow wnd) => _owner = wnd;
+		internal void SetOwner(CoreWindow wnd)
+		{
+			_owner = wnd;
+
+			if (_version.BuildNumber > 22000)
+			{
+				((IPseudoClasses)_owner.Classes).Set(":windows11", true);
+			}
+			else
+			{
+				((IPseudoClasses)_owner.Classes).Set(":windows10", true);
+			}
+		}
 
 		private int GetResizeHandleHeight()
 		{
@@ -246,7 +260,7 @@ namespace FluentAvaloniaSamples.Views.Internal
 			Win32Interop.AdjustWindowRectExForDpi(ref frame,
 				(int)style, false, 0, (int)(RenderScaling * 96));
 
-			marg.topHeight = -frame.top;
+			marg.topHeight = -frame.top + (_isWindows11 ? 0 : -1);
 			Win32Interop.DwmExtendFrameIntoClientArea(Handle.Handle, ref marg);
 		}
 
