@@ -159,11 +159,11 @@ namespace FluentAvalonia.UI.Controls
 		{
 			get
 			{
-				return GetValue(IsPrimaryButtonEnabledProperty);
+				return GetValue(IsSecondaryButtonEnabledProperty);
 			}
 			set
 			{
-				SetValue(IsPrimaryButtonEnabledProperty, value);
+				SetValue(IsSecondaryButtonEnabledProperty, value);
 			}
 		}
 
