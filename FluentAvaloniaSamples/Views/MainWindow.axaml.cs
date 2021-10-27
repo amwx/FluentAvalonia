@@ -17,6 +17,7 @@ using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Navigation;
 using FluentAvaloniaSamples.Pages;
 using FluentAvaloniaSamples.ViewModels;
+using FluentAvaloniaSamples.Views.Internal;
 using SkiaSharp;
 using System;
 using System.Collections;
@@ -27,7 +28,7 @@ using IconElement = FluentAvalonia.UI.Controls.IconElement;
 
 namespace FluentAvaloniaSamples.Views
 {
-    public class MainWindow : Window
+    public class MainWindow : CoreWindow
     {
         public MainWindow()
         {

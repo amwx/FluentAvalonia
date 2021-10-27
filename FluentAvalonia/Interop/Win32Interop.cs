@@ -72,6 +72,9 @@ namespace FluentAvalonia.Interop
 		[DllImport("user32.dll")]
 		public static extern int GetSystemMetrics(int smIndex);
 
+		[DllImport("user32.dll")]
+		public static extern int GetSystemMetricsForDpi(int nIndex, uint dpi);
+
 		[DllImport("user32.dll", SetLastError = true)]
 		public static unsafe extern int SetWindowCompositionAttribute(IntPtr hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
 
