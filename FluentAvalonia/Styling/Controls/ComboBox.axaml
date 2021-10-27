@@ -7,9 +7,9 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3f3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
-                <ui:ComboBox>
+                <ui:ComboBox PlaceholderText="Test">
                     <ui:ComboBoxItem Content="Item1" />
                     <ui:ComboBoxItem Content="Item2" />
                     <ui:ComboBoxItem Content="Item3" />
@@ -24,43 +24,9 @@
         </Border>
     </Design.PreviewWith>
 
-    <Styles.Resources>
-        <x:Double x:Key="ComboBoxArrowThemeFontSize">21</x:Double>
-        <x:Double x:Key="ComboBoxThemeMinWidth">64</x:Double>
-        <x:Double x:Key="ComboBoxPopupThemeMinWidth">80</x:Double>
-        <x:Double x:Key="ComboBoxPopupThemeTouchMinWidth">240</x:Double>
-        <x:Double x:Key="ComboBoxItemPillHeight">16</x:Double>
-        <x:Double x:Key="ComboBoxItemPillWidth">3</x:Double>
-        <!--<x:Double x:Key="ComboBoxItemPillMinScale">0.625</x:Double>-->
-        <x:Double x:Key="ComboBoxMinHeight">32</x:Double>
-
-        <x:Int32 x:Key="ComboBoxPopupMaxNumberOfItems">15</x:Int32>
-        <x:Int32 x:Key="ComboBoxPopupMaxNumberOfItemsThatCanBeShownOnOneSide">7</x:Int32>
-
-        <x:String x:Key="ComboBoxItemScaleAnimationDuration">00:00:00.167</x:String>
-
-        <Thickness x:Key="ComboBoxBorderThemeThickness">1</Thickness>
-        <Thickness x:Key="ComboBoxDropdownBorderThickness">1</Thickness>
-        <Thickness x:Key="ComboBoxHeaderThemeMargin">0,0,0,4</Thickness>
-        <Thickness x:Key="ComboBoxPopupBorderThemeThickness">2</Thickness>
-        <Thickness x:Key="ComboBoxItemThemePadding">11,5,11,7</Thickness>
-        <Thickness x:Key="ComboBoxItemThemeTouchPadding">11,11,11,13</Thickness>
-        <Thickness x:Key="ComboBoxItemThemeGameControllerPadding">11,11,11,13</Thickness>
-        <Thickness x:Key="ComboBoxBackgroundBorderThicknessFocused">2</Thickness>
-        <Thickness x:Key="ComboBoxDropdownBorderPadding">0</Thickness>
-        <Thickness x:Key="ComboBoxDropdownContentMargin">0,4</Thickness>
-        <Thickness x:Key="ComboBoxTopHeaderMargin">0,0,0,8</Thickness>
-        <Thickness x:Key="ComboBoxPadding">12,5,0,7</Thickness>
-        <Thickness x:Key="ComboBoxEditableTextPadding">11,5,32,6</Thickness>
-
-        <CornerRadius x:Key="ComboBoxHiglightBorderCornerRadius">7</CornerRadius>
-        <CornerRadius x:Key="ComboBoxDropDownButtonBackgroundCornerRadius">4</CornerRadius>
-        <CornerRadius x:Key="ComboBoxItemCornerRadius">3</CornerRadius>
-        <CornerRadius x:Key="ComboBoxItemPillCornerRadius">1.5</CornerRadius>
-
-        <FontWeight x:Key="ComboBoxHeaderThemeFontWeight">Normal</FontWeight>
-        <FontWeight x:Key="ComboBoxPlaceholderTextThemeFontWeight">SemiLight</FontWeight>
-    </Styles.Resources>
+	<!-- 
+	See AvComboBox.axaml for resources 
+	-->
 
     <Style Selector="Border.ComboBoxItemPill">
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -81,7 +47,7 @@
 						  Background="{TemplateBinding Background}"
 						  BorderBrush="{TemplateBinding BorderBrush}"
 						  BorderThickness="{TemplateBinding BorderThickness}"
-						  CornerRadius="{DynamicResource ControlCornerRadius}"
+						  CornerRadius="{TemplateBinding CornerRadius}"
 						  MinWidth="{TemplateBinding MinWidth}"
 						  MinHeight="{TemplateBinding MinHeight}"
 						  RenderTransform="scaleY(-1)">
@@ -168,6 +134,7 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
                 <StackPanel />
@@ -175,14 +142,14 @@
         </Setter>
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid Name="LayoutRoot" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,32">
+                <Grid Name="LayoutRoot" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,38">
                     <ContentPresenter Name="HeaderContentPresenter"
                                       Grid.Row="0"
                                       Grid.Column="0"
                                       Grid.ColumnSpan="2"
                                       Content="{TemplateBinding Header}"
                                       ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                      TextBlock.FontWeight="{DynamicResource ComboBoxHeaderFontWeight}"
+                                      TextBlock.FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
                                       Margin="{DynamicResource ComboBoxTopHeaderMargin}"
                                       VerticalAlignment="Top"
                                       IsVisible="False" />
@@ -202,7 +169,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             MinWidth="{DynamicResource ComboBoxThemeMinWidth}"
                             RenderTransform="scaleY(-1)"/>
                     
@@ -216,14 +183,16 @@
                                       Grid.Column="0"
                                       Margin="{TemplateBinding Padding}"
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      >                        
-                    </ContentPresenter>
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     <!--  
                     Content="{TemplateBinding SelectionBoxItem}"
                     WinUI puts this in the ContentPresenter, can't do that here, so hold outside until I know how to handle this...-->
-                    <TextBlock Name="PlaceholderText" Grid.Row="1" Grid.Column="0"
-                                   Text="{TemplateBinding PlaceholderText}" />
+                    <TextBlock Name="PlaceholderTextBlock" Grid.Row="1" Grid.Column="0"
+							   Margin="{TemplateBinding Padding}"
+                               Text="{TemplateBinding PlaceholderText}"
+							   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							   VerticalAlignment="Center"
+							   IsVisible="{TemplateBinding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
 
                     <!--  -->
                     <TextBox Name="EditableText"
@@ -238,7 +207,7 @@
                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                              Watermark="{TemplateBinding PlaceholderText}"
                              Foreground="{DynamicResource ComboBoxPlaceHolderForeground}"
-                              />
+							 CornerRadius="{TemplateBinding CornerRadius}" />
                     
                     <Border Name="DropDownOverlay"
                             Grid.Row="1"
@@ -255,7 +224,7 @@
                                  Margin="0 0 12 0"
                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                  FontSize="12"
-                                 Glyph="&#xF2A6;"
+                                 Glyph="&#xE70D;"
                                  HorizontalAlignment="Right"
                                  VerticalAlignment="Center" />
                     
@@ -377,7 +346,7 @@
     <Style Selector="ui|ComboBox:focus-within /template/ Border#HighlightBackground">
         <Setter Property="Opacity" Value="1" />
     </Style>
-    <Style Selector="ui|ComboBox:focus-within /template/ Border#Pill">
+    <Style Selector="ui|ComboBox:focus-visible /template/ Border#Pill">
         <Setter Property="Opacity" Value="1" />
     </Style>
     <Style Selector="ui|ComboBox:focus-within /template/ ContentPresenter#ContentPresenter">
@@ -394,9 +363,9 @@
     <Style Selector="ui|ComboBox:focused:pressed /template/ Border#HighlightBackground">
         <Setter Property="Opacity" Value="1" />
     </Style>
-    <Style Selector="ui|ComboBox:focused:pressed /template/ Border#Pill">
+    <!--<Style Selector="ui|ComboBox:focused:pressed /template/ Border#Pill">
         <Setter Property="Opacity" Value="1" />
-    </Style>
+    </Style>-->
     <Style Selector="ui|ComboBox:focused:pressed /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ComboBoxForegroundFocusedPressed}" />
     </Style>
@@ -486,7 +455,7 @@
                         TemplatedControl.IsTemplateFocusTarget="True">
                     <Panel>
                         <Border Name="Pill"
-                            Classes="ComboBoxItemPill" />
+								Classes="ComboBoxItemPill" />
 
                         <ContentPresenter Name="ContentPresenter"
                                           Content="{TemplateBinding Content}"

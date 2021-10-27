@@ -23,8 +23,8 @@ namespace FluentAvalonia.UI.Controls
 	public class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 	{
 		private readonly bool _isContextMenu;
-		private IDisposable? _inputManagerSubscription;
-		private IRenderRoot? _root;
+		private IDisposable _inputManagerSubscription;
+		private IRenderRoot _root;
 
 		public MenuFlyoutInteractionHandler(bool isContextMenu)
 			: this(isContextMenu, Avalonia.Input.InputManager.Instance, DefaultDelayRun)
@@ -33,7 +33,7 @@ namespace FluentAvalonia.UI.Controls
 
 		public MenuFlyoutInteractionHandler(
 			bool isContextMenu,
-			IInputManager? inputManager,
+			IInputManager inputManager,
 			Action<Action, TimeSpan> delayRun)
 		{
 			delayRun = delayRun ?? throw new ArgumentNullException(nameof(delayRun));
@@ -117,9 +117,9 @@ namespace FluentAvalonia.UI.Controls
 
 		protected Action<Action, TimeSpan> DelayRun { get; }
 
-		protected IInputManager? InputManager { get; }
+		protected IInputManager InputManager { get; }
 
-		protected IMenu? Menu { get; private set; }
+		protected IMenu Menu { get; private set; }
 
 		protected static TimeSpan MenuShowDelay { get; } = TimeSpan.FromMilliseconds(400);
 
@@ -148,7 +148,7 @@ namespace FluentAvalonia.UI.Controls
 			KeyDown(GetMenuItem(e.Source as IControl), e);
 		}
 
-		protected internal virtual void KeyDown(IMenuItem? item, KeyEventArgs e)
+		protected internal virtual void KeyDown(IMenuItem item, KeyEventArgs e)
 		{
 			switch (e.Key)
 			{
@@ -465,7 +465,7 @@ namespace FluentAvalonia.UI.Controls
 
 		protected void CloseMenu(IMenuItem item)
 		{
-			var current = (IMenuElement?)item;
+			var current = (IMenuElement)item;
 
 			// We change this behavior here b/c in cascading menus, Avalonia runs it MenuItem->MenuItem
 			// whereas with the MenuFlyoutPresenter, it runs MenuFlyoutSubItem->MenuFlyoutPresenter->Items...
@@ -530,7 +530,7 @@ namespace FluentAvalonia.UI.Controls
 
 		protected void SelectItemAndAncestors(IMenuItem item)
 		{
-			var current = (IMenuItem?)item;
+			var current = (IMenuItem)item;
 
 			while (current?.Parent != null)
 			{
@@ -539,7 +539,7 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		protected static IMenuItem? GetMenuItem(IControl? item)
+		protected static IMenuItem GetMenuItem(IControl item)
 		{
 			while (true)
 			{

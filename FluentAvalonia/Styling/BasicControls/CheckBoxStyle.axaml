@@ -26,9 +26,12 @@
         <x:Double x:Key="CheckBoxMinWidth">120</x:Double>
         <Thickness x:Key="CheckBoxPadding">8,5,0,0</Thickness>
         <Thickness x:Key="CheckBoxFocusVisualMargin">-7,-3,-7,-3</Thickness>
-        <!-- Updated to Fluent-Icons (indet. uses line_horizontal) -->
-        <x:String x:Key="CheckBoxCheckedGlyph">&#xF296;</x:String>
-        <x:String x:Key="CheckBoxIndeterminateGlyph">&#xF4E0;</x:String>      
+        <!--
+		Looks like WinUI still using old code points, changed to updated
+		Interminate use FluentUI Subtract
+		-->
+        <x:String x:Key="CheckBoxCheckedGlyph">&#xE10B;</x:String>
+        <x:String x:Key="CheckBoxIndeterminateGlyph">&#xE108;</x:String>      
     </Styles.Resources>
 
     <Style Selector="CheckBox">
@@ -44,13 +47,14 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="MinWidth" Value="{DynamicResource CheckBoxMinWidth}" />
         <Setter Property="MinHeight" Value="{DynamicResource CheckBoxHeight}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="Root"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}">
 
                     <Grid ColumnDefinitions="Auto,*">
 
@@ -60,7 +64,7 @@
                                        UseLayoutRounding="False"
                                        Height="{StaticResource CheckBoxSize}"
                                        Width="{StaticResource CheckBoxSize}"
-                                       CornerRadius="{DynamicResource ControlCornerRadius}" />
+                                       CornerRadius="{TemplateBinding CornerRadius}" />
                             
                             <ui:FontIcon Name="CheckGlyph"
                                          FontFamily="{DynamicResource SymbolThemeFontFamily}"                                         

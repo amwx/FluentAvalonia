@@ -32,56 +32,50 @@ namespace FluentAvalonia.UI.Controls
 			FullSizeDesiredProperty.Changed.AddClassHandler<ContentDialog>((x, v) => x.OnFullSizedDesiredChanged(v));
 		}
 
-		#region AvaloniaProperties
-
 		public static readonly StyledProperty<ICommand> CloseButtonCommandProperty =
-			AvaloniaProperty.Register<ContentDialog, ICommand>("CloseButtonCommand");
+			AvaloniaProperty.Register<ContentDialog, ICommand>(nameof(CloseButtonCommand));
 
 		public static readonly StyledProperty<object> CloseButtonCommandParameterProperty =
-			AvaloniaProperty.Register<ContentDialog, object>("CloseButtonCommandParameter");
+			AvaloniaProperty.Register<ContentDialog, object>(nameof(CloseButtonCommandParameter));
 
 		public static readonly StyledProperty<string> CloseButtonTextProperty =
-			AvaloniaProperty.Register<ContentDialog, string>("CloseButtonText");
+			AvaloniaProperty.Register<ContentDialog, string>(nameof(CloseButtonText));
 
 		public static readonly StyledProperty<ContentDialogButton> DefaultButtonProperty =
-			AvaloniaProperty.Register<ContentDialog, ContentDialogButton>("DefaultButton", ContentDialogButton.None);
+			AvaloniaProperty.Register<ContentDialog, ContentDialogButton>(nameof(DefaultButton), ContentDialogButton.None);
 
 		public static readonly StyledProperty<bool> IsPrimaryButtonEnabledProperty =
-			AvaloniaProperty.Register<ContentDialog, bool>("IsPrimaryButtonEnabled", true);
+			AvaloniaProperty.Register<ContentDialog, bool>(nameof(IsPrimaryButtonEnabled), true);
 
 		public static readonly StyledProperty<bool> IsSecondaryButtonEnabledProperty =
-			AvaloniaProperty.Register<ContentDialog, bool>("IsSecondaryButtonEnabled", true);
+			AvaloniaProperty.Register<ContentDialog, bool>(nameof(IsSecondaryButtonEnabled), true);
 
 		public static readonly StyledProperty<ICommand> PrimaryButtonCommandProperty =
-			AvaloniaProperty.Register<ContentDialog, ICommand>("PrimaryButtonCommand");
+			AvaloniaProperty.Register<ContentDialog, ICommand>(nameof(PrimaryButtonCommand));
 
 		public static readonly StyledProperty<object> PrimaryButtonCommandParameterProperty =
-			AvaloniaProperty.Register<ContentDialog, object>("PrimaryButtonCommandParameter");
+			AvaloniaProperty.Register<ContentDialog, object>(nameof(PrimaryButtonCommandParameter));
 
 		public static readonly StyledProperty<string> PrimaryButtonTextProperty =
-			AvaloniaProperty.Register<ContentDialog, string>("PrimaryButtonText");
+			AvaloniaProperty.Register<ContentDialog, string>(nameof(PrimaryButtonText));
 
 		public static readonly StyledProperty<ICommand> SecondaryButtonCommandProperty =
-			AvaloniaProperty.Register<ContentDialog, ICommand>("SecondaryButtonCommand");
+			AvaloniaProperty.Register<ContentDialog, ICommand>(nameof(SecondaryButtonCommand));
 
 		public static readonly StyledProperty<object> SecondaryButtonCommandParameterProperty =
-			AvaloniaProperty.Register<ContentDialog, object>("SecondaryButtonCommandParameter");
+			AvaloniaProperty.Register<ContentDialog, object>(nameof(SecondaryButtonCommandParameter));
 
 		public static readonly StyledProperty<string> SecondaryButtonTextProperty =
-			AvaloniaProperty.Register<ContentDialog, string>("SecondaryButtonText");
+			AvaloniaProperty.Register<ContentDialog, string>(nameof(SecondaryButtonText));
 
 		public static readonly StyledProperty<object> TitleProperty =
-			AvaloniaProperty.Register<ContentDialog, object>("Title", "");
+			AvaloniaProperty.Register<ContentDialog, object>(nameof(Title), "");
 
 		public static readonly StyledProperty<IDataTemplate> TitleTemplateProperty =
-			AvaloniaProperty.Register<ContentDialog, IDataTemplate>("TitleTemplate");
+			AvaloniaProperty.Register<ContentDialog, IDataTemplate>(nameof(TitleTemplate));
 
 		public static readonly StyledProperty<bool> FullSizeDesiredProperty =
-			AvaloniaProperty.Register<ContentDialog, bool>("FullSizeDesired");
-
-		#endregion
-
-		#region CLR Properties
+			AvaloniaProperty.Register<ContentDialog, bool>(nameof(FullSizeDesired));
 
 		/// <summary>
 		/// Command to execute when the close button is clicked
@@ -165,11 +159,11 @@ namespace FluentAvalonia.UI.Controls
 		{
 			get
 			{
-				return GetValue(IsPrimaryButtonEnabledProperty);
+				return GetValue(IsSecondaryButtonEnabledProperty);
 			}
 			set
 			{
-				SetValue(IsPrimaryButtonEnabledProperty, value);
+				SetValue(IsSecondaryButtonEnabledProperty, value);
 			}
 		}
 
@@ -303,8 +297,6 @@ namespace FluentAvalonia.UI.Controls
 			get => GetValue(FullSizeDesiredProperty);
 			set => SetValue(FullSizeDesiredProperty, value);
 		}
-
-		#endregion
 
 		public event TypedEventHandler<ContentDialog, object> Opening;
 		public event TypedEventHandler<ContentDialog, object> Opened;

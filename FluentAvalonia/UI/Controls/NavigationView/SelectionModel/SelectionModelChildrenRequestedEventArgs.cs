@@ -9,7 +9,7 @@ namespace FluentAvalonia.UI.Controls
     /// </summary>
     public class SelectionModelChildrenRequestedEventArgs : EventArgs
     {
-        private object? _source;
+        private object _source;
         private IndexPath _sourceIndexPath;
         private IndexPath _finalIndexPath;
         private bool _throwOnAccess;
@@ -28,7 +28,7 @@ namespace FluentAvalonia.UI.Controls
         /// Gets or sets an observable which produces the children of the <see cref="Source"/>
         /// object.
         /// </summary>
-        public IObservable<object?>? Children { get; set; }
+        public IObservable<object> Children { get; set; }
 
         /// <summary>
         /// Gets the object whose children are being requested.
@@ -79,7 +79,7 @@ namespace FluentAvalonia.UI.Controls
         }
 
         internal void Initialize(
-            object? source,
+            object source,
             IndexPath sourceIndexPath,
             IndexPath finalIndexPath,
             bool throwOnAccess)

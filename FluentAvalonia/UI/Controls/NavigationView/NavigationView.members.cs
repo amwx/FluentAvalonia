@@ -679,7 +679,7 @@ namespace FluentAvalonia.UI.Controls
         bool _wasForceClosed;
         bool _isClosedCompact;
         bool _blockNextClosingEvent;
-        bool _initialListSizeStateSet;
+        //bool _initialListSizeStateSet;
 		bool _isLeftPaneTitleEmpty;
 
         private TopNavigationViewDataProvider _topDataProvider;
@@ -744,5 +744,7 @@ namespace FluentAvalonia.UI.Controls
         private const int _footerMenuBlockIndex = 1;
 
         private const int _itemNotFound = -1;
+
+        private double _openPaneWidth = 320; //WinUI #5800
     }
 }

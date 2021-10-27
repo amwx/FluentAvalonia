@@ -989,6 +989,7 @@ namespace FluentAvalonia.UI.Controls
 
         private void OnSizeChanged(Rect r)
         {
+            UpdateOpenPaneWidth(r.Width);
             UpdateAdaptiveLayout(r.Width);
             UpdateTitleBarPadding();
             UpdateBackAndCloseButtonsVisibility();
@@ -2175,7 +2176,7 @@ namespace FluentAvalonia.UI.Controls
             // If we decide we want it to animate open/closed when you resize the
             // window we'll have to change how we figure out the initial state
             // instead of this:
-            _initialListSizeStateSet = false; // see UpdateIsClosedCompact
+            //_initialListSizeStateSet = false; // see UpdateIsClosedCompact
 
             NavigationViewDisplayMode dMode = NavigationViewDisplayMode.Compact;
 
@@ -2186,7 +2187,7 @@ namespace FluentAvalonia.UI.Controls
                 {
                     dMode = NavigationViewDisplayMode.Expanded;
                 }
-                else if (width < CompactModeThresholdWidth)
+                else if (width > 0 && width < CompactModeThresholdWidth)
                 {
                     dMode = NavigationViewDisplayMode.Minimal;
                 }
@@ -2228,7 +2229,12 @@ namespace FluentAvalonia.UI.Controls
             if (prev == NavigationViewDisplayMode.Expanded &&
                 dMode == NavigationViewDisplayMode.Compact)
             {
-                _initialListSizeStateSet = false;
+                //_initialListSizeStateSet = false;
+                ClosePane();
+            }
+
+            if (dMode == NavigationViewDisplayMode.Minimal)
+            {
                 ClosePane();
             }
         }
@@ -3323,7 +3329,7 @@ namespace FluentAvalonia.UI.Controls
             //PseudoClasses.Set(":notclosedcompact", !_isClosedCompact); (default)
 
 
-            _initialListSizeStateSet = true;
+            //_initialListSizeStateSet = true;
 
             PseudoClasses.Set(":listsizecompact", _isClosedCompact);
             //PseudoClasses.Set(":listsizefull", !_isClosedCompact); (default)
@@ -3385,7 +3391,8 @@ namespace FluentAvalonia.UI.Controls
 				{ 
 					third();
 
-					_paneTitleOnTopPane.IsVisible = !string.IsNullOrEmpty(PaneTitle) && PaneTitle.Length != 0;
+                    if (_paneTitleOnTopPane != null)
+					    _paneTitleOnTopPane.IsVisible = !string.IsNullOrEmpty(PaneTitle) && PaneTitle.Length != 0;
 				}
             }
         }
@@ -3421,7 +3428,10 @@ namespace FluentAvalonia.UI.Controls
         {
             if (_appliedTemplate)
             {
-                _topDataProvider.InvalidWidthCache();
+                if (MenuItems == null) // WinUI #5558
+                {
+                    _topDataProvider.InvalidWidthCache();
+                }
                 InvalidateMeasure();
             }
         }
@@ -4020,7 +4030,15 @@ namespace FluentAvalonia.UI.Controls
             return null;
         }
 
+        private void UpdateOpenPaneWidth(double width) // WinUI #5800
+        {
+            if (!IsTopNavigationView && _splitView != null)
+            {
+                _openPaneWidth = Math.Max(0, Math.Min(width, OpenPaneLength));
 
+                TemplateSettings.OpenPaneWidth = _openPaneWidth;
+            }
+        }
 
 
     }

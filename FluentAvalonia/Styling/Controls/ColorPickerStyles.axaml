@@ -5,7 +5,7 @@
         xmlns:sty="using:FluentAvalonia.Styling"
         xmlns:conv="using:FluentAvalonia.Converters"
         xmlns:avconv="using:Avalonia.Controls.Converters">
-    <Design.PreviewWith>
+    <Design.PreviewWith> 
         <Border Padding="0">
             <ui:ColorPicker UseSpectrum="True" UseColorWheel="True" IsCompact="False"
                             UseColorTriangle="True" UseColorPalette="True"
@@ -55,7 +55,8 @@
                              FontFamily="{TemplateBinding FontFamily}"
                              TextAlignment="{TemplateBinding TextAlignment}">
                         <TextBox.InnerLeftContent>
-                            <Border Background="{DynamicResource ColorPickerComponentLabelBackground}">
+                            <Border Background="{DynamicResource ColorPickerComponentLabelBackground}"
+									Name="Label">
                                 <TextBlock Text="{Binding $parent[ui:NumberBox].Header}"
                                            VerticalAlignment="Center"
                                            FontWeight="SemiBold" Margin="9 4"
@@ -80,17 +81,18 @@
                                 Background="{DynamicResource NumberBoxPopupBackground}"
                                 BorderBrush="{DynamicResource NumberBoxPopupBorderBrush}"
                                 BorderThickness="{DynamicResource NumberBoxPopupBorderThickness}"
-                                CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                CornerRadius="{DynamicResource OverlayCornerRadius}"
+								Padding="6">
 
                             <Grid RowDefinitions="*,*">
                                 <RepeatButton Name="PopupUpSpinButton" Focusable="False"
                                               FontSize="18"
-                                              Classes="NumberBoxPopupSpinButtonStyle"
+                                              Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
                                               Content="&#xF2B9;" />
 
                                 <RepeatButton Name="PopupDownSpinButton" Focusable="False"
                                               FontSize="18"
-                                              Classes="NumberBoxPopupSpinButtonStyle"
+                                              Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
                                               Grid.Row="1"
                                               Content="&#xF2A6;" />
                             </Grid>
@@ -115,6 +117,9 @@
             </ControlTemplate>
         </Setter>
     </Style>
+	<Style Selector="ui|NumberBox.ColorPicker /template/ TextBox:focus Border#Label">
+		<Setter Property="Margin" Value="0 0 0 1" />
+	</Style>
 
     <Style Selector="ToggleButton.ColorPickerType">
         <Setter Property="Background" Value="{DynamicResource ColorPickerColorTypeButtonBackground}" />
@@ -379,9 +384,9 @@
                                         <TabItem Name="WheelTab"
                                                  IsVisible="{TemplateBinding UseColorWheel}">
                                             <TabItem.Header>
-                                                <ui:FontIcon Glyph="&#xF2F6;"
+                                                <ui:FontIcon Glyph="&#xE790;"
                                                         FontSize="20"
-                                                        FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"
+                                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                                      />
                                             </TabItem.Header>
                                         </TabItem>
@@ -390,10 +395,13 @@
                                             <TabItem.Header>
                                                 <Panel>
                                                     <!-- TODO: probably could make a better icon for this... -->
-                                                    <ui:FontIcon Glyph="&#xF645;"
+													<Ellipse Stroke="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}, Path=Foreground}"
+															 StrokeThickness="2"
+															 Width="18" Height="18" Margin="-1 0 0 0" />
+                                                    <!--<ui:FontIcon Glyph="&#xF645;"
                                                                  FontSize="20"
                                                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                     />
+                                                     />-->
                                                     <ui:PathIcon Data="M1,21H23L12,2"
                                                                  Width="14" Height="12"
                                                                  Margin="1 0 0 0"
@@ -404,9 +412,9 @@
                                         <TabItem Name="PaletteTab"
                                                  IsVisible="{TemplateBinding UseColorPalette}">
                                             <TabItem.Header>
-                                                <ui:FontIcon Glyph="&#xF780;"
+                                                <ui:FontIcon Glyph="&#xF0E2;"
                                                          FontSize="20"
-                                                         FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"/>
+                                                         FontFamily="{DynamicResource SymbolThemeFontFamily}"/>
 
                                             </TabItem.Header>
                                             <Panel Name="PaletteContent" IsVisible="True"

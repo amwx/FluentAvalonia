@@ -10,8 +10,6 @@ using FluentAvalonia.Core;
 using System.Collections.Generic;
 using AvColor = Avalonia.Media.Color;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -23,47 +21,48 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		public static readonly StyledProperty<Color2> PreviousColorProperty =
-			AvaloniaProperty.Register<ColorPicker, Color2>("PreviousColor", Colors.Red, defaultBindingMode: BindingMode.TwoWay);
+			AvaloniaProperty.Register<ColorPicker, Color2>(nameof(PreviousColor), Colors.Red, defaultBindingMode: BindingMode.TwoWay);
 
 		public static readonly StyledProperty<Color2> ColorProperty =
-			AvaloniaProperty.Register<ColorPicker, Color2>("Color", Colors.Red, defaultBindingMode: BindingMode.TwoWay);
+			AvaloniaProperty.Register<ColorPicker, Color2>(nameof(Color), Colors.Red, defaultBindingMode: BindingMode.TwoWay);
 
 		public static readonly DirectProperty<ColorPicker, ColorTextType> ColorTextTypeProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, ColorTextType>("ColorTextType",
+			AvaloniaProperty.RegisterDirect<ColorPicker, ColorTextType>(nameof(ColorTextType),
 				x => x.ColorTextType, (x, v) => x.ColorTextType = v);
 
 		public static readonly DirectProperty<ColorPicker, ColorSpectrumComponents> ComponentProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, ColorSpectrumComponents>("Component",
+			AvaloniaProperty.RegisterDirect<ColorPicker, ColorSpectrumComponents>(nameof(Component),
 				x => x.Component, (x, v) => x.Component = v);
 
 		public static readonly StyledProperty<bool> IsMoreButtonVisibleProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>("IsMoreButtonVisible");
+			AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsMoreButtonVisible));
 
 		public static readonly DirectProperty<ColorPicker, bool> IsCompactProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, bool>("IsCompact",
+			AvaloniaProperty.RegisterDirect<ColorPicker, bool>(nameof(IsCompact),
 				x => x.IsCompact, (x, v) => x.IsCompact = v);
 
 		public static readonly DirectProperty<ColorPicker, bool> IsAlphaEnabledProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, bool>("IsAlphaEnabled",
+			AvaloniaProperty.RegisterDirect<ColorPicker, bool>(nameof(IsAlphaEnabled),
 				x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
 
 		public static readonly StyledProperty<bool> UseSpectrumProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>("UseSpectrum", defaultValue: true);
+			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseSpectrum), defaultValue: true);
 
 		public static readonly StyledProperty<bool> UseColorWheelProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>("UseColorWheel");
+			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorWheel));
 
 		public static readonly StyledProperty<bool> UseColorTriangleProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>("UseColorTriangle");
+			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorTriangle));
 
 		public static readonly StyledProperty<bool> UseColorPaletteProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>("UseColorPalette");
+			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorPalette));
 
 		public static readonly DirectProperty<ColorPicker, IEnumerable<AvColor>> CustomPaletteColorsProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, IEnumerable<AvColor>>("CustomPaletteColors", x => x.CustomPaletteColors, (x, v) => x.CustomPaletteColors = v);
+			AvaloniaProperty.RegisterDirect<ColorPicker, IEnumerable<AvColor>>(nameof(CustomPaletteColors),
+                x => x.CustomPaletteColors, (x, v) => x.CustomPaletteColors = v);
 
 		public static readonly StyledProperty<int> PaletteColumnCountProperty =
-			AvaloniaProperty.Register<ColorPicker, int>("PaletteColumnCount", defaultValue:10);
+			AvaloniaProperty.Register<ColorPicker, int>(nameof(PaletteColumnCount), defaultValue:10);
 
 
 		public Color2 PreviousColor
@@ -1035,13 +1034,11 @@ namespace FluentAvalonia.UI.Controls
 		private ToggleButton _rgbButton;
 		private ToggleButton _hsvButton;
 
-		private int _lastDisplayItem = 0;
 		private bool _ignoreRadioChange;
         //fields
         private bool _templateApplied;
         private bool _ignoreColorChange;
         private ColorTextType _textType;
-        private ColorSpectrumShape _shape = ColorSpectrumShape.Spectrum;
         private ColorSpectrumComponents _component = ColorSpectrumComponents.SaturationValue;
         private bool _isCompact = false;
         private bool _isAlphaEnabled = true;

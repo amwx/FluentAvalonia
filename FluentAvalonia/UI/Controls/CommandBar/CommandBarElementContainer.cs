@@ -20,9 +20,6 @@ namespace FluentAvalonia.UI.Controls
 		public static readonly StyledProperty<bool> IsCompactProperty =
 			AvaloniaProperty.Register<CommandBarElementContainer, bool>(nameof(IsCompact));
 		
-		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			Border.CornerRadiusProperty.AddOwner<CommandBarElementContainer>();
-
 		public bool IsCompact
 		{
 			get => GetValue(IsCompactProperty);
@@ -45,12 +42,6 @@ namespace FluentAvalonia.UI.Controls
 		{
 			get => _dynamicOverflowOrder;
 			set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
-		}
-
-		public CornerRadius CornerRadius
-		{
-			get => GetValue(CornerRadiusProperty);
-			set => SetValue(CornerRadiusProperty, value);
 		}
 
 		private bool _isInOverflow;

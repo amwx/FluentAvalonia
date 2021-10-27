@@ -7,7 +7,7 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3F3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <ui:DropDownButton Content="hello" />
 
@@ -27,13 +27,14 @@
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
                      <!--Elevation brush hack-->
                     <Border Name="Root"
                             Background="{TemplateBinding Background}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="{TemplateBinding Padding}">
                         <Grid Name="InnerGrid"
                               ColumnDefinitions="*,Auto">
@@ -48,7 +49,7 @@
                                        Grid.Column="1"
                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                        FontSize="14"
-                                       Text="&#xF2A6;"
+                                       Text="&#xE70D;"
                                        VerticalAlignment="Center"
                                        Padding="2,4,2,0"
                                        Margin="8,0,0,0" />
@@ -61,7 +62,7 @@
                             IsHitTestVisible="False"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             RenderTransform="scaleY(-1)"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"/>
+                            CornerRadius="{TemplateBinding CornerRadius}"/>
                 </Panel>
             </ControlTemplate>
         </Setter>

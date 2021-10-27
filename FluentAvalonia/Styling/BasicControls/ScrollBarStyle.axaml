@@ -1,14 +1,11 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sys="clr-namespace:System;assembly=netstandard"
-             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:sty="using:FluentAvalonia.Styling">
 
-    <!-- Another really complex template... -->
-    
+    <!-- Another really complex template... -->    
     
     <Design.PreviewWith>
         <Border Padding="50" Background="#F3F3f3">
@@ -19,14 +16,9 @@
             </Panel>
         </Border>
     </Design.PreviewWith>
+   
 
-    
-
-    <Styles.Resources>
-        <Thickness x:Key="ScrollBarTrackBorderThemeThickness">0</Thickness>
-        <Thickness x:Key="ScrollBarPanningBorderThemeThickness">1</Thickness>
-
-        
+    <Styles.Resources>                
     <!--<x:String x:Key="ScrollBarExpandDuration">00:00:00.167</x:String>
         <x:String x:Key="ScrollBarOpacityChangeDuration">00:00:00.083</x:String>
         <x:String x:Key="ScrollBarColorChangeDuration">00:00:00.083</x:String>
@@ -46,10 +38,11 @@
 
         <Thickness x:Key="ScrollBarThumbStrokeThickness">6</Thickness>
 
-		<!-- Upped this from 8-10, Fluent icons are smaller than MDL2 -->
-        <x:Double x:Key="ScrollBarButtonArrowIconFontSize">10</x:Double>
+        <!-- Upped this from 8-12, Fluent icons are smaller than MDL2 -->
+        <x:Double x:Key="ScrollBarButtonArrowIconFontSize">12</x:Double>
         <!--<x:String x:Key="ScrollBarExpandBeginTime">00:00:00.40</x:String>
         <x:String x:Key="ScrollBarContractBeginTime">00:00:00.50</x:String>-->
+        <!-- Doubled this, seems more correct -->
         <CornerRadius x:Key="ScrollBarCornerRadius">6</CornerRadius>
 
         <!-- WinUI Animates to ScrollBar[Orientation]ThumbMin{Width/Height} for expand collapse 
@@ -66,6 +59,7 @@
         <Setter Property="Background" Value="{DynamicResource ScrollBarBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource ScrollBarForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ScrollBarBorderBrush}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
     </Style>
 
     <Style Selector="ScrollBar:vertical">
@@ -252,20 +246,23 @@
     <Style Selector="ScrollBar /template/ RepeatButton.line">
         <Setter Property="Template">
             <ControlTemplate>
-				<Border x:Name="Root"
+                <Border x:Name="Root"
                         Background="{DynamicResource ScrollBarButtonBackground}"
                         BorderBrush="{DynamicResource ScrollBarButtonBorderBrush}"
                         CornerRadius="{DynamicResource ScrollBarCornerRadius}">
-					<ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamilyFilled}"
-									 Name="ArrowGlyph"
-									 FontSize="{DynamicResource ScrollBarButtonArrowIconFontSize}"/>
-				</Border>
+                    <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                     Name="ArrowGlyph"
+                                     FontSize="{DynamicResource ScrollBarButtonArrowIconFontSize}"/>
+                </Border>
             </ControlTemplate>
         </Setter>
         <Setter Property="Opacity" Value="0" />
+        <Setter Property="RenderTransform" Value="scale(1)" />
         <Setter Property="Transitions">
             <Transitions>
                 <DoubleTransition Property="Opacity" Duration="0:0:0.1" />
+                <TransformOperationsTransition Duration="00:00:00.016"
+                                               Property="RenderTransform" />
             </Transitions>
         </Setter>
     </Style>
@@ -274,12 +271,15 @@
         <Setter Property="Background" Value="{DynamicResource ScrollBarButtonBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ScrollBarButtonBorderBrush}" />
     </Style>
-
+        
     <Style Selector="ScrollBar /template/ RepeatButton.line:pointerover /template/ Border#Root" >
         <Setter Property="Background" Value="{DynamicResource ScrollBarButtonBackgroundPointerOver}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ScrollBarButtonBorderBrushPointerOver}" />
     </Style>
 
+    <Style Selector="ScrollBar /template/ RepeatButton.line:pressed" >
+        <Setter Property="RenderTransform" Value="scale(0.875)" />
+    </Style>
     <Style Selector="ScrollBar /template/ RepeatButton.line:pressed /template/ Border#Root" >
         <Setter Property="Background" Value="{DynamicResource ScrollBarButtonBackgroundPressed}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ScrollBarButtonBorderBrushPressed}" />
@@ -311,20 +311,20 @@
     </Style>
 
     <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.up /template/ ui|FontIcon">
-        <Setter Property="Glyph" Value="&#xF968;" />
+        <Setter Property="Glyph" Value="&#xEDDB;" />
     </Style>
 
     <Style Selector="ScrollBar:vertical /template/ RepeatButton.line.down /template/ ui|FontIcon">
-		<Setter Property="Glyph" Value="&#xF262;" />    
-	</Style>
+        <Setter Property="Glyph" Value="&#xEDDC;" />    
+    </Style>
 
     <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.up /template/ ui|FontIcon">
-		<Setter Property="Glyph" Value="&#xF266;" />
-	</Style>
+        <Setter Property="Glyph" Value="&#xEDD9;" />
+    </Style>
 
     <Style Selector="ScrollBar:horizontal /template/ RepeatButton.line.down /template/ ui|FontIcon">
-		<Setter Property="Glyph" Value="&#xF26A;" />
-	</Style>
+        <Setter Property="Glyph" Value="&#xEDDA;" />
+    </Style>
 
     <Style Selector="ScrollBar /template/ Border#TrackRect">
         <Setter Property="BorderThickness" Value="{DynamicResource ScrollBarTrackBorderThemeThickness}" />

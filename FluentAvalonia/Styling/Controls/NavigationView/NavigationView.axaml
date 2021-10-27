@@ -204,7 +204,7 @@
                                    DisplayMode="Inline"
                                    IsPaneOpen="{TemplateBinding IsPaneOpen, Mode=TwoWay}"
                                    KeyboardNavigation.IsTabStop="False"
-                                   OpenPaneLength="{TemplateBinding OpenPaneLength}"
+                                   OpenPaneLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OpenPaneWidth}"
                                    Grid.Row="1">
 
                             <SplitView.Pane>
@@ -335,9 +335,7 @@
 								<Border Name="ContentGridBorder">
 									<Grid Name="ContentGrid" 
 										  RowDefinitions="Auto,Auto,*" 
-										  ColumnDefinitions="Auto,*"
-										  Background="{DynamicResource NavigationViewContentBackground}"
-										  Margin="{DynamicResource NavigationViewContentMargin}">
+										  ColumnDefinitions="Auto,*">
 
 										<Rectangle Name="ContentTopPadding"
 												   Grid.ColumnSpan="2"
@@ -373,7 +371,7 @@
                         
                         <Border Name="ShadowCaster"
                                 Grid.RowSpan="2"
-                                Width="{TemplateBinding OpenPaneLength}"
+                                Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OpenPaneWidth}"
                                 HorizontalAlignment="Left"
                                 BoxShadow="0 16 32 #17000000" />
                         
@@ -403,10 +401,10 @@
         <Setter Property="PaneBackground" Value="{DynamicResource NavigationViewDefaultPaneBackground}" />    
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemSeparatorForeground}" />
         <Setter Property="BorderThickness" Value="{DynamicResource NavigationViewBorderThickness}" />
+		<!-- DynamicResource does not work here -->
+		<Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}" />
     </Style>
-    <Style Selector="ui|NavigationView /template/ SplitView#RootSplitView /template/ Border#PaneLayoutRoot">
-        <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
-    </Style>
+	
     <Style Selector="ui|NavigationView /template/ SplitView ui|Button#PaneAutoSuggestButton">
         <Setter Property="IsVisible" Value="False" />
     </Style>
@@ -426,6 +424,7 @@
 	<Style Selector="ui|NavigationView:minimal /template/ SplitView Border#ContentGridBorder">
 		<Setter Property="BorderThickness" Value="{DynamicResource NavigationViewMinimalContentGridBorderThickness}" />
 		<Setter Property="CornerRadius" Value="{DynamicResource NavigationViewMinimalContentGridCornerRadius}" />
+		<Setter Property="Margin" Value="{DynamicResource NavigationViewMinimalContentMargin}" />
 	</Style>
 	<!-- TODO: Set back button to small style... -->
 
@@ -436,6 +435,7 @@
 	<Style Selector="ui|NavigationView:minimalwithback /template/ SplitView Border#ContentGridBorder">
 		<Setter Property="BorderThickness" Value="{DynamicResource NavigationViewMinimalContentGridBorderThickness}" />
 		<Setter Property="CornerRadius" Value="{DynamicResource NavigationViewMinimalContentGridCornerRadius}" />
+		<Setter Property="Margin" Value="{DynamicResource NavigationViewMinimalContentMargin}" />
 	</Style>
 	<!-- TODO: Set back button to small style... -->
 

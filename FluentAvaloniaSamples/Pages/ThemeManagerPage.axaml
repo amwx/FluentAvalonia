@@ -8,7 +8,7 @@
 
     <Design.DataContext>
         <vm:MainWindowViewModel />
-    </Design.DataContext>
+    </Design.DataContext> 
     
     <ScrollViewer Padding="10">
         <TextBlock Text="{Binding ThemesHeader}" TextWrapping="Wrap" />

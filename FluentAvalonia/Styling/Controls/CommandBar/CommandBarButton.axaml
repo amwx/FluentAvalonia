@@ -48,10 +48,6 @@
 		<x:Double x:Key="AppBarButtonContentHeight">20</x:Double>
 	</Styles.Resources>
 	
-    <!-- 
-
-	-->
-	
 	<Style Selector="ui|CommandBarButton">
 		<Setter Property="Background" Value="{DynamicResource AppBarButtonBackground}" />
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonForeground}" />
@@ -114,7 +110,11 @@
 	</Style>
 	<Style Selector="ui|CommandBarButton /template/ Border#AppBarButtonInnerBorder">
 		<Setter Property="Margin" Value="{DynamicResource AppBarButtonInnerBorderMargin}" />
-		<!-- TODO: Add brush transition when 0.10.7 is released -->
+		<Setter Property="Transitions">
+			<Transitions>
+				<BrushTransition Duration="00:00:00.083" Property="Background" />
+			</Transitions>
+		</Setter>
 	</Style>
 	<Style Selector="ui|CommandBarButton /template/ Grid#ContentRoot">
 		<Setter Property="MinHeight" Value="{DynamicResource AppBarThemeMinHeight}" />

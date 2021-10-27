@@ -8,7 +8,7 @@
              xmlns:sty="using:FluentAvalonia.Styling">
 
 	<Design.PreviewWith>
-		<Border Padding="50" Background="#F3F3F3">
+		<Border Padding="50">
 			<StackPanel Spacing="5">
 				<TextBox />
 				<TextBox Text="Hello Down there"/>
@@ -48,6 +48,7 @@
 		<Setter Property="Padding" Value="{DynamicResource TextControlThemePadding}" />
 		<Setter Property="FocusAdorner" Value="{x:Null}" />
 		<Setter Property="ContextFlyout" Value="{StaticResource DefaultTextBoxContextFlyout}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<DataValidationErrors>
@@ -61,8 +62,8 @@
                           BorderThickness="{TemplateBinding BorderThickness}"
                           MinWidth="{TemplateBinding MinWidth}"
                           MinHeight="{TemplateBinding MinHeight}"
-                          RenderTransform="scaleY(-1)">
-						</Border>
+                          RenderTransform="scaleY(-1)"
+						  CornerRadius="{TemplateBinding CornerRadius}"/>
 
 						<Border
                           Margin="{TemplateBinding BorderThickness}">
@@ -113,9 +114,6 @@
 
 	<Style Selector="TextBox /template/ TextBlock#PART_Watermark, TextBox /template/ TextBlock#PART_FloatingWatermark">
 		<Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForeground}" />
-	</Style>
-	<Style Selector="TextBox /template/ Border#PART_BorderElement">
-		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 	</Style>
 
 	<!-- Disabled State -->
@@ -208,7 +206,7 @@
 		</Setter>
 	</Style>
 	<Style Selector="ToggleButton.passwordBoxRevealButton /template/ ui|FontIcon#Glyph">
-		<Setter Property="Glyph" Value="&#xF3F8;" />
+		<Setter Property="Glyph" Value="&#xE18B;" />
 	</Style>
 
 	<Style Selector="Button.textBoxClearButton">
@@ -275,7 +273,9 @@
 		<Setter Property="Opacity" Value="0" />
 	</Style>
 
+	<!--
+	TODO: Add "eye_hide" to font & re-enable this, tho for now this matches WinUI
 	<Style Selector="ToggleButton.passwordBoxRevealButton:checked /template/ ui|FontIcon#Glyph">
 		<Setter Property="Glyph" Value="&#xF3FC;" />
-	</Style>
+	</Style>-->
 </Styles>

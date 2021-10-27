@@ -177,12 +177,13 @@
 
 	<Style Selector="DataGridColumnHeader:sortascending /template/ ui|FontIcon#SortIcon">
 		<Setter Property="IsVisible" Value="True" />
-		<Setter Property="Glyph" Value="&#xF821;" />
+		<Setter Property="Glyph" Value="&#xE110;" />
 	</Style>
 
 	<Style Selector="DataGridColumnHeader:sortdescending /template/ ui|FontIcon#SortIcon">
 		<Setter Property="IsVisible" Value="True" />
-		<Setter Property="Glyph" Value="&#xF811;" />
+		<!-- This might be missing?? (arrow down) -->
+		<Setter Property="Glyph" Value="&#xE74B;" />
 	</Style>
 
 

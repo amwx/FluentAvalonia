@@ -22,16 +22,19 @@
         <Setter Property="MinWidth" Value="50" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
                     <ui:Button Name="MainButton"
-                               Padding="0 0 32 0" >
+                               Padding="0 0 32 0"
+							   CornerRadius="{TemplateBinding CornerRadius}">
                         <Border BorderBrush="{DynamicResource ColorPickerButtonOutline}"
                                 BorderThickness="1"
                                 Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                 MinWidth="23" MinHeight="23"
-                                Background="{TemplateBinding Color, Converter={StaticResource ColorBrushConv}}">
+                                Background="{TemplateBinding Color, Converter={StaticResource ColorBrushConv}}"
+								CornerRadius="{TemplateBinding CornerRadius}">
                             <ui:ColorPicker Name="ColorPicker" IsVisible="False" />
                         </Border>                        
                     </ui:Button>

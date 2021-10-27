@@ -8,7 +8,7 @@
                  xmlns:sty="using:FluentAvalonia.Styling">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3F3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <RepeatButton Content="Button" />
                 <RepeatButton Content="Button" IsEnabled="False" />
@@ -17,7 +17,6 @@
     </Design.PreviewWith>
 
     <Styles.Resources>
-        <Thickness x:Key="RepeatButtonBorderThemeThickness">1</Thickness>
         <Thickness x:Key="ButtonPadding">11,5,11,6</Thickness>        
     </Styles.Resources>
 
@@ -34,6 +33,7 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -45,22 +45,18 @@
                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                   Padding="{TemplateBinding Padding}"
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+									  CornerRadius="{TemplateBinding CornerRadius}"/>
                     <Border Name="BorderElement"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             RenderTransform="scaleY(-1)"
                             IsHitTestVisible="False"
+							CornerRadius="{TemplateBinding CornerRadius}"
                             />
                 </Panel>
             </ControlTemplate>
         </Setter>
-    </Style>
-    <Style Selector="RepeatButton /template/ Border#BorderElement">
-        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-    </Style>
-    <Style Selector="RepeatButton /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
     </Style>
 
     <Style Selector="RepeatButton:pointerover /template/ Border#BorderElement">

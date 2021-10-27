@@ -10,34 +10,36 @@ namespace FluentAvalonia.UI.Controls
 	public class InfoBar : ContentControl
 	{
 		public static readonly DirectProperty<InfoBar, bool> IsOpenProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, bool>("IsOpen", x => x.IsOpen, (x, v) => x.IsOpen = v);
+			AvaloniaProperty.RegisterDirect<InfoBar, bool>(nameof(IsOpen), 
+				x => x.IsOpen, (x, v) => x.IsOpen = v);
 
 		public static readonly StyledProperty<string> TitleProperty =
-			AvaloniaProperty.Register<InfoBar, string>("Title");
+			AvaloniaProperty.Register<InfoBar, string>(nameof(Title));
 
 		public static readonly StyledProperty<string> MessageProperty =
-			AvaloniaProperty.Register<InfoBar, string>("Message");
+			AvaloniaProperty.Register<InfoBar, string>(nameof(Message));
 
 		public static readonly StyledProperty<InfoBarSeverity> SeverityProperty =
-			AvaloniaProperty.Register<InfoBar, InfoBarSeverity>("Severity");
+			AvaloniaProperty.Register<InfoBar, InfoBarSeverity>(nameof(Severity));
 
 		public static readonly StyledProperty<IconSource> IconSourceProperty =
-			AvaloniaProperty.Register<InfoBar, IconSource>("IconSource");
+			AvaloniaProperty.Register<InfoBar, IconSource>(nameof(IconSource));
 
 		public static readonly StyledProperty<bool> IsIconVisibleProperty =
-			AvaloniaProperty.Register<InfoBar, bool>("IsIconVisible", true);
+			AvaloniaProperty.Register<InfoBar, bool>(nameof(IsIconVisible), true);
 
 		public static readonly StyledProperty<bool> IsClosableProperty =
-			AvaloniaProperty.Register<InfoBar, bool>("IsClosable", true);
+			AvaloniaProperty.Register<InfoBar, bool>(nameof(IsClosable), true);
 
 		public static readonly StyledProperty<ICommand> CloseButtonCommandProperty =
-			AvaloniaProperty.Register<InfoBar, ICommand>("CloseButtonCommand");
+			AvaloniaProperty.Register<InfoBar, ICommand>(nameof(CloseButtonCommand));
 
 		public static readonly DirectProperty<InfoBar, object> CloseButtonCommandParameterProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, object>("CloseButtonCommandParameter", x => x.CloseButtonCommandParameter, (x, v) => x.CloseButtonCommandParameter = v);
+			AvaloniaProperty.RegisterDirect<InfoBar, object>(nameof(CloseButtonCommandParameter), 
+				x => x.CloseButtonCommandParameter, (x, v) => x.CloseButtonCommandParameter = v);
 
 		public static readonly StyledProperty<IControl> ActionButtonProperty =
-			AvaloniaProperty.Register<InfoBar, IControl>("ActionButton");
+			AvaloniaProperty.Register<InfoBar, IControl>(nameof(ActionButton));
 
 		public bool IsOpen
 		{
@@ -120,9 +122,6 @@ namespace FluentAvalonia.UI.Controls
 
 				ToolTip.SetTip(_closeButton, "Close");
 			}
-
-			_standardIconTextBlock = e.NameScope.Find<TextBlock>("StandardIcon");
-			_iconBackground = e.NameScope.Find<TextBlock>("IconBackground");
 
 			_appliedTemplate = true;
 
@@ -242,8 +241,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", false);
 					PseudoClasses.Set(":error", false);
 					PseudoClasses.Set(":informational", false);
-					_standardIconTextBlock.Text = "\uF29A";
-					_iconBackground.Text = "\uF29A";
 					break;
 
 				case InfoBarSeverity.Warning:
@@ -251,8 +248,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", true);
 					PseudoClasses.Set(":error", false);
 					PseudoClasses.Set(":informational", false);
-					_standardIconTextBlock.Text = "\uF86A";
-					_iconBackground.Text = "\uF882";
 					break;
 
 				case InfoBarSeverity.Error:
@@ -260,8 +255,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", false);
 					PseudoClasses.Set(":error", true);
 					PseudoClasses.Set(":informational", false);
-					_standardIconTextBlock.Text = "\uF3F2";
-					_iconBackground.Text = "\uF3F1";
 					break;
 
 				default: // default to informational
@@ -269,8 +262,6 @@ namespace FluentAvalonia.UI.Controls
 					PseudoClasses.Set(":warning", false);
 					PseudoClasses.Set(":error", false);
 					PseudoClasses.Set(":informational", true);
-					_standardIconTextBlock.Text = "\uF4A5";
-					_iconBackground.Text = "\uF4AC";
 					break;
 			}
 		}
@@ -308,8 +299,6 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Set(":foregroundset", this.GetValue(TextBlock.ForegroundProperty) != AvaloniaProperty.UnsetValue);
 		}
 
-		private TextBlock _standardIconTextBlock;
-		private TextBlock _iconBackground;
 		private Button _closeButton;
 
 		private bool _appliedTemplate;

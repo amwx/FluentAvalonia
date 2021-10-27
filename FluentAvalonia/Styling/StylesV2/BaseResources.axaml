@@ -3,14 +3,16 @@
         xmlns:avconv="using:Avalonia.Controls.Converters">
     <Styles.Resources>
         <!-- New FluentUI Icons from Microsoft, embedded in assembly
-             NOTE: Changing this font, will break design of most FluentAvalonia controls-->
-        <FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular</FontFamily>
-        <FontFamily x:Key="SymbolThemeFontFamilyFilled">avares://FluentAvalonia/Fonts/FluentSystemIcons-Filled.ttf#FluentSystemIcons-Filled</FontFamily>
+             NOTE: Changing this font, will break design of most FluentAvalonia controls
+			 This font has been adapted, thanks to robloo to use the FluentSystemIcons font, but
+			 match the same unicode code points from WinUI Segoe Fluent
+		-->
+        <FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>
         <FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>
 
         <!--Updated to new corner radius (values are actual +1, as is in regular fluent theme) -->
-        <CornerRadius x:Key="ControlCornerRadius">5</CornerRadius>
-        <CornerRadius x:Key="OverlayCornerRadius">9</CornerRadius>
+        <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
+        <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
 
         <x:Double x:Key="ControlContentThemeFontSize">14</x:Double>
         <Thickness x:Key="FlyoutContentThemePadding">12,11,12,12</Thickness>
@@ -18,10 +20,7 @@
         <x:Double x:Key="FlyoutThemeMaxWidth">456</x:Double>
         <x:Double x:Key="FlyoutThemeMinHeight">40</x:Double>
         <x:Double x:Key="FlyoutThemeMinWidth">96</x:Double>
-
-        <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
-        <Thickness x:Key="TextControlBorderThemeThicknessFocused">2</Thickness>
-        <Thickness x:Key="TextControlThemePadding">10,6,6,5</Thickness>
+        
         <x:Double x:Key="TextControlThemeMinHeight">32</x:Double>
         <x:Double x:Key="TextControlThemeMinWidth">64</x:Double>
 

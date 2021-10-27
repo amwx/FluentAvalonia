@@ -6,7 +6,7 @@ namespace FluentAvalonia.UI.Controls
     public class PathIconSource : IconSource
     {
         public static StyledProperty<Geometry> DataProperty =
-            AvaloniaProperty.Register<PathIconSource, Geometry>("Data");
+            PathIcon.DataProperty.AddOwner<PathIconSource>();
 
         public Geometry Data
         {

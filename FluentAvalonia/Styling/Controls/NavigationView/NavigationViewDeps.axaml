@@ -9,9 +9,9 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="4">
-                <Button Classes="PaneToggleButtonStyle" />
-                <Button Classes="NavigationViewPaneSearchButtonStyle" />
-                <Button Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop" />
+                <ui:Button Classes="PaneToggleButtonStyle" />
+				<ui:Button Classes="NavigationViewPaneSearchButtonStyle" />
+				<ui:Button Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop" />
                 <TextBlock Text="Header Style" Classes="NavigationViewItemHeaderTextStyle" />
                 <ContentControl Classes="NavigationViewTitleHeaderContentControlTextStyle" Content="Title" />
             </StackPanel>
@@ -72,17 +72,17 @@
         <Thickness x:Key="NavigationViewCompactItemSeparatorMargin">0,3,0,4</Thickness>
         <Thickness x:Key="TopNavigationViewItemSeparatorMargin">3,0,4,0</Thickness>
         <Thickness x:Key="TopNavigationViewOverflowButtonMargin">0</Thickness>
-        <Thickness x:Key="NavigationViewItemContentPresenterMargin">4,-1,20,0</Thickness>
+        <Thickness x:Key="NavigationViewItemContentPresenterMargin">4,-1,8,0</Thickness>
         <Thickness x:Key="NavigationViewCompactItemContentPresenterMargin">0,0,0,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemContentPresenterMargin">8,-1,12,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemContentOnlyContentPresenterMargin">12,0</Thickness>
-        <Thickness x:Key="NavigationViewItemExpandChevronMargin">0</Thickness>
+        <Thickness x:Key="NavigationViewItemExpandChevronMargin">0,0,-14,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemExpandChevronMargin">-16,0,0,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemIconOnlyExpandChevronMargin">0,0,0,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemContentOnlyExpandChevronMargin">-12,0,0,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemOnOverflowContentPresenterMargin">12,0,20,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemOnOverflowNoIconContentPresenterMargin">16,0,20,0</Thickness>
-        <Thickness x:Key="TopNavigationViewItemOnOverflowExpandChevronMargin">-4,0,6,0</Thickness>
+        <Thickness x:Key="TopNavigationViewItemOnOverflowExpandChevronMargin">-4,0,-8,0</Thickness>
         <Thickness x:Key="TopNavigationViewItemOnOverflowExpandChevronPadding">12,0,12,0</Thickness>
 
         <!-- The two resources below must be defined at the app level in order to take effect. -->
@@ -90,11 +90,12 @@
         <Thickness x:Key="NavigationViewItemChildrenMenuFlyoutPadding">0,8</Thickness>
 
         <x:Double x:Key="NavigationViewItemExpandedGlyphFontSize">18.0</x:Double>
-        <x:String x:Key="NavigationViewItemExpandedGlyph">&#xF2A6;</x:String>
+        <x:String x:Key="NavigationViewItemExpandedGlyph">&#xE70D;</x:String>
 
 		<CornerRadius x:Key="NavigationViewContentGridCornerRadius">8,0,0,0</CornerRadius>
 		<CornerRadius x:Key="TopNavigationViewContentGridCornerRadius">0</CornerRadius>
 		<CornerRadius x:Key="NavigationViewMinimalContentGridCornerRadius">0</CornerRadius>
+		<Thickness x:Key="NavigationViewMinimalContentMargin">0</Thickness>
     </Styles.Resources>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - -->
@@ -135,7 +136,7 @@
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                 <TextBlock Name="Icon"
-                                           Text="&#xF561;"
+                                           Text="&#xE700;"
                                            FontSize="{TemplateBinding FontSize}" />
                             </Viewbox>
                         </Border>
@@ -193,7 +194,7 @@
 
     <Style Selector="ui|Button.NavigationViewPaneSearchButtonStyle">
         <Setter Property="MinHeight" Value="36"/>
-        <Setter Property="Content" Value="&#xF691;"/>
+        <Setter Property="Content" Value="&#xE11A;"/>
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
         <Setter Property="BorderThickness" Value="{DynamicResource NavigationViewToggleBorderThickness}" />
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
@@ -247,14 +248,14 @@
                                  HorizontalAlignment="Center"
                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                  FontSize="20"
-                                 Glyph="&#xFC30;"
+                                 Glyph="&#xE10C;"
                                  Foreground="{TemplateBinding Foreground}"
                                  IsHitTestVisible="False" />
                 </Panel>
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop /template/ Rectangle#PointerRectangle">
+    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop /template/ Rectangle#PointerRectangle">
         <Setter Property="Fill" Value="Transparent" />
         <Setter Property="IsVisible" Value="False" />
     </Style>
@@ -264,7 +265,7 @@
         <Setter Property="Fill" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
     </Style>
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ Panel#RootGrid">
-        <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
+        <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPointerOver}" />
     </Style>
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ ui|FontIcon#Icon">
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundPointerOver}" />
@@ -272,7 +273,7 @@
 
     <!-- pressed -->
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Rectangle#PointerRectangle">
-        <Setter Property="Fill" Value="{DynamicResource TopNavigationViewItemBackgroundPressed}" />
+        <Setter Property="Fill" Value="{DynamicResource NavigationViewItemBackgroundPressed}" />
     </Style>
     <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Panel#RootGrid">
         <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPressed}" />

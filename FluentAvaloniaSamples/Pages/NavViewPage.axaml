@@ -5,7 +5,7 @@
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:vm="clr-namespace:FluentAvaloniaSamples.ViewModels;assembly=FluentAvaloniaSamples"
              xmlns:local="using:FluentAvaloniaSamples"
-             mc:Ignorable="d" d:DesignWidth="800"
+             mc:Ignorable="d" d:DesignWidth="1050" d:DesignHeight="5000"
              x:Class="FluentAvaloniaSamples.Pages.NavViewPage">
     
     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
@@ -17,7 +17,7 @@
                                   XamlSource="{Binding NavViewDefaultXaml}">
                 <ui:NavigationView x:Name="nvSample" Height="460" PaneDisplayMode="Left">
                     <ui:NavigationView.MenuItems>
-                        <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play" />
+						<ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play"/>
                         <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" Icon="Save" />
                         <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" Icon="Refresh" />
                         <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" Icon="Download" />
@@ -45,7 +45,7 @@
                                            PaneDisplayMode="Top"
                                            SelectionFollowsFocus="True">
                     <ui:NavigationView.MenuItems>
-                        <ui:NavigationViewItem Content="Item1" Tag="SamplePage1" />
+                        <ui:NavigationViewItem Content="Item1" Tag="SamplePage1"/>
                         <ui:NavigationViewItem Content="Item2" Tag="SamplePage2" />
                         <ui:NavigationViewItem Content="Item3" Tag="SamplePage3" />
                         <ui:NavigationViewItem Content="Item4" Tag="SamplePage4" />
@@ -91,6 +91,35 @@
 					</ui:NavigationView.MenuItemTemplateSelector>
                 </ui:NavigationView>
             </local:ControlExample>
+
+			<local:ControlExample Header="NavigationView with FooterMenuItems"
+								  ShowDocs="False">
+				<ui:NavigationView x:Name="nvSample9"
+								   Height="460"
+								   Header="This is Header Text"
+								   PaneDisplayMode="Left"
+								   IsTabStop="False"
+								   IsSettingsVisible="False">
+					<ui:NavigationView.MenuItems>
+						<ui:NavigationViewItem Content="Browse" Tag="SamplePage1" Icon="Library" />
+						<ui:NavigationViewItem Content="Track an Order" Tag="SamplePage2" Icon="Map" />
+						<ui:NavigationViewItem Content="Order History" Tag="SamplePage3" Icon="Tag" />
+					</ui:NavigationView.MenuItems>
+					<ui:NavigationView.FooterMenuItems>
+						<ui:NavigationViewItem Content="Account" Tag="SamplePage4" Icon="Contact" />
+						<ui:NavigationViewItem Content="Your Cart" Tag="SamplePage5" Icon="Shop" />
+						<ui:NavigationViewItem Content="Help" Tag="SamplePage6" Icon="Help" />
+					</ui:NavigationView.FooterMenuItems>
+					<ui:Frame Margin="0,0,0,0" x:Name="contentFrame9" />
+				</ui:NavigationView>
+
+				<local:ControlExample.Options>
+					<StackPanel>
+						<RadioButton Name="NV9Left" Content="Left Pane" IsChecked="True" />
+						<RadioButton Name="NV9Top" Content="Top" />
+					</StackPanel>
+				</local:ControlExample.Options>
+			</local:ControlExample>
 
             <local:ControlExample Header="NavigationView Hierarchical"
                                   XamlSource="{Binding NavViewHierarchicalXaml}">

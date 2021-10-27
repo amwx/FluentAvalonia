@@ -8,13 +8,18 @@
         xmlns:sty="using:FluentAvalonia.Styling">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3f3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <ComboBox>
                     <ComboBoxItem Content="Item1" />
                     <ComboBoxItem Content="Item2" />
                     <ComboBoxItem Content="Item3" />
                 </ComboBox>
+				<ComboBox PlaceholderText="Placeholder">
+					<ComboBoxItem Content="Item1" />
+					<ComboBoxItem Content="Item2" />
+					<ComboBoxItem Content="Item3" />
+				</ComboBox>
                 
                 <ComboBox IsEnabled="False" />
             </StackPanel>
@@ -73,6 +78,8 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+		<Setter Property="PlaceholderForeground" Value="{DynamicResource ComboBoxPlaceHolderForeground}" />
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
                 <StackPanel />
@@ -100,7 +107,7 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 MinWidth="{DynamicResource ComboBoxThemeMinWidth}"
                                 RenderTransform="scaleY(-1)"
-                                CornerRadius="{DynamicResource ControlCornerRadius}"/>
+                                CornerRadius="{TemplateBinding CornerRadius}"/>
 
                         <Border x:Name="HighlightBackground"
                                 Grid.Row="1"
@@ -141,6 +148,8 @@
                                 IsVisible="False"
                                 HorizontalAlignment="Right" />
 
+						<!-- WinUI is still mapping to a very old code point here, so updated
+							 to match Segoe Fluent Icons -->
                             <ui:FontIcon Name="DropDownGlyph"
                                          MinHeight="{DynamicResource ComboBoxMinHeight}"
                                          Grid.Row="1"
@@ -149,7 +158,7 @@
                                          Margin="0 0 14 0"
                                          FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                          FontSize="12"
-                                         Glyph="&#xF2A6;"
+                                         Glyph="&#xE70D;"
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Center" />
                         
@@ -185,12 +194,6 @@
         </Setter>
     </Style>
 
-    <Style Selector="ComboBox /template/ TextBox#EditableText">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-    <Style Selector="ComboBox /template/ TextBlock#PlaceholderTextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForeground}" />
-    </Style>
     <Style Selector="ComboBox /template/ ContentPresenter#HeaderContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ComboBoxHeaderForeground}" />
     </Style>
@@ -254,32 +257,19 @@
     </Style>
 
     <!-- Focused -->
-    <Style Selector="ComboBox:focus-within /template/ Border#Pill">
+    <Style Selector="ComboBox:focus-visible /template/ Border#Pill">
         <Setter Property="Opacity" Value="1" />
     </Style>
-    <Style Selector="ComboBox:focus-within /template/ ContentPresenter#ContentPresenter">
+    <Style Selector="ComboBox:focus-visible /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ComboBoxForegroundFocused}" />
     </Style>
-    <Style Selector="ComboBox:disabled /template/ TextBlock#PlaceholderTextBlock">
+    <Style Selector="ComboBox:focus-visible /template/ TextBlock#PlaceholderTextBlock">
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundFocused}" />
     </Style>
-    <Style Selector="ComboBox:disabled /template/ ui|FontIcon#DropDownGlyph">
+    <Style Selector="ComboBox:focus-visible /template/ ui|FontIcon#DropDownGlyph">
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundFocused}" />
     </Style>
 
-    <!-- Focused -->    
-    <Style Selector="ComboBox:focused:pressed /template/ Border#Pill">
-        <Setter Property="Opacity" Value="1" />
-    </Style>
-    <Style Selector="ComboBox:focused:pressed /template/ ContentPresenter#ContentPresenter">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ComboBoxForegroundFocusedPressed}" />
-    </Style>
-    <Style Selector="ComboBox:focused:pressed /template/ TextBlock#PlaceholderTextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundFocusedPressed}" />
-    </Style>
-    <Style Selector="ComboBox:focused:pressed /template/ ui|FontIcon#DropDownGlyph">
-        <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundFocusedPressed}" />
-    </Style>
 
 
     <!-- Error State -->

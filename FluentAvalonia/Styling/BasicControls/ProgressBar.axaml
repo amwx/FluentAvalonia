@@ -3,10 +3,10 @@
         <Border Padding="20">
             <StackPanel Spacing="10">
                 <ProgressBar VerticalAlignment="Center" IsIndeterminate="False" />
-                <ProgressBar VerticalAlignment="Center" Value="5" Maximum="10" />
+                <ProgressBar VerticalAlignment="Center" Value="5" Maximum="100" />
                 <ProgressBar VerticalAlignment="Center" Value="50" />
                 <ProgressBar VerticalAlignment="Center" Value="50" Minimum="25" Maximum="75" />
-                <ProgressBar HorizontalAlignment="Left" IsIndeterminate="False" Orientation="Vertical" />
+                <ProgressBar Value="50" HorizontalAlignment="Left" IsIndeterminate="False" Orientation="Vertical" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -14,7 +14,7 @@
     <Styles.Resources>
         <x:Double x:Key="ProgressBarMinHeight">3</x:Double>
         <x:Double x:Key="ProgressBarTrackHeight">1</x:Double>
-        <CornerRadius x:Key="ProgressBarCornerRadius">1.5</CornerRadius>
+        <!--<CornerRadius x:Key="ProgressBarCornerRadius">1.5</CornerRadius>-->
         <CornerRadius x:Key="ProgressBarTrackCornerRadius">0.5</CornerRadius>
     </Styles.Resources>
 
@@ -22,48 +22,72 @@
         <Setter Property="Foreground" Value="{DynamicResource ProgressBarForeground}" />
         <Setter Property="Background" Value="{DynamicResource ProgressBarBackground}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ProgressBarBorderThemeThickness}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ProgressBarBorderBrush}" />
-        <Setter Property="MinHeight" Value="{DynamicResource ProgressBarThemeMinHeight}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ProgressBarBorderBrush}" />        
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border x:Name="ProgressBarRoot" ClipToBounds="True" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{DynamicResource ControlCornerRadius}">
-                    <Panel>
-                        <Panel x:Name="DeterminateRoot">
-                            <Border CornerRadius="{DynamicResource ControlCornerRadius}" x:Name="PART_Indicator" Margin="{TemplateBinding Padding}" Background="{TemplateBinding Foreground}" />
+                <Border Name="ProgressBarRoot"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+					<Panel>
+                        <Panel Name="DeterminateRoot">
+                            <Border Name="ProgressBarTrack"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{DynamicResource ProgressBarTrackCornerRadius}" />
+                            <Border CornerRadius="{TemplateBinding CornerRadius}" 
+                                    Name="PART_Indicator" 
+                                    Background="{TemplateBinding Foreground}" />
                         </Panel>
-                        <Panel x:Name="IndeterminateRoot">
-                            <Border x:Name="IndeterminateProgressBarIndicator" CornerRadius="{DynamicResource ControlCornerRadius}" Margin="{TemplateBinding Padding}" Background="{TemplateBinding Foreground}" />
-                            <Border x:Name="IndeterminateProgressBarIndicator2" CornerRadius="{DynamicResource ControlCornerRadius}" Margin="{TemplateBinding Padding}" Background="{TemplateBinding Foreground}" />
+                        <Panel Name="IndeterminateRoot">
+                            <Border Name="IndeterminateProgressBarIndicator" 
+                                    CornerRadius="{TemplateBinding CornerRadius}" 
+                                    Margin="{TemplateBinding Padding}" 
+                                    Background="{TemplateBinding Foreground}" />
+                            <Border Name="IndeterminateProgressBarIndicator2" 
+                                    CornerRadius="{TemplateBinding CornerRadius}" 
+                                    Margin="{TemplateBinding Padding}" 
+                                    Background="{TemplateBinding Foreground}" />
                         </Panel>
                     </Panel>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
+	<Style Selector="ProgressBar:horizontal /template/ Border#ProgressBarTrack">
+		<Setter Property="Height" Value="{DynamicResource ProgressBarTrackHeight}" />
+	</Style>
+	<Style Selector="ProgressBar:vertical /template/ Border#ProgressBarTrack">
+		<Setter Property="Width" Value="{DynamicResource ProgressBarTrackHeight}" />
+	</Style>
+	
     <Style Selector="ProgressBar:horizontal /template/ Border#PART_Indicator">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
+		<Setter Property="Height" Value="NaN" />
     </Style>
     <Style Selector="ProgressBar:vertical /template/ Border#PART_Indicator">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
+		<Setter Property="Width" Value="NaN" />
     </Style>
+
+	<!-- Width & Height are forced here instead of MinWidth/MinHeight b/c bad things
+	     happen if Min[] is used and I'm done dealing with this -->
     <Style Selector="ProgressBar:horizontal">
         <Setter Property="MinWidth" Value="200" />
-        <Setter Property="MinHeight" Value="4" />
+		<Setter Property="Height" Value="{DynamicResource ProgressBarMinHeight}" />
     </Style>
     <Style Selector="ProgressBar:vertical">
-        <Setter Property="MinWidth" Value="4" />
         <Setter Property="MinHeight" Value="200" />
+		<Setter Property="Width" Value="{DynamicResource ProgressBarMinHeight}" />
     </Style>
-    <Style Selector="ProgressBar:vertical /template/ LayoutTransformControl#PART_LayoutTransformControl">
-        <Setter Property="LayoutTransform">
-            <Setter.Value>
-                <RotateTransform Angle="90" />
-            </Setter.Value>
-        </Setter>
-    </Style>
+	
+	
     <!-- FadeInAnimation mockup-->
     <Style Selector="ProgressBar /template/ Panel#DeterminateRoot">
         <Setter Property="Transitions">
@@ -153,14 +177,18 @@
     </Style>
     <Style Selector="ProgressBar:horizontal /template/ Border#IndeterminateProgressBarIndicator">
         <Setter Property="Width" Value="{Binding $parent[ProgressBar].TemplateProperties.ContainerWidth}" />
+		<Setter Property="Height" Value="NaN" />
     </Style>
     <Style Selector="ProgressBar:horizontal /template/ Border#IndeterminateProgressBarIndicator2">
         <Setter Property="Width" Value="{Binding $parent[ProgressBar].TemplateProperties.Container2Width}" />
+		<Setter Property="Height" Value="NaN" />
     </Style>
     <Style Selector="ProgressBar:vertical /template/ Border#IndeterminateProgressBarIndicator">
         <Setter Property="Height" Value="{Binding $parent[ProgressBar].TemplateProperties.ContainerWidth}" />
+		<Setter Property="Width" Value="NaN" />
     </Style>
     <Style Selector="ProgressBar:vertical /template/ Border#IndeterminateProgressBarIndicator2">
         <Setter Property="Height" Value="{Binding $parent[ProgressBar].TemplateProperties.Container2Width}" />
+		<Setter Property="Width" Value="NaN" />
     </Style>
 </Styles>

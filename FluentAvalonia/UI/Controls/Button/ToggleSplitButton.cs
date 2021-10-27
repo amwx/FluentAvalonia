@@ -9,7 +9,7 @@ namespace FluentAvalonia.UI.Controls
 	public class ToggleSplitButton : SplitButton, IStyleable
 	{
 		public static readonly DirectProperty<ToggleSplitButton, bool> IsCheckedProperty =
-			AvaloniaProperty.RegisterDirect<ToggleSplitButton, bool>("IsChecked",
+			AvaloniaProperty.RegisterDirect<ToggleSplitButton, bool>(nameof(IsChecked),
 				x => x.IsChecked, (x, v) => x.IsChecked = v);
 
 		public bool IsChecked

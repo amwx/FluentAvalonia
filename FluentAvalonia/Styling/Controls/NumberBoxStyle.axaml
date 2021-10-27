@@ -10,7 +10,7 @@
 	<Design.PreviewWith>
 		<Border Padding="30">
 			<!--<TextBox Width="100" Classes="clearButton" />-->
-			<ui:NumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
+			<ui:NumberBox Width="150" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="100" Value="10" />
 		</Border>
 	</Design.PreviewWith>
 
@@ -21,8 +21,6 @@
 		<x:Double x:Key="NumberBoxPopupHorizonalOffset">-21</x:Double>
 		<x:Double x:Key="NumberBoxPopupVerticalOffset">-27</x:Double>
 		<x:Double x:Key="NumberBoxPopupShadowDepth">16</x:Double>
-		<Thickness x:Key="NumberBoxPopupBorderThickness">1</Thickness>
-		<Thickness x:Key="NumberBoxPopupSpinButtonBorderThickness">0</Thickness>
 
 		<Thickness x:Key="NumberBoxPopupIndicatorMargin">0,0,8,0</Thickness>
 	</Styles.Resources>
@@ -36,6 +34,7 @@
 		<Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
 		<Setter Property="BorderThickness" Value="{DynamicResource NumberBoxSpinButtonBorderThickness}"/>
 		<Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<ContentPresenter Background="{TemplateBinding Background}"
@@ -43,7 +42,7 @@
 								  BorderThickness="{TemplateBinding BorderThickness}"
 								  TextBlock.Foreground="{TemplateBinding Foreground}"
 								  Padding="{TemplateBinding Padding}"
-								  CornerRadius="{DynamicResource ControlCornerRadius}"
+								  CornerRadius="{TemplateBinding CornerRadius}"
 								  Content="{TemplateBinding Content}"
 								  HorizontalContentAlignment="Center"
 								  VerticalContentAlignment="Center"/>
@@ -81,7 +80,8 @@
 								BorderThickness="{TemplateBinding BorderThickness}"
 								MinWidth="{TemplateBinding MinWidth}"
 								MinHeight="{TemplateBinding MinHeight}"
-								RenderTransform="scaleY(-1)" />
+								RenderTransform="scaleY(-1)"
+								CornerRadius="{TemplateBinding CornerRadius}" />
 						
 						<Border Margin="{TemplateBinding BorderThickness}">
 							<Grid ColumnDefinitions="Auto,*,Auto" >
@@ -124,8 +124,8 @@
 											 VerticalAlignment="Center" HorizontalAlignment="Center"
 											 Width="18" Height="18"
 											 Name="PopupIndicator">
-										<ui:FontIcon Glyph="&#xFE51;"
-													 FontFamily="{DynamicResource SymbolThemeFontFamilyFilled}"
+										<ui:FontIcon Glyph="&#xEC8F;"
+													 FontFamily="{DynamicResource SymbolThemeFontFamily}"
 													 FontSize="24"
 													 Foreground="{DynamicResource NumberBoxPopupIndicatorForeground}" />
 									</Viewbox>
@@ -146,6 +146,7 @@
 		<Setter Property="SelectionHighlightColor" Value="{DynamicResource TextControlSelectionHighlightColor}" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<Grid Name="Root" RowDefinitions="Auto,*,Auto"
@@ -172,7 +173,8 @@
                              FontWeight="{TemplateBinding FontWeight}"
                              FontFamily="{TemplateBinding FontFamily}"
                              TextAlignment="{TemplateBinding TextAlignment}"
-							 Classes="NumberBoxTextBoxStyle clearButton"/>
+							 Classes="NumberBoxTextBoxStyle clearButton"
+							 CornerRadius="{TemplateBinding CornerRadius}"/>
 
 					<Popup Name="UpDownPopup" Focusable="False"
                            WindowManagerAddShadowHint="False"
@@ -197,13 +199,13 @@
 								<RepeatButton Name="PopupUpSpinButton" Focusable="False"
                                               FontSize="18"
                                               Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
-                                              Content="&#xF2B9;" />
+                                              Content="&#xE70E;" />
 
 								<RepeatButton Name="PopupDownSpinButton" Focusable="False"
                                               FontSize="18"
                                               Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
                                               Grid.Row="1"
-                                              Content="&#xF2A6;" />
+                                              Content="&#xE70D;" />
 							</Grid>
 						</Border>
 					</Popup>
@@ -222,14 +224,14 @@
                                   Grid.Column="1"
                                   FontSize="18"
                                   Classes="NumberBoxSpinButtonStyle"
-                                  Content="&#xF2B9;"
+                                  Content="&#xE70E;"
 								  Margin="4"/>
 
 					<RepeatButton Name="DownSpinButton"
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   FontSize="18"
-                                  Content="&#xF2A6;"
+                                  Content="&#xE70D;"
                                   Classes="NumberBoxSpinButtonStyle"
 								  Margin="0 4 4 4"/>
 

@@ -2,20 +2,16 @@
 using Avalonia.Controls;
 using FluentAvalonia.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls.Primitives
 {
 	public class InfoBarPanel : Panel
 	{
 		public static readonly StyledProperty<Thickness> HorizontalOrientationPaddingProperty =
-			AvaloniaProperty.Register<InfoBarPanel, Thickness>("HorizontalOrientationPadding");
+			AvaloniaProperty.Register<InfoBarPanel, Thickness>(nameof(HorizontalOrientationPadding));
 
 		public static readonly StyledProperty<Thickness> VerticalOrientationPaddingProperty =
-			AvaloniaProperty.Register<InfoBarPanel, Thickness>("VerticalOrientationPadding");
+			AvaloniaProperty.Register<InfoBarPanel, Thickness>(nameof(VerticalOrientationPadding));
 
 		public Thickness HorizontalOrientationPadding
 		{
@@ -28,7 +24,6 @@ namespace FluentAvalonia.UI.Controls.Primitives
 			get => GetValue(VerticalOrientationPaddingProperty);
 			set => SetValue(VerticalOrientationPaddingProperty, value);
 		}
-
 
 		public static readonly AttachedProperty<Thickness> HorizontalOrientationMarginProperty =
 			AvaloniaProperty.RegisterAttached<InfoBarPanel, IControl, Thickness>("HorizontalOrientationMargin");
@@ -55,8 +50,6 @@ namespace FluentAvalonia.UI.Controls.Primitives
 		{
 			return c.GetValue(VerticalOrientationMarginProperty);
 		}
-
-
 
 		protected override Size MeasureOverride(Size availableSize)
 		{

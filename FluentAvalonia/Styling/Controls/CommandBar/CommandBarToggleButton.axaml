@@ -36,10 +36,6 @@
 		<Thickness x:Key="AppBarToggleButtonOverflowTextLabelPadding">0,5,0,8</Thickness>
 	</Styles.Resources>
 	
-    <!-- 
-
-	-->
-	
 	<Style Selector="ui|CommandBarToggleButton">
 		<Setter Property="Background" Value="{DynamicResource AppBarToggleButtonBackground}" />
 		<Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
@@ -101,7 +97,11 @@
 	</Style>
 	<Style Selector="ui|CommandBarToggleButton /template/ Border#AppBarButtonInnerBorder">
 		<Setter Property="Margin" Value="{DynamicResource AppBarButtonInnerBorderMargin}" />
-		<!-- TODO: Add brush transition when 0.10.7 is released -->
+		<Setter Property="Transitions">
+			<Transitions>
+				<BrushTransition Duration="00:00:00.083" Property="Background" />
+			</Transitions>
+		</Setter>
 	</Style>
 	<Style Selector="ui|CommandBarToggleButton /template/ Grid#ContentRoot">
 		<Setter Property="MinHeight" Value="{DynamicResource AppBarThemeMinHeight}" />

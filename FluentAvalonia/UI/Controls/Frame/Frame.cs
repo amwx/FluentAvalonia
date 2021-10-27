@@ -146,6 +146,16 @@ namespace FluentAvalonia.UI.Controls
                     CurrentEntry = null;
                 }
             }
+            else if (change.Property == SourcePageTypeProperty)
+            {
+                if (!_isNavigating)
+                {
+                    if (change.NewValue.GetValueOrDefault() is null)
+                        throw new InvalidOperationException("SourcePageType cannot be null. Use Content instead.");
+
+                    Navigate(change.NewValue.GetValueOrDefault<Type>());
+                }
+            }
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -393,7 +403,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 //Default to entrance transition
                 entry.NavigationTransitionInfo = entry.NavigationTransitionInfo ?? new EntranceNavigationTransitionInfo();
-
+				_presenter.Opacity = 0;
 				// Very busy pages will delay loading b/c layout & render has to occur first
 				// Posting this helps a little bit, but not much
 				// Not really sure how to get the transition to occur while the page is loading

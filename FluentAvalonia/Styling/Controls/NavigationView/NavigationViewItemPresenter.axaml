@@ -7,7 +7,7 @@
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
 
     <Design.PreviewWith>
-        <Border Background="#F3F3F3" Padding="50">
+        <Border Padding="50">
             <StackPanel Spacing="4">
                 <uip:NavigationViewItemPresenter Content="Hello" Icon="Save" />
             </StackPanel>
@@ -52,7 +52,7 @@
                         <Grid Name="ContentGrid"
                               MinHeight="{DynamicResource NavigationViewItemOnLeftMinHeight}"
                               HorizontalAlignment="Stretch"
-                              ColumnDefinitions="Auto,*,Auto">
+                              ColumnDefinitions="Auto,*,Auto,Auto">
 
                             <Border Name="IconColumn">
                                 <Viewbox Name="IconBox"
@@ -73,7 +73,7 @@
                                               Padding="{TemplateBinding Padding}" />
 
                             <Panel Name="ExpandCollapseChevron"
-                                   Grid.Column="2"
+                                   Grid.Column="3"
                                    HorizontalAlignment="Right"
                                    Width="40"
                                    Margin="{DynamicResource NavigationViewItemExpandedChevronMargin}"
@@ -85,6 +85,9 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center" />
                             </Panel>
+							
+							<ContentPresenter Name="InfoBadgePresenter"
+											  Content="{TemplateBinding InfoBadge}" />
                             
                         </Grid>
                         
@@ -113,6 +116,9 @@
 		<Setter Property="Width" Value="{DynamicResource NavigationViewSelectionIndicatorWidth}" />
 		<Setter Property="Height" Value="{DynamicResource NavigationViewSelectionIndicatorHeight}" />
 		<Setter Property="CornerRadius" Value="{DynamicResource NavigationViewSelectionIndicatorRadius}" />
+	</Style>
+	<Style Selector="uip|NavigationViewItemPresenter /template/ Grid#ContentGrid">
+		<Setter Property="Margin" Value="0 0 14 0" />
 	</Style>
 
     <!-- Interaction -->
@@ -206,8 +212,23 @@
     <Style Selector="uip|NavigationViewItemPresenter:closedcompacttop /template/ ContentPresenter#ContentPresenter">
         <Setter Property="Margin" Value="{DynamicResource NavigationViewCompactItemContentPresenterMargin}" />
     </Style>
-    
-    
+	<Style Selector="uip|NavigationViewItemPresenter:closedcompacttop:infobadge /template/ ContentPresenter#InfoBadgePresenter">
+		<Setter Property="Grid.Column" Value="0" />
+		<Setter Property="Grid.ColumnSpan" Value="4" />
+		<Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="HorizontalAlignment" Value="Right" />
+		<Setter Property="Margin" Value="0 2 2 0" />
+	</Style>
+
+	<!-- InfoBadge -->
+	<Style Selector="uip|NavigationViewItemPresenter /template/ ContentPresenter#InfoBadgePresenter">
+		<Setter Property="IsVisible" Value="False" />
+		<Setter Property="Grid.Column" Value="2" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="uip|NavigationViewItemPresenter:infobadge /template/ ContentPresenter#InfoBadgePresenter">
+		<Setter Property="IsVisible" Value="True" />		
+	</Style>
 
 
     <!-- - - - - - - - - - - - - - - - - - - - -->
@@ -226,7 +247,7 @@
                     <Panel>
                         <Rectangle Name="PointerRectangle" />
 
-                        <Grid Name="ContentGrid" ColumnDefinitions="Auto,*,Auto">
+                        <Grid Name="ContentGrid" ColumnDefinitions="Auto,*,Auto,Auto">
 
                             <Viewbox Name="IconBox"
                                      Height="18"
@@ -258,6 +279,9 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center" />
                             </Panel>
+
+							<ContentPresenter Name="InfoBadgePresenter"
+											  Content="{TemplateBinding InfoBadge}" />
                             
                         </Grid>
                         
@@ -294,6 +318,17 @@
     <Style Selector="uip|NavigationViewItemPresenter:topnav /template/ ContentPresenter#ContentPresenter">
         <Setter Property="Margin" Value="{DynamicResource TopNavigationViewItemContentPresenterMargin}" />
     </Style>
+	
+	<Style Selector="uip|NavigationViewItemPresenter:topnav /template/ Grid#ContentGrid">
+		<Setter Property="Margin" Value="0" />
+	</Style>
+	<Style Selector="uip|NavigationViewItemPresenter:topnav /template/ ContentPresenter#InfoBadgePresenter">
+		<Setter Property="Grid.Column" Value="3" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="Margin" Value="-16,0,2,13" />
+	</Style>
+
 
     <!-- Interaction -->
     
@@ -443,7 +478,7 @@
                         </Panel>
 
                         <Grid Name="ContentGrid"
-                              ColumnDefinitions="Auto,*,Auto">
+                              ColumnDefinitions="Auto,*,Auto,Auto">
 
                             <Viewbox Name="IconBox"
                                      Height="16"
@@ -470,7 +505,7 @@
                             TopNavigationViewItemOnOverflowExpandChevronPadding
                             -->
                             <Panel Name="ExpandCollapseChevron"
-                                   Grid.Column="2"
+                                   Grid.Column="3"
                                    HorizontalAlignment="Right"
                                    Width="40"
                                    Margin="{DynamicResource TopNavigationViewItemOnOverflowExpandChevronMargin}"
@@ -483,6 +518,8 @@
                                            VerticalAlignment="Center" />
                             </Panel>
 
+							<ContentPresenter Name="InfoBadgePresenter" />
+							
                         </Grid>
 
 
@@ -495,6 +532,15 @@
     <Style Selector="uip|NavigationViewItemPresenter:topoverflow /template/ ContentPresenter#ContentPresenter">
         <Setter Property="Margin" Value="{DynamicResource TopNavigationViewItemOnOverflowContentPresenterMargin}" />
     </Style>
+
+	<Style Selector="uip|NavigationViewItemPresenter:topoverflow /template/ Grid#ContentGrid">
+		<Setter Property="Margin" Value="0 0 14 0" />
+	</Style>
+
+	<Style Selector="uip|NavigationViewItemPresenter:topoverflow /template/ ContentPresenter#InfoBadgePresenter">
+		<Setter Property="Grid.Column" Value="2" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
 
     <!-- Interaction -->
     

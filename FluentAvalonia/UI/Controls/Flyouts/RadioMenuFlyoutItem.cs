@@ -67,8 +67,8 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		private bool _isSafeUncheck = false;
-		private bool _isChecked;
+		//private bool _isSafeUncheck = false;
+		//private bool _isChecked;
 		private string _groupName = string.Empty;
 
 		internal static readonly SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>> SelectionMap;

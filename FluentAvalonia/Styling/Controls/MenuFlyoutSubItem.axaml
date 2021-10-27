@@ -16,6 +16,7 @@
 		<Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
 		<Setter Property="Padding" Value="{StaticResource MenuFlyoutItemThemePadding}" />
 		<Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<!--<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />-->
 		<Setter Property="Template">
@@ -25,7 +26,7 @@
 						BorderBrush="{TemplateBinding BorderBrush}"
 						BorderThickness="{TemplateBinding BorderThickness}"
 						Margin="{StaticResource MenuFlyoutItemMargin}"
-						CornerRadius="{DynamicResource ControlCornerRadius}">
+						CornerRadius="{TemplateBinding CornerRadius}">
 					<Grid ColumnDefinitions="*,Auto"
 						  Name="LayoutRootGrid">
 						<Viewbox Name="IconRoot"
@@ -37,7 +38,7 @@
 						</Viewbox>
 						<TextBlock Name="TextBlock"
 								   Text="{TemplateBinding Text}"
-								   TextTrimming="CharacterEllipsis"
+								   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
 								   Foreground="{TemplateBinding Foreground}"
 								   VerticalAlignment="Center"
 								   HorizontalAlignment="Stretch" />

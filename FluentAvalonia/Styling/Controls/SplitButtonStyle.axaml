@@ -7,7 +7,7 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
     <Design.PreviewWith>
-        <Border Padding="50" Background="#F3F3F3">
+        <Border Padding="50">
             <StackPanel Spacing="5">
                 <ui:SplitButton Content="hello" />
 
@@ -39,11 +39,12 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="Padding" Value="{DynamicResource ButtonPadding}"/>
         <Setter Property="KeyboardNavigation.IsTabStop" Value="True" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="Root"
                         Background="Transparent"
-                        CornerRadius="{DynamicResource ControlCornerRadius}" ClipToBounds="True">
+                        CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
                     <Border.Styles>
                          <!--Override the button style-->
                         <Style Selector="ui|Button">
@@ -93,7 +94,7 @@
                                 Grid.ColumnSpan="3"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{DynamicResource ControlCornerRadius}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
                                 RenderTransform="scaleY(-1)"/>
 
                         <ui:Button Name="PrimaryButton"
@@ -130,7 +131,7 @@
                             <TextBlock Name="ChevronTextBlock"
                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                        FontSize="14"
-                                       Text="&#xF2A6;"
+                                       Text="&#xE70D;"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Right" />
                             

@@ -25,7 +25,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
         public static readonly StyledProperty<Color2> ColorProperty =
-            AvaloniaProperty.Register<ColorPickerButton, Color2>("Color", defaultBindingMode: BindingMode.TwoWay);
+            AvaloniaProperty.Register<ColorPickerButton, Color2>(nameof(Color), defaultBindingMode: BindingMode.TwoWay);
 
 		public static readonly StyledProperty<bool> IsMoreButtonVisibleProperty =
 			ColorPicker.IsMoreButtonVisibleProperty.AddOwner<ColorPickerButton>();
@@ -58,7 +58,7 @@ namespace FluentAvalonia.UI.Controls
 			ColorPicker.PaletteColumnCountProperty.AddOwner<ColorPickerButton>();
 
 		public static readonly StyledProperty<bool> ShowAcceptDismissButtonsProperty =
-			AvaloniaProperty.Register<ColorPickerButton, bool>("ShowAcceptDismissButtons", defaultValue: true);
+			AvaloniaProperty.Register<ColorPickerButton, bool>(nameof(ShowAcceptDismissButtons), defaultValue: true);
 
 
 		Type IStyleable.StyleKey => typeof(ColorPickerButton);

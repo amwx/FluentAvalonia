@@ -7,7 +7,7 @@
              xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
 
 	<Design.PreviewWith>
-		<Border Padding="50">
+		<Border Padding="50" Width="250">
 			<StackPanel>
 				<ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False" 
 							   DefaultLabelPosition="Right">
@@ -20,18 +20,6 @@
 	</Design.PreviewWith>
 
 	<Styles.Resources>
-		<x:Double x:Key="CommandBarOverflowMinWidth">160</x:Double>
-		<x:Double x:Key="CommandBarOverflowTouchMinWidth">240</x:Double>
-		<x:Double x:Key="CommandBarOverflowMaxWidth">480</x:Double>
-		<x:Double x:Key="CommandBarOverflowMaxHeight">198</x:Double>
-		<Thickness x:Key="CommandBarBorderThicknessOpen">1</Thickness>
-		<Thickness x:Key="CommandBarOverflowPresenterBorderThickness">1</Thickness>
-		<Thickness x:Key="CommandBarOverflowPresenterBorderDownThickness">0,0,0,1</Thickness>
-		<Thickness x:Key="CommandBarOverflowPresenterBorderUpThickness">0,1,0,0</Thickness>
-		<Thickness x:Key="CommandBarOverflowPresenterBorderPadding">0</Thickness>
-		<Thickness x:Key="CommandBarOverflowPresenterBorderDownPadding">0</Thickness>
-		<Thickness x:Key="CommandBarOverflowPresenterBorderUpPadding">0</Thickness>
-
 		<x:Double x:Key="AppBarThemeMinHeight">64</x:Double>
 		<x:Double x:Key="AppBarThemeCompactHeight">48</x:Double>
 		<Thickness x:Key="AppBarEllipsisButtonInnerBorderMargin">2,6,6,6</Thickness>
@@ -66,6 +54,7 @@
 		<Setter Property="FontWeight" Value="SemiBold" />
 		<Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
 		<Setter Property="Width" Value="{DynamicResource AppBarExpandButtonThemeWidth}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<Panel>
@@ -79,7 +68,7 @@
 									Padding="0"
 									HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
 									VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-									CornerRadius="{DynamicResource ControlCornerRadius}" />
+									CornerRadius="{TemplateBinding CornerRadius}" />
 				</Panel>
 			</ControlTemplate>
 		</Setter>
@@ -113,6 +102,7 @@
 		<Setter Property="HorizontalContentAlignment" Value="Left" />
 		<Setter Property="VerticalContentAlignment" Value="Top" />
 		<Setter Property="ClosedDisplayMode" Value="Compact" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
 				<Panel Name="LayoutRoot">
@@ -282,12 +272,4 @@
 		<Setter Property="VerticalAlignment" Value="Stretch" />
 	</Style>
 
-
-	
-	
-	
-	
-	
-	
-	
 </Styles>

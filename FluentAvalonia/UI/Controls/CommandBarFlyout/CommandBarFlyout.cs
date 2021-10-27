@@ -129,7 +129,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		public static readonly StyledProperty<bool> AlwaysExpandedProperty =
-			AvaloniaProperty.Register<CommandBarFlyout, bool>("AlwaysExpanded");
+			AvaloniaProperty.Register<CommandBarFlyout, bool>(nameof(AlwaysExpanded));
 
 		[Content]
 		public IAvaloniaList<ICommandBarElement> PrimaryCommands { get; }

@@ -8,8 +8,8 @@ namespace FluentAvalonia.UI.Controls
     internal class SelectionNodeOperation : ISelectedItemInfo
     {
         private readonly SelectionNode _owner;
-        private List<IndexRange>? _selected;
-        private List<IndexRange>? _deselected;
+        private List<IndexRange> _selected;
+        private List<IndexRange> _deselected;
         private int _selectedCount = -1;
         private int _deselectedCount = -1;
 
@@ -19,10 +19,10 @@ namespace FluentAvalonia.UI.Controls
         }
 
         public bool HasChanges => _selected?.Count > 0 || _deselected?.Count > 0;
-        public List<IndexRange>? SelectedRanges => _selected;
-        public List<IndexRange>? DeselectedRanges => _deselected;
+        public List<IndexRange> SelectedRanges => _selected;
+        public List<IndexRange> DeselectedRanges => _deselected;
         public IndexPath Path => _owner.IndexPath;
-        public ItemsSourceView? Items => _owner.ItemsSourceView;
+        public ItemsSourceView Items => _owner.ItemsSourceView;
 
         public int SelectedCount
         {
@@ -80,8 +80,8 @@ namespace FluentAvalonia.UI.Controls
 
         private static void Add(
             IndexRange range,
-            ref List<IndexRange>? add,
-            List<IndexRange>? remove)
+            ref List<IndexRange> add,
+            List<IndexRange> remove)
         {
             if (remove != null)
             {

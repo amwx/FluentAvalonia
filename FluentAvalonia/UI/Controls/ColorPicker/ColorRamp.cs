@@ -23,14 +23,14 @@ namespace FluentAvalonia.UI.Controls
         }
 
         public static readonly DirectProperty<ColorRamp, Orientation> OrientationProperty =
-            AvaloniaProperty.RegisterDirect<ColorRamp, Orientation>("Orientation",
+            AvaloniaProperty.RegisterDirect<ColorRamp, Orientation>(nameof(Orientation),
                 x => x.Orientation, (x, v) => x.Orientation = v);
 
 		public static readonly StyledProperty<IBrush> BorderBrushProperty =
 			Border.BorderBrushProperty.AddOwner<ColorRamp>();
 
 		public static readonly StyledProperty<double> BorderThicknessProperty =
-			AvaloniaProperty.Register<ColorRamp, double>("BorderThickness", 1d);
+			AvaloniaProperty.Register<ColorRamp, double>(nameof(BorderThickness), 1d);
 
 		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
 			Border.CornerRadiusProperty.AddOwner<ColorRamp>();

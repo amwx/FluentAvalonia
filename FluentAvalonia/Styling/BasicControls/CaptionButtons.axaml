@@ -1,0 +1,81 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:ui="using:FluentAvalonia.UI.Controls">
+
+	<Design.PreviewWith>
+		<Border Padding="50">
+			<CaptionButtons />
+		</Border>
+	</Design.PreviewWith>
+	
+	<Style Selector="CaptionButtons">
+		<Setter Property="MaxHeight" Value="32" />
+		<Setter Property="MinHeight" Value="32" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<StackPanel Spacing="2" VerticalAlignment="Stretch" TextBlock.FontSize="10" Orientation="Horizontal">
+					<StackPanel.Styles>
+						<Style Selector="Panel">
+							<Setter Property="Width" Value="45" />
+							<Setter Property="Background" Value="Transparent" />
+						</Style>
+						<Style Selector="Panel:pointerover">
+							<Setter Property="Background" Value="#7F7f7f7f" />
+						</Style>
+						<Style Selector="Panel#PART_CloseButton:pointerover">
+							<Setter Property="Background" Value="#7FFF0000" />
+						</Style>
+						<Style Selector="Viewbox">
+							<Setter Property="Width" Value="15" />
+							<Setter Property="Margin" Value="2" />
+						</Style>
+					</StackPanel.Styles>
+					<Panel x:Name="PART_FullScreenButton">
+						<Viewbox>
+							<ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" />
+						</Viewbox>
+					</Panel>
+
+					<Panel x:Name="PART_MinimiseButton">
+						<Viewbox>
+							<ui:FontIcon Glyph="&#xE108;"
+										 FontFamily="{StaticResource SymbolThemeFontFamily}" />
+						</Viewbox>
+					</Panel>
+
+					<Panel x:Name="PART_RestoreButton">
+						<Viewbox>
+							<ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" />
+						</Viewbox>
+					</Panel>
+
+					<Panel x:Name="PART_CloseButton">
+						<Viewbox Width="16">
+							<ui:FontIcon Glyph="&#xE106;"
+										 FontFamily="{StaticResource SymbolThemeFontFamily}" />
+						</Viewbox>
+					</Panel>
+				</StackPanel>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+	<Style Selector="CaptionButtons Panel#PART_RestoreButton ui|FontIcon">
+		<Setter Property="Glyph" Value="&#xE15B;" />
+	</Style>
+	<Style Selector="CaptionButtons:maximized Panel#PART_RestoreButton ui|FontIcon">
+		<Setter Property="Glyph" Value="&#xF80B9;" />
+	</Style>
+	
+	<Style Selector="CaptionButtons Panel#PART_FullScreenButton">
+		<Setter Property="IsVisible" Value="True" />
+	</Style>
+	<Style Selector="CaptionButtons Panel#PART_FullScreenButton ui|FontIcon">
+		<Setter Property="Glyph" Value="&#xF8073;" />
+	</Style>
+	<Style Selector="CaptionButtons:maximized Panel#PART_FullScreenButton ui|FontIcon">
+		<Setter Property="Glyph" Value="&#xF8075;" />
+	</Style>	
+	<Style Selector="CaptionButtons:fullscreen Panel#PART_RestoreButton, CaptionButtons:fullscreen Panel#PART_MinimiseButton">
+		<Setter Property="IsVisible" Value="False" />
+	</Style>
+</Styles>

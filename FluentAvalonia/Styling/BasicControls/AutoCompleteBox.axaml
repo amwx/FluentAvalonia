@@ -2,11 +2,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="using:FluentAvalonia.UI.Controls">
 
+    <Design.PreviewWith>
+        <Border Padding="50">
+            <StackPanel Orientation="Vertical" Spacing="5">
+                <AutoCompleteBox />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
     <Styles.Resources>
-        <x:Double x:Key="AutoCompleteListMaxHeight">374</x:Double>
-        <Thickness x:Key="AutoCompleteListMargin">0,2,0,2</Thickness>
-        <Thickness x:Key="AutoCompleteListBorderThemeThickness">1</Thickness>
-        <Thickness x:Key="AutoCompleteListPadding">-1,0,-1,0</Thickness>
+        <Thickness x:Key="AutoSuggestBoxTopHeaderMargin">0,0,0,8</Thickness>
+        <Thickness x:Key="AutoSuggestBoxInnerButtonMargin">1,3</Thickness>
+        <Thickness x:Key="AutoSuggestBoxDeleteButtonMargin">0,4</Thickness>
+        <!-- Taken from generic.xaml -->
+        <Thickness x:Key="AutoSuggestListMargin">0 2</Thickness>
+        <x:Double x:Key="AutoSuggestListMaxHeight">374</x:Double>
+        <Thickness x:Key="AutoSuggestListPadding">-1,0</Thickness>
+
+		<!-- Unused -->
+        <!--<Thickness x:Key="AutoSuggestBoxQueryButtonPadding">3,2</Thickness>-->
+        <!--<x:Double x:Key="AutoSuggestBoxLeftButtonMargin">3</x:Double>
+        <x:Double x:Key="AutoSuggestBoxRightButtonMargin">4</x:Double>-->
     </Styles.Resources>
 
     <Style Selector="AutoCompleteBox">
@@ -18,40 +34,42 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="Padding" Value="{DynamicResource TextControlThemePadding}" />
         <Setter Property="MaxDropDownHeight" Value="{DynamicResource AutoCompleteListMaxHeight}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="PART_LayoutRoot">
                     <TextBox Name="PART_TextBox"
-                                Watermark="{TemplateBinding Watermark}"
-                                Width="{TemplateBinding Width}"
-                                Foreground="{TemplateBinding Foreground}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                FontSize="{TemplateBinding FontSize}"
-                                FontFamily="{TemplateBinding FontFamily}"
-                                FontWeight="{TemplateBinding FontWeight}"
-                                Padding="{TemplateBinding Padding}"
-                                Margin="0"
-                                DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}" />
+                             Watermark="{TemplateBinding Watermark}"
+                             Width="{TemplateBinding Width}"
+                             Foreground="{TemplateBinding Foreground}"
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             FontSize="{TemplateBinding FontSize}"
+                             FontFamily="{TemplateBinding FontFamily}"
+                             FontWeight="{TemplateBinding FontWeight}"
+                             Padding="{TemplateBinding Padding}"
+                             Margin="0"
+                             DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}"
+                             CornerRadius="{TemplateBinding CornerRadius}"/>
 
                     <Popup Name="PART_Popup"
-                            WindowManagerAddShadowHint="False"
-                            MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
-                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                            IsLightDismissEnabled="True"
-                            PlacementTarget="{TemplateBinding}">
+                           WindowManagerAddShadowHint="False"
+                           MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                           MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                           IsLightDismissEnabled="True"
+                           PlacementTarget="{TemplateBinding}">
                         <Border Name="PART_SuggestionsContainer"
-                                Padding="{DynamicResource AutoCompleteListMargin}"
-                                BorderThickness="{DynamicResource AutoCompleteListBorderThemeThickness}"
-                                BorderBrush="{DynamicResource AutoCompleteBoxSuggestionsListBorderBrush}"
-                                Background="{DynamicResource AutoCompleteBoxSuggestionsListBackground}"
+                                Padding="{DynamicResource AutoSuggestListMargin}"
+                                BorderThickness="{DynamicResource AutoSuggestListBorderThemeThickness}"
+                                BorderBrush="{DynamicResource AutoSuggestBoxSuggestionsListBorderBrush}"
+                                Background="{DynamicResource AutoSuggestBoxSuggestionsListBackground}"
                                 CornerRadius="{DynamicResource OverlayCornerRadius}">
                             <ListBox Name="PART_SelectingItemsControl"
-                                        BorderThickness="0"
-                                        Background="Transparent"
-                                        ItemTemplate="{TemplateBinding ItemTemplate}"
-                                        Margin="{DynamicResource AutoCompleteListPadding}" />
+                                     BorderThickness="0"
+                                     Background="Transparent"
+                                     ItemTemplate="{TemplateBinding ItemTemplate}"
+                                     Margin="{DynamicResource AutoSuggestListPadding}" />
                         </Border>
                     </Popup>
                 </Grid>

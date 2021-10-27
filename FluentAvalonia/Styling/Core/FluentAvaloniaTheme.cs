@@ -4,65 +4,60 @@ using Avalonia.Logging;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Styling;
-using Avalonia.Themes.Fluent;
 using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Media;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.Styling
 {
-    public class FluentAvaloniaTheme : IStyle, IResourceProvider
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FluentTheme"/> class.
-        /// </summary>
-        /// <param name="baseUri">The base URL for the XAML context.</param>
-        public FluentAvaloniaTheme(Uri baseUri)
-        {
-            _baseUri = baseUri;
-			Register();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FluentTheme"/> class.
-        /// </summary>
-        /// <param name="serviceProvider">The XAML service provider.</param>
-        public FluentAvaloniaTheme(IServiceProvider serviceProvider)
-        {
-            _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
+	public class FluentAvaloniaTheme : IStyle, IResourceProvider
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FluentAvaloniaTheme"/> class.
+		/// </summary>
+		/// <param name="baseUri">The base URL for the XAML context.</param>
+		public FluentAvaloniaTheme(Uri baseUri)
+		{
+			_baseUri = baseUri;
 			Register();
 		}
 
-        /// <summary>
-        /// Gets or sets the mode of the fluent theme (light, dark).
-        /// </summary>
-        public string RequestedTheme
-        {
-            get => _mode;
-            set
-            {
-                if (_mode != value)
-                {
-                    _mode = value;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FluentAvaloniaTheme"/> class.
+		/// </summary>
+		/// <param name="serviceProvider">The XAML service provider.</param>
+		public FluentAvaloniaTheme(IServiceProvider serviceProvider)
+		{
+			_baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
+			Register();
+		}
+
+		/// <summary>
+		/// Gets or sets the mode of the fluent theme (light, dark).
+		/// </summary>
+		public string RequestedTheme
+		{
+			get => _mode;
+			set
+			{
+				if (_mode != value)
+				{
+					_mode = value;
 										
 					RequestedThemeChanged?.Invoke(this, value);
 					
-                    if (_loaded != null)
+					if (_loaded != null)
 					{
 						var thm = value.Equals("Light", StringComparison.OrdinalIgnoreCase) ? "Light" : "Dark";
-						_isLoading = true;
 						var old = _loaded[2];
 						//Only switch the third item in loaded (light/dark theme)
 						//Everything else remains the same
 						(old as IResourceProvider)?.RemoveOwner(Owner);
 						_loaded[2] = null;
 						var newStyles = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV{ControlsVersion}/{thm}Resources.axaml", UriKind.Absolute), _baseUri);
-						_isLoading = false;
-
+						
 						_loaded[2] = newStyles;
 						(newStyles as IResourceProvider)?.AddOwner(Owner);
 						
@@ -70,25 +65,26 @@ namespace FluentAvalonia.Styling
 
 					//Apply the update (this is at app level & will propagate through...)
 					Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
-                }
-            }
-        }
+				}
+			}
+		}
 
 		public int ControlsVersion
 		{
-			get => _controlsVersion;
+			get => 2;
 			set
 			{
-				if (value != _controlsVersion)
-				{
-					_controlsVersion = value;
-					Init(true);
-					Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
-					if (value == 1)
-					{
-						Debug.WriteLine("NOTE: Fluent v1 Styles are now considered deprecated, and support will be removed from FluentAvalonia in a future version");						
-					}
-				}
+				throw new NotSupportedException("Fluent v1 Styles have been deprecated and removed from FluentAvalonia. This property is now obsolete");
+				//if (value != _controlsVersion)
+				//{
+				//	_controlsVersion = value;
+				//	Init(true);
+				//	Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
+				//	if (value == 1)
+				//	{
+				//		Debug.WriteLine("NOTE: Fluent v1 Styles are now considered deprecated, and support will be removed from FluentAvalonia in a future version");						
+				//	}
+				//}
 			}
 		}
 
@@ -132,7 +128,7 @@ namespace FluentAvalonia.Styling
 			}
 		}
 
-        public IResourceHost Owner
+		public IResourceHost Owner
 		{
 			get => _owner;
 			set
@@ -145,7 +141,7 @@ namespace FluentAvalonia.Styling
 			}
 		}
 
-        bool IResourceNode.HasResources
+		bool IResourceNode.HasResources
 		{
 			get
 			{
@@ -159,7 +155,7 @@ namespace FluentAvalonia.Styling
 			}
 		}
 
-        public IReadOnlyList<IStyle> Children
+		public IReadOnlyList<IStyle> Children
 		{
 			get
 			{
@@ -171,11 +167,11 @@ namespace FluentAvalonia.Styling
 		}
 
 		public event EventHandler OwnerChanged;
-        
+		
 
 		public event EventHandler<string> RequestedThemeChanged;
 
-        public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
+		public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
 		{
 			_cache ??= new Dictionary<Type, List<IStyle>>();
 
@@ -216,22 +212,19 @@ namespace FluentAvalonia.Styling
 			}
 		}
 
-        public bool TryGetResource(object key, out object value)
-        {
-            if (!_isLoading)
-			{
-				for (int i = Children.Count - 1; i >= 0; i--)
-				{
-					if (Children[i] is IResourceProvider rp && rp.TryGetResource(key, out value))
-						return true;
-				}
-			}
+		public bool TryGetResource(object key, out object value)
+		{
+            for (int i = Children.Count - 1; i >= 0; i--)
+            {
+                if (Children[i] is IResourceProvider rp && rp.TryGetResource(key, out value))
+                    return true;
+            }
 
             value = null;
-            return false;
-        }
+			return false;
+		}
 
-        void IResourceProvider.AddOwner(IResourceHost owner)
+		void IResourceProvider.AddOwner(IResourceHost owner)
 		{
 			if (owner == null)
 				throw new ArgumentNullException("owner");
@@ -250,7 +243,7 @@ namespace FluentAvalonia.Styling
 			}
 		}
 
-        void IResourceProvider.RemoveOwner(IResourceHost owner)
+		void IResourceProvider.RemoveOwner(IResourceHost owner)
 		{
 			if (owner == null)
 				throw new ArgumentNullException("owner");
@@ -289,20 +282,21 @@ namespace FluentAvalonia.Styling
 
 			if (string.IsNullOrEmpty(theme))
 			{
-				theme = IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : "Light";
+				theme = IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : LightModeString;
 			}
 			else
 			{
-				theme = IsValidRequestedTheme(theme) ? theme : IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : "Light";
+				theme = IsValidRequestedTheme(theme) ? theme : IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : LightModeString;
 			}
 
-			Win32Interop.ApplyTheme(w.PlatformImpl.Handle.Handle, theme.Equals("Dark", StringComparison.OrdinalIgnoreCase), osInfo);
+			Win32Interop.ApplyTheme(w.PlatformImpl.Handle.Handle, theme.Equals(DarkModeString, StringComparison.OrdinalIgnoreCase), osInfo);
 		}
 
 		private bool IsValidRequestedTheme(string thm)
 		{
-			if ("Light".Equals(thm, StringComparison.OrdinalIgnoreCase) ||
-				"Dark".Equals(thm, StringComparison.OrdinalIgnoreCase))
+			if (LightModeString.Equals(thm, StringComparison.OrdinalIgnoreCase) ||
+				DarkModeString.Equals(thm, StringComparison.OrdinalIgnoreCase) ||
+                HighContrastModeString.Equals(thm, StringComparison.OrdinalIgnoreCase))
 			{
 				return true;
 			}
@@ -312,8 +306,6 @@ namespace FluentAvalonia.Styling
 
 		private void Init(bool clear = false)
 		{
-			_isLoading = true;
-
 			if (clear && _loaded != null) //This is a complete refresh, e.g., changing Version #
 			{
 				for (int i = 0; i < _loaded.Length; i++)
@@ -324,19 +316,69 @@ namespace FluentAvalonia.Styling
 			}
 
 			//Make sure we don't get an invalid version number
-			var version = ControlsVersion > 2 || ControlsVersion < 1 ? 2 : ControlsVersion;
 			string thm = GetTheme();
 
-			_loaded = new[]
+            // Must populate this incrementally, otherwise some resources won't evaluate if they're in other files
+            _loaded = new IStyle[4];
+            _loaded[0] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/AccentColors.axaml", UriKind.Absolute), _baseUri);
+            _loaded[1] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/BaseResources.axaml", UriKind.Absolute), _baseUri);
+            _loaded[2] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{thm}Resources.axaml", UriKind.Absolute), _baseUri);
+            _loaded[3] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/Controls.axaml", UriKind.Absolute), _baseUri);
+
+			// TODO: Figure out how to load HighContrast theme colors from system
+			// This only loads one version of the HC theme & doesn't respect the variants
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
-				(IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV{version}/AccentColors.axaml", UriKind.Absolute), _baseUri),
-				(IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV{version}/BaseResources.axaml", UriKind.Absolute), _baseUri),
-				(IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV{version}/{thm}Resources.axaml", UriKind.Absolute), _baseUri),
-				(IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV{version}/Controls.axaml", UriKind.Absolute), _baseUri),
-			};
+				// Populate HighContrast from System Colors
+				if (string.Equals(thm, HighContrastModeString))
+				{
+					bool GetSystemColor(SystemColors color, out Color c)
+					{
+						try
+						{
+							var intCol = Win32Interop.GetSysColor(color);
+							var r = (byte)((intCol >> 16) & 0xFF);
+							var g = (byte)((intCol >> 8) & 0xFF);
+							var b = (byte)(intCol & 0xFF);
+
+							c = Color.FromRgb(r, g, b);
+
+							return true;
+						}
+						catch
+						{
+							c = Colors.Transparent;
+							return false;
+						}
+					}
+
+					if (GetSystemColor(SystemColors.COLOR_WINDOWTEXT, out Color windowT))
+						(_loaded[0] as Styles).Resources["SystemColorWindowTextColor"] = windowT;
+
+					if (GetSystemColor(SystemColors.COLOR_GRAYTEXT, out Color grey))
+						(_loaded[0] as Styles).Resources["SystemColorGrayTextColor"] = grey;
+
+					if (GetSystemColor(SystemColors.COLOR_BTNFACE, out Color btn))
+						(_loaded[0] as Styles).Resources["SystemColorButtonFaceColor"] = btn;
+
+					if (GetSystemColor(SystemColors.COLOR_WINDOW, out Color window))
+						(_loaded[0] as Styles).Resources["SystemColorWindowColor"] = window;
+
+					if (GetSystemColor(SystemColors.COLOR_BTNTEXT, out Color btnT))
+						(_loaded[0] as Styles).Resources["SystemColorButtonTextColor"] = btnT;
+
+					if (GetSystemColor(SystemColors.COLOR_HIGHLIGHT, out Color highlight))
+						(_loaded[0] as Styles).Resources["SystemColorHighlightColor"] = highlight;
+
+					if (GetSystemColor(SystemColors.COLOR_HIGHLIGHTTEXT, out Color highlightT))
+						(_loaded[0] as Styles).Resources["SystemColorHighlightTextColor"] = highlightT;
+
+					if (GetSystemColor(SystemColors.COLOR_HOTLIGHT, out Color hotlight))
+						(_loaded[0] as Styles).Resources["SystemColorHotlightColor"] = hotlight;
+				}
+			}
 
 			InitIfNecessary();
-			_isLoading = false;
 		}
 
 		private void Register()
@@ -359,8 +401,19 @@ namespace FluentAvalonia.Styling
 			{				
 				if (UseSegoeUIOnWindows)
 				{
-					//This is defined in the BaseResources.axaml file
-					(_loaded[1] as Styles).Resources["ContentControlThemeFontFamily"] = new FontFamily("Segoe UI");
+					Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
+					Win32Interop.RtlGetVersion(ref osInfo);
+
+					if (osInfo.BuildNumber >= 22000) // Windows 11
+					{
+						//This is defined in the BaseResources.axaml file
+						(_loaded[1] as Styles).Resources["ContentControlThemeFontFamily"] = new FontFamily("Segoe UI Variable Text");
+					}
+					else // Windows 10
+					{
+						//This is defined in the BaseResources.axaml file
+						(_loaded[1] as Styles).Resources["ContentControlThemeFontFamily"] = new FontFamily("Segoe UI");
+					}                    
 				}
 
 				if (CustomAccentColor == null && GetUserAccentColor)
@@ -384,15 +437,33 @@ namespace FluentAvalonia.Styling
 				Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
 				Win32Interop.RtlGetVersion(ref osInfo);
 
-				bool useDark = Win32Interop.GetSystemTheme(osInfo);
-				_mode = useDark ? "Dark" : "Light";
+                try
+                {
+                    var hc = new Win32Interop.HIGHCONTRAST
+                    {
+                        cbSize = (uint)Marshal.SizeOf<Win32Interop.HIGHCONTRAST>()
+                    };
+
+                    bool ok = Win32Interop.SystemParametersInfo(0x0042 /*SPI_GETHIGHCONTRAST*/, 0, ref hc, 0);
+
+                    if (ok && (hc.dwFlags & HCF.HCF_HIGHCONTRASTON) == HCF.HCF_HIGHCONTRASTON)
+                    {
+                        _mode = HighContrastModeString;
+                        return _mode;
+                    }
+                }
+                catch { }
+				
+
+                bool useDark = Win32Interop.GetSystemTheme(osInfo);
+				_mode = useDark ? DarkModeString : LightModeString;
 				return _mode;
 			}
 
-			if (_mode == "Light" || _mode == "Dark")
+			if (_mode == LightModeString || _mode == DarkModeString || _mode == HighContrastModeString)
 				return _mode;
 
-			_mode = "Light"; // Default to Mode
+			_mode = LightModeString; // Default to Mode
 			return _mode;
 		}
 
@@ -412,7 +483,7 @@ namespace FluentAvalonia.Styling
 				}
 				else
 				{
-					_loaded[0] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV{_controlsVersion}/AccentColors.axaml", UriKind.Absolute), _baseUri);
+					_loaded[0] = (IStyle)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/AccentColors.axaml", UriKind.Absolute), _baseUri);
 				}
 
 				return;
@@ -434,11 +505,13 @@ namespace FluentAvalonia.Styling
 
 		private Dictionary<Type, List<IStyle>> _cache;
 		private IResourceHost _owner;
-        private readonly Uri _baseUri;
-        private IStyle[] _loaded;
-        private bool _isLoading;
-        private string _mode = string.Empty;
-		private int _controlsVersion = 2;
+		private readonly Uri _baseUri;
+		private IStyle[] _loaded;
+		private string _mode = string.Empty;
 		private Color? _customAccentColor;
-    }
+
+        public readonly string LightModeString = "Light";
+        public readonly string DarkModeString = "Dark";
+        public readonly string HighContrastModeString = "HighContrast";
+	}
 }

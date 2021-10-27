@@ -69,7 +69,7 @@ namespace FluentAvalonia.UI.Controls
 				x => x.SecondaryCommands);
 
 		public static readonly StyledProperty<CommandBarOverflowButtonVisibility> OverflowButtonVisibilityProperty =
-			AvaloniaProperty.Register<CommandBar, CommandBarOverflowButtonVisibility>("OverflowButtonVisibility");
+			AvaloniaProperty.Register<CommandBar, CommandBarOverflowButtonVisibility>(nameof(OverflowButtonVisibility));
 
 		public static readonly DirectProperty<CommandBar, bool> IsDynamicOverflowEnabledProperty =
 			AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(SecondaryCommands),
@@ -80,9 +80,6 @@ namespace FluentAvalonia.UI.Controls
 
 		public static readonly StyledProperty<CommandBarDefaultLabelPosition> DefaultLabelPositionProperty =
 			AvaloniaProperty.Register<CommandBar, CommandBarDefaultLabelPosition>(nameof(DefaultLabelPosition));
-
-		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			Border.CornerRadiusProperty.AddOwner<CommandBarButton>();
 
 		public bool IsSticky
 		{
@@ -160,12 +157,6 @@ namespace FluentAvalonia.UI.Controls
 		{
 			get => GetValue(DefaultLabelPositionProperty);
 			set => SetValue(DefaultLabelPositionProperty, value);
-		}
-
-		public CornerRadius CornerRadius
-		{
-			get => GetValue(CornerRadiusProperty);
-			set => SetValue(CornerRadiusProperty, value);
 		}
 
 		public event TypedEventHandler<CommandBar, object> Opened;
