@@ -335,9 +335,7 @@
 								<Border Name="ContentGridBorder">
 									<Grid Name="ContentGrid" 
 										  RowDefinitions="Auto,Auto,*" 
-										  ColumnDefinitions="Auto,*"
-										  Background="{DynamicResource NavigationViewContentBackground}"
-										  Margin="{DynamicResource NavigationViewContentMargin}">
+										  ColumnDefinitions="Auto,*">
 
 										<Rectangle Name="ContentTopPadding"
 												   Grid.ColumnSpan="2"
