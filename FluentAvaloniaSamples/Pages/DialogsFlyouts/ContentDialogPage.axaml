@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -67,6 +67,44 @@
                 </local:ControlExample.Options>
                 
             </local:ControlExample>
+
+            <local:ControlExample Header="ContentDialog with Custom Content"
+                                  TargetType="ContentDialog"
+                                  UsageNotes="{Binding ContentDialogUsageNotes}">
+                <local:ControlExample.CSharpSource>
+                    <x:String xml:space="preserve">
+public async void ShowInputDialogAsync()
+{
+    var dialog = new ContentDialog()
+    {
+        Title = "My Dialog Title", 
+        PrimaryButtonText = "Ok", SecondaryButtonText = "Not OK", CloseButtonText = "Close"
+    };
+
+    
+    var viewModel = new MyViewModel(dialog); // Pass the dialog if you need to hide it from the ViewModel.
+
+    dialog.Content = new ContentDialogInputExample() // In our case the Content is a UserControl, but can be anything.
+    {
+        DataContext = viewModel
+    };
+
+    var result = await dialog.ShowAsync();
+}
+                    </x:String>
+                </local:ControlExample.CSharpSource>
+                <StackPanel Spacing="20">
+                    <TextBlock xml:space="preserve">
+This example launches a ContentDialog with a TextBox which automatically closes based on the user input.
+
+  ● write "accept" or "ok" to close the dialog with the result 'Primary'
+  ● write "dismiss" or "not ok" to close the dialog with the result 'Secondary'
+  ● write "cancel", "close" or "hide" to close the dialog with the result 'None'
+                    </TextBlock>
+                    <Button Content="Show Input" Command="{Binding ShowInputDialogAsync}" />
+                </StackPanel>
+            </local:ControlExample>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>
