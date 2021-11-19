@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using FluentAvaloniaSamples.Pages.DialogsFlyouts;
 
 namespace FluentAvaloniaSamples.ViewModels
 {
@@ -177,6 +178,23 @@ namespace FluentAvaloniaSamples.ViewModels
 			}
         }
 
+        public async void ShowInputDialogAsync()
+        {
+	        var dialog = new ContentDialog()
+	        {
+		        Title = "Let's go ...",
+		        PrimaryButtonText = "Ok :-)", SecondaryButtonText = "Not OK :-(", CloseButtonText = "Leave me alone!"
+	        };
+
+	        var viewModel = new ContentDialogViewModel(dialog);
+	        dialog.Content = new ContentDialogInputExample()
+	        {
+		        DataContext = viewModel
+	        };
+
+	        _ = await dialog.ShowAsync();
+        }
+        
 		private async void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 			var def = args.GetDeferral();
