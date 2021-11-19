@@ -221,7 +221,7 @@ namespace FluentAvaloniaSamples.Views.Internal
 		{
 			_owner = wnd;
 
-			if (_version.BuildNumber > 22000)
+			if (_version.BuildNumber >= 22000)
 			{
 				((IPseudoClasses)_owner.Classes).Set(":windows11", true);
 			}

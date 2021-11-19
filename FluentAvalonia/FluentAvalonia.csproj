@@ -10,8 +10,8 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.1.5</Version>
-        <AssemblyVersion>1.1.5.0</AssemblyVersion>
+        <Version>1.1.6</Version>
+        <AssemblyVersion>1.1.6.0</AssemblyVersion>
     </PropertyGroup>
 
 
@@ -27,8 +27,8 @@
 	    <AvaloniaResource Include="Fonts\*.*" />
     </ItemGroup> 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="0.10.9" />
-      <PackageReference Include="Avalonia.Desktop" Version="0.10.9" />
-      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.9" />
+      <PackageReference Include="Avalonia" Version="0.10.10" />
+      <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
     </ItemGroup>
 </Project>

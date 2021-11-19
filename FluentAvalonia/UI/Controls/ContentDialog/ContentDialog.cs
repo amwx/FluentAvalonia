@@ -899,7 +899,7 @@ namespace FluentAvalonia.UI.Controls
 			{
 				// OverlayLayer is a Canvas, so we won't get a signal to resize if the window
 				// bounds change. Subscribe to force update
-				wb.GetObservable(BoundsProperty).Subscribe(_ => OnRootBoundsChanged());
+				_rootBoundsWatcher = wb.GetObservable(BoundsProperty).Subscribe(_ => OnRootBoundsChanged());
 			}
 		}
 
