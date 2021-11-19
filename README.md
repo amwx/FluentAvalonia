@@ -5,7 +5,8 @@ Bringing more of Fluent design and WinUI controls into Avalonia.
 [![Nuget](https://img.shields.io/nuget/v/FluentAvaloniaUI?style=flat-square)](https://www.nuget.org/packages/FluentAvaloniaUI/)
 (NOTE: nuget package is under id FluentAvaloniaUI)
 
-Currently Targets: Avalonia 0.10.9 & .net core 5.0
+Currently Targets: Avalonia 0.10.10 & .net core 5.0
+
 Note: Windows 7, 8/8.1 are not supported by FluentAvalonia.
 
 # Getting Started
@@ -24,9 +25,9 @@ To include the styles for FluentAvalonia, add the following to your App.xaml (or
 
     <sty:FluentAvaloniaTheme />
     
-By default, FluentAvalonia is now using the new WinUI styles that have been rolling out since last November. These are still a work in progress both here and in WinUI itself. Most controls in core Avalonia also have been provided a template here to provide a cohesive UX, thus making FluentAvalonia independent. See the Core Basic Controls page for the controls that do not have a corresponding template present and you will need to provide one. In these cases, only a template is needed and no additional resources are necessary.
+By default, FluentAvalonia is now using the new WinUI styles that have been rolling out since November 2020. These are still a work in progress both here and in WinUI itself. All controls in core Avalonia also have been provided a template here to provide a cohesive UX, thus making FluentAvalonia independent (style wise).
 
-As of v1.1.5, Fluent v1 styles (what in core Avalonia) are no longer supported within FluentAvalonia.
+As of v1.1.5, Fluent v1 styles (what's in core Avalonia) are no longer supported within FluentAvalonia.
 
 FluentAvaloniaTheme has several additional options for customizing:
 
