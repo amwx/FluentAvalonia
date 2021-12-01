@@ -191,4 +191,18 @@
         <Setter Property="Height" Value="{Binding $parent[ProgressBar].TemplateProperties.Container2Width}" />
 		<Setter Property="Width" Value="NaN" />
     </Style>
+
+	<!-- 
+	HACK
+	DO NOT REMOVE THIS CODE
+	For some unexplainable reason, removing this code will break the indeterminate and every other RenderTransform animation.
+	-->
+	<Style Selector="ProgressBar:vertical /template/ LayoutTransformControl#PART_LayoutTransformControl">
+		<Setter Property="LayoutTransform">
+			<Setter.Value>
+				<RotateTransform Angle="90" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
 </Styles>
