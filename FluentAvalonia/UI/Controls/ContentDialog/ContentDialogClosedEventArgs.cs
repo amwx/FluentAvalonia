@@ -1,10 +1,8 @@
-﻿//This file is a part of FluentAvalonia
-//AvaloniaUI - Licenced under MIT Licence, https://github.com/AvaloniaUI/Avalonia
-//Adapted from the WinUI project, MIT Licence, https://github.com/microsoft/microsoft-ui-xaml
+﻿using System;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class ContentDialogClosedEventArgs
+    public class ContentDialogClosedEventArgs : EventArgs
     {
         public ContentDialogResult Result { get; }
 

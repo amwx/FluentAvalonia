@@ -461,5 +461,5 @@ namespace FluentAvalonia.UI.Controls
 		private bool _isFlyoutOpen;
 	}
 
-	public class SplitButtonClickEventArgs { }
+	public class SplitButtonClickEventArgs : EventArgs { }
 }

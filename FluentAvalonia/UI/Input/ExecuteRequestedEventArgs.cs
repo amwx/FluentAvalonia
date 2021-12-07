@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Input
 {
-	public class ExecuteRequestedEventArgs
+	public class ExecuteRequestedEventArgs : EventArgs
 	{
 		internal ExecuteRequestedEventArgs(object param)
 		{

@@ -2,6 +2,7 @@
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
+using System;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -42,12 +43,12 @@ namespace FluentAvalonia.UI.Controls
 
 		private void OnDismissClick(object sender, RoutedEventArgs e)
 		{
-			Dismissed?.Invoke(this, null);
+			Dismissed?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnAcceptClick(object sender, RoutedEventArgs e)
 		{
-			Confirmed?.Invoke(this, null);
+			Confirmed?.Invoke(this, EventArgs.Empty);
 		}
 
 		internal void ShowHideButtons(bool show)

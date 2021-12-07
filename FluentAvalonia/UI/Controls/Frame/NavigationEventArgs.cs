@@ -6,7 +6,7 @@ namespace FluentAvalonia.UI.Navigation
     public delegate void NavigatedEventHandler(object sender, NavigationEventArgs e);
     public delegate void NavigationStoppedEventHandler(object sender, NavigationEventArgs e);
 
-    public class NavigationEventArgs
+    public class NavigationEventArgs : EventArgs
     {
         internal NavigationEventArgs(object content, NavigationMode mode,
             NavigationTransitionInfo navInfo, object param,

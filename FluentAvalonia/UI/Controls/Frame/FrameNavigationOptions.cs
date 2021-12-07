@@ -1,7 +1,4 @@
 ﻿using FluentAvalonia.UI.Media.Animation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Navigation
 {

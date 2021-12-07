@@ -2774,7 +2774,7 @@ namespace FluentAvalonia.UI.Controls
 
         private void OnSplitViewPaneClosed(object sender, EventArgs e)
         {
-            PaneClosed?.Invoke(this, null);
+            PaneClosed?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSplitViewPaneClosing(object sender, SplitViewPaneClosingEventArgs e)
@@ -2815,7 +2815,7 @@ namespace FluentAvalonia.UI.Controls
 
         private void OnSplitViewPaneOpened(object sender, EventArgs e)
         {
-            PaneOpened?.Invoke(this, null);
+            PaneOpened?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSplitViewPaneOpening(object sender, EventArgs e)
@@ -2826,7 +2826,7 @@ namespace FluentAvalonia.UI.Controls
                 //PseudoClasses.Set(":listsizefull", true);
             }
 
-			PaneOpening?.Invoke(this, null);
+			PaneOpening?.Invoke(this, EventArgs.Empty);
         }
 
 

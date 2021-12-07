@@ -54,7 +54,7 @@ namespace FluentAvalonia.UI.Controls
 		private bool _isChecked;
 	}
 
-	public class ToggleSplitButtonIsCheckedChangedEventArgs
+	public class ToggleSplitButtonIsCheckedChangedEventArgs : EventArgs
 	{
 
 	}

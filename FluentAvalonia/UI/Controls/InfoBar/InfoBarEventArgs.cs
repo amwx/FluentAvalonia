@@ -1,6 +1,8 @@
-﻿namespace FluentAvalonia.UI.Controls
+﻿using System;
+
+namespace FluentAvalonia.UI.Controls
 {
-	public class InfoBarClosedEventArgs
+	public class InfoBarClosedEventArgs : EventArgs
 	{
 		internal InfoBarClosedEventArgs(InfoBarCloseReason reason)
 		{

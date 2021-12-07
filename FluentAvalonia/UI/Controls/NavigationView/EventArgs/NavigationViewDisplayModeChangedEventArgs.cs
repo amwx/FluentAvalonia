@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class NavigationViewDisplayModeChangedEventArgs
+    public class NavigationViewDisplayModeChangedEventArgs : EventArgs
     {
         internal NavigationViewDisplayModeChangedEventArgs(NavigationViewDisplayMode mode)
         {
