@@ -78,5 +78,24 @@ namespace FluentAvalonia.Core
             }
         }
 
-    }
+		public static bool Contains(this IEnumerable items, object item)
+		{
+			if (items is IList list)
+			{
+				return list.Contains(item);
+			}
+			else
+			{
+				foreach (var i in items)
+				{
+					if (ReferenceEquals(i, item))
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
+		}
+	}
 }
