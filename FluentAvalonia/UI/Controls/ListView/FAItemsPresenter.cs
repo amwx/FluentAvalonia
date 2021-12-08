@@ -5,20 +5,17 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
 	// This class is intended for internal use only and shouldn't be used outside
 	// of the ListView or GridView (in retemplating)
-	public class FAItemsPresenter : Control, IItemsPresenter, ILogicalScrollable
+	public class FAItemsPresenter : Control, IItemsPresenter, ILogicalScrollable, ITemplatedControl
 	{
 		public FAItemsPresenter()
 		{
@@ -29,6 +26,11 @@ namespace FluentAvalonia.UI.Controls
 			LogicalChildren.Add(_footerControl);
 			VisualChildren.Add(_headerControl);
 			VisualChildren.Add(_footerControl);
+		}
+
+		static FAItemsPresenter()
+		{
+			KeyboardNavigation.TabNavigationProperty.OverrideDefaultValue<FAItemsPresenter>(KeyboardNavigationMode.Once);
 		}
 
 		public static readonly StyledProperty<object> HeaderProperty =
@@ -98,23 +100,17 @@ namespace FluentAvalonia.UI.Controls
 
 				InvalidateMeasure();
 			}
+			else if (change.Property == TemplatedParentProperty)
+			{
+				change.NewValue.GetValueOrDefault<IItemsPresenterHost>()?.RegisterItemsPresenter(this);
+			}
 		}
 
 		protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
 		{
 			base.OnAttachedToVisualTree(e);
 
-			_itemsOwner = this.FindAncestorOfType<ItemsControl>();
-			if (_itemsOwner == null)
-				throw new Exception("FAItemsPresenter not used in ItemsControl");
-
-			_itemsPanelDisposable = _itemsOwner.GetPropertyChangedObservable(ItemsControl.ItemsPanelProperty).Subscribe(OnItemsPanelChanged);
-
-			var panel = _itemsOwner.ItemsPanel?.Build();
-			if (panel == null)
-				panel = new StackPanel();
-
-			SetItemsPanel(panel);
+			InitControl();
 		}
 
 		protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
@@ -214,6 +210,28 @@ namespace FluentAvalonia.UI.Controls
 			return finalSize;
 		}
 
+		// This should generally only matter for Unit Tests where the visual tree may not exist
+		public sealed override void ApplyTemplate()
+		{
+			if (_itemsPanel == null)
+				InitControl();
+		}
+
+		private void InitControl()
+		{
+			_itemsOwner = this.FindAncestorOfType<ItemsControl>();
+			if (_itemsOwner == null)
+				throw new Exception("FAItemsPresenter not used in ItemsControl");
+
+			_itemsPanelDisposable = _itemsOwner.GetPropertyChangedObservable(ItemsControl.ItemsPanelProperty).Subscribe(OnItemsPanelChanged);
+
+			var panel = _itemsOwner.ItemsPanel?.Build();
+			if (panel == null)
+				panel = new StackPanel();
+
+			SetItemsPanel(panel);
+		}
+
 		internal void SetItemsPanel(IPanel panel)
 		{
 			if (_itemsPanel != null)
@@ -236,6 +254,8 @@ namespace FluentAvalonia.UI.Controls
 
 			_itemsPanel.SetValue(TemplatedParentProperty, _itemsOwner);
 
+			KeyboardNavigation.SetTabNavigation(_itemsPanel as InputElement, KeyboardNavigation.GetTabNavigation(this));
+
 			// TODO: Sub to orientation change
 			if (_itemsPanel is ItemsStackPanel isp)
 			{
@@ -252,7 +272,8 @@ namespace FluentAvalonia.UI.Controls
 			// themselves. So this allows a fallback...though no virtualization is supported this way
 			if (!(panel is ItemsStackPanel))
 			{
-				_itemsManager = new ItemsPresenterItemsManager(this.FindAncestorOfType<ItemsControl>(), panel);
+				_itemsManager = new ItemsPresenterItemsManager(_itemsOwner, panel);
+				_itemsPresenterManagesItems = true;
 			}
 			else
 			{
@@ -318,7 +339,7 @@ namespace FluentAvalonia.UI.Controls
 		IEnumerable IItemsPresenter.Items
 		{
 			get => _itemsOwner.Items;
-			set => throw new NotSupportedException();
+			set { }
 		}
 
 		IPanel IItemsPresenter.Panel => Panel;
@@ -336,7 +357,15 @@ namespace FluentAvalonia.UI.Controls
 		{ }
 
 		void IItemsPresenter.ScrollIntoView(int index)
-		{ }
+		{
+			if (_itemsPresenterManagesItems)
+			{
+				if (index != -1)
+				{
+					_itemsOwner.ItemContainerGenerator.ContainerFromIndex(index)?.BringIntoView();
+				}
+			}
+		}
 
 		private Vector CoerceOffset(Vector value)
 		{

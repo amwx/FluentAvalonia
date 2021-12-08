@@ -1,9 +1,14 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Mixins;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ListViewItem : ContentControl, ISelectable
+	public class ListViewItem : ListBoxItem
 	{
 		public ListViewItem()
 		{
@@ -13,24 +18,16 @@ namespace FluentAvalonia.UI.Controls
 		static ListViewItem()
 		{
 			FocusableProperty.OverrideDefaultValue<ListViewItem>(true);
-		}
+		}		
 
-		public static readonly StyledProperty<bool> IsSelectedProperty =
-			ListBoxItem.IsSelectedProperty.AddOwner<ListViewItem>();
-
-		public bool IsSelected
+		protected override void OnGotFocus(GotFocusEventArgs e)
 		{
-			get => GetValue(IsSelectedProperty);
-			set => SetValue(IsSelectedProperty, value);
-		}
+			base.OnGotFocus(e);
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
-		{
-			base.OnPropertyChanged(change);
-
-			if (change.Property == IsSelectedProperty)
+			var lv = this.FindAncestorOfType<ListViewBase>();
+			if (lv != null)
 			{
-				PseudoClasses.Set(":selected", change.NewValue.GetValueOrDefault<bool>());
+				lv.UpdateSelectionFromItemFocus(this);
 			}
 		}
 	}

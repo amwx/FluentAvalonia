@@ -31,4 +31,24 @@ namespace FluentAvalonia.UI.Controls
 		Default,
 		Leading
 	}
+
+	public enum ItemsUpdatingScrollMode
+	{
+		KeepItemsInView,
+		KeepScrollOffset,
+		KeepLastItemInView
+	}
+
+	public enum GroupHeaderPlacement
+	{
+		Top,
+		Left
+	}
+
+	public enum PaneScrollingDirection
+	{
+		None,
+		Foreword,
+		Backward
+	}
 }

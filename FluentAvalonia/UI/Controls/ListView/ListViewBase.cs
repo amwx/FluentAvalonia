@@ -7,7 +7,6 @@ using FluentAvalonia.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAvalonia.Core.Attributes;
 using Avalonia.Controls.Generators;
@@ -152,9 +151,10 @@ namespace FluentAvalonia.UI.Controls
 			set => SetValue(IsMultiSelectCheckBoxEnabledProperty, value);
 		}
 
+		[NotImplemented] // TODO:
 		public IReadOnlyList<ItemIndexRange> SelectedRanges
 		{
-			get => _selectedRanges.AsReadOnly();
+			get => _selectedRanges?.AsReadOnly();
 		}
 
 		public bool SingleSelectionFollowsFocus
@@ -208,6 +208,36 @@ namespace FluentAvalonia.UI.Controls
 			return lvicg;
 		}
 
+		protected override void OnContainersMaterialized(ItemContainerEventArgs e)
+		{
+			base.OnContainersMaterialized(e);
+
+			if (SelectedIndex == -1)
+				return;
+
+			// UpdateSelection() isn't called on load if SelectedIndex is set, so we do that here to make sure
+			// the tab once element is set correctly
+			var selIndex = SelectedIndex;
+			for (int i = 0; i < e.Containers.Count; i++)
+			{
+				if (e.Containers[i].Index == selIndex)
+				{
+					if (KeyboardNavigation.GetTabOnceActiveElement(ItemsPanelRoot as InputElement) != e.Containers[i].ContainerControl)
+					{
+						KeyboardNavigation.SetTabOnceActiveElement(ItemsPanelRoot as InputElement,
+							e.Containers[i].ContainerControl);
+					}
+
+					break;
+				}
+			}
+		}
+
+		protected override void OnGotFocus(GotFocusEventArgs e)
+		{
+			base.OnGotFocus(e);
+		}
+
 		public void SelectAll()
 		{
 			if (ItemCount == 0)
@@ -224,7 +254,8 @@ namespace FluentAvalonia.UI.Controls
 
 		public void ScrollIntoView(object item, ScrollIntoViewAlignment alignment)
 		{
-			// TODO
+			// TODO 
+			
 		}
 
 		[NotImplemented]
@@ -247,6 +278,20 @@ namespace FluentAvalonia.UI.Controls
 		public bool IsDragSource()
 		{
 			return false;
+		}
+
+		internal void UpdateSelectionFromItemFocus(ListViewItem lvi)
+		{
+			var index = ItemContainerGenerator.IndexFromContainer(lvi);
+			Presenter.ScrollIntoView(index);
+
+			if (!SingleSelectionFollowsFocus || SelectionMode != ListViewSelectionMode.Single)
+				return;
+						
+			if (index != -1 && SelectedIndex != index)
+			{
+				SelectedIndex = index;
+			}
 		}
 
 		private void UpdateVisualStateForSelectionModeChange(ListViewSelectionMode mode)
@@ -290,17 +335,7 @@ namespace FluentAvalonia.UI.Controls
 					break;
 			}
 		}
-				
-		protected override void OnContainersDematerialized(ItemContainerEventArgs e)
-		{
-			base.OnContainersDematerialized(e);
-		}
-
-		protected override void OnContainersMaterialized(ItemContainerEventArgs e)
-		{
-			base.OnContainersMaterialized(e);
-		}
-
+			
 		private void InitEvents()
 		{
 			// This is called from OnApplyTemplate, so if template is reapplied for some reason, this fires again
@@ -308,10 +343,10 @@ namespace FluentAvalonia.UI.Controls
 			if (_hasPointerSubscriptions)
 				return;
 
-			AddHandler(PointerPressedEvent, OnPointerPressedPreview, RoutingStrategies.Tunnel);
-			AddHandler(PointerReleasedEvent, OnPointerReleasedPreview, RoutingStrategies.Tunnel);
-			AddHandler(PointerMovedEvent, OnPointerMovedPreview, RoutingStrategies.Tunnel);
-			AddHandler(PointerCaptureLostEvent, OnPointerCaptureLostPreview, RoutingStrategies.Tunnel);
+			AddHandler(PointerPressedEvent, OnPointerPressedPreview, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+			AddHandler(PointerReleasedEvent, OnPointerReleasedPreview, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+			AddHandler(PointerMovedEvent, OnPointerMovedPreview, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+			AddHandler(PointerCaptureLostEvent, OnPointerCaptureLostPreview, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
 			// When Doing a DragDrop operation, UI thread is blocked so we lose mouse interaction if 
 			// reordering is also enabled. This becomes our PointerMoved event in that case.
@@ -323,6 +358,12 @@ namespace FluentAvalonia.UI.Controls
 
 		private void OnPointerPressedPreview(object sender, PointerPressedEventArgs e)
 		{
+			if (e.Route == RoutingStrategies.Bubble)
+			{
+				e.Handled = true;
+				return;
+			}
+
 			var point = e.GetCurrentPoint(this);
 			if (point.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
 			{
@@ -335,7 +376,7 @@ namespace FluentAvalonia.UI.Controls
 					{
 						_pointerDownItem = item;
 						_isDragging = ShouldInitDragging();
-						e.Handled = true;
+						//e.Handled = true;
 						_lastPointerPoint = point.Position;
 					}
 				}
@@ -344,6 +385,12 @@ namespace FluentAvalonia.UI.Controls
 
 		private void OnPointerReleasedPreview(object sender, PointerReleasedEventArgs e)
 		{
+			if (e.Route == RoutingStrategies.Bubble)
+			{
+				e.Handled = true;
+				return;
+			}
+
 			if (_isDragging)
 			{
 				_isDragging = false;
@@ -356,7 +403,7 @@ namespace FluentAvalonia.UI.Controls
 				}
 			}
 
-			if (_pointerDownItem != null &&
+			if (_pointerDownItem != null && 
 				e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
 			{
 				var panel = ItemsPanelRoot;
@@ -388,6 +435,8 @@ namespace FluentAvalonia.UI.Controls
 							point.X > _pointerDownItem.Bounds.Width || point.Y > _pointerDownItem.Bounds.Height)
 							return;
 
+						//_pointerDownItem.Focus();
+
 						bool selected = _pointerDownItem is ISelectable s ? s.IsSelected : false;
 
 						var container = GetContainerFromEventSource(e.Source);
@@ -409,7 +458,7 @@ namespace FluentAvalonia.UI.Controls
 							UpdateSelectionFromEventSource(item);
 						}
 
-						e.Handled = true;
+						//e.Handled = true;
 						_pointerDownItem = null;
 					}
 				}

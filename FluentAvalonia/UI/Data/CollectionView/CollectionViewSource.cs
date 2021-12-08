@@ -63,7 +63,7 @@ namespace FluentAvalonia.UI.Data
 			{
 				if (_view == null)
 				{
-					SetAndRaise(ViewProperty, ref _view, new GroupedDataCollectionView(_source, _isSourceGrouped, _itemsPath));
+					UpdateView();
 				}
 
 				return _view;
@@ -73,7 +73,7 @@ namespace FluentAvalonia.UI.Data
 
 		private void UpdateView()
 		{
-			if (_view == null)
+			if (_source == null)
 				return;
 
 			if (Source is IEnumerable ie)

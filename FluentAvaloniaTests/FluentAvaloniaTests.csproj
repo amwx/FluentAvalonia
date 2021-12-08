@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ControlTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
 
