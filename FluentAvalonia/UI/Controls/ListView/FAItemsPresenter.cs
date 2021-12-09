@@ -10,6 +10,7 @@ using Avalonia.VisualTree;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -104,13 +105,6 @@ namespace FluentAvalonia.UI.Controls
 			{
 				change.NewValue.GetValueOrDefault<IItemsPresenterHost>()?.RegisterItemsPresenter(this);
 			}
-		}
-
-		protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-		{
-			base.OnAttachedToVisualTree(e);
-
-			InitControl();
 		}
 
 		protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
@@ -210,7 +204,6 @@ namespace FluentAvalonia.UI.Controls
 			return finalSize;
 		}
 
-		// This should generally only matter for Unit Tests where the visual tree may not exist
 		public sealed override void ApplyTemplate()
 		{
 			if (_itemsPanel == null)
@@ -248,10 +241,15 @@ namespace FluentAvalonia.UI.Controls
 				_itemsPanel.SetValue(TemplatedParentProperty, null);
 			}
 
+			panel.AttachedToVisualTree += (s, e) =>
+			{
+				Debug.WriteLine("Attached");
+			};
+
 			_itemsPanel = panel;
 			LogicalChildren.Insert(1, _itemsPanel);
 			VisualChildren.Insert(1, _itemsPanel);
-
+						
 			_itemsPanel.SetValue(TemplatedParentProperty, _itemsOwner);
 
 			KeyboardNavigation.SetTabNavigation(_itemsPanel as InputElement, KeyboardNavigation.GetTabNavigation(this));
@@ -310,7 +308,7 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		bool ILogicalScrollable.IsLogicalScrollEnabled => _itemsPanel is ILogicalScrollable;
+		bool ILogicalScrollable.IsLogicalScrollEnabled => false;// _itemsPanel is ILogicalScrollable;
 
 		Size ILogicalScrollable.ScrollSize => (_itemsPanel as ILogicalScrollable)?.ScrollSize ?? new(1, 1);
 
@@ -363,6 +361,19 @@ namespace FluentAvalonia.UI.Controls
 				if (index != -1)
 				{
 					_itemsOwner.ItemContainerGenerator.ContainerFromIndex(index)?.BringIntoView();
+				}
+			}
+			else if (_itemsPanel is ItemsStackPanel isp)
+			{
+				if (index >= isp.FirstCacheIndex && index <= isp.LastCacheIndex)
+				{
+					_itemsOwner.ItemContainerGenerator.ContainerFromIndex(index)?.BringIntoView();
+				}
+				else
+				{
+					// TODO:
+					// Container isn't currently realized. We need to mark this as the anchor index & trigger
+					// a new layout pass...
 				}
 			}
 		}

@@ -172,9 +172,15 @@ namespace FluentAvalonia.UI.Controls
 		public event DragItemsStartingEventHandler DragItemsStarting;
 		public event ItemClickEventHandler ItemClick;
 		public event TypedEventHandler<ListViewBase, DragItemsCompletedEventArgs> DragItemsCompleted;
-		//public event TypedEventHandler<> ContainerContentChanging
-		//public event ChoosingGroupHeaderContainer
-		//public event ChoosingItemContainer
+
+		[NotImplemented]
+		public event TypedEventHandler<ListViewBase, ContainerContentChangingEventArgs> ContainerContentChanging;
+
+		[NotImplemented]
+		public event TypedEventHandler<ListViewBase, ChoosingGroupHeaderContainerEventArgs> ChoosingGroupHeaderContainer;
+
+		[NotImplemented]
+		public event TypedEventHandler<ListViewBase, ChoosingItemContainerEventArgs> ChoosingItemContainer;
 
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
