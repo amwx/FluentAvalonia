@@ -1,10 +1,11 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
-using Avalonia.Controls.Mixins;
 using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
+using Avalonia.Media;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
+using System;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -36,6 +37,43 @@ namespace FluentAvalonia.UI.Controls
 			{
 				lv.UpdateSelectionFromItemFocus(this);
 			}
+		}
+
+		protected override async void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+		{
+			base.OnAttachedToVisualTree(e);
+
+			// TODO: Move this from here, make it optional
+			var ani = new Animation
+			{
+				Duration = TimeSpan.FromSeconds(0.5),
+				Children =
+				{
+					new KeyFrame
+					{
+						Cue = new Cue(0d),
+						Setters =
+						{
+							new Setter(Visual.OpacityProperty, 0.0d),
+							new Setter(ScaleTransform.ScaleXProperty, 0.85d),
+							new Setter(ScaleTransform.ScaleYProperty, 0.85d)
+						}
+					},
+					new KeyFrame
+					{
+						Cue = new Cue(1d),
+						Setters =
+						{
+							new Setter(Visual.OpacityProperty, 1.0d),
+							new Setter(ScaleTransform.ScaleXProperty, 1.0d),
+							new Setter(ScaleTransform.ScaleYProperty, 1.0d)
+						},
+						KeySpline = new KeySpline(1,0,0,0)
+					},
+				}
+			};
+
+			await ani.RunAsync(this);
 		}
 	}
 }
