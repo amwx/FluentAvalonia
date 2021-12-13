@@ -1,7 +1,8 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:wnd="using:FluentAvalonia.Core.ApplicationModel"
-		xmlns:ui="using:FluentAvalonia.UI.Controls">
+		xmlns:ui="using:FluentAvalonia.UI.Controls"
+		xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
 
 	<!-- This template should generally not be modified. Use the customization APIs to
 		 modify the appearance of a CoreWindow instance 
@@ -19,6 +20,7 @@
 		<Setter Property="VerticalAlignment" Value="Stretch" />
 		<Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
 		<Setter Property="FontSize" Value="14" />
+		<Setter Property="Focusable" Value="False" />
 		<Setter Property="Template">
 			<ControlTemplate>
 				<Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
@@ -66,7 +68,7 @@
 		<Setter Property="Foreground" Value="White" />
 	</Style>
 
-	<Style Selector="wnd|MinMaxCloseControl">
+	<Style Selector="uip|MinMaxCloseControl">
 		<Setter Property="Height" Value="32" />
 		<Setter Property="Template">
 			<ControlTemplate>
@@ -81,18 +83,18 @@
 			</ControlTemplate>
 		</Setter>
 	</Style>
-	<Style Selector="wnd|MinMaxCloseControl /template/ Button#MinimizeButton">
+	<Style Selector="uip|MinMaxCloseControl /template/ Button#MinimizeButton">
 		<Setter Property="Content" Value="&#xE921;" />
 	</Style>
-	<Style Selector="wnd|MinMaxCloseControl /template/ Button#MaxRestoreButton">
+	<Style Selector="uip|MinMaxCloseControl /template/ Button#MaxRestoreButton">
 		<Setter Property="Content" Value="&#xE15B;" />
 	</Style>
-	<Style Selector="wnd|MinMaxCloseControl:maximized /template/ Button#MaxRestoreButton">
+	<Style Selector="uip|MinMaxCloseControl:maximized /template/ Button#MaxRestoreButton">
 		<Setter Property="Content" Value="&#xE923;" />
 		<!-- Icon seems a little too small, so we'll up the font size here to make it look more correct -->
 		<Setter Property="FontSize" Value="16" />
 	</Style>
-	<Style Selector="wnd|MinMaxCloseControl /template/ Button#CloseButton">
+	<Style Selector="uip|MinMaxCloseControl /template/ Button#CloseButton">
 		<Setter Property="Content" Value="&#xE8BB;" />
 	</Style>
 
@@ -130,7 +132,7 @@
 											  ContentTemplate="{TemplateBinding ContentTemplate}" />
 
 							<!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
-							<wnd:MinMaxCloseControl HorizontalAlignment="Right"
+							<uip:MinMaxCloseControl HorizontalAlignment="Right"
 													VerticalAlignment="Top"
 													Name="SystemCaptionButtons"/>
 
@@ -182,10 +184,10 @@
 		<Setter Property="BorderThickness" Value="0 0 0 0" />
 	</Style>
 
-	<Style Selector="wnd|CoreWindow:windows:extended /template/ TextBlock#TitleText">
+	<Style Selector="Window:windows:extended /template/ TextBlock#TitleText">
 		<Setter Property="IsVisible" Value="False" />
 	</Style>
-	<Style Selector="wnd|CoreWindow:windows:extended:customtitlebar /template/ Panel#DefaultTitleBar">
+	<Style Selector="Window:windows:extended:customtitlebar /template/ Panel#DefaultTitleBar">
 		<Setter Property="HorizontalAlignment" Value="Right" />
 		<Setter Property="Width" Value="10" />
 	</Style>
