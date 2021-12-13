@@ -17,8 +17,12 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		public IEnumerable<ItemContainerInfo> Containers => _containers?.Values ?? Enumerable.Empty<ItemContainerInfo>();
+
 		IDataTemplate IItemContainerGenerator.ItemTemplate { get; set; }
+
 		Type IItemContainerGenerator.ContainerType => null;
+
+		internal bool HasVirtualizingPanel { get; set; }
 
 		public event EventHandler<ItemContainerEventArgs> Materialized;
 		public event EventHandler<ItemContainerEventArgs> Dematerialized;
@@ -39,10 +43,33 @@ namespace FluentAvalonia.UI.Controls
 				return existing;
 			}
 
-			IControl container = _owner.IsItemItsOwnContainerCore(item) ? item as IControl :
-				_recyclePool != null && _recyclePool.Count > 0 ? _recyclePool.Dequeue() : _owner.GetContainerForItemCore();
+			IControl container = null;
+			if (!HasVirtualizingPanel)
+			{
+				// Non-Virtualizing panel ListView event order
+				// 1. IsItemItsOwnContainerOverride
+				// 2. GetContainerForItem
+				// 3. PrepareContainer
 
-			_owner.PrepareItemContainerCore(container, item);
+				if (_owner.IsItemItsOwnContainerCore(item))
+				{
+					container = item as IControl;
+				}
+				else
+				{
+					// If the ItemsPanel isn't virtualizing, don't use the recycle queue
+					// While it makes sense to recycle the containers if list changes, it also
+					// could leave the RecyclePool in a state where it becomes too big if many
+					// changes are made, and it only clears on a full reset.
+					container = _owner.GetContainerForItemCore(index, item);
+
+					_owner.PrepareItemContainerCore(container, item, index, false);
+				}
+			}
+			else
+			{
+				// Virtualizing logic...
+			}
 
 			var ici = new ItemContainerInfo(container, item, index);
 
@@ -57,15 +84,23 @@ namespace FluentAvalonia.UI.Controls
 		{
 			var result = new List<ItemContainerInfo>();
 
-			if (_recyclePool == null)
-				_recyclePool = new Queue<IControl>();
-
-			for (int i = startingIndex; i < startingIndex + count; i++)
+			if (HasVirtualizingPanel)
 			{
-				_owner.ClearItemContainerCore(_containers[i].ContainerControl, _containers[i].Item);
-				_recyclePool.Enqueue(_containers[i].ContainerControl);
-				result.Add(_containers[i]);
-				_containers.Remove(i);
+				for (int i = startingIndex; i < startingIndex + count; i++)
+				{
+					_owner.ClearItemContainerCore(_containers[i].ContainerControl, _containers[i].Item);
+					result.Add(_containers[i]);
+					_containers.Remove(i);
+				}
+			}
+			else
+			{
+				for (int i = startingIndex; i < startingIndex + count; i++)
+				{
+					_owner.ClearItemContainerCore(_containers[i].ContainerControl, _containers[i].Item);
+					result.Add(_containers[i]);
+					_containers.Remove(i);
+				}
 			}
 
 			Dematerialized?.Invoke(this, new ItemContainerEventArgs(startingIndex, result));
@@ -95,30 +130,56 @@ namespace FluentAvalonia.UI.Controls
 			if (count <= 0)
 				return Enumerable.Empty<ItemContainerInfo>();
 
-			if (_recyclePool == null)
-				_recyclePool = new Queue<IControl>();
-
 			var result = new List<ItemContainerInfo>();
-
-			for (int i = startingIndex; i < startingIndex + count; i++)
+			if (HasVirtualizingPanel)
 			{
-				if (_containers.TryGetValue(i, out var found))
-					result.Add(found);
+				//if (_recyclePool == null)
+				//	_recyclePool = new Queue<IControl>();
 
-				_owner.ClearItemContainerCore(_containers[i].ContainerControl, _containers[i].Item);
-				_recyclePool.Enqueue(_containers[i].ContainerControl);
+				
 
-				_containers.Remove(i);
+				//for (int i = startingIndex; i < startingIndex + count; i++)
+				//{
+				//	if (_containers.TryGetValue(i, out var found))
+				//		result.Add(found);
+
+				//	_owner.ClearItemContainerCore(_containers[i].ContainerControl, _containers[i].Item);
+				//	_recyclePool.Enqueue(_containers[i].ContainerControl);
+
+				//	_containers.Remove(i);
+				//}
+
+				//var toMove = _containers.Where(x => x.Key >= startingIndex)
+				//	.OrderBy(x => x.Key).ToArray();
+
+				//for (int i = 0; i < toMove.Length; i++)
+				//{
+				//	_containers.Remove(toMove[i].Key);
+				//	toMove[i].Value.Index -= count;
+				//	_containers.Add(toMove[i].Value.Index, toMove[i].Value);
+				//}
 			}
-
-			var toMove = _containers.Where(x => x.Key >= startingIndex)
-				.OrderBy(x => x.Key).ToArray();
-
-			for (int i = 0; i < toMove.Length; i++)
+			else
 			{
-				_containers.Remove(toMove[i].Key);
-				toMove[i].Value.Index -= count;
-				_containers.Add(toMove[i].Value.Index, toMove[i].Value);
+				for (int i = startingIndex; i < startingIndex + count; i++)
+				{
+					if (_containers.TryGetValue(i, out var found))
+						result.Add(found);
+
+					_owner.ClearItemContainerCore(_containers[i].ContainerControl, _containers[i].Item);
+					
+					_containers.Remove(i);
+				}
+
+				var toMove = _containers.Where(x => x.Key >= startingIndex)
+					.OrderBy(x => x.Key).ToArray();
+
+				for (int i = 0; i < toMove.Length; i++)
+				{
+					_containers.Remove(toMove[i].Key);
+					toMove[i].Value.Index -= count;
+					_containers.Add(toMove[i].Value.Index, toMove[i].Value);
+				}
 			}
 
 			Dematerialized?.Invoke(this, new ItemContainerEventArgs(startingIndex, result));
@@ -128,6 +189,8 @@ namespace FluentAvalonia.UI.Controls
 
 		public IEnumerable<ItemContainerInfo> Clear()
 		{
+			_recyclePool?.Clear();
+
 			if (_containers == null)
 				return Enumerable.Empty<ItemContainerInfo>();
 
@@ -168,6 +231,7 @@ namespace FluentAvalonia.UI.Controls
 			throw new NotImplementedException();
 		}
 
+		
 		private ListViewBase _owner;
 		private Queue<IControl> _recyclePool;
 		private SortedDictionary<int, ItemContainerInfo> _containers;

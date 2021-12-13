@@ -7,10 +7,12 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using FluentAvalonia.UI.Data;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Linq;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -212,7 +214,8 @@ namespace FluentAvalonia.UI.Controls
 
 		private void InitControl()
 		{
-			_itemsOwner = this.FindAncestorOfType<ItemsControl>();
+			_itemsOwner = TemplatedParent as ItemsControl ?? this.FindAncestorOfType<ItemsControl>();
+						
 			if (_itemsOwner == null)
 				throw new Exception("FAItemsPresenter not used in ItemsControl");
 
@@ -240,11 +243,6 @@ namespace FluentAvalonia.UI.Controls
 
 				_itemsPanel.SetValue(TemplatedParentProperty, null);
 			}
-
-			panel.AttachedToVisualTree += (s, e) =>
-			{
-				Debug.WriteLine("Attached");
-			};
 
 			_itemsPanel = panel;
 			LogicalChildren.Insert(1, _itemsPanel);
@@ -278,8 +276,13 @@ namespace FluentAvalonia.UI.Controls
 				_itemsPresenterManagesItems = false;
 			}
 
+			((ILogicalScrollable)this).RaiseScrollInvalidated(EventArgs.Empty);
+
 			InvalidateMeasure();
 		}
+
+		internal Size GetHeaderSize() =>
+			_headerControl.DesiredSize;
 
 		private void OnItemsPanelChanged(AvaloniaPropertyChangedEventArgs args)
 		{
@@ -308,7 +311,8 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		bool ILogicalScrollable.IsLogicalScrollEnabled => false;// _itemsPanel is ILogicalScrollable;
+		public bool IsLogicalScrollEnabled => 
+			_itemsPanel is ILogicalScrollable;
 
 		Size ILogicalScrollable.ScrollSize => (_itemsPanel as ILogicalScrollable)?.ScrollSize ?? new(1, 1);
 
@@ -400,6 +404,8 @@ namespace FluentAvalonia.UI.Controls
 		{
 			public ItemsPresenterItemsManager(ItemsControl owner, IPanel panel)
 			{
+				// ItemsPresenter will not handle grouping outside of ListView/GridView. Doing so really
+				// requires rewriting the entire ItemsControl. See the FAItemsControl.cs file for more...
 				_itemsControl = owner;
 				_itemsView = owner.Items == null ? Avalonia.Controls.ItemsSourceView.Empty : new Avalonia.Controls.ItemsSourceView(owner.Items);
 

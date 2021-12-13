@@ -1517,7 +1517,7 @@
 		
 		
 
-        <!-- LIST BOX ITEM -->
+        <!-- LIST BOX ITEM & ListViewItem -->
 		<x:Boolean x:Key='ListViewItemSelectionIndicatorVisualEnabled'>True</x:Boolean>
 		<x:Double x:Key="ListViewItemContentOffsetX">-40.5</x:Double>
 		<x:Double x:Key="ListViewItemDisabledThemeOpacity">0.3</x:Double>
@@ -1594,6 +1594,12 @@
 		<StaticResource x:Key="ListViewItemSelectionIndicatorPressedBrush" ResourceKey="AccentFillColorDefaultBrush" />
 		<StaticResource x:Key="ListViewItemSelectionIndicatorDisabledBrush" ResourceKey="AccentFillColorDisabledBrush" />
 
+
+
+		<!-- ListViewHeaderItem -->
+		<StaticResource x:Key="ListViewHeaderItemBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+		<StaticResource x:Key="ListViewHeaderItemDividerStroke" ResourceKey="DividerStrokeColorDefaultBrush" />
+		
 		
 
 

@@ -1,21 +1,24 @@
 ﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Generators;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
+using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core.Attributes;
+using FluentAvalonia.UI.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ItemsStackPanel : Panel
+	public class ItemsStackPanel : Panel, ILogicalScrollable
 	{
 		public static readonly DirectProperty<ItemsStackPanel, double> CacheLengthProperty =
 			AvaloniaProperty.RegisterDirect<ItemsStackPanel, double>(nameof(CacheLength),
@@ -45,18 +48,21 @@ namespace FluentAvalonia.UI.Controls
 		[NotImplemented]
 		public ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; }
 
+		[NotImplemented] // Future TODO
 		public Thickness GroupPadding
 		{
 			get => _groupPadding;
 			set => SetAndRaise(GroupPaddingProperty, ref _groupPadding, value);
 		}
 
+		[NotImplemented] // Future TODO
 		public GroupHeaderPlacement GroupHeaderPlacement
 		{
 			get => _groupHeaderPlacement;
 			set => SetAndRaise(GroupHeaderPlacementProperty, ref _groupHeaderPlacement, value);
 		}
 
+		// Will be implemented with Virtualization
 		public double CacheLength
 		{
 			get => _cacheLength;
@@ -105,8 +111,10 @@ namespace FluentAvalonia.UI.Controls
 
 		protected override Size MeasureOverride(Size availableSize)
 		{
-			if (_context != null && _itemsView != null)
+			if (_context != null)
 			{
+				_context.LastPresenterHeaderSize = (Parent as FAItemsPresenter)?.GetHeaderSize() ?? Size.Empty;
+
 				_context.Measure(availableSize, _itemsView);
 
 				return _context.Extent;
@@ -117,7 +125,7 @@ namespace FluentAvalonia.UI.Controls
 
 		protected override Size ArrangeOverride(Size finalSize)
 		{
-			if (_context != null && _itemsView != null)
+			if (_context != null)
 			{
 				_context.Arrange(finalSize, _itemsView);
 			}
@@ -127,25 +135,56 @@ namespace FluentAvalonia.UI.Controls
 
 		private void InitializePanel()
 		{
+			_context = null;
 			EffectiveViewportChanged += OnEffectiveViewportChanged;
 
 			_itemsControl = this.FindAncestorOfType<ItemsControl>();
 			if (_itemsControl == null)
-				throw new InvalidOperationException("ItemsStackPanel can only be used inside an ItemsControl");
+			{
+				// Log warning about ItemsStackPanel's use outside of ItemsControl
+			}		
 
-			_itemsDisposable?.Dispose();
-			_itemsDisposable = _itemsControl.GetPropertyChangedObservable(ItemsControl.ItemsProperty).Subscribe(OnItemsChanged);
+			if (_itemsControl != null)
+			{
+				_groupStyleDisposable?.Dispose();
+				_itemsDisposable?.Dispose();
+				_itemsDisposable = _itemsControl.GetPropertyChangedObservable(ItemsControl.ItemsProperty).Subscribe(OnItemsChanged);
 
-			_host = this.FindAncestorOfType<FAItemsPresenter>();
-			if (_host == null)
-				throw new InvalidOperationException("ItemsStackPanel can only be used inside an FAItemsPresenter");
+				_host = this.FindAncestorOfType<FAItemsPresenter>();
+				if (_host == null)
+					throw new InvalidOperationException("ItemsStackPanel can only be used inside an FAItemsPresenter");
 
-			_itemsView = _itemsControl.Items != null ? new Avalonia.Controls.ItemsSourceView(_itemsControl.Items) :
-				Avalonia.Controls.ItemsSourceView.Empty;
+				_itemsView = _itemsControl.Items != null ? new Avalonia.Controls.ItemsSourceView(_itemsControl.Items) :
+					Avalonia.Controls.ItemsSourceView.Empty;
 
-			_itemsView.CollectionChanged += OnItemsCollectionChanged;
+				_itemsView.CollectionChanged += OnItemsCollectionChanged;
 
-			_context = new IterableStackingNonVirtualizingContext(this);
+
+				if (_itemsControl.Items is ICollectionView view && view.CollectionGroups != null)
+				{
+					_context = new GroupedStackingNonVirtualizingContext(this, view);
+				}
+				else
+				{
+					_context = new IterableStackingNonVirtualizingContext(this);
+				}
+
+				_currentGroupStyle = FAItemsControl.GetGroupStyle(_itemsControl);
+
+				_groupStyleDisposable = _itemsControl.GetPropertyChangedObservable(FAItemsControl.GroupStyleProperty)
+					.Subscribe(OnGroupStyleChanged);
+			}
+
+			// Usually ItemsStackPanel isn't allowed outside of an ItemsControl, but for unit tests sake 
+			// enforcing that has been removed. Create a non-virtualzing context if we aren't the
+			// panel inside of an ItemsControl
+			if (_context == null)
+				_context = new IterableStackingNonVirtualizingContext(this);			
+		}
+
+		private void OnGroupStyleChanged(AvaloniaPropertyChangedEventArgs args)
+		{
+			_currentGroupStyle = args.NewValue as GroupStyle;
 		}
 
 		private void OnItemsChanged(AvaloniaPropertyChangedEventArgs obj)
@@ -154,8 +193,19 @@ namespace FluentAvalonia.UI.Controls
 
 			_itemsView.Dispose();
 
-			_itemsView = obj.NewValue is IEnumerable ie ? new Avalonia.Controls.ItemsSourceView(ie) :
+			var newItems = obj.NewValue as IEnumerable;
+
+			_itemsView = newItems != null ? new Avalonia.Controls.ItemsSourceView(newItems) :
 				Avalonia.Controls.ItemsSourceView.Empty;
+
+			if (newItems is ICollectionView view && view.CollectionGroups != null)
+			{
+				_context = new GroupedStackingNonVirtualizingContext(this, view);
+			}
+			else
+			{
+				_context = new IterableStackingNonVirtualizingContext(this);
+			}
 
 			_itemsView.CollectionChanged += OnItemsCollectionChanged;
 
@@ -169,40 +219,99 @@ namespace FluentAvalonia.UI.Controls
 
 		private void OnEffectiveViewportChanged(object sender, EffectiveViewportChangedEventArgs e)
 		{
-			//var lvi = this.FindAncestorOfType<ListViewItem>();
-
-			//if (lvi != null)
-			//	Debug.WriteLine($"{lvi.Content} | {e.EffectiveViewport}");
-
-			//Debug.WriteLine($"{e.EffectiveViewport}");
 			_context.Viewport = e.EffectiveViewport;
 			InvalidateMeasure();
 		}
+		bool ILogicalScrollable.CanHorizontallyScroll
+		{
+			get => Orientation == Orientation.Horizontal;
+			set { }
+		}
+
+		bool ILogicalScrollable.CanVerticallyScroll
+		{
+			get => Orientation == Orientation.Vertical;
+			set { }
+		}
+
+		bool ILogicalScrollable.IsLogicalScrollEnabled => true;
+
+		Size ILogicalScrollable.ScrollSize => Orientation == Orientation.Horizontal ?
+			new(_context.AverageItemHeight, 0) : new(0, _context.AverageItemHeight);
+
+		Size ILogicalScrollable.PageScrollSize => new Size(16, _context.AverageItemHeight * 10); // TODO
+
+		Size IScrollable.Extent => _context.Extent;
+
+		Vector IScrollable.Offset
+		{
+			get => _context.Offset;
+			set
+			{
+				if (value != _context.Offset)
+				{
+					_context.Offset = value;
+					InvalidateMeasure();
+				}
+			}
+		}
+
+		Size IScrollable.Viewport => _context.Viewport.Size;
+
+		event EventHandler ILogicalScrollable.ScrollInvalidated
+		{
+			add { }
+			remove { }
+		}
+
+		bool ILogicalScrollable.BringIntoView(IControl target, Rect targetRect) => false;
+
+		IControl ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl from) =>
+			null;
+
+		void ILogicalScrollable.RaiseScrollInvalidated(EventArgs e) =>
+			(_host as ILogicalScrollable)?.RaiseScrollInvalidated(EventArgs.Empty);
+		//ScrollInvalidated?.Invoke(this, e);
+
 
 		private bool _areStickyGroupHeadersEnabled = true;
 		private double _cacheLength = 1;
 		private Thickness _groupPadding;
 		private GroupHeaderPlacement _groupHeaderPlacement;
 
-		private IDisposable _itemsDisposable;
-		private Avalonia.Controls.ItemsSourceView _itemsView;
+		private IDisposable _itemsDisposable, _groupStyleDisposable;
+		private Avalonia.Controls.ItemsSourceView _itemsView = Avalonia.Controls.ItemsSourceView.Empty;
 		private FAItemsPresenter _host;
 		private ItemsControl _itemsControl;
 		private StackingVirtualizingContext _context;
+		private GroupStyle _currentGroupStyle;
 
-		private abstract class StackingVirtualizingContext
+		private abstract class StackingVirtualizingContext : IDisposable
 		{
 			public StackingVirtualizingContext(ItemsStackPanel owner)
 			{
 				Owner = owner;
-				ItemContainerGenerator = owner._itemsControl.ItemContainerGenerator;
+				ItemContainerGenerator = owner._itemsControl?.ItemContainerGenerator;
 			}
 
 			public ItemsStackPanel Owner { get; }
 
-			public Rect Viewport { get; set; }
+			public Rect Viewport
+			{
+				get => _viewport;
+				set
+				{
+					if (_viewport != value)
+					{
+						_viewport = value;
+						(Owner as ILogicalScrollable)?.RaiseScrollInvalidated(EventArgs.Empty);
+					}
+				}
+			}
 
 			public Size Extent { get; protected set; }
+
+			public Vector Offset { get; set; }
 
 			protected IItemContainerGenerator ItemContainerGenerator { get; }
 
@@ -213,6 +322,8 @@ namespace FluentAvalonia.UI.Controls
 			public bool AreItemsDirty { get; set; } = true;
 
 			protected Size LastMeasureSize { get; set; }
+
+			public Size LastPresenterHeaderSize { get; set; }
 
 			public abstract Size Measure(Size constraint, Avalonia.Controls.ItemsSourceView itemsView);
 
@@ -233,6 +344,9 @@ namespace FluentAvalonia.UI.Controls
 				return cont;
 			}
 
+			public virtual void Dispose() { }
+
+			private Rect _viewport;
 		}
 
 		private class IterableStackingNonVirtualizingContext : StackingVirtualizingContext
@@ -244,14 +358,7 @@ namespace FluentAvalonia.UI.Controls
 			{
 				LastMeasureSize = constraint;
 
-				if (Viewport == Rect.Empty)
-					return default;
-
-				if (itemsView.Count == 0)
-				{
-					Extent = Size.Empty;
-				}
-				else if (AreItemsDirty)
+				if (AreItemsDirty && itemsView.Count > 0)
 				{
 					if (Owner.Children.Count > 0)
 						Owner.Children.Clear();
@@ -288,6 +395,44 @@ namespace FluentAvalonia.UI.Controls
 					Owner.LastVisibleIndex = Owner.LastCacheIndex = itemsView.Count;
 
 					AreItemsDirty = false;
+					((ILogicalScrollable)Owner).RaiseScrollInvalidated(EventArgs.Empty);
+				}
+				else
+				{
+					// Still run a measure pass to ensure items that changed visibility or size are
+					// properly reflected
+					// When virtualizing, if the extent here is different than before, we need to 
+					// restart the measure pass 
+					bool horizontal = Owner.Orientation == Orientation.Horizontal;
+					double stackSize = 0;
+					double nonStackSize = 0;
+
+					for (int i = 0; i < Owner.Children.Count; i++)
+					{
+						var cont = Owner.Children[i];
+
+						cont.Measure(constraint);
+						var size = cont.DesiredSize;
+
+						if (horizontal)
+						{
+							stackSize += size.Width;
+							nonStackSize = Math.Max(nonStackSize, size.Height);
+						}
+						else
+						{
+							stackSize += size.Height;
+							nonStackSize = Math.Max(nonStackSize, size.Width);
+						}
+					}
+
+					var newExtent = horizontal ? new Size(stackSize, nonStackSize) : new Size(nonStackSize, stackSize);
+
+					if (newExtent != Extent)
+					{
+						Extent = newExtent;
+						((ILogicalScrollable)Owner).RaiseScrollInvalidated(EventArgs.Empty);
+					}
 				}
 
 				return Extent;
@@ -295,7 +440,7 @@ namespace FluentAvalonia.UI.Controls
 
 			public override void Arrange(Size finalSize, Avalonia.Controls.ItemsSourceView itemsView)
 			{
-				if (Viewport == Rect.Empty || itemsView.Count == 0)
+				if (Owner.Children.Count == 0)
 					return;
 
 				bool horizontal = Owner.Orientation == Orientation.Horizontal;
@@ -303,11 +448,15 @@ namespace FluentAvalonia.UI.Controls
 				Rect rc;
 				double x = 0;
 				double y = 0;
-				for (int i = 0; i < itemsView.Count; i++)
+				var offset = horizontal ? Offset.X : Offset.Y;
+				for (int i = 0; i < Owner.Children.Count; i++)
 				{
+					if (!Owner.Children[i].IsVisible) // Skip arranging invisible items
+						continue;
+
 					rc = horizontal ?
-						new Rect(x, 0, Owner.Children[i].DesiredSize.Width, finalSize.Height) :
-						new Rect(0, y, finalSize.Width, Owner.Children[i].DesiredSize.Height);
+						new Rect(x - offset, 0, Owner.Children[i].DesiredSize.Width, finalSize.Height) :
+						new Rect(0, y - offset, Math.Max(finalSize.Width, Owner.Children[i].DesiredSize.Width), Owner.Children[i].DesiredSize.Height);
 
 					Owner.Children[i].Arrange(rc);
 
@@ -322,12 +471,15 @@ namespace FluentAvalonia.UI.Controls
 			{
 				bool horizontal = Owner.Orientation == Orientation.Horizontal;
 
-				void Add()
+				void Add(bool insertSpace = true)
 				{
-					if (args.NewStartingIndex + args.NewItems.Count < itemsView.Count)
+					if (insertSpace)
 					{
-						ItemContainerGenerator.InsertSpace(args.NewStartingIndex, args.NewItems.Count);
-					}
+						if (args.NewStartingIndex + args.NewItems.Count < itemsView.Count)
+						{
+							ItemContainerGenerator.InsertSpace(args.NewStartingIndex, args.NewItems.Count);
+						}
+					}					
 
 					int idx = args.NewStartingIndex;
 					double addExtent = 0;
@@ -405,6 +557,660 @@ namespace FluentAvalonia.UI.Controls
 
 				Owner.LastVisibleIndex = Owner.LastCacheIndex = itemsView.Count;				
 			}
+		}
+
+		private class GroupedStackingNonVirtualizingContext : StackingVirtualizingContext
+		{
+			public GroupedStackingNonVirtualizingContext(ItemsStackPanel panel, ICollectionView view) :
+				base(panel)
+			{
+				CollectionView = view;
+
+				_groupsDisposable = view.CollectionGroups.WeakSubscribe(OnCollectionGroupsChanged);
+			}
+
+			public ICollectionView CollectionView { get; }
+
+			public override Size Measure(Size constraint, Avalonia.Controls.ItemsSourceView itemsView)
+			{
+				LastMeasureSize = constraint;
+
+				if (AreItemsDirty && itemsView.Count > 0)
+				{
+					if (Owner.Children.Count > 0)
+						Owner.Children.Clear();
+
+					if (_groupHeaderContainers != null && _groupHeaderContainers.Count > 0)
+						_groupHeaderContainers.Clear();
+
+					bool horizontal = Owner.Orientation == Orientation.Horizontal;
+					double stackSize = 0;
+					double nonStackSize = 0;
+
+					// First materialize the groups, they're listed first
+					for (int i = 0; i < CollectionView.CollectionGroups.Count; i++)
+					{
+						var cont = CreateGroupHeader(i, CollectionView.CollectionGroups[i].Group);
+						_groupHeaderContainers.Add(cont);
+						Owner.Children.Add(cont);
+						cont.Measure(constraint);
+						var size = cont.DesiredSize;
+
+						if (horizontal)
+						{
+							stackSize += size.Width;
+							nonStackSize = Math.Max(size.Height, nonStackSize);
+						}
+						else
+						{
+							stackSize += size.Height;
+							nonStackSize = Math.Max(size.Width, nonStackSize);
+						}
+					}
+
+					// Now materialize the items
+					for (int i = 0; i < CollectionView.Count; i++)
+					{
+						var cont = GetOrCreateElement(i);
+
+						Owner.Children.Add(cont);
+						cont.Measure(constraint);
+
+						var size = cont.DesiredSize;
+
+						if (horizontal)
+						{
+							stackSize += size.Width;
+							nonStackSize = Math.Max(size.Height, nonStackSize);
+						}
+						else
+						{
+							stackSize += size.Height;
+							nonStackSize = Math.Max(size.Width, nonStackSize);
+						}
+					}
+
+					Extent = horizontal ? new Size(stackSize, nonStackSize) : new Size(nonStackSize, stackSize);
+
+					Owner.FirstVisibleIndex = Owner.FirstCacheIndex = 0;
+					Owner.LastVisibleIndex = Owner.LastCacheIndex = itemsView.Count;
+
+					(Owner as ILogicalScrollable)?.RaiseScrollInvalidated(EventArgs.Empty);
+
+					AreItemsDirty = false;
+				}
+				else
+				{
+					// Still run a measure pass to ensure items that changed visibility or size are
+					// properly reflected
+					// When virtualizing, if the extent here is different than before, we need to 
+					// restart the measure pass 
+					bool horizontal = Owner.Orientation == Orientation.Horizontal;
+					double stackSize = 0;
+					double nonStackSize = 0;
+
+					for (int i = 0; i < Owner.Children.Count; i++)
+					{
+						var cont = Owner.Children[i];
+
+						cont.Measure(constraint);
+						var size = cont.DesiredSize;
+
+						if (horizontal)
+						{
+							stackSize += size.Width;
+							nonStackSize = Math.Max(nonStackSize, size.Height);
+						}
+						else
+						{
+							stackSize += size.Height;
+							nonStackSize = Math.Max(nonStackSize, size.Width);
+						}
+					}
+
+					var newExtent = horizontal ? new Size(stackSize, nonStackSize) : new Size(nonStackSize, stackSize);
+
+					if (newExtent != Extent)
+					{
+						Extent = newExtent;
+						(Owner as ILogicalScrollable)?.RaiseScrollInvalidated(EventArgs.Empty);
+					}
+				}
+
+				return Extent;
+			}
+
+			public override void Arrange(Size finalSize, Avalonia.Controls.ItemsSourceView itemsView)
+			{
+				if (_groupHeaderContainers.Count == 0)
+					return;
+
+				if (Owner.AreStickyGroupHeadersEnabled)
+				{
+					ArrangeStickyHeaders(finalSize);
+				}
+				else
+				{
+					ArrangeNormal(finalSize);
+				}
+			}
+
+			public override void Dispose()
+			{
+				_groupsDisposable?.Dispose();
+			}
+
+			private void ArrangeNormal(Size finalSize)
+			{
+				if (Owner.Children.Count == 0)
+					return;
+
+				var icg = Owner._itemsControl.ItemContainerGenerator;
+				bool horizontal = Owner.Orientation == Orientation.Horizontal;
+				double x = 0, y = 0;
+				Rect rc;
+				double offset = horizontal ? Offset.X : Offset.Y;
+				int firstVisible = -1;
+				int lastVisible = -1;
+				var count = CollectionView.CollectionGroups.Count;
+				for (int i = 0, idx = 0; i < count; i++)
+				{
+					var groupCount = CollectionView.CollectionGroups[i].GroupItems.Count;
+
+					rc = horizontal ? new Rect(x - offset, 0, Owner.Children[i].DesiredSize.Width, finalSize.Height) :
+						new Rect(0, y - offset, finalSize.Width, Owner.Children[i].DesiredSize.Height);
+
+					Owner.Children[i].Arrange(rc);
+
+					if (horizontal)
+						x += rc.Width;
+					else
+						y += rc.Height;
+
+					for (int j = 0; j < groupCount; j++)
+					{
+						// See note in ArrangeStickyHeaders for this
+						if (Owner.Children[i].Clip != null)
+							Owner.Children[i].Clip = null;
+
+						var item = icg.ContainerFromIndex(idx);
+						rc = horizontal ? new Rect(x - offset, 0, item.DesiredSize.Width, finalSize.Height) :
+								new Rect(0, y - offset, finalSize.Width, item.DesiredSize.Height);
+
+						item.Arrange(rc);
+
+						if (firstVisible == -1)
+						{
+							if (horizontal)
+							{
+								if (rc.Right >= 0)
+								{
+									firstVisible = idx;
+								}
+							}
+							else
+							{
+								if (rc.Bottom >= 0)
+								{ 
+									firstVisible = idx; 
+								}
+							}
+							
+						}
+
+						if (lastVisible == -1)
+						{
+							if (horizontal)
+							{
+								if (rc.Left < Viewport.Width)
+								{
+									lastVisible = idx;
+								}
+							}
+							else
+							{
+								if (rc.Top < Viewport.Height)
+								{
+									lastVisible = idx;
+								}
+							}
+						}
+
+						if (horizontal)
+							x += rc.Width;
+						else
+							y += rc.Height;
+
+						idx++;
+					}
+				}
+
+				Owner.FirstVisibleIndex = firstVisible;
+				Owner.LastVisibleIndex = lastVisible;				
+			}
+
+			private void ArrangeStickyHeaders(Size finalSize)
+			{
+				bool horizontal = Owner.Orientation == Orientation.Horizontal;
+
+				void CollapseItemsUnderStickyHeaders()
+				{
+					int groupCount = _groupHeaderContainers.Count;
+					int first = Owner.FirstVisibleIndex + groupCount;
+					int last = Owner.LastVisibleIndex + groupCount;
+					Size size = _groupHeaderContainers[_currentStickyGroupHeader].DesiredSize;
+					// Iterate until we reach an item that is fully beneath the current sticky header
+					// Start at first - 1 to ensure we have nothing visible
+					for (int i = Math.Max(groupCount, first-1); i < Owner.Children.Count; i++)
+					{
+						if (horizontal)
+						{
+							if (Owner.Children[i].Bounds.Left > size.Width)
+								break;
+
+							// Item is completely hidden by group header, re-arrange with empty rect
+							if (Owner.Children[i].Bounds.Right <= size.Width)
+							{
+								Owner.Children[i].Arrange(Owner.Children[i].Bounds.WithX(-Owner.Children[i].Bounds.Width));
+							}
+							else
+							{
+								// Item is partially hidden by group header, re-arrange with collapsed rect
+								var dx = size.Width - Owner.Children[i].Bounds.Left;
+								var clipRect = new Rect(dx, 0, Owner.Children[i].Bounds.Width - dx, Owner.Children[i].Bounds.Height);
+
+								// Cliping the LVI probably isn't the **best** solution here, as if user set Clip, this
+								// will automatically override that.
+								// But WinUI is doing something that looks like clipping, but I can't figure out which element 
+								// is being clipped. Need to investigate more
+								// Can't clip the panel because that would hide the sticky header...
+								Owner.Children[i].Clip = new RectangleGeometry(clipRect);
+							}
+						}
+						else
+						{
+							if (Owner.Children[i].Bounds.Top > size.Height)
+								break;
+
+							// Item is completely hidden by group header, re-arrange with empty rect
+							if (Owner.Children[i].Bounds.Bottom <= size.Height)
+							{
+								Owner.Children[i].Arrange(Owner.Children[i].Bounds.WithY(-Owner.Children[i].Bounds.Height));
+							}
+							else
+							{
+								// Item is partially hidden by group header, re-arrange with collapsed rect
+								var dy = size.Height - Owner.Children[i].Bounds.Top;								
+								var clipRect = new Rect(0, dy, Owner.Children[i].Bounds.Width, Owner.Children[i].Bounds.Height - dy);
+
+								// Cliping the LVI probably isn't the **best** solution here, as if user set Clip, this
+								// will automatically override that.
+								// But WinUI is doing something that looks like clipping, but I can't figure out which element 
+								// is being clipped. Need to investigate more
+								// Can't clip the panel because that would hide the sticky header...
+								Owner.Children[i].Clip = new RectangleGeometry(clipRect);
+							}
+						}
+					}  
+				}
+
+				// Run a normal arrange first, we'll use the absolute location of the headers to 
+				// determine which one goes where
+				ArrangeNormal(finalSize);
+
+				
+				if (_currentStickyGroupHeader == -1)
+				{
+					_currentStickyGroupHeader = 0;
+
+					if (horizontal)
+					{
+						_groupHeaderContainers[_currentStickyGroupHeader].Arrange(new Rect(0, 0,
+							_groupHeaderContainers[_currentStickyGroupHeader].DesiredSize.Width, finalSize.Height));
+					}
+					else
+					{
+						_lastStickyRect = new Rect(0, 0,
+							finalSize.Width, _groupHeaderContainers[_currentStickyGroupHeader].DesiredSize.Height);
+
+						_groupHeaderContainers[_currentStickyGroupHeader].Arrange(_lastStickyRect);
+					}
+
+					CollapseItemsUnderStickyHeaders();
+					return;
+				}
+
+				int nextStickyHeader = -1;
+				for (int i = 0; i < _groupHeaderContainers.Count; i++)
+				{
+					if (i == _currentStickyGroupHeader)
+					{
+						if (i < _groupHeaderContainers.Count - 1)
+						{
+							continue;
+						}
+						else
+						{
+							nextStickyHeader = _groupHeaderContainers.Count - 1;
+							break;
+						}
+					}
+
+					if (horizontal)
+					{
+						if (_groupHeaderContainers[i].Bounds.Left > _lastStickyRect.Right)
+						{
+							nextStickyHeader = i - 1;
+							break;
+						}
+					}
+					else
+					{
+						if (_groupHeaderContainers[i].Bounds.Top > _lastStickyRect.Bottom)
+						{
+							nextStickyHeader = i - 1;
+							break;
+						}
+					}
+
+					nextStickyHeader = i;
+				}
+
+				if (nextStickyHeader == -1)
+					nextStickyHeader = 0;
+
+				if (horizontal)
+				{
+					var g = _groupHeaderContainers[nextStickyHeader];
+
+					if (g.Bounds.Left <= 0)
+					{
+						_currentStickyGroupHeader = nextStickyHeader;
+						_lastStickyRect = new Rect(0, 0, g.DesiredSize.Width, finalSize.Height);
+
+						g.Arrange(_lastStickyRect);
+					}
+					else
+					{
+						//Debug.WriteLine($"Transition N:{nextStickyHeader} | C:{_currentStickyGroupHeader}");
+
+						var curG = _groupHeaderContainers[_currentStickyGroupHeader];
+						var nextG = _groupHeaderContainers[nextStickyHeader];
+
+						double delta;
+						if (nextStickyHeader != 0 && _currentStickyGroupHeader == nextStickyHeader)
+						{
+							nextG = _groupHeaderContainers[nextStickyHeader - 1];
+							var rc = new Rect(curG.Bounds.Left - nextG.Bounds.Width, 0, curG.DesiredSize.Width, finalSize.Height);
+
+							if (rc.Left >= 0)
+							{
+								rc = rc.WithX(0);
+								_currentStickyGroupHeader--;
+							}
+
+							nextG.Arrange(rc);
+
+							CollapseItemsUnderStickyHeaders();
+							return;
+						}
+
+
+						delta = _lastStickyRect.Right - nextG.Bounds.Left;
+
+						curG.Arrange(new Rect(-delta, 0, curG.DesiredSize.Width, finalSize.Height));
+						nextG.Arrange(new Rect(_lastStickyRect.Right - delta, 0, nextG.DesiredSize.Width, finalSize.Height));
+					}
+				}
+				else
+				{
+					var g = _groupHeaderContainers[nextStickyHeader];
+
+					if (g.Bounds.Top <= 0)
+					{
+						_currentStickyGroupHeader = nextStickyHeader;
+						_lastStickyRect = new Rect(0, 0, finalSize.Width, g.DesiredSize.Height);
+
+						g.Arrange(_lastStickyRect);
+					}
+					else
+					{
+						//Debug.WriteLine($"Transition N:{nextStickyHeader} | C:{_currentStickyGroupHeader}");
+
+						var curG = _groupHeaderContainers[_currentStickyGroupHeader];
+						var nextG = _groupHeaderContainers[nextStickyHeader];
+
+						double delta;
+						if (nextStickyHeader != 0 && _currentStickyGroupHeader == nextStickyHeader)
+						{
+							nextG = _groupHeaderContainers[nextStickyHeader - 1];
+							var rc = new Rect(0, curG.Bounds.Top - nextG.Bounds.Height, finalSize.Width, curG.DesiredSize.Height);
+
+							if (rc.Top >= 0)
+							{
+								rc = rc.WithY(0);
+								_currentStickyGroupHeader--;
+							}
+
+							nextG.Arrange(rc);
+							CollapseItemsUnderStickyHeaders();
+							return;
+						}
+
+
+						delta = _lastStickyRect.Bottom - nextG.Bounds.Top;
+
+						curG.Arrange(new Rect(0, -delta, finalSize.Width, curG.DesiredSize.Height));
+						nextG.Arrange(new Rect(0, _lastStickyRect.Bottom - delta, finalSize.Width, nextG.DesiredSize.Height));
+					}
+				}
+
+				CollapseItemsUnderStickyHeaders();
+			}
+
+			public override void UpdateFromItemsChange(NotifyCollectionChangedEventArgs args, Avalonia.Controls.ItemsSourceView itemsView)
+			{
+				// Since ICollectionView is a flattened list without the headers, this logic is mostly the same as
+				// in the Iterable version. The only difference is we need to offset the indexes for adding/removing
+				// containers by the number of group headers, which are all at the front of the Panel Children collection
+				var offset = _groupHeaderContainers.Count;
+				bool horizontal = Owner.Orientation == Orientation.Horizontal;
+
+				void Add(bool insertSpace = true)
+				{
+					if (insertSpace)
+					{
+						if (args.NewStartingIndex + args.NewItems.Count < itemsView.Count)
+						{
+							ItemContainerGenerator.InsertSpace(args.NewStartingIndex, args.NewItems.Count);
+						}
+					}
+
+					int idx = args.NewStartingIndex;
+					double addExtent = 0;
+					double nonStackSize = horizontal ? Extent.Height : Extent.Width;
+					for (int i = 0; i < args.NewItems.Count; i++)
+					{
+						var cont = GetOrCreateElement(idx);
+						Owner.Children.Insert(idx + offset, cont);
+						cont.Measure(LastMeasureSize);
+						var size = cont.DesiredSize;
+
+						addExtent += horizontal ? size.Width : size.Height;
+						nonStackSize = Math.Max(nonStackSize, horizontal ? size.Height : size.Width);
+
+						idx++;
+					}
+
+					Extent = horizontal ? new Size(Extent.Width + addExtent, nonStackSize) :
+						new Size(nonStackSize, Extent.Height + addExtent);
+				}
+
+				void Remove(bool useDematerialize = false)
+				{
+					if (useDematerialize)
+						ItemContainerGenerator.Dematerialize(args.OldStartingIndex, args.OldItems.Count);
+					else
+						ItemContainerGenerator.RemoveRange(args.OldStartingIndex, args.OldItems.Count);
+
+					int idx = args.OldStartingIndex + args.OldItems.Count - 1;
+					double subExtent = 0;
+					// To avoid iterating over many items, we'll assume the non-stack size is unchanged
+					// Since this panel only stacks, the non-stack size is automatically the Bounds 
+					// direction in the non-stacking direction so this won't matter
+					for (int i = 0; i < args.OldItems.Count; i++)
+					{
+						subExtent += horizontal ? Owner.Children[idx].Bounds.Width :
+							Owner.Children[idx].Bounds.Height;
+
+						Owner.Children.RemoveAt(idx + offset);
+
+						idx--;
+					}
+
+					Extent = horizontal ? new Size(Extent.Width - subExtent, Extent.Height) :
+						new Size(Extent.Width, Extent.Height - subExtent);
+				}
+
+
+				switch (args.Action)
+				{
+					case NotifyCollectionChangedAction.Add:
+						Add();
+						break;
+
+					case NotifyCollectionChangedAction.Remove:
+						Remove();
+						break;
+
+					case NotifyCollectionChangedAction.Replace:
+						Remove(false);
+						Add(true);
+						break;
+
+					case NotifyCollectionChangedAction.Reset:
+						ItemContainerGenerator.Clear();
+						Owner.Children.Clear();
+						break;
+
+					case NotifyCollectionChangedAction.Move:
+						Remove();
+						Add();
+						break;
+				}
+
+				Owner.LastVisibleIndex = Owner.LastCacheIndex = itemsView.Count;
+				(Owner as ILogicalScrollable)?.RaiseScrollInvalidated(EventArgs.Empty);
+			}
+
+			private void OnCollectionGroupsChanged(object sender, NotifyCollectionChangedEventArgs e)
+			{
+				// Only handle the group header here. Adding a group will trigger an INCC notification with the group items,
+				// which we will handle above. This INCC update is fired first
+								
+				void Add()
+				{
+					for (int i = 0; i < e.NewItems.Count; i++)
+					{
+						var cont = CreateGroupHeader(e.NewStartingIndex + i, (e.NewItems[i] as ICollectionViewGroup).Group);
+						_groupHeaderContainers.Insert(e.NewStartingIndex + i, cont);
+
+						Owner.Children.Insert(e.NewStartingIndex + i, cont);
+					}
+				}
+
+				void Remove()
+				{
+					for (int i = e.OldStartingIndex + e.OldItems.Count - 1; i >= e.OldStartingIndex; i--)
+					{
+						_groupHeaderContainers.RemoveAt(i);
+						Owner.Children.RemoveAt(i);
+					}
+				}
+
+				// TO CHECK: Adding should trigger a new measure pass, so we don't need to measure and change extent here
+				switch (e.Action)
+				{
+					case NotifyCollectionChangedAction.Add:
+						Add();
+						break;
+
+					case NotifyCollectionChangedAction.Remove:
+						Remove();
+						break;
+
+					case NotifyCollectionChangedAction.Reset:
+						Owner.Children.RemoveRange(0, _groupHeaderContainers.Count);
+						_groupHeaderContainers.Clear();
+						break;
+
+					// TODO: Recycle the containers here
+					case NotifyCollectionChangedAction.Replace:
+						Remove();
+						Add();
+						break;
+
+					case NotifyCollectionChangedAction.Move:
+						Remove();
+						Add();
+						break;					
+				}
+
+				// TODO: Two ScrollInvalidated events will fire if groups are modified, don't
+				(Owner as ILogicalScrollable)?.RaiseScrollInvalidated(EventArgs.Empty);
+			}
+
+			private IControl CreateGroupHeader(int index, object group)
+			{
+				if (_groupHeaderContainers == null)
+					_groupHeaderContainers = new List<IControl>();
+				// Keep GroupHeader order in sync with container list
+
+				IControl container = null;
+				if (Owner._itemsControl is ListViewBase lvb)
+				{
+					// We'll fire this event even if we're not virtualizing, since technically this is 
+					// still an ItemsStackPanel
+					var args = new ChoosingGroupHeaderContainerEventArgs
+					{
+						GroupIndex = index,
+						Group = group
+					};
+
+					lvb.RaiseChoosingGroupHeaderContainerEvent(args);
+
+					container = args.GroupHeaderContainer;
+
+					if (container == null)
+						container = lvb.GetGroupContainerForItem(index, group);
+				}
+				// GridView
+				else
+				{
+					container = new ContentControl();
+				}
+
+				if (container is ContentControl cc)
+				{
+					cc.Content = group;
+					cc.ContentTemplate = Owner.FindDataTemplate(group,
+						Owner._currentGroupStyle?.HeaderTemplate ?? 
+						Owner._currentGroupStyle?.HeaderTemplateSelector?.SelectTemplate(group, container)) ??
+						FuncDataTemplate.Default;
+
+					cc.DataContext = group;
+				}
+				else
+				{
+					container.DataContext = group;
+				}
+				return container;
+			}
+
+			private IDisposable _groupsDisposable;
+			private List<IControl> _groupHeaderContainers;
+			private int _currentStickyGroupHeader = -1;
+			private Rect _lastStickyRect;
 		}
 	}
 }

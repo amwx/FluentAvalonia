@@ -89,4 +89,7 @@
 	
 	<StyleInclude Source="/Styling/Controls/ListView.axaml" />
 	<StyleInclude Source="/Styling/Controls/ListViewItem.axaml" />
+	<StyleInclude Source="/Styling/Controls/ListViewHeaderItem.axaml" />
+
+	<StyleInclude Source="/Styling/Controls/CoreWindow.axaml" />
 </Styles>

@@ -258,6 +258,7 @@ namespace FluentAvalonia.UI.Controls
 			throw new NotImplementedException();
 		}
 
+		[NotImplemented]
 		public void ScrollIntoView(object item, ScrollIntoViewAlignment alignment)
 		{
 			// TODO 
@@ -508,33 +509,38 @@ namespace FluentAvalonia.UI.Controls
 			if (!CanDragItems && !CanReorderItems)
 				return false;
 
+			// DragDrop.AllowDrop must be set to true
+			if (!DragDrop.GetAllowDrop(this))
+				return false;
+
 			var itms = Items;
 			// IList and INCC are required for drag operations. Not sure if WinUI places these same
 			// restrictions, but IList provides exact indexing of items, which is needed for all this
 			if (itms is not IList || itms is not INotifyCollectionChanged)
 				return false;
 
-			// Reordering is not allowed in grouping scenarios, but drag and drop is
+			// Drag drop / reordering currently disabled when Grouping, may revisit this in future
 			if (itms is ICollectionView view && view.CollectionGroups != null)
-				return CanDragItems;
+				return false;
 
 			// ItemsStackPanel uses virtualization, if that's our current panel, this is disabled
 			// for now until virtualization logic & interaction logic gets sorted out
 			// Will keep dragging active though, but reordering is disabled
-			if (ItemsPanelRoot is ItemsStackPanel)
-				return CanDragItems;
+			//if (ItemsPanelRoot is ItemsStackPanel)
+			//	return CanDragItems;
 
 			return true;
 		}
 
 		protected async void OnDragStarted(PointerEventArgs pArgs)
 		{
-			if (CanReorderItems)
+			_reorderContext = new DragReorderContext(this);
+
+			if (CanReorderItems && !(Items is ICollectionView view && view.CollectionGroups != null))
 			{
 				PseudoClasses.Set(":drag", true);
 
-				_reorderContext = new DragReorderContext(this);
-
+				_reorderContext.IsDoingReorder = true;
 				_reorderContext.Begin(_pointerDownItem);
 			}
 
@@ -579,7 +585,6 @@ namespace FluentAvalonia.UI.Controls
 					return;
 				}
 
-				// Currently DragDrop is a blocking thing, thus reorder can't also take place
 				_lastDropEffect = await DragDrop.DoDragDrop(pArgs, args.Data, DragDropEffects.Move);
 
 				OnDragCompleted();
@@ -622,32 +627,18 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		
+
 
 
 		// WinUI ItemsControl stuff
 
-		protected virtual bool IsItemItsOwnContainerOverride(object item) =>
-			item is ListViewItem;
+		protected virtual bool IsItemItsOwnContainerOverride(object item) => false; // delegate to the ListView/GridView
 
-		protected virtual IControl GetContainerForItemOverride() =>
-			new ListViewItem();
+		protected virtual IControl GetContainerForItemOverride() => null; // delegate to the ListView/GridView
 
 		protected virtual void PrepareItemContainerOverride(IControl container, object item)
 		{
-			// Don't do anything here if item is its own container
-			if (item == container)
-				return;
-			if (container is ListViewItem lvi)
-			{
-				lvi.DataContext = item;
-				lvi.Content = item;
-				lvi.ContentTemplate = this.FindDataTemplate(item, ItemTemplate);
-			}
-			else
-			{
-				container.DataContext = item;
-			}
+			// This logic is delegated to the ListView and GridView
 		}
 
 		protected virtual void ClearItemContainerOverride(IControl container, object item)
@@ -667,17 +658,58 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
+
 		internal bool IsItemItsOwnContainerCore(object item) =>
 			IsItemItsOwnContainerOverride(item);
 
-		internal void PrepareItemContainerCore(IControl control, object item) =>
-			PrepareItemContainerOverride(control, item);
+		internal void PrepareItemContainerCore(IControl control, object item, int index, bool wasContainerInRecyclePool)
+		{			
+			//ContainerContentChanging?.Invoke(this, new ContainerContentChangingEventArgs(control as ContentControl, item, index, wasContainerInRecyclePool));
+
+			PrepareItemContainerOverride(control, item);		
+		}
+			
 
 		internal void ClearItemContainerCore(IControl control, object item) =>
 			ClearItemContainerOverride(control, item);
 
-		internal IControl GetContainerForItemCore() =>
-			GetContainerForItemOverride();
+		internal IControl GetContainerForItemCore(int index, object item)//, IControl recycledContainer)
+		{
+			//IControl container = null;
+
+			//if (ItemsPanelRoot is ItemsStackPanel)
+			//{
+			//	// Per WinUI docs this event only fires if using an ItemsStackPanel or ItemsWrapGrid
+			//	var args = new ChoosingItemContainerEventArgs
+			//	{
+			//		Item = item,
+			//		ItemIndex = index
+			//	};
+
+			//	ChoosingItemContainer?.Invoke(this, args);
+
+			//	container = args.ItemContainer;
+			//}
+
+			//if (container == null)
+			//	container = recycledContainer ?? GetContainerForItemOverride();
+
+			//if (!args.IsContainerPrepared)
+			//	PrepareItemContainerCore(container, item, index, container == recycledContainer);
+
+			return GetContainerForItemOverride(); 
+				//container;
+		}
+
+		protected internal virtual IControl GetGroupContainerForItem(int index, object group) =>
+			new ContentControl();
+
+		internal void RaiseChoosingGroupHeaderContainerEvent(ChoosingGroupHeaderContainerEventArgs args)
+		{
+			ChoosingGroupHeaderContainer?.Invoke(this, args);
+		}
+
+
 
 		// SemanticZoom related...
 		//public Task<bool> TryStartConnectedAnimationAsync() => throw new NotImplementedException();
@@ -715,6 +747,8 @@ namespace FluentAvalonia.UI.Controls
 				_scroller = _presenter.FindAncestorOfType<ScrollViewer>();
 			}
 
+			public bool IsDoingReorder { get; set; }
+
 			public void Begin(IControl initContainer)
 			{
 				if (_scroller != null)
@@ -744,25 +778,31 @@ namespace FluentAvalonia.UI.Controls
 				_dragHost = initContainer;
 				_lastInsertIndex = _dragHostIndex = containerIndex;
 
-				((IPseudoClasses)initContainer.Classes).Set(":dragging", true);
-
-				if (isContainerSelected)
+				if (IsDoingReorder)
 				{
-					// Only if the item used to start the drag is selected do we include all selected items
-					// in the drag operation
-					var indices = _owner.Selection.SelectedIndexes;
-					if (indices.Count != 0)
+					((IPseudoClasses)initContainer.Classes).Set(":dragging", true);
+
+					if (isContainerSelected)
 					{
-						for (int i = 0; i < indices.Count; i++)
+						// Only if the item used to start the drag is selected do we include all selected items
+						// in the drag operation
+						var indices = _owner.Selection.SelectedIndexes;
+						if (indices.Count != 0)
 						{
-							if (indices[i] != _dragHostIndex)
+							for (int i = 0; i < indices.Count; i++)
 							{
-								//((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":dragging", true);
-								((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":multidrag", true);
+								if (indices[i] != _dragHostIndex)
+								{
+									//((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":dragging", true);
+									((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":multidrag", true);
+								}
 							}
 						}
 					}
 				}
+				
+
+				
 
 				if (_popup == null)
 				{
@@ -790,57 +830,61 @@ namespace FluentAvalonia.UI.Controls
 
 			public void End()
 			{
-				var indices = _owner.Selection.SelectedIndexes;
-				if (indices.Count != 0)
+				if (IsDoingReorder)
 				{
-					for (int i = 0; i < indices.Count; i++)
+					var indices = _owner.Selection.SelectedIndexes;
+					if (indices.Count != 0)
 					{
-						//_panel.Children.Remove();
-						((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":dragging", false);
-						((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":multidrag", false);
-					}
-				}
-
-				((IPseudoClasses)_dragHost.Classes).Set(":dragging", false);
-
-				if (_lastInsertIndex != -1 && _lastInsertIndex != _dragHostIndex)
-				{
-					var list = _owner.Items as IList; // IList is required for this
-
-					bool isContainerSelected = false;
-					if (_dragHost is ISelectable select)
-					{
-						isContainerSelected = select.IsSelected;
-					}
-					else if (_owner.Selection.SelectedIndexes.Contains(_dragHostIndex))
-					{
-						isContainerSelected = true;
-					}
-
-					if (isContainerSelected)
-					{
-						// If we're moving selected items, we preserve the order and move them one my one
-						// Copy the SelectedItems since that get's modified if the source collection clears
-						// This will insert the items back in the order they're in the SelectedItems collection
-						// which may or may not be chronological order by item index
-						// This might differ from WinUI, but it's a small change and simplest.
-						object[] selItems = new object[_owner.SelectedItems.Count];
-						_owner.SelectedItems.CopyTo(selItems, 0);
-
-						foreach (var sel in selItems)
+						for (int i = 0; i < indices.Count; i++)
 						{
-							list.Remove(sel);
-							list.Insert(_lastInsertIndex++, sel);
+							//_panel.Children.Remove();
+							((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":dragging", false);
+							((IPseudoClasses)_owner.ItemContainerGenerator.ContainerFromIndex(indices[i]).Classes).Set(":multidrag", false);
 						}
 					}
-					else
+
+					((IPseudoClasses)_dragHost.Classes).Set(":dragging", false);
+
+					if (_lastInsertIndex != -1 && _lastInsertIndex != _dragHostIndex)
 					{
-						var moveItem = list[_dragHostIndex];
-						// Otherwise, if we're just moving one item, simple
-						list.RemoveAt(_dragHostIndex);
-						list.Insert(_lastInsertIndex, moveItem);
+						var list = _owner.Items as IList; // IList is required for this
+
+						bool isContainerSelected = false;
+						if (_dragHost is ISelectable select)
+						{
+							isContainerSelected = select.IsSelected;
+						}
+						else if (_owner.Selection.SelectedIndexes.Contains(_dragHostIndex))
+						{
+							isContainerSelected = true;
+						}
+
+						if (isContainerSelected)
+						{
+							// If we're moving selected items, we preserve the order and move them one my one
+							// Copy the SelectedItems since that get's modified if the source collection clears
+							// This will insert the items back in the order they're in the SelectedItems collection
+							// which may or may not be chronological order by item index
+							// This might differ from WinUI, but it's a small change and simplest.
+							object[] selItems = new object[_owner.SelectedItems.Count];
+							_owner.SelectedItems.CopyTo(selItems, 0);
+
+							foreach (var sel in selItems)
+							{
+								list.Remove(sel);
+								list.Insert(_lastInsertIndex++, sel);
+							}
+						}
+						else
+						{
+							var moveItem = list[_dragHostIndex];
+							// Otherwise, if we're just moving one item, simple
+							list.RemoveAt(_dragHostIndex);
+							list.Insert(_lastInsertIndex, moveItem);
+						}
 					}
 				}
+				
 
 				_dragHost = null;
 				_dragHostIndex = -1;
@@ -854,15 +898,18 @@ namespace FluentAvalonia.UI.Controls
 					_timer.Stop();
 				}
 
-				_popup.IsOpen = false;
-				_popup.Child = null;
+				if (_popup != null)
+				{
+					_popup.IsOpen = false;
+					_popup.Child = null;
+				}
 			}
 
 			public void HandleDrag(Point currentPoint)
 			{
 				HandleAutoScroll(currentPoint);
 
-				_popup.Host.ConfigurePosition(null, PlacementMode.Pointer, new Point());
+				_popup?.Host.ConfigurePosition(null, PlacementMode.Pointer, new Point());
 
 				if (_scroller != null)
 					currentPoint += _scroller.Offset;
@@ -883,19 +930,22 @@ namespace FluentAvalonia.UI.Controls
 				if (insertionIndex == -1)
 					return;
 
-				if (_lastInsertIndex > -1 && _dragHostIndex != _lastInsertIndex && insertionIndex == _dragHostIndex)
+				if (IsDoingReorder)
 				{
-					_panel.Children.Move(_lastInsertIndex, _dragHostIndex);
-					_lastInsertIndex = _dragHostIndex;
-				}
+					if (_lastInsertIndex > -1 && _dragHostIndex != _lastInsertIndex && insertionIndex == _dragHostIndex)
+					{
+						_panel.Children.Move(_lastInsertIndex, _dragHostIndex);
+						_lastInsertIndex = _dragHostIndex;
+					}
 
-				if (insertionIndex != _lastInsertIndex && _dragHostIndex != insertionIndex)
-				{
-					//Debug.WriteLine($"Move to {insertionIndex}");
-					_panel.Children.Move(_lastInsertIndex == -1 ? _dragHostIndex : _lastInsertIndex, insertionIndex);
+					if (insertionIndex != _lastInsertIndex && _dragHostIndex != insertionIndex)
+					{
+						//Debug.WriteLine($"Move to {insertionIndex}");
+						_panel.Children.Move(_lastInsertIndex == -1 ? _dragHostIndex : _lastInsertIndex, insertionIndex);
 
-					_lastInsertIndex = insertionIndex;
-				}
+						_lastInsertIndex = insertionIndex;
+					}
+				}				
 			}
 
 			private void HandleAutoScroll(Point pt)
@@ -904,7 +954,7 @@ namespace FluentAvalonia.UI.Controls
 					return;
 
 				var normalRect = new Rect(_autoScrollLeft, _autoScrollUp, _autoScrollRight - _autoScrollLeft, _autoScrollDown - _autoScrollUp);
-				Debug.WriteLine($"Normal Rect {normalRect}, Point {pt}, Contains? {normalRect.Contains(pt)}");
+				//Debug.WriteLine($"Normal Rect {normalRect}, Point {pt}, Contains? {normalRect.Contains(pt)}");
 				if (normalRect.Contains(pt))
 				{
 					if (_isAutoScrollingH != 0 || _isAutoScrollingV != 0)
@@ -939,7 +989,7 @@ namespace FluentAvalonia.UI.Controls
 					_isAutoScrollingV = pt.Y < normalRect.Top ? -1 : pt.Y > normalRect.Bottom ? 1 : 0;
 				}
 
-				Debug.WriteLine($"Auto Scrolling H {_isAutoScrollingH}, V {_isAutoScrollingV}");
+				//Debug.WriteLine($"Auto Scrolling H {_isAutoScrollingH}, V {_isAutoScrollingV}");
 			}
 
 			private void OnAutoScrollTimerRun(object sender, EventArgs e)

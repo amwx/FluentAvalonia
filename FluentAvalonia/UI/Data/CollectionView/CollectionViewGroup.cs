@@ -154,7 +154,15 @@ namespace FluentAvalonia.UI.Data
 
 		public void CopyTo(object[] array, int arrayIndex)
 		{
-			throw new NotImplementedException();
+			if (_collection is ICollection list)
+			{
+				list.CopyTo(array, arrayIndex);
+			}
+			else
+			{
+				// I hope this is never needed
+				Enumerable.ToList<object>(_collection.Cast<object>()).CopyTo(array, arrayIndex);
+			}
 		}
 
 		public IEnumerator<object> GetEnumerator()

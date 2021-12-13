@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -104,6 +105,20 @@ namespace FluentAvalonia.UI.Data
 
 			if (_isGrouped)
 			{
+				int GetItemCountToIndex(int index)
+				{
+					int ct = 0;
+					for (int i = 0; i < CollectionGroups.Count; i++)
+					{
+						if (i == index)
+							break;
+
+						ct += CollectionGroups[i].GroupItems?.Count ?? 0;
+					}
+
+					return ct;
+				}
+
 				// If grouping, we need to make sure to add the CollectionGroup and ensure the item count
 				// is up to date. If a group is added, but has no items, no notification is sent
 				int idx = 0;
@@ -121,7 +136,7 @@ namespace FluentAvalonia.UI.Data
 						{
 							var cg = new CollectionViewGroup(this, args.NewItems[idx++], _itemsPath);
 
-							CollectionGroups.Add(cg);
+							CollectionGroups.Insert(i, cg);
 							_count += cg.GroupItems?.Count ?? 0;
 
 							if (cg.GroupItems == null || cg.GroupItems.Count == 0)
@@ -129,7 +144,7 @@ namespace FluentAvalonia.UI.Data
 
 							// If new items were added, let's raise a notification
 							CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
-								cg.GroupItems, itemCount));
+								cg.GroupItems as IList, itemCount));
 
 							itemCount += cg.GroupItems.Count;
 						}
@@ -155,7 +170,7 @@ namespace FluentAvalonia.UI.Data
 							itemCount -= cg.GroupItems.Count;
 
 							CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
-								cg.GroupItems, itemCount));
+								cg.GroupItems as IList, itemCount));
 						}
 
 						break;
@@ -167,52 +182,57 @@ namespace FluentAvalonia.UI.Data
 
 						// If this was a reset without clearing, we'll attempt to reset everything
 						// NOTE: This is untested...
-						CreateGroups(_collection, _itemsPath.Path);
+						CreateGroups(_collection, _itemsPath?.Path);
 
 						break;
 
 					case NotifyCollectionChangedAction.Replace:
-						for (int i = 0; i < args.NewStartingIndex; i++)
-						{
-							itemCount += CollectionGroups[i].GroupItems?.Count ?? 0;
-						}
+						// Replacing a group requires special handling, because we need to fire 2 CollectionChanged
+						// notifications. One remove with all the items being removed by the old groups,
+						// and another with the new items being added. 
 
+						// Remove the items & fire the notification
+						List<object> remove = new List<object>();
+						int start = GetItemCountToIndex(args.OldStartingIndex);
+						for (int i = args.OldStartingIndex; i < args.OldStartingIndex + args.OldItems.Count; i++)
+						{
+							if (CollectionGroups[i].GroupItems != null)
+							{
+								itemCount += CollectionGroups[i].GroupItems.Count;
+								remove.AddRange(CollectionGroups[i].GroupItems);
+							}							
+						}
+						CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
+							remove, start));
+
+						_count -= itemCount;
+
+						remove.Clear();
+						itemCount = 0;
+						// Now add the new group back in
 						for (int i = args.NewStartingIndex; i < args.NewStartingIndex + args.NewItems.Count; i++)
 						{
-							var oldGroup = CollectionGroups[i];
-
-							_count -= oldGroup.GroupItems?.Count ?? 0;
-
 							var newGroup = new CollectionViewGroup(this, args.NewItems[idx++], _itemsPath);
 							CollectionGroups[i] = newGroup;
 
+							if (newGroup.GroupItems != null)
+								remove.AddRange(newGroup.GroupItems);
+
+							itemCount += newGroup.GroupItems?.Count ?? 0;
+
 							if (newGroup.GroupItems == null || newGroup.GroupItems.Count == 0)
-								continue;
-
-							_count += newGroup.GroupItems.Count;
-
-							CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace,
-								newGroup.GroupItems, (IList)oldGroup.GroupItems ?? new List<object>(0)));
+								continue;							
 						}
+
+						CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
+							   remove, start));
+
+						_count += itemCount;
 						break;
 
 					case NotifyCollectionChangedAction.Move:
 						// Moving doesn't adjust the overall item count, but we do need to reorder the CollectionGroups
 						// and propagate the move notification
-
-						int GetItemCountToIndex(int index)
-						{
-							int ct = 0;
-							for (int i = 0; i < CollectionGroups.Count; i++)
-							{
-								if (i == index)
-									break;
-
-								ct += CollectionGroups[i].GroupItems?.Count ?? 0;
-							}
-
-							return ct;
-						}
 
 						for (int i = args.OldStartingIndex; i < args.OldStartingIndex + args.OldItems.Count; i++)
 						{
@@ -228,7 +248,7 @@ namespace FluentAvalonia.UI.Data
 							}
 
 							CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move,
-								group.GroupItems,
+								group.GroupItems as IList,
 								newIndex, oldIndex));
 
 							idx++;
@@ -385,7 +405,7 @@ namespace FluentAvalonia.UI.Data
 					throw new ArgumentException("Invalid group index");
 
 				if (gIndex == 0)
-					return args.NewStartingIndex;
+					return index;
 
 				int count = 0;
 				for (int i = 0; i < gIndex; i++)
@@ -393,7 +413,7 @@ namespace FluentAvalonia.UI.Data
 					count += CollectionGroups[i].GroupItems?.Count ?? 0;
 				}
 
-				return count + args.NewStartingIndex;
+				return count + index;
 			}
 
 			NotifyCollectionChangedEventArgs newArgs = null;
@@ -491,7 +511,19 @@ namespace FluentAvalonia.UI.Data
 				}
 			}
 
-			CollectionGroups = new AvaloniaList<ICollectionViewGroup>(groups);
+			if (CollectionGroups == null) // First time
+			{
+				CollectionGroups = new AvaloniaList<ICollectionViewGroup>(groups);
+			}
+			else // Collection Reset (CollectionGroups should already be cleared)
+			{
+				CollectionGroups.AddRange(groups);
+			}
+
+			//CollectionGroups.CollectionChanged += (s, e) =>
+			//{
+			//	Debug.WriteLine("CollectionGroups changed");
+			//};
 		}
 
 		private object GetCurrentGrouped(int index)
