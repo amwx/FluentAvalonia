@@ -154,10 +154,13 @@ namespace FluentAvalonia.UI.Controls
 
 		protected override Size ArrangeOverride(Size finalSize)
 		{
+			ILogicalScrollable logScroll = this;
+
+			var offset = logScroll.IsLogicalScrollEnabled ? logScroll.Offset : Vector.Zero;
 			// Regardless of orientation, the header control is always in the topleft
 			if (_headerControl != null)
 			{
-				_headerControl.Arrange(new Rect(0, 0, _headerControl.DesiredSize.Width, _headerControl.DesiredSize.Height));
+				_headerControl.Arrange(new Rect(-offset.X, -offset.Y, _headerControl.DesiredSize.Width, _headerControl.DesiredSize.Height));
 			}
 
 			var panelSize = _itemsPanel.DesiredSize;
@@ -166,26 +169,26 @@ namespace FluentAvalonia.UI.Controls
 			{
 				double totalWidth = _headerControl?.DesiredSize.Width ?? 0;
 
-				_itemsPanel.Arrange(new Rect(totalWidth, 0, panelSize.Width, finalSize.Height));
+				_itemsPanel.Arrange(new Rect(totalWidth - offset.X, -offset.Y, panelSize.Width, finalSize.Height));
 
 				totalWidth += panelSize.Width;
 
 				if (_footerControl != null)
 				{
-					_footerControl.Arrange(new Rect(totalWidth, 0, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					_footerControl.Arrange(new Rect(totalWidth-offset.X, -offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
 				}
 			}
 			else if (_orientation == Orientation.Vertical)
 			{
 				double totalHeight = _headerControl?.DesiredSize.Height ?? 0;
 
-				_itemsPanel.Arrange(new Rect(0, totalHeight, finalSize.Width, panelSize.Height));
+				_itemsPanel.Arrange(new Rect(-offset.X, totalHeight - offset.Y, finalSize.Width, panelSize.Height));
 
 				totalHeight += panelSize.Height;
 
 				if (_footerControl != null)
 				{
-					_footerControl.Arrange(new Rect(0, totalHeight, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					_footerControl.Arrange(new Rect(-offset.X, totalHeight - offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
 				}
 			}
 			else
@@ -193,13 +196,13 @@ namespace FluentAvalonia.UI.Controls
 				double totalWidth = _headerControl?.DesiredSize.Width ?? 0;
 				double totalHeight = _headerControl?.DesiredSize.Height ?? 0;
 
-				_itemsPanel.Arrange(new Rect(0, totalHeight, panelSize.Width, panelSize.Height));
+				_itemsPanel.Arrange(new Rect(-offset.X, totalHeight - offset.Y, panelSize.Width, panelSize.Height));
 
 				totalHeight += panelSize.Height;
 
 				if (_footerControl != null)
 				{
-					_footerControl.Arrange(new Rect(0, totalHeight, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					_footerControl.Arrange(new Rect(-offset.X, totalHeight-offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
 				}
 			}
 
@@ -284,6 +287,9 @@ namespace FluentAvalonia.UI.Controls
 		internal Size GetHeaderSize() =>
 			_headerControl.DesiredSize;
 
+		internal Size GetFooterSize() =>
+			_footerControl.DesiredSize;
+
 		private void OnItemsPanelChanged(AvaloniaPropertyChangedEventArgs args)
 		{
 			SetItemsPanel(args.NewValue as IPanel ?? new StackPanel());
@@ -318,7 +324,7 @@ namespace FluentAvalonia.UI.Controls
 
 		Size ILogicalScrollable.PageScrollSize => (_itemsPanel as ILogicalScrollable)?.PageScrollSize ?? new Size(16, 16);
 
-		Size IScrollable.Extent => (_itemsPanel as ILogicalScrollable)?.Extent ?? Size.Empty;
+		Size IScrollable.Extent => (_itemsPanel as ILogicalScrollable)?.Extent ?? new Size(250,2000);
 
 		Vector IScrollable.Offset
 		{
@@ -327,6 +333,8 @@ namespace FluentAvalonia.UI.Controls
 			{
 				if (_itemsPanel is ILogicalScrollable scrollable)
 					scrollable.Offset = CoerceOffset(value);
+
+				((ILogicalScrollable)this).RaiseScrollInvalidated(EventArgs.Empty);
 			}
 		}
 
@@ -352,8 +360,12 @@ namespace FluentAvalonia.UI.Controls
 		IControl ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl from) =>
 			(_itemsPanel as ILogicalScrollable)?.GetControlInDirection(direction, from) ?? null;
 
-		void ILogicalScrollable.RaiseScrollInvalidated(EventArgs e) =>
+		void ILogicalScrollable.RaiseScrollInvalidated(EventArgs e)
+		{
 			_scrollEvent?.Invoke(this, e);
+			InvalidateArrange();
+		}
+			
 
 		void IItemsPresenter.ItemsChanged(NotifyCollectionChangedEventArgs e)
 		{ }

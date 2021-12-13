@@ -239,7 +239,7 @@ namespace FluentAvalonia.UI.Controls
 		Size ILogicalScrollable.ScrollSize => Orientation == Orientation.Horizontal ?
 			new(_context.AverageItemHeight, 0) : new(0, _context.AverageItemHeight);
 
-		Size ILogicalScrollable.PageScrollSize => new Size(16, _context.AverageItemHeight * 10); // TODO
+		Size ILogicalScrollable.PageScrollSize => _context.Viewport.Size;
 
 		Size IScrollable.Extent => _context.Extent;
 
@@ -325,6 +325,8 @@ namespace FluentAvalonia.UI.Controls
 
 			public Size LastPresenterHeaderSize { get; set; }
 
+			public Size LastPresenterFooterSize { get; set; }
+
 			public abstract Size Measure(Size constraint, Avalonia.Controls.ItemsSourceView itemsView);
 
 			public abstract void Arrange(Size finalSize, Avalonia.Controls.ItemsSourceView itemsView);
@@ -342,6 +344,22 @@ namespace FluentAvalonia.UI.Controls
 				}
 
 				return cont;
+			}
+
+			protected void UpdateExtent(Size itemsExtent, bool horizontal)
+			{
+				var header = Owner._host.GetHeaderSize();
+				var footer = Owner._host.GetFooterSize();
+				if (horizontal)
+				{
+					Extent = new Size(itemsExtent.Width + header.Width + footer.Width, 
+						Math.Max(itemsExtent.Height, Math.Max(header.Height, footer.Height)));
+				}
+				else
+				{
+					Extent = new Size(Math.Max(itemsExtent.Width, Math.Max(header.Width, footer.Width)), 
+						itemsExtent.Height + header.Height + footer.Height);
+				}				
 			}
 
 			public virtual void Dispose() { }
@@ -389,7 +407,7 @@ namespace FluentAvalonia.UI.Controls
 						}
 					}
 
-					Extent = horizontal ? new Size(stackSize, nonStackSize) : new Size(nonStackSize, stackSize);
+					UpdateExtent(horizontal ? new Size(stackSize, nonStackSize) : new Size(nonStackSize, stackSize), horizontal);
 
 					Owner.FirstVisibleIndex = Owner.FirstCacheIndex = 0;
 					Owner.LastVisibleIndex = Owner.LastCacheIndex = itemsView.Count;
@@ -430,7 +448,7 @@ namespace FluentAvalonia.UI.Controls
 
 					if (newExtent != Extent)
 					{
-						Extent = newExtent;
+						UpdateExtent(newExtent, horizontal);
 						((ILogicalScrollable)Owner).RaiseScrollInvalidated(EventArgs.Empty);
 					}
 				}
@@ -448,15 +466,15 @@ namespace FluentAvalonia.UI.Controls
 				Rect rc;
 				double x = 0;
 				double y = 0;
-				var offset = horizontal ? Offset.X : Offset.Y;
+				//var offset = horizontal ? Offset.X : Offset.Y;
 				for (int i = 0; i < Owner.Children.Count; i++)
 				{
 					if (!Owner.Children[i].IsVisible) // Skip arranging invisible items
 						continue;
 
 					rc = horizontal ?
-						new Rect(x - offset, 0, Owner.Children[i].DesiredSize.Width, finalSize.Height) :
-						new Rect(0, y - offset, Math.Max(finalSize.Width, Owner.Children[i].DesiredSize.Width), Owner.Children[i].DesiredSize.Height);
+						new Rect(x, 0, Owner.Children[i].DesiredSize.Width, finalSize.Height) :
+						new Rect(0, y, Math.Max(finalSize.Width, Owner.Children[i].DesiredSize.Width), Owner.Children[i].DesiredSize.Height);
 
 					Owner.Children[i].Arrange(rc);
 
@@ -630,7 +648,7 @@ namespace FluentAvalonia.UI.Controls
 						}
 					}
 
-					Extent = horizontal ? new Size(stackSize, nonStackSize) : new Size(nonStackSize, stackSize);
+					UpdateExtent(horizontal ? new Size(stackSize, nonStackSize) : new Size(nonStackSize, stackSize), horizontal);
 
 					Owner.FirstVisibleIndex = Owner.FirstCacheIndex = 0;
 					Owner.LastVisibleIndex = Owner.LastCacheIndex = itemsView.Count;
@@ -672,7 +690,7 @@ namespace FluentAvalonia.UI.Controls
 
 					if (newExtent != Extent)
 					{
-						Extent = newExtent;
+						UpdateExtent(newExtent, horizontal);
 						(Owner as ILogicalScrollable)?.RaiseScrollInvalidated(EventArgs.Empty);
 					}
 				}
@@ -709,7 +727,7 @@ namespace FluentAvalonia.UI.Controls
 				bool horizontal = Owner.Orientation == Orientation.Horizontal;
 				double x = 0, y = 0;
 				Rect rc;
-				double offset = horizontal ? Offset.X : Offset.Y;
+				//double offset = horizontal ? Offset.X : Offset.Y;
 				int firstVisible = -1;
 				int lastVisible = -1;
 				var count = CollectionView.CollectionGroups.Count;
@@ -717,8 +735,8 @@ namespace FluentAvalonia.UI.Controls
 				{
 					var groupCount = CollectionView.CollectionGroups[i].GroupItems.Count;
 
-					rc = horizontal ? new Rect(x - offset, 0, Owner.Children[i].DesiredSize.Width, finalSize.Height) :
-						new Rect(0, y - offset, finalSize.Width, Owner.Children[i].DesiredSize.Height);
+					rc = horizontal ? new Rect(x, 0, Owner.Children[i].DesiredSize.Width, finalSize.Height) :
+						new Rect(0, y, finalSize.Width, Owner.Children[i].DesiredSize.Height);
 
 					Owner.Children[i].Arrange(rc);
 
@@ -734,8 +752,8 @@ namespace FluentAvalonia.UI.Controls
 							Owner.Children[i].Clip = null;
 
 						var item = icg.ContainerFromIndex(idx);
-						rc = horizontal ? new Rect(x - offset, 0, item.DesiredSize.Width, finalSize.Height) :
-								new Rect(0, y - offset, finalSize.Width, item.DesiredSize.Height);
+						rc = horizontal ? new Rect(x, 0, item.DesiredSize.Width, finalSize.Height) :
+								new Rect(0, y, finalSize.Width, item.DesiredSize.Height);
 
 						item.Arrange(rc);
 
