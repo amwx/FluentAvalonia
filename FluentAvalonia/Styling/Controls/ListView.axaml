@@ -10,14 +10,19 @@
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="Template">
 			<ControlTemplate>
-				<ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+				<Border Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						CornerRadius="{TemplateBinding CornerRadius}">
+					<ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
 							  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-					<ui:FAItemsPresenter Header="{TemplateBinding Header}"
-										 HeaderTemplate="{TemplateBinding HeaderTemplate}"
-										 Footer="{TemplateBinding Footer}"
-										 FooterTemplate="{TemplateBinding FooterTemplate}"
-										 Name="ItemsHost" />
-				</ScrollViewer>
+						<ui:FAItemsPresenter Header="{TemplateBinding Header}"
+											 HeaderTemplate="{TemplateBinding HeaderTemplate}"
+											 Footer="{TemplateBinding Footer}"
+											 FooterTemplate="{TemplateBinding FooterTemplate}"
+											 Name="ItemsHost" />
+					</ScrollViewer>
+				</Border>
 			</ControlTemplate>
 		</Setter>
 	</Style>    

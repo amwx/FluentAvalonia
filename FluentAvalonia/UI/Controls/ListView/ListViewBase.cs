@@ -167,7 +167,7 @@ namespace FluentAvalonia.UI.Controls
 		//public bool IsZoomedInView { get; }
 		//public bool IsActiveView { get; }
 
-		public IPanel ItemsPanelRoot => _presenter.Panel;
+		public IPanel ItemsPanelRoot => _presenter?.Panel;
 
 		public event DragItemsStartingEventHandler DragItemsStarting;
 		public event ItemClickEventHandler ItemClick;

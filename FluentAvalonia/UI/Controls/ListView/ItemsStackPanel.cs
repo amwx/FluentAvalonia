@@ -133,6 +133,16 @@ namespace FluentAvalonia.UI.Controls
 			return finalSize;
 		}
 
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+
+			if (change.Property == AreStickyGroupHeadersEnabledProperty)
+			{
+				InvalidateMeasure();
+			}
+		}
+
 		private void InitializePanel()
 		{
 			_context = null;
@@ -807,9 +817,10 @@ namespace FluentAvalonia.UI.Controls
 				Owner.LastVisibleIndex = lastVisible;				
 			}
 
-			private void ArrangeStickyHeaders(Size finalSize)
+			private void ArrangeStickyHeaders(Size finalSize, bool arrange = true)
 			{
 				bool horizontal = Owner.Orientation == Orientation.Horizontal;
+				Rect viewRC = horizontal ? Viewport.WithX(Offset.X) : Viewport.WithY(Offset.Y);
 
 				void CollapseItemsUnderStickyHeaders()
 				{
@@ -817,24 +828,25 @@ namespace FluentAvalonia.UI.Controls
 					int first = Owner.FirstVisibleIndex + groupCount;
 					int last = Owner.LastVisibleIndex + groupCount;
 					Size size = _groupHeaderContainers[_currentStickyGroupHeader].DesiredSize;
+
 					// Iterate until we reach an item that is fully beneath the current sticky header
 					// Start at first - 1 to ensure we have nothing visible
 					for (int i = Math.Max(groupCount, first-1); i < Owner.Children.Count; i++)
 					{
 						if (horizontal)
 						{
-							if (Owner.Children[i].Bounds.Left > size.Width)
+							if (Owner.Children[i].Bounds.Left > (viewRC.Left + size.Width))
 								break;
 
-							// Item is completely hidden by group header, re-arrange with empty rect
-							if (Owner.Children[i].Bounds.Right <= size.Width)
+							// Item is completely hidden by group header
+							if (Owner.Children[i].Bounds.Right <= (viewRC.Left + size.Width))
 							{
 								Owner.Children[i].Arrange(Owner.Children[i].Bounds.WithX(-Owner.Children[i].Bounds.Width));
 							}
 							else
 							{
 								// Item is partially hidden by group header, re-arrange with collapsed rect
-								var dx = size.Width - Owner.Children[i].Bounds.Left;
+								var dx = (viewRC.Left + size.Width) - Owner.Children[i].Bounds.Left;
 								var clipRect = new Rect(dx, 0, Owner.Children[i].Bounds.Width - dx, Owner.Children[i].Bounds.Height);
 
 								// Cliping the LVI probably isn't the **best** solution here, as if user set Clip, this
@@ -847,18 +859,18 @@ namespace FluentAvalonia.UI.Controls
 						}
 						else
 						{
-							if (Owner.Children[i].Bounds.Top > size.Height)
+							if (Owner.Children[i].Bounds.Top > (viewRC.Top + size.Height))
 								break;
 
-							// Item is completely hidden by group header, re-arrange with empty rect
-							if (Owner.Children[i].Bounds.Bottom <= size.Height)
+							// Item is completely hidden by group header
+							if (Owner.Children[i].Bounds.Bottom <= (viewRC.Top + size.Height))
 							{
 								Owner.Children[i].Arrange(Owner.Children[i].Bounds.WithY(-Owner.Children[i].Bounds.Height));
 							}
 							else
 							{
 								// Item is partially hidden by group header, re-arrange with collapsed rect
-								var dy = size.Height - Owner.Children[i].Bounds.Top;								
+								var dy = (viewRC.Top + size.Height) - Owner.Children[i].Bounds.Top;								
 								var clipRect = new Rect(0, dy, Owner.Children[i].Bounds.Width, Owner.Children[i].Bounds.Height - dy);
 
 								// Cliping the LVI probably isn't the **best** solution here, as if user set Clip, this
@@ -874,154 +886,124 @@ namespace FluentAvalonia.UI.Controls
 
 				// Run a normal arrange first, we'll use the absolute location of the headers to 
 				// determine which one goes where
-				ArrangeNormal(finalSize);
+				if (arrange)
+					ArrangeNormal(finalSize);
 
-				
+
 				if (_currentStickyGroupHeader == -1)
 				{
+					// First time load only...
 					_currentStickyGroupHeader = 0;
 
 					if (horizontal)
 					{
-						_groupHeaderContainers[_currentStickyGroupHeader].Arrange(new Rect(0, 0,
-							_groupHeaderContainers[_currentStickyGroupHeader].DesiredSize.Width, finalSize.Height));
+						_lastStickyRect = new Rect(0, 0,
+								_groupHeaderContainers[0].DesiredSize.Width, finalSize.Height);
 					}
 					else
 					{
-						_lastStickyRect = new Rect(0, 0,
-							finalSize.Width, _groupHeaderContainers[_currentStickyGroupHeader].DesiredSize.Height);
-
-						_groupHeaderContainers[_currentStickyGroupHeader].Arrange(_lastStickyRect);
+						_lastStickyRect = new Rect(0, 0, finalSize.Width,
+								_groupHeaderContainers[0].DesiredSize.Height);
 					}
+					
+					// TO DO: Do we get another arrange if we start off not scrolled at the top?
 
-					CollapseItemsUnderStickyHeaders();
 					return;
 				}
 
-				int nextStickyHeader = -1;
-				for (int i = 0; i < _groupHeaderContainers.Count; i++)
-				{
-					if (i == _currentStickyGroupHeader)
-					{
-						if (i < _groupHeaderContainers.Count - 1)
-						{
-							continue;
-						}
-						else
-						{
-							nextStickyHeader = _groupHeaderContainers.Count - 1;
-							break;
-						}
-					}
-
-					if (horizontal)
-					{
-						if (_groupHeaderContainers[i].Bounds.Left > _lastStickyRect.Right)
-						{
-							nextStickyHeader = i - 1;
-							break;
-						}
-					}
-					else
-					{
-						if (_groupHeaderContainers[i].Bounds.Top > _lastStickyRect.Bottom)
-						{
-							nextStickyHeader = i - 1;
-							break;
-						}
-					}
-
-					nextStickyHeader = i;
-				}
-
-				if (nextStickyHeader == -1)
-					nextStickyHeader = 0;
-
+				
 				if (horizontal)
 				{
-					var g = _groupHeaderContainers[nextStickyHeader];
-
-					if (g.Bounds.Left <= 0)
+					int firstVisible = _groupHeaderContainers.Count - 1;
+					for (int i = _groupHeaderContainers.Count - 1; i >= 0; i--)
 					{
-						_currentStickyGroupHeader = nextStickyHeader;
-						_lastStickyRect = new Rect(0, 0, g.DesiredSize.Width, finalSize.Height);
+						if (_groupHeaderContainers[i].Bounds.Left < viewRC.Left)
+						{
+							break;
+						}
 
-						g.Arrange(_lastStickyRect);
+						firstVisible = i;
+					}
+
+					var firstCont = _groupHeaderContainers[firstVisible];
+
+					if (firstVisible == 0)
+					{
+						// I believe this can only happen IF Offset.Y == 0
+						_lastStickyRect = new Rect(Offset.X, 0, firstCont.DesiredSize.Width, finalSize.Height);
+						firstCont.Arrange(_lastStickyRect);
+						return;
+					}
+
+					if (firstCont.Bounds.Left > viewRC.Left + _lastStickyRect.Width)
+					{
+						// First visible container is below the sticky header line
+						if (firstVisible > 0)
+							firstVisible--;
+
+						firstCont = _groupHeaderContainers[firstVisible];
+
+						_lastStickyRect = new Rect(Offset.X, 0, firstCont.DesiredSize.Width, finalSize.Height);
+
+						firstCont.Arrange(_lastStickyRect);
+						_currentStickyGroupHeader = firstVisible;
 					}
 					else
 					{
-						//Debug.WriteLine($"Transition N:{nextStickyHeader} | C:{_currentStickyGroupHeader}");
+						var delta = (viewRC.Left + _lastStickyRect.Width) - firstCont.Bounds.Left;
 
-						var curG = _groupHeaderContainers[_currentStickyGroupHeader];
-						var nextG = _groupHeaderContainers[nextStickyHeader];
+						var rc = _lastStickyRect.WithX(viewRC.Left - delta);
 
-						double delta;
-						if (nextStickyHeader != 0 && _currentStickyGroupHeader == nextStickyHeader)
-						{
-							nextG = _groupHeaderContainers[nextStickyHeader - 1];
-							var rc = new Rect(curG.Bounds.Left - nextG.Bounds.Width, 0, curG.DesiredSize.Width, finalSize.Height);
-
-							if (rc.Left >= 0)
-							{
-								rc = rc.WithX(0);
-								_currentStickyGroupHeader--;
-							}
-
-							nextG.Arrange(rc);
-
-							CollapseItemsUnderStickyHeaders();
-							return;
-						}
-
-
-						delta = _lastStickyRect.Right - nextG.Bounds.Left;
-
-						curG.Arrange(new Rect(-delta, 0, curG.DesiredSize.Width, finalSize.Height));
-						nextG.Arrange(new Rect(_lastStickyRect.Right - delta, 0, nextG.DesiredSize.Width, finalSize.Height));
+						_groupHeaderContainers[firstVisible - 1].Arrange(rc);
 					}
 				}
 				else
 				{
-					var g = _groupHeaderContainers[nextStickyHeader];
-
-					if (g.Bounds.Top <= 0)
+					int firstVisible = _groupHeaderContainers.Count - 1;
+					for (int i = _groupHeaderContainers.Count - 1; i >= 0; i--)
 					{
-						_currentStickyGroupHeader = nextStickyHeader;
-						_lastStickyRect = new Rect(0, 0, finalSize.Width, g.DesiredSize.Height);
+						if (_groupHeaderContainers[i].Bounds.Top < viewRC.Top)
+						{
+							break;
+						}
 
-						g.Arrange(_lastStickyRect);
+						firstVisible = i;
+					}
+
+					var firstCont = _groupHeaderContainers[firstVisible];
+
+					if (firstVisible == 0)
+					{
+						// I believe this can only happen IF Offset.Y == 0
+						_lastStickyRect = new Rect(0, Offset.Y, finalSize.Width, firstCont.DesiredSize.Height);
+						firstCont.Arrange(_lastStickyRect);
+						return;
+					}
+
+					if (firstCont.Bounds.Top > viewRC.Top + _lastStickyRect.Height)
+					{
+						// First visible container is below the sticky header line
+						if (firstVisible > 0)
+							firstVisible--;
+
+						firstCont = _groupHeaderContainers[firstVisible];
+
+						_lastStickyRect = new Rect(0, Offset.Y, finalSize.Width, firstCont.DesiredSize.Height);
+
+						firstCont.Arrange(_lastStickyRect);
+						_currentStickyGroupHeader = firstVisible;
 					}
 					else
 					{
-						//Debug.WriteLine($"Transition N:{nextStickyHeader} | C:{_currentStickyGroupHeader}");
+						var delta = (viewRC.Top + _lastStickyRect.Height) - firstCont.Bounds.Top;
 
-						var curG = _groupHeaderContainers[_currentStickyGroupHeader];
-						var nextG = _groupHeaderContainers[nextStickyHeader];
+						var rc = _lastStickyRect.WithY(viewRC.Top - delta);
 
-						double delta;
-						if (nextStickyHeader != 0 && _currentStickyGroupHeader == nextStickyHeader)
-						{
-							nextG = _groupHeaderContainers[nextStickyHeader - 1];
-							var rc = new Rect(0, curG.Bounds.Top - nextG.Bounds.Height, finalSize.Width, curG.DesiredSize.Height);
-
-							if (rc.Top >= 0)
-							{
-								rc = rc.WithY(0);
-								_currentStickyGroupHeader--;
-							}
-
-							nextG.Arrange(rc);
-							CollapseItemsUnderStickyHeaders();
-							return;
-						}
-
-
-						delta = _lastStickyRect.Bottom - nextG.Bounds.Top;
-
-						curG.Arrange(new Rect(0, -delta, finalSize.Width, curG.DesiredSize.Height));
-						nextG.Arrange(new Rect(0, _lastStickyRect.Bottom - delta, finalSize.Width, nextG.DesiredSize.Height));
+						_groupHeaderContainers[firstVisible - 1].Arrange(rc);
 					}
 				}
+
+				
 
 				CollapseItemsUnderStickyHeaders();
 			}
