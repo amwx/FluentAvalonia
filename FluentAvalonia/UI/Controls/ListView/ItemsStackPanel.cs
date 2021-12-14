@@ -358,6 +358,12 @@ namespace FluentAvalonia.UI.Controls
 
 			protected void UpdateExtent(Size itemsExtent, bool horizontal)
 			{
+				if (Owner._host == null) // Unit Tests only
+				{
+					Extent = itemsExtent;
+					return;
+				}
+
 				var header = Owner._host.GetHeaderSize();
 				var footer = Owner._host.GetFooterSize();
 				if (horizontal)
