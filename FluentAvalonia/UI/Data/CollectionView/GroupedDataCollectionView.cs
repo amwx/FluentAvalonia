@@ -489,7 +489,7 @@ namespace FluentAvalonia.UI.Data
 				{
 					var cvg = new CollectionViewGroup(this, list[i], _itemsPath);
 					groups.Add(cvg);
-					_count += groups[^1].GroupItems?.Count ?? 0;
+					_count += groups[groups.Count - 1].GroupItems?.Count ?? 0;
 				}
 			}
 			else if (collection is IList<object> genList)
@@ -498,7 +498,7 @@ namespace FluentAvalonia.UI.Data
 				{
 					var cvg = new CollectionViewGroup(this, genList[i], _itemsPath);
 					groups.Add(cvg);
-					_count += groups[^1].GroupItems?.Count ?? 0;
+					_count += groups[groups.Count - 1].GroupItems?.Count ?? 0;
 				}
 			}
 			else
@@ -507,7 +507,7 @@ namespace FluentAvalonia.UI.Data
 				{
 					var cvg = new CollectionViewGroup(this, item, _itemsPath);
 					groups.Add(cvg);
-					_count += groups[^1].GroupItems?.Count ?? 0;
+					_count += groups[groups.Count - 1].GroupItems?.Count ?? 0;
 				}
 			}
 

@@ -1,12 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
     <Nullable>disable</Nullable>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>-->
     <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
     <PackageId>FluentAvaloniaUI</PackageId>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -25,10 +29,11 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\*.*" />
 	    <AvaloniaResource Include="Fonts\*.*" />
-    </ItemGroup> 
-    <ItemGroup>
-      <PackageReference Include="Avalonia" Version="0.10.10" />
-      <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
-      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
     </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="0.10.10" />
+		<PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
+	</ItemGroup>
 </Project>

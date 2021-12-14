@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media;
+using FluentAvalonia.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -58,7 +59,7 @@ namespace FluentAvalonia.UI.Media
 		{
 			get
 			{
-				return (byte)MathF.Round(_alpha * 255);
+				return (byte)Math.Round(_alpha * 255);
 			}
 		}
 
@@ -74,7 +75,7 @@ namespace FluentAvalonia.UI.Media
 					return ToRGB().R;
 				}
 
-				return (byte)MathF.Round(_c1 * 255);
+				return (byte)Math.Round(_c1 * 255);
 			}
 		}
 
@@ -90,7 +91,7 @@ namespace FluentAvalonia.UI.Media
 					return ToRGB().G;
 				}
 
-				return (byte)MathF.Round(_c2 * 255);
+				return (byte)Math.Round(_c2 * 255);
 			}
 		}
 
@@ -106,7 +107,7 @@ namespace FluentAvalonia.UI.Media
 					return ToRGB().B;
 				}
 
-				return (byte)MathF.Round(_c3 * 255);
+				return (byte)Math.Round(_c3 * 255);
 			}
 		}
 
@@ -177,7 +178,7 @@ namespace FluentAvalonia.UI.Media
 					return ToHSV().Hue;
 				}
 
-				return (int)MathF.Round(_c1);
+				return (int)Math.Round(_c1);
 			}
 		}
 
@@ -211,7 +212,7 @@ namespace FluentAvalonia.UI.Media
 					return ToHSV().Saturation;
 				}
 
-				return (int)MathF.Round(_c2 * 100);
+				return (int)Math.Round(_c2 * 100);
 			}
 		}
 
@@ -243,7 +244,7 @@ namespace FluentAvalonia.UI.Media
 					return ToHSV().Value;
 				}
 
-				return (int)MathF.Round(_c3 * 100);
+				return (int)Math.Round(_c3 * 100);
 			}
 		}
 
@@ -275,7 +276,7 @@ namespace FluentAvalonia.UI.Media
 					return ToHSL().HSLSaturation;
 				}
 
-				return (int)MathF.Round(_c2 * 100);
+				return (int)Math.Round(_c2 * 100);
 			}
 		}
 
@@ -307,7 +308,7 @@ namespace FluentAvalonia.UI.Media
 					return ToHSL().Lightness;
 				}
 
-				return (int)MathF.Round(_c3 * 100);
+				return (int)Math.Round(_c3 * 100);
 			}
 		}
 
@@ -339,7 +340,7 @@ namespace FluentAvalonia.UI.Media
 					return ToCMYK().CMYKCyan;
 				}
 
-				return (int)MathF.Round(_c1 * 100);
+				return (int)Math.Round(_c1 * 100);
 			}
 		}
 
@@ -371,7 +372,7 @@ namespace FluentAvalonia.UI.Media
 					return ToCMYK().CMYKMagenta;
 				}
 
-				return (int)MathF.Round(_c2 * 100);
+				return (int)Math.Round(_c2 * 100);
 			}
 		}
 
@@ -403,7 +404,7 @@ namespace FluentAvalonia.UI.Media
 					return ToCMYK().CMYKYellow;
 				}
 
-				return (int)MathF.Round(_c3 * 100);
+				return (int)Math.Round(_c3 * 100);
 			}
 		}
 
@@ -435,7 +436,7 @@ namespace FluentAvalonia.UI.Media
 					return ToCMYK().CMYKBlack;
 				}
 
-				return (int)MathF.Round(_c4 * 100);
+				return (int)Math.Round(_c4 * 100);
 			}
 		}
 
@@ -471,10 +472,10 @@ namespace FluentAvalonia.UI.Media
 				return;
 			}
 
-			r = (byte)MathF.Round(_c1 * 255);
-			g = (byte)MathF.Round(_c2 * 255);
-			b = (byte)MathF.Round(_c3 * 255);
-			a = (byte)MathF.Round(_alpha * 255);
+			r = (byte)Math.Round(_c1 * 255);
+			g = (byte)Math.Round(_c2 * 255);
+			b = (byte)Math.Round(_c3 * 255);
+			a = (byte)Math.Round(_alpha * 255);
 		}
 
 		/// <summary>
@@ -534,10 +535,10 @@ namespace FluentAvalonia.UI.Media
 				return;
 			}
 
-			h = (int)MathF.Round(_c1);
-			s = (int)MathF.Round(_c2 * 100);
-			v = (int)MathF.Round(_c3 * 100);
-			a = (int)MathF.Round(_alpha * 255);
+			h = (int)Math.Round(_c1);
+			s = (int)Math.Round(_c2 * 100);
+			v = (int)Math.Round(_c3 * 100);
+			a = (int)Math.Round(_alpha * 255);
 		}
 		
 		/// <summary>
@@ -576,10 +577,10 @@ namespace FluentAvalonia.UI.Media
 				return;
 			}
 
-			h = (int)MathF.Round(_c1);
-			s = (int)MathF.Round(_c2 * 100);
-			l = (int)MathF.Round(_c3 * 100);
-			a = (int)MathF.Round(_alpha * 255);
+			h = (int)Math.Round(_c1);
+			s = (int)Math.Round(_c2 * 100);
+			l = (int)Math.Round(_c3 * 100);
+			a = (int)Math.Round(_alpha * 255);
 		}
 
 		/// <summary>
@@ -621,11 +622,11 @@ namespace FluentAvalonia.UI.Media
 				return;
 			}
 
-			c = (int)MathF.Round(_c1 * 100);
-			m = (int)MathF.Round(_c2 * 100);
-			y = (int)MathF.Round(_c3 * 100);
-			k = (int)MathF.Round(_c4 * 100);
-			a = (int)MathF.Round(_alpha * 255);
+			c = (int)Math.Round(_c1 * 100);
+			m = (int)Math.Round(_c2 * 100);
+			y = (int)Math.Round(_c3 * 100);
+			k = (int)Math.Round(_c4 * 100);
+			a = (int)Math.Round(_alpha * 255);
 		}
 
 		/// <summary>
@@ -819,7 +820,21 @@ namespace FluentAvalonia.UI.Media
 
 		public override int GetHashCode()
 		{
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
 			return HashCode.Combine(_cType, _alpha, _c1, _c2, _c3);
+#else
+			unchecked
+			{
+				int hash = 17;
+
+				hash = hash * 23 + _cType.GetHashCode();
+				hash = hash * 23 + _alpha.GetHashCode();
+				hash = hash * 23 + _c1.GetHashCode();
+				hash = hash * 23 + _c2.GetHashCode();
+				hash = hash * 23 + _c3.GetHashCode();
+				return hash;
+			}
+#endif
 		}
 
 		public static bool operator ==(Color2 ec1, Color2 ec2)
@@ -878,7 +893,7 @@ namespace FluentAvalonia.UI.Media
 		/// <returns></returns>
 		public static Color2 Parse(string value)
 		{
-			if (TryParse(value, out Color2 ec))
+			if (TryParse(value.AsSpan(), out Color2 ec))
 				return ec;
 
 			return Empty;
@@ -892,6 +907,9 @@ namespace FluentAvalonia.UI.Media
 		/// <returns>True if successful, otherwise false</returns>
 		public static bool TryParse(ReadOnlySpan<char> value, out Color2 ec)
 		{
+#if NETSTANDARD2_0
+			return TryParseNetStandard2(value, out ec);
+#else
 			if (value.Contains("#", StringComparison.Ordinal))
 			{
 				var v = value.Slice(1);
@@ -947,7 +965,69 @@ namespace FluentAvalonia.UI.Media
 
 			ec = Empty;
 			return false;
+#endif
 		}
+
+#if NETSTANDARD2_0
+		private static bool TryParseNetStandard2(ReadOnlySpan<char> value, out Color2 ec)
+		{
+			if (value.Contains("#".AsSpan(), StringComparison.Ordinal))
+			{
+				var v = value.Slice(1);
+				if (v.Length == 3 || v.Length == 4)
+				{
+					Span<char> normal = stackalloc char[v.Length * 2];
+
+					for (int i = 0; i < v.Length; i++)
+					{
+						normal[i * 2] = normal[i * 2 + 1] = v[i];
+					}
+
+					if (uint.TryParse(normal.ToString(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint result))
+					{
+						ec = FromUInt(result | (v.Length == 3 ? 0xff000000 : 0u));
+						return true;
+					}
+				}
+				else if (v.Length == 6 || v.Length == 8)
+				{
+					if (uint.TryParse(v.ToString(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint result))
+					{
+						ec = FromUInt(result | (v.Length == 6 ? 0xff000000 : 0u));
+						return true;
+					}
+				}
+			}
+			else if (value.StartsWith("rgb".AsSpan()))
+			{
+				var start = value.ToString().IndexOf("(") + 1;
+				var result = value.Slice(start, value.Length - start - 1).Trim().ToString().Split(',');
+
+				if (result.Length != 3 && result.Length != 4)
+				{
+					ec = Empty;
+					return false;
+				}
+
+				if (byte.TryParse(result[0].Trim(), out byte r) &&
+					byte.TryParse(result[1].Trim(), out byte g) &&
+					byte.TryParse(result[2].Trim(), out byte b))
+				{
+					if (result.Length == 4 && byte.TryParse(result[3], out byte a))
+					{
+						ec = FromARGB(a, r, g, b);
+						return true;
+					}
+
+					ec = FromRGB(r, g, b);
+					return true;
+				}
+			}
+
+			ec = Empty;
+			return false;
+		}
+#endif
 
 		public static implicit operator Color(Color2 ec)
 		{
@@ -1035,10 +1115,10 @@ namespace FluentAvalonia.UI.Media
 		{
 			Color2 newColor = new Color2();
 			newColor._cType = ColorType.RGB;
-			newColor._c1 = Math.Clamp(r, 0, 1);
-			newColor._c2 = Math.Clamp(g, 0, 1);
-			newColor._c3 = Math.Clamp(b, 0, 1);
-			newColor._alpha = Math.Clamp(a, 0, 1);
+			newColor._c1 = MathHelpers.Clamp(r, 0, 1);
+			newColor._c2 = MathHelpers.Clamp(g, 0, 1);
+			newColor._c3 = MathHelpers.Clamp(b, 0, 1);
+			newColor._alpha = MathHelpers.Clamp(a, 0, 1);
 			return newColor;
 		}
 
@@ -1082,10 +1162,10 @@ namespace FluentAvalonia.UI.Media
 		{
 			Color2 newColor = new Color2();
 			newColor._cType = ColorType.HSV;
-			newColor._c1 = hue == -1 ? 0 : Math.Clamp(hue % 360, 0, 360);
-			newColor._c2 = Math.Clamp(sat, 0, 1);
-			newColor._c3 = Math.Clamp(val, 0, 1);
-			newColor._alpha = Math.Clamp(alpha, 0, 1);
+			newColor._c1 = hue == -1 ? 0 : MathHelpers.Clamp(hue % 360, 0, 360);
+			newColor._c2 = MathHelpers.Clamp(sat, 0, 1);
+			newColor._c3 = MathHelpers.Clamp(val, 0, 1);
+			newColor._alpha = MathHelpers.Clamp(alpha, 0, 1);
 			return newColor;
 		}
 
@@ -1114,10 +1194,10 @@ namespace FluentAvalonia.UI.Media
 		{
 			Color2 newColor = new Color2();
 			newColor._cType = ColorType.HSL;
-			newColor._c1 = hue == -1 ? 0 : Math.Clamp(hue % 360, 0, 360);
-			newColor._c2 = Math.Clamp(sat, 0, 1);
-			newColor._c3 = Math.Clamp(light, 0, 1);
-			newColor._alpha = Math.Clamp(alpha, 0, 1);
+			newColor._c1 = hue == -1 ? 0 : MathHelpers.Clamp(hue % 360, 0, 360);
+			newColor._c2 = MathHelpers.Clamp(sat, 0, 1);
+			newColor._c3 = MathHelpers.Clamp(light, 0, 1);
+			newColor._alpha = MathHelpers.Clamp(alpha, 0, 1);
 			return newColor;
 		}
 
@@ -1148,11 +1228,11 @@ namespace FluentAvalonia.UI.Media
 		{
 			Color2 newColor = new Color2();
 			newColor._cType = ColorType.CMYK;
-			newColor._c1 = Math.Clamp(c, 0, 1);
-			newColor._c2 = Math.Clamp(m, 0, 1);
-			newColor._c3 = Math.Clamp(y, 0, 1);
-			newColor._c4 = Math.Clamp(k, 0, 1);
-			newColor._alpha = Math.Clamp(alpha, 0, 1);
+			newColor._c1 = MathHelpers.Clamp(c, 0, 1);
+			newColor._c2 = MathHelpers.Clamp(m, 0, 1);
+			newColor._c3 = MathHelpers.Clamp(y, 0, 1);
+			newColor._c4 = MathHelpers.Clamp(k, 0, 1);
+			newColor._alpha = MathHelpers.Clamp(alpha, 0, 1);
 			return newColor;
 		}
 
@@ -1278,7 +1358,7 @@ namespace FluentAvalonia.UI.Media
 				return ToHSL().Lighten(amount);
 
 			var l = _c3 + amount;
-			Math.Clamp(l, 0, 1);
+			MathHelpers.Clamp(l, 0, 1);
 
 			return FromHSLf(_c1, _c2, l, _alpha);
 		}
@@ -1294,7 +1374,7 @@ namespace FluentAvalonia.UI.Media
 				return ToHSL().LightenPercent(percent);
 
 			var l = _c3 < EPSILON ? percent : _c3 + (_c3 * percent);
-			Math.Clamp(l, 0, 1);
+			MathHelpers.Clamp(l, 0, 1);
 
 			return FromHSLf(_c1, _c2, l, _alpha);
 		}
@@ -1547,8 +1627,8 @@ namespace FluentAvalonia.UI.Media
 		{
 			if (ColorTable == null)
 			{
-				var kcs = Enum.GetValues<KnownColor>();
-				var names = Enum.GetNames<KnownColor>();
+				var kcs = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+				var names = Enum.GetNames(typeof(KnownColor));
 
 				ColorTable = new Dictionary<Color2, string>(kcs.Length);
 				for (int i = 0; i < kcs.Length; i++)

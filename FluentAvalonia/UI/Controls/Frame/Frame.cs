@@ -171,7 +171,7 @@ namespace FluentAvalonia.UI.Controls
         {
             if (CanGoForward)
             {
-                NavigateCore(_forwardStack[^1], NavigationMode.Forward);
+                NavigateCore(_forwardStack[_forwardStack.Count - 1], NavigationMode.Forward);
             }
         }
 
@@ -192,7 +192,7 @@ namespace FluentAvalonia.UI.Controls
         {
             if (CanGoBack)
             {
-                var entry = _backStack[^1];
+                var entry = _backStack[_backStack.Count - 1];
                 if (infoOverride != null)
                 {
                     entry.NavigationTransitionInfo = infoOverride;

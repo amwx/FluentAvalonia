@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Data;
 using System;
 using System.Collections;
@@ -399,7 +400,7 @@ namespace FluentAvalonia.UI.Controls
 			var scroll = this as ILogicalScrollable;
 			var maxX = Math.Max(scroll.Extent.Width - scroll.Viewport.Width, 0);
 			var maxY = Math.Max(scroll.Extent.Height - scroll.Viewport.Height, 0);
-			return new Vector(Math.Clamp(value.X, 0, maxX), Math.Clamp(value.Y, 0, maxY));
+			return new Vector(MathHelpers.Clamp(value.X, 0, maxX), MathHelpers.Clamp(value.Y, 0, maxY));
 		}
 
 		private IPanel _itemsPanel;

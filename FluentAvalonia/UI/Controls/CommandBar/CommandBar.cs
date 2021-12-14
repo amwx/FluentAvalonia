@@ -546,7 +546,7 @@ namespace FluentAvalonia.UI.Controls
 				}
 				else
 				{
-					return new[] { _primaryItems[^1] };
+					return new[] { _primaryItems[_primaryItems.Count - 1] };
 				}
 			}
 			else
@@ -554,7 +554,7 @@ namespace FluentAvalonia.UI.Controls
 				if (_primaryItems.Count == 0)
 					return null;
 
-				return new[] { _primaryItems[^1] };
+				return new[] { _primaryItems[_primaryItems.Count - 1] };
 			}
 		}
 

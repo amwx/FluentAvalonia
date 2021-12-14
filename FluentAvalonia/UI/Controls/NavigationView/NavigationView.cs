@@ -240,7 +240,11 @@ namespace FluentAvalonia.UI.Controls
                     _closeButton.Click += OnPaneToggleButtonClick;
                 }
 
-                _itemsContainerRow = _paneContentGrid?.RowDefinitions[^1];
+                if (_paneContentGrid != null)
+				{
+                    _itemsContainerRow = _paneContentGrid.RowDefinitions[_paneContentGrid.RowDefinitions.Count - 1];
+                }
+                
                 _menuItemsScrollViewer = e.NameScope.Get<ScrollViewer>("MenuItemsScrollViewer");
                 _footerItemsScrollViewer = e.NameScope.Get<ScrollViewer>("FooterItemsScrollViewer");
 

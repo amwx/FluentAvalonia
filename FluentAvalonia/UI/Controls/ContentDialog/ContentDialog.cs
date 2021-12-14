@@ -839,7 +839,7 @@ namespace FluentAvalonia.UI.Controls
 					{
 						if (i == 0)
 						{
-							return (true, children[^1]);
+							return (true, children[children.Count - 1]);
 						}
 						else
 						{
