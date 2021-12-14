@@ -1,0 +1,131 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="using:FluentAvaloniaSamples"
+			 xmlns:ui="using:FluentAvalonia.UI.Controls"
+			 xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+			 xmlns:data="using:FluentAvalonia.UI.Data"
+             mc:Ignorable="d" d:DesignWidth="500"
+             x:Class="FluentAvaloniaSamples.Pages.ListViewPage">
+	<UserControl.Resources>
+		<data:CollectionViewSource x:Key="ContactGroupsSource" Source="{Binding ContactGroups}" IsSourceGrouped="True" />
+	</UserControl.Resources>
+	
+	<ScrollViewer>
+		<StackPanel>
+			
+			<TextBlock Text="NOTE: This control is still under active development, and is not considered production ready. Some features may not be implemented yet."
+					   TextWrapping="Wrap"
+					   Margin="15" FontWeight="SemiBold" />
+
+			<local:ControlExample TargetType="ListView"
+								  Header="Basic ListView with simple DataTemplate"
+								  ShowDocs="False">
+
+				<ui:ListView Items="{Binding Contacts}"
+							 Width="350"
+							 Height="400"
+							 HorizontalAlignment="Left"
+							 BorderThickness="1"
+							 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
+					<ui:ListView.ItemTemplate>
+						<DataTemplate x:DataType="vm:Contact">
+							<TextBlock Text="{CompiledBinding Name}" />
+						</DataTemplate>
+					</ui:ListView.ItemTemplate>
+				</ui:ListView>				
+			</local:ControlExample>
+
+			<local:ControlExample TargetType="ListView"
+								  Header="Basic ListView with selection support"
+								  ShowDocs="False">
+
+				<StackPanel>
+					<TextBlock Text="You can enable four different selection modes on the right." TextWrapping="Wrap"  />
+					<TextBlock Text="None disables selection all together." TextWrapping="Wrap"  />
+					<TextBlock Text="Single allows for only one item to be selected in the list" TextWrapping="Wrap"  />
+					<TextBlock Text="Multiple causes checkboxes to appear next to items, so that multiple items can be chosen from the list." TextWrapping="Wrap"  />
+					<TextBlock Text="Extended allows the user to select multiple items by using Ctrl+Click to select the individual items they want, or Shift+Click to select a range of contiguous items." TextWrapping="Wrap" />
+					
+					<ui:ListView Items="{Binding Contacts}"
+							 Width="350"
+							 Height="400"
+							 HorizontalAlignment="Left"
+							 BorderThickness="1"
+							 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+							 Name="ListView2">
+						<ui:ListView.ItemTemplate>
+							<DataTemplate x:DataType="vm:Contact">
+								<TextBlock Text="{CompiledBinding Name}" />
+							</DataTemplate>
+						</ui:ListView.ItemTemplate>
+					</ui:ListView>
+				</StackPanel>
+
+				<local:ControlExample.Options>
+					<StackPanel Margin="5">
+						<TextBlock Text="SelectionMode" />
+						<ComboBox Items="{Binding SelectionModes}" 
+								  SelectedItem="{Binding Path=SelectionMode, ElementName=ListView2, Mode=TwoWay}" />
+					</StackPanel>
+				</local:ControlExample.Options>
+				
+			</local:ControlExample>
+
+			
+			
+			<local:ControlExample TargetType="ListView"
+								  Header="ListViews with Drag, Drop, and Reordering support"
+								  ShowDocs="False">
+
+				<Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+					<TextBlock Text="This feature is still under development" />
+				</Grid>
+			</local:ControlExample>
+
+			<local:ControlExample TargetType="ListView"
+								  Header="ListView with grouped headers"
+								  ShowDocs="False">
+
+				<ui:ListView Items="{Binding Path=View, Source={StaticResource ContactGroupsSource}}"
+							 Width="250"
+							 Height="400"
+							 HorizontalAlignment="Left"
+							 BorderThickness="1"
+							 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+							 Name="ListView5">
+					<ui:ListView.ItemTemplate>
+						<DataTemplate x:DataType="vm:Contact">
+							<TextBlock Text="{CompiledBinding Name}" />
+						</DataTemplate>
+					</ui:ListView.ItemTemplate>
+					<ui:ListView.ItemsPanel>
+						<ItemsPanelTemplate>
+							<ui:ItemsStackPanel />
+						</ItemsPanelTemplate>
+					</ui:ListView.ItemsPanel>
+
+					<ui:FAItemsControl.GroupStyle>
+						<ui:GroupStyle>
+							<ui:GroupStyle.HeaderTemplate>
+								<DataTemplate DataType="vm:ContactGroup">
+									<TextBlock Text="{CompiledBinding GroupName}" />
+								</DataTemplate>
+							</ui:GroupStyle.HeaderTemplate>
+						</ui:GroupStyle>
+					</ui:FAItemsControl.GroupStyle>
+				</ui:ListView>
+
+				<local:ControlExample.Options>
+					<StackPanel Margin="5">
+						<TextBlock Text="AreStickyHeadersEnabled" />
+						<ToggleSwitch IsChecked="{Binding AreStickyHeadersEnabled, Mode=TwoWay}" Name="StickyHeadersToggle" />
+					</StackPanel>
+				</local:ControlExample.Options>
+				
+			</local:ControlExample>
+
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>
