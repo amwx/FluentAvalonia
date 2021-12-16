@@ -34,39 +34,11 @@ using IconElement = FluentAvalonia.UI.Controls.IconElement;
 
 namespace FluentAvaloniaSamples.Views
 {
-	public class TestItem
-	{
-		public TestItem(string h, string g)
-		{
-			Header = h;
-			Group = g;
-		}
-
-		public string Header { get; }
-		public string Group { get; }
-
-		public override string ToString()
-		{
-			return $"{Header}, {Group}";
-		}
-	}
-
-	public class TestGroup : ObservableCollection<TestItem>
-	{
-		public TestGroup(IEnumerable<TestItem> items, string groupName)
-			: base(items)
-		{
-			GroupName = groupName;
-		}
-
-		public string GroupName { get; }
-	}
+	
 
 	public class MainWindow : CoreWindow
     {
-		public ObservableCollection<TestItem> Items { get; }
-
-		public int SelectedIndex { get; } = 12;
+		
 
         public MainWindow()
         {
@@ -74,116 +46,9 @@ namespace FluentAvaloniaSamples.Views
 
 			DataContext = new MainWindowViewModel();
 
-			//var panel = new StackPanel();
-			//panel.AttachedToVisualTree += (s, e) =>
-			//{
-			//	Debug.WriteLine("SDFSDF ATTACHED");
-			//};
-
 #if DEBUG
 			this.AttachDevTools();
 #endif
-
-			var lv = this.FindControl<ListView>("ListView1");
-			Items = new ObservableCollection<TestItem>
-			{
-				new TestItem("Paul", "Atreides"),
-				new TestItem("Leto", "Atreides"),
-				new TestItem("Duncan", "Atreides"),
-				new TestItem("Gurney", "Atreides"),
-				new TestItem("Feyd Rautha", "Harkonnen"),
-				new TestItem("Baron", "Harkonnen"),
-				new TestItem("Alia", "Abomination"),
-				new TestItem("Gaius Helen Moiham", "Reverend Mother"),
-				new TestItem("Jessica", "Reverend Mother")
-			};
-
-			for (int i = 0; i < 10; i++)
-			{
-				Items.Add(new TestItem($"Added {i + 1}", "TEST"));
-			}
-			Items.Add(new TestItem("LastItem", ""));
-
-			//lv.Items = Items;
-
-			PointerPressed += (s, e) =>
-			{
-				//this.FindControl<ListView>("ListView1").ItemContainerGenerator.ContainerFromIndex(Items.Count - 1)
-				//.BringIntoView();
-			};
-
-			//this.FindControl<ListBox>("lb1").ItemsPanel =
-			//	new FuncTemplate<IPanel>(() => panel);
-
-			var gr = from item in Items
-					 group item by item.Group
-					 into g
-					 select new TestGroup(g, g.Key);
-
-			var obs = new ObservableCollection<TestGroup>(gr);
-
-			var cvs = new CollectionViewSource();
-			cvs.Source = obs;
-			cvs.IsSourceGrouped = true;
-
-			//this.FindControl<ItemsControl>("IC1").Items = cvs.View;
-			lv.Items = cvs.View;
-
-
-			this.FindControl<Avalonia.Controls.Button>("AddButton").Click += (s, e) =>
-			{
-				//Items.Insert(1, new TestItem("AddedItem", "Added"));
-
-				//obs[1].Add(new TestItem("Rabban", "Harkonnen"));
-
-				obs.Insert(0, new TestGroup(new[]
-				{
-					new TestItem("T1", "New Group"),
-					new TestItem("T1", "New Group"),
-				}, "New Group"));
-			};
-
-			this.FindControl<Avalonia.Controls.Button>("RemoveButton").Click += (s, e) =>
-			{
-				//Items.RemoveAt(4);
-
-				//obs[0].RemoveAt(2);
-
-				obs.RemoveAt(obs.Count - 1);
-			};
-
-			this.FindControl<Avalonia.Controls.Button>("ReplaceButton").Click += (s, e) =>
-			{
-				//Items[2] = new TestItem("Replaced", "R");
-
-				//obs[0][0] = new TestItem("Muad'Dib", "Atreides");
-
-				obs[1]= new TestGroup(new[]
-				{
-					new TestItem("R1", "Rep Group"),
-					new TestItem("R1", "Rep Group"),
-				}, "New Group");
-			};
-
-			this.FindControl<Avalonia.Controls.Button>("ResetButton").Click += (s, e) =>
-			{
-				//Items.Clear();
-
-				//obs[2].Clear();
-
-				obs.Clear();
-			};
-
-			this.FindControl<Avalonia.Controls.Button>("MoveButton").Click += (s, e) =>
-			{
-				//Items.Move(Items.Count - 1, 0);
-
-				//obs[3].Move(1, 0);
-
-				obs.Move(1, 0);
-			};
-
-
 
 			navView = this.Find<NavigationView>("NavView");
 			_frame = this.Find<Frame>("FrameView");
@@ -201,9 +66,7 @@ namespace FluentAvaloniaSamples.Views
 				_frame.Navigated += OnFrameNavigated;
 
 				_frame.Navigate(typeof(HomePage));
-			}
-
-			
+			}			
 		}
 
 		protected override void OnOpened(EventArgs e)

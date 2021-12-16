@@ -23,64 +23,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>-->
 	
-	<Panel Background="{DynamicResource TestBrush}">
-		<StackPanel Spacing="5" Margin="0 50 0 0" IsVisible="False">
-			<Button Content="Add" Name="AddButton" />
-			<Button Content="Remove" Name="RemoveButton" />
-			<Button Content="Replace" Name="ReplaceButton" />
-			<Button Content="Reset" Name="ResetButton" />
-			<Button Content="Move" Name="MoveButton" />
-		</StackPanel>
-		<!--SelectedIndex="{Binding Path=SelectedIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"-->
-		<Border Width="250" Height="400" IsVisible="False"
-				BorderBrush="#15FFFFFF" BorderThickness="1">
-			<ui:ListView Name="ListView1" CanDragItems="True" DragDrop.AllowDrop="True"
-						 CanReorderItems="True" SingleSelectionFollowsFocus="False"
-						 Header="header"
-						 ScrollViewer.HorizontalScrollBarVisibility="Auto">
-				<ui:ListView.ItemsPanel>
-					<ItemsPanelTemplate>
-						<ui:ItemsStackPanel Orientation="Vertical" />
-					</ItemsPanelTemplate>
-				</ui:ListView.ItemsPanel>
-				<ui:FAItemsControl.GroupStyle>
-					<ui:GroupStyle>
-						<ui:GroupStyle.HeaderTemplate>
-							<DataTemplate>
-								<TextBlock FontWeight="700"
-										   Text="{Binding GroupName}" />
-							</DataTemplate>
-						</ui:GroupStyle.HeaderTemplate>
-					</ui:GroupStyle>
-				</ui:FAItemsControl.GroupStyle>
-				<!--<ui:ListView.ItemTemplate>
-					<DataTemplate>
-						<Panel>
-							<TextBlock Text="{Binding Header}" />
-							<ui:ItemsStackPanel Margin="0 35 0 0">
-								<ui:ListViewItem Content="Hello" />
-							</ui:ItemsStackPanel>
-						</Panel>
-					</DataTemplate>
-				</ui:ListView.ItemTemplate>-->
-			</ui:ListView>
-		</Border>
-
-		<!--<ListBox Name="lb1" SelectedIndex="{Binding Path=SelectedIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-				 Items="{Binding Path=Items, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-				 Width="250" Height="200" VerticalAlignment="Top" HorizontalAlignment="Left">
-			
-		</ListBox>-->
-
-		<!--<ItemsControl Name="IC1" Width="250" Height="350" HorizontalAlignment="Right">
-			<ItemsControl.Template>
-				<ControlTemplate>
-					<ui:FAItemsPresenter />
-				</ControlTemplate>
-			</ItemsControl.Template>
-			
-		</ItemsControl>-->
-		
+	<Panel Background="{DynamicResource TestBrush}">		
 		<ui:NavigationView Name="NavView"
 							PaneDisplayMode="Left"
 							IsVisible="True"
