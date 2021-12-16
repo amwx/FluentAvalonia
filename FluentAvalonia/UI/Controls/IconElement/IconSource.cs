@@ -47,9 +47,9 @@ namespace FluentAvalonia.UI.Controls
             else if (value is string val)
             {
                 //First we try if the text is a valid Symbol
-                if (Enum.TryParse(typeof(Symbol), val, out object sym))
+                if (Enum.TryParse<Symbol>(val, out Symbol sym))
                 {
-                    return new SymbolIconSource() { Symbol = (Symbol)sym };
+                    return new SymbolIconSource() { Symbol = sym };
                 }
 
                 //Try a PathIcon

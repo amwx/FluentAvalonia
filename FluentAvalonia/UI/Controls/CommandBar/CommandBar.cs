@@ -311,12 +311,12 @@ namespace FluentAvalonia.UI.Controls
 
 		protected virtual void OnOpening() 
 		{
-			Opening?.Invoke(this, null);
+			Opening?.Invoke(this, EventArgs.Empty);
 		}
 
 		protected virtual void OnClosing() 
 		{
-			Closing?.Invoke(this, null);
+			Closing?.Invoke(this, EventArgs.Empty);
 		}
 
 		protected virtual void OnOpened() 
@@ -330,12 +330,12 @@ namespace FluentAvalonia.UI.Controls
 				}
 			}	
 
-			Opened?.Invoke(this, null);
+			Opened?.Invoke(this, EventArgs.Empty);
 		}
 
 		protected virtual void OnClosed() 
 		{
-			Closed?.Invoke(this, null);
+			Closed?.Invoke(this, EventArgs.Empty);
 			_moreButton?.Focus();
 		}
 
@@ -546,7 +546,7 @@ namespace FluentAvalonia.UI.Controls
 				}
 				else
 				{
-					return new[] { _primaryItems[^1] };
+					return new[] { _primaryItems[_primaryItems.Count - 1] };
 				}
 			}
 			else
@@ -554,7 +554,7 @@ namespace FluentAvalonia.UI.Controls
 				if (_primaryItems.Count == 0)
 					return null;
 
-				return new[] { _primaryItems[^1] };
+				return new[] { _primaryItems[_primaryItems.Count - 1] };
 			}
 		}
 

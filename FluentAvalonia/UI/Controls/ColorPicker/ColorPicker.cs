@@ -762,7 +762,7 @@ namespace FluentAvalonia.UI.Controls
 		{
 			if (e.Key == Key.Enter)
 			{
-				if (Color2.TryParse(_hexBox.Text, out Color2 c))
+				if (Color2.TryParse(_hexBox.Text.AsSpan(), out Color2 c))
 				{
 					UpdateColorAndControls(c, ColorUpdateReason.HexBox);
 					DataValidationErrors.SetError(_hexBox, null);

@@ -86,4 +86,13 @@
 	<StyleInclude Source="/Styling/Controls/CommandBar/CommandBarFlyoutCommandBar.axaml" />
 	
 	<StyleInclude Source="/Styling/Controls/InfoBadgeStyles.axaml" />
+	
+	<StyleInclude Source="/Styling/Controls/ListView.axaml" />
+	<StyleInclude Source="/Styling/Controls/ListViewItem.axaml" />
+	<StyleInclude Source="/Styling/Controls/ListViewHeaderItem.axaml" />
+
+	<StyleInclude Source="/Styling/Controls/GridView.axaml" />
+	<StyleInclude Source="/Styling/Controls/GridViewItem.axaml" />
+	
+	<StyleInclude Source="/Styling/Controls/CoreWindow.axaml" />
 </Styles>

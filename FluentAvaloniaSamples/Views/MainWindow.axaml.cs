@@ -4,39 +4,50 @@ using Avalonia.Animation.Animators;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Templates;
 using Avalonia.Diagnostics;
 using Avalonia.Dialogs;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using FluentAvalonia.Core;
+using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Data;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Navigation;
 using FluentAvaloniaSamples.Pages;
 using FluentAvaloniaSamples.ViewModels;
-using FluentAvaloniaSamples.Views.Internal;
+//using FluentAvaloniaSamples.Views.Internal;
 using SkiaSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using IconElement = FluentAvalonia.UI.Controls.IconElement;
 
 namespace FluentAvaloniaSamples.Views
 {
-    public class MainWindow : CoreWindow
+	
+
+	public class MainWindow : CoreWindow
     {
+		
+
         public MainWindow()
         {
 			InitializeComponent();
 
 			DataContext = new MainWindowViewModel();
+
 #if DEBUG
-            this.AttachDevTools();
+			this.AttachDevTools();
 #endif
 
 			navView = this.Find<NavigationView>("NavView");
@@ -55,13 +66,13 @@ namespace FluentAvaloniaSamples.Views
 				_frame.Navigated += OnFrameNavigated;
 
 				_frame.Navigate(typeof(HomePage));
-			}
-
+			}			
 		}
 
 		protected override void OnOpened(EventArgs e)
 		{
-			base.OnOpened(e);		
+			base.OnOpened(e);
+			Debug.WriteLine(FocusManager.Instance.Current);
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -154,7 +165,8 @@ namespace FluentAvaloniaSamples.Views
 			{
 				new NavigationViewItem { Content = "Home", Icon = new SymbolIcon{ Symbol=Symbol.Home }, Tag = typeof(HomePage)},
 				new NavigationViewItem { Content = "How to Use", Icon = new SymbolIcon{ Symbol=Symbol.DarkTheme }, Tag = typeof(ThemeManagerPage)},
-				
+				new NavigationViewItem { Content = "CoreWindow", Icon = new SymbolIcon{ Symbol=Symbol.NewWindow }, Tag = typeof(CoreWindowPage)},
+
 				new NavigationViewItemHeader { Content = "Restyled Core Controls" },
 				new NavigationViewItem { Content = "Core Controls", Icon = new SymbolIcon{ Symbol=Symbol.Checkmark }, Tag = typeof(BasicControls)},
 				
@@ -207,6 +219,7 @@ namespace FluentAvaloniaSamples.Views
 				new NavigationViewItem { Content = "NumberBox", Icon = new SymbolIcon{ Symbol=Symbol.Calculator }, Tag = typeof(NumberBoxPage)},
 				new NavigationViewItem { Content = "InfoBadge", Icon = new SymbolIcon{ Symbol=Symbol.Help }, Tag = typeof(InfoBadgePage)},
 				new NavigationViewItem { Content = "InfoBar", Icon = new SymbolIcon{ Symbol=Symbol.Help }, Tag = typeof(InfoBarPage)},
+				new NavigationViewItem {Content = "ListView", Icon = new SymbolIcon {Symbol = Symbol.List }, Tag=typeof(ListViewPage) }
 			};
 
 			navView.MenuItems = items;

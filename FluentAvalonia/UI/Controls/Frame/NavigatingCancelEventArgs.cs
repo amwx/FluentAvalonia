@@ -1,13 +1,11 @@
 ﻿using FluentAvalonia.UI.Media.Animation;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Navigation
 {
     public delegate void NavigatingCancelEventHandler(object sender, NavigatingCancelEventArgs e);
 
-    public class NavigatingCancelEventArgs
+    public class NavigatingCancelEventArgs : EventArgs
     {
         internal NavigatingCancelEventArgs(NavigationMode mode, NavigationTransitionInfo info,
             object param, Type srcType)

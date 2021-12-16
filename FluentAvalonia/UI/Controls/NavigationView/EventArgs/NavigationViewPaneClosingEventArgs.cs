@@ -1,11 +1,9 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class NavigationViewPaneClosingEventArgs
+    public class NavigationViewPaneClosingEventArgs : EventArgs
     {
         public bool Cancel
         {

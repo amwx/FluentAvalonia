@@ -1,0 +1,195 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:wnd="using:FluentAvalonia.Core.ApplicationModel"
+		xmlns:ui="using:FluentAvalonia.UI.Controls"
+		xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
+
+	<!-- This template should generally not be modified. Use the customization APIs to
+		 modify the appearance of a CoreWindow instance 
+		 Use ApplicationViewTitleBar.Instance to modify the colors here
+		 Use ICoreApplicationView (get from AvaloniaLocator) .TitleBar to extend the view or set your
+		 own custom title bar region
+	-->
+	
+	<Style Selector="Button.SystemCaption">
+		<Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackground}" />
+		<Setter Property="BorderBrush" Value="{x:Null}" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Width" Value="46" />
+		<Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForeground}" />
+		<Setter Property="VerticalAlignment" Value="Stretch" />
+		<Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
+		<Setter Property="FontSize" Value="14" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
+					<TextBlock FontFamily="{TemplateBinding FontFamily}"
+							   VerticalAlignment="Center"
+							   HorizontalAlignment="Center"
+								 Text="{TemplateBinding Content}"
+								   UseLayoutRounding="True"/>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+	<Style Selector="Button.SystemCaption:pointerover /template/ Border">
+		<Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundHover}" />
+	</Style>
+	<Style Selector="Button.SystemCaption:pointerover /template/ TextBlock">
+		<Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundHover}" />
+	</Style>
+	
+	<Style Selector="Button.SystemCaption:pressed /template/ Border">
+		<Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundPressed}" />
+	</Style>
+	<Style Selector="Button.SystemCaption:pressed /template/ TextBlock">
+		<Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundPressed}" />
+	</Style>
+
+	<Style Selector="Window[IsActive=False] Button.SystemCaption /template/ Border">
+		<Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundInactive}" />
+	</Style>
+	<Style Selector="Window[IsActive=False] Button.SystemCaption /template/ TextBlock">
+		<Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundInactive}" />
+	</Style>
+
+	<!-- Close Button -->
+	<Style Selector="Button.SystemCaption.Close:pointerover /template/ Border">
+		<Setter Property="Background" Value="#e81123" />
+	</Style>
+	<Style Selector="Button.SystemCaption.Close:pointerover /template/ TextBlock">
+		<Setter Property="Foreground" Value="White" />
+	</Style>
+	<Style Selector="Button.SystemCaption.Close:pressed /template/ Border">
+		<Setter Property="Background" Value="#f1707a" />
+	</Style>
+	<Style Selector="Button.SystemCaption.Close:pressed /template/ TextBlock">
+		<Setter Property="Foreground" Value="White" />
+	</Style>
+
+	<Style Selector="uip|MinMaxCloseControl">
+		<Setter Property="Height" Value="32" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<StackPanel Orientation="Horizontal">
+					<Button Name="MinimizeButton"
+							Classes="SystemCaption"  />
+					<Button Name="MaxRestoreButton"
+							Classes="SystemCaption" />
+					<Button Name="CloseButton"
+							Classes="SystemCaption Close"  />
+				</StackPanel>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+	<Style Selector="uip|MinMaxCloseControl /template/ Button#MinimizeButton">
+		<Setter Property="Content" Value="&#xE921;" />
+	</Style>
+	<Style Selector="uip|MinMaxCloseControl /template/ Button#MaxRestoreButton">
+		<Setter Property="Content" Value="&#xE15B;" />
+	</Style>
+	<Style Selector="uip|MinMaxCloseControl:maximized /template/ Button#MaxRestoreButton">
+		<Setter Property="Content" Value="&#xE923;" />
+		<!-- Icon seems a little too small, so we'll up the font size here to make it look more correct -->
+		<Setter Property="FontSize" Value="16" />
+	</Style>
+	<Style Selector="uip|MinMaxCloseControl /template/ Button#CloseButton">
+		<Setter Property="Content" Value="&#xE8BB;" />
+	</Style>
+
+
+	<Style Selector="Window:windows">
+		<Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
+		<Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+		<Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
+		<Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<VisualLayerManager>
+					<!-- Because we use the System Border, we don't specify anything like that here.-->
+					<Border Background="{TemplateBinding Background}"
+							Padding="{TemplateBinding Padding}"
+							Name="RootBorder">
+						<Panel>
+							<Panel Name="DefaultTitleBar"
+								   Height="32"
+								   VerticalAlignment="Top">
+								<TextBlock Name="TitleText"
+										   Text="{TemplateBinding Title}"
+										   Margin="70 0 0 0"
+										   FontSize="12"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Left" />
+							</Panel>
+
+							<ContentPresenter Name="PART_ContentPresenter"
+											  ClipToBounds="False"
+											  Margin="0 0 0 0"
+											  HorizontalAlignment="Stretch"
+											  VerticalAlignment="Stretch"
+											  Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+							<!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
+							<uip:MinMaxCloseControl HorizontalAlignment="Right"
+													VerticalAlignment="Top"
+													Name="SystemCaptionButtons"/>
+
+						</Panel>
+					</Border>
+				</VisualLayerManager>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+
+	<Style Selector="Window:windows /template/ Panel#DefaultTitleBar">
+		<Setter Property="Background" Value="{DynamicResource FATitle_TitleBarBackground}" />
+	</Style>
+	<Style Selector="Window:windows /template/ TextBlock#TitleText">
+		<Setter Property="Foreground" Value="{DynamicResource FATitle_TitleBarForeground}" />
+	</Style>
+
+	<Style Selector="Window:windows[IsActive=False] /template/ Panel#DefaultTitleBar">
+		<Setter Property="Background" Value="{DynamicResource FATitle_TitleBarBackgroundInactive}" />
+	</Style>
+	<Style Selector="Window:windows[IsActive=False] /template/ TextBlock#TitleText">
+		<Setter Property="Foreground" Value="{DynamicResource FATitle_TitleBarForegroundInactive}" />
+	</Style>
+	
+	<Style Selector="Window:windows:windows11">
+		<Setter Property="Background">
+			<SolidColorBrush Color="{DynamicResource SolidBackgroundFillColorTertiary}" Opacity="0.945" />
+		</Setter>
+	</Style>
+	<!-- Windows 10 doesn't have Mica, so we use a solid background color, which matches what WinUI does too -->
+	<Style Selector="Window:windows:windows10">
+		<Setter Property="Background" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
+	</Style>
+	<!-- 
+		Windows 10 is really a pain in the ass with custom window frames
+		For whatever reason, the top border of the window frame hides under WinUI Comp, so we have to 
+		fake it or else it looks weird. This isn't perfect, but better than nothing
+		-->
+	<Style Selector="Window:windows:windows10 /template/ Border#RootBorder">
+		<!-- This will show if custom accent color setting is used in Settings page-->
+		<Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+		<Setter Property="BorderThickness" Value="0 0.5 0 0" />
+	</Style>
+	<Style Selector="Window[IsActive=False]:windows:windows10 /template/ Border#RootBorder">
+		<Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultSolid}" />
+		<Setter Property="BorderThickness" Value="0 0.5 0 0" />
+	</Style>
+	<Style Selector="Window[WindowState=Maximized]:windows:windows10 /template/ Border#RootBorder">
+		<Setter Property="BorderThickness" Value="0 0 0 0" />
+	</Style>
+
+	<Style Selector="Window:windows:extended /template/ TextBlock#TitleText">
+		<Setter Property="IsVisible" Value="False" />
+	</Style>
+	<Style Selector="Window:windows:extended:customtitlebar /template/ Panel#DefaultTitleBar">
+		<Setter Property="HorizontalAlignment" Value="Right" />
+		<Setter Property="Width" Value="10" />
+	</Style>
+
+</Styles>

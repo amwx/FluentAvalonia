@@ -500,12 +500,12 @@ namespace FluentAvalonia.UI.Controls
 
 		protected virtual void OnOpening()
 		{
-			Opening?.Invoke(this, null);
+			Opening?.Invoke(this, EventArgs.Empty);
 		}
 
 		protected virtual void OnOpened()
 		{
-			Opened?.Invoke(this, null);
+			Opened?.Invoke(this, EventArgs.Empty);
 		}
 
 		protected virtual void OnClosing(ContentDialogClosingEventArgs args)
@@ -839,7 +839,7 @@ namespace FluentAvalonia.UI.Controls
 					{
 						if (i == 0)
 						{
-							return (true, children[^1]);
+							return (true, children[children.Count - 1]);
 						}
 						else
 						{

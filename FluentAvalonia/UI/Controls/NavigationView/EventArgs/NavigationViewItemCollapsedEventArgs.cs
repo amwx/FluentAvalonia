@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class NavigationViewItemCollapsedEventArgs
+    public class NavigationViewItemCollapsedEventArgs : EventArgs
     {
         public NavigationViewItemCollapsedEventArgs(NavigationView navigationView)
         {
@@ -27,6 +25,7 @@ namespace FluentAvalonia.UI.Controls
                 return null;
             }
         }
+
         public NavigationViewItemBase CollapsedItemContainer { get; internal set; }
 
         private object _collapsedItem;

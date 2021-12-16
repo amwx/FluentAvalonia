@@ -8,6 +8,7 @@ using Avalonia.Input;
 using FluentAvalonia.UI.Media;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -802,8 +803,8 @@ namespace FluentAvalonia.UI.Controls
 					{
 						var sz = Bounds.Size;
 
-						var pX = Math.Clamp(pt.X / sz.Width, 0, 1);
-						var pY = Math.Clamp(pt.Y / sz.Height, 0, 1);
+						var pX = MathHelpers.Clamp(pt.X / sz.Width, 0, 1);
+						var pY = MathHelpers.Clamp(pt.Y / sz.Height, 0, 1);
 
 						switch (Component)
 						{
@@ -837,8 +838,8 @@ namespace FluentAvalonia.UI.Controls
 						if (theta < 0)
 							theta += 360;
 
-						var dist = Math.Clamp(Math.Sqrt(dp.X * dp.X + dp.Y * dp.Y) / (_lastWheelRect.Width / 2), 0, 1);
-						Color = Color2.FromHSVf((float)Math.Clamp(theta, 0, 360), (float)dist, Color.Valuef);
+						var dist = MathHelpers.Clamp(Math.Sqrt(dp.X * dp.X + dp.Y * dp.Y) / (_lastWheelRect.Width / 2), 0, 1);
+						Color = Color2.FromHSVf((float)MathHelpers.Clamp(theta, 0, 360), (float)dist, Color.Valuef);
 					}
 					break;
 

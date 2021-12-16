@@ -1,114 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Platform;
-using Avalonia.Controls.Primitives;
-using Avalonia.Platform;
-using Avalonia.Rendering;
-using Avalonia.Styling;
 using FluentAvalonia.Interop;
 using System;
 using System.Runtime.InteropServices;
 
-namespace FluentAvaloniaSamples.Views.Internal
+namespace FluentAvalonia.UI.Controls
 {
-	// Special Win32 window impl for a better extended window frame.
-	// Not intended for outside use
-
-	public static class WindowImplSolver
-	{
-		public static IWindowImpl GetWindowImpl()
-		{
-			if (Design.IsDesignMode)
-				return PlatformManager.CreateWindow();
-
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-			{
-				return new CoreWindowImpl();
-			}
-
-			return PlatformManager.CreateWindow();
-		}
-	}
-
-	public class CoreWindow : Window, IStyleable
-	{
-		public CoreWindow()
-			: base(WindowImplSolver.GetWindowImpl())
-		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-			{
-				PseudoClasses.Set(":windows", true);
-
-				if (this.PlatformImpl is CoreWindowImpl cwi)
-				{
-					cwi.SetOwner(this);
-				}
-
-				ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
-				ExtendClientAreaToDecorationsHint = true;
-				TransparencyLevelHint = WindowTransparencyLevel.Mica;
-			}
-		}
-
-		Type IStyleable.StyleKey => typeof(Window);
-
-		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-		{
-			base.OnApplyTemplate(e);
-			_systemCaptionButtons = e.NameScope.Find<MinMaxCloseControl>("SystemCaptionButtons");
-			if (_systemCaptionButtons != null)
-			{
-				_systemCaptionButtons.Height = 32;
-			}
-			
-			_defaultTitleBar = e.NameScope.Find<Control>("DefaultTitleBar");
-			if (_defaultTitleBar != null)
-			{
-				_defaultTitleBar.Margin = new Thickness(0, 0, 138 /* 46x3 */, 0);
-				_defaultTitleBar.Height = 32;
-			}
-
-		}
-
-		internal bool HitTestTitleBarRegion(Point windowPoint)
-		{
-			return _defaultTitleBar?.HitTestCustom(windowPoint) ?? false;
-		}
-
-		internal bool HitTestCaptionButtons(Point pos)
-		{
-			if (pos.Y < 1)
-				return false;
-
-			var result = _systemCaptionButtons?.HitTestCustom(pos) ?? false;
-			return result;
-		}
-
-		internal bool HitTestMaximizeButton(Point pos)
-		{
-			return _systemCaptionButtons.HitTestMaxButton(pos);
-		}
-
-		internal void FakeMaximizeHover(bool hover)
-		{
-			_systemCaptionButtons.FakeMaximizeHover(hover);
-		}
-
-		internal void FakeMaximizePressed(bool pressed)
-		{
-			_systemCaptionButtons.FakeMaximizePressed(pressed);
-		}
-
-		internal void FakeMaximizeClick()
-		{
-			_systemCaptionButtons.FakeMaximizeClick();
-		}
-
-		private Control _defaultTitleBar;
-		private MinMaxCloseControl _systemCaptionButtons;
-	}
-
-	public class CoreWindowImpl : Avalonia.Win32.WindowImpl
+	internal class CoreWindowImpl : Avalonia.Win32.WindowImpl
 	{
 		public CoreWindowImpl()
 		{
@@ -125,7 +23,6 @@ namespace FluentAvaloniaSamples.Views.Internal
 			}
 
 			_isWindows11 = version.BuildNumber >= 22000;
-			_version = version;
 		}
 
 		protected override IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
@@ -133,16 +30,14 @@ namespace FluentAvaloniaSamples.Views.Internal
 			switch ((WM)msg)
 			{
 				case WM.NCCALCSIZE:
-					// Follows logic from how to extend window frame + WindowsTerminal + Firefox
+					// Weirdness: 
 					// Windows Terminal only handles WPARAM = TRUE & only adjusts the top of the
 					// rgrc[0] RECT & gets the correct result
 					// Firefox, on the other hand, handles BOTH times WM_NCCALCSIZE is called,
 					// and modifies the RECT.
-					// This particularly differs from the "built-in" method in Avalonia in that
-					// I retain the SystemBorder & ability resize the window in the transparent
-					// area over the drop shadows, meaning resize handles don't overlap the window
+					// HERE, I've gotten Firefox's method to work but I can resize from the Window shadows again!
 
-					if (wParam != IntPtr.Zero)
+					if (wParam != IntPtr.Zero) //wParam == TRUE
 					{
 						var ncParams = Marshal.PtrToStructure<NCCALCSIZE_PARAMS>(lParam);
 
@@ -178,6 +73,13 @@ namespace FluentAvaloniaSamples.Views.Internal
 
 				case WM.SIZE:
 					EnsureExtended();
+
+					if (_fakingMaximizeButton)
+					{
+						// Sometimes the effect can get stuck, so if we resize, clear it
+						_owner.FakeMaximizePressed(false);
+						_wasFakeMaximizeDown = false;
+					}
 					break;
 
 				case WM.NCMOUSEMOVE:
@@ -217,28 +119,11 @@ namespace FluentAvaloniaSamples.Views.Internal
 			return base.WndProc(hWnd, msg, wParam, lParam);
 		}
 
-		internal void SetOwner(CoreWindow wnd)
-		{
-			_owner = wnd;
-
-			if (_version.BuildNumber >= 22000)
-			{
-				((IPseudoClasses)_owner.Classes).Set(":windows11", true);
-			}
-			else
-			{
-				((IPseudoClasses)_owner.Classes).Set(":windows10", true);
-			}
-		}
+		internal void SetOwner(CoreWindow wnd) => _owner = wnd;
 
 		private int GetResizeHandleHeight()
 		{
-			if (_version.BuildNumber >= 14393)
-			{
-				return Win32Interop.GetSystemMetricsForDpi(92 /*SM_CXPADDEDBORDER*/, (uint)(RenderScaling * 96)) +
-					Win32Interop.GetSystemMetricsForDpi(33 /* SM_CYSIZEFRAME */, (uint)(RenderScaling * 96));
-			}
-
+			// TODO GetSystemMetricsForDPI (Win 10 1607 / 10.0.14393 and later)
 			return Win32Interop.GetSystemMetrics(92 /* SM_CXPADDEDBORDER */) +
 				Win32Interop.GetSystemMetrics(33/* SM_CYSIZEFRAME */);
 		}
@@ -260,7 +145,7 @@ namespace FluentAvaloniaSamples.Views.Internal
 			Win32Interop.AdjustWindowRectExForDpi(ref frame,
 				(int)style, false, 0, (int)(RenderScaling * 96));
 
-			marg.topHeight = -frame.top + (_isWindows11 ? 0 : -1);
+			marg.topHeight = -frame.top;
 			Win32Interop.DwmExtendFrameIntoClientArea(Handle.Handle, ref marg);
 		}
 
@@ -355,10 +240,9 @@ namespace FluentAvaloniaSamples.Views.Internal
 			return (int)(ptr.ToInt64() & 0xffffffff);
 		}
 
-		private bool _wasFakeMaximizeDown;
-		private bool _fakingMaximizeButton;
-		private bool _isWindows11 = false;
+		private bool _isWindows11;
 		private CoreWindow _owner;
-		private Win32Interop.OSVERSIONINFOEX _version;
+		private bool _fakingMaximizeButton;
+		private bool _wasFakeMaximizeDown;
 	}
 }

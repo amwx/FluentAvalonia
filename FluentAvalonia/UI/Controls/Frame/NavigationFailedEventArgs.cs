@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Navigation
 {
     public delegate void NavigationFailedEventHandler(object sender, NavigationFailedEventArgs e);
 
-    public class NavigationFailedEventArgs
+    public class NavigationFailedEventArgs : EventArgs
     {
         internal NavigationFailedEventArgs(Exception ex, Type srcPageType)
         {

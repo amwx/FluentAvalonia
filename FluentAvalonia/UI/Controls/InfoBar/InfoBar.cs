@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
+using System;
 using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Controls
@@ -175,7 +176,7 @@ namespace FluentAvalonia.UI.Controls
 
 		private void OnCloseButtonClick(object sender, RoutedEventArgs e)
 		{
-			CloseButtonClick?.Invoke(this, null);
+			CloseButtonClick?.Invoke(this, EventArgs.Empty);
 			_lastCloseReason = InfoBarCloseReason.CloseButton;
 			IsOpen = false;
 		}

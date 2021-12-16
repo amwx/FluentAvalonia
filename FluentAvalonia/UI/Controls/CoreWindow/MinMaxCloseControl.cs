@@ -2,14 +2,19 @@
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using FluentAvaloniaSamples.Views.Internal;
 using System;
 using Avalonia.Rendering;
+using Avalonia.Input;
 
-namespace FluentAvaloniaSamples
+namespace FluentAvalonia.UI.Controls.Primitives
 {
 	public class MinMaxCloseControl : TemplatedControl
 	{
+		public MinMaxCloseControl()
+		{
+			KeyboardNavigation.SetIsTabStop(this, false);
+		}
+
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
 			if (_minimizeButton != null)
@@ -23,18 +28,24 @@ namespace FluentAvaloniaSamples
 
 			base.OnApplyTemplate(e);
 
-			_minimizeButton = e.NameScope.Find<Button>("MinimizeButton");
+			_minimizeButton = e.NameScope.Find<Avalonia.Controls.Button>("MinimizeButton");
 			if (_minimizeButton != null)
 				_minimizeButton.Click += OnButtonClick;
 
-			_maximizeButton = e.NameScope.Find<Button>("MaxRestoreButton");
+			_maximizeButton = e.NameScope.Find<Avalonia.Controls.Button>("MaxRestoreButton");
 			if (_maximizeButton != null)
 				_maximizeButton.Click += OnButtonClick;
 
-			_closeButton = e.NameScope.Find<Button>("CloseButton");
+			_closeButton = e.NameScope.Find<Avalonia.Controls.Button>("CloseButton");
 			if (_closeButton != null)
 				_closeButton.Click += OnButtonClick;
 		}
+
+		internal Avalonia.Controls.Button MinimizeButton => _minimizeButton;
+
+		internal Avalonia.Controls.Button MaximizeButton => _maximizeButton;
+
+		internal Avalonia.Controls.Button CloseButton => _closeButton;
 
 		protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
 		{
@@ -119,11 +130,11 @@ namespace FluentAvaloniaSamples
 		{
 			OnButtonClick(_maximizeButton, null);
 		}
-
+				
 		private IDisposable _windowStateObservable;
 		private CoreWindow _owner;
-		private Button _minimizeButton;
-		private Button _maximizeButton;
-		private Button _closeButton;
+		private Avalonia.Controls.Button _minimizeButton;
+		private Avalonia.Controls.Button _maximizeButton;
+		private Avalonia.Controls.Button _closeButton;
 	}
 }

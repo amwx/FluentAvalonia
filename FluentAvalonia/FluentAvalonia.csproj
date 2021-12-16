@@ -1,17 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
     <Nullable>disable</Nullable>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
-    <PackageId>FluentAvaloniaUI</PackageId>
-  </PropertyGroup>
+	<RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
+	<PackageId>FluentAvaloniaUI</PackageId>
+</PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.1.6</Version>
-        <AssemblyVersion>1.1.6.0</AssemblyVersion>
+        <Version>1.1.7</Version>
+        <AssemblyVersion>1.1.7.0</AssemblyVersion>
     </PropertyGroup>
 
 
@@ -25,10 +32,11 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\*.*" />
 	    <AvaloniaResource Include="Fonts\*.*" />
-    </ItemGroup> 
-    <ItemGroup>
-      <PackageReference Include="Avalonia" Version="0.10.10" />
-      <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
-      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
     </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="0.10.10" />
+		<PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
+	</ItemGroup>
 </Project>

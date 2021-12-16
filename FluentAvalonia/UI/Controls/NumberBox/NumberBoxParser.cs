@@ -244,7 +244,7 @@ namespace FluentAvalonia.UI.Controls
 
         public static double? Compute(string expr)
         {
-            var tokens = GetTokens(expr);
+            var tokens = GetTokens(expr.AsSpan());
             if (tokens != null && tokens.Count > 0)
             {
                 // Rearrange to postfix notation

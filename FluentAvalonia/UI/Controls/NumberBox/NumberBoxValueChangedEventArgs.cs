@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace FluentAvalonia.UI.Controls
 {
-    public class NumberBoxValueChangedEventArgs
+    public class NumberBoxValueChangedEventArgs : EventArgs
     {
         internal NumberBoxValueChangedEventArgs(double oldV, double newV)
         {
