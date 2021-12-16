@@ -5,7 +5,7 @@ Bringing more of Fluent design and WinUI controls into Avalonia.
 [![Nuget](https://img.shields.io/nuget/v/FluentAvaloniaUI?style=flat-square)](https://www.nuget.org/packages/FluentAvaloniaUI/)
 (NOTE: nuget package is under id FluentAvaloniaUI)
 
-Currently Targets: Avalonia 0.10.10 & .net core 5.0
+Currently Targets: Avalonia 0.10.10 & multitargets netstandard2.0;netstandard2.1;net5.0
 
 Note: Windows 7, 8/8.1 are not supported by FluentAvalonia.
 
