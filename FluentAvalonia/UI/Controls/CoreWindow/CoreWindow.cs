@@ -48,7 +48,6 @@ namespace FluentAvalonia.UI.Controls
 				ExtendClientAreaToDecorationsHint = true;
 				PseudoClasses.Add(":windows");
 
-				AvaloniaLocator.CurrentMutable.Bind<ICoreApplicationView>().ToConstant<ICoreApplicationView>(this);
 				ApplicationViewTitleBar.Instance.TitleBarPropertyChanged += OnTitleBarPropertyChanged;
 			}
 		}

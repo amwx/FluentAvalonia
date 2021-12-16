@@ -165,7 +165,8 @@ namespace FluentAvaloniaSamples.Views
 			{
 				new NavigationViewItem { Content = "Home", Icon = new SymbolIcon{ Symbol=Symbol.Home }, Tag = typeof(HomePage)},
 				new NavigationViewItem { Content = "How to Use", Icon = new SymbolIcon{ Symbol=Symbol.DarkTheme }, Tag = typeof(ThemeManagerPage)},
-				
+				new NavigationViewItem { Content = "CoreWindow", Icon = new SymbolIcon{ Symbol=Symbol.NewWindow }, Tag = typeof(CoreWindowPage)},
+
 				new NavigationViewItemHeader { Content = "Restyled Core Controls" },
 				new NavigationViewItem { Content = "Core Controls", Icon = new SymbolIcon{ Symbol=Symbol.Checkmark }, Tag = typeof(BasicControls)},
 				
