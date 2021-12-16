@@ -8,6 +8,7 @@ using Avalonia.Layout;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
+using FluentAvalonia.UI.Controls.Primitives;
 using FluentAvalonia.UI.Data;
 using System;
 using System.Collections;
@@ -129,7 +130,7 @@ namespace FluentAvalonia.UI.Controls
 			if (_itemsPanel == null)
 				SetItemsPanel(new StackPanel());
 
-			_itemsPanel.Measure(availableSize);
+			_itemsPanel.Measure(Size.Infinity);
 
 			_headerControl?.Measure(Size.Infinity);
 			_footerControl?.Measure(Size.Infinity);
@@ -166,30 +167,62 @@ namespace FluentAvalonia.UI.Controls
 
 			var panelSize = _itemsPanel.DesiredSize;
 
-			if (_orientation == Orientation.Horizontal)
+			if (_itemsPanel is ItemsStackPanel || _itemsPanel is StackPanel)
 			{
-				double totalWidth = _headerControl?.DesiredSize.Width ?? 0;
-
-				_itemsPanel.Arrange(new Rect(totalWidth - offset.X, -offset.Y, panelSize.Width, finalSize.Height));
-
-				totalWidth += panelSize.Width;
-
-				if (_footerControl != null)
+				if (_orientation == Orientation.Horizontal)
 				{
-					_footerControl.Arrange(new Rect(totalWidth-offset.X, -offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					double totalWidth = _headerControl?.DesiredSize.Width ?? 0;
+
+					_itemsPanel.Arrange(new Rect(totalWidth - offset.X, -offset.Y, panelSize.Width, finalSize.Height));
+
+					totalWidth += panelSize.Width;
+
+					if (_footerControl != null)
+					{
+						_footerControl.Arrange(new Rect(totalWidth - offset.X, -offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					}
+				}
+				else if (_orientation == Orientation.Vertical)
+				{
+					double totalHeight = _headerControl?.DesiredSize.Height ?? 0;
+
+					_itemsPanel.Arrange(new Rect(-offset.X, totalHeight - offset.Y, finalSize.Width, panelSize.Height));
+
+					totalHeight += panelSize.Height;
+
+					if (_footerControl != null)
+					{
+						_footerControl.Arrange(new Rect(-offset.X, totalHeight - offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					}
 				}
 			}
-			else if (_orientation == Orientation.Vertical)
+			else if (_itemsPanel is ItemsWrapGrid || _itemsPanel is WrapPanel)
 			{
-				double totalHeight = _headerControl?.DesiredSize.Height ?? 0;
-
-				_itemsPanel.Arrange(new Rect(-offset.X, totalHeight - offset.Y, finalSize.Width, panelSize.Height));
-
-				totalHeight += panelSize.Height;
-
-				if (_footerControl != null)
+				if (_orientation == Orientation.Vertical)
 				{
-					_footerControl.Arrange(new Rect(-offset.X, totalHeight - offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					double totalWidth = _headerControl?.DesiredSize.Width ?? 0;
+
+					_itemsPanel.Arrange(new Rect(totalWidth - offset.X, -offset.Y, panelSize.Width, finalSize.Height));
+
+					totalWidth += panelSize.Width;
+
+					if (_footerControl != null)
+					{
+						_footerControl.Arrange(new Rect(totalWidth - offset.X, -offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					}
+				}
+				else if (_orientation == Orientation.Horizontal)
+				{
+					double totalHeight = _headerControl?.DesiredSize.Height ?? 0;
+
+					_itemsPanel.Arrange(new Rect(-offset.X, totalHeight - offset.Y, finalSize.Width, panelSize.Height));
+
+					totalHeight += panelSize.Height;
+
+					if (_footerControl != null)
+					{
+						_footerControl.Arrange(new Rect(-offset.X, totalHeight - offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					}
 				}
 			}
 			else
@@ -197,13 +230,13 @@ namespace FluentAvalonia.UI.Controls
 				double totalWidth = _headerControl?.DesiredSize.Width ?? 0;
 				double totalHeight = _headerControl?.DesiredSize.Height ?? 0;
 
-				_itemsPanel.Arrange(new Rect(-offset.X, totalHeight - offset.Y, panelSize.Width, panelSize.Height));
+				_itemsPanel.Arrange(new Rect(-offset.X, totalHeight - offset.Y, finalSize.Width, finalSize.Height));
 
 				totalHeight += panelSize.Height;
 
 				if (_footerControl != null)
 				{
-					_footerControl.Arrange(new Rect(-offset.X, totalHeight-offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
+					_footerControl.Arrange(new Rect(-offset.X, totalHeight - offset.Y, _footerControl.DesiredSize.Width, _footerControl.DesiredSize.Height));
 				}
 			}
 
@@ -261,6 +294,10 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_orientation = isp.Orientation;
 			}
+			else if (_itemsPanel is ItemsWrapGrid iwg)
+			{
+				_orientation = iwg.Orientation;
+			}
 			else if (_itemsPanel is StackPanel sp)
 			{
 				_orientation = sp.Orientation;
@@ -270,7 +307,9 @@ namespace FluentAvalonia.UI.Controls
 			// ItemsStackPanel or ItemsWrapGrid. If user changes that to any of the default panels in
 			// Avalonia (or a custom one) these controls won't populate because ISP/IWG handle items
 			// themselves. So this allows a fallback...though no virtualization is supported this way
-			if (!(panel is ItemsStackPanel))
+			// However, if you implement your own panel that extends from ModernCollectionBasePanel, 
+			// we hand it off to custom panel
+			if (!(panel is ModernCollectionBasePanel))
 			{
 				_itemsManager = new ItemsPresenterItemsManager(_itemsOwner, panel);
 				_itemsPresenterManagesItems = true;

@@ -9,6 +9,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core.Attributes;
+using FluentAvalonia.UI.Controls.Primitives;
 using FluentAvalonia.UI.Data;
 using System;
 using System.Collections;
@@ -18,7 +19,7 @@ using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ItemsStackPanel : Panel, ILogicalScrollable
+	public class ItemsStackPanel : ModernCollectionBasePanel, ILogicalScrollable
 	{
 		public static readonly DirectProperty<ItemsStackPanel, double> CacheLengthProperty =
 			AvaloniaProperty.RegisterDirect<ItemsStackPanel, double>(nameof(CacheLength),
@@ -68,14 +69,6 @@ namespace FluentAvalonia.UI.Controls
 			get => _cacheLength;
 			set => SetAndRaise(CacheLengthProperty, ref _cacheLength, value);
 		}
-
-		public int FirstCacheIndex { get; private set; }
-
-		public int FirstVisibleIndex { get; private set; }
-
-		public int LastCacheIndex { get; private set; }
-
-		public int LastVisibleIndex { get; private set; }
 
 		[NotImplemented]
 		public PaneScrollingDirection ScrollingDirection { get; private set; }

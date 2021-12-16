@@ -91,5 +91,8 @@
 	<StyleInclude Source="/Styling/Controls/ListViewItem.axaml" />
 	<StyleInclude Source="/Styling/Controls/ListViewHeaderItem.axaml" />
 
+	<StyleInclude Source="/Styling/Controls/GridView.axaml" />
+	<StyleInclude Source="/Styling/Controls/GridViewItem.axaml" />
+	
 	<StyleInclude Source="/Styling/Controls/CoreWindow.axaml" />
 </Styles>

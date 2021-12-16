@@ -287,7 +287,7 @@ namespace FluentAvalonia.UI.Controls
 			return false;
 		}
 
-		internal void UpdateSelectionFromItemFocus(ListViewItem lvi)
+		internal void UpdateSelectionFromItemFocus(IControl lvi)
 		{
 			var index = ItemContainerGenerator.IndexFromContainer(lvi);
 			Presenter.ScrollIntoView(index);
