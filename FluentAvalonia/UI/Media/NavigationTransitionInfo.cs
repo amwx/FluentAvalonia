@@ -87,7 +87,7 @@ namespace FluentAvalonia.UI.Media.Animation
 				FillMode = FillMode.Forward
 			};
 
-            await animation.RunAsync(ctrl);
+            await animation.RunAsync(ctrl, null);
 
 			(ctrl as IVisual).Opacity = 1;
 		}
@@ -131,7 +131,7 @@ namespace FluentAvalonia.UI.Media.Animation
 				FillMode = FillMode.Forward
             };
 
-            await animation.RunAsync(ctrl);
+            await animation.RunAsync(ctrl, null);
 
 			(ctrl as IVisual).Opacity = 1;
         }
@@ -174,7 +174,7 @@ namespace FluentAvalonia.UI.Media.Animation
 				FillMode = FillMode.Forward
 			};
 
-            await animation.RunAsync(ctrl);
+            await animation.RunAsync(ctrl, null);
 
 			(ctrl as IVisual).Opacity = 1;
 		}

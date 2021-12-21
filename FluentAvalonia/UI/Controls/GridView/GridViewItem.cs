@@ -75,7 +75,7 @@ namespace FluentAvalonia.UI.Controls
 				}
 			};
 
-			await ani.RunAsync(this);
+			await ani.RunAsync(this, null);
 		}
 	}
 }
