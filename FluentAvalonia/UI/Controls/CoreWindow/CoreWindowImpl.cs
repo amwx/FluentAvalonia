@@ -119,7 +119,11 @@ namespace FluentAvalonia.UI.Controls
 			return base.WndProc(hWnd, msg, wParam, lParam);
 		}
 
-		internal void SetOwner(CoreWindow wnd) => _owner = wnd;
+		internal void SetOwner(CoreWindow wnd)
+		{
+			 _owner = wnd;
+			((IPseudoClasses)wnd.Classes).Set(":windows10", !_isWindows11);
+		}
 
 		private int GetResizeHandleHeight()
 		{
