@@ -17,8 +17,8 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.1.7</Version>
-        <AssemblyVersion>1.1.7.0</AssemblyVersion>
+        <Version>1.1.8</Version>
+        <AssemblyVersion>1.1.8.0</AssemblyVersion>
     </PropertyGroup>
 
 
