@@ -77,6 +77,19 @@ namespace FluentAvalonia.UI.Controls
 				_systemCaptionButtons.Height = _titleBar.Height;
 			}
 
+			if (_titleBar != null && Presenter != null)
+			{
+				if (_titleBar.ExtendViewIntoTitleBar)
+				{
+					(Presenter as ContentPresenter).Margin = new Thickness();
+				}
+				else
+				{
+					(Presenter as ContentPresenter).Margin = new Thickness(0,
+						_titleBar.Height, 0, 0);
+				}
+			}
+
 			SetTitleBarColors();
 		}
 

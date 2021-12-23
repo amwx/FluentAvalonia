@@ -291,7 +291,7 @@ namespace FluentAvalonia.UI.Controls
 					_minRecoverWidth = _primaryItemsHost.DesiredSize.Width;// + trackWid;
 				}
 
-				_overflowSeparator.IsVisible = _numInOverflow > 0;
+				_overflowSeparator.IsVisible = _numInOverflow > 0 && SecondaryCommands.Count > 0;
 			}
 
 			var overflowVis = OverflowButtonVisibility;
@@ -303,8 +303,7 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_moreButton.IsVisible = overflowVis == CommandBarOverflowButtonVisibility.Visible;
 			}
-
-			
+						
 			return base.MeasureOverride(availableSize);
 		}
 

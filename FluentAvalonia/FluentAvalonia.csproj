@@ -17,8 +17,8 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.1.7</Version>
-        <AssemblyVersion>1.1.7.0</AssemblyVersion>
+        <Version>1.1.8</Version>
+        <AssemblyVersion>1.1.8.0</AssemblyVersion>
     </PropertyGroup>
 
 
@@ -35,8 +35,8 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia" Version="0.10.10" />
-		<PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
-		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
+		<PackageReference Include="Avalonia" Version="0.10.11" />
+		<PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.11" />
 	</ItemGroup>
 </Project>
