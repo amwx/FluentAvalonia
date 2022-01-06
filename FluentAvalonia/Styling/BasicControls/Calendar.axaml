@@ -191,9 +191,12 @@
     <Style Selector="CalendarDayButton:dayfocused:not(:focus) /template/ Border#FocusVisual">
             <Setter Property="IsVisible" Value="True"/>
       </Style>
+	<!--
+	Removed as this seems to conflict when Calendar is in CalendarDatePicker
+	No side effects so far
 	<Style Selector="CalendarDayButton:dayfocused:not(:focus) Border#Border">
 		<Setter Property="IsVisible" Value="False"/>
-	</Style>
+	</Style>-->
     <Style Selector="CalendarDayButton:disabled /template/ Ellipse#Background">
         <Setter Property="Fill" Value="{DynamicResource CalendarViewCalendarItemDisabledBackground}"/>
     </Style>
@@ -344,9 +347,11 @@
 	<Style Selector="CalendarButton:dayfocused:not(:focus) /template/ Border#FocusVisual">
 		<Setter Property="IsVisible" Value="True"/>
 	</Style>
+	<!--
+	See note above
 	<Style Selector="CalendarButton:dayfocused:not(:focus) Border#Border">
 		<Setter Property="IsVisible" Value="False"/>
-	</Style>
+	</Style>-->
 	<Style Selector="CalendarButton:disabled /template/ Ellipse#Background">
 		<Setter Property="Fill" Value="{DynamicResource CalendarViewCalendarItemDisabledBackground}"/>
 	</Style>

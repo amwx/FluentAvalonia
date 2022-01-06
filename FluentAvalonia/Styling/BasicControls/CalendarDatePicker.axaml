@@ -101,21 +101,32 @@
                     <Popup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"
                            PlacementTarget="{TemplateBinding}"
+						   PlacementMode="AnchorAndGravity"
+						   PlacementAnchor="Bottom"
+						   PlacementGravity="Bottom"
                            IsLightDismissEnabled="True">
-                        <Calendar Name="PART_Calendar"
-                                  FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
-                                  IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
-                                  SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
-                                  DisplayDate="{TemplateBinding DisplayDate}"
-                                  DisplayDateStart="{TemplateBinding DisplayDateStart}"
-                                  DisplayDateEnd="{TemplateBinding DisplayDateEnd}"/>
+						<Border Name="DropDownRoot">
+							<Calendar Name="PART_Calendar"
+									  FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
+									  IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
+									  SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
+									  DisplayDate="{TemplateBinding DisplayDate}"
+									  DisplayDateStart="{TemplateBinding DisplayDateStart}"
+									  DisplayDateEnd="{TemplateBinding DisplayDateEnd}"/>
+						</Border>
+                        
                     </Popup>
                 </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
-
-
+	<Style Selector="CalendarDatePicker /template/ Border#DropDownRoot">
+		<Setter Property="Background" Value="{DynamicResource FlyoutPresenterBackground}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+	</Style>
+	<Style Selector="CalendarDatePicker /template/ Calendar#PART_Calendar">
+		<Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+	</Style>
 
 
 </Styles>
