@@ -113,7 +113,8 @@
 											  Width="Auto" />
 						</Grid.ColumnDefinitions>
 
-						<ContentPresenter Content="{TemplateBinding Content}" />
+						<ContentPresenter Content="{TemplateBinding Content}" 
+						                  ContentTemplate="{TemplateBinding ContentTemplate}" />
 
 						<ui:FontIcon Name="SortIcon"
 									 Grid.Column="1"
