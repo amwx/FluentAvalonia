@@ -11,13 +11,12 @@ namespace FluentAvalonia.UI.Controls
 	// Why? Who knows, just derive straight from ToggleMenuFlyoutItem
 	// Either way, I can't make sense of what they actually do, so this is just a simple
 	// radiobutton approach
+
+	/// <summary>
+	/// Represents a menu item that is mutually exclusive with other radio menu items in its group.
+	/// </summary>
 	public class RadioMenuFlyoutItem : ToggleMenuFlyoutItem, IStyleable
 	{
-		public RadioMenuFlyoutItem()
-		{
-
-		}
-
 		static RadioMenuFlyoutItem()
 		{
 			if (SelectionMap == null)
@@ -26,17 +25,23 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		Type IStyleable.StyleKey => typeof(RadioMenuFlyoutItem);
-
+		/// <summary>
+		/// Defines the <see cref="GroupName"/> property
+		/// </summary>
 		public static readonly DirectProperty<RadioMenuFlyoutItem, string> GroupNameProperty =
 			RadioButton.GroupNameProperty.AddOwner<RadioMenuFlyoutItem>(x => x.GroupName,
 				(x, v) => x.GroupName = v);
 
+		/// <summary>
+		/// Gets or sets the name that specifies which RadioMenuFlyoutItem controls are mutually exclusive.
+		/// </summary>
 		public string GroupName
 		{
 			get => _groupName;
 			set => SetAndRaise(GroupNameProperty, ref _groupName, value);
 		}
+
+		Type IStyleable.StyleKey => typeof(RadioMenuFlyoutItem);
 
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
 		{
@@ -67,8 +72,6 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		//private bool _isSafeUncheck = false;
-		//private bool _isChecked;
 		private string _groupName = string.Empty;
 
 		internal static readonly SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>> SelectionMap;

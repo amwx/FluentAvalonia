@@ -7,7 +7,7 @@ using Avalonia.Data;
 namespace FluentAvalonia.UI.Controls
 {
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public class MenuFlyoutPresenterItemContainerGenerator : ItemContainerGenerator
+	internal class MenuFlyoutPresenterItemContainerGenerator : ItemContainerGenerator
 	{
 		public MenuFlyoutPresenterItemContainerGenerator(IControl owner)
 			: base(owner) { }

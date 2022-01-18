@@ -5,93 +5,15 @@ using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using FluentAvalonia.UI.Input;
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSource
+	/// <summary>
+	/// Represents a command in a <see cref="MenuFlyout"/> control.
+	/// </summary>
+	public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSource
 	{
-		public static readonly StyledProperty<string> TextProperty =
-			AvaloniaProperty.Register<MenuFlyoutItem, string>(nameof(Text));
-
-		public static readonly StyledProperty<IconElement> IconProperty =
-			AvaloniaProperty.Register<MenuFlyoutItem, IconElement>(nameof(Icon));
-
-		public static readonly DirectProperty<MenuFlyoutItem, ICommand> CommandProperty =
-			Button.CommandProperty.AddOwner<MenuFlyoutItem>(x => x.Command,
-				(x, v) => x.Command = v);
-
-		public static readonly StyledProperty<object> CommandParameterProperty =
-			Button.CommandParameterProperty.AddOwner<MenuFlyoutItem>();
-
-		public static readonly StyledProperty<KeyGesture> HotKeyProperty =
-			Button.HotKeyProperty.AddOwner<MenuFlyoutItem>();
-
-
-		public string Text
-		{
-			get => GetValue(TextProperty);
-			set => SetValue(TextProperty, value);
-		}
-
-		public IconElement Icon
-		{
-			get => GetValue(IconProperty);
-			set => SetValue(IconProperty, value);
-		}
-
-		public KeyGesture HotKey
-		{
-			get => GetValue(HotKeyProperty);
-			set => SetValue(HotKeyProperty, value);
-		}
-
-		public ICommand Command
-		{
-			get => _command;
-			set => SetAndRaise(CommandProperty, ref _command, value);
-		}
-
-		public object CommandParameter
-		{
-			get => GetValue(CommandParameterProperty);
-			set => SetValue(CommandParameterProperty, value);
-		}
-
-		protected override bool IsEnabledCore => base.IsEnabledCore && _canExecute;
-
-		public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-			RoutedEvent.Register<MenuFlyoutItem, RoutedEventArgs>(nameof(Click),
-			  RoutingStrategies.Bubble);
-
-		public event EventHandler<RoutedEventArgs> Click
-		{
-			add => AddHandler(ClickEvent, value);
-			remove => RemoveHandler(ClickEvent, value);
-		}
-
-
-		bool IMenuItem.HasSubMenu => false;
-		bool IMenuItem.IsPointerOverSubMenu => false;
-		bool IMenuItem.IsSubMenuOpen { get => false; set { } }
-		public bool IsTopLevel => false;
-		IMenuItem IMenuElement.SelectedItem { get => null; set { } }
-		IEnumerable<IMenuItem> IMenuElement.SubItems => null;
-		IMenuElement IMenuItem.Parent
-		{
-			get
-			{
-				if (this.FindLogicalAncestorOfType<MenuFlyoutSubItem>() is MenuFlyoutSubItem mfsi)
-				{
-					return mfsi;
-				}
-
-				return Parent as IMenuElement;
-			}
-		}
-
-
 		protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
 		{
 			if (_hotkey != null)
@@ -211,20 +133,7 @@ namespace FluentAvalonia.UI.Controls
 				PseudoClasses.Set(":pressed", false);
 			}
 		}
-
-		void IMenuElement.Close() { }
-		void IMenuElement.Open() { }
-
-		public bool MoveSelection(NavigationDirection direction, bool wrap)
-		{
-			return false;
-		}
-
-		public void RaiseClick()
-		{
-			OnClick();
-		}
-
+				
 		protected virtual void OnClick()
 		{
 			RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
@@ -246,14 +155,16 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		protected override void OnGotFocus(GotFocusEventArgs e)
-		{
-			base.OnGotFocus(e);
-		}
+		bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;
+
+		void IMenuItem.RaiseClick() => OnClick();
 
 		void ICommandSource.CanExecuteChanged(object sender, EventArgs e) => this.CanExecuteChanged(sender, e);
+		
+		void IMenuElement.Close() { }
+		
+		void IMenuElement.Open() { }
 
-		private ICommand _command;
 		private bool _canExecute = true;
 		private KeyGesture _hotkey;
 	}

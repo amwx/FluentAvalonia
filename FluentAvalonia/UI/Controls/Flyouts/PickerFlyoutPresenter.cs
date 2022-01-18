@@ -6,6 +6,9 @@ using System;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// The FlyoutPresenter that is used within a <see cref="PickerFlyoutBase"/>
+	/// </summary>
 	public class PickerFlyoutPresenter : ContentControl
 	{
 		public PickerFlyoutPresenter()
@@ -13,7 +16,14 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Add(":acceptdismiss");
 		}
 
+		/// <summary>
+		/// Raised when the Confirmed button is tapped indicating the new Color should be applied
+		/// </summary>
 		public event TypedEventHandler<PickerFlyoutPresenter, object> Confirmed;
+
+		/// <summary>
+		/// Raised when the Dismiss button is tapped, indicating the new color should not be applied
+		/// </summary>
 		public event TypedEventHandler<PickerFlyoutPresenter, object> Dismissed;
 
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

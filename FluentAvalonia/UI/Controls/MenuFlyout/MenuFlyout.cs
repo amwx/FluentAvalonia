@@ -8,6 +8,9 @@ using System.Collections;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Represents a flyout that displays a menu of commands.
+	/// </summary>
 	public class MenuFlyout : FlyoutBase
 	{
 		public MenuFlyout()
@@ -25,9 +28,8 @@ namespace FluentAvalonia.UI.Controls
 		/// <summary>
 		/// Defines the <see cref="ItemTemplate"/> property
 		/// </summary>
-		public static readonly DirectProperty<MenuFlyout, IDataTemplate> ItemTemplateProperty =
-			AvaloniaProperty.RegisterDirect<MenuFlyout, IDataTemplate>(nameof(ItemTemplate),
-				x => x.ItemTemplate, (x, v) => x.ItemTemplate = v);
+		public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
+			ItemsControl.ItemTemplateProperty.AddOwner<MenuFlyout>();
 
 		/// <summary>
 		/// Gets or sets the items of the MenuFlyout
@@ -44,10 +46,14 @@ namespace FluentAvalonia.UI.Controls
 		/// </summary>
 		public IDataTemplate ItemTemplate
 		{
-			get => _itemTemplate;
-			set => SetAndRaise(ItemTemplateProperty, ref _itemTemplate, value);
+			get => GetValue(ItemTemplateProperty);
+			set => SetValue(ItemTemplateProperty, value);
 		}
 
+		/// <summary>
+		/// Sets the Classes used for styling the MenuFlyoutPresenter. This property
+		/// takes the place of WinUI's MenuFlyoutPresenterStyle
+		/// </summary>
 		public Classes FlyoutPresenterClasses => _classes ??= new Classes();
 
 		protected override Control CreatePresenter()
@@ -86,6 +92,5 @@ namespace FluentAvalonia.UI.Controls
 
 		private Classes _classes;
 		private IEnumerable _items;
-		private IDataTemplate _itemTemplate;
 	}
 }

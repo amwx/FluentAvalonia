@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Generators;
 using Avalonia.Controls.Platform;
 using Avalonia.Controls.Primitives;
@@ -10,6 +9,9 @@ using System;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Displays the content of a <see cref="MenuFlyout"/> control.
+	/// </summary>
 	public class MenuFlyoutPresenter : MenuBase, IStyleable
 	{
 		public MenuFlyoutPresenter()
@@ -23,6 +25,13 @@ namespace FluentAvalonia.UI.Controls
 
 		Type IStyleable.StyleKey => typeof(Avalonia.Controls.MenuFlyoutPresenter);
 
+		/// <summary>
+		/// Closes the MenuFlyout.
+		/// </summary>
+		/// <remarks>
+		/// This method should generally not be called directly and is present for the
+		/// MenuInteractionHandler. Close Flyouts by calling Hide() on the Flyout object directly.
+		/// </remarks>
 		public override void Close()
 		{
 			// DefaultMenuInteractionHandler calls this
@@ -42,6 +51,10 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
+		/// <summary>
+		/// This method has no functionality
+		/// </summary>
+		/// <exception cref="NotSupportedException" />
 		public override void Open()
 		{
 			throw new NotSupportedException("Use MenuFlyout.ShowAt(Control) instead");
@@ -112,7 +125,6 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Set(":icons", _iconCount > 0);
 			PseudoClasses.Set(":toggle", _toggleCount > 0);
 		}
-
 
 		private int _iconCount = 0;
 		private int _toggleCount = 0;

@@ -6,11 +6,24 @@ using System.ComponentModel;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Defines a flyout that hosts a <see cref="ColorPicker"/>
+	/// </summary>
 	public sealed class ColorPickerFlyout : PickerFlyoutBase
 	{
+		/// <summary>
+		/// Gets the <see cref="ColorPicker"/> that this flyout hosts
+		/// </summary>
 		public ColorPicker ColorPicker => _picker ??= new ColorPicker();
 
+		/// <summary>
+		/// Raised when the Confirmed button is tapped indicating the new Color should be applied
+		/// </summary>
 		public event TypedEventHandler<ColorPickerFlyout, object> Confirmed;
+
+		/// <summary>
+		/// Raised when the Dismiss button is tapped, indicating the new color should not be applied
+		/// </summary>
 		public event TypedEventHandler<ColorPickerFlyout, object> Dismissed;
 
 		protected override Control CreatePresenter()
@@ -37,13 +50,6 @@ namespace FluentAvalonia.UI.Controls
 		protected override void OnOpening(CancelEventArgs args)
 		{
 			base.OnOpening(args);
-			
-		}
-
-		protected override void OnOpened()
-		{
-			base.OnOpened();
-			// TEMPORARY FIX...REVERT TO ONOPENING AFTER NRE ISSUE FIXED
 			(Popup.Child as PickerFlyoutPresenter).ShowHideButtons(ShouldShowConfirmationButtons());
 		}
 

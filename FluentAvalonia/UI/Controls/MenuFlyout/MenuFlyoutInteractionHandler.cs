@@ -20,7 +20,7 @@ namespace FluentAvalonia.UI.Controls
 	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	[Browsable(false)]
-	public class MenuFlyoutInteractionHandler : IMenuInteractionHandler
+	internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 	{
 		private readonly bool _isContextMenu;
 		private IDisposable _inputManagerSubscription;
@@ -57,7 +57,7 @@ namespace FluentAvalonia.UI.Controls
 			Menu.PointerPressed += PointerPressed;
 			Menu.PointerReleased += PointerReleased;
 			Menu.AddHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
-			Menu.AddHandler(Avalonia.Controls.Menu.MenuOpenedEvent, this.MenuOpened);
+			Menu.AddHandler(MenuBase.MenuOpenedEvent, MenuOpened);
 			Menu.AddHandler(MenuItem.PointerEnterItemEvent, PointerEnter);
 			Menu.AddHandler(MenuItem.PointerLeaveItemEvent, PointerLeave);
 
@@ -92,7 +92,7 @@ namespace FluentAvalonia.UI.Controls
 			Menu.PointerPressed -= PointerPressed;
 			Menu.PointerReleased -= PointerReleased;
 			Menu.RemoveHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
-			Menu.RemoveHandler(Avalonia.Controls.Menu.MenuOpenedEvent, this.MenuOpened);
+			Menu.RemoveHandler(MenuBase.MenuOpenedEvent, MenuOpened);
 			Menu.RemoveHandler(MenuItem.PointerEnterItemEvent, PointerEnter);
 			Menu.RemoveHandler(MenuItem.PointerLeaveItemEvent, PointerLeave);
 
@@ -455,8 +455,7 @@ namespace FluentAvalonia.UI.Controls
 		protected void Click(IMenuItem item)
 		{
 			item.RaiseClick();
-			// I have absolutely no idea why this property is public in IMenuItem but will not 
-			// show here.
+			// TODO: uncomment when StaysOpenOnClick is in main package
 			//if (!item.StaysOpenOnClick)
 			//{
 			CloseMenu(item);
@@ -479,17 +478,6 @@ namespace FluentAvalonia.UI.Controls
 					mnu.Close();
 				}
 			}
-
-			//while (current != null)// && !(current is IMenu))
-			//{
-			//	current = (current as IMenuItem)?.Parent;
-			//	if (current is IMenu mnu)
-			//	{
-			//		mnu.Close();
-			//	}
-			//}
-
-			//current?.Close();
 		}
 
 		protected void CloseWithDelay(IMenuItem item)
@@ -530,7 +518,7 @@ namespace FluentAvalonia.UI.Controls
 
 		protected void SelectItemAndAncestors(IMenuItem item)
 		{
-			var current = (IMenuItem)item;
+			var current = item;
 
 			while (current?.Parent != null)
 			{
