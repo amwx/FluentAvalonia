@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FluentAvalonia.Core
 {
     public static class IEnumerableExtensions
     {
+        /// <summary>
+        /// Gets the item count of the IEnumerable
+        /// </summary>
         public static int Count(this IEnumerable items)
         {
             if (items == null)
@@ -23,6 +24,9 @@ namespace FluentAvalonia.Core
             }
         }
 
+        /// <summary>
+        /// Gets the index of an item from an IEnumerable
+        /// </summary>
         public static int IndexOf(this IEnumerable items, object item)
         {
             var list = items as IList;
@@ -49,6 +53,12 @@ namespace FluentAvalonia.Core
             }
         }
 
+        /// <summary>
+        /// Retreives the element at the specified index from the IEnumerable
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="reqIndex"></param>
+        /// <returns></returns>
         public static object ElementAt(this IEnumerable items, int reqIndex)
         {
             if (items.Count() == 0)
@@ -65,19 +75,9 @@ namespace FluentAvalonia.Core
 
         }
 
-        public static IEnumerable<TSource> DistinctBy<TSource, TKey>
-    (this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-        {
-            HashSet<TKey> seenKeys = new HashSet<TKey>();
-            foreach (TSource element in source)
-            {
-                if (seenKeys.Add(keySelector(element)))
-                {
-                    yield return element;
-                }
-            }
-        }
-
+        /// <summary>
+        /// Checks of the IEnumerable contains the given item
+        /// </summary>
 		public static bool Contains(this IEnumerable items, object item)
 		{
 			if (items is IList list)
