@@ -2,8 +2,6 @@
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Layout;
-using FluentAvalonia.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,28 +9,10 @@ using System.Linq;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public enum CommandBarClosedDisplayMode
-	{
-		Compact,
-		Minimal,
-		Hidden
-	}
-
-	public enum CommandBarDefaultLabelPosition
-	{
-		Bottom,
-		Right,
-		Collapsed
-	}
-
-	public enum CommandBarOverflowButtonVisibility
-	{
-		Auto,
-		Visible,
-		Collapsed
-	}
-
-	public class CommandBar : ContentControl
+	/// <summary>
+	/// Represents a specialized command bar that provides layout for CommandBarButton and related command elements.
+	/// </summary>
+	public partial class CommandBar : ContentControl
 	{
 		public CommandBar()
 		{
@@ -48,125 +28,7 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Add(":compact");
 			PseudoClasses.Add(":labelbottom");
 		}
-
-		public static readonly DirectProperty<CommandBar, bool> IsStickyProperty =
-			AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(IsSticky), 
-				x => x.IsSticky, (x, v) => x.IsSticky = v);
-
-		public static readonly DirectProperty<CommandBar, bool> IsOpenProperty =
-			AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(IsOpen), 
-				x => x.IsOpen, (x, v) => x.IsOpen = v);
-
-		public static readonly StyledProperty<CommandBarClosedDisplayMode> ClosedDisplayModeProperty =
-			AvaloniaProperty.Register<CommandBar, CommandBarClosedDisplayMode>(nameof(ClosedDisplayMode));
-
-		public static readonly DirectProperty<CommandBar, IAvaloniaList<ICommandBarElement>> PrimaryCommandsProperty =
-			AvaloniaProperty.RegisterDirect<CommandBar, IAvaloniaList<ICommandBarElement>>(nameof(PrimaryCommands), 
-				x => x.PrimaryCommands);
-
-		public static readonly DirectProperty<CommandBar, IAvaloniaList<ICommandBarElement>> SecondaryCommandsProperty =
-			AvaloniaProperty.RegisterDirect<CommandBar, IAvaloniaList<ICommandBarElement>>(nameof(SecondaryCommands), 
-				x => x.SecondaryCommands);
-
-		public static readonly StyledProperty<CommandBarOverflowButtonVisibility> OverflowButtonVisibilityProperty =
-			AvaloniaProperty.Register<CommandBar, CommandBarOverflowButtonVisibility>(nameof(OverflowButtonVisibility));
-
-		public static readonly DirectProperty<CommandBar, bool> IsDynamicOverflowEnabledProperty =
-			AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(SecondaryCommands),
-				x => x.IsDynamicOverflowEnabled, (x, v) => x.IsDynamicOverflowEnabled = v);
-
-		public static readonly StyledProperty<HorizontalAlignment> ItemsAlignmentProperty =
-			AvaloniaProperty.Register<CommandBar, HorizontalAlignment>(nameof(ItemsAlignment), HorizontalAlignment.Left);
-
-		public static readonly StyledProperty<CommandBarDefaultLabelPosition> DefaultLabelPositionProperty =
-			AvaloniaProperty.Register<CommandBar, CommandBarDefaultLabelPosition>(nameof(DefaultLabelPosition));
-
-		public bool IsSticky
-		{
-			get => _isSticky;
-			set => SetAndRaise(IsStickyProperty, ref _isSticky, value);
-		}
-
-		public bool IsOpen
-		{
-			get => _isOpen;
-			set
-			{
-				if (value)
-				{
-					OnOpening();
-				}
-				else
-				{
-					OnClosing();
-				}
-
-				if (SetAndRaise(IsOpenProperty, ref _isOpen, value))
-				{
-					PseudoClasses.Set(":open", value);
-
-					if (value)
-					{
-						OnOpened();
-					}
-					else
-					{
-						OnClosed();
-					}
-				}
-			}
-		}
-
-		public CommandBarClosedDisplayMode ClosedDisplayMode
-		{
-			get => GetValue(ClosedDisplayModeProperty);
-			set => SetValue(ClosedDisplayModeProperty, value);
-		}
-
-		public IAvaloniaList<ICommandBarElement> PrimaryCommands
-		{
-			get => _primaryCommands;
-			private set => SetAndRaise(PrimaryCommandsProperty, ref _primaryCommands, value);
-		}
-
-		public IAvaloniaList<ICommandBarElement> SecondaryCommands
-		{
-			get => _secondaryCommands;
-			private set => SetAndRaise(SecondaryCommandsProperty, ref _secondaryCommands, value);
-		}
-
-		public CommandBarOverflowButtonVisibility OverflowButtonVisibility
-		{
-			get => GetValue(OverflowButtonVisibilityProperty);
-			set => SetValue(OverflowButtonVisibilityProperty, value);
-		}
-
-		public bool IsDynamicOverflowEnabled
-		{
-			get => _isDynamicOverflowEnabled;
-			set => SetAndRaise(IsDynamicOverflowEnabledProperty, ref _isDynamicOverflowEnabled, value);
-		}
-
-		public HorizontalAlignment ItemsAlignment
-		{
-			get => GetValue(ItemsAlignmentProperty);
-			set => SetValue(ItemsAlignmentProperty, value);
-		}
-
-		public CommandBarDefaultLabelPosition DefaultLabelPosition
-		{
-			get => GetValue(DefaultLabelPositionProperty);
-			set => SetValue(DefaultLabelPositionProperty, value);
-		}
-
-		public event TypedEventHandler<CommandBar, object> Opened;
-		public event TypedEventHandler<CommandBar, object> Opening;
-		public event TypedEventHandler<CommandBar, object> Closed;
-		public event TypedEventHandler<CommandBar, object> Closing;
-
-		// TODO:
-		//public event TypedEventHandler<CommandBar, DynamicOverflowItemsChangingEventArgs> DynamicOverflowItemsChanging;
-
+				
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
 			_appliedTemplate = false;
@@ -493,7 +355,6 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Set(":secondaryonly", _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
 		}
 			
-
 		private void ReturnOverflowToPrimary()
 		{
 			for (int i = _numInOverflow - 1; i >= 0; i--)
@@ -504,7 +365,6 @@ namespace FluentAvalonia.UI.Controls
 			}
 			_numInOverflow = 0;
 		}
-
 
 		private void OnMoreButtonClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
 		{
@@ -588,12 +448,6 @@ namespace FluentAvalonia.UI.Controls
 			else
 				_widthCache.Add(item, wid);
 		}
-
-		private bool _isSticky = true;
-		private bool _isOpen;
-		private IAvaloniaList<ICommandBarElement> _primaryCommands;
-		private IAvaloniaList<ICommandBarElement> _secondaryCommands;
-		private bool _isDynamicOverflowEnabled = true;
 
 		private bool _appliedTemplate = false;
 

@@ -7,6 +7,13 @@ using System.Collections.Specialized;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Displays the overflow content of a CommandBar.
+	/// </summary>
+	/// <remarks>
+	/// This class generally should not be used on your own and is meant for
+	/// the template of a <see cref="CommandBar"/>
+	/// </remarks>
 	public class CommandBarOverflowPresenter : ItemsControl, IStyleable
 	{
 		Type IStyleable.StyleKey => typeof(CommandBarOverflowPresenter);
