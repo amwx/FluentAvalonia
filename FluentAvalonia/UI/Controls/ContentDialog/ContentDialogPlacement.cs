@@ -1,5 +1,8 @@
 ﻿namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Defines constants that specify where in the XAML visual tree a ContentDialog is rooted.
+    /// </summary>
     public enum ContentDialogPlacement
     {
         /// <summary>
@@ -7,8 +10,9 @@
         /// appears below.
         /// </summary>
         Popup = 0,
+
         /// <summary>
-        /// Rooted in a parent container
+        /// Rooted in a parent container - currently not supported
         /// </summary>
         InPlace = 1
     }

@@ -13,6 +13,9 @@
 
         internal bool IsDeferred { get; set; }
 
+        /// <summary>
+        /// Notifies the system that the app has finished processing the button click event.
+        /// </summary>
         public void Complete() 
         {
             Owner.CompleteButtonClickDeferral();
