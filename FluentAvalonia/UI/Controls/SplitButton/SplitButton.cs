@@ -2,47 +2,17 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using FluentAvalonia.Core;
 using System;
 using System.Reactive.Disposables;
 using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class SplitButton : ContentControl
-	{
-		public static readonly DirectProperty<SplitButton, ICommand> CommandProperty =
-			Button.CommandProperty.AddOwner<SplitButton>(x => x.Command, (x, v) => x.Command = v);
-
-		public static readonly StyledProperty<object> CommandParameterProperty =
-			Button.CommandParameterProperty.AddOwner<SplitButton>();
-
-		public static readonly DirectProperty<SplitButton, FlyoutBase> FlyoutProperty =
-			AvaloniaProperty.RegisterDirect<SplitButton, FlyoutBase>(nameof(Flyout),
-				x => x.Flyout, (x, v) => x.Flyout = v);
-
-		public ICommand Command
-		{
-			get => _command;
-			set => SetAndRaise(CommandProperty, ref _command, value);
-		}
-
-		public object CommandParameter
-		{
-			get => GetValue(CommandParameterProperty);
-			set => SetValue(CommandParameterProperty, value);
-		}
-
-		public FlyoutBase Flyout
-		{
-			get => _flyout;
-			set => SetAndRaise(FlyoutProperty, ref _flyout, value);
-		}
-
-		internal virtual bool InternalIsChecked => false;
-
-		public event TypedEventHandler<SplitButton, SplitButtonClickEventArgs> Click;
-
+	/// <summary>
+	/// Represents a button with two parts that can be invoked separately. One part behaves like a standard button and the other part invokes a flyout.
+	/// </summary>
+	public partial class SplitButton : ContentControl
+	{		
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
 			UnregisterEvents();
@@ -166,14 +136,6 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		private void CloseFlyout()
-		{
-			if (Flyout != null)
-			{
-				Flyout.Hide();
-			}
-		}
-
 		private void UnregisterEvents()
 		{
 			if (_primaryButton == null || _secondaryButton == null)
@@ -219,7 +181,7 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		//Separate event for different args in Avalonia
+		// Separate event for different args in Avalonia
 		private void OnPointerLostEvent(object sender, PointerCaptureLostEventArgs e)
 		{
 			if (_lastPointerDeviceType != e.Pointer.Type)
@@ -237,8 +199,8 @@ namespace FluentAvalonia.UI.Controls
 
 		private void RegisterFlyoutEvents()
 		{
-			//Note, this is called AFTER flyout changes, so we must dispose of
-			//the old handlers in the PropertyChanged method, unlike WinUI
+			// Note, this is called AFTER flyout changes, so we must dispose of
+			// the old handlers in the PropertyChanged method, unlike WinUI
 
 			if (_flyout != null)
 			{
@@ -273,7 +235,7 @@ namespace FluentAvalonia.UI.Controls
 				{
 					PseudoClasses.Set(":flyoutopen", false);
 		
-					if (InternalIsChecked) //SplitToggleButton only
+					if (InternalIsChecked) // SplitToggleButton only
 					{
 						// Clear non-checked states
 						PseudoClasses.Set(":touchpressed", false);
@@ -448,8 +410,7 @@ namespace FluentAvalonia.UI.Controls
 			UpdateVisualStates();
 		}
 
-		protected bool _hasLoaded;
-		private FlyoutBase _flyout;
+		protected bool _hasLoaded;		
 		private ICommand _command;
 		private Button _primaryButton;
 		private Button _secondaryButton;
@@ -460,6 +421,4 @@ namespace FluentAvalonia.UI.Controls
 		private bool _isKeyDown;
 		private bool _isFlyoutOpen;
 	}
-
-	public class SplitButtonClickEventArgs : EventArgs { }
 }

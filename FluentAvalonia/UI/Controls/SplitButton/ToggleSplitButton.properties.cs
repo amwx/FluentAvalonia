@@ -1,17 +1,20 @@
 ﻿using Avalonia;
-using Avalonia.Interactivity;
-using Avalonia.Styling;
 using FluentAvalonia.Core;
-using System;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ToggleSplitButton : SplitButton, IStyleable
+	public partial class ToggleSplitButton
 	{
+		/// <summary>
+		/// Defines the <see cref="IsChecked"/> property
+		/// </summary>
 		public static readonly DirectProperty<ToggleSplitButton, bool> IsCheckedProperty =
 			AvaloniaProperty.RegisterDirect<ToggleSplitButton, bool>(nameof(IsChecked),
 				x => x.IsChecked, (x, v) => x.IsChecked = v);
 
+		/// <summary>
+		/// Gets or sets whether the ToggleSplitButton is checked.
+		/// </summary>
 		public bool IsChecked
 		{
 			get => _isChecked;
@@ -24,38 +27,8 @@ namespace FluentAvalonia.UI.Controls
 
 		internal override bool InternalIsChecked => IsChecked;
 
-		Type IStyleable.StyleKey => typeof(SplitButton);
-
 		public event TypedEventHandler<ToggleSplitButton, ToggleSplitButtonIsCheckedChangedEventArgs> IsCheckedChanged;
 
-		protected override void OnClickPrimary(object sender, RoutedEventArgs e)
-		{
-			Toggle();
-
-			base.OnClickPrimary(sender, e);
-		}
-
-		private void Toggle()
-		{
-			IsChecked = !IsChecked;
-		}
-
-		private void OnIsCheckedChanged()
-		{
-			if (_hasLoaded)
-			{
-				var ea = new ToggleSplitButtonIsCheckedChangedEventArgs();
-				IsCheckedChanged?.Invoke(this, ea);
-			}
-
-			UpdateVisualStates();
-		}
-
 		private bool _isChecked;
-	}
-
-	public class ToggleSplitButtonIsCheckedChangedEventArgs : EventArgs
-	{
-
 	}
 }
