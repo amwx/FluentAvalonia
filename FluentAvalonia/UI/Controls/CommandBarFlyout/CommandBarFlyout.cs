@@ -10,6 +10,10 @@ using System.Linq;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Represents a specialized flyout that provides layout for CommandBarButton,
+	/// CommandBarToggleButton, and CommandBarSeparator controls.
+	/// </summary>
 	public class CommandBarFlyout : FlyoutBase
 	{
 		public CommandBarFlyout()
@@ -128,14 +132,28 @@ namespace FluentAvalonia.UI.Controls
 			};			
 		}
 
+		/// <summary>
+		/// Defines the <see cref="AlwaysExpanded"/> property
+		/// </summary>
 		public static readonly StyledProperty<bool> AlwaysExpandedProperty =
 			AvaloniaProperty.Register<CommandBarFlyout, bool>(nameof(AlwaysExpanded));
 
+		/// <summary>
+		/// Gets the collection of primary command elements for the CommandBarFlyout.
+		/// </summary>
 		[Content]
 		public IAvaloniaList<ICommandBarElement> PrimaryCommands { get; }
 
+		/// <summary>
+		/// Gets the collection of secondary command elements for the CommandBarFlyout.
+		/// </summary>
 		public IAvaloniaList<ICommandBarElement> SecondaryCommands { get; }
 
+		/// <summary>
+		/// Gets or sets a value that indicates whether or not the CommandBarFlyout should 
+		/// always stay in its Expanded state and block the user from entering the Collapsed state. 
+		/// Defaults to false.
+		/// </summary>
 		public bool AlwaysExpanded
 		{
 			get => GetValue(AlwaysExpandedProperty);
@@ -202,16 +220,6 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_commandBar.IsOpen = true;
 			}
-		}
-
-		protected override void OnOpened()
-		{
-			base.OnOpened();
-		}
-
-		protected override void OnClosing(CancelEventArgs args)
-		{
-			base.OnClosing(args);
 		}
 
 		protected override void OnClosed()
