@@ -20,6 +20,11 @@ using System.Reactive.Linq;
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// NOTE: This control is currently not receiving support. A better implementation is needed
+    /// to support a fully editable combobox which is under consideration. It may be better to
+    /// place that work in Avalonia rather than here
+    /// </summary>
     public class ComboBox : HeaderedSelectingItemsControl
     {
         static ComboBox()
