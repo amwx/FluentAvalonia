@@ -175,8 +175,21 @@ namespace FluentAvalonia.Interop
 			public string lpszDefaultScheme;
 		}
 
+		[DllImport("dwmapi.dll")]
+		public static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
 
 
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MARGINS
+		{
+			public int leftWidth;
+			public int rightWidth;
+			public int topHeight;
+			public int bottomHeight;
+		}
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 	}
 
 	[Flags]
@@ -351,4 +364,13 @@ namespace FluentAvalonia.Interop
 		UseImmersiveDarkMode = 20
 	}
 
+	public enum WM : uint
+	{
+		SIZE = 0x0005,
+		NCMOUSEMOVE = 0x00A0,
+		NCLBUTTONDOWN = 0x00A1,
+		NCLBUTTONUP = 0x00A2,
+		NCHITTEST = 0x0084,
+		NCCALCSIZE = 0x0083,
+	}
 }
