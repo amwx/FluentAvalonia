@@ -14,25 +14,25 @@ namespace FluentAvaloniaSamples.Pages
 
 			DataContext = new ListViewPageViewModel();
 
-			_stickyHeadersToggle = this.FindControl<ToggleSwitch>("StickyHeadersToggle");
+			//_stickyHeadersToggle = this.FindControl<ToggleSwitch>("StickyHeadersToggle");
 
-			_stickyHeadersToggle.Checked += (s, e) =>
-			{
-				var lv = this.FindControl<ListView>("ListView5");
-				if (lv.ItemsPanelRoot is ItemsStackPanel isp)
-				{
-					isp.AreStickyGroupHeadersEnabled = (DataContext as ListViewPageViewModel).AreStickyHeadersEnabled = true;
-				}
-			};
+			//_stickyHeadersToggle.Checked += (s, e) =>
+			//{
+			//	var lv = this.FindControl<ListView>("ListView5");
+			//	if (lv.ItemsPanelRoot is ItemsStackPanel isp)
+			//	{
+			//		isp.AreStickyGroupHeadersEnabled = (DataContext as ListViewPageViewModel).AreStickyHeadersEnabled = true;
+			//	}
+			//};
 
-			_stickyHeadersToggle.Unchecked += (s, e) =>
-			{
-				var lv = this.FindControl<ListView>("ListView5");
-				if (lv.ItemsPanelRoot is ItemsStackPanel isp)
-				{
-					isp.AreStickyGroupHeadersEnabled = (DataContext as ListViewPageViewModel).AreStickyHeadersEnabled = false;
-				}
-			};
+			//_stickyHeadersToggle.Unchecked += (s, e) =>
+			//{
+			//	var lv = this.FindControl<ListView>("ListView5");
+			//	if (lv.ItemsPanelRoot is ItemsStackPanel isp)
+			//	{
+			//		isp.AreStickyGroupHeadersEnabled = (DataContext as ListViewPageViewModel).AreStickyHeadersEnabled = false;
+			//	}
+			//};
 		}
 
 		private void InitializeComponent()

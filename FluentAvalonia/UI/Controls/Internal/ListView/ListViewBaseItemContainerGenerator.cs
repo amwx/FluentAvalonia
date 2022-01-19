@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ListViewBaseItemContainerGenerator : IItemContainerGenerator
+	internal class ListViewBaseItemContainerGenerator : IItemContainerGenerator
 	{
 		public ListViewBaseItemContainerGenerator(ListViewBase owner)
 		{

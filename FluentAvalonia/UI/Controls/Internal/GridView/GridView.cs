@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class GridView : ListViewBase
+	internal class GridView : ListViewBase
 	{
 		protected override bool IsItemItsOwnContainerOverride(object item) =>
 			   item is ListViewItem;

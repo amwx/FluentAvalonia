@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ListView : ListViewBase
+	internal class ListView : ListViewBase
 	{
 		protected override bool IsItemItsOwnContainerOverride(object item) =>
 			item is ListViewItem;

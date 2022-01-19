@@ -22,7 +22,7 @@ using Avalonia.Threading;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ListViewBase : SelectingItemsControl, IItemsPresenterHost
+	internal class ListViewBase : SelectingItemsControl, IItemsPresenterHost
 	{
 		public static readonly new StyledProperty<ListViewSelectionMode> SelectionModeProperty =
 			AvaloniaProperty.Register<ListViewBase, ListViewSelectionMode>(nameof(SelectionMode), ListViewSelectionMode.Single);
