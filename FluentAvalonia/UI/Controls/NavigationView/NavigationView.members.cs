@@ -9,7 +9,6 @@ using FluentAvalonia.UI.Media.Animation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -65,17 +64,19 @@ namespace FluentAvalonia.UI.Controls
 
         internal bool IsTopNavigationView => PaneDisplayMode == NavigationViewPaneDisplayMode.Top;
 
-
         private bool IsTopPrimaryListVisible => _topNavRepeater != null && TemplateSettings.TopPaneVisibility;
 
-        private double GetPaneToggleButtonWidth() => this.TryFindResource("PaneToggleButtonWidth", out object value) ? (double)value : 40;
+        private double GetPaneToggleButtonWidth() => 
+            this.TryFindResource("PaneToggleButtonWidth", out object value) ? (double)value : 40;
 
-        private double GetPaneToggleButtonHeight() => this.TryFindResource("PaneToggleButtonHeight", out object value) ? (double)value : 40;
+        private double GetPaneToggleButtonHeight() => 
+            this.TryFindResource("PaneToggleButtonHeight", out object value) ? (double)value : 40;
 
         internal bool IsOverlay => _splitView != null && _splitView.DisplayMode == SplitViewDisplayMode.Overlay;
 
         private bool IsLightDismissable => _splitView != null && (
-            _splitView.DisplayMode != SplitViewDisplayMode.Inline && _splitView.DisplayMode != SplitViewDisplayMode.CompactInline);
+            _splitView.DisplayMode != SplitViewDisplayMode.Inline && 
+            _splitView.DisplayMode != SplitViewDisplayMode.CompactInline);
 
         internal bool ShouldShowBackButton
         {
@@ -102,7 +103,8 @@ namespace FluentAvalonia.UI.Controls
                     var pdm = PaneDisplayMode;
 
                     if (pdm != NavigationViewPaneDisplayMode.LeftMinimal &&
-                        (pdm != NavigationViewPaneDisplayMode.Auto || DisplayMode != NavigationViewDisplayMode.Minimal))
+                        (pdm != NavigationViewPaneDisplayMode.Auto || 
+                        DisplayMode != NavigationViewDisplayMode.Minimal))
                     {
                         return false;
                     }
@@ -131,7 +133,8 @@ namespace FluentAvalonia.UI.Controls
 
         private bool DoesNavigationViewItemHaveChildren(NavigationViewItem nvi)
         {
-            return nvi != null && ((nvi.MenuItems != null && nvi.MenuItems.Count() > 0) || nvi.HasUnrealizedChildren);
+            return nvi != null && 
+                ((nvi.MenuItems != null && nvi.MenuItems.Count() > 0) || nvi.HasUnrealizedChildren);
         }
 
         private bool IsSelectionSuppressed(object item)
@@ -185,8 +188,9 @@ namespace FluentAvalonia.UI.Controls
 
         private NavigationViewItem GetParentNavigationViewItemForContainer(NavigationViewItemBase nvib)
         {
-            //TODO: This scenario does not find parent items when in a flyout, which causes problems if item if first loaded
-            //straight in the flyout. Fix.This logic can be merged with the 'GetIndexPathForContainer' logic below.
+            // (WinUI) TODO: This scenario does not find parent items when in a flyout, which causes problems
+            // if item if first loaded straight in the flyout. Fix.This logic can be merged with the
+            // 'GetIndexPathForContainer' logic below.
             var parent = GetParentItemsRepeaterForContainer(nvib);
             if (!IsRootItemsRepeater(parent))
             {
@@ -287,12 +291,11 @@ namespace FluentAvalonia.UI.Controls
             return NavigationViewItemBaseOrSettingsContentFromData(item);
         }
 
-        private int GetNavigationViewItemCountInPrimaryList => _topDataProvider?.NavigationViewItemCountInPrimaryList ?? 0;
+        private int GetNavigationViewItemCountInPrimaryList => 
+            _topDataProvider?.NavigationViewItemCountInPrimaryList ?? 0;
 
-        private int GetNavigationViewItemCountInTopNav => _topDataProvider?.NavigationViewItemCountInTopNav ?? 0;
-
-        //CreateNavigationTransitionInfo
-        //GetRecommendedTransitionDirection
+        private int GetNavigationViewItemCountInTopNav => 
+            _topDataProvider?.NavigationViewItemCountInTopNav ?? 0;
 
         private bool IsSettingsItem(object item)
         {
@@ -482,7 +485,6 @@ namespace FluentAvalonia.UI.Controls
             return recTransDir;
         }
 
-
         private NavigationTransitionInfo CreateNavigationTransitionInfo(NavigationRecommendedTransitionDirection recDir)
         {
             // In current implementation, if click is from overflow item, just recommend FromRight Slide animation.
@@ -506,9 +508,7 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-
         internal NavigationViewItemsFactory ItemsFactory => _itemsFactory;
-
 
         private void UnhookEventsAndClearFields()
         {
@@ -610,8 +610,6 @@ namespace FluentAvalonia.UI.Controls
 
 			_itemsContainerSizeRevoker?.Dispose();
 		}
-
-
 
         private NavigationViewItemsFactory _itemsFactory;
         internal SplitView GetSplitView => _splitView;

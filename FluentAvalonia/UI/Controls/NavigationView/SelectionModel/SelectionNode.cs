@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Controls;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -364,10 +365,10 @@ namespace FluentAvalonia.UI.Controls
 
         public void Dispose()
         {
+            UnhookCollectionChangedHandler();
             _childrenSubscription?.Dispose();
             ItemsSourceView?.Dispose();
             ClearChildNodes();
-            UnhookCollectionChangedHandler();
         }
 
         public void BeginOperation()

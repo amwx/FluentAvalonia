@@ -2,6 +2,9 @@
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Provides event data for the NavigationViewItem.ItemExpanding event.
+    /// </summary>
     public class NavigationViewItemExpandingEventArgs : EventArgs
     {
         public NavigationViewItemExpandingEventArgs(NavigationView navigationView)
@@ -9,6 +12,9 @@ namespace FluentAvalonia.UI.Controls
             _navigationView = navigationView;
         }
 
+        /// <summary>
+        /// Gets the object that is expanding after the NavigationViewItem.Expanding event.
+        /// </summary>
         public object ExpandingItem
         {
             get
@@ -25,6 +31,9 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the container of the expanding item after a NavigationViewItem.Expanding event.
+        /// </summary>
         public NavigationViewItemBase ExpandingItemContainer { get; internal set; }
 
         private NavigationView _navigationView;

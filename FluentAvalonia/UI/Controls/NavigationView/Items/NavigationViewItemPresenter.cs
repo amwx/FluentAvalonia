@@ -4,61 +4,23 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.VisualTree;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls.Primitives
 {
-    [PseudoClasses(":expanded")]
+	/// <summary>
+	/// Represents the visual elements of a NavigationViewItem.
+	/// </summary>
+	[PseudoClasses(":expanded")]
     [PseudoClasses(":closedcompacttop", ":notclosedcompacttop")]
     [PseudoClasses(":leftnav", ":topnav", ":topoverflow")]
     [PseudoClasses(":chevronopen", ":chevronclosed", ":chevronhidden")]
     [PseudoClasses(":iconleft", ":icononly", ":contentonly")]
-    public class NavigationViewItemPresenter : ContentControl
+    public partial class NavigationViewItemPresenter : ContentControl
     {
         public NavigationViewItemPresenter()
         {
             TemplateSettings = new NavigationViewItemPresenterTemplateSettings();
         }
-
-        public static readonly StyledProperty<IconElement> IconProperty =
-            AvaloniaProperty.Register<NavigationViewItemPresenter, IconElement>(nameof(Icon));
-
-        public static readonly StyledProperty<NavigationViewItemPresenterTemplateSettings> TemplateSettingsProperty =
-            AvaloniaProperty.Register<NavigationViewItemPresenter, NavigationViewItemPresenterTemplateSettings>(nameof(TemplateSettings));
-
-        public static readonly StyledProperty<InfoBadge> InfoBadgeProperty =
-            NavigationViewItem.InfoBadgeProperty.AddOwner<NavigationViewItemPresenter>();
-
-        public IconElement Icon
-        {
-            get => GetValue(IconProperty);
-            set => SetValue(IconProperty, value);
-        }
-
-        public NavigationViewItemPresenterTemplateSettings TemplateSettings
-        {
-            get => GetValue(TemplateSettingsProperty);
-            set => SetValue(TemplateSettingsProperty, value);
-        }
-
-        public InfoBadge InfoBadge
-        {
-            get => GetValue(InfoBadgeProperty);
-            set => SetValue(InfoBadgeProperty, value);
-        }
-
-        public NavigationViewItem GetNVI
-        {
-            get
-            {
-                return this.FindAncestorOfType<NavigationViewItem>();
-            }
-        }
-
-        internal IControl SelectionIndicator => _selectionIndicator;
 
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
@@ -167,35 +129,11 @@ namespace FluentAvalonia.UI.Controls.Primitives
             PseudoClasses.Set(":notclosedcompacttop", !isClosedCompact && topLevel);
         }
 
-
         private Panel _contentGrid;
         private Panel _expandCollapseChevron;
         private IControl _selectionIndicator;
         private ContentPresenter _infoBadgePresenter;
         private double _compactPaneLengthValue = 40;
         private double _leftIndentation;
-    }
-
-    public class NavigationViewItemPresenterTemplateSettings : AvaloniaObject
-    {
-        internal NavigationViewItemPresenterTemplateSettings() { }
-
-        public static readonly StyledProperty<double> IconWidthProperty =
-            AvaloniaProperty.Register<NavigationViewItemPresenterTemplateSettings, double>(nameof(IconWidth));
-
-        public static readonly StyledProperty<double> SmallerIconWidthProperty =
-            AvaloniaProperty.Register<NavigationViewItemPresenterTemplateSettings, double>(nameof(SmallerIconWidth));
-
-        public double IconWidth
-        {
-            get => GetValue(IconWidthProperty);
-            internal set => SetValue(IconWidthProperty, value);
-        }
-
-        public double SmallerIconWidth
-        {
-            get => GetValue(SmallerIconWidthProperty);
-            internal set => SetValue(SmallerIconWidthProperty, value);
-        }
     }
 }
