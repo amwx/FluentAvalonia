@@ -986,7 +986,7 @@ namespace FluentAvalonia.UI.Controls
 				return;
 			}
 
-			_borderPen = new ImmutablePen(BorderBrush, BorderThickness);
+			_borderPen = new ImmutablePen(BorderBrush.ToImmutable(), BorderThickness);
 		}
 
 		private static readonly IPen BlackPen = new ImmutablePen(Brushes.Black, 2);

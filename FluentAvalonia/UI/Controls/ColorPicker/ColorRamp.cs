@@ -367,7 +367,7 @@ namespace FluentAvalonia.UI.Controls
 				return;
 			}
 
-			_borderPen = new ImmutablePen(BorderBrush, BorderThickness);
+			_borderPen = new ImmutablePen(BorderBrush.ToImmutable(), BorderThickness);
 		}
 
 		/// <summary>
