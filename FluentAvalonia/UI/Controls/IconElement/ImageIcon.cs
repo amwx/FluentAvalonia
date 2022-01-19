@@ -5,11 +5,20 @@ using Avalonia.Visuals.Media.Imaging;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Represents an icon that uses an <see cref="Avalonia.Media.IImage"/> as its content.
+	/// </summary>
 	public class ImageIcon : IconElement
 	{
+		/// <summary>
+		/// Defines the <see cref="Source"/> property
+		/// </summary>
 		public static readonly StyledProperty<IImage> SourceProperty =
 			AvaloniaProperty.Register<ImageIcon, IImage>(nameof(Source));
 
+		/// <summary>
+		/// Gets or sets the <see cref="Avalonia.Media.IImage"/> content this icon displays
+		/// </summary>
 		[Content]
 		public IImage Source
 		{

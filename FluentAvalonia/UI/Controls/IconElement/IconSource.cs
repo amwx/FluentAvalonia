@@ -7,16 +7,22 @@ using System.Globalization;
 
 namespace FluentAvalonia.UI.Controls
 {
-    //[TypeConverter(typeof(IconSourceConverter))]
+    [TypeConverter(typeof(IconSourceConverter))]
     public abstract class IconSource : AvaloniaObject
     {
         static IconSource()
         {
         }
 
+        /// <summary>
+        /// Defines the <see cref="Foreground"/> property
+        /// </summary>
         public static readonly AttachedProperty<IBrush> ForegroundProperty =
             TextBlock.ForegroundProperty.AddOwner<IconSource>();
-        
+
+        /// <summary>
+        /// Gets or sets a brush that describes the foreground color.
+        /// </summary>
         public IBrush Foreground
         {
             get => GetValue(ForegroundProperty);
@@ -24,6 +30,9 @@ namespace FluentAvalonia.UI.Controls
         }
     }
 
+    /// <summary>
+    /// Type converter for allowing strings in Xaml to be automatically interpreted as an IconElement
+    /// </summary>
     public class IconSourceConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)

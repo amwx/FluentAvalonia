@@ -5,6 +5,9 @@ using System;
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Represents an icon source that uses a bitmap as its content.
+    /// </summary>
     public class BitmapIconSource : IconSource, IDisposable
     {
         ~BitmapIconSource()
@@ -12,18 +15,30 @@ namespace FluentAvalonia.UI.Controls
             Dispose();
         }
 
+        /// <summary>
+        /// Defines the <see cref="UriSource"/> property
+        /// </summary>
         public static readonly StyledProperty<Uri> UriSourceProperty =
             BitmapIcon.UriSourceProperty.AddOwner<BitmapIconSource>();
 
+        /// <summary>
+        /// Defines the <see cref="ShowAsMonochrome"/> property
+        /// </summary>
         public static readonly StyledProperty<bool> ShowAsMonochromeProperty =
             BitmapIcon.ShowAsMonochromeProperty.AddOwner<BitmapIconSource>();
 
+        /// <summary>
+        /// Gets or sets the Uniform Resource Identifier (URI) of the bitmap to use as the icon content.
+        /// </summary>
         public Uri UriSource
         {
             get => GetValue(UriSourceProperty);
 			set => SetValue(UriSourceProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates whether the bitmap is shown in a single color.
+        /// </summary>
         public bool ShowAsMonochrome
         {
 			get => GetValue(ShowAsMonochromeProperty);
@@ -37,6 +52,7 @@ namespace FluentAvalonia.UI.Controls
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
 		{
 			base.OnPropertyChanged(change);
+
 			if (change.Property == UriSourceProperty)
 			{
 				CreateBitmap(change.NewValue.GetValueOrDefault<Uri>());

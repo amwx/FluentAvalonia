@@ -4,11 +4,21 @@ using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Represents an icon that uses a vector path as its content.
+    /// </summary>
     public class PathIcon : IconElement
     {
+        /// <summary>
+        /// Defines the <see cref="Data"/> property
+        /// </summary>
         public static StyledProperty<Geometry> DataProperty =
             AvaloniaProperty.Register<PathIcon, Geometry>(nameof(Data));
 
+        /// <summary>
+        /// Gets or sets a Geometry that specifies the shape to be drawn. 
+        /// In XAML. this can also be set using a string that describes Move and draw commands syntax.
+        /// </summary>
         public Geometry Data
         {
             get => GetValue(DataProperty);

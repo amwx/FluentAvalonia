@@ -4,40 +4,37 @@ using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls
 {
-    /// <summary>
-    /// Represents an icon source that uses a glyph from the specified font.
-    /// </summary>
-    public class FontIconSource : IconSource
+    public partial class FontIcon : IconElement
     {
         /// <summary>
         /// Defines the <see cref="FontFamily"/> property
         /// </summary>
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
-            TextBlock.FontFamilyProperty.AddOwner<FontIconSource>();
+            TextBlock.FontFamilyProperty.AddOwner<FontIcon>();
 
         /// <summary>
         /// Defines the <see cref="FontSize"/> property
         /// </summary>
         public static readonly StyledProperty<double> FontSizeProperty =
-            TextBlock.FontSizeProperty.AddOwner<FontIconSource>();
+            TextBlock.FontSizeProperty.AddOwner<FontIcon>();
 
         /// <summary>
         /// Defines the <see cref="FontWeight"/> property
         /// </summary>
         public static readonly StyledProperty<FontWeight> FontWeightProperty =
-            TextBlock.FontWeightProperty.AddOwner<FontIconSource>();
+            TextBlock.FontWeightProperty.AddOwner<FontIcon>();
 
         /// <summary>
         /// Defines the <see cref="FontStyle"/> property
         /// </summary>
         public static readonly StyledProperty<FontStyle> FontStyleProperty =
-            TextBlock.FontStyleProperty.AddOwner<FontIconSource>();
+            TextBlock.FontStyleProperty.AddOwner<FontIcon>();
 
         /// <summary>
         /// Defines the <see cref="Glyph"/> property
         /// </summary>
         public static readonly StyledProperty<string> GlyphProperty =
-            FontIcon.GlyphProperty.AddOwner<FontIconSource>();
+            AvaloniaProperty.Register<FontIcon, string>(nameof(Glyph));
 
         /// <summary>
         /// Gets or sets the <see cref="Avalonia.Media.FontFamily"/> to use when rendering
@@ -83,7 +80,7 @@ namespace FluentAvalonia.UI.Controls
         /// </summary>
         public string Glyph
         {
-			get => GetValue(GlyphProperty);
+            get => GetValue(GlyphProperty);
 			set => SetValue(GlyphProperty, value);
         }
     }
