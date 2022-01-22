@@ -44,11 +44,11 @@ namespace FluentAvalonia.UI.Media
 		public Color2(Color avColor)
 		{
 			_cType = ColorType.RGB;
-			_c1 = avColor.R / 255;
-			_c2 = avColor.G / 255;
-			_c3 = avColor.B / 255;
+			_c1 = avColor.R / 255f;
+			_c2 = avColor.G / 255f;
+			_c3 = avColor.B / 255f;
 			_c4 = 0;
-			_alpha = avColor.A / 255;
+			_alpha = avColor.A / 255f;
 		}
 
 
@@ -1212,7 +1212,7 @@ namespace FluentAvalonia.UI.Media
 		/// <returns>CMYK <see cref="Color2"/></returns>
 		public static Color2 FromCMYK(int c, int m, int y, int k, int alpha = 255)
 		{
-			return FromCMYKf(c / 100f, m / 100f, y / 100f, k / 100f, alpha / 255);
+			return FromCMYKf(c / 100f, m / 100f, y / 100f, k / 100f, alpha / 255f);
 		}
 
 		/// <summary>

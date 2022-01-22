@@ -1,11 +1,9 @@
 ﻿using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
-using FluentAvalonia.Core.Attributes;
 using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
 using System;
@@ -14,7 +12,11 @@ using System.Collections.Specialized;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class Frame : ContentControl
+    /// <summary>
+    /// Displays <see cref="UserControl"/> instances (Pages in WinUI), supports navigation to new pages, 
+    /// and maintains a navigation history to support forward and backward navigation.
+    /// </summary>
+    public partial class Frame : ContentControl
     {
         public Frame()
         {
@@ -27,114 +29,6 @@ namespace FluentAvalonia.UI.Controls
             BackStack = back;
             ForwardStack = forw;
         }
-
-
-        public static readonly DirectProperty<Frame, Type> SourcePageTypeProperty =
-            AvaloniaProperty.RegisterDirect<Frame, Type>(nameof(SourcePageType),
-                x => x.SourcePageType, (x,v) => x.SourcePageType = v);
-
-        public static readonly DirectProperty<Frame, int> CacheSizeProperty =
-            AvaloniaProperty.RegisterDirect<Frame, int>(nameof(CacheSize),
-                x => x.CacheSize, (x, v) => x.CacheSize = v);
-
-        public static readonly DirectProperty<Frame, int> BackStackDepthProperty =
-            AvaloniaProperty.RegisterDirect<Frame, int>(nameof(BackStackDepth),
-                x => x.BackStackDepth);
-
-        public static readonly DirectProperty<Frame, bool> CanGoBackProperty =
-            AvaloniaProperty.RegisterDirect<Frame, bool>(nameof(CanGoBack),
-                x => x.CanGoBack);
-
-        public static readonly DirectProperty<Frame, bool> CanGoForwardProperty =
-            AvaloniaProperty.RegisterDirect<Frame, bool>(nameof(CanGoForward),
-                x => x.CanGoForward);
-
-        public static readonly DirectProperty<Frame, Type> CurrentSourcePageTypeProperty =
-            AvaloniaProperty.RegisterDirect<Frame, Type>(nameof(CurrentSourcePageType),
-                x => x.CurrentSourcePageType);
-
-        public static readonly DirectProperty<Frame, IList<PageStackEntry>> BackStackProperty =
-            AvaloniaProperty.RegisterDirect<Frame, IList<PageStackEntry>>(nameof(BackStack),
-                x => x.BackStack);
-
-        public static readonly DirectProperty<Frame, IList<PageStackEntry>> ForwardStackProperty =
-            AvaloniaProperty.RegisterDirect<Frame, IList<PageStackEntry>>(nameof(ForwardStack),
-                x => x.ForwardStack);
-
-        public static readonly DirectProperty<Frame, bool> IsNavigationStackEnabledProperty =
-            AvaloniaProperty.RegisterDirect<Frame, bool>(nameof(IsNavigationStackEnabled),
-                x => x.IsNavigationStackEnabled, (x, v) => x.IsNavigationStackEnabled = v);
-
-        public Type SourcePageType
-        {
-            get => _sourcePageType;
-            set => SetAndRaise(SourcePageTypeProperty, ref _sourcePageType, value);
-        }
-
-        public int CacheSize
-        {
-            get => _cacheSize;
-            set 
-            {
-                if (value < 0)
-                    value = 0;//Ensure we never get a negative cachesize
-
-                SetAndRaise(CacheSizeProperty, ref _cacheSize, value);
-            }
-        }
-
-        public int BackStackDepth
-        {
-            get => _backStack.Count;
-        }
-
-        public bool CanGoBack
-        {
-            get => _backStack.Count > 0;
-        }
-
-        public bool CanGoForward
-        {
-            get => _forwardStack.Count > 0;
-        }
-
-        public Type CurrentSourcePageType => Content?.GetType();
-
-        public IList<PageStackEntry> BackStack
-        {
-            get => _backStack;
-            private set => SetAndRaise(BackStackProperty, ref _backStack, value);
-        }
-
-        public IList<PageStackEntry> ForwardStack
-        {
-            get => _forwardStack;
-            private set => SetAndRaise(ForwardStackProperty, ref _forwardStack, value);
-        }
-
-        public bool IsNavigationStackEnabled
-        {
-            get => _isNavigationStackEnabled;
-            set
-            {
-                if (SetAndRaise(IsNavigationStackEnabledProperty, ref _isNavigationStackEnabled, value))
-                {
-                    if (!value)
-                    {
-                        _backStack.Clear();
-                        _forwardStack.Clear();                     
-                    }
-                }
-            }
-        }
-
-        internal PageStackEntry CurrentEntry { get; set; }
-
-        public event NavigatedEventHandler Navigated;
-        public event NavigatingCancelEventHandler Navigating;
-        public event NavigationFailedEventHandler NavigationFailed;
-        public event NavigationStoppedEventHandler NavigationStopped;
-
 
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
@@ -164,30 +58,16 @@ namespace FluentAvalonia.UI.Controls
             _presenter = e.NameScope.Find<ContentPresenter>("ContentPresenter");
         }
 
-
+        /// <summary>
+        /// Navigates to the most recent item in back navigation history, if a Frame manages its own navigation history.
+        /// </summary>
         public void GoBack() => GoBack(null);
 
-        public void GoForward() 
-        {
-            if (CanGoForward)
-            {
-                NavigateCore(_forwardStack[_forwardStack.Count - 1], NavigationMode.Forward);
-            }
-        }
-
-        public bool Navigate(Type sourcePageType, object parameter) => Navigate(sourcePageType, parameter, null);
-
-        //TODO
-        public string GetNavigationState() => throw new NotImplementedException();
-
-        public void SetNavigationState(string navState) { }
-
-        public bool Navigate(Type sourcePageType, object parameter, NavigationTransitionInfo infoOverride)
-        {
-            return NavigateCore(new PageStackEntry(sourcePageType, parameter,
-                infoOverride), NavigationMode.New);
-        }
-
+        /// <summary>
+        /// Navigates to the most recent item in back navigation history, if a Frame manages its own navigation history, 
+        /// and specifies the animated transition to use.
+        /// </summary>
+        /// <param name="infoOverride">Info about the animated transition to use.</param>
         public void GoBack(NavigationTransitionInfo infoOverride)
         {
             if (CanGoBack)
@@ -206,19 +86,97 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        //TODO
-        public void SetNavigationState(string navState, bool suppressNavigate) 
+        /// <summary>
+        /// Navigates to the most recent item in forward navigation history, if a Frame manages its own navigation history.
+        /// </summary>
+        public void GoForward() 
         {
-            throw new NotImplementedException();
+            if (CanGoForward)
+            {
+                NavigateCore(_forwardStack[_forwardStack.Count - 1], NavigationMode.Forward);
+            }
         }
 
-        //TODO
+        /// <summary>
+        /// Causes the Frame to load content represented by the specified Page.
+        /// </summary>
+        /// <param name="sourcePageType">he page to navigate to, specified as a type reference to its partial class type.</param>
+        /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; otherwise, true. </returns>
+        public bool Navigate(Type sourcePageType) => Navigate(sourcePageType, null, null);
+
+
+        /// <summary>
+        /// Causes the Frame to load content represented by the specified Page, also passing a parameter to be 
+        /// interpreted by the target of the navigation.
+        /// </summary>
+        /// <param name="sourcePageType">The page to navigate to, specified as a type reference to its 
+        /// partial class type.</param>
+        /// <param name="parameter">The navigation parameter to pass to the target page; 
+        /// must have a basic type (string, char, numeric, or GUID) to support parameter serialization
+        /// using GetNavigationState.</param>
+        /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
+        /// otherwise, true.</returns>
+        public bool Navigate(Type sourcePageType, object parameter) => Navigate(sourcePageType, parameter, null);
+
+        /// <summary>
+        /// Causes the Frame to load content represented by the specified Page -derived data type, 
+        /// also passing a parameter to be interpreted by the target of the navigation, and a value 
+        /// indicating the animated transition to use.
+        /// </summary>
+        /// <param name="sourcePageType">The page to navigate to, specified as a type reference to 
+        /// its partial class type. </param>
+        /// <param name="parameter">The navigation parameter to pass to the target page; must have a 
+        /// basic type (string, char, numeric, or GUID) to support parameter serialization using 
+        /// GetNavigationState.</param>
+        /// <param name="infoOverride">Info about the animated transition.</param>
+        /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
+        /// otherwise, true.</returns>
+        public bool Navigate(Type sourcePageType, object parameter, NavigationTransitionInfo infoOverride)
+        {
+            return NavigateCore(new PageStackEntry(sourcePageType, parameter,
+                infoOverride), NavigationMode.New);
+        }
+
+        /// <summary>
+        /// TODO: Implement this method
+        /// Causes the Frame to load content represented by the specified Page, also passing a parameter to be 
+        /// interpreted by the target of the navigation.
+        /// </summary>
+        /// <param name="sourcePageType">The page to navigate to, specified as a type reference to its partial class type.</param>
+        /// <param name="parameter">The navigation parameter to pass to the target page; must have a basic type 
+        /// (string, char, numeric, or GUID) to support parameter serialization using GetNavigationState.</param>
+        /// <param name="navOptions">Options for the navigation, including whether it is recorded in the navigation stack 
+        /// and what transition animation is used.</param>
+        /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; otherwise, true.</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool NavigateToType(Type sourcePageType, object parameter, FrameNavigationOptions navOptions)
         {
             throw new NotImplementedException();
         }
 
-        public bool Navigate(Type sourcePageType) => Navigate(sourcePageType, null, null);
+        /// <summary>
+        /// TODO: implement this method
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public string GetNavigationState() => throw new NotImplementedException();
+
+        /// <summary>
+        /// TODO: Implement this method
+        /// </summary>
+        /// <param name="navState"></param>
+        public void SetNavigationState(string navState) { }
+
+        /// <summary>
+        /// TODO: Implement this method
+        /// </summary>
+        /// <param name="navState"></param>
+        /// <param name="suppressNavigate"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void SetNavigationState(string navState, bool suppressNavigate) 
+        {
+            throw new NotImplementedException();
+        }
 
         private bool NavigateCore(PageStackEntry entry, NavigationMode mode)
         {
@@ -245,23 +203,25 @@ namespace FluentAvalonia.UI.Controls
 
                 //Navigate to new page
                 var prevEntry = CurrentEntry;
-                CurrentEntry = entry;
-
+                
                 if (mode == NavigationMode.New)
                 {
                     //Check if we already have an instance of the page in the cache
-                    CurrentEntry.Instance = CheckCacheAndGetPage(entry.SourcePageType);
+                    entry.Instance = CheckCacheAndGetPage(entry.SourcePageType);
                 }
 
-                if (CurrentEntry.Instance == null)
+                if (entry.Instance == null)
                 {
                     var page = CreatePageAndCacheIfNecessary(entry.SourcePageType);
                     if (page == null)
-                        return false;
+                    {
+                        throw new ArgumentException($"The type {entry.SourcePageType} is not a valid page type.");
+                    }
 
-                    CurrentEntry.Instance = page;
+                    entry.Instance = page;
                 }
 
+                CurrentEntry = entry;
                 SetContentAndAnimate(entry);
 
                 if (IsNavigationStackEnabled)
@@ -306,7 +266,6 @@ namespace FluentAvalonia.UI.Controls
                 //VisualTreeHelper.CloseAllPopups();
 
                 return true;
-
             }
             catch (Exception ex)
             {
@@ -418,10 +377,5 @@ namespace FluentAvalonia.UI.Controls
         private ContentPresenter _presenter;
         private List<IControl> _cache = new List<IControl>(10);
         bool _isNavigating = false;
-        private Type _sourcePageType;
-        private int _cacheSize = 10;
-        private IList<PageStackEntry> _backStack;
-        private IList<PageStackEntry> _forwardStack;
-        private bool _isNavigationStackEnabled = true;
     }   
 }

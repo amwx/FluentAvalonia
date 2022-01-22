@@ -7,6 +7,9 @@ using System.Reactive.Disposables;
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Represents a header for a group of menu items in a NavigationMenu.
+    /// </summary>
     [PseudoClasses(":headertextcollapsed", ":headertextvisible")]
     public class NavigationViewItemHeader : NavigationViewItemBase
     {
@@ -81,8 +84,6 @@ namespace FluentAvalonia.UI.Controls
             var newLeft = Depth * _itemIndentation;
             _rootGrid.Margin = new Thickness(newLeft, oldMargin.Top, oldMargin.Right, oldMargin.Bottom);
         }
-
-
 
         private IDisposable _splitViewRevokers;
         private Grid _rootGrid;

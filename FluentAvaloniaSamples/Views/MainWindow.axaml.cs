@@ -38,9 +38,7 @@ namespace FluentAvaloniaSamples.Views
 
 	public class MainWindow : CoreWindow
     {
-		
-
-        public MainWindow()
+		public MainWindow()
         {
 			InitializeComponent();
 
@@ -219,7 +217,7 @@ namespace FluentAvaloniaSamples.Views
 				new NavigationViewItem { Content = "NumberBox", Icon = new SymbolIcon{ Symbol=Symbol.Calculator }, Tag = typeof(NumberBoxPage)},
 				new NavigationViewItem { Content = "InfoBadge", Icon = new SymbolIcon{ Symbol=Symbol.Help }, Tag = typeof(InfoBadgePage)},
 				new NavigationViewItem { Content = "InfoBar", Icon = new SymbolIcon{ Symbol=Symbol.Help }, Tag = typeof(InfoBarPage)},
-				new NavigationViewItem {Content = "ListView", Icon = new SymbolIcon {Symbol = Symbol.List }, Tag=typeof(ListViewPage) }
+				//new NavigationViewItem {Content = "ListView", Icon = new SymbolIcon {Symbol = Symbol.List }, Tag=typeof(ListViewPage) }
 			};
 
 			navView.MenuItems = items;

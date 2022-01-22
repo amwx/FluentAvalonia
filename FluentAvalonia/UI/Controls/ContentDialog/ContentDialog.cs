@@ -3,308 +3,25 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
-using FluentAvalonia.Core;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Controls
 {
 	/// <summary>
 	/// Presents a asyncronous dialog to the user.
-	/// Note, Tab navigation currently doesn't work
 	/// </summary>
-	public class ContentDialog : ContentControl, ICustomKeyboardNavigation
+	public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 	{
 		public ContentDialog()
 		{
 			PseudoClasses.Add(":hidden");
 		}
-
-		static ContentDialog()
-		{
-			FullSizeDesiredProperty.Changed.AddClassHandler<ContentDialog>((x, v) => x.OnFullSizedDesiredChanged(v));
-		}
-
-		public static readonly StyledProperty<ICommand> CloseButtonCommandProperty =
-			AvaloniaProperty.Register<ContentDialog, ICommand>(nameof(CloseButtonCommand));
-
-		public static readonly StyledProperty<object> CloseButtonCommandParameterProperty =
-			AvaloniaProperty.Register<ContentDialog, object>(nameof(CloseButtonCommandParameter));
-
-		public static readonly StyledProperty<string> CloseButtonTextProperty =
-			AvaloniaProperty.Register<ContentDialog, string>(nameof(CloseButtonText));
-
-		public static readonly StyledProperty<ContentDialogButton> DefaultButtonProperty =
-			AvaloniaProperty.Register<ContentDialog, ContentDialogButton>(nameof(DefaultButton), ContentDialogButton.None);
-
-		public static readonly StyledProperty<bool> IsPrimaryButtonEnabledProperty =
-			AvaloniaProperty.Register<ContentDialog, bool>(nameof(IsPrimaryButtonEnabled), true);
-
-		public static readonly StyledProperty<bool> IsSecondaryButtonEnabledProperty =
-			AvaloniaProperty.Register<ContentDialog, bool>(nameof(IsSecondaryButtonEnabled), true);
-
-		public static readonly StyledProperty<ICommand> PrimaryButtonCommandProperty =
-			AvaloniaProperty.Register<ContentDialog, ICommand>(nameof(PrimaryButtonCommand));
-
-		public static readonly StyledProperty<object> PrimaryButtonCommandParameterProperty =
-			AvaloniaProperty.Register<ContentDialog, object>(nameof(PrimaryButtonCommandParameter));
-
-		public static readonly StyledProperty<string> PrimaryButtonTextProperty =
-			AvaloniaProperty.Register<ContentDialog, string>(nameof(PrimaryButtonText));
-
-		public static readonly StyledProperty<ICommand> SecondaryButtonCommandProperty =
-			AvaloniaProperty.Register<ContentDialog, ICommand>(nameof(SecondaryButtonCommand));
-
-		public static readonly StyledProperty<object> SecondaryButtonCommandParameterProperty =
-			AvaloniaProperty.Register<ContentDialog, object>(nameof(SecondaryButtonCommandParameter));
-
-		public static readonly StyledProperty<string> SecondaryButtonTextProperty =
-			AvaloniaProperty.Register<ContentDialog, string>(nameof(SecondaryButtonText));
-
-		public static readonly StyledProperty<object> TitleProperty =
-			AvaloniaProperty.Register<ContentDialog, object>(nameof(Title), "");
-
-		public static readonly StyledProperty<IDataTemplate> TitleTemplateProperty =
-			AvaloniaProperty.Register<ContentDialog, IDataTemplate>(nameof(TitleTemplate));
-
-		public static readonly StyledProperty<bool> FullSizeDesiredProperty =
-			AvaloniaProperty.Register<ContentDialog, bool>(nameof(FullSizeDesired));
-
-		/// <summary>
-		/// Command to execute when the close button is clicked
-		/// </summary>
-		public ICommand CloseButtonCommand
-		{
-			get
-			{
-				return GetValue(CloseButtonCommandProperty);
-			}
-			set
-			{
-				SetValue(CloseButtonCommandProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// CommandParameter for the close button
-		/// </summary>
-		public object CloseButtonCommandParameter
-		{
-			get
-			{
-				return GetValue(CloseButtonCommandParameterProperty);
-			}
-			set
-			{
-				SetValue(CloseButtonCommandParameterProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Close Button Text
-		/// </summary>
-		public string CloseButtonText
-		{
-			get
-			{
-				return GetValue(CloseButtonTextProperty);
-			}
-			set
-			{
-				SetValue(CloseButtonTextProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Sets which button is the Default, closing the dialog when enter/space is pressed
-		/// </summary>
-		public ContentDialogButton DefaultButton
-		{
-			get
-			{
-				return GetValue(DefaultButtonProperty);
-			}
-			set
-			{
-				SetValue(DefaultButtonProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets primary button enabled
-		/// </summary>
-		public bool IsPrimaryButtonEnabled
-		{
-			get
-			{
-				return GetValue(IsPrimaryButtonEnabledProperty);
-			}
-			set
-			{
-				SetValue(IsPrimaryButtonEnabledProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets secondary button enabled
-		/// </summary>
-		public bool IsSecondaryButtonEnabled
-		{
-			get
-			{
-				return GetValue(IsSecondaryButtonEnabledProperty);
-			}
-			set
-			{
-				SetValue(IsSecondaryButtonEnabledProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Command for the Primary Button
-		/// </summary>
-		public ICommand PrimaryButtonCommand
-		{
-			get
-			{
-				return GetValue(PrimaryButtonCommandProperty);
-			}
-			set
-			{
-				SetValue(PrimaryButtonCommandProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// CommandParamter for the PrimaryButton
-		/// </summary>
-		public object PrimaryButtonCommandParameter
-		{
-			get
-			{
-				return GetValue(PrimaryButtonCommandParameterProperty);
-			}
-			set
-			{
-				SetValue(PrimaryButtonCommandParameterProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Primary Button Text
-		/// </summary>
-		public string PrimaryButtonText
-		{
-			get
-			{
-				return GetValue(PrimaryButtonTextProperty);
-			}
-			set
-			{
-				SetValue(PrimaryButtonTextProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Command for the secondary button
-		/// </summary>
-		public ICommand SecondaryButtonCommand
-		{
-			get
-			{
-				return GetValue(SecondaryButtonCommandProperty);
-			}
-			set
-			{
-				SetValue(SecondaryButtonCommandProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// CommandParameter for the Secondary button
-		/// </summary>
-		public object SecondaryButtonCommandParameter
-		{
-			get
-			{
-				return GetValue(SecondaryButtonCommandParameterProperty);
-			}
-			set
-			{
-				SetValue(SecondaryButtonCommandParameterProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// SecondaryButtonText
-		/// </summary>
-		public string SecondaryButtonText
-		{
-			get
-			{
-				return GetValue(SecondaryButtonTextProperty);
-			}
-			set
-			{
-				SetValue(SecondaryButtonTextProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the Dialog Title
-		/// </summary>
-		public object Title
-		{
-			get
-			{
-				return GetValue(TitleProperty);
-			}
-			set
-			{
-				SetValue(TitleProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the template for the Title
-		/// </summary>
-		public IDataTemplate TitleTemplate
-		{
-			get
-			{
-				return GetValue(TitleTemplateProperty);
-			}
-			set
-			{
-				SetValue(TitleTemplateProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets whether the Dialog should show full screen
-		/// On WinUI3, at least desktop, this just show the dialog at 
-		/// the maximum size of a contentdialog.
-		/// </summary>
-		public bool FullSizeDesired
-		{
-			get => GetValue(FullSizeDesiredProperty);
-			set => SetValue(FullSizeDesiredProperty, value);
-		}
-
-		public event TypedEventHandler<ContentDialog, object> Opening;
-		public event TypedEventHandler<ContentDialog, object> Opened;
-		public event TypedEventHandler<ContentDialog, ContentDialogClosingEventArgs> Closing;
-		public event TypedEventHandler<ContentDialog, ContentDialogClosedEventArgs> Closed;
-		public event TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs> PrimaryButtonClick;
-		public event TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs> SecondaryButtonClick;
-		public event TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs> CloseButtonClick;
 
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
@@ -323,6 +40,16 @@ namespace FluentAvalonia.UI.Controls
 			_secondaryButton.Click += OnButtonClick;
 			_closeButton = e.NameScope.Get<Button>("CloseButton");
 			_closeButton.Click += OnButtonClick;
+		}
+
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
+
+			if (change.Property == FullSizeDesiredProperty)
+			{
+				OnFullSizedDesiredChanged(change);
+			}
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e)
@@ -545,7 +272,8 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		private void SetupDialog()
+        // Internal only for UnitTests
+		internal void SetupDialog()
 		{
 			if (_primaryButton == null)
 				ApplyTemplate();
@@ -643,20 +371,20 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		//This is the exit point for the ContentDialog
-		//This method MUST be called to finalize everything
+		// This is the exit point for the ContentDialog
+		// This method MUST be called to finalize everything
 		private async void FinalCloseDialog()
 		{
-			//Prevent interaction when closing...double/mutliple clicking on the buttons to close
-			//the dialog was calling this multiple times, which would cause the OverlayLayer check
-			//below to fail (as this would be removed from the tree). This is a simple workaround
-			//to make sure we don't error out
+			// Prevent interaction when closing...double/mutliple clicking on the buttons to close
+			// the dialog was calling this multiple times, which would cause the OverlayLayer check
+			// below to fail (as this would be removed from the tree). This is a simple workaround
+			// to make sure we don't error out
 			this.IsHitTestVisible = false;
 
-			//For a better experience when animating closed, we need to make sure the
-			//focus adorner is not showing (if using keyboard) otherwise that will hang
-			//around and not fade out and it just looks weird. So focus this to force the
-			//adorner to hide, then continue forward.
+			// For a better experience when animating closed, we need to make sure the
+			// focus adorner is not showing (if using keyboard) otherwise that will hang
+			// around and not fade out and it just looks weird. So focus this to force the
+			// adorner to hide, then continue forward.
 			Focus();
 
 			PseudoClasses.Set(":hidden", true);
@@ -666,7 +394,7 @@ namespace FluentAvalonia.UI.Controls
 			// We'll wait just a touch longer to be sure
 			await Task.Delay(200);
 
-			//Re-enable interaction in case we reuse the dialog
+			// Re-enable interaction in case we reuse the dialog
 			this.IsHitTestVisible = true;
 
 			OnClosed(new ContentDialogClosedEventArgs(result));
@@ -852,8 +580,8 @@ namespace FluentAvalonia.UI.Controls
 			return (false, null);
 		}
 
-		//Store the last element focused before showing the dialog, so we can
-		//restore it when it closes
+		// Store the last element focused before showing the dialog, so we can
+		// restore it when it closes
 		private IInputElement _lastFocus;
 		private IControl _originalHost;
 		private int _originalHostIndex;
@@ -865,6 +593,13 @@ namespace FluentAvalonia.UI.Controls
 		private Button _closeButton;
 	}
 
+	/// <summary>
+	/// Special control to host a <see cref="ContentDialog"/>
+	/// </summary>
+	/// <remarks>
+	/// This class should generally not be used outside of FluentAvalonia, and is
+	/// only public for Xaml styling support
+	/// </remarks>
 	public class DialogHost : ContentControl, IStyleable
 	{
 		public DialogHost()

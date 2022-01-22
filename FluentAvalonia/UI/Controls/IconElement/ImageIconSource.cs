@@ -1,19 +1,23 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Avalonia.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Represents an icon source that uses an image type as its content.
+	/// </summary>
 	public class ImageIconSource : IconSource
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="Source"/> property
+		/// </summary>
         public static readonly StyledProperty<IImage> SourceProperty =
             ImageIcon.SourceProperty.AddOwner<ImageIconSource>();
 
+		/// <summary>
+		/// Gets or sets the <see cref="Avalonia.Media.IImage"/> content this icon displays
+		/// </summary>
 		[Content]
 		public IImage Source
 		{

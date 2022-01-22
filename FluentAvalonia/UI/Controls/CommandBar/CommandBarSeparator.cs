@@ -6,14 +6,23 @@ namespace FluentAvalonia.UI.Controls
 {
 	public class CommandBarSeparator : TemplatedControl, ICommandBarElement
 	{
+		/// <summary>
+		/// Defines the <see cref="IsInOverflow"/> property
+		/// </summary>
 		public static readonly DirectProperty<CommandBarSeparator, bool> IsInOverflowProperty =
 			   AvaloniaProperty.RegisterDirect<CommandBarSeparator, bool>(nameof(IsInOverflow),
 				   x => x.IsInOverflow);
 
+		/// <summary>
+		/// Defines the <see cref="DynamicOverflowOrder"/> property
+		/// </summary>
 		public static readonly DirectProperty<CommandBarSeparator, int> DynamicOverflowOrderProperty =
 			AvaloniaProperty.RegisterDirect<CommandBarSeparator, int>(nameof(DynamicOverflowOrder),
 				x => x.DynamicOverflowOrder, (x, v) => x.DynamicOverflowOrder = v);
 
+		/// <summary>
+		/// Defines the <see cref="IsCompact"/> property
+		/// </summary>
 		public static readonly StyledProperty<bool> IsCompactProperty =
 			AvaloniaProperty.Register<CommandBarSeparator, bool>(nameof(IsCompact));
 

@@ -7,6 +7,9 @@ using System.Reactive.Disposables;
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Represents a line that separates menu items in a NavigationView.
+    /// </summary>
     [PseudoClasses(":horizontal", ":horizontalcompact", ":vertical")]
     public class NavigationViewItemSeparator : NavigationViewItemBase
     {

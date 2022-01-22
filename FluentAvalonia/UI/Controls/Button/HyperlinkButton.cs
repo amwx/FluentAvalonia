@@ -7,13 +7,22 @@ using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls
 {
+	/// <summary>
+	/// Represents a button control that functions as a hyperlink.
+	/// </summary>
 	public class HyperlinkButton : Button, IStyleable
 	{
 		Type IStyleable.StyleKey => typeof(HyperlinkButton);
 
+		/// <summary>
+		/// Defines the <see cref="NavigateUri"/> property
+		/// </summary>
 		public static readonly DirectProperty<HyperlinkButton, Uri> NavigateUriProperty =
 			AvaloniaProperty.RegisterDirect<HyperlinkButton, Uri>(nameof(NavigateUri), x => x.NavigateUri, (x, v) => x.NavigateUri = v);
 
+		/// <summary>
+		/// Gets or sets the Uri that the button should navigate to upon clicking. In assembly paths are not supported, (e.g., avares://...)
+		/// </summary>
 		public Uri NavigateUri
 		{
 			get => _navigateUri;

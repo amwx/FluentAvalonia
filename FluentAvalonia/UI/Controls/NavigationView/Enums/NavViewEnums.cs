@@ -1,38 +1,8 @@
 ﻿namespace FluentAvalonia.UI.Controls
 {
-    public enum NavigationViewDisplayMode
-    {
-        Minimal = 0,
-        Compact,
-        Expanded
-    }
-
-    //Replaced with bool
-    //public enum NavigationViewBackButtonVisible
-    //{
-    //    Collapsed = 0,
-    //    Visible,
-    //    Auto
-    //}
-
-    public enum NavigationViewPaneDisplayMode
-    {
-        Auto = 0,
-        Left,
-        Top,
-        LeftCompact,
-        LeftMinimal
-    }
-
-    ////Ignore NavigationViewShoulderNavigationEnabled - xbox only
-
-    //Removed...
-    public enum NavigationViewOverflowLabelMode
-    {
-        MoreLabel = 0,
-        NoLabel
-    }
-
+    // Ignore NavigationViewShoulderNavigationEnabled - xbox only
+    // Removed NavigationViewOverflowLabelMode - deprecated
+   
     internal enum TopNavigationViewLayoutState
     {
         Uninitialized = 0,

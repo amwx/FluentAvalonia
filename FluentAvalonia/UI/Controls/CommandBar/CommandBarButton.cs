@@ -8,62 +8,9 @@ using System;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class CommandBarButton : Button, ICommandBarElement, IStyleable
+	public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
 	{
 		Type IStyleable.StyleKey => typeof(CommandBarButton);
-
-		public static readonly DirectProperty<CommandBarButton, bool> IsInOverflowProperty =
-			AvaloniaProperty.RegisterDirect<CommandBarButton, bool>(nameof(IsInOverflow),
-				x => x.IsInOverflow);
-
-		public static readonly StyledProperty<IconElement> IconProperty =
-			AvaloniaProperty.Register<CommandBarButton, IconElement>(nameof(Icon));
-
-		public static readonly StyledProperty<string> LabelProperty =
-			AvaloniaProperty.Register<CommandBarButton, string>(nameof(Label));
-
-		public static readonly DirectProperty<CommandBarButton, int> DynamicOverflowOrderProperty =
-			AvaloniaProperty.RegisterDirect<CommandBarButton, int>(nameof(DynamicOverflowOrder),
-				x => x.DynamicOverflowOrder, (x, v) => x.DynamicOverflowOrder = v);
-
-		public static readonly StyledProperty<bool> IsCompactProperty =
-			AvaloniaProperty.Register<CommandBarButton, bool>(nameof(IsCompact));
-
-		public bool IsCompact
-		{
-			get => GetValue(IsCompactProperty);
-			set => SetValue(IsCompactProperty, value);
-		}
-
-		public bool IsInOverflow
-		{
-			get => _isInOverflow;
-			internal set
-			{
-				if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
-				{
-					PseudoClasses.Set(":overflow", value);
-				}
-			}
-		}
-
-		public IconElement Icon
-		{
-			get => GetValue(IconProperty);
-			set => SetValue(IconProperty, value);
-		}
-
-		public string Label
-		{
-			get => GetValue(LabelProperty);
-			set => SetValue(LabelProperty, value);
-		}
-
-		public int DynamicOverflowOrder
-		{
-			get => _dynamicOverflowOrder;
-			set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
-		}
 
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
 		{
@@ -177,8 +124,5 @@ namespace FluentAvalonia.UI.Controls
 		{
 			PseudoClasses.Set(":submenuopen", false);
 		}
-
-		private bool _isInOverflow;
-		private int _dynamicOverflowOrder;
 	}
 }

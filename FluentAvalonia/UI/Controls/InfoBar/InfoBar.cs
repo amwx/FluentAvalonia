@@ -2,110 +2,12 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using FluentAvalonia.Core;
 using System;
-using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class InfoBar : ContentControl
+	public partial class InfoBar : ContentControl
 	{
-		public static readonly DirectProperty<InfoBar, bool> IsOpenProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, bool>(nameof(IsOpen), 
-				x => x.IsOpen, (x, v) => x.IsOpen = v);
-
-		public static readonly StyledProperty<string> TitleProperty =
-			AvaloniaProperty.Register<InfoBar, string>(nameof(Title));
-
-		public static readonly StyledProperty<string> MessageProperty =
-			AvaloniaProperty.Register<InfoBar, string>(nameof(Message));
-
-		public static readonly StyledProperty<InfoBarSeverity> SeverityProperty =
-			AvaloniaProperty.Register<InfoBar, InfoBarSeverity>(nameof(Severity));
-
-		public static readonly StyledProperty<IconSource> IconSourceProperty =
-			AvaloniaProperty.Register<InfoBar, IconSource>(nameof(IconSource));
-
-		public static readonly StyledProperty<bool> IsIconVisibleProperty =
-			AvaloniaProperty.Register<InfoBar, bool>(nameof(IsIconVisible), true);
-
-		public static readonly StyledProperty<bool> IsClosableProperty =
-			AvaloniaProperty.Register<InfoBar, bool>(nameof(IsClosable), true);
-
-		public static readonly StyledProperty<ICommand> CloseButtonCommandProperty =
-			AvaloniaProperty.Register<InfoBar, ICommand>(nameof(CloseButtonCommand));
-
-		public static readonly DirectProperty<InfoBar, object> CloseButtonCommandParameterProperty =
-			AvaloniaProperty.RegisterDirect<InfoBar, object>(nameof(CloseButtonCommandParameter), 
-				x => x.CloseButtonCommandParameter, (x, v) => x.CloseButtonCommandParameter = v);
-
-		public static readonly StyledProperty<IControl> ActionButtonProperty =
-			AvaloniaProperty.Register<InfoBar, IControl>(nameof(ActionButton));
-
-		public bool IsOpen
-		{
-			get => _isOpen;
-			set => SetAndRaise(IsOpenProperty, ref _isOpen, value);
-		}
-
-		public string Title
-		{
-			get => GetValue(TitleProperty);
-			set => SetValue(TitleProperty, value);
-		}
-
-		public string Message
-		{
-			get => GetValue(MessageProperty);
-			set => SetValue(MessageProperty, value);
-		}
-
-		public InfoBarSeverity Severity
-		{
-			get => GetValue(SeverityProperty);
-			set => SetValue(SeverityProperty, value);
-		}
-
-		public IconSource IconSource
-		{
-			get => GetValue(IconSourceProperty);
-			set => SetValue(IconSourceProperty, value);
-		}
-
-		public bool IsIconVisible
-		{
-			get => GetValue(IsIconVisibleProperty);
-			set => SetValue(IsIconVisibleProperty, value);
-		}
-
-		public bool IsClosable
-		{
-			get => GetValue(IsClosableProperty);
-			set => SetValue(IsClosableProperty, value);
-		}
-
-		public ICommand CloseButtonCommand
-		{
-			get => GetValue(CloseButtonCommandProperty);
-			set => SetValue(CloseButtonCommandProperty, value);
-		}
-
-		public object CloseButtonCommandParameter
-		{
-			get => _closeButtonCommandParameter;
-			set => SetAndRaise(CloseButtonCommandParameterProperty, ref _closeButtonCommandParameter, value);
-		}
-
-		public IControl ActionButton
-		{
-			get => GetValue(ActionButtonProperty);
-			set => SetValue(ActionButtonProperty, value);
-		}
-
-		public event TypedEventHandler<InfoBar, object> CloseButtonClick;
-		public event TypedEventHandler<InfoBar, InfoBarClosingEventArgs> Closing;
-		public event TypedEventHandler<InfoBar, InfoBarClosedEventArgs> Closed;
-
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
 			_appliedTemplate = false;
@@ -269,10 +171,8 @@ namespace FluentAvalonia.UI.Controls
 
 		private void UpdateIcon()
 		{
-			// WinUI sets an IconElement in TemplateSetings
-			// Why tho...Just use an IconSourceElement and
-			// set the icon there, why must they make everything
-			// so complicated
+			// Skip this logic - used an IconSourceElement in the template instead
+			// which automatically handles IconSource -> IconElement for us
 		}
 
 		private void UpdateIconVisibility()
@@ -306,8 +206,6 @@ namespace FluentAvalonia.UI.Controls
 		private bool _notifyOpen;
 		private bool _isVisible;
 
-		private bool _isOpen;
-		private object _closeButtonCommandParameter;
 		private InfoBarCloseReason _lastCloseReason;
 	}
 }

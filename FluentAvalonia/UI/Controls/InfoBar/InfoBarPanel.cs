@@ -5,52 +5,14 @@ using System;
 
 namespace FluentAvalonia.UI.Controls.Primitives
 {
-	public class InfoBarPanel : Panel
+	/// <summary>
+	/// Represents a panel that arranges its items horizontally if there is available space, otherwise vertically.
+	/// </summary>
+	/// <remarks>
+	/// This control is specific to the <see cref="InfoBar"/> and generally should not be used elsewhere
+	/// </remarks>
+	public partial class InfoBarPanel : Panel
 	{
-		public static readonly StyledProperty<Thickness> HorizontalOrientationPaddingProperty =
-			AvaloniaProperty.Register<InfoBarPanel, Thickness>(nameof(HorizontalOrientationPadding));
-
-		public static readonly StyledProperty<Thickness> VerticalOrientationPaddingProperty =
-			AvaloniaProperty.Register<InfoBarPanel, Thickness>(nameof(VerticalOrientationPadding));
-
-		public Thickness HorizontalOrientationPadding
-		{
-			get => GetValue(HorizontalOrientationPaddingProperty);
-			set => SetValue(HorizontalOrientationPaddingProperty, value);
-		}
-
-		public Thickness VerticalOrientationPadding
-		{
-			get => GetValue(VerticalOrientationPaddingProperty);
-			set => SetValue(VerticalOrientationPaddingProperty, value);
-		}
-
-		public static readonly AttachedProperty<Thickness> HorizontalOrientationMarginProperty =
-			AvaloniaProperty.RegisterAttached<InfoBarPanel, IControl, Thickness>("HorizontalOrientationMargin");
-
-		public static readonly AttachedProperty<Thickness> VerticalOrientationMarginProperty =
-			AvaloniaProperty.RegisterAttached<InfoBarPanel, IControl, Thickness>("VerticalOrientationMargin");
-
-		public static void SetHorizontalOrientationMargin(IControl c, Thickness t)
-		{
-			c.SetValue(HorizontalOrientationMarginProperty, t);
-		}
-
-		public static Thickness GetHorizontalOrientationMargin(IControl c)
-		{
-			return c.GetValue(HorizontalOrientationMarginProperty);
-		}
-
-		public static void SetVerticalOrientationMargin(IControl c, Thickness t)
-		{
-			c.SetValue(VerticalOrientationMarginProperty, t);
-		}
-
-		public static Thickness GetVerticalOrientationMargin(IControl c)
-		{
-			return c.GetValue(VerticalOrientationMarginProperty);
-		}
-
 		protected override Size MeasureOverride(Size availableSize)
 		{
 			double totalWid = 0;

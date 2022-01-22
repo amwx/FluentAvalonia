@@ -1,294 +1,22 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
-using FluentAvalonia.Core;
 using System;
 using System.Globalization;
-using FluentAvalonia.Core.Attributes;
-using Avalonia.Data;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class NumberBox : TemplatedControl
+    /// <summary>
+    /// Represents a control that can be used to display and edit numbers.
+    /// </summary>
+    public partial class NumberBox : TemplatedControl
     {
         public NumberBox()
         {
             AddHandler(PointerPressedEvent, OnPointerPressedPreview, RoutingStrategies.Tunnel);
         }
-
-        public static readonly DirectProperty<NumberBox, bool> AcceptsExpressionProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, bool>(nameof(AcceptsExpression),
-                x => x.AcceptsExpression, (x, v) => x.AcceptsExpression = v);
-
-        public static readonly StyledProperty<string> DescriptionProperty =
-            AvaloniaProperty.Register<NumberBox, string>(nameof(Description));
-
-        public static readonly StyledProperty<object> HeaderProperty =
-            AvaloniaProperty.Register<NumberBox, object>(nameof(Header));
-
-        public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty =
-            AvaloniaProperty.Register<NumberBox, IDataTemplate>(nameof(HeaderTemplate));
-
-        public static readonly StyledProperty<bool> IsWrapEnabledProperty =
-            AvaloniaProperty.Register<NumberBox, bool>(nameof(IsWrapEnabled));
-
-        public static readonly DirectProperty<NumberBox, double> LargeChangeProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, double>(nameof(LargeChangeProperty),
-                x => x.LargeChange, (x, v) => x.LargeChange = v);
-
-        public static readonly DirectProperty<NumberBox, double> MinimumProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, double>(nameof(Minimum),
-                x => x.Minimum, (x, v) => x.Minimum = v);
-
-        public static readonly DirectProperty<NumberBox, double> MaximumProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, double>(nameof(Maximum),
-                x => x.Maximum, (x, v) => x.Maximum = v);
-
-        //Skip NumberFormatter
-
-        public static readonly StyledProperty<string> PlaceholderTextProperty =
-            AvaloniaProperty.Register<NumberBox, string>(nameof(PlaceholderText));
-
-        //Skip PreventKeyboardDisplayOnProgrammaticFocus
-
-        public static readonly DirectProperty<NumberBox, FlyoutBase> SelectionFlyoutProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, FlyoutBase>(nameof(SelectionFlyout),
-                x => x.SelectionFlyout, (x, v) => x.SelectionFlyout = v);
-
-        public static readonly StyledProperty<IBrush> SelectionHighlightColorProperty =
-            AvaloniaProperty.Register<NumberBox, IBrush>(nameof(SelectionHighlightColor));
-
-        public static readonly DirectProperty<NumberBox, double> SmallChangeProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, double>(nameof(SmallChangeProperty),
-                x => x.SmallChange, (x, v) => x.SmallChange = v);
-
-        public static readonly StyledProperty<NumberBoxSpinButtonPlacementMode> SpinButtonPlacementModeProperty =
-            AvaloniaProperty.Register<NumberBox, NumberBoxSpinButtonPlacementMode>(nameof(SpinButtonPlacementMode), NumberBoxSpinButtonPlacementMode.Hidden);
-
-        public static readonly DirectProperty<NumberBox, string> TextProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, string>(nameof(Text),
-                x => x.Text, (x, v) => x.Text = v, defaultBindingMode: BindingMode.TwoWay);
-
-        public static readonly DirectProperty<NumberBox, TextReadingOrder> TextReadingOrderProperty =
-            AvaloniaProperty.RegisterDirect<NumberBox, TextReadingOrder>(nameof(TextReadingOrder),
-                x => x.TextReadingOrder, (x, v) => x.TextReadingOrder = v);
-
-        public static readonly DirectProperty<NumberBox, NumberBoxValidationMode> ValidationModeProperty =
-           AvaloniaProperty.RegisterDirect<NumberBox, NumberBoxValidationMode>(nameof(ValidationMode),
-               x => x.ValidationMode, (x, v) => x.ValidationMode = v);
-
-        public static readonly DirectProperty<NumberBox, double> ValueProperty =
-             AvaloniaProperty.RegisterDirect<NumberBox, double>(nameof(Value),
-                 x => x.Value, (x, v) => x.Value = v, defaultBindingMode: BindingMode.TwoWay);
-
-        //Skip InputScope
-
-        public static readonly StyledProperty<TextAlignment> TextAlignmentProperty =
-            TextBlock.TextAlignmentProperty.AddOwner<NumberBox>();
-
-		public static readonly DirectProperty<NumberBox, string> SimpleNumberFormatProperty =
-			AvaloniaProperty.RegisterDirect<NumberBox, string>(nameof(SimpleNumberFormat),
-				x => x.SimpleNumberFormat, (x, v) => x.SimpleNumberFormat = v);
-
-
-        public bool AcceptsExpression
-        {
-            get => _acceptsExpression;
-            set => SetAndRaise(AcceptsExpressionProperty, ref _acceptsExpression, value);
-        }
-
-        public string Description
-        {
-            get => GetValue(DescriptionProperty);
-            set => SetValue(DescriptionProperty, value);
-        }
-
-        public object Header
-        {
-            get => GetValue(HeaderProperty);
-            set => SetValue(HeaderProperty, value);
-        }
-
-        public IDataTemplate HeaderTemplate
-        {
-            get => GetValue(HeaderTemplateProperty);
-            set => SetValue(HeaderTemplateProperty, value);
-        }
-
-        public bool IsWrapEnabled
-        {
-            get => GetValue(IsWrapEnabledProperty);
-            set => SetValue(IsWrapEnabledProperty, value);
-        }
-
-        public double LargeChange
-        {
-            get => _largeChange;
-            set 
-            {
-                SetAndRaise(LargeChangeProperty, ref _largeChange, value);
-                UpdateSpinButtonEnabled();
-            }
-        }
-
-        public double Minimum
-        {
-            get => _minimum;
-            set
-            {
-                if (value > _maxmimum)
-                    value = _maxmimum;
-                SetAndRaise(MinimumProperty, ref _minimum, value);
-                CoerceValueIfNeeded(value, _maxmimum);
-                UpdateSpinButtonEnabled();
-            }
-        }
-
-        public double Maximum
-        {
-            get => _maxmimum;
-            set
-            {
-                if (value < _minimum)
-                    value = _minimum;
-                SetAndRaise(MaximumProperty, ref _maxmimum, value);
-                CoerceValueIfNeeded(_minimum, value);
-                UpdateSpinButtonEnabled();
-            }
-        }
-
-        /// <summary>
-        /// A function for customizing the format of the NumberBox Value Text.
-        /// </summary>
-        /// <remarks>
-        /// .NET doesn't have all of the formatting stuff from WinUI/WinRT, thus doing fancy things
-        /// requires a bit more manual work, and I'm not about to attempt to replicate the NumberFormatters :D
-		/// NOTE: This cannot be used if <see cref="SimpleNumberFormat"/> is in use
-        /// </remarks>
-        public Func<double, string> NumberFormatter { get; set; }
-
-		/// <summary>
-		/// Use this for simple number formatting using normal .net formatting. Resulting string must still
-		/// be numeric in value, no special characters, as they are not removed when attempting to convert
-		/// text to value
-		/// </summary>
-		/// <remarks>
-		/// This property cannot be used if <see cref="NumberFormatter"/> is also in use
-		/// </remarks>
-		public string SimpleNumberFormat
-		{
-			get => _simpleFormat;
-			set
-			{
-				if (NumberFormatter != null)
-					throw new InvalidOperationException("NumberFormatter must be null");
-
-				if (SetAndRaise(SimpleNumberFormatProperty, ref _simpleFormat, value))
-				{
-					UpdateTextToValue();
-				}
-			}
-		}
-
-        public string PlaceholderText
-        {
-            get => GetValue(PlaceholderTextProperty);
-            set => SetValue(PlaceholderTextProperty, value);
-        }
-
-        [NotImplemented]
-        public FlyoutBase SelectionFlyout
-        {
-            get => _selectionFlyout;
-            set => SetAndRaise(SelectionFlyoutProperty, ref _selectionFlyout, value);
-        }
-
-        public IBrush SelectionHighlightColor
-        {
-            get => GetValue(SelectionHighlightColorProperty);
-            set => SetValue(SelectionHighlightColorProperty, value);
-        }
-
-        public double SmallChange
-        {
-            get => _smallChange;
-            set
-            {
-                SetAndRaise(SmallChangeProperty, ref _smallChange, value);
-                UpdateSpinButtonEnabled();
-            }
-        }
-
-        public NumberBoxSpinButtonPlacementMode SpinButtonPlacementMode
-        {
-            get => GetValue(SpinButtonPlacementModeProperty);
-            set => SetValue(SpinButtonPlacementModeProperty, value);
-        }
-
-        public string Text
-        {
-            get => _text;
-            set
-            {
-                if (!_textUpdating && SetAndRaise(TextProperty, ref _text, value))
-                {
-                    UpdateValueToText();
-                }
-            }
-        }
-
-        [NotImplemented]
-        public TextReadingOrder TextReadingOrder
-        {
-            get => _textReadingOrder;
-            set
-            {
-                SetAndRaise(TextReadingOrderProperty, ref _textReadingOrder, value);
-            }
-        }
-
-        public NumberBoxValidationMode ValidationMode
-        {
-            get => _validationMode;
-            set
-            {
-                if (SetAndRaise(ValidationModeProperty, ref _validationMode, value))
-                {
-                    ValidateInput();
-                    UpdateSpinButtonEnabled();
-                }
-            }
-        }
-
-        public double Value
-        {
-            get => _value;
-            set
-            {
-				if (!double.IsNaN(value) || !double.IsNaN(_value))
-				{
-					var old = _value;
-					value = CoerceValueToRange(value);
-					if (SetAndRaise(ValueProperty, ref _value, value))
-					{
-						OnValueChanged(old, value);
-					}
-				}
-			}
-        }
-
-        public TextAlignment TextAlignment
-        {
-            get => GetValue(TextAlignmentProperty);
-            set => SetValue(TextAlignmentProperty, value);
-        }
-
-        public event TypedEventHandler<NumberBox, NumberBoxValueChangedEventArgs> ValueChanged;
-
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
@@ -362,6 +90,10 @@ namespace FluentAvalonia.UI.Controls
             {
                 UpdateHeaderPresenterState();
             }
+            else if (change.Property == LargeChangeProperty || change.Property == SmallChangeProperty)
+			{
+                UpdateSpinButtonEnabled();
+			}
         }
 
         protected override void OnGotFocus(GotFocusEventArgs e)
@@ -398,7 +130,6 @@ namespace FluentAvalonia.UI.Controls
 
             if (_textBox != null && IsKeyboardFocusWithin)
             {
-                //WHO DECIDED THIS NEEDS TO BE A VECTOR
                 var delta = e.Delta.Y;
                 if (delta > 0)
                 {
@@ -414,9 +145,9 @@ namespace FluentAvalonia.UI.Controls
 
         private void OnPointerPressedPreview(object sender, PointerPressedEventArgs args)
         {
-            //Hack: B/c we make popup lightdismissable, we need to ensure we can reopen the popup if focus
-            //never leaves the control, but we click back on it
-            //Do this in Preview b/c TextBox will handle pointer event
+            // Hack: B/c we make popup lightdismissable, we need to ensure we can reopen the popup if focus
+            // never leaves the control, but we click back on it
+            // Do this in Preview b/c TextBox will handle pointer event
             if (SpinButtonPlacementMode == NumberBoxSpinButtonPlacementMode.Compact &&
                 _popup != null && !_popup.IsOpen && IsKeyboardFocusWithin)
             {
@@ -628,7 +359,7 @@ namespace FluentAvalonia.UI.Controls
             finally
             {
                 _textUpdating = false;
-                MoveCaretToTextEnd(); //Add this
+                MoveCaretToTextEnd(); // Add this
             }
         }
 
@@ -719,7 +450,6 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-
         private void CoerceValueIfNeeded(double min, double max)
         {
             if (double.IsNaN(_value))
@@ -745,9 +475,6 @@ namespace FluentAvalonia.UI.Controls
             return val;
         }
 
-        
-
-
         //Template parts
         private RepeatButton _spinDown;
         private RepeatButton _spinUp;
@@ -755,19 +482,6 @@ namespace FluentAvalonia.UI.Controls
         private Popup _popup;
         private RepeatButton _popupUpButton;
         private RepeatButton _popupDownButton;
-
-        //Fields
-        private bool _acceptsExpression;
-        private double _largeChange = 10;
-        private double _minimum = double.MinValue;
-        private double _maxmimum = double.MaxValue;
-        private FlyoutBase _selectionFlyout;
-        private double _smallChange = 1;
-        public string _text = null;
-        private TextReadingOrder _textReadingOrder;
-        private NumberBoxValidationMode _validationMode;
-        private double _value = double.NaN;
-		private string _simpleFormat;
 
         private bool _textUpdating;
         private bool _valueUpdating;

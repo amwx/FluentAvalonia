@@ -2,46 +2,18 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class InfoBadge : TemplatedControl
+    /// <summary>
+    /// Represents a control for indicating notifications, alerts, new content, 
+    /// or to attract focus to an area within an app.
+    /// </summary>
+    public partial class InfoBadge : TemplatedControl
     {
         public InfoBadge()
         {
             TemplateSettings = new InfoBadgeTemplateSettings();
-            BoundsProperty.Changed.AddClassHandler<InfoBadge>((s, e) => s.OnBoundsChanged(e));
-        }
-
-        public static readonly StyledProperty<int> ValueProperty =
-            AvaloniaProperty.Register<InfoBadge, int>(nameof(Value), -1);
-
-        public static readonly StyledProperty<IconSource> IconSourceProperty =
-            AvaloniaProperty.Register<InfoBadge, IconSource>(nameof(IconSource));
-
-        public static readonly StyledProperty<InfoBadgeTemplateSettings> TemplateSettingsProperty =
-            AvaloniaProperty.Register<InfoBadge, InfoBadgeTemplateSettings>(nameof(TemplateSettings));
-
-        public int Value
-        {
-            get => GetValue(ValueProperty);
-            set => SetValue(ValueProperty, value);
-        }
-
-        public IconSource IconSource
-        {
-            get => GetValue(IconSourceProperty);
-            set => SetValue(IconSourceProperty, value);
-        }
-
-        public InfoBadgeTemplateSettings TemplateSettings
-        {
-            get => GetValue(TemplateSettingsProperty);
-            set => SetValue(TemplateSettingsProperty, value);
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -66,16 +38,20 @@ namespace FluentAvalonia.UI.Controls
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
             base.OnPropertyChanged(change);
+
             if (change.Property== ValueProperty)
             {
                 if (Value < -1)
-                    throw new ArgumentOutOfRangeException("Value");
+                    throw new ArgumentOutOfRangeException(nameof(Value));
             }
-
-            if (change.Property == ValueProperty || change.Property == IconSourceProperty)
+            else if (change.Property == ValueProperty || change.Property == IconSourceProperty)
             {
                 OnDisplayKindPropertiesChanged();
             }
+            else if (change.Property == BoundsProperty)
+			{
+                OnBoundsChanged(change);
+			}
         }
 
         private void OnDisplayKindPropertiesChanged()

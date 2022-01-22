@@ -9,100 +9,16 @@ using System;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class ColorPaletteItem : Control
+	/// <summary>
+	/// Defines the control used in the Color Palette of a <see cref="ColorPicker"/> to
+	/// preview or select a color
+	/// </summary>
+	public partial class ColorPaletteItem : Control
 	{
 		public ColorPaletteItem()
 		{
 			MinWidth = 23;
 			MinHeight = 23;
-		}
-
-		static ColorPaletteItem()
-		{
-			AffectsRender<ColorPaletteItem>(ColorProperty,
-				BorderBrushProperty, BorderThicknessProperty,
-				CornerRadiusProperty);
-		}
-
-		public static readonly DirectProperty<ColorPaletteItem, Color> ColorProperty =
-			AvaloniaProperty.RegisterDirect<ColorPaletteItem, Color>(nameof(Color), x => x.Color, (x, v) => x.Color = v);
-
-		public static readonly StyledProperty<IBrush> BorderBrushProperty =
-			Border.BorderBrushProperty.AddOwner<ColorPaletteItem>();
-
-		public static readonly StyledProperty<IBrush> BorderBrushPointerOverProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, IBrush>(nameof(BorderBrushPointerOver));
-
-		public static readonly StyledProperty<IBrush> BorderBrushPressedProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, IBrush>(nameof(BorderBrushPressed));
-
-		public static readonly StyledProperty<Thickness> BorderThicknessProperty =
-			Border.BorderThicknessProperty.AddOwner<ColorPaletteItem>();
-
-		public static readonly StyledProperty<Thickness> BorderThicknessPointerOverProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, Thickness>(nameof(BorderThicknessPointerOver));
-
-		public static readonly StyledProperty<Thickness> BorderThicknessPressedProperty =
-		 AvaloniaProperty.Register<ColorPaletteItem, Thickness>(nameof(BorderThicknessPressed));
-
-		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			Border.CornerRadiusProperty.AddOwner<ColorPaletteItem>();
-
-		public Color Color
-		{
-			get => _color;
-			set
-			{
-				if (SetAndRaise(ColorProperty, ref _color, value))
-				{
-					if (_colorBrush == null)
-						_colorBrush = new SolidColorBrush();
-
-					_colorBrush.Color = _color;
-				}
-			}
-		}
-
-		public IBrush BorderBrush
-		{
-			get => GetValue(BorderBrushProperty);
-			set => SetValue(BorderBrushProperty, value);
-		}
-
-		public IBrush BorderBrushPointerOver
-		{
-			get => GetValue(BorderBrushPointerOverProperty);
-			set => SetValue(BorderBrushPointerOverProperty, value);
-		}
-
-		public IBrush BorderBrushPressed
-		{
-			get => GetValue(BorderBrushPressedProperty);
-			set => SetValue(BorderBrushPressedProperty, value);
-		}
-
-		public Thickness BorderThickness
-		{
-			get => GetValue(BorderThicknessProperty);
-			set => SetValue(BorderThicknessProperty, value);
-		}
-
-		public Thickness BorderThicknessPointerOver
-		{
-			get => GetValue(BorderThicknessPointerOverProperty);
-			set => SetValue(BorderThicknessPointerOverProperty, value);
-		}
-
-		public Thickness BorderThicknessPressed
-		{
-			get => GetValue(BorderThicknessPressedProperty);
-			set => SetValue(BorderThicknessPressedProperty, value);
-		}
-
-		public CornerRadius CornerRadius
-		{
-			get => GetValue(CornerRadiusProperty);
-			set => SetValue(CornerRadiusProperty, value);
 		}
 
 		public override void Render(DrawingContext context)
@@ -125,6 +41,13 @@ namespace FluentAvalonia.UI.Controls
 			if (change.Property == IsPointerOverProperty)
 			{
 				InvalidateVisual();				
+			}
+			else if (change.Property == ColorProperty ||
+				change.Property == BorderBrushProperty ||
+				change.Property ==	BorderThicknessProperty ||
+				change.Property == CornerRadiusProperty)
+			{
+				InvalidateVisual();
 			}
 		}
 
@@ -159,7 +82,6 @@ namespace FluentAvalonia.UI.Controls
 
 		private bool _isPressed;
 		private BorderRenderHelper _helper;
-		private Color _color;
 		private SolidColorBrush _colorBrush;
 	}
 

@@ -7,12 +7,20 @@ using Avalonia.Skia;
 using Avalonia.Input;
 using FluentAvalonia.UI.Media;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using FluentAvalonia.Core;
+using Avalonia.Media.Immutable;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class ColorSpectrum : ColorPickerComponent
+	/// <summary>
+	/// Defines the control for displaying the interactive ways of modifying a color within
+	/// a <see cref="ColorPicker"/>
+	/// </summary>
+	/// <remarks>
+	/// This control handles displaying the regular Color Spectrum, the Color Wheel, and
+	/// the HSV Color Triangle
+	/// </remarks>
+	public partial class ColorSpectrum : ColorPickerComponent
     {
         public ColorSpectrum()
         {
@@ -26,40 +34,7 @@ namespace FluentAvalonia.UI.Controls
         {
             FocusableProperty.OverrideDefaultValue<ColorSpectrum>(true);
         }
-
-        public static readonly DirectProperty<ColorSpectrum, ColorSpectrumShape> ShapeProperty =
-            AvaloniaProperty.RegisterDirect<ColorSpectrum, ColorSpectrumShape>(nameof(Shape),
-                x => x.Shape, (x, v) => x.Shape = v);
-
-		public static readonly StyledProperty<IBrush> BorderBrushProperty =
-			Border.BorderBrushProperty.AddOwner<ColorSpectrum>();
-
-		public static readonly StyledProperty<double> BorderThicknessProperty =
-			ColorRamp.BorderThicknessProperty.AddOwner<ColorSpectrum>();
-
-		public IBrush BorderBrush
-		{
-			get => GetValue(BorderBrushProperty);
-			set => SetValue(BorderBrushProperty, value);
-		}
-
-		public double BorderThickness
-		{
-			get => GetValue(BorderThicknessProperty);
-			set => SetValue(BorderThicknessProperty, value);
-		}
-
-
-		public ColorSpectrumShape Shape
-        {
-            get => _shape;
-            set
-            {
-                if (SetAndRaise(ShapeProperty, ref _shape, value))
-                    OnShapeChanged(value);
-            }
-        }
-
+        
 		public override void Render(DrawingContext context)
         {
             if (_tempBitmap == null)
@@ -79,8 +54,7 @@ namespace FluentAvalonia.UI.Controls
 						context.DrawRectangle(new Pen(Brushes.Gray), rect);
                 }
                 else if (Shape == ColorSpectrumShape.Wheel)
-                {
-					
+                {					
 					var minD = Math.Min(Bounds.Width, Bounds.Height) - WheelPadding;
 					if (_lastWheelRect.Width != minD)
 					{
@@ -91,9 +65,9 @@ namespace FluentAvalonia.UI.Controls
 					Rect x = new Rect(_lastWheelRect.X + 1, _lastWheelRect.Y + 1, minD - 2, minD - 2);
 					context.FillRectangle(Brushes.Black, x, (float)minD * 2);
 
-					//Rather than creating the bitmap everytime the color changes, we can fake the change in
-					//Value by drawing a Black ellipse behind the image and the using the Value as the opacity
-					//to draw the bitmap
+					// Rather than creating the bitmap everytime the color changes, we can fake the change in
+					// Value by drawing a Black ellipse behind the image and the using the Value as the opacity
+					// to draw the bitmap
 					using (context.PushOpacity(Color.Valuef))
 						context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
 				}
@@ -115,7 +89,7 @@ namespace FluentAvalonia.UI.Controls
 
             if (Shape == ColorSpectrumShape.Wheel)
             {
-                //Don't clip this to bounds so draw here
+                // Don't clip this to bounds so draw here
                 RenderWheelSelector(context);
             }
         }
@@ -155,8 +129,8 @@ namespace FluentAvalonia.UI.Controls
             if (_lastHTR != HitTestResult.None && e.InitialPressMouseButton == MouseButton.Left &&
 				cPt.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
             {
-				//Ensure we've set the color correctly on pointer up, but only if we're still in a 
-				//hit testable area
+				// Ensure we've set the color correctly on pointer up, but only if we're still in a 
+				// hit testable area
 				var result = HitTestPoint(cPt.Position);
 				if (result != HitTestResult.None)
 					SetColorFromHitTestPosition(cPt.Position, result);
@@ -230,16 +204,16 @@ namespace FluentAvalonia.UI.Controls
             }
             else if (Shape == ColorSpectrumShape.Triangle)
             {
-				//Check _tempBitmap to make sure we've initialized to not trigger this
-				//if the color changes before we've init-d
+				// Check _tempBitmap to make sure we've initialized to not trigger this
+				// if the color changes before we've init-d
 				if (_tempBitmap != null && newColor.Hue >= 0 && Hue != oldColor.Hue)
 					_triangleDirty = true;
 			}
 
-			//From WinUI (ColorSpectrum.cpp - SelectionEllipseShouldBeLight)
+			// From WinUI (ColorSpectrum.cpp - SelectionEllipseShouldBeLight)
 			// Alt would be to calculate HSL Lightness from HSV
-			//Simpler, but may not work as nicely
-			//var light = Color.Valuef * (1 - (Color.Saturationf / 2f));
+			// Simpler, but may not work as nicely
+			// var light = Color.Valuef * (1 - (Color.Saturationf / 2f));
 			newColor.GetRGB(out byte R, out byte G, out byte B, out _);
 			var rg = R <= 10 ? R / 3294.0 : Math.Pow(R / 269.0 + 0.0513, 2.4);
 			var gg = G <= 10 ? G / 3294.0 : Math.Pow(G / 269.0 + 0.0513, 2.4);
@@ -252,7 +226,7 @@ namespace FluentAvalonia.UI.Controls
         protected override void OnComponentChanged(ColorComponent newValue)
         {
             CreateBitmap();
-            base.OnComponentChanged(newValue); //this will call invalidate            
+            base.OnComponentChanged(newValue); // this will call invalidate            
         }
 
         private void OnShapeChanged(ColorSpectrumShape shape)
@@ -265,9 +239,9 @@ namespace FluentAvalonia.UI.Controls
 
         private void CreateBitmap()
         {
-            //Triangle sizes the bitmap to the control at all times so we have to make sure we skip this
-            //if the control has no size
-            //Spectrum & wheel can proceed as normal since they use a fixed bitmap...
+            // Triangle sizes the bitmap to the control at all times so we have to make sure we skip this
+            // if the control has no size
+            // Spectrum & wheel can proceed as normal since they use a fixed bitmap...
             if (Shape == ColorSpectrumShape.Triangle && _lastWheelRect == Rect.Empty)
                 return;
 
@@ -279,7 +253,7 @@ namespace FluentAvalonia.UI.Controls
 					_tempBitmap = new WriteableBitmap(new PixelSize(500, 500), new Vector(96, 96), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul);
 				}
 
-				//Component represents the third, non-displayed, color component
+				// Component represents the third, non-displayed, color component
 				switch (Component)
                 {
                     case ColorComponent.Hue:
@@ -370,7 +344,7 @@ namespace FluentAvalonia.UI.Controls
 						int start = i * _defBitmapSize;
 						uint x = 0;
 						var hue = 360 - ((i / size) * 360);
-						//var sat = (1 - (i / (size - 1)));
+
 						for (int j = start; j < start + _defBitmapSize; j++)
 						{
 							var value = x / size;
@@ -399,7 +373,7 @@ namespace FluentAvalonia.UI.Controls
 						int start = i * _defBitmapSize;
 						uint x = 0;
 						var hue = 360 - ((i / size) * 360);
-						//var sat = (1 - (i / (size - 1)));
+
 						for (int j = start; j < start + _defBitmapSize; j++)
 						{
 							var sat = x / size;
@@ -428,7 +402,7 @@ namespace FluentAvalonia.UI.Controls
 						int start = i * _defBitmapSize;
 						uint x = 0;
 						var green = 255 - ((i / size) * 255);
-						//var sat = (1 - (i / (size - 1)));
+
 						for (int j = start; j < start + _defBitmapSize; j++)
 						{
 							var blue = (x / size) * 255;
@@ -456,7 +430,7 @@ namespace FluentAvalonia.UI.Controls
 						int start = i * _defBitmapSize;
 						uint x = 0;
 						var red = 255 - ((i / size) * 255);
-						//var sat = (1 - (i / (size - 1)));
+
 						for (int j = start; j < start + _defBitmapSize; j++)
 						{
 							var blue = (x / size) * 255;
@@ -484,7 +458,7 @@ namespace FluentAvalonia.UI.Controls
 						int start = i * _defBitmapSize;
 						uint x = 0;
 						var red = 255 - ((i / size) * 255);
-						//var sat = (1 - (i / (size - 1)));
+
 						for (int j = start; j < start + _defBitmapSize; j++)
 						{
 							var green = (x / size) * 255;
@@ -578,8 +552,6 @@ namespace FluentAvalonia.UI.Controls
 
                 var grad = SKShader.CreateColor(SKColors.Black);
                 paint.Shader = grad;
-                paint.Style = SKPaintStyle.Fill;
-                paint.IsAntialias = true;
                 paint.BlendMode = SKBlendMode.DstOut;
 
                 skDC.DrawCircle(center, radius - wheelThicc, paint);
@@ -589,7 +561,7 @@ namespace FluentAvalonia.UI.Controls
                 // -- Now draw the Triangle
                 paint.BlendMode = SKBlendMode.SrcOver; //Restore to default
                 paint.Style = SKPaintStyle.StrokeAndFill;
-                //paint.IsAntialias = false;
+
                 rect.Inflate(-wheelThicc + (float)WheelPadding / 2,
                     -wheelThicc + (float)WheelPadding / 2);
 
@@ -715,29 +687,21 @@ namespace FluentAvalonia.UI.Controls
 
         private void RenderTriangleSelector(DrawingContext context)
         {
-            //Apply scale to TriangleWheelThickness
+            // Apply scale to TriangleWheelThickness
             var wheelThicc = TriangleWheelThickness * (_lastWheelRect.Width / 500);
             var rect = _lastWheelRect.Inflate(-(wheelThicc + WheelPadding / 2));
-            var radius = (rect.Width / 2);// - wheelThicc;
+            var radius = (rect.Width / 2);
             Color.GetHSVf(out float h, out float s, out float v, out float _);
             h *= MathF.PI / 180;
             var hx = rect.Center.X + radius * MathF.Cos(h);
             var hy = rect.Center.Y - radius * MathF.Sin(h);
-            //var third = MathF.PI * 2f / 3;
-
-            //TODO SIMPLIFY
-            //Adapted from https://stackoverflow.com/questions/58222353/the-formulars-in-hsv-triangle
-            //var x = hx * s * v + (rect.Center.X + radius * MathF.Cos(h + third)) * (1 - s) *
-            //    v + (rect.Center.X + radius * MathF.Cos(h - third)) * (1 - v);
-            //var y = hy * s * v + (rect.Center.Y - radius * MathF.Sin(h + third)) * (1 - s) *
-            //    v + (rect.Center.Y - radius * MathF.Sin(h - third)) * (1 - v);
-
-            //Draw line - uses hx,hy
+           
+            // Draw line - uses hx,hy
             context.DrawLine(_shouldSelectorBeDark ? BlackPen : WhitePen, new Point(hx, hy),
                 new Point(rect.Center.X + (radius + wheelThicc) * MathF.Cos(h),
                 rect.Center.Y - (radius + wheelThicc) * MathF.Sin(h)));
 
-            //Draw ellipse
+            // Draw ellipse
             var x = (3 * s * v / 2) - 0.5;
             var y = ((Math.Sqrt(3) / 2) * s * v) - (v * Math.Sqrt(3)) + (Math.Sqrt(3) / 2);
 
@@ -859,10 +823,10 @@ namespace FluentAvalonia.UI.Controls
 						var innerRadius = radius - wheelThicc - 2;
 						var h = Color.Huef * MathF.PI / 180;
 
-						//Normalize points to Unit Circle & rotate accounting for hue & placing H=0 at top
-						//See below for more on this reasoning
-						//Then we know the coordinates of the triangle from the unit circle & we don't need
-						//to calculate them...
+						// Normalize points to Unit Circle & rotate accounting for hue & placing H=0 at top
+						// See below for more on this reasoning
+						// Then we know the coordinates of the triangle from the unit circle & we don't need
+						// to calculate them...
 						var norm = (pt - _lastWheelRect.Center) / innerRadius;
 						norm *= Matrix.CreateRotation(-Math.PI / 2 + h);
 
@@ -879,7 +843,7 @@ namespace FluentAvalonia.UI.Controls
 
 		public static bool PointInTriangle(Point p, Point p0, Point p1, Point p2)
         {
-			//https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+			// https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
 			static double sign(Point p1, Point p2, Point p3)
 			{
 				return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
@@ -896,18 +860,6 @@ namespace FluentAvalonia.UI.Controls
 			has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
 
 			return !(has_neg && has_pos);
-
-			//var s = p0.Y * p2.X - p0.X * p2.Y + (p2.Y - p0.Y) * p.X + (p0.X - p2.X) * p.Y;
-			//var t = p0.X * p1.Y - p0.Y * p1.X + (p0.Y - p1.Y) * p.X + (p1.X - p0.X) * p.Y;
-
-			//if ((s < 0) != (t < 0))
-			//    return false;
-
-			//var A = -p1.Y * p2.X + p0.Y * (p2.X - p1.X) + p0.X * (p1.Y - p2.Y) + p1.X * p2.Y;
-
-			//return A < 0 ?
-			//        (s <= 0 && s + t >= A) :
-			//        (s >= 0 && s + t <= A);
 		}
 
         private void HandleUpDownKey(KeyEventArgs e)
@@ -916,8 +868,8 @@ namespace FluentAvalonia.UI.Controls
             var col = Color;
             if (Shape == ColorSpectrumShape.Spectrum)
             {
-                //The "with[..]f" methods scale the values there so we don't 
-                //need to check if we're in a valid range
+                // The "with[..]f" methods scale the values there so we don't 
+                // need to check if we're in a valid range
                 switch (Component)
                 {
                     case ColorComponent.Hue: //Adjust saturation
@@ -943,9 +895,9 @@ namespace FluentAvalonia.UI.Controls
 			}
             else if (Shape == ColorSpectrumShape.Triangle)
             {
-                //For simplicity, we'll map up/down to value
-                //since v = 0 is the bottom corner of the triangle
-                //If ctrl + up/down is used, we'll adjust the hue
+                // For simplicity, we'll map up/down to value
+                // since v = 0 is the bottom corner of the triangle
+                // If ctrl + up/down is used, we'll adjust the hue
 
                 if ((KeyModifiers.Control & e.KeyModifiers) == KeyModifiers.Control)
                 {
@@ -969,8 +921,8 @@ namespace FluentAvalonia.UI.Controls
             var col = Color;
             if (Shape == ColorSpectrumShape.Spectrum)
             {
-                //The "with[..]f" methods scale the values there so we don't 
-                //need to check if we're in a valid range
+                // The "with[..]f" methods scale the values there so we don't 
+                // need to check if we're in a valid range
                 switch (Component)
                 {
                     case ColorComponent.Hue: //Adjust value
@@ -1005,13 +957,13 @@ namespace FluentAvalonia.UI.Controls
 			}
             else if (Shape == ColorSpectrumShape.Triangle)
             {
-                //For simplicity, we'll map left/right to saturation
-                //since s increases left to right (assuming H=0, right is top of triangle)
-                //If ctrl + up/down is used, we'll adjust the hue
+                // For simplicity, we'll map left/right to saturation
+                // since s increases left to right (assuming H=0, right is top of triangle)
+                // If ctrl + up/down is used, we'll adjust the hue
                 if ((KeyModifiers.Control & e.KeyModifiers) == KeyModifiers.Control)
                 {
-                    //Because of the direction of the wheel, we'll invert the key to 
-                    //increase the hue (left increases it)
+                    // Because of the direction of the wheel, we'll invert the key to 
+                    // increase the hue (left increases it)
                     var h = col.Huef + (!inc ? 1f : -1f);
                     if (h < 0)
                         h += 360;
@@ -1034,12 +986,11 @@ namespace FluentAvalonia.UI.Controls
 				return;
 			}
 
-			_borderPen = new Pen(BorderBrush, BorderThickness);
+			_borderPen = new ImmutablePen(BorderBrush.ToImmutable(), BorderThickness);
 		}
 
-
-		private static readonly IPen BlackPen = new Pen(Brushes.Black, 2).ToImmutable();
-		private static readonly IPen WhitePen = new Pen(Brushes.White, 2).ToImmutable();
+		private static readonly IPen BlackPen = new ImmutablePen(Brushes.Black, 2);
+		private static readonly IPen WhitePen = new ImmutablePen(Brushes.White, 2);
 
 		private bool _shouldSelectorBeDark;
 		private HitTestResult _lastHTR;
@@ -1047,11 +998,10 @@ namespace FluentAvalonia.UI.Controls
 		private bool _triangleDirty;
 
         private IBitmap _tempBitmap;
-        private ColorSpectrumShape _shape = ColorSpectrumShape.Spectrum;
         private Rect _lastWheelRect;
         private readonly double WheelPadding = 4;
         private readonly float TriangleWheelThickness = 50f;
-		private Pen _borderPen;
+		private IPen _borderPen;
 
 		private enum HitTestResult
 		{
@@ -1062,23 +1012,4 @@ namespace FluentAvalonia.UI.Controls
 			Triangle
 		}
 	}
-
-    public enum ColorSpectrumShape
-    {
-        Wheel,
-        Spectrum,
-        Triangle
-    }
-
-    //Named by component on X axis, then Y axis
-    //Other component is displayed in the slider
-    public enum ColorSpectrumComponents
-    {
-        SaturationValue=0,
-        ValueHue=1,
-        SaturationHue=2,
-        BlueGreen=3,
-        BlueRed=4,
-        GreenRed=5
-    }
 }

@@ -1,13 +1,10 @@
 ﻿using Avalonia.Controls;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public static class IconHelpers
+    internal static class IconHelpers
     {
-        internal static FontIcon CreateFontIconFromFontIconSource(FontIconSource fis)
+        public static FontIcon CreateFontIconFromFontIconSource(FontIconSource fis)
         {
             var fi = new FontIcon
             {
@@ -26,7 +23,7 @@ namespace FluentAvalonia.UI.Controls
             return fi;
         }
 
-        internal static PathIcon CreatePathIconFromPathIconSource(PathIconSource pis)
+        public static PathIcon CreatePathIconFromPathIconSource(PathIconSource pis)
         {
             var pi = new PathIcon
             {
@@ -41,7 +38,7 @@ namespace FluentAvalonia.UI.Controls
             return pi;
         }
 
-        internal static SymbolIcon CreateSymbolIconFromSymbolIconSource(SymbolIconSource sis)
+        public static SymbolIcon CreateSymbolIconFromSymbolIconSource(SymbolIconSource sis)
         {
             var si = new SymbolIcon
             {
@@ -57,11 +54,11 @@ namespace FluentAvalonia.UI.Controls
             return si;
         }
 
-        internal static BitmapIcon CreateBitmapIconFromBitmapIconSource(BitmapIconSource bis)
+        public static BitmapIcon CreateBitmapIconFromBitmapIconSource(BitmapIconSource bis)
         {
-            //This one works slightly differently to avoid holding multiple instances of the same
-            //bitmap in memory (since IconSources are meant for sharing). We don't alter the properties, 
-            //but instead just link the SKBitmap from BitmapIconSource into the BitmapIcon. 
+            // This one works slightly differently to avoid holding multiple instances of the same
+            // bitmap in memory (since IconSources are meant for sharing). We don't alter the properties, 
+            // but instead just link the SKBitmap from BitmapIconSource into the BitmapIcon. 
             BitmapIcon bi = new BitmapIcon();
             bi.LinkToBitmapIconSource(bis);
 
@@ -73,7 +70,7 @@ namespace FluentAvalonia.UI.Controls
             return bi;
         }
 
-		internal static ImageIcon CreateImageIconFromImageIconSource(ImageIconSource iis)
+        public static ImageIcon CreateImageIconFromImageIconSource(ImageIconSource iis)
 		{
 			var ii = new ImageIcon
 			{
@@ -88,7 +85,7 @@ namespace FluentAvalonia.UI.Controls
             return ii;
 		}
 
-        internal static IconElement CreateFromUnknown(IconSource src)
+        public static IconElement CreateFromUnknown(IconSource src)
         {
             if (src is BitmapIconSource bis)
             {

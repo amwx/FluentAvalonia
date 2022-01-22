@@ -8,174 +8,26 @@ using System;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.Core;
 using System.Collections.Generic;
-using AvColor = Avalonia.Media.Color;
 using Avalonia.Interactivity;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class ColorPicker : TemplatedControl
+	/// <summary>
+	/// Defines a control for selecting a color
+	/// </summary>
+	public partial class ColorPicker : TemplatedControl
     {
         public ColorPicker()
         {
 
 		}
-
-		public static readonly StyledProperty<Color2> PreviousColorProperty =
-			AvaloniaProperty.Register<ColorPicker, Color2>(nameof(PreviousColor), Colors.Red, defaultBindingMode: BindingMode.TwoWay);
-
-		public static readonly StyledProperty<Color2> ColorProperty =
-			AvaloniaProperty.Register<ColorPicker, Color2>(nameof(Color), Colors.Red, defaultBindingMode: BindingMode.TwoWay);
-
-		public static readonly DirectProperty<ColorPicker, ColorTextType> ColorTextTypeProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, ColorTextType>(nameof(ColorTextType),
-				x => x.ColorTextType, (x, v) => x.ColorTextType = v);
-
-		public static readonly DirectProperty<ColorPicker, ColorSpectrumComponents> ComponentProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, ColorSpectrumComponents>(nameof(Component),
-				x => x.Component, (x, v) => x.Component = v);
-
-		public static readonly StyledProperty<bool> IsMoreButtonVisibleProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsMoreButtonVisible));
-
-		public static readonly DirectProperty<ColorPicker, bool> IsCompactProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, bool>(nameof(IsCompact),
-				x => x.IsCompact, (x, v) => x.IsCompact = v);
-
-		public static readonly DirectProperty<ColorPicker, bool> IsAlphaEnabledProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, bool>(nameof(IsAlphaEnabled),
-				x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
-
-		public static readonly StyledProperty<bool> UseSpectrumProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseSpectrum), defaultValue: true);
-
-		public static readonly StyledProperty<bool> UseColorWheelProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorWheel));
-
-		public static readonly StyledProperty<bool> UseColorTriangleProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorTriangle));
-
-		public static readonly StyledProperty<bool> UseColorPaletteProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorPalette));
-
-		public static readonly DirectProperty<ColorPicker, IEnumerable<AvColor>> CustomPaletteColorsProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, IEnumerable<AvColor>>(nameof(CustomPaletteColors),
-                x => x.CustomPaletteColors, (x, v) => x.CustomPaletteColors = v);
-
-		public static readonly StyledProperty<int> PaletteColumnCountProperty =
-			AvaloniaProperty.Register<ColorPicker, int>(nameof(PaletteColumnCount), defaultValue:10);
-
-
-		public Color2 PreviousColor
-		{
-			get => GetValue(PreviousColorProperty);
-			set => SetValue(PreviousColorProperty, value);
-		}
-
-        public Color2 Color
-        {
-            get => GetValue(ColorProperty);
-            set => SetValue(ColorProperty, value);
-        }
-
-		public ColorTextType ColorTextType
-		{
-			get => _textType;
-			set
-			{
-				if (SetAndRaise(ColorTextTypeProperty, ref _textType, value))
-				{
-					SetHexBoxHeader();
-					UpdateHexBox(Color);
-				}
-			}
-		}
-
-		public ColorSpectrumComponents Component
-		{
-			get => _component;
-			set
-			{
-				if (SetAndRaise(ComponentProperty, ref _component, value))
-				{
-					UpdatePickerComponents();
-				}
-			}
-		}
-
-		public bool IsMoreButtonVisible
-		{
-			get => GetValue(IsMoreButtonVisibleProperty);
-			set => SetValue(IsMoreButtonVisibleProperty, value);
-		}
-
-        public bool IsCompact
-		{
-            get => _isCompact;
-            set
-            {
-                if (SetAndRaise(IsCompactProperty, ref _isCompact, value))
-                {
-					PseudoClasses.Set(":compact", value);
-					SetAsCompactMode();
-                }
-            }
-        }
-
-        public bool IsAlphaEnabled
-        {
-            get => _isAlphaEnabled;
-            set
-            {
-                if (SetAndRaise(IsAlphaEnabledProperty, ref _isAlphaEnabled, value))
-                {
-					PseudoClasses.Set(":alpha", value);
-                }
-            }
-        }
-
-		public bool UseSpectrum
-		{
-			get => GetValue(UseSpectrumProperty);
-			set => SetValue(UseSpectrumProperty, value);
-		}
-
-		public bool UseColorWheel
-		{
-			get => GetValue(UseColorWheelProperty);
-			set => SetValue(UseColorWheelProperty, value);
-		}
-
-		public bool UseColorTriangle
-		{
-			get => GetValue(UseColorTriangleProperty);
-			set => SetValue(UseColorTriangleProperty, value);
-		}
-
-		public bool UseColorPalette
-		{
-			get => GetValue(UseColorPaletteProperty);
-			set => SetValue(UseColorPaletteProperty, value);
-		}
-
-		public IEnumerable<AvColor> CustomPaletteColors
-		{
-			get => _customPaletteColors;
-			set => SetAndRaise(CustomPaletteColorsProperty, ref _customPaletteColors, value);
-		}
-
-		public int PaletteColumnCount
-		{
-			get => GetValue(PaletteColumnCountProperty);
-			set => SetValue(PaletteColumnCountProperty, value);
-		}
-
-		public event TypedEventHandler<ColorPicker, ColorChangedEventArgs> ColorChanged;
-        
+		        
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             //Disconnect event handlers...
             if (_templateApplied)
             {
+				UnhookEvents();
                 _templateApplied = false;
             }
 
@@ -214,26 +66,31 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_hueButton.Checked += OnComponentRBChecked;
 			}
+
 			_satButton = e.NameScope.Find<RadioButton>("SatRadio");
 			if (_satButton != null)
 			{
 				_satButton.Checked += OnComponentRBChecked;
 			}
+
 			_valButton = e.NameScope.Find<RadioButton>("ValRadio");
 			if (_valButton != null)
 			{
 				_valButton.Checked += OnComponentRBChecked;
 			}
+
 			_redButton = e.NameScope.Find<RadioButton>("RedRadio");
 			if (_redButton != null)
 			{
 				_redButton.Checked += OnComponentRBChecked;
 			}
+
 			_greenButton = e.NameScope.Find<RadioButton>("GreenRadio");
 			if (_greenButton != null)
 			{
 				_greenButton.Checked += OnComponentRBChecked;
 			}
+
 			_blueButton = e.NameScope.Find<RadioButton>("BlueRadio");
 			if (_blueButton != null)
 			{
@@ -245,31 +102,37 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_hueBox.ValueChanged += OnComponentBoxValueChanged;
 			}
+
 			_satBox = e.NameScope.Find<NumberBox>("SatBox");
 			if (_satBox != null)
 			{
 				_satBox.ValueChanged += OnComponentBoxValueChanged;
 			}
+
 			_valBox = e.NameScope.Find<NumberBox>("ValBox");
 			if (_valBox != null)
 			{
 				_valBox.ValueChanged += OnComponentBoxValueChanged;
 			}
+
 			_redBox = e.NameScope.Find<NumberBox>("RedBox");
 			if (_redBox != null)
 			{
 				_redBox.ValueChanged += OnComponentBoxValueChanged;
 			}
+
 			_greenBox = e.NameScope.Find<NumberBox>("GreenBox");
 			if (_greenBox != null)
 			{
 				_greenBox.ValueChanged += OnComponentBoxValueChanged;
 			}
+
 			_blueBox = e.NameScope.Find<NumberBox>("BlueBox");
 			if (_blueBox != null)
 			{
 				_blueBox.ValueChanged += OnComponentBoxValueChanged;
 			}
+
 			_alphaBox = e.NameScope.Find<NumberBox>("AlphaBox");
 			if (_alphaBox != null)
 			{
@@ -281,11 +144,13 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_hueRamp.ColorChanged += OnComponentRampColorChanged;
 			}
+
 			_satRamp = e.NameScope.Find<ColorRamp>("SatRamp");
 			if (_satRamp != null)
 			{
 				_satRamp.ColorChanged += OnComponentRampColorChanged;
 			}
+
 			_valRamp = e.NameScope.Find<ColorRamp>("ValRamp");
 			if (_valRamp != null)
 			{
@@ -296,16 +161,19 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_redRamp.ColorChanged += OnComponentRampColorChanged;
 			}
+
 			_greenRamp = e.NameScope.Find<ColorRamp>("GreenRamp");
 			if (_greenRamp != null)
 			{
 				_greenRamp.ColorChanged += OnComponentRampColorChanged;
 			}
+
 			_blueRamp = e.NameScope.Find<ColorRamp>("BlueRamp");
 			if (_blueRamp != null)
 			{
 				_blueRamp.ColorChanged += OnComponentRampColorChanged;
 			}
+
 			_alphaRamp = e.NameScope.Find<ColorRamp>("AlphaRamp");
 			if (_alphaRamp != null)
 			{
@@ -313,7 +181,10 @@ namespace FluentAvalonia.UI.Controls
 			}
 
 			_hexBox = e.NameScope.Find<TextBox>("HexBox");
-			_hexBox.KeyDown += OnHexBoxKeyDown;
+			if (_hexBox != null)
+			{
+				_hexBox.KeyDown += OnHexBoxKeyDown;
+			}
 
 			_rgbButton = e.NameScope.Find<ToggleButton>("RGBButton");
 			if (_rgbButton != null)
@@ -994,6 +865,90 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
+		private void UnhookEvents()
+		{
+			if (_displayItemTabControl != null)
+				_displayItemTabControl.SelectionChanged -= OnDisplayItemChanged;
+
+			if (_spectrum != null)
+				_spectrum.ColorChanged -= OnSpectrumColorChanged;
+
+			if (_thirdComponentSlider != null)
+				_thirdComponentSlider.ColorChanged -= OnThirdComponentColorChanged;
+
+			if (_opacityComponentSlider != null)
+				_opacityComponentSlider.ColorChanged -= OnSpectrumAlphaChanged;
+
+			if (_hueButton != null)
+				_hueButton.Checked -= OnComponentRBChecked;
+
+			if (_satButton != null)
+				_satButton.Checked -= OnComponentRBChecked;
+
+			if (_valButton != null)
+				_valButton.Checked -= OnComponentRBChecked;
+
+			if (_redButton != null)
+				_redButton.Checked -= OnComponentRBChecked;
+
+			if (_greenButton != null)
+				_greenButton.Checked -= OnComponentRBChecked;
+
+			if (_blueButton != null)
+				_blueButton.Checked -= OnComponentRBChecked;
+
+			if (_hueBox != null)
+				_hueBox.ValueChanged -= OnComponentBoxValueChanged;
+
+			if (_satBox != null)
+				_satBox.ValueChanged -= OnComponentBoxValueChanged;
+
+			if (_valBox != null)
+				_valBox.ValueChanged -= OnComponentBoxValueChanged;
+
+			if (_redBox != null)
+				_redBox.ValueChanged -= OnComponentBoxValueChanged;
+
+			if (_greenBox != null)
+				_greenBox.ValueChanged -= OnComponentBoxValueChanged;
+
+			if (_blueBox != null)
+				_blueBox.ValueChanged -= OnComponentBoxValueChanged;
+
+			if (_alphaBox != null)
+				_alphaBox.ValueChanged -= OnComponentBoxValueChanged;
+
+			if (_hueRamp != null)
+				_hueRamp.ColorChanged -= OnComponentRampColorChanged;
+
+			if (_satRamp != null)
+				_satRamp.ColorChanged -= OnComponentRampColorChanged;
+
+			if (_valRamp != null)
+				_valRamp.ColorChanged -= OnComponentRampColorChanged;
+
+			if (_redRamp != null)
+				_redRamp.ColorChanged -= OnComponentRampColorChanged;
+
+			if (_greenRamp != null)
+				_greenRamp.ColorChanged -= OnComponentRampColorChanged;
+
+			if (_blueRamp != null)
+				_blueRamp.ColorChanged -= OnComponentRampColorChanged;
+
+			if (_alphaRamp != null)
+				_alphaRamp.ColorChanged -= OnComponentRampColorChanged;
+
+			if (_hexBox != null)
+				_hexBox.KeyDown += OnHexBoxKeyDown;
+
+			if (_rgbButton != null)
+				_rgbButton.Checked -= OnColorTypeRBChecked;
+
+			if (_hsvButton != null)
+				_hsvButton.Checked -= OnColorTypeRBChecked;
+		}
+
 
 		//Template Items
 		private TabControl _displayItemTabControl;
@@ -1035,46 +990,8 @@ namespace FluentAvalonia.UI.Controls
 		private ToggleButton _hsvButton;
 
 		private bool _ignoreRadioChange;
-        //fields
+        
         private bool _templateApplied;
         private bool _ignoreColorChange;
-        private ColorTextType _textType;
-        private ColorSpectrumComponents _component = ColorSpectrumComponents.SaturationValue;
-        private bool _isCompact = false;
-        private bool _isAlphaEnabled = true;
-		private IEnumerable<Color> _customPaletteColors;
-
 	}
-
-	public enum ColorUpdateReason
-    {
-        Initial,
-        Programmatic,
-        Spectrum,
-        ThirdComponent,
-        HueSlider,
-        HueBox,
-        SaturationSlider,
-        SaturationBox,
-        ValueSlider,
-        ValueBox,
-        RedRamp,
-        RedBox,
-        GreenRamp,
-        GreenBox,
-        BlueRamp,
-        BlueBox,
-        SpectrumAlphaRamp,
-		AlphaRamp,//Part of text entry area
-        AlphaBox,
-        HexBox
-    }
-
-    public enum ColorTextType
-    {
-        Hex, //#FFFFFF
-        HexAlpha, //#FFFFFFFF
-        RGB, //rgb( 0, 0, 0 )
-        RGBA //rgba( 0, 0, 0, 0 )
-    }
 }

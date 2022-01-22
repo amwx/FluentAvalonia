@@ -8,62 +8,12 @@ using FluentAvalonia.UI.Input;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public class CommandBarToggleButton : ToggleButton, ICommandBarElement, IStyleable
+	/// <summary>
+	/// Represents a button control that can switch states and be displayed in a CommandBar.
+	/// </summary>
+	public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, IStyleable
 	{
 		Type IStyleable.StyleKey => typeof(CommandBarToggleButton);
-
-		public static readonly DirectProperty<CommandBarToggleButton, bool> IsInOverflowProperty =
-			   AvaloniaProperty.RegisterDirect<CommandBarToggleButton, bool>(nameof(IsInOverflow),
-				   x => x.IsInOverflow);
-
-		public static readonly StyledProperty<IconElement> IconProperty =
-			AvaloniaProperty.Register<CommandBarToggleButton, IconElement>(nameof(Icon));
-
-		public static readonly StyledProperty<string> LabelProperty =
-			AvaloniaProperty.Register<CommandBarToggleButton, string>(nameof(Label));
-
-		public static readonly DirectProperty<CommandBarToggleButton, int> DynamicOverflowOrderProperty =
-			AvaloniaProperty.RegisterDirect<CommandBarToggleButton, int>(nameof(DynamicOverflowOrder),
-				x => x.DynamicOverflowOrder, (x, v) => x.DynamicOverflowOrder = v);
-
-		public static readonly StyledProperty<bool> IsCompactProperty =
-			AvaloniaProperty.Register<CommandBarToggleButton, bool>(nameof(IsCompact));
-
-		public bool IsCompact
-		{
-			get => GetValue(IsCompactProperty);
-			set => SetValue(IsCompactProperty, value);
-		}
-
-		public bool IsInOverflow
-		{
-			get => _isInOverflow;
-			internal set
-			{
-				if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
-				{
-					PseudoClasses.Set(":overflow", value);
-				}
-			}
-		}
-
-		public IconElement Icon
-		{
-			get => GetValue(IconProperty);
-			set => SetValue(IconProperty, value);
-		}
-
-		public string Label
-		{
-			get => GetValue(LabelProperty);
-			set => SetValue(LabelProperty, value);
-		}
-
-		public int DynamicOverflowOrder
-		{
-			get => _dynamicOverflowOrder;
-			set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
-		}
 
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
 		{
@@ -145,8 +95,5 @@ namespace FluentAvalonia.UI.Controls
 				}
 			}
 		}
-
-		private bool _isInOverflow;
-		private int _dynamicOverflowOrder;
 	}
 }

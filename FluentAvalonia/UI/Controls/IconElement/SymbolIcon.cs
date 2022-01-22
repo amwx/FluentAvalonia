@@ -2,10 +2,12 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using System;
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Represents an icon that uses a glyph from the SymbolThemeFontFamily resource as its content.
+    /// </summary>
     public class SymbolIcon : IconElement
     {
         static SymbolIcon()
@@ -13,34 +15,35 @@ namespace FluentAvalonia.UI.Controls
             FontSizeProperty.OverrideDefaultValue<SymbolIcon>(18d);
         }
 
+        /// <summary>
+        /// Defines the <see cref="Symbol"/> property
+        /// </summary>
         public static readonly StyledProperty<Symbol> SymbolProperty =
             AvaloniaProperty.Register<SymbolIcon, Symbol>(nameof(Symbol));
 
+        /// <summary>
+        /// Defines the <see cref="FontSize"/> property
+        /// </summary>
         public static readonly StyledProperty<double> FontSizeProperty =
             TextBlock.FontSizeProperty.AddOwner<SymbolIcon>();
 
-		[Obsolete("This property no longer does anything. Filled Icons are now in the Symbol Enum")]
-		public static readonly StyledProperty<bool> UseFilledProperty =
-			AvaloniaProperty.Register<SymbolIcon, bool>(nameof(UseFilled));
-
+        /// <summary>
+        /// Gets or sets the <see cref="FluentAvalonia.UI.Controls.Symbol"/> this icon displays
+        /// </summary>
         public Symbol Symbol
         {
 			get => GetValue(SymbolProperty);
 			set => SetValue(SymbolProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the font size this icon uses when rendering
+        /// </summary>
         public double FontSize
         {
             get => GetValue(FontSizeProperty);
             set => SetValue(FontSizeProperty, value);
         }
-
-		[Obsolete("This property no longer does anything. Filled Icons are now in the Symbol Enum")]
-		public bool UseFilled
-		{
-			get => GetValue(UseFilledProperty);
-			set => SetValue(UseFilledProperty, value);
-		}
 
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
 		{

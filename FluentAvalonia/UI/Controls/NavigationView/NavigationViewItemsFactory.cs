@@ -7,11 +7,14 @@ using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class NavigationViewItemsFactory : ElementFactory
+    /// <summary>
+    /// Element factory for the ItemsRepeaters in a NavigationView
+    /// </summary>
+    internal class NavigationViewItemsFactory : ElementFactory
     {
-        internal NavigationViewItemBase SettingsItem { set => _settingsItem = value; }
+        public NavigationViewItemBase SettingsItem { set => _settingsItem = value; }
 
-        internal void UserElementFactory(object newValue)
+        public void UserElementFactory(object newValue)
         {
             _itemTemplateWrapper = newValue as IElementFactory;
             if (_itemTemplateWrapper == null)

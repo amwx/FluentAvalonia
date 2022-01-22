@@ -13,7 +13,7 @@
 	</UserControl.Resources>
 	
 	<ScrollViewer>
-		<StackPanel>
+		<!--<StackPanel>
 			
 			<TextBlock Text="NOTE: This control is still under active development, and is not considered production ready. Some features may not be implemented yet."
 					   TextWrapping="Wrap"
@@ -126,6 +126,6 @@
 				
 			</local:ControlExample>
 
-		</StackPanel>
+		</StackPanel>-->
 	</ScrollViewer>
 </UserControl>

@@ -4,13 +4,17 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Media.Immutable;
 using FluentAvalonia.UI.Media;
 using System;
 using AvColor = Avalonia.Media.Color;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public class ColorRamp : ColorPickerComponent
+	/// <summary>
+	/// Defines a control displaying a gradient slider for modifying a specific component of a color
+	/// </summary>
+    public partial class ColorRamp : ColorPickerComponent
     {
         public ColorRamp()
         {
@@ -21,49 +25,6 @@ namespace FluentAvalonia.UI.Controls
         {
             FocusableProperty.OverrideDefaultValue<ColorRamp>(true);
         }
-
-        public static readonly DirectProperty<ColorRamp, Orientation> OrientationProperty =
-            AvaloniaProperty.RegisterDirect<ColorRamp, Orientation>(nameof(Orientation),
-                x => x.Orientation, (x, v) => x.Orientation = v);
-
-		public static readonly StyledProperty<IBrush> BorderBrushProperty =
-			Border.BorderBrushProperty.AddOwner<ColorRamp>();
-
-		public static readonly StyledProperty<double> BorderThicknessProperty =
-			AvaloniaProperty.Register<ColorRamp, double>(nameof(BorderThickness), 1d);
-
-		public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			Border.CornerRadiusProperty.AddOwner<ColorRamp>();
-			
-        public Orientation Orientation
-        {
-            get => _orientation;
-            set
-            {
-                if(SetAndRaise(OrientationProperty, ref _orientation, value))
-                {
-                    InvalidateVisual();
-                }
-            }
-        }
-
-		public CornerRadius CornerRadius
-		{
-			get => GetValue(CornerRadiusProperty);
-			set => SetValue(CornerRadiusProperty, value);
-		}
-
-		public IBrush BorderBrush
-		{
-			get => GetValue(BorderBrushProperty);
-			set => SetValue(BorderBrushProperty, value);
-		}
-
-		public double BorderThickness
-		{
-			get => GetValue(BorderThicknessProperty);
-			set => SetValue(BorderThicknessProperty, value);
-		}
 
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
 		{
@@ -295,29 +256,28 @@ namespace FluentAvalonia.UI.Controls
             switch (Component)
             {
                 case ColorComponent.Hue:
-					Color = Color.WithHuef(359 * (float)perc);// Color2.FromHSV(359 * (float)perc, Color.Saturationf, Color.Valuef);
+					Color = Color.WithHuef(359 * (float)perc);
                     break;
                 case ColorComponent.Saturation:
-					Color = Color.WithSatf((float)perc);// Color2.FromHSV(Hue, (float)perc, Color.Valuef);
+					Color = Color.WithSatf((float)perc);
                     break;
                 case ColorComponent.Value:
-					Color = Color.WithValf((float)perc);// Color2.FromHSV(Hue, Color.Saturationf, (float)perc);
+					Color = Color.WithValf((float)perc);
                     break;
 
                 case ColorComponent.Red:
-                    Color = Color.WithRedf((float)perc);// Color2.FromRGB((float)perc, Color.Gf, Color.Bf, Color.Af);
+                    Color = Color.WithRedf((float)perc);
                     break;
                 case ColorComponent.Green:
-					Color = Color.WithGreenf((float)perc);// Color2.FromRGB(Color.Rf, (float)perc, Color.Bf, Color.Af);
+					Color = Color.WithGreenf((float)perc);
                     break;
                 case ColorComponent.Blue:
-					Color = Color.WithBluef((float)perc);// Color2.FromRGB(Color.Rf, Color.Gf, (float)perc, Color.Af);
+					Color = Color.WithBluef((float)perc);
                     break;
                 case ColorComponent.Alpha:
-					Color = Color.WithAlphaf((float)perc);// Color2.FromRGB(Color.Rf, Color.Gf, Color.Bf, (float)perc);
+					Color = Color.WithAlphaf((float)perc);
                     break;
             }
-
         }
 
         private void SetComponentFromKeyPress(bool increment)
@@ -327,33 +287,31 @@ namespace FluentAvalonia.UI.Controls
                 case ColorComponent.Hue:
 					Color = Color.WithHue(Hue + (increment ? 1 : -1));// Color2.FromHSV(Hue + (increment ? 1 : -1), Color.Saturation, Color.Value);
                     break;
+
                 case ColorComponent.Saturation:
-					Color = Color.WithSat(Color.Saturation + (increment ? 1 : -1));
-					//Color = Color2.FromHSV(Hue, Color.Saturation + (increment ? 0.01f : -0.01f), Color.Value);
-                    break;
+					Color = Color.WithSat(Color.Saturation + (increment ? 1 : -1));					
+					break;
+
                 case ColorComponent.Value:
-					Color = Color.WithVal(Color.Value + (increment ? 1 : -1));
-					// Color = Color2.FromHSV(Hue, Color.Saturation, Color.Value + (increment ? 0.01f : -0.01f));
+					Color = Color.WithVal(Color.Value + (increment ? 1 : -1));					
 					break;
 
                 case ColorComponent.Red:
-					Color = Color.WithRed(Color.R + (increment ? 1 : -1));
-					//Color = Color2.FromRGB(Color.R + (increment ? 1 : -1), Color.G, Color.B);
-                    break;
+					Color = Color.WithRed(Color.R + (increment ? 1 : -1));					
+					break;
+
                 case ColorComponent.Green:
 					Color = Color.WithGreen(Color.G + (increment ? 1 : -1));
-					//Color = Color2.FromRGB(Color.R, Color.G + (increment ? 1 : -1), Color.B);
 					break;
+
                 case ColorComponent.Blue:
 					Color = Color.WithBlue(Color.B + (increment ? 1 : -1));
-					//Color = Color2.FromRGB(Color.R, Color.G, Color.B + (increment ? 1 : -1));
                     break;
+
                 case ColorComponent.Alpha:
 					Color = Color.WithAlpha(Color.A + (increment ? 1 : -1));
-					//Color = Color2.FromRGB(Color.R, Color.G, Color.B, Color.A + (increment ? 1 : -1));
 					break;
             }
-
         }
 
         private double GetMarkerPosition(ColorComponent comp, double length, bool vertical = false)
@@ -362,37 +320,42 @@ namespace FluentAvalonia.UI.Controls
             {
                 case ColorComponent.Hue:
 					return vertical ? 1 + (1 - (Hue / 360f)) * length : 1 + (Hue / 360f) * length;
-					//return vertical ? _handleRadius + (1 - (Hue / 360f)) * length : _handleRadius + (Hue / 360f) * length;
-                case ColorComponent.Saturation:
+					
+				case ColorComponent.Saturation:
 					return vertical ? 1 + (1 - Color.Saturationf) * length : 1 + Color.Saturationf * length;
-                    //return vertical ? _handleRadius + (1 - Color.Saturationf) * length : _handleRadius + Color.Saturationf * length;
-                case ColorComponent.Value:
+                   
+				case ColorComponent.Value:
 					return vertical ? 1 + (1 - Color.Valuef) * length : 1 + Color.Valuef * length;
-					//return vertical ? _handleRadius + (1 - Color.Valuef) * length : _handleRadius + Color.Valuef * length;
-
+					
                 case ColorComponent.Red:
 					return vertical ? 1 + (1 - Color.Rf) * length : 1 + Color.Rf * length;
-                    //return vertical ? _handleRadius + (1 - Color.Rf) * length : _handleRadius + Color.Rf * length;
-                case ColorComponent.Green:
+                    
+				case ColorComponent.Green:
 					return vertical ? 1 + (1 - Color.Gf) * length : 1 + Color.Gf * length;
-					//return vertical ? _handleRadius + (1 - Color.Gf) * length : _handleRadius + Color.Gf * length;
-                case ColorComponent.Blue:
+					
+				case ColorComponent.Blue:
 					return vertical ? 1 + (1 - Color.Bf) * length : 1 + Color.Bf * length;
-					//return vertical ? _handleRadius + (1 - Color.Bf) * length : _handleRadius + Color.Bf * length;
-                case ColorComponent.Alpha:
+					
+				case ColorComponent.Alpha:
 					return vertical ? 1 + (1 - Color.Af) * length : 1 + Color.Af * length;
-					//return vertical ? _handleRadius + (1 - Color.Af) * length : _handleRadius + Color.Af * length;
-
+					
                 default:
                     return 0.0;
             }
         }
 
+		/// <summary>
+		/// Quick test to determine the lightness of the color. Used to define whether the slider
+		/// drag handle should display black or white
+		/// </summary>
+		/// <param name="col">The color to test</param>
+		/// <returns>The estimated lightness</returns>
 		private double GetLightness(AvColor col)
 		{
 			var rg = col.R <= 10 ? col.R / 3294.0 : Math.Pow(col.R / 269.0 + 0.0513, 2.4);
 			var gg = col.G <= 10 ? col.G / 3294.0 : Math.Pow(col.G / 269.0 + 0.0513, 2.4);
 			var bg = col.B <= 10 ? col.B / 3294.0 : Math.Pow(col.B / 269.0 + 0.0513, 2.4);
+
 			return 0.2126 * rg + 0.7152 * gg + 0.0722 * bg;
 		}
 
@@ -404,10 +367,13 @@ namespace FluentAvalonia.UI.Controls
 				return;
 			}
 
-			_borderPen = new Pen(BorderBrush, BorderThickness);
+			_borderPen = new ImmutablePen(BorderBrush.ToImmutable(), BorderThickness);
 		}
 
-
+		/// <summary>
+		/// Shared brush that renders the checkered pattern for seeing the alpha
+		/// component of the color. This brush is shared among all components
+		/// </summary>
 		public static IBrush CheckeredBrush { get; } = CreateCheckeredBrush();
 
 		private static IBrush CreateCheckeredBrush()
@@ -448,26 +414,14 @@ namespace FluentAvalonia.UI.Controls
 
 		}
 		        
-		private static readonly Pen BlackPen = new Pen(Brushes.Black, 3);
-		private static readonly Pen WhitePen = new Pen(Brushes.White, 3);
+		private static readonly IPen BlackPen = new ImmutablePen(Brushes.Black, 3);
+		private static readonly IPen WhitePen = new ImmutablePen(Brushes.White, 3);
 
 		//This is the brush for the background
 		//Create once here & recycle
 		private LinearGradientBrush _lgb = new LinearGradientBrush();
 
 		private bool _isDown;
-		private Orientation _orientation;
-		private Pen _borderPen;		
-    }
-
-    public enum ColorComponent
-    {
-        Hue,
-        Saturation,
-        Value,
-        Red,
-        Green,
-        Blue,
-        Alpha
+		private IPen _borderPen;		
     }
 }

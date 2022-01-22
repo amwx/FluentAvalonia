@@ -1,30 +1,49 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls
 {
+    /// <summary>
+    /// Represents an icon that uses an IconSource as its content.
+    /// </summary>
     public class IconSourceElement : IconElement
     {
-        static IconSourceElement()
-        {
-            ForegroundProperty.Changed.AddClassHandler<IconSourceElement>((x, _) => x.OnForegroundChanged());
-            IconSourceProperty.Changed.AddClassHandler<IconSourceElement>((x,v) => x.OnIconSourceChanged(v));
-            AffectsMeasure<IconSourceElement>(IconSourceProperty);
-        }
-               
-
+        /// <summary>
+        /// Defines the <see cref="IconSource"/> property
+        /// </summary>
         public static readonly StyledProperty<IconSource> IconSourceProperty =
              AvaloniaProperty.Register<IconSourceElement, IconSource>(nameof(IconSource));
 
+        /// <summary>
+        /// Gets or sets the IconSource used as the icon content.
+        /// </summary>
         public IconSource IconSource
         {
             get => GetValue(IconSourceProperty);
             set => SetValue(IconSourceProperty, value);
         }
 
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		{
+			base.OnPropertyChanged(change);
 
-        private void OnIconSourceChanged(AvaloniaPropertyChangedEventArgs args)
+            if (change.Property == ForegroundProperty)
+			{
+                if (IconSource != null)
+                {
+                    IconSource.Foreground = change.NewValue.GetValueOrDefault<IBrush>();
+                }
+            }
+            else if (change.Property == IconSourceProperty)
+			{
+                OnIconSourceChanged(change);
+                InvalidateMeasure();
+			}
+		}
+
+		private void OnIconSourceChanged(AvaloniaPropertyChangedEventArgs args)
         {
             var newIcon= (IconSource)args.NewValue;
 
@@ -55,14 +74,6 @@ namespace FluentAvalonia.UI.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             return LayoutHelper.ArrangeChild(_child, finalSize, new Thickness());
-        }
-
-        private void OnForegroundChanged()
-        {
-            if (IconSource != null)
-            {
-                IconSource.Foreground = Foreground;
-            }
         }
 
         private Control _child;

@@ -278,7 +278,7 @@ namespace FluentAvaloniaSamples
 				if (item is SymbolIcon si)
 				{
 					var txt = $"    <ui:{ownerType}.{propName}>\n";
-					txt += $"        <ui:SymbolIcon Symbol=\"{si.Symbol}\" UseFilled=\"{si.UseFilled}\" />\n";
+					txt += $"        <ui:SymbolIcon Symbol=\"{si.Symbol}\" />\n";
 					txt += $"    </ui:{ownerType}.{propName}>";
 
 					return txt;

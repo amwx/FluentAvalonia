@@ -1,36 +1,13 @@
 ﻿using Avalonia;
 using Avalonia.Input;
-using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Input
 {
-	public enum StandardUICommandKind
-	{
-		None = 0,
-		Cut = 1,
-		Copy = 2,
-		Paste = 3,
-		SelectAll = 4,
-		Delete = 5,
-		Share = 6,
-		Save = 7,
-		Open = 8,
-		Close = 9,
-		Pause = 10,
-		Play = 11,
-		Stop = 12,
-		Forward = 13,
-		Backward = 14,
-		Undo = 15,
-		Redo = 16
-	}
-
+	/// <summary>
+	/// Derives from XamlUICommand, adding a set of standard platform commands with pre-defined properties.
+	/// </summary>
 	public class StandardUICommand : XamlUICommand
 	{
 		public StandardUICommand() { }
@@ -42,9 +19,16 @@ namespace FluentAvalonia.UI.Input
 			SetupCommand();
 		}
 
+		/// <summary>
+		/// Defines the <see cref="Kind"/> property
+		/// </summary>
 		public static readonly StyledProperty<StandardUICommandKind> KindProperty =
 			AvaloniaProperty.Register<StandardUICommand, StandardUICommandKind>(nameof(Kind));
 
+		/// <summary>
+		/// Gets the platform command (with pre-defined properties such as icon, keyboard accelerator, 
+		/// and description) that can be used with a StandardUICommand.
+		/// </summary>
 		public StandardUICommandKind Kind
 		{
 			get => GetValue(KindProperty);
