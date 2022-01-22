@@ -89,12 +89,32 @@ namespace FluentAvaloniaTests.ControlTests
         [Fact]
         public void PaneEventOrderIsCorrect()
         {
-            using var app = UnitTestApplication.Start();
-            
             bool opening = false;
             bool opened = false;
             bool closing = false;
             bool closed = false;
+            void Opening(object sender, EventArgs e)
+            {
+                Assert.False(opened);
+                opening = true;
+            }
+            void Opened(object sender, EventArgs e)
+            {
+                Assert.True(opening);
+                opened = true;
+            }
+            void Closing(object sender, EventArgs e)
+            {
+                Assert.False(closed);
+                closing = true;
+            }
+            void Closed(object sender, EventArgs e)
+            {
+                Assert.True(closing);
+                closed = true;
+            }
+
+            
 
             var navView = Context.NavigationView;
 
@@ -103,29 +123,10 @@ namespace FluentAvaloniaTests.ControlTests
             if (!navView.IsPaneOpen)
                 navView.IsPaneOpen = true;
 
-            navView.PaneOpening += (s, e) =>
-            {
-                Assert.False(opened);
-                opening = true;
-            };
-
-            navView.PaneOpened += (s, e) =>
-            {
-                Assert.True(opening);
-                opened = true;
-            };
-
-            navView.PaneClosing += (s, e) =>
-            {
-                Assert.False(closed);
-                closing = true;
-            };
-
-            navView.PaneClosed += (s, e) =>
-            {
-                Assert.True(closing);
-                closed = true;
-            };
+            navView.PaneOpening += Opening;
+            navView.PaneOpened += Opened;
+            navView.PaneClosing += Closing;
+            navView.PaneClosed += Closed;
 
             navView.IsPaneOpen = false;
 
@@ -135,56 +136,66 @@ namespace FluentAvaloniaTests.ControlTests
 
             navView.IsPaneOpen = true;
             Assert.True(opening);
-            Assert.True(opened);            
+            Assert.True(opened);
+
+            navView.PaneOpening -= Opening;
+            navView.PaneOpened -= Opened;
+            navView.PaneClosing -= Closing;
+            navView.PaneClosed -= Closed;
         }
 
         [Fact]
         public void NavigationViewItemInvokedEventFiresAndSelectsItem()
         {
-            using var app = UnitTestApplication.Start();
             var navView = Context.NavigationView;
-
             // Ensure the pane is open so Items are realized
             navView.IsPaneOpen = true;
 
             var firstItem = navView.MenuItems.ElementAt(0) as NavigationViewItem;
 
             bool eventFired = false;
-            navView.ItemInvoked += (s, e) =>
+            void ItemInvoked(object sender, NavigationViewItemInvokedEventArgs e)
             {
                 eventFired = true;
                 Assert.Equal(firstItem, e.InvokedItemContainer);
-            };
-                                   
+            }
+
+            navView.ItemInvoked += ItemInvoked;
             firstItem.RaiseEvent(new RoutedEventArgs(InputElement.TappedEvent));
 
             Assert.True(eventFired);
             Assert.True(firstItem.IsSelected);
+
+            navView.ItemInvoked -= ItemInvoked;
         }
 
         [Fact]
         public void InvokingItemWithFalseSelectsOnInvokedDoesNotSelect()
         {
-            using var app = UnitTestApplication.Start();
             var navView = Context.NavigationView;
 
             // Ensure the pane is open so Items are realized
             navView.IsPaneOpen = true;
 
             var firstItem = navView.MenuItems.ElementAt(0) as NavigationViewItem;
+            firstItem.IsSelected = false; // Previous test may set this, ensure it's false to start
             firstItem.SelectsOnInvoked = false;
 
             bool eventFired = false;
-            navView.ItemInvoked += (s, e) =>
+            void ItemInvoked(object sender, NavigationViewItemInvokedEventArgs e)
             {
                 eventFired = true;
                 Assert.Equal(firstItem, e.InvokedItemContainer);
-            };
+            }
+
+            navView.ItemInvoked += ItemInvoked;
 
             firstItem.RaiseEvent(new RoutedEventArgs(InputElement.TappedEvent));
 
             Assert.True(eventFired);
             Assert.False(firstItem.IsSelected);
+
+            navView.ItemInvoked -= ItemInvoked;
         }
 
         
