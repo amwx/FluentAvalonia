@@ -178,7 +178,6 @@ namespace FluentAvalonia.UI.Controls
             throw new NotImplementedException();
         }
 
-
         private bool NavigateCore(PageStackEntry entry, NavigationMode mode)
         {
             try
@@ -204,23 +203,25 @@ namespace FluentAvalonia.UI.Controls
 
                 //Navigate to new page
                 var prevEntry = CurrentEntry;
-                CurrentEntry = entry;
-
+                
                 if (mode == NavigationMode.New)
                 {
                     //Check if we already have an instance of the page in the cache
-                    CurrentEntry.Instance = CheckCacheAndGetPage(entry.SourcePageType);
+                    entry.Instance = CheckCacheAndGetPage(entry.SourcePageType);
                 }
 
-                if (CurrentEntry.Instance == null)
+                if (entry.Instance == null)
                 {
                     var page = CreatePageAndCacheIfNecessary(entry.SourcePageType);
                     if (page == null)
-                        return false;
+                    {
+                        throw new ArgumentException($"The type {entry.SourcePageType} is not a valid page type.");
+                    }
 
-                    CurrentEntry.Instance = page;
+                    entry.Instance = page;
                 }
 
+                CurrentEntry = entry;
                 SetContentAndAnimate(entry);
 
                 if (IsNavigationStackEnabled)
@@ -265,7 +266,6 @@ namespace FluentAvalonia.UI.Controls
                 //VisualTreeHelper.CloseAllPopups();
 
                 return true;
-
             }
             catch (Exception ex)
             {

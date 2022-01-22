@@ -272,7 +272,8 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		private void SetupDialog()
+        // Internal only for UnitTests
+		internal void SetupDialog()
 		{
 			if (_primaryButton == null)
 				ApplyTemplate();

@@ -23,6 +23,12 @@ namespace FluentAvaloniaTests
 			IsVisible = true;
 		}
 
+        public TestRoot(Size clientSize)
+            : this()
+        {
+            ClientSize = clientSize;
+        }
+
 		public Size ClientSize { get; } = new Size(100, 100);
 		public double LayoutScaling { get; } = 1;
 		public ILayoutManager LayoutManager { get; }

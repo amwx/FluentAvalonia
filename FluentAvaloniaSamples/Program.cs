@@ -17,9 +17,10 @@ namespace FluentAvaloniaSamples
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
-			.With(new Win32PlatformOptions()
-			{
-				UseWindowsUIComposition = true
-			});
+                .With(new Win32PlatformOptions()
+                {
+                    UseWindowsUIComposition = true,
+                    EnableMultitouch = true
+                });
     }
 }
