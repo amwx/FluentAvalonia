@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Disposables;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Platform;
 using Avalonia.Shared.PlatformSupport;
 using Avalonia.Styling;
-using Avalonia.Threading;
 using FluentAvalonia.Styling;
 
 namespace FluentAvaloniaTests.Helpers
@@ -63,7 +56,7 @@ namespace FluentAvaloniaTests.Helpers
             {
                 // This loads just the core base resources that enable StaticResources to work (since they throw if not found)
                 // Controls are not loaded here since that's a big ask - individual tests can load what they need
-                Styles.Add(new FluentAvaloniaTheme(new Uri("avares://FluentAvalonia/Styling"))
+                Styles.Add(new FluentAvaloniaTheme(new Uri("avares://FluentAvalonia"))
                 {
                     // ALL will instruct FluentAvaloniaTheme to not load any templates - we'll let individual control unit tests
                     // load what they need so we don't waste CPU/memory here
