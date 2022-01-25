@@ -2,23 +2,464 @@
 using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Styling;
+using FluentAvalonia.Core;
 using FluentAvalonia.Interop;
+using FluentAvalonia.Interop.WinRT;
 using FluentAvalonia.UI.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.Styling
 {
-	public class FluentAvaloniaTheme : IStyle, IResourceProvider
+    public class FluentAvaloniaTheme : IStyle, IResourceProvider
+    {
+        public FluentAvaloniaTheme(Uri baseUri)
+        {
+            _baseUri = baseUri;
+        }
+
+        public FluentAvaloniaTheme(IServiceProvider serviceProvider)
+        {
+            _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
+        }
+
+        public string RequestedTheme
+        {
+            get => _requestedTheme;
+            set
+            {
+                Refresh(value);
+            }
+        }
+
+        public bool UseSystemFontOnWindows { get; set; } = true;
+
+        public bool UseUserAccentColorOnWindows { get; set; } = true;
+
+        public bool UseSystemThemeOnWindows { get; set; } = true;
+
+        public string SkipControls { get; set; } //= "CoreWindow;NavigationView;FlyoutPresenter;ContentDialog;ComboBox;Frame;SplitButton;DropDownButton;MenuFlyoutItem;MenuFlyoutSubItem;ToggleMenuFlyoutItem;RadioMenuFlyoutItem;MenuFlyoutSeparator;ColorPicker;NumberBox;PickerFlyoutPresenter;HyperlinkButton;InfoBar;CommandBar;InfoBadge";
+
+        public IResourceHost Owner
+        {
+            get => _owner;
+            set
+            {
+                if (_owner != value)
+                {
+                    _owner = value;
+                    OwnerChanged?.Invoke(this, EventArgs.Empty);
+
+                    if (!_hasLoaded)
+                    {
+                        Init();
+                    }
+                }
+            }
+        }
+
+        bool IResourceNode.HasResources => true;
+
+        public IReadOnlyList<IStyle> Children => _controlStyles;
+
+        public event EventHandler OwnerChanged;
+        public TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
+
+        public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
+        {
+            if (_cache.TryGetValue(target.StyleKey, out var cached))
+            {
+                if (cached is object)
+                {
+                    foreach (var style in cached)
+                    {
+                        style.TryAttach(target, host);
+                    }
+
+                    return SelectorMatchResult.AlwaysThisType;
+                }
+                else
+                {
+                    return SelectorMatchResult.NeverThisType;
+                }
+            }
+            else
+            {
+                List<IStyle> matches = null;
+
+                foreach (var child in Children)
+                {
+                    if (child.TryAttach(target, host) != SelectorMatchResult.NeverThisType)
+                    {
+                        matches ??= new List<IStyle>();
+                        matches.Add(child);
+                    }
+                }
+
+                _cache.Add(target.StyleKey, matches);
+
+                return matches is null ?
+                    SelectorMatchResult.NeverThisType :
+                    SelectorMatchResult.AlwaysThisType;
+            }
+        }
+
+        public bool TryGetResource(object key, out object value)
+        {
+            // We also search the app level resources so resources can be overridden.
+            // Do not search App level styles though as we'll have to iterate over them
+            // to skip the FluentAvaloniaTheme instance or we'll stack overflow
+            if (Application.Current?.Resources.TryGetResource(key, out value) == true)
+                return true;
+
+            // This checks the actual ResourceDictionary where the SystemResources are stored
+            // and checks the merged dictionaries where base resources and theme resources are
+            if (_themeResources.TryGetResource(key, out value))
+                return true;
+
+            for (int i = _controlStyles.Count - 1; i >= 0; i--)
+            {
+                if (_controlStyles[i] is IResourceProvider rp && rp.TryGetResource(key, out value))
+                    return true;
+            }
+
+            return false;
+        }
+
+        void IResourceProvider.AddOwner(IResourceHost owner)
+        {
+            owner = owner ?? throw new ArgumentNullException(nameof(owner));
+
+            if (Owner != null)
+                throw new InvalidOperationException("An owner already exists");
+
+            Owner = owner;
+
+            (_themeResources as IResourceProvider).AddOwner(owner);
+           // (_systemResources as IResourceProvider).AddOwner(owner);
+
+            for (int i = 0; i < Children.Count; i++)
+            {
+                if (Children[i] is IResourceProvider rp)
+                {
+                    rp.AddOwner(owner);
+                }
+            }
+        }
+
+        void IResourceProvider.RemoveOwner(IResourceHost owner)
+        {
+            owner = owner ?? throw new ArgumentNullException(nameof(owner));
+
+            if (Owner == owner)
+            {
+                Owner = null;
+
+                (_themeResources as IResourceProvider).RemoveOwner(owner);
+               // (_systemResources as IResourceProvider).RemoveOwner(owner);
+
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    if (Children[i] is IResourceProvider rp)
+                    {
+                        rp.RemoveOwner(owner);
+                    }
+                }
+            }
+        }
+
+        private void Init()
+        {
+            AvaloniaLocator.CurrentMutable.Bind<FluentAvaloniaTheme>().ToConstant(this);
+
+            // First load our base and theme resources
+
+            Stopwatch sw = Stopwatch.StartNew();
+
+            // When initializing, UseSystemTheme overrides any setting of RequestedTheme, this must be
+            // explicitly disabled to enable setting the theme manually
+            _requestedTheme = ResolveThemeAndInitializeSystemResources();
+
+            // Base resources
+            _themeResources.MergedDictionaries.Add(
+                (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/StylesV2/BaseResources.axaml"), _baseUri));
+
+            // Theme resource colors/brushes
+            _themeResources.MergedDictionaries.Add(
+                (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
+
+            bool hasControlsToSkip = !string.IsNullOrEmpty(SkipControls);
+            string[] controls = hasControlsToSkip ? SkipControls.Split(';') : null;
+            var prefix = "avares://FluentAvalonia";
+            // Now load all the Avalonia Controls
+            var assetLoader = AvaloniaLocator.Current.GetService<IAssetLoader>();
+            using (var stream = assetLoader.Open(new Uri("avares://FluentAvalonia/Styling/StylesV2/AvaloniaControls.txt")))
+            using (var streamReader = new StreamReader(stream))
+            {
+                while (streamReader.Peek() != -1)
+                {
+                    var file = streamReader.ReadLine();
+                    if (string.IsNullOrEmpty(file) || file.StartsWith("["))
+                        continue;
+
+                    if (hasControlsToSkip)
+                    {
+                        // The time spent here checking (and splitting the string above) may be made up by not
+                        // loading those particular styles so it actually seems to balance out nicely
+                        var span = file.AsSpan();
+                        bool skip = false;
+                        foreach(var item in controls)
+                        {
+                            if (span.Contains(item.AsSpan(), StringComparison.OrdinalIgnoreCase))
+                            {
+                                skip = true;
+                                break;
+                            }
+                        }
+
+                        if (skip)
+                            continue;
+                    }
+
+                    var styles = (IStyle)AvaloniaXamlLoader.Load(new Uri($"{prefix}{file}"), _baseUri);
+
+                    _controlStyles.Add(styles);
+
+                }                
+            }
+
+            sw.Stop();
+            Debug.WriteLine(sw.Elapsed);
+            _hasLoaded = true;
+        }
+
+        private void Refresh(string newTheme)
+        {
+            var old = _requestedTheme;
+            if (!string.Equals(newTheme, old, StringComparison.OrdinalIgnoreCase))
+            {
+                _requestedTheme = newTheme;
+
+                // Remove the old theme resources
+                _themeResources.MergedDictionaries.RemoveAt(1);
+
+                _themeResources.MergedDictionaries.Add(
+                    (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
+
+                if (string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Ensure HighContrast resources are available...
+                }
+
+                Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
+
+                RequestedThemeChanged?.Invoke(this, new RequestedThemeChangedEventArgs(_requestedTheme));
+            }
+        }
+
+        private string ResolveThemeAndInitializeSystemResources()
+        {
+            string theme = _requestedTheme;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && UseSystemThemeOnWindows)
+            {
+                IAccessibilitySettings accessibility = null;
+                IUISettings3 uiSettings3 = null;
+                try
+                {
+                    accessibility = WinRTInterop.CreateInstance<IAccessibilitySettings>("Windows.UI.ViewManagement.AccessibilitySettings");
+                    int isUsingHighContrast = accessibility.HighContrast;
+                    if (isUsingHighContrast == 1)
+                    {
+                        theme = HighContrastModeString;
+                    }
+                }
+                catch
+                {
+                    Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                        .Log("FluentAvaloniaTheme", "Unable to retrieve High contrast settings.");
+                }
+
+                try
+                {
+                    uiSettings3 = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
+                    var background = (Color2)uiSettings3.GetColorValue(UIColorType.Background);
+                    var foreground = (Color2)uiSettings3.GetColorValue(UIColorType.Foreground);
+
+                    // There doesn't seem to be a solid way to detect system theme here, so we check if the background
+                    // color is darker than the foreground for lightmode
+                    bool isDarkMode = background.Lightness < foreground.Lightness;
+
+                    theme = isDarkMode ? DarkModeString : LightModeString;
+                }
+                catch
+                {
+                    Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                        .Log("FluentAvaloniaTheme", "Detecting system theme failed, defaulting to Light mode");
+
+                    theme = LightModeString;
+                }
+
+                if (accessibility != null && theme == HighContrastModeString)
+                {
+                    TryLoadHighContrastThemeColors(accessibility);
+                }
+
+                if (UseSystemThemeOnWindows)
+                {
+                    TryLoadWindowsAccentColor(uiSettings3);
+                }
+
+                if (UseSystemFontOnWindows)
+                {
+                    try
+                    {
+                        Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
+                        Win32Interop.RtlGetVersion(ref osInfo);
+
+                        if (osInfo.BuildNumber >= 22000) // Windows 11
+                        {
+                            _themeResources.Add("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable Text"));
+                        }
+                        else // Windows 10
+                        {
+                            //This is defined in the BaseResources.axaml file
+                            _themeResources.Add("ContentControlThemeFontFamily", new FontFamily("Segoe UI"));
+                        }
+                    }
+                    catch
+                    {
+                        Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                        .Log("FluentAvaloniaTheme", "Error in detecting Windows system font.");
+                    }
+                }
+            }
+
+            // Load the SymbolThemeFontFamily
+            _themeResources.Add("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
+
+            // If not on Windows or if not using the system them, we default to LightMode
+            // if user didn't specify the theme to use
+            return string.IsNullOrEmpty(theme) ? LightModeString : theme;
+        }
+
+        private void TryLoadHighContrastThemeColors(IAccessibilitySettings accessibility)
+        {
+            try
+            {
+                // TODO
+            }
+            catch
+            {
+                Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                    .Log("FluentAvaloniaTheme", "Loading high contrast theme resources failed");
+            }
+        }
+
+        private void TryLoadWindowsAccentColor(IUISettings3 settings3)
+        {
+            try
+            {
+                // TODO
+                AddOrUpdateSystemResource("SystemAccentColor", (Color)settings3.GetColorValue(UIColorType.Accent));
+
+                AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)settings3.GetColorValue(UIColorType.AccentLight1));
+                AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)settings3.GetColorValue(UIColorType.AccentLight2));
+                AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)settings3.GetColorValue(UIColorType.AccentLight3));
+
+                AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)settings3.GetColorValue(UIColorType.AccentDark1));
+                AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)settings3.GetColorValue(UIColorType.AccentDark2));
+                AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)settings3.GetColorValue(UIColorType.AccentDark3));
+            }
+            catch
+            {
+                Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                    .Log("FluentAvaloniaTheme", "Loading system accent color failed, using fallback (SlateBlue)");
+
+                // We don't know where it failed, so override all
+                AddOrUpdateSystemResource("SystemAccentColor", Colors.SlateBlue);
+
+                AddOrUpdateSystemResource("SystemAccentColorLight1", Color.Parse("#7F69FF"));
+                AddOrUpdateSystemResource("SystemAccentColorLight2", Color.Parse("#9B8AFF"));
+                AddOrUpdateSystemResource("SystemAccentColorLight3", Color.Parse("#B9ADFF"));
+
+                AddOrUpdateSystemResource("SystemAccentColorDark1", Color.Parse("#43339C"));
+                AddOrUpdateSystemResource("SystemAccentColorDark2", Color.Parse("#33238C"));
+                AddOrUpdateSystemResource("SystemAccentColorDark3", Color.Parse("#1D115C"));
+            }
+        }
+
+        private void AddOrUpdateSystemResource(object key, object value)
+        {
+            if (_themeResources.ContainsKey(key))
+            {
+                _themeResources[key] = value;
+            }
+            else
+            {
+                _themeResources.Add(key, value);
+            }
+        }
+
+        private bool _hasLoaded;
+        private readonly List<IStyle> _controlStyles = new List<IStyle>();
+        private readonly Dictionary<Type, List<IStyle>> _cache = new Dictionary<Type, List<IStyle>>();
+        private readonly ResourceDictionary _themeResources = new ResourceDictionary();
+        //private readonly SystemThemeResources _systemResources = new SystemThemeResources();
+        private IResourceHost _owner;
+        private string _requestedTheme = null;
+        private Uri _baseUri;
+
+        public readonly string LightModeString = "Light";
+        public readonly string DarkModeString = "Dark";
+        public readonly string HighContrastModeString = "HighContrast";
+    }
+
+    internal class SystemThemeResources : ResourceDictionary
+    {
+        public void TryAdd(object key, object value)
+        {
+            if (ContainsKey(key))
+                return;
+
+            Add(key, value);
+        }
+
+        public void AddOrUpdateValue(object key, object value)
+        {
+            if (ContainsKey(key))
+            {
+                this[key] = value;
+            }
+            else
+            {
+                Add(key, value);
+            }
+        }
+    }
+
+    public class RequestedThemeChangedEventArgs : EventArgs
+    {
+        internal RequestedThemeChangedEventArgs(string theme)
+        {
+            NewTheme = theme;
+        }
+        public string NewTheme { get; }
+    }
+
+	public class FluentAvaloniaThemeOLD : IStyle, IResourceProvider
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FluentAvaloniaTheme"/> class.
 		/// </summary>
 		/// <param name="baseUri">The base URL for the XAML context.</param>
-		public FluentAvaloniaTheme(Uri baseUri)
+		public FluentAvaloniaThemeOLD(Uri baseUri)
 		{
 			_baseUri = baseUri;
 			Register();
@@ -28,11 +469,11 @@ namespace FluentAvalonia.Styling
 		/// Initializes a new instance of the <see cref="FluentAvaloniaTheme"/> class.
 		/// </summary>
 		/// <param name="serviceProvider">The XAML service provider.</param>
-		public FluentAvaloniaTheme(IServiceProvider serviceProvider)
+		public FluentAvaloniaThemeOLD(IServiceProvider serviceProvider)
 		{
 			_baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
 			Register();
-		}
+        }
 
 		/// <summary>
 		/// Gets or sets the mode of the fluent theme (light, dark).
@@ -384,7 +825,7 @@ namespace FluentAvalonia.Styling
 		private void Register()
 		{
 			//For easy access, save to AvaloniaLocator
-			AvaloniaLocator.CurrentMutable.Bind<FluentAvaloniaTheme>().ToConstant(this);
+			//AvaloniaLocator.CurrentMutable.Bind<FluentAvaloniaTheme>().ToConstant(this);
 		}
 
 		private void InitIfNecessary()
