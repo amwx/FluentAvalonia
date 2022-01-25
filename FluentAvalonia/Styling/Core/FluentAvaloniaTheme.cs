@@ -305,43 +305,48 @@ namespace FluentAvalonia.Styling
             }
 
             bool hasControlsToSkip = !string.IsNullOrEmpty(SkipControls);
-            string[] controls = hasControlsToSkip ? SkipControls.Split(';') : null;
-            var prefix = "avares://FluentAvalonia";
-            // Now load all the Avalonia Controls
-            var assetLoader = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using (var stream = assetLoader.Open(new Uri("avares://FluentAvalonia/Styling/StylesV2/Controls.txt")))
-            using (var streamReader = new StreamReader(stream))
-            {
-                while (streamReader.Peek() != -1)
-                {
-                    var file = streamReader.ReadLine();
-                    if (string.IsNullOrEmpty(file) || file.StartsWith("["))
-                        continue;
 
-                    if (hasControlsToSkip)
+            // ALL keyword should only be used in UnitTests since it doesn't load anything
+            if (SkipControls != "ALL")
+			{
+                string[] controls = hasControlsToSkip ? SkipControls.Split(';') : null;
+                var prefix = "avares://FluentAvalonia";
+                // Now load all the Avalonia Controls
+                var assetLoader = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                using (var stream = assetLoader.Open(new Uri("avares://FluentAvalonia/Styling/StylesV2/Controls.txt")))
+                using (var streamReader = new StreamReader(stream))
+                {
+                    while (streamReader.Peek() != -1)
                     {
-                        // The time spent here checking (and splitting the string above) may be made up by not
-                        // loading those particular styles so it actually seems to balance out nicely
-                        var span = file.AsSpan();
-                        bool skip = false;
-                        foreach(var item in controls)
+                        var file = streamReader.ReadLine();
+                        if (string.IsNullOrEmpty(file) || file.StartsWith("["))
+                            continue;
+
+                        if (hasControlsToSkip)
                         {
-                            if (span.Contains(item.AsSpan(), StringComparison.OrdinalIgnoreCase))
+                            // The time spent here checking (and splitting the string above) may be made up by not
+                            // loading those particular styles so it actually seems to balance out nicely
+                            var span = file.AsSpan();
+                            bool skip = false;
+                            foreach (var item in controls)
                             {
-                                skip = true;
-                                break;
+                                if (span.Contains(item.AsSpan(), StringComparison.OrdinalIgnoreCase))
+                                {
+                                    skip = true;
+                                    break;
+                                }
                             }
+
+                            if (skip)
+                                continue;
                         }
 
-                        if (skip)
-                            continue;
+                        var styles = (IStyle)AvaloniaXamlLoader.Load(new Uri($"{prefix}{file}"), _baseUri);
+
+                        _controlStyles.Add(styles);
+
                     }
-
-                    var styles = (IStyle)AvaloniaXamlLoader.Load(new Uri($"{prefix}{file}"), _baseUri);
-
-                    _controlStyles.Add(styles);
-
-                }                
+                }
             }
 
             sw.Stop();
