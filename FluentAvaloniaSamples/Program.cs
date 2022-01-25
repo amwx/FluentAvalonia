@@ -16,7 +16,7 @@ namespace FluentAvaloniaSamples
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .LogToTrace()
+                .LogToTrace(Avalonia.Logging.LogEventLevel.Information, "FluentAvaloniaTheme")
                 .With(new Win32PlatformOptions()
                 {
                     UseWindowsUIComposition = true,
