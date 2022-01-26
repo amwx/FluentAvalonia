@@ -78,7 +78,6 @@ namespace FluentAvaloniaSamples.ViewModels
 		public string CommandBarButtonPageHeader => DescriptionServiceProvider.Instance.GetInfo("CommandBarButton", "Header");
 		public string CommandBarToggleButtonPageHeader => DescriptionServiceProvider.Instance.GetInfo("CommandBarToggleButton", "Header");
 
-        // Has no effect, will be fixed in SampleApp update for v1.2
         public bool UseCustomAccent
 		{
 			get => _useCustomAccentColor;
@@ -90,18 +89,17 @@ namespace FluentAvaloniaSamples.ViewModels
 					{
 
 						CustomAccentColor = Colors.SlateBlue;
-						//AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
+						AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
 					}
 					else
 					{
 						CustomAccentColor = default;
-						//AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
+						AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
 					}
 				}
 			}
 		}
 
-        // Has no effect, will be fixed in SampleApp update for v1.2
 		public Color CustomAccentColor
 		{
 			get => _customAccentColor;
@@ -109,7 +107,7 @@ namespace FluentAvaloniaSamples.ViewModels
 			{
 				if (RaiseAndSetIfChanged(ref _customAccentColor, value))
 				{
-					//AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
+					AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
 				}
 			}
 		}
