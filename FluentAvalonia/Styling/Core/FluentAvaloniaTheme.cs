@@ -156,6 +156,7 @@ namespace FluentAvalonia.Styling
                     return true;
             }
 
+            value = null;
             return false;
         }
 
