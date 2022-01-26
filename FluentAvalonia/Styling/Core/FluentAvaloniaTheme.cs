@@ -139,6 +139,9 @@ namespace FluentAvalonia.Styling
 
         public bool TryGetResource(object key, out object value)
         {
+            // Github build failing with this not being set, even tho it passes locally
+            value = null;
+
             // We also search the app level resources so resources can be overridden.
             // Do not search App level styles though as we'll have to iterate over them
             // to skip the FluentAvaloniaTheme instance or we'll stack overflow
