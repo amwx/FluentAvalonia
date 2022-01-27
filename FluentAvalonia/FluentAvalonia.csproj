@@ -5,6 +5,7 @@
     <Nullable>disable</Nullable>
 	<RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
 	<PackageId>FluentAvaloniaUI</PackageId>
+    <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
 </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -33,10 +34,16 @@
         <AvaloniaResource Include="Assets\*.*" />
 	    <AvaloniaResource Include="Fonts\*.*" />
     </ItemGroup>
+    <ItemGroup>
+      <AvaloniaResource Include="Styling\StylesV2\Controls.txt" />
+    </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="0.10.11" />
 		<PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
 		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.11" />
+		<PackageReference Include="MicroCom.CodeGenerator.MSBuild" Version="0.10.4" />
+		<PackageReference Include="MicroCom.Runtime" Version="0.10.4" />
+        <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />
 	</ItemGroup>
 </Project>

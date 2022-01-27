@@ -21,9 +21,10 @@
 	
     <!--<Design.DataContext>
         <vm:MainWindowViewModel/>
-    </Design.DataContext>-->
+    </Design.DataContext>
+     Background="{DynamicResource TestBrush}"-->
 	
-	<Panel Background="{DynamicResource TestBrush}">		
+	<Panel>		
 		<ui:NavigationView Name="NavView"
 							PaneDisplayMode="Left"
 							IsVisible="True"

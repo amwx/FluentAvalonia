@@ -10,12 +10,12 @@
 
     <!-- All NavigationView resources are declared in this file -->
     
-    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewDeps.axaml" />
-    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewBackButton.axaml" />
-    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItem.axaml" />
-    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItemPresenter.axaml" />
-    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItemHeader.axaml" />
-    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItemSeparator.axaml" />
+    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewDepsStyles.axaml" />
+    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewBackButtonStyles.axaml" />
+    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItemStyles.axaml" />
+    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItemPresenterStyles.axaml" />
+    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItemHeaderStyles.axaml" />
+    <StyleInclude Source="avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewItemSeparatorStyles.axaml" />
 
     
     <Style Selector="ui|NavigationView">

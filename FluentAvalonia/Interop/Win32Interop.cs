@@ -12,43 +12,6 @@ namespace FluentAvalonia.Interop
 		[DllImport("dwmapi.dll", SetLastError = true)]
 		public static extern int DwmIsCompositionEnabled(out bool enabled);
 
-		[DllImport("uxtheme.dll", EntryPoint = "#95")]
-		public static extern uint GetImmersiveColorFromColorSetEx(uint dwImmersiveColorSet, uint dwImmersiveColorType, bool bIgnoreHighContrast, uint dwHighContrastCacheMode);
-		
-		[DllImport("uxtheme.dll", EntryPoint = "#96")]
-		public static extern uint GetImmersiveColorTypeFromName(IntPtr pName);
-		
-		[DllImport("uxtheme.dll", EntryPoint = "#98")]
-		public static extern int GetImmersiveUserColorSetPreference(bool bForceCheckRegistry, bool bSkipCheckOnFail);
-
-
-		public static Avalonia.Media.Color GetThemeColorRef(string h, bool ignoreHighContrast = false)
-		{
-			var colorSetEx = GetImmersiveColorFromColorSetEx(
-			(uint)GetImmersiveUserColorSetPreference(false, false),
-			GetImmersiveColorTypeFromName(Marshal.StringToHGlobalUni(h)),
-			ignoreHighContrast, 0);
-
-			var a = 0xFFFFFF & colorSetEx >> 24;
-			var r = (0xFFFFFF & colorSetEx);
-			var g = (0xFFFFFF & colorSetEx) >> 8;
-			var b = (0xFFFFFF & colorSetEx) >> 16;
-
-			var colour = Avalonia.Media.Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
-
-			return colour;
-		}
-
-		[DllImport("user32.dll", SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, ref HIGHCONTRAST pvParam, uint fWinIni);
-
-		[DllImport("user32.dll")]
-		public static extern uint GetSysColor(int nIndex);
-
-        [DllImport("user32.dll")]
-        public static extern uint GetSysColor(SystemColors nIndex);
-
         [DllImport("user32.dll", SetLastError = true)]
 		public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
 
@@ -131,12 +94,19 @@ namespace FluentAvalonia.Interop
 				}
 				if (success == 0)
 					return false;
-			}                       
+			}
+
+            // Try to get the window to redraw to reflect the changes
+            SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, (uint)(0x0001 | 0x0002 | 0x0004 | 0x0010 | 0x0020 | 0x0200));
 
 			return true;
 		}
 
-		[SecurityCritical]
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
+
+        [SecurityCritical]
 		[DllImport("ntdll.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
 
@@ -166,15 +136,6 @@ namespace FluentAvalonia.Interop
 			int dwExStyle,
 			int dpi);
 		
-		[StructLayout(LayoutKind.Sequential)]
-		public struct HIGHCONTRAST
-		{
-			public uint cbSize;
-			public HCF dwFlags;
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpszDefaultScheme;
-		}
-
 		[DllImport("dwmapi.dll")]
 		public static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
 
@@ -190,57 +151,6 @@ namespace FluentAvalonia.Interop
 
 		[DllImport("user32.dll")]
 		public static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
-	}
-
-	[Flags]
-	public enum HCF : uint
-	{
-		HCF_HIGHCONTRASTON = 0x00000001,
-		HCF_AVAILABLE = 0x00000002,
-		HCF_HOTKEYACTIVE = 0x00000004,
-		HCF_CONFIRMHOTKEY = 0x00000008,
-		HCF_HOTKEYSOUND = 0x00000010,
-		HCF_INDICATOR = 0x00000020,
-		HCF_HOTKEYAVAILABLE = 0x00000040,
-		HCF_OPTION_NOTHEMECHANGE = 0x00001000
-	}
-	
-	public enum SystemColors
-	{
-		COLOR_3DDKSHADOW = 21,
-        COLOR_3DFACE = 15,
-        COLOR_3DHIGHLIGHT = 20,
-        COLOR_3DLIGHT = 22,
-        COLOR_3DSHADOW = 16,
-        COLOR_ACTIVEBORDER = 10,
-        COLOR_ACTIVECAPTION = 2,
-        COLOR_APPWORKSPACE = 12,
-        COLOR_BACKGROUND = 1,
-        COLOR_BTNFACE = 15,
-        COLOR_BTNHIGHLIGHT = 20,
-        COLOR_BTNSHADOW = 16,
-        COLOR_BTNTEXT = 18,
-        COLOR_CAPTIONTEXT = 9,
-        COLOR_DESKTOP = 1,
-        COLOR_GRADIENTACTIVECAPTION = 27,
-        COLOR_GRADIENTINACTIVECAPTION = 28,
-        COLOR_GRAYTEXT = 17,
-        COLOR_HIGHLIGHT = 13,
-        COLOR_HIGHLIGHTTEXT = 14,
-        COLOR_HOTLIGHT = 26,
-        COLOR_INACTIVEBORDER = 11,
-        COLOR_INACTIVECAPTION = 3,
-        COLOR_INACTIVECAPTIONTEXT = 19,
-        COLOR_INFOBK = 24,
-        COLOR_INFOTEXT = 23,
-        COLOR_MENU = 4,
-        COLOR_MENUHILIGHT = 29,
-        COLOR_MENUBAR = 30,
-        COLOR_MENUTEXT = 7,
-        COLOR_SCROLLBAR = 0,
-        COLOR_WINDOW = 5,
-        COLOR_WINDOWFRAME = 6,
-        COLOR_WINDOWTEXT = 8
 	}
 
 	public unsafe struct WINDOWCOMPOSITIONATTRIBDATA

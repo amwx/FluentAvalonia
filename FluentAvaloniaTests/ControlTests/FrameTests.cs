@@ -44,7 +44,7 @@ namespace FluentAvaloniaTests.ControlTests
             Root.StylingParent = UnitTestApplication.Current;
 
             UnitTestApplication.Current.Styles.Add(
-                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/Controls/Frame.axaml")));
+                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/Controls/FrameStyles.axaml")));
 
             Frame = new Frame();
 

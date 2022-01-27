@@ -36,13 +36,13 @@ namespace FluentAvaloniaTests.ControlTests
             //UnitTestApplication.Current.Styles.Add(
             //   (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ContentControl.axaml")));
             UnitTestApplication.Current.Styles.Add(
-               (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/Controls/ContentDialogStyle.axaml")));
+               (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/Controls/ContentDialogStyles.axaml")));
             UnitTestApplication.Current.Styles.Add(
-                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollBarStyle.axaml")));
+                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollBarStyles.axaml")));
             UnitTestApplication.Current.Styles.Add(
-                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollViewer.axaml")));
+                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollViewerStyles.axaml")));
             UnitTestApplication.Current.Styles.Add(
-               (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ButtonStyle.axaml")));
+               (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ButtonStyles.axaml")));
 
             // ContentDialog is an async process which is hard to unit test, so force create and add to tree here
             var cd = new ContentDialog();

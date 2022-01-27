@@ -1,96 +1,41 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:avconv="using:Avalonia.Controls.Converters">
-    <Styles.Resources>
-        <!-- New FluentUI Icons from Microsoft, embedded in assembly
-             NOTE: Changing this font, will break design of most FluentAvalonia controls
-			 This font has been adapted, thanks to robloo to use the FluentSystemIcons font, but
-			 match the same unicode code points from WinUI Segoe Fluent
-		-->
-        <FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>
-        <FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>
 
-        <!--Updated to new corner radius (values are actual +1, as is in regular fluent theme) -->
-        <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
-        <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
+    <!-- New FluentUI Icons from Microsoft, embedded in assembly - see v1.1.5 PR for details
+         NOTE: Changing this font, will break design of most FluentAvalonia controls
+		 This font has been adapted, thanks to robloo to use the FluentSystemIcons font, but
+		 match the same unicode code points from WinUI Segoe Fluent
+	-->
+    <!--<FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>-->
+    <!--<FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>-->
 
-        <x:Double x:Key="ControlContentThemeFontSize">14</x:Double>
-        <Thickness x:Key="FlyoutContentThemePadding">12,11,12,12</Thickness>
-        <x:Double x:Key="FlyoutThemeMaxHeight">758</x:Double>
-        <x:Double x:Key="FlyoutThemeMaxWidth">456</x:Double>
-        <x:Double x:Key="FlyoutThemeMinHeight">40</x:Double>
-        <x:Double x:Key="FlyoutThemeMinWidth">96</x:Double>
-        
-        <x:Double x:Key="TextControlThemeMinHeight">32</x:Double>
-        <x:Double x:Key="TextControlThemeMinWidth">64</x:Double>
+    <!-- Updated to new corner radius -->
+    <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
+    <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
 
-        <avconv:CornerRadiusFilterConverter x:Key="TopCornerRadiusFilterConverter" Filter="TopLeft, TopRight"/>
-        <avconv:CornerRadiusFilterConverter x:Key="RightCornerRadiusFilterConverter" Filter="TopRight, BottomRight"/>
-        <avconv:CornerRadiusFilterConverter x:Key="BottomCornerRadiusFilterConverter" Filter="BottomLeft, BottomRight"/>
-        <avconv:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
+    <x:Double x:Key="ControlContentThemeFontSize">14</x:Double>
+    <Thickness x:Key="FlyoutContentThemePadding">12,11,12,12</Thickness>
+    <x:Double x:Key="FlyoutThemeMaxHeight">758</x:Double>
+    <x:Double x:Key="FlyoutThemeMaxWidth">456</x:Double>
+    <x:Double x:Key="FlyoutThemeMinHeight">40</x:Double>
+    <x:Double x:Key="FlyoutThemeMinWidth">96</x:Double>
 
-        <!--
+    <x:Double x:Key="TextControlThemeMinHeight">32</x:Double>
+    <x:Double x:Key="TextControlThemeMinWidth">64</x:Double>
+
+    <avconv:CornerRadiusFilterConverter x:Key="TopCornerRadiusFilterConverter" Filter="TopLeft, TopRight"/>
+    <avconv:CornerRadiusFilterConverter x:Key="RightCornerRadiusFilterConverter" Filter="TopRight, BottomRight"/>
+    <avconv:CornerRadiusFilterConverter x:Key="BottomCornerRadiusFilterConverter" Filter="BottomLeft, BottomRight"/>
+    <avconv:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
+
+    <!--
         Preserving for reference:
         <x:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</x:String>
         <x:String x:Key="ControlNormalAnimationDuration">00:00:00.250</x:String>
         <x:String x:Key="ControlFastAnimationDuration">00:00:00.167</x:String>
         <x:String x:Key="ControlFastAnimationAfterDuration">00:00:00.168</x:String>
         <x:String x:Key="ControlFasterAnimationDuration">00:00:00.083</x:String>-->
-    </Styles.Resources>
 
-	<Style Selector="TextBlock.BaseTextBlockStyle">
-		<Setter Property="FontFamily" Value="XamlAutoFontFamily" />
-		<Setter Property="FontSize" Value="14" />
-		<Setter Property="FontWeight" Value="SemiBold" />
-		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-	</Style>
 	
-	<Style Selector="TextBlock.CaptionTextBlockStyle">
-		<Setter Property="FontFamily" Value="XamlAutoFontFamily" />
-		<Setter Property="FontSize" Value="12" />
-		<Setter Property="FontWeight" Value="Normal" />
-		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-	</Style>
-
-	<Style Selector="TextBlock.BodyTextBlockStyle">
-		<Setter Property="FontFamily" Value="XamlAutoFontFamily" />
-		<Setter Property="FontSize" Value="14" />
-		<Setter Property="FontWeight" Value="Normal" />
-		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-	</Style>
-
-	<Style Selector="TextBlock.BodyStrongTextBlockStyle">
-		<Setter Property="FontFamily" Value="XamlAutoFontFamily" />
-		<Setter Property="FontSize" Value="14" />
-		<Setter Property="FontWeight" Value="SemiBold" />
-		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-	</Style>
-
-	<Style Selector="TextBlock.SubtitleTextBlockStyle">
-		<Setter Property="FontFamily" Value="XamlAutoFontFamily" />
-		<Setter Property="FontSize" Value="20" />
-		<Setter Property="FontWeight" Value="SemiBold" />
-		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-	</Style>
-
-	<Style Selector="TextBlock.TitleTextBlockStyle">
-		<Setter Property="FontFamily" Value="XamlAutoFontFamily" />
-		<Setter Property="FontSize" Value="28" />
-		<Setter Property="FontWeight" Value="SemiBold" />
-		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-	</Style>
-
-	<Style Selector="TextBlock.DisplayTextBlockStyle">
-		<Setter Property="FontFamily" Value="XamlAutoFontFamily" />
-		<Setter Property="FontSize" Value="68" />
-		<Setter Property="FontWeight" Value="SemiBold" />
-		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-	</Style>
-</Styles>
+</ResourceDictionary>

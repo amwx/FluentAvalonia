@@ -1,41 +1,21 @@
 ﻿using Avalonia;
-using Avalonia.Animation;
-using Avalonia.Animation.Animators;
-using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
-using Avalonia.Controls.Templates;
-using Avalonia.Diagnostics;
-using Avalonia.Dialogs;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Avalonia.Styling;
-using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
-using FluentAvalonia.UI.Data;
-using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Navigation;
 using FluentAvaloniaSamples.Pages;
 using FluentAvaloniaSamples.ViewModels;
-//using FluentAvaloniaSamples.Views.Internal;
 using SkiaSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using IconElement = FluentAvalonia.UI.Controls.IconElement;
 
 namespace FluentAvaloniaSamples.Views
 {
-	
-
 	public class MainWindow : CoreWindow
     {
 		public MainWindow()
@@ -70,7 +50,8 @@ namespace FluentAvaloniaSamples.Views
 		protected override void OnOpened(EventArgs e)
 		{
 			base.OnOpened(e);
-			Debug.WriteLine(FocusManager.Instance.Current);
+			
+            AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceWin32WindowToTheme(this);
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)

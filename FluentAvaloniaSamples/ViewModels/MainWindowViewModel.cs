@@ -78,19 +78,7 @@ namespace FluentAvaloniaSamples.ViewModels
 		public string CommandBarButtonPageHeader => DescriptionServiceProvider.Instance.GetInfo("CommandBarButton", "Header");
 		public string CommandBarToggleButtonPageHeader => DescriptionServiceProvider.Instance.GetInfo("CommandBarToggleButton", "Header");
 
-		public int ControlsVersion
-		{
-			get => _controlsVersion;
-			set
-			{
-				if (RaiseAndSetIfChanged(ref _controlsVersion, value))
-				{
-					AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().ControlsVersion = value;
-				}
-			}
-		}
-
-		public bool UseCustomAccent
+        public bool UseCustomAccent
 		{
 			get => _useCustomAccentColor;
 			set
@@ -133,13 +121,13 @@ namespace FluentAvaloniaSamples.ViewModels
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && 
 				App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime cdl)
 			{
-				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceNativeTitleBarToTheme(cdl.MainWindow);
+				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceWin32WindowToTheme(cdl.MainWindow);
 			}
 
 			// Ignore these, these are for the SampleApp only
-			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#0F000000"));
-			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#F3F3F3"));
-			App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#F9F9F9"));
+			//App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#0F000000"));
+			//App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#F3F3F3"));
+			//App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#F9F9F9"));
 		}
 
         public void SetDarkTheme()
@@ -151,13 +139,13 @@ namespace FluentAvaloniaSamples.ViewModels
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
 				App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime cdl)
 			{
-				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceNativeTitleBarToTheme(cdl.MainWindow);
+				AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceWin32WindowToTheme(cdl.MainWindow);
 			}
 
 			// Ignore these, these are for the SampleApp only
-			App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#12FFFFFF"));
-			App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#202020"));
-			App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#292929"));
+			//App.Current.Resources["ControlExampleStrokeColor"] = new SolidColorBrush(Color.Parse("#12FFFFFF"));
+			//App.Current.Resources["ControlExampleBackgroundFill"] = new SolidColorBrush(Color.Parse("#202020"));
+			//App.Current.Resources["ControlExampleBackgroundFill2"] = new SolidColorBrush(Color.Parse("#292929"));
 		}
 
         public async void LaunchContentDialog(object param)
