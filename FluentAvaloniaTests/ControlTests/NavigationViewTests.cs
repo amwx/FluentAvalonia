@@ -45,17 +45,17 @@ namespace FluentAvaloniaTests.ControlTests
             tr.StylingParent = UnitTestApplication.Current;
 
             UnitTestApplication.Current.Styles.Add(
-                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationView.axaml")));
+                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/Controls/NavigationView/NavigationViewStyles.axaml")));
 
             // SplitView, ScrollViewer/ScrollBar, and Button styles are required too
             UnitTestApplication.Current.Styles.Add(
-                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/SplitViewStyle.axaml")));
+                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/SplitViewStyles.axaml")));
             UnitTestApplication.Current.Styles.Add(
-                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollBarStyle.axaml")));
+                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollBarStyles.axaml")));
             UnitTestApplication.Current.Styles.Add(
-                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollViewer.axaml")));
+                (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ScrollViewerStyles.axaml")));
             UnitTestApplication.Current.Styles.Add(
-               (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ButtonStyle.axaml")));
+               (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ButtonStyles.axaml")));
 
 
             var navView = new NavigationView()
