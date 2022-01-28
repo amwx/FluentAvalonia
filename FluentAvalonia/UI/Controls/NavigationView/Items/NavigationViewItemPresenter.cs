@@ -26,8 +26,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
         {
             base.OnApplyTemplate(e);
 
-            //TODO check types
-            _selectionIndicator = e.NameScope.Get<Border>("SelectionIndicator");
+            _selectionIndicator = e.NameScope.Find<Border>("SelectionIndicator");
 
             //This doesn't exist in the TopPane template, so use Find and allow it to be null
             _contentGrid = e.NameScope.Find<Panel>("PresenterContentRootGrid");
@@ -37,7 +36,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
             var nvi = GetNVI;
             if (nvi != null)
             {
-                _expandCollapseChevron = e.NameScope.Get<Panel>("ExpandCollapseChevron");
+                _expandCollapseChevron = e.NameScope.Find<Panel>("ExpandCollapseChevron");
 
                 if (_expandCollapseChevron != null)
                 {
