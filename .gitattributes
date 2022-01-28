@@ -63,4 +63,4 @@
 #*.RTF   diff=astextplain
 
 #Try force .axaml files to display with xaml syntax highlighting
-*.axaml linguist-language=Xaml
+*.axaml linguist-language=xml
