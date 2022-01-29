@@ -62,6 +62,25 @@
                 
             </local:ControlExample>
 
+            <local:ControlExample Header="A NumberBox with validation" ShowDocs="False">
+
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <ui:NumberBox Name="ValidationNB1" Header="Enter an even or uneven number:"
+                                  Value="{Binding EvenValue}"
+                                  SpinButtonPlacementMode="Inline"/>
+
+                    <ui:NumberBox Name="ValidationNB2" Header="Enter an even or uneven number:"
+                                  Value="{Binding EvenValue}"
+                                  SpinButtonPlacementMode="Compact"/>
+
+                    <ui:NumberBox Name="ValidationNB3" Header="Enter an even or uneven number:"
+                                  Value="{Binding EvenValue}"/>
+                </StackPanel>
+
+
+            </local:ControlExample>
+
+
         </StackPanel>
     </ScrollViewer>
 
