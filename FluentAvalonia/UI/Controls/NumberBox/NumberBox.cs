@@ -118,6 +118,8 @@ namespace FluentAvalonia.UI.Controls
         {
             base.OnLostFocus(e);
 
+            ValidateInput();
+
             if (_popup != null)
             {
                 _popup.IsOpen = false;
@@ -280,7 +282,7 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        private void OnNumberBoxKeyUp(object sender, Avalonia.Input.KeyEventArgs e)
+        private void OnNumberBoxKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.Key) 
             {
