@@ -173,16 +173,19 @@ namespace FluentAvaloniaSamples.Views
 
             if (sender is CoreWindow cw)
             {
-                var titleBar = (cw as ICoreApplicationView).TitleBar;
-                titleBar.ExtendViewIntoTitleBar = true;
-
-                titleBar.LayoutMetricsChanged += OnApplicationTitleBarLayoutMetricsChanged;
-
-                if (this.FindControl<Grid>("TitleBarHost") is Grid g)
+                var titleBar = cw.TitleBar;
+                if (titleBar != null)
                 {
-                    cw.SetTitleBar(g);
-                    g.Margin = new Thickness(0, 0, titleBar.SystemOverlayRightInset, 0);
-                }
+                    titleBar.ExtendViewIntoTitleBar = true;
+
+                    titleBar.LayoutMetricsChanged += OnApplicationTitleBarLayoutMetricsChanged;
+
+                    if (this.FindControl<Grid>("TitleBarHost") is Grid g)
+                    {
+                        cw.SetTitleBar(g);
+                        g.Margin = new Thickness(0, 0, titleBar.SystemOverlayRightInset, 0);
+                    }
+                }                
             }
         }
 
