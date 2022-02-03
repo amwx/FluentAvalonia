@@ -117,7 +117,7 @@
 								   VerticalAlignment="Top">
 								<TextBlock Name="TitleText"
 										   Text="{TemplateBinding Title}"
-										   Margin="70 0 0 0"
+										   Margin="32 0 0 0"
 										   FontSize="12"
 										   VerticalAlignment="Center"
 										   HorizontalAlignment="Left" />
