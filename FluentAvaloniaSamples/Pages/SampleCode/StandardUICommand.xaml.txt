@@ -1,0 +1,39 @@
+﻿XamlUICommand is in the FluentAvalonia.UI.Input namespace
+xmlns:input="using:FluentAvalonia.UI.Input"
+
+Declare the Command as a resource so it can be shared:
+
+<input:StandardUICommand x:Key="DeleteCommand" Kind="Delete" Command="{Binding DeleteItem}" />
+
+You can either handle the events manually in code behind, or bind a Command to the XamlUICommand. It works either way!
+
+Xaml inside the control example:
+
+<StackPanel>
+    <ui:CommandBar DefaultLabelPosition="Right">
+        <ui:CommandBar.PrimaryCommands>
+            <ui:CommandBarButton Label="Add" Command="{Binding AddItem}" />
+        </ui:CommandBar.PrimaryCommands>
+        <ui:CommandBar.SecondaryCommands>
+            <ui:CommandBarButton Command="{StaticResource DeleteCommand}" CommandParameter="{Binding #ListBox1.SelectedItem}"/>
+        </ui:CommandBar.SecondaryCommands>
+    </ui:CommandBar>
+    <ListBox Items="{Binding TempItems}" Name="ListBox1" VirtualizationMode="None">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Border Background="Transparent">
+                    <Panel>
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                        <ui:CommandBarButton HorizontalAlignment="Right" Command="{StaticResource DeleteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}" HotKey="{x:Null}" />
+                    </Panel>
+
+                    <Border.ContextFlyout>
+                        <ui:MenuFlyout>
+                            <ui:MenuFlyoutItem Command="{StaticResource DeleteCommand}" CommandParameter="{Binding #ListBox1.SelectedItem}" />
+                        </ui:MenuFlyout>
+                    </Border.ContextFlyout>
+                </Border>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</StackPanel>

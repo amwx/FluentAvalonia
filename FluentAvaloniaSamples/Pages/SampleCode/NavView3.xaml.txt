@@ -1,0 +1,41 @@
+﻿<ui:NavigationView x:Name="nvSample3" Height="460"
+                   PaneDisplayMode="LeftCompact"
+                   MenuItems="{Binding Categories}"
+                   Content="{Binding CurrentPage}"
+                   SelectedItem="{Binding SelectedCategory}">
+
+    <!--
+	If you only need NavigationViewItems, you can just set the ItemTemplate:
+	<ui:NavigationView.MenuItemTemplate>
+        <DataTemplate DataType="{x:Type vm:Category}">
+            <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+        </DataTemplate>
+    </ui:NavigationView.MenuItemTemplate>
+    -->
+    <ui:NavigationView.MenuItemTemplateSelector>
+        <!-- 
+        If you need to bind to multiple different containers,
+		like including separators, you'll need to use a DataTemplateSelector
+        Note the DataTemplateSelector is generally bad Avalonia practice and should
+        only be used here in the NavigationView
+        -->
+        <vm:MenuItemTemplateSelector>
+            <!-- 
+			Default DataTemplate
+			Our binded collection has 4 items and a Separator. This template
+			will apply to all items, the separator was defined in the 
+			MenuItemTemplateSelector
+			-->
+            <DataTemplate DataType="{x:Type vm:Category}">
+                <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+            </DataTemplate>
+
+            <vm:MenuItemTemplateSelector.SeparatorTemplate>
+                <DataTemplate DataType="{x:Type vm:Separator}">
+                    <ui:NavigationViewItemSeparator />
+                </DataTemplate>
+            </vm:MenuItemTemplateSelector.SeparatorTemplate>
+        </vm:MenuItemTemplateSelector>
+    </ui:NavigationView.MenuItemTemplateSelector>               
+                
+</ui:NavigationView>

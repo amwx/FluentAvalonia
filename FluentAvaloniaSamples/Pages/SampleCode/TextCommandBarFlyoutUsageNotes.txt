@@ -1,0 +1,4 @@
+﻿You don't specify commands for a TextCommandBarFlyout, they're automatically preset based on the controls they're attached to. It's a bit limited because we don't have rich text support yet.
+TextCommandBarFlyout is the default ContextFlyout for TextBox in FluentAvalonia. It will adapt based on clipboard state, text selection, password box, etc. No Bold/Italic/Underline options are available yet, however.
+
+TextBlocks also can be provided one to offer a 'Copy' command to copy the TextBlock's text to the clipboard. Just declare a TextCommandBarFlyout as a resource, and reference it as the TextBlock's ContextFlyout.

@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="900"
+             x:Class="FluentAvaloniaSamples.Pages.PickerFlyoutBasePage"
+             PreviewImage="/Assets/PageIcons/PickerFlyoutBase.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="PickerFlyoutBase">
+            <TextBlock Text="PickerFlyoutBase is the base implementation for providing a Flyout that the user can select an option and confirm or dismiss the selection. The ColorPickerButton uses this, see its source for how to implement your own."
+                       TextWrapping="Wrap"/>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="PickerFlyoutPresenter">
+            <ui:PickerFlyoutPresenter Width="200" Height="150" Content="Content for flyout goes here"/>
+
+            <ctrls:ControlExample.UsageNotes>
+                <x:String xml:space="preserve">
+                    Presenter for a PickerFlyoutBase derived control. 
+                </x:String>
+            </ctrls:ControlExample.UsageNotes>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

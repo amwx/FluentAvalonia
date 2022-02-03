@@ -1,0 +1,19 @@
+﻿// To access the CoreApplicationViewTitleBar, use the TitleBar property on the CoreWindow
+
+// To extend the current view into the Titlebar region, set ExtendViewIntoTitleBar to true
+
+public override void OnOpened()
+{
+    TitleBar.ExtendViewIntoTitleBar = true;
+}
+
+
+// To set a custom TitleBar, use SetTitleBar() on the Window and supply your IControl instances you want to use as a titlebar
+// Your custom TitleBar can be any IControl, but must be hit testable, ensure the Background is Transparent.
+// You must set ExtendViewIntoTitleBar to true before doing this
+public override void OnOpened()
+{
+    SetTitleBar(_myTitleBarElement);
+}
+
+

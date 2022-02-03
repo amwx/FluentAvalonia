@@ -1,0 +1,31 @@
+﻿<ui:NavigationView x:Name="nvSample6" Height="460" 
+                   PaneDisplayMode="$(PaneDisplayMode)"
+                   IsBackButtonVisible="$(BackButtonVis)"
+                   IsBackEnabled="$(BackEnabled)"
+                   Header="$(Header)"
+                   AlwaysShowHeader="$(AlwaysHeader)"
+                   PaneTitle="$(PaneTitle)"
+                   IsSettingsVisible="$(Settings)">
+    <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play" />
+        <ui:NavigationViewItemHeader Content="Actions" />
+        <ui:NavigationViewItem Name="MenuItem2" Content="Menu Item2" Tag="SamplePage2" Icon="Download" $(NoSelection) />
+        <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" Icon="Refresh" />
+    </ui:NavigationView.MenuItems>
+
+    <ui:NavigationView.AutoCompleteBox>
+        <AutoCompleteBox />
+    </ui:NavigationView.AutoCompleteBox>
+
+    <ui:NavigationView.PaneCustomContent>
+        <TextBlock Name="PaneHyperlink" TextDecorations="Underline" Text="More Info" IsVisible="$(CustomContent)" />
+    </ui:NavigationView.PaneCustomContent>
+
+    <ui:NavigationView.PaneFooter>
+        <StackPanel Name="FooterStackPanel" Orientation="Vertical" IsVisible="$(PaneFooter)">
+            <ui:NavigationViewItem Icon="Download" />
+            <ui:NavigationViewItem Icon="Alert" />
+        </StackPanel>
+    </ui:NavigationView.PaneFooter>
+
+</ui:NavigationView>

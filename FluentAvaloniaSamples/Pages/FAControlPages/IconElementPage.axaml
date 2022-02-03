@@ -1,0 +1,228 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1500"
+             x:Class="FluentAvaloniaSamples.Pages.IconElementPage"
+             PreviewImage="/Assets/PageIcons/Icons.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="SymbolIcon"
+                              TargetType="ui:SymbolIcon">
+            <ui:SymbolIcon Name="Icon" 
+                           Symbol="{Binding #SymbolTypeSelector.SelectedItem.Content}"
+                           FontSize="{Binding #IconFontSize.Value}"/>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Symbol" />
+                    <ComboBox MinWidth="125" Name="SymbolTypeSelector"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="{x:Static ui:Symbol.Cut}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.CutFilled}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.Copy}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.CopyFilled}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.Paste}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.PasteFilled}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.Save}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.SaveFilled}" />
+                        <ComboBoxItem Content="{x:Static ui:Symbol.Dismiss}" />
+                    </ComboBox>
+                    
+                    <TextBlock Text="Font Size" />
+                    <ui:NumberBox Minimum="8" Maximum="100" MinWidth="125"
+                                  SmallChange="2" LargeChange="10"
+                                  Value="18" Name="IconFontSize"
+                                  SpinButtonPlacementMode="Inline" />
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                &lt;ui:SymbolIcon Symbol="$(Symbol)" FontSize="$(FontSize)" /&gt;
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Symbol" Value="{Binding #Icon.Symbol}" />
+                <ctrls:ControlExampleSubstitution Key="FontSize" Value="{Binding #Icon.FontSize}" />
+            </ctrls:ControlExample.Substitutions>
+
+            <ctrls:ControlExample.UsageNotes>
+                <x:String xml:space="preserve">
+SymbolIcons are based on the new Fluent Icons from Microsoft, both filled and regular (unfilled) icons are included. The fonts themselves are embedded directly in the FluentAvalonia assembly and can be referenced by SymbolThemeFontFamily. 
+Thanks to github user robloo, the glyph icons should now match the equivalent icons in Segoe Fluent Icons (the WinUI icon font).
+A select number of symbols are available via the Symbol enum, which you can preview below. 
+
+In addition, I've also added a FontSize property to the SymbolIcon to allow changing size.                   
+                </x:String>
+            </ctrls:ControlExample.UsageNotes>
+        </ctrls:ControlExample>
+
+        <Expander>
+            <Expander.Header>
+                <StackPanel Spacing="3">
+                    <TextBlock Text="Browse the Symbol Enum" FontWeight="SemiBold"
+                               FontSize="16" Margin="0 10"/>
+                </StackPanel>
+            </Expander.Header>
+
+            <ScrollViewer Height="700"
+                          Padding="6"> 
+                <StackPanel>
+                    <TextBlock Text="Predefined Symbols matching upstream WinUI Symbol enum &amp; some extras. Filled variants have 'Filled' appended to their enum value (Up -> UpFilled). Note that not all symbols have a corresponding filled variant."
+                               TextWrapping="Wrap"
+                               Margin="8 4 8 12"/>
+                    
+                    <ItemsRepeater Items="{Binding Symbols}">
+                        <ItemsRepeater.Layout>
+                            <WrapLayout HorizontalSpacing="4" VerticalSpacing="4" />
+                        </ItemsRepeater.Layout>
+
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SymbolItem">
+                                <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        Padding="8"
+                                        Width="175" Height="90"
+                                        CornerRadius="{StaticResource ControlCornerRadius}">
+                                    <DockPanel>
+                                        <TextBlock Text="{CompiledBinding Symbol}" VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left" TextWrapping="Wrap"
+                                                   FontWeight="SemiBold"
+                                                   DockPanel.Dock="Top"/>
+
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <DockPanel Margin="6 0">
+                                                <TextBlock Text="Regular" VerticalAlignment="Top"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Center"
+                                                   DockPanel.Dock="Bottom"/>
+
+                                                <ui:SymbolIcon Symbol="{CompiledBinding Symbol}"
+                                                       FontSize="20"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,4"
+                                                       Grid.Row="1"/>
+                                            </DockPanel>
+
+                                            <DockPanel Margin="6 0"
+                                                       IsVisible="{Binding SymbolFilled, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                                <TextBlock Text="Filled" VerticalAlignment="Top"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Center"
+                                                   DockPanel.Dock="Bottom" />
+
+                                                <ui:SymbolIcon Symbol="{CompiledBinding SymbolFilled}"
+                                                       FontSize="20"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,4"
+                                                       Grid.Row="1" Grid.Column="1"/>
+                                            </DockPanel>
+
+                                        </StackPanel>
+
+
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+                
+            </ScrollViewer>
+        </Expander>
+
+        <ctrls:ControlExample Header="FontIcon"
+                              TargetType="ui:FontIcon">
+            <ui:FontIcon Name="FontIcon"
+                         Glyph="A" 
+                         FontSize="18"/>
+
+            <ctrls:ControlExample.XamlSource>
+                &lt;ui:FontIcon Glyph="A" FontSize="18" FontFamily="FONTFAMILY" FontWeight="FONTWEIGHT" FontStyle="FONTSTYLE" /&gt;
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+
+        <ctrls:ControlExample Header="PathIcon"
+                              TargetType="ui:PathIcon">
+            <ui:PathIcon Name="PathIcon"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Data="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z" />
+
+            <ctrls:ControlExample.XamlSource>
+                &lt;ui:PathIcon Data="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z" /&gt;
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="BitmapIcon"
+                              TargetType="ui:BitmapIcon">
+            <ui:BitmapIcon Name="BitmapIcon"
+                           UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Width="50" Height="50"/>
+
+            <ctrls:ControlExample.Options>
+                <CheckBox Content="ShowAsMonochrome"
+                          IsChecked="{Binding #BitmapIcon.ShowAsMonochrome}" />
+            </ctrls:ControlExample.Options>
+            
+            <ctrls:ControlExample.XamlSource>
+                &lt;ui:BitmapIcon UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" $(ShowAsMonochrome) Width="50" Height="50"  /&gt;
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="ShowAsMonochrome" Value="ShowAsMonoChrome=&quot;True&quot;"
+                                                  IsEnabled="{Binding #BitmapIcon.ShowAsMonochrome}" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+
+        <ctrls:ControlExample Header="ImageIcon"
+                              TargetType="ui:ImageIcon">
+            <ui:ImageIcon Width="100" Height="100">
+                <DrawingImage>
+                    <DrawingGroup>
+                        <DrawingGroup.Transform>
+                            <MatrixTransform Matrix="1,0,0,1,0,-1028.4" />
+                        </DrawingGroup.Transform>
+                        <DrawingGroup>
+                            <DrawingGroup.Transform>
+                                <MatrixTransform Matrix="1,0,0,1.25,-10,1031.4" />
+                            </DrawingGroup.Transform>
+                            <GeometryDrawing Brush="#FF7F8C8D"
+                                             Geometry="F1 M24,14 A2,2,0,1,1,20,14 A2,2,0,1,1,24,14 z" />
+                        </DrawingGroup>
+                        <GeometryDrawing Brush="#FFF39C12"
+                                         Geometry="F1 M12,1030.4 C8.134,1030.4 5,1033.6 5,1037.6 5,1040.7 8.125,1043.5 9,1045.4 9.875,1047.2 9,1050.4 9,1050.4 L12,1049.9 15,1050.4 C15,1050.4 14.125,1047.2 15,1045.4 15.875,1043.5 19,1040.7 19,1037.6 19,1033.6 15.866,1030.4 12,1030.4 z" />
+                        <GeometryDrawing Brush="#FFF1C40F"
+                                         Geometry="F1 M12,1030.4 C15.866,1030.4 19,1033.6 19,1037.6 19,1040.7 15.875,1043.5 15,1045.4 14.125,1047.2 15,1050.4 15,1050.4 L12,1049.9 12,1030.4 z" />
+                        <GeometryDrawing Brush="#FFE67E22"
+                                         Geometry="F1 M9,1036.4 L8,1037.4 12,1049.4 16,1037.4 15,1036.4 14,1037.4 13,1036.4 12,1037.4 11,1036.4 10,1037.4 9,1036.4 z M9,1037.4 L10,1038.4 10.5,1037.9 11,1037.4 11.5,1037.9 12,1038.4 12.5,1037.9 13,1037.4 13.5,1037.9 14,1038.4 15,1037.4 15.438,1037.8 12,1048.1 8.5625,1037.8 9,1037.4 z" />
+                        <DrawingGroup>
+                            <DrawingGroup.Transform>
+                                <MatrixTransform Matrix="1,0,0,1,9,1045.4" />
+                            </DrawingGroup.Transform>
+                            <GeometryDrawing Brush="#FFBDC3C7">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="0,0,6,5" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                        <GeometryDrawing Brush="#FF95A5A6"
+                                         Geometry="F1 M9,1045.4 L9,1050.4 12,1050.4 12,1049.4 15,1049.4 15,1048.4 12,1048.4 12,1047.4 15,1047.4 15,1046.4 12,1046.4 12,1045.4 9,1045.4 z" />
+                        <GeometryDrawing Brush="#FF7F8C8D"
+                                         Geometry="F1 M9,1046.4 L9,1047.4 12,1047.4 12,1046.4 9,1046.4 z M9,1048.4 L9,1049.4 12,1049.4 12,1048.4 9,1048.4 z" />
+                    </DrawingGroup>
+                </DrawingImage>
+            </ui:ImageIcon>
+            <ctrls:ControlExample.XamlSource>
+                &lt;!-- See the page source for the ImageIcon source code example --/&gt;
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>   
+    </StackPanel>
+</UserControl>

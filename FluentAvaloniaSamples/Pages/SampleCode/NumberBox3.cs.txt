@@ -1,0 +1,6 @@
+﻿var nm = this.FindControl<NumberBox>("FormattedNumBox");
+nm.NumberFormatter = (input) =>
+{
+    double increment = 1/0.25;
+    return (Math.Round(input * increment, MidpointRounding.AwayFromZero) / increment).ToString("F2");
+};

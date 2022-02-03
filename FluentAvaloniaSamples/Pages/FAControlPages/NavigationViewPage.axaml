@@ -1,0 +1,224 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
+             x:Class="FluentAvaloniaSamples.Pages.NavigationViewPage"
+             PreviewImage="/Assets/PageIcons/NavView.jpg">
+    <StackPanel Spacing="8">
+        <Expander Header="General Notes">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+Sample pages used here are from the WinUI Xaml Controls Gallery
+Known issues:
+>Adjustment for TitleBars is NOT implemented, as balancing Native vs. custom titlebars is quite difficult. This is a TODO though.
+>From pre-release version: Keyboard Navigation in Pane has been improved, but may not yet work 100% like WinUI.
+>Switching from Top->Left mode may cause the pane to display incorrectly. This likely due to the pane reorganizing before the pane is properly reinvalidated and everything has its correct size. Closing &amp; reopening the pane will fix the issue.
+>Selecting a subitem, then switching from Left->Top or Top->Left will result in the SelectionIndicator not showing. This is a bug in WinUI
+>Items loaded first in TopOverflow or subitems in Flyout when in TopNav will keep the TopOverflow styling if switched to LeftNav mode (though this is minimal). This also occurs in the WinUI version.
+>Binding errors are thrown from the NavigationView (but do not affect its usability). Not sure the issue here. One binding error comes from the SplitView control, and still not sure why that occurs (present since I wrote the control)
+>DO NOT USE SelectionFollowsFocus=True with a hierarchical NavView. It's clunky in WinUI and is even worse here 
+>If using binding, for best results, disable the built in SettingsItem and provide your own (if binding both MenuItems and SelectedItem) or make your ViewModel property of type 'object'. It does not work with binding (even in WinUI) if your ViewModel type for the SelectedItem can't accept being sent a NavigationViewItem upon clicking Settings. 
+>Hiding and reshowing the SettingsItem (see API in action below) will cause the Settings Item to not show until a layout pass is triggered (resize the window, for example). This is a bug in the ItemsRepeater implementation b/c Avalonia doesn't have UpdateLayout() on controls
+>Other bugs in WinUI have likely made it through...                    
+                </x:String>
+            </TextBlock>
+        </Expander>
+
+        <ctrls:ControlExample Header="Default NavigationView"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView1.xaml.txt">
+            <ui:NavigationView x:Name="nvSample1" Height="460" PaneDisplayMode="Left">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play"/>
+                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" Icon="Save" />
+                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" Icon="Refresh" />
+                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" Icon="Download" />
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Adaptive NavigationView"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView2.xaml.txt">
+            <ui:NavigationView x:Name="nvSample2" Height="460" PaneDisplayMode="Auto">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" />
+                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" />
+                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" />
+                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" />
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Binding to a NavigationView"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView3.xaml.txt">
+            <ui:NavigationView x:Name="nvSample3" Height="460"
+                                           PaneDisplayMode="LeftCompact"
+                                           MenuItems="{Binding Categories}"
+                                           Content="{Binding CurrentPage}"
+                                           SelectedItem="{Binding SelectedCategory}">
+
+                <!--
+				If you only need NavigationViewItems, you can just set the ItemTemplate:
+				<ui:NavigationView.MenuItemTemplate>
+                    <DataTemplate DataType="{x:Type vm:Category}">
+                        <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+                    </DataTemplate>
+                </ui:NavigationView.MenuItemTemplate>
+                -->
+                <ui:NavigationView.MenuItemTemplateSelector>
+                    <!-- 
+                    If you need to bind to multiple different containers,
+				    like including separators, you'll need to use a DataTemplateSelector
+                    -->
+                    <vm:MenuItemTemplateSelector>
+                        <!-- 
+						Default DataTemplate
+						Our binded collection has 4 items and a Separator. This template
+						will apply to all items, the separator was defined in the 
+						MenuItemTemplateSelector
+						-->
+                        <DataTemplate DataType="{x:Type vm:Category}">
+                            <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+                        </DataTemplate>
+
+                        <vm:MenuItemTemplateSelector.SeparatorTemplate>
+                            <DataTemplate DataType="{x:Type vm:Separator}">
+                                <ui:NavigationViewItemSeparator />
+                            </DataTemplate>
+                        </vm:MenuItemTemplateSelector.SeparatorTemplate>
+                    </vm:MenuItemTemplateSelector>
+                </ui:NavigationView.MenuItemTemplateSelector>               
+                
+            </ui:NavigationView>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Hierarchical NavigationView"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView4.xaml.txt">
+            <ui:NavigationView x:Name="nvSample4" PaneDisplayMode="Left" Height="460">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Home" Tag="SamplePage1" Icon="Home" />
+                    <ui:NavigationViewItem Content="Account" Tag="SamplePage2" Icon="Home">
+                        <ui:NavigationViewItem.MenuItems>
+                            <ui:NavigationViewItem Content="Mail" Icon="Mail" Tag="SamplePage3" />
+                            <ui:NavigationViewItem Content="Calendar" Icon="Calendar" Tag="SamplePage4" />
+                        </ui:NavigationViewItem.MenuItems>
+                    </ui:NavigationViewItem>
+                    <ui:NavigationViewItem Content="Document options" Tag="SamplePage3" Icon="Document" SelectsOnInvoked="False">
+                        <ui:NavigationViewItem.MenuItems>
+                            <ui:NavigationViewItem Content="Create new" Icon="New" Tag="SamplePage5" />
+                            <ui:NavigationViewItem Content="Upload file" Icon="Upload" Tag="SamplePage6" />
+                        </ui:NavigationViewItem.MenuItems>
+                    </ui:NavigationViewItem>
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+        </ctrls:ControlExample> 
+
+        <ctrls:ControlExample Header="NavigationView with FooterMenuItems"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView5.xaml.txt">
+            <ui:NavigationView x:Name="nvSample5"
+                               Height="460"
+                               Header="This is Header Text"
+                               PaneDisplayMode="{Binding #DispModeBox.SelectedItem.Content}"
+                               IsTabStop="False"
+                               IsSettingsVisible="False">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Browse" Tag="SamplePage1" Icon="Library" />
+                    <ui:NavigationViewItem Content="Track an Order" Tag="SamplePage2" Icon="Map" />
+                    <ui:NavigationViewItem Content="Order History" Tag="SamplePage3" Icon="Tag" />
+                </ui:NavigationView.MenuItems>
+                <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem Content="Account" Tag="SamplePage4" Icon="Contact" />
+                    <ui:NavigationViewItem Content="Your Cart" Tag="SamplePage5" Icon="Shop" />
+                    <ui:NavigationViewItem Content="Help" Tag="SamplePage6" Icon="Help" />
+                </ui:NavigationView.FooterMenuItems>
+            </ui:NavigationView>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel>
+                    <TextBlock Text="Display Mode" />
+                    <ComboBox MinWidth="125" SelectedIndex="0" Name="DispModeBox">
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Left}" />
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Top}" />
+                    </ComboBox>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="PaneDisplay" Value="{Binding #nvSample5.PaneDisplayMode}" />
+            </ctrls:ControlExample.Substitutions>
+            
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="NavigationView API in Action"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView6.xaml.txt">
+            <ui:NavigationView x:Name="nvSample6" Height="460"
+                               PaneDisplayMode="{Binding #DispModeAPIBox.SelectedItem.Content}">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play" />
+                    <ui:NavigationViewItemHeader Content="Actions" />
+                    <ui:NavigationViewItem Name="MenuItem2" Content="Menu Item2" Tag="SamplePage2" Icon="Download" />
+                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" Icon="Refresh" />
+                </ui:NavigationView.MenuItems>
+
+                <ui:NavigationView.AutoCompleteBox>
+                    <AutoCompleteBox />
+                </ui:NavigationView.AutoCompleteBox>
+
+                <ui:NavigationView.PaneCustomContent>
+                    <TextBlock Name="PaneHyperlink" TextDecorations="Underline" Text="More Info" IsVisible="False" />
+                </ui:NavigationView.PaneCustomContent>
+
+                <ui:NavigationView.PaneFooter>
+                    <StackPanel Name="FooterStackPanel" Orientation="Vertical" IsVisible="False">
+                        <ui:NavigationViewItem Icon="Download" />
+                        <ui:NavigationViewItem Icon="Alert" />
+                    </StackPanel>
+                </ui:NavigationView.PaneFooter>
+
+            </ui:NavigationView>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Grid.Column="1">
+                    <CheckBox Content="Settings item visible" IsChecked="{Binding ElementName=nvSample6, Path=IsSettingsVisible, Mode=TwoWay}" />
+                    <CheckBox Content="Back button visible" IsChecked="{Binding ElementName=nvSample6, Path=IsBackButtonVisible, Mode=TwoWay}" />
+                    <CheckBox Content="Back button enabled" IsChecked="{Binding ElementName=nvSample6, Path=IsBackEnabled, Mode=TwoWay}" />
+                    <TextBlock Text="Header" />
+                    <TextBox Width="150" Text="{Binding ElementName=nvSample6, Path=Header, Mode=TwoWay}" />
+                    <CheckBox Content="Always show header" IsChecked="{Binding ElementName=nvSample6, Path=AlwaysShowHeader, Mode=TwoWay}" />
+                    <TextBlock Text="PaneTitle" />
+                    <TextBox Width="150" Text="{Binding ElementName=nvSample6, Path=PaneTitle, Mode=TwoWay}" />
+                    <CheckBox Content="PaneCustomContent visible" IsChecked="{Binding ElementName=PaneHyperlink, Path=IsVisible, Mode=TwoWay}"/>
+                    <CheckBox Content="PaneFooter visible" IsChecked="{Binding ElementName=FooterStackPanel, Path=IsVisible, Mode=TwoWay}"/>
+                    <TextBlock Text="PanePosition" />
+                    <ComboBox Name="DispModeAPIBox" SelectedIndex="0" MinWidth="125">
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Left}" />
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.LeftCompact}" />
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.LeftMinimal}" />
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Top}" />
+                    </ComboBox>
+                    <TextBlock Text="PaneTitle" />
+                    <CheckBox IsVisible="False" Content="Keyboard SelectionFollowsFocus" IsChecked="{Binding ElementName=nvSample6, Path=SelectionFollowsFocus, Mode=TwoWay}"/>
+                    <CheckBox Content="Selection of Menu Item2 suppressed" IsChecked="{Binding ElementName=MenuItem2, Path=!SelectsOnInvoked, Mode=TwoWay}" />
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Settings" Value="{Binding #nvSample6.IsSettingsVisible}" />
+                <ctrls:ControlExampleSubstitution Key="PaneDisplayMode" Value="{Binding #nvSample6.PaneDisplayMode}" />
+                <ctrls:ControlExampleSubstitution Key="BackButtonVis" Value="{Binding #nvSample6.IsBackButtonVisible}" />
+                <ctrls:ControlExampleSubstitution Key="BackEnabled" Value="{Binding #nvSample6.IsBackEnabled}" />
+                <ctrls:ControlExampleSubstitution Key="Header" Value="{Binding #nvSample6.Header}" />
+                <ctrls:ControlExampleSubstitution Key="AlwaysHeader" Value="{Binding #nvSample6.AlwaysShowHeader}" />
+                <ctrls:ControlExampleSubstitution Key="PaneTitle" Value="{Binding #nvSample6.PaneTitle}" />
+                <ctrls:ControlExampleSubstitution Key="CustomContent" Value="{Binding #PaneHyperlink.IsVisible}" />
+                <ctrls:ControlExampleSubstitution Key="PaneFooter" Value="{Binding #FooterStackPanel.IsVisible}" />
+                <ctrls:ControlExampleSubstitution Key="NoSelection" Value="SelectsOnInvoked=&quot;False&quot;" IsEnabled="{Binding !#MenuItem2.SelectsOnInvoked}" />
+            </ctrls:ControlExample.Substitutions>
+            
+    </ctrls:ControlExample>
+        
+    </StackPanel>
+</UserControl>

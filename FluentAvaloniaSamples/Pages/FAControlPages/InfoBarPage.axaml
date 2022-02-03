@@ -1,0 +1,188 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:pg="clr-namespace:FluentAvaloniaSamples.Pages;assembly=FluentAvaloniaSamples"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="2500"
+             x:Class="FluentAvaloniaSamples.Pages.InfoBarPage"
+             PreviewImage="/Assets/PageIcons/InfoBar.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="A Closable InfoBar with Options to Change its Severity">
+            <ui:InfoBar Name="Bar1"
+                        Title="Title"
+                        Message="Essential app message for your users to be informed of, acknowledge, or take action on."
+                        IsOpen="True"
+                        Severity="{Binding #SevList1.SelectedItem.Content, Mode=TwoWay}"/>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <CheckBox Content="IsOpen" IsChecked="{Binding #Bar1.IsOpen}" />
+                    <ComboBox Name="SevList1" 
+                              SelectedIndex="0"
+                              HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Informational}" />
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Success}" />
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Warning}" />
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Error}" />
+                    </ComboBox>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:InfoBar Title="Title" IsOpen="$(Open)" Severity="$(Severity)" Message="Essential app message for your users to be informed of, acknowledge, or take action on." /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Open" Value="{Binding #Bar1.IsOpen}" />
+                <ctrls:ControlExampleSubstitution Key="Severity" Value="{Binding #Bar1.Severity}" />
+            </ctrls:ControlExample.Substitutions>
+            
+        </ctrls:ControlExample>
+
+
+        <ctrls:ControlExample Header="A Closable InfoBar with a long or short message and various buttons">
+            <ui:InfoBar Name="Bar2"
+                        Title="Title"
+                        Message="{Binding Bar2CurrentMessage}"
+                        IsOpen="True"
+                        Severity="{Binding #SevList1.SelectedItem.Content, Mode=TwoWay}"/>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <CheckBox Content="IsOpen" IsChecked="{Binding #Bar2.IsOpen}" />
+                    <TextBlock Text="Message Length" />
+                    <ComboBox Name="MsgLenList"
+                              SelectedIndex="{Binding Bar2MessageType}"
+                              HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Long" />
+                        <ComboBoxItem Content="Short" />
+                    </ComboBox>
+                    
+                    <TextBlock Text="Action Button" />
+                    <ComboBox Name="ActionButtonList"
+                              SelectedIndex="{Binding Bar2ButtonType}"
+                              HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="None" />
+                        <ComboBoxItem Content="Button" />
+                        <ComboBoxItem Content="Hyperlink" />
+                    </ComboBox>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:InfoBar Title="Title" IsOpen="$(Open)" Message="$(Message)"&gt;
+$(Action)
+&lt;/ui:InfoBar&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Open" Value="{Binding #Bar2.IsOpen}" />
+                <ctrls:ControlExampleSubstitution Key="Message" Value="{Binding Bar2DynamicXamlMessage}" />
+                <ctrls:ControlExampleSubstitution Key="Action" Value="{Binding Bar2ActionButtonXaml}" />
+            </ctrls:ControlExample.Substitutions>
+
+        </ctrls:ControlExample>
+
+
+        <ctrls:ControlExample Header="A Closable InfoBar with Options to Display the Close Button and Icon">
+            <ui:InfoBar Name="Bar3"
+                        Title="Title"
+                        Message="Essential app message for your users to be informed of, acknowledge, or take action on."
+                        IsOpen="True"
+                        Severity="{Binding #SevList1.SelectedItem.Content, Mode=TwoWay}"/>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <CheckBox Content="IsOpen" IsChecked="{Binding #Bar3.IsOpen}" />
+                    <CheckBox Content="IsIconVisible" IsChecked="{Binding #Bar3.IsIconVisible}" />
+                    <CheckBox Content="IsClosable" IsChecked="{Binding #Bar3.IsClosable}" />
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:InfoBar Title="Title" IsOpen="$(Open)" IsIconVisible="$(Icon)" IsClosable="$(Close)" Message="Essential app message for your users to be informed of, acknowledge, or take action on." /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Open" Value="{Binding #Bar3.IsOpen}" />
+                <ctrls:ControlExampleSubstitution Key="Icon" Value="{Binding #Bar3.IsIconVisible}" />
+                <ctrls:ControlExampleSubstitution Key="Close" Value="{Binding #Bar3.IsClosable}" />
+            </ctrls:ControlExample.Substitutions>
+
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="InfoBar API in Action">
+
+            <ui:InfoBar Name="Bar4"
+                            Title="Title"
+                            Message="Message"
+                            IsOpen="True"
+                            Severity="{Binding #SevList2.SelectedItem.Content, Mode=TwoWay}">
+                <CheckBox Content="Custom Content" IsVisible="{Binding #Bar4CustomContent.IsChecked}" />
+            </ui:InfoBar>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel>
+                    <CheckBox Content="IsOpen" IsChecked="{Binding #Bar4.IsOpen, Mode=TwoWay}" />
+                    <CheckBox Content="IsIconVisible" IsChecked="{Binding #Bar4.IsIconVisible, Mode=TwoWay}" />
+                    <CheckBox Content="IsClosable" IsChecked="{Binding #Bar4.IsClosable, Mode=TwoWay}" />
+                    <CheckBox Content="Has Custom Content" Name="Bar4CustomContent"/>
+                    <CheckBox Content="Custom Background Color" Name="CustomBGCheck"
+                              Command="{Binding $parent[pg:InfoBarPage].SetCustomBackground}"/>
+
+                    <TextBlock Text="Icon" />
+                    <ComboBox Name="Bar4IconType"
+                              HorizontalAlignment="Stretch"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="Default Icon" />
+                        <ComboBoxItem Content="Custom Icon" />
+                    </ComboBox>
+
+                    <ui:Button Content="Set Foreground" Margin="0 5"
+                               Name="Bar4ForegroundButton"
+                               Command="{Binding $parent[pg:InfoBarPage].SetForeground}"/>
+
+                    <TextBlock Text="Severity" />
+                    <ComboBox Name="SevList2"
+                              SelectedIndex="0"
+                              HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Informational}" />
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Success}" />
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Warning}" />
+                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Error}" />
+                    </ComboBox>
+
+                    <TextBlock Text="Title" />
+                    <TextBox HorizontalAlignment="Stretch" Text="{Binding #Bar4.Title, Mode=TwoWay}" />
+
+                    <TextBlock Text="Message" />
+                    <TextBox HorizontalAlignment="Stretch"
+                             MaxWidth="250"
+                             Text="{Binding #Bar4.Message, Mode=TwoWay}"
+                             AcceptsReturn="True"/>
+                    
+                    <TextBlock Text="Action Button" />
+                    <ComboBox Name="Bar4ButtonType"
+                              HorizontalAlignment="Stretch"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="None" />
+                        <ComboBoxItem Content="Button" />
+                        <ComboBoxItem Content="Hyperlink" />
+                        <ComboBoxItem Content="Right Aligned Button" />
+                        <ComboBoxItem Content="Right Aligned Hyperlink" />
+                    </ComboBox>
+
+
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

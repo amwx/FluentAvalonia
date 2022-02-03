@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="3500"
+             x:Class="FluentAvaloniaSamples.Pages.CommandBarFlyoutPage"
+             PreviewImage="/Assets/PageIcons/CommandBarFlyout.jpg">
+
+    <UserControl.Resources>
+        <ui:CommandBarFlyout Placement="Right" x:Key="CommandBarFlyout1">
+            <ui:CommandBarButton Label="Share" Icon="Share" ToolTip.Tip="Share" Command="{Binding FlyoutCommands}" CommandParameter="Share" />
+            <ui:CommandBarButton Label="Save" Icon="Save" ToolTip.Tip="Save" Command="{Binding FlyoutCommands}" CommandParameter="Save" />
+            <ui:CommandBarButton Label="Delete" Icon="Delete" ToolTip.Tip="Delete" Command="{Binding FlyoutCommands}" CommandParameter="Delete" />
+            <ui:CommandBarFlyout.SecondaryCommands>
+                <ui:CommandBarButton Label="Resize" Command="{Binding FlyoutCommands}" CommandParameter="Resize" />
+                <ui:CommandBarButton Label="Move" Command="{Binding FlyoutCommands}" CommandParameter="Move" />
+            </ui:CommandBarFlyout.SecondaryCommands>
+        </ui:CommandBarFlyout>
+
+        <ui:TextCommandBarFlyout x:Key="TextCommandBarFlyout1" />
+    </UserControl.Resources>
+
+    <StackPanel Spacing="8">
+
+        <ctrls:ControlExample Header="Default CommandBarFlyout"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CommandBarFlyout.xaml.txt"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CommandBarFlyout.cs.txt">
+
+            <DockPanel>
+                <TextBlock Text="Click or right click the image to open a CommandBarFlyout" DockPanel.Dock="Top" />
+
+                <TextBlock Text="{Binding LastAction, StringFormat='You Clicked: {0}'}" DockPanel.Dock="Bottom" />
+
+                <Button Name="myImageButton" Padding="0" Click="MyImageButton_Click">
+                    <Image Name="Image1" Source="/Assets/rainier.jpg" Height="300" />
+                </Button>
+            </DockPanel>
+
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="TextCommandBarFlyout"
+                              UsageNotes="avares://FluentAvaloniaSamples/Pages/SampleCode/TextCommandBarFlyoutUsageNotes.txt">
+
+            <StackPanel Spacing="10">
+                <TextBox Text="Right Click for flyout"
+                         HorizontalAlignment="Left"
+                         MinWidth="200"
+                         ContextFlyout="{StaticResource TextCommandBarFlyout1}" />
+
+                <TextBlock Text="TextCommandBarFlyout works on TextBlocks too!"
+                           ContextFlyout="{StaticResource TextCommandBarFlyout1}" />
+            </StackPanel>
+
+        </ctrls:ControlExample>
+    
+    </StackPanel>    
+</UserControl>

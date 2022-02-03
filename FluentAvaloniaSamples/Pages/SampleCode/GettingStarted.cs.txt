@@ -1,0 +1,82 @@
+﻿// Getting access to FluentAvaloniaTheme
+
+// FluentAvalonia Theme is automatically registered with the AvaloniaLocator on startup. To quickly access it in code,
+var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+
+// Set the Current theme using the Requested Theme Property
+
+// For Light Mode
+RequestedTheme = "Light";
+
+// For Dark Mode
+RequestedTheme = "Dark";
+
+// For HighContast
+RequestedTheme = "HighContrast";
+
+// On Windows the following properties are available, which all default to true:
+
+// Use the System font as the primary font for the App. On Windows 10, this is Segoe UI. On Windows 11, this is Segoe UI Variable Text
+// This value is only respected on startup
+public bool UseSystemFontOnWindows { get; set; } = true;
+
+// Use the current User System Accent Color as the Accent Color in the app
+public bool UseUserAccentColorOnWindows { get; set; } = true;
+
+// Set the app theme to whatever the Windows theme is, respects HighContrast mode
+// This value is only respected on startup
+public bool UseSystemThemeOnWindows { get; set; } = true;
+
+
+// Additionally, by default on Windows, all Win32 windows appear in light mode, regardless of the System setting. To force the window to dark mode:
+
+var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+thm.ForceNativeTitleBarToTheme(Window); // Window is the Window object you want to force
+
+// On a regular window, this will force the titlebar and window border into dark mode. NOTE: If you have accent colors enabled on titlebars and window borders
+// in system settings, this most likely won't have much of an effect, since the accent color is used instead.
+
+// If you're using my CoreWindow class, this is done automatically.
+
+
+// The following properties are available on ALL systems:
+
+// To set a custom accent color set this property. The 3 light and 3 dark variants will be generated for you.
+// NOTE: I do not verify whether the custom accent color ensures good legibility and accessibility - that is up to you
+// If you would like more control over the shades generated, you can directly override the resources in the Application level ResourceDictionary
+public Color? CustomAccentColor { get; set; }
+
+CustomAccentColor = Colors.Orange;
+
+// To return to default, set the property to null;
+// On Mac/Linux, and Windows with (UseUserAccentColorOnWindows = false), the default color is SlateBlue. Otherwise it returns to the System defined accent.
+
+
+// NEW in v1.2, if there are controls you don't use, you can use this property to skip loading their template
+// This saves a bit of memory, but more importantly reduces the number of styles that need to be evaluated which can add a performance benefit
+// This is a semi-colon (;) delimited string of controls. 
+public string SkipControls { get; set; }
+
+
+// For example, to skip the NavigationView and DataGrid controls
+SkipControls = "NavigationView;DataGrid";
+
+// The search mechanism just uses a string.Contains() to evaluate each entry. This for controls like NavigationView and CommandBar where
+// those terms are in the related controls (NavigationViewItem, CommandBarButton) - this will automatically remove those as well so you
+// don't need to specify everything. See the Styles files in (FluentAvalonia/Styling/[BasicControls | Controls]) for naming - though you
+// don't need to include "Styles" unless you want specifically only that file
+
+// Have custom resources you want changed when the Theme changes?
+
+// Listen to the RequestedThemeChanged event:
+public TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
+
+RequestedThemeChanged += OnAppThemeChanged;
+
+private void OnAppThemeChanged(FluentAvaloniaTheme faTheme, RequestedThemeChangedEventArgs args)
+{
+    // Retreive the new theme from args
+    var newTheme = args.NewTheme;
+
+    // your logic
+}

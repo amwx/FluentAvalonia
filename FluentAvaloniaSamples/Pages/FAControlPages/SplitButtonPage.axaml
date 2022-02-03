@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
+             x:Class="FluentAvaloniaSamples.Pages.SplitButtonPage"
+             PreviewImage="/Assets/PageIcons/SplitButton.jpg">
+
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="A basic SplitButton"
+                              XamlSource="{Binding XamlSource}">
+            <ui:SplitButton Content="Split!">
+                <ui:SplitButton.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid Width="200" Height="100">
+                            <TextBlock Text="SplitButton Flyout!" />
+                        </Grid>
+                    </Flyout>
+                </ui:SplitButton.Flyout>
+            </ui:SplitButton>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

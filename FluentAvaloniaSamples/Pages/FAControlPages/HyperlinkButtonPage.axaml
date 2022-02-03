@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             x:Class="FluentAvaloniaSamples.Pages.HyperlinkButtonPage"
+             PreviewImage="/Assets/PageIcons/HyperlinkButton.jpg">
+    <StackPanel Spacing="8">        
+        <ctrls:ControlExample Header="A hyperlink button that navigates to a URI">
+            <ui:HyperlinkButton NavigateUri="http://github.com/amwx/FluentAvalonia"            
+                                Content="FluentAvalonia Github repo" 
+                                Name="TargetHyperlinkButton"/>
+
+            <ctrls:ControlExample.Options>
+                <CheckBox IsChecked="{Binding #TargetHyperlinkButton.IsEnabled}"
+                          Content="IsEnabled"/>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String>
+                    &lt;HyperlinkButton Content="FluentAvalonia Github repo" NavigateUri="http://github.com/amwx/FluentAvalonia" $(IsEnabled) /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="IsEnabled" IsEnabled="{Binding !#TargetHyperlinkButton.IsEnabled}"
+                                                  Value="IsEnabled=&quot;False&quot;" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A hyperlink button that handles a Click event">
+            <ui:HyperlinkButton Content="Go to Settings"
+                                Click="HyperlinkButton_Click"
+                                Name="TargetClickHyperlinkButton"/>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String>
+                    &lt;HyperlinkButton Content="FluentAvalonia Github repo" Click="HyperlinkButton_Click" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.CSharpSource>
+                <x:String>
+                    public void HyperlinkButton_Click(object sender, RoutedEventArgs args)
+                    {
+                        // Handle navigation logic here, for example:
+                        NavigationService.Instance.Navigate(typeof(SettingsPage));
+                    }
+                </x:String>
+            </ctrls:ControlExample.CSharpSource>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluentAvaloniaSamples.Pages.WhatsNewPage">
+    <DockPanel Margin="12">
+        <DockPanel LastChildFill="False" DockPanel.Dock="Top"
+                   Margin="8">
+            <TextBlock Text="What's New"
+                       Classes="TitleTextBlockStyle" />
+
+
+            <ComboBox MinWidth="150" Items="{Binding Versions}"
+                      SelectedItem="{Binding CurrentVersion}"
+                      DockPanel.Dock="Right">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FAVersionInfo">
+                        <TextBlock Text="{CompiledBinding Version, StringFormat='Version: {0}'}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DockPanel>
+
+        <ScrollViewer>
+            <ItemsRepeater Items="{Binding CurrentVersion.ChangeItems}">
+                <ItemsRepeater.Styles>
+                    <Style Selector="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </ItemsRepeater.Styles>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl Content="{Binding}">
+                            <ContentControl.DataTemplates>
+                                <DataTemplate DataType="vm:FAChangeItemHeader">
+                                    <TextBlock Text="{CompiledBinding Header}"
+                                               Margin="0 4"
+                                               Classes="BodyStrongTextBlockStyle"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="vm:FAChangeItemDescription">
+                                    <TextBlock Text="{CompiledBinding Text, StringFormat='• {0}'}" 
+                                               Margin="24 2 0 2" />
+                                </DataTemplate>
+                                <DataTemplate DataType="vm:FAChangeSubItem">
+                                    <TextBlock Text="{CompiledBinding Text, StringFormat='• {0}'}"
+                                               Margin="48 2 0 2"
+                                               Classes="CaptionTextBlockStyle"/>
+                                </DataTemplate>
+                            </ContentControl.DataTemplates>
+                        </ContentControl>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

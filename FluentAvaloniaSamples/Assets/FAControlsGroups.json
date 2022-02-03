@@ -1,0 +1,166 @@
+﻿[
+  {
+    "Header": "Windowing",
+    "Controls": [
+      {
+        "Header": "CoreWindow",
+        "Description": "A modern UWP window style for Windows system with a graceful fallback on Mac/Linux",
+        "PageType": "CoreWindowPage"
+      }
+    ]
+  },
+  {
+    "Header": "Basic Input Controls",
+    "Controls": [
+      {
+        "Header": "HyperlinkButton",
+        "Description": "A button that appears as a hyperlink text, and can navigate to a URI or handle a click event.",
+        "PreviewImageSource": "/Assets/PageIcons/HyperlinkButton.jpg",
+        "PageType": "HyperlinkButtonPage"
+      },
+      {
+        "Header": "SplitButton",
+        "Description": "A two-part button that displays a Flyout when its secondary part is clicked.",
+        "PreviewImageSource": "/Assets/PageIcons/SplitButton.jpg",
+        "PageType": "SplitButtonPage"
+      },
+      {
+        "Header": "ToggleSplitButton",
+        "Description": "A version of the SplitButton where the activation target toggles on/off",
+        "PreviewImageSource": "/Assets/PageIcons/ToggleSplitButton.jpg",
+        "PageType": "ToggleSplitButtonPage"
+      },
+      {
+        "Header": "DropDownButton",
+        "Description": "A button that displays a flyout of choices when clicked.",
+        "PreviewImageSource": "/Assets/PageIcons/DropDownButton.jpg",
+        "PageType": "DropDownButtonPage"
+      },
+      {
+        "Header": "NumberBox",
+        "Description": "A text control used for numeric input and evaluation of algebraic equations.",
+        "PreviewImageSource": "/Assets/PageIcons/NumberBox.jpg",
+        "PageType": "NumberBoxPage"
+      }
+    ]
+  },
+  {
+    "Header": "Dialogs and Flyouts",
+    "Controls": [
+      {
+        "Header": "ContentDialog",
+        "Description": "A dialog box that can be customized to contain any XAML content",
+        "PreviewImageSource": "/Assets/PageIcons/ContentDialog.jpg",
+        "PageType": "ContentDialogPage"
+      },
+      {
+        "Header": "PickerFlyoutBase",
+        "Description": "Base class of a special flyout that presents with confirm/dismiss buttons",
+        "PreviewImageSource": "/Assets/PageIcons/PickerFlyoutBase.jpg",
+        "PageType": "PickerFlyoutBasePage"
+      }
+    ]
+  },
+  {
+    "Header": "Icons",
+    "Controls": [
+      {
+        "Header": "IconElement",
+        "Description": "Represents icon controls that use different image types as its content",
+        "PreviewImageSource": "/Assets/PageIcons/Icons.jpg",
+        "PageType": "IconElementPage"
+      },
+      {
+        "Header": "IconSource",
+        "Description": "Represents sharable icons that use different image types as its content",
+        "PreviewImageSource": "/Assets/PageIcons/Icons.jpg",
+        "PageType": "IconSourcePage"
+      }
+    ]
+  },
+  {
+    "Header": "Navigation Controls",
+    "Controls": [
+      {
+        "Header": "NavigationView",
+        "Description": "Common vertical layout for top-level areas of your app via a collapsible navigation menu",
+        "PreviewImageSource": "/Assets/PageIcons/NavView.jpg",
+        "PageType": "NavigationViewPage"
+      },
+      {
+        "Header": "Frame",
+        "Description": "Displays Page instances, supports navigation to new pages, and maintains a navigation history to support forward and backward navigation.",
+        "PageType": "FramePage"
+      }
+    ]
+  },
+  {
+    "Header": "Menus and Toolbars",
+    "Controls": [
+      {
+        "Header": "XamlUICommand",
+        "Description": "An object which is used to define the look and feel of a given command",
+        "PreviewImageSource": "/Assets/PageIcons/UICommand.jpg",
+        "PageType": "XamlUICommandPage"
+      },
+      {
+        "Header": "StandardUICommand",
+        "Description": "A StandardUICommand is a built-in XamlUICommand which represents commonly used commands, e.g., Save",
+        "PreviewImageSource": "/Assets/PageIcons/UICommand.jpg",
+        "PageType": "StandardUICommandPage"
+      },
+      {
+        "Header": "CommandBar",
+        "Description": "A toolbar for displaying application-specific commands that handles layout and resizing of its contents",
+        "PreviewImageSource": "/Assets/PageIcons/CommandBar.jpg",
+        "PageType": "CommandBarPage"
+      },
+      {
+        "Header": "CommandBarFlyout",
+        "Description": "A mini-toolbar displaying proactive commands, and an optional menu of commands",
+        "PreviewImageSource": "/Assets/PageIcons/CommandBarFlyout.jpg",
+        "PageType": "CommandBarFlyoutPage"
+      },
+      {
+        "Header": "MenuFlyout",
+        "Description": "Shows a contextual list of simple commands or options",
+        "PreviewImageSource": "/Assets/PageIcons/MenuFlyout.jpg",
+        "PageType": "MenuFlyoutPage"
+      }
+    ]
+  },
+  {
+    "Header": "Color Picker Controls",
+    "Controls": [
+      {
+        "Header": "ColorPicker",
+        "Description": "A control that displays a selectable color spectrum",
+        "PreviewImageSource": "/Assets/PageIcons/ColorPicker.jpg",
+        "PageType": "ColorPickerPage"
+      },
+      {
+        "Header": "ColorPickerButton",
+        "Description": "A control that displays a ColorPicker in a flyout",
+        "PreviewImageSource": "/Assets/PageIcons/ColorPickerButton.jpg",
+        "PageType": "ColorPickerButtonPage"
+      }
+    ]
+  },
+  {
+    "Header": "Information / Alert Controls",
+    "Controls": [
+      {
+        "Header": "InfoBar",
+        "Description": "An inline message to display app-wide status change information",
+        "PreviewImageSource": "/Assets/PageIcons/InfoBar.jpg",
+        "PageType": "InfoBarPage"
+      },
+      {
+        "Header": "InfoBadge",
+        "Description": "A non-intrusive UI to display notifications or bring focus to an area",
+        "PreviewImageSource": "/Assets/PageIcons/InfoBadge.jpg",
+        "PageType": "InfoBadgePage"
+      }
+    ]
+  }
+]

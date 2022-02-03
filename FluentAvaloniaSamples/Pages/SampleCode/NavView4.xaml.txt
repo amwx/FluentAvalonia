@@ -1,0 +1,17 @@
+﻿<ui:NavigationView x:Name="nvSample5" PaneDisplayMode="Left" Height="460">
+    <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="Home" Tag="SamplePage1" Icon="Home" />
+        <ui:NavigationViewItem Content="Account" Tag="SamplePage2" Icon="Home">
+            <ui:NavigationViewItem.MenuItems>
+                <ui:NavigationViewItem Content="Mail" Icon="Mail" Tag="SamplePage3" />
+                <ui:NavigationViewItem Content="Calendar" Icon="Calendar" Tag="SamplePage4" />
+            </ui:NavigationViewItem.MenuItems>
+        </ui:NavigationViewItem>
+        <ui:NavigationViewItem Content="Document options" Tag="SamplePage3" Icon="Document" SelectsOnInvoked="False">
+            <ui:NavigationViewItem.MenuItems>
+                <ui:NavigationViewItem Content="Create new" Icon="New" Tag="SamplePage5" />
+                <ui:NavigationViewItem Content="Upload file" Icon="Upload" Tag="SamplePage6" />
+            </ui:NavigationViewItem.MenuItems>
+        </ui:NavigationViewItem>
+    </ui:NavigationView.MenuItems>
+</ui:NavigationView>

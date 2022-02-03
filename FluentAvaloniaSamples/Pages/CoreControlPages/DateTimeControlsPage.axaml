@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
+             x:Class="FluentAvaloniaSamples.Pages.DateTimeControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="Date/Time Controls"
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="Calendar"
+                                  TargetType="Calendar"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <Calendar />
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="CalendarDatePicker"
+                                  TargetType="CalendarDatePicker"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <CalendarDatePicker />
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="DatePicker"
+                                  TargetType="DatePicker"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <DatePicker />
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="TimePicker"
+                                  TargetType="TimePicker"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <TimePicker />
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1200"
+             x:Class="FluentAvaloniaSamples.Pages.MiscControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="Miscellaneous Controls"
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="Flyout"
+                                  TargetType="Flyout"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel>
+                    <Button Content="Click Me!">
+                        <Button.Flyout>
+                            <Flyout>
+                                Flyout Content!!
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="GridSplitter"
+                                  TargetType="GridSplitter"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <Grid ColumnDefinitions="*,Auto,*" Height="50">
+                    <Panel Background="PaleVioletRed" />
+                    <GridSplitter Grid.Column="1" />
+                    <Panel Background="SteelBlue" Grid.Column="2" />
+                </Grid>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ScrollViewer / ScrollBar"
+                                  TargetType="ScrollViewer"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                              Width="250" Height="250">
+                    <Rectangle Width="400" Height="400" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Rectangle.Fill>
+                            <RadialGradientBrush Center="100%,100%" GradientOrigin="100%,100%" Radius="1.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="OrangeRed" />
+                                    <GradientStop Offset="0.7" Color="DarkSlateBlue" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </ScrollViewer>
+
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ToolTip"
+                                  TargetType="ToolTip"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+
+                <Border Width="100"
+                        Height="100"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Background="DarkSlateBlue"
+                        ToolTip.Tip="ToolTip in new WinUI style">
+                    <TextBlock Text="Hover"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Foreground="White"/>
+                </Border>
+
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

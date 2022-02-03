@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="2000"
+             x:Class="FluentAvaloniaSamples.Pages.IconSourcePage"
+             PreviewImage="/Assets/PageIcons/Icons.jpg">
+
+    <UserControl.Resources>
+        <ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save" FontSize="18" />
+        <ui:PathIconSource x:Key="SamplePathIcon" Data="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z" />
+        <ui:FontIconSource x:Key="FGlyph" Glyph="F" FontSize="18" />
+        <ui:BitmapIconSource x:Key="AvaloniaLogo" UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" />
+        <ui:ImageIconSource x:Key="AvaloniaLogoImage" Source="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" />
+    </UserControl.Resources>
+    
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="SymbolIconSource"
+                              TargetType="ui:SymbolIconSource">
+            
+            <ui:IconSourceElement IconSource="{StaticResource SaveIcon}" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;!-- Defined in a resource dictionary --&gt;                    
+&lt;ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save" FontSize="18" /&gt;
+
+&lt;!-- If the control accepts an icon source (like InfoBar), use it directly --&gt; 
+&lt;ui:InfoBar IconSource="{StaticResource SaveIcon}" /&gt;
+                    
+&lt;!-- Otherwise use an IconSourceElement to host and display the Icon resource --&gt; 
+&lt;ui:IconSourceElement IconSource="{StaticResource SaveIcon}" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="FontIcon"
+                              TargetType="ui:FontIcon">
+            <ui:IconSourceElement IconSource="{StaticResource FGlyph}" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;!-- Defined in a resource dictionary --&gt;                    
+&lt;ui:FontIconSource x:Key="FGlyph" Glyph="F" FontSize="18" /&gt;
+
+&lt;!-- If the control accepts an icon source (like InfoBar), use it directly --&gt; 
+&lt;ui:InfoBar IconSource="{StaticResource FGlpyh}" /&gt;
+                    
+&lt;!-- Otherwise use an IconSourceElement to host and display the Icon resource --&gt; 
+&lt;ui:IconSourceElement IconSource="{StaticResource FGlyph}" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+
+        <ctrls:ControlExample Header="PathIcon"
+                              TargetType="ui:PathIcon">
+            <ui:IconSourceElement IconSource="{StaticResource SamplePathIcon}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;!-- Defined in a resource dictionary --&gt;                    
+&lt;ui:PathIconSource x:Key="SamplePathIcon" Data="PATHDATA" /&gt;
+
+&lt;!-- If the control accepts an icon source (like InfoBar), use it directly --&gt; 
+&lt;ui:InfoBar IconSource="{StaticResource SamplePathIcon}" /&gt;
+                    
+&lt;!-- Otherwise use an IconSourceElement to host and display the Icon resource --&gt; 
+&lt;ui:IconSourceElement IconSource="{StaticResource SamplePathIcon}" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="BitmapIcon"
+                              TargetType="ui:BitmapIcon">
+            <ui:IconSourceElement IconSource="{StaticResource AvaloniaLogo}"
+                                  Width="50" Height="50"/>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;!-- Defined in a resource dictionary --&gt;                    
+&lt;ui:BitmapSourceIcon x:Key="AvaloniaLogo" UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" /&gt;
+
+&lt;!-- If the control accepts an icon source (like InfoBar), use it directly --&gt; 
+&lt;ui:InfoBar IconSource="{StaticResource AvaloniaLogo}" /&gt;
+                    
+&lt;!-- Otherwise use an IconSourceElement to host and display the Icon resource --&gt; 
+&lt;ui:IconSourceElement IconSource="{StaticResource AvaloniaLogo}" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+
+        <ctrls:ControlExample Header="ImageIcon"
+                              TargetType="ui:ImageIcon">
+            <ui:IconSourceElement IconSource="{StaticResource AvaloniaLogoImage}"
+                                  Width="50" Height="50"/>
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;!-- Defined in a resource dictionary --&gt;                    
+&lt;ui:ImageIconSource x:Key="AvaloniaLogoImage" UriSource="avares://FluentAvaloniaSamples/Assets/avalonia-logo.ico" /&gt;
+
+&lt;!-- If the control accepts an icon source (like InfoBar), use it directly --&gt; 
+&lt;ui:InfoBar IconSource="{StaticResource AvaloniaLogoImage}" /&gt;
+                    
+&lt;!-- Otherwise use an IconSourceElement to host and display the Icon resource --&gt; 
+&lt;ui:IconSourceElement IconSource="{StaticResource AvaloniaLogoImage}" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

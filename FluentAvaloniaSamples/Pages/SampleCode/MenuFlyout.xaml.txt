@@ -1,0 +1,21 @@
+﻿<ui:Button.Flyout>
+    <ui:MenuFlyout Placement="Bottom">
+        <ui:MenuFlyoutItem Text="Item 1" Icon="Copy" />
+        <ui:MenuFlyoutItem Text="Item 2" Icon="Paste" />
+        <ui:MenuFlyoutSeparator />
+        <ui:MenuFlyoutSubItem Text="SubMenu">
+            <ui:MenuFlyoutItem Text="Subitem 1" />
+            <ui:MenuFlyoutItem Text="Subitem 2" />
+            <ui:MenuFlyoutItem Text="Subitem 3" />
+        </ui:MenuFlyoutSubItem>
+        <ui:MenuFlyoutSeparator />
+        <ui:ToggleMenuFlyoutItem Text="Toggle Item" Icon="Bold" />
+        <ui:MenuFlyoutSeparator />
+        <ui:RadioMenuFlyoutItem Text="Radio Menu Item" IsChecked="True"
+                                GroupName="Test Group"
+                                Icon="Games"/>
+        <ui:RadioMenuFlyoutItem Text="Radio Menu Item 2"
+                                Icon="Icons"
+                                GroupName="Test Group" />
+    </ui:MenuFlyout>
+</ui:Button.Flyout>

@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluentAvaloniaSamples.Pages.MenuControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="Menu Controls"
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="Menu / MenuItem"
+                                  TargetType="Menu"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <Menu VerticalAlignment="Top">
+                    <MenuItem Header="File">
+                        <MenuItem Header="Disabled"
+                                  IsEnabled="False" />
+                        <MenuItem Header="New"
+                                  InputGesture="Ctrl+N">
+                            <MenuItem Header="XML" />
+                        </MenuItem>
+                        <MenuItem Header="Open">
+                            <MenuItem.Icon>
+                                <ui:SymbolIcon Symbol="Open" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Exit"
+                                  InputGesture="Alt+F4" />
+                    </MenuItem>
+                    <MenuItem Header="Edit">
+                        <MenuItem Header="Go To">
+                            <MenuItem Header="Go To Line" />
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="View">
+                        <MenuItem Header="Designer"
+                                  InputGesture="Shift+F7" />
+                    </MenuItem>
+                    <MenuItem Header="Project">
+                        <MenuItem Header="Add class" />
+                    </MenuItem>
+                </Menu>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="MenuFlyout"
+                                  TargetType="MenuFlyout"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+
+                <ui:DropDownButton Content="Click Me">
+                    <ui:DropDownButton.Flyout>
+                        <MenuFlyout>
+                            <MenuItem Header="Item 1" />
+                            <MenuItem Header="Item 2" />
+                        </MenuFlyout>
+                    </ui:DropDownButton.Flyout>
+                </ui:DropDownButton>
+                
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
