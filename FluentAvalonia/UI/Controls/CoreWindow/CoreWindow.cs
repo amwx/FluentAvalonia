@@ -65,6 +65,8 @@ namespace FluentAvalonia.UI.Controls
         /// </summary>
 		public CoreApplicationViewTitleBar TitleBar => _titleBar;
 
+        protected internal bool IsWindows11 { get; internal set; }
+
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
 			base.OnApplyTemplate(e);

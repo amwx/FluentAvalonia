@@ -124,6 +124,7 @@ namespace FluentAvalonia.UI.Controls
 		{
 			 _owner = wnd;
 			((IPseudoClasses)wnd.Classes).Set(":windows10", !_isWindows11);
+            _owner.IsWindows11 = _isWindows11;
 		}
 
 		private int GetResizeHandleHeight()

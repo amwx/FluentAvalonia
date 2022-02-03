@@ -40,7 +40,7 @@ namespace FluentAvaloniaSamples.Views
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 // TODO: add Windows version to CoreWindow
-                if (Classes.Contains(":windows") && thm.RequestedTheme != FluentAvaloniaTheme.HighContrastModeString)
+                if (IsWindows11 && thm.RequestedTheme != FluentAvaloniaTheme.HighContrastModeString)
                 {
                     TransparencyBackgroundFallback = Brushes.Transparent;
                     TransparencyLevelHint = WindowTransparencyLevel.Mica;
@@ -102,7 +102,7 @@ namespace FluentAvaloniaSamples.Views
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 // TODO: add Windows version to CoreWindow
-                if (Classes.Contains(":windows") && args.NewTheme != FluentAvaloniaTheme.HighContrastModeString)
+                if (IsWindows11 && args.NewTheme != FluentAvaloniaTheme.HighContrastModeString)
                 {
                     TryEnableMicaEffect(sender);
                 }
