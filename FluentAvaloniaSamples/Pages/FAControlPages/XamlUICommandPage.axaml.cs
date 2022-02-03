@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Input;
 
-namespace FluentAvaloniaSamples.Pages.FAControlPages
+namespace FluentAvaloniaSamples.Pages
 {
     public partial class XamlUICommandPage : FAControlsPageBase
     {

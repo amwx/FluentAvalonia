@@ -6,7 +6,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:input="using:FluentAvalonia.UI.Input"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
-             x:Class="FluentAvaloniaSamples.Pages.FAControlPages.XamlUICommandPage"
+             x:Class="FluentAvaloniaSamples.Pages.XamlUICommandPage"
              PreviewImage="/Assets/PageIcons/UICommand.jpg">
     <UserControl.Resources>
         <input:XamlUICommand x:Key="CustomXamlUICommand" 

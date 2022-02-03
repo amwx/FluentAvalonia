@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Input;
 using FluentAvaloniaSamples.ViewModels;
 
-namespace FluentAvaloniaSamples.Pages.FAControlPages
+namespace FluentAvaloniaSamples.Pages
 {
     public partial class StandardUICommandPage : FAControlsPageBase
     {
