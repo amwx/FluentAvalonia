@@ -89,12 +89,10 @@ namespace FluentAvalonia.UI.Controls
 
 		protected override bool IsEnabledCore => base.IsEnabledCore && _canExecute;
 
-		/// <summary>
-		/// Defines the <see cref="Click"/> event
-		/// </summary>
-		public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-			RoutedEvent.Register<MenuFlyoutItem, RoutedEventArgs>(nameof(Click),
-			  RoutingStrategies.Bubble);
+        /// <summary>
+        /// Defines the <see cref="Click"/> event
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> ClickEvent = MenuItem.ClickEvent;
 
 		/// <summary>
 		/// Raised when this MenuFlyoutItem is invoked

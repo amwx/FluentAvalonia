@@ -136,7 +136,7 @@ namespace FluentAvalonia.UI.Controls
 				
 		protected virtual void OnClick()
 		{
-			RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+			RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent, this));
 
 			if (Command?.CanExecute(CommandParameter) == true)
 			{
