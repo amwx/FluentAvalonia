@@ -122,8 +122,8 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="Value"/> property
         /// </summary>
         public static readonly DirectProperty<NumberBox, double> ValueProperty =
-             RangeBase.ValueProperty.AddOwner<NumberBox>(x => x.Value,
-                 (x,v) => x.Value = v, defaultBindingMode: BindingMode.TwoWay);
+             RangeBase.ValueProperty.AddOwnerWithDataValidation<NumberBox>(x => x.Value,
+                 (x,v) => x.Value = v, defaultBindingMode: BindingMode.TwoWay, enableDataValidation: true);
 
         //Skip InputScope
 
