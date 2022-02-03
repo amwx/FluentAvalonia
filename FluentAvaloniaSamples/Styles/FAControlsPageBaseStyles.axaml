@@ -46,7 +46,8 @@
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid ColumnDefinitions="Auto,*" Name="RootGrid">                    
+                <Grid ColumnDefinitions="Auto,*" Name="RootGrid"
+                      Background="{TemplateBinding Background}">                    
                     <ctrls:FAControlsPageHeader TargetType="{TemplateBinding TargetType}"
                                                 PreviewImage="{TemplateBinding PreviewImage}"
                                                 WinUINamespace="{TemplateBinding WinUINamespace}"
