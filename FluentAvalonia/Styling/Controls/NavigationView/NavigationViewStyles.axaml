@@ -89,7 +89,6 @@
                                        IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.TopPaneVisibility}" />
 
                             <Border BorderBrush="{DynamicResource NavigationViewItemSeparatorForeground}"
-                                    BorderThickness="0,0,0,1"
                                     Margin="{DynamicResource TopNavigationViewTopNavGridMargin}">
                                 <Grid Name="TopNavGrid"
                                       Height="{DynamicResource NavigationViewTopPaneHeight}"
@@ -275,7 +274,7 @@
                                                     Grid.Row="4" />
 
                                     <!--"Non header" content-->
-                                    <Grid Name="ItemsContainerGrid" Grid.Row="6" Margin="0,0,0,8">
+                                    <Grid Name="ItemsContainerGrid" Grid.Row="6">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*" />
                                             <!-- MenuItems -->
@@ -332,7 +331,8 @@
 
                             <SplitView.Content>
 
-								<Border Name="ContentGridBorder">
+								<Border Name="ContentGridBorder"
+                                        ClipToBounds="True">
 									<Grid Name="ContentGrid" 
 										  RowDefinitions="Auto,Auto,*" 
 										  ColumnDefinitions="Auto,*">
@@ -403,6 +403,10 @@
         <Setter Property="BorderThickness" Value="{DynamicResource NavigationViewBorderThickness}" />
 		<!-- DynamicResource does not work here -->
 		<Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}" />
+    </Style>
+
+    <Style Selector="ui|NavigationView /template/ SplitView Grid#ItemsContainerGrid">
+        <Setter Property="Margin" Value="0 0 0 8" />
     </Style>
 	
     <Style Selector="ui|NavigationView /template/ SplitView ui|Button#PaneAutoSuggestButton">
