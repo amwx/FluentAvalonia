@@ -85,7 +85,7 @@ namespace FluentAvalonia.Core.ApplicationModel
 			//Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
 			RECT frame = new RECT();
 			Win32Interop.AdjustWindowRectExForDpi(ref frame,
-				(int)style, false, 0, (int)(_owner.PlatformImpl.RenderScaling * 96));
+				(int)style, false, 0, 96);
 
 			_height = -frame.top;
 		}
