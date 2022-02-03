@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using System;
@@ -72,6 +73,14 @@ namespace FluentAvalonia.UI.Controls
             else
             {
                 UpdateTextToValue();
+            }
+        }
+
+        protected override void UpdateDataValidation<T>(AvaloniaProperty<T> property, BindingValue<T> value)
+        {
+            if (property == ValueProperty)
+            {
+                DataValidationErrors.SetError(this, value.Error);
             }
         }
 

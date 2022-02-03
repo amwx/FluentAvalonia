@@ -61,3 +61,6 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+#Try force .axaml files to display with xaml syntax highlighting
+*.axaml linguist-language=xml
