@@ -3000,10 +3000,13 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (_paneContentGrid.RowDefinitions.Count >= _backButtonRowDefinition)
                 {
+                    int backButtonRowHeight = 0;
                     if (!IsOverlay && showBack)
                     {
-                        _paneContentGrid.RowDefinitions[_backButtonRowDefinition].Height = new GridLength(_backButtonHeight);
+                        backButtonRowHeight = _backButtonHeight;                        
                     }
+
+                    _paneContentGrid.RowDefinitions[_backButtonRowDefinition].Height = new GridLength(backButtonRowHeight);
                 }
             }
 
