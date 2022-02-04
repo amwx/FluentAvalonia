@@ -219,7 +219,16 @@ namespace FluentAvaloniaSamples.ViewModels
             {
                 foreach(var ctrl in group.Controls)
                 {
-                    MainSearchItems.Add(new MainAppSearchItem(ctrl.Header, Type.GetType($"FluentAvaloniaSamples.Pages.{ctrl.PageType}")));
+                    // Differentiate between the Avalonia MenuFlyout and my own
+                    if (ctrl.Header == "MenuFlyout")
+                    {
+                        MainSearchItems.Add(new MainAppSearchItem($"{ctrl.Header} (FluentAvalonia)", Type.GetType($"FluentAvaloniaSamples.Pages.{ctrl.PageType}")));
+                    }
+                    else
+                    {
+                        MainSearchItems.Add(new MainAppSearchItem(ctrl.Header, Type.GetType($"FluentAvaloniaSamples.Pages.{ctrl.PageType}")));
+                    }
+                    
                 }
             }
 
