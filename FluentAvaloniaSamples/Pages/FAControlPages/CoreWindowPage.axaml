@@ -65,6 +65,16 @@ Simply edit the colors in that class to your liking and CoreWindow will automati
                 </x:String>
             </TextBlock>
         </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Custom TitleBar - Adding an Icon"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CoreWindow3.cs.txt"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CoreWindow3.xaml.txt">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+By default, CoreWindow does not support Icons. However, with the ability set your own titlebar element, you can add an icon to your window (like I do for the sample app)
+                </x:String>
+            </TextBlock>
+        </ctrls:ControlExample>
         
     </StackPanel>
 </UserControl>
