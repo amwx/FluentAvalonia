@@ -80,7 +80,9 @@ Some notes:
             </ui:CommandBar>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="CommandBarButton">
+        <ctrls:ControlExample Header="CommandBarButton" 
+                              TargetType="ui:CommandBarButton"
+                              EnableShowDefinitionLink="True">
             
             <ui:CommandBarButton Label="Label" Icon="Save" />
 
@@ -101,7 +103,9 @@ Note: While CommandBarButtons can be used outside of the CommandBar, Label on th
             </ctrls:ControlExample.UsageNotes>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="CommandBarToggleButton">
+        <ctrls:ControlExample Header="CommandBarToggleButton"
+                              TargetType="ui:CommandBarToggleButton"
+                              EnableShowDefinitionLink="True">
 
             <ui:CommandBarToggleButton Label="Label" Icon="Save" />
 
@@ -118,7 +122,9 @@ Note: In WinUI, indeterminate looks like checked, I don't handle that case so it
             </ctrls:ControlExample.UsageNotes>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="CommandBarToggleButton">
+        <ctrls:ControlExample Header="CommandBarSeparator"
+                              TargetType="ui:CommandBarSeparator"
+                              EnableShowDefinitionLink="True">
 
             <ui:CommandBar DefaultLabelPosition="Right">
                 <ui:CommandBar.PrimaryCommands>
@@ -143,7 +149,9 @@ A CommandBarSeparator creates a vertical line to visually separate groups of com
             </ctrls:ControlExample.UsageNotes>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="CommandBarElementContainer">
+        <ctrls:ControlExample Header="CommandBarElementContainer"
+                              TargetType="ui:CommandBarElementContainer"
+                              EnableShowDefinitionLink="True">
 
             <ui:CommandBar DefaultLabelPosition="Right">
                 <ui:CommandBar.PrimaryCommands>
