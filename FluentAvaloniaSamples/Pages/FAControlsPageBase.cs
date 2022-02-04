@@ -217,9 +217,7 @@ namespace FluentAvaloniaSamples.Pages
                 Resources.MergedDictionaries.Clear();
                 Background = Brushes.Transparent;
                 SetThemeOnExamples(true);
-            }
-
-            
+            }            
         }
 
         private void SetThemeOnExamples(bool isLightMode)
@@ -248,7 +246,7 @@ namespace FluentAvaloniaSamples.Pages
                     MoveHeaderToRootGrid();
                 }
 
-                if (size.Height >= 550 && size.Height < 690)
+                if (size.Height >= 525 && size.Height < 665)
                 {
                     if (_adaptiveHeightStage == 1)
                         return;
@@ -256,7 +254,7 @@ namespace FluentAvaloniaSamples.Pages
                     _adaptiveHeightStage = 1;
                     _headerElement.GoToHeightState(1);
                 }
-                else if (size.Height < 550)
+                else if (size.Height < 525)
                 {
                     if (_adaptiveHeightStage == 2)
                         return;
