@@ -68,6 +68,7 @@
             </Grid>
             
             <ctrls:OptionsDisplayItem Header="Theme"
+                                      Icon="DarkTheme"
                                       Description="Change the current App Theme.">
 
                 <ctrls:OptionsDisplayItem.ActionButton>
@@ -79,6 +80,7 @@
             </ctrls:OptionsDisplayItem>
 
             <ctrls:OptionsDisplayItem Header="AccentColor" 
+                                      Icon="ColorLine"
                                       Description="Set a custom accent color for the App"
                                       Expands="True" IsExpanded="{Binding Path=IsChecked, ElementName=CustomCheck, Mode=OneWay}">
                 <ctrls:OptionsDisplayItem.ActionButton>
