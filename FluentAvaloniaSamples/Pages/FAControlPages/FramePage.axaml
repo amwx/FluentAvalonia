@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1200"
+             x:Class="FluentAvaloniaSamples.Pages.FramePage"
+             PreviewImage="/Assets/PageIcons/NavView.jpg">
+
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample TargetType="ui:Frame"
+                              Header="Frame API in Action"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/Frame.xaml.txt"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/Frame.cs.txt">
+
+            <StackPanel>
+                <ListBox Name="PageSelection"
+                         Items="{Binding PageOptions}"
+                         VirtualizationMode="None">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+
+                <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                    <ui:Frame Name="TestFrame" MaxWidth="500" MaxHeight="500"
+                              MinWidth="250" MinHeight="250"/>
+                </Border>
+            </StackPanel>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="3" DockPanel.Dock="Top">
+                    <TextBlock Text="{Binding #TestFrame.BackStackDepth, StringFormat='{}Items in Back Stack: {0}'}" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding #TestFrame.CanGoBack, StringFormat='{}Can Go Back: {0}'}" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding #TestFrame.ForwardStack.Count, StringFormat='{}Items in Forward Stack: {0}'}" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding #TestFrame.CanGoForward, StringFormat='{}Can Go Forward: {0}'}" HorizontalAlignment="Right" />
+
+                    <ui:Button Content="Go Back" Command="{Binding #TestFrame.GoBack}" IsEnabled="{Binding #TestFrame.CanGoBack}" />
+                    <ui:Button Content="Go Forward" Command="{Binding #TestFrame.GoForward}" IsEnabled="{Binding #TestFrame.CanGoForward}" />
+
+
+
+
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.UsageNotes>
+                NOTE: Because no 'Page' control exists in Avalonia like UWP/WinUI, IControl is targeted by the Frame logic. IControl does not have a method 'OnNavigatedTo' so if you need to pass a custom parameter into your page it must be done manually. Easiest way is to handle the Navigated event from Frame, get the new page from the EventArgs and pass the parameter in manually.
+            </ctrls:ControlExample.UsageNotes>
+
+        </ctrls:ControlExample>
+    </StackPanel>
+    
+</UserControl>

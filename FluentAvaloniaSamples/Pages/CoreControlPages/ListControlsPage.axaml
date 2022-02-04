@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+             x:Class="FluentAvaloniaSamples.Pages.ListControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="List Controls"
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="ComboBox"
+                                  TargetType="ComboBox"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel>
+                    <ComboBox MinWidth="150">
+                        <ComboBoxItem Content="Item1" />
+                        <ComboBoxItem Content="Item2" />
+                        <ComboBoxItem Content="Item3" />
+                        <ComboBoxItem Content="Item4" />
+                        <ComboBoxItem Content="Item5" />
+                    </ComboBox>
+                </StackPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ListBox"
+                                  TargetType="ListBox"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="4">
+                    <ListBox>
+                        <ListBoxItem Content="Item1" />
+                        <ListBoxItem Content="Item2" />
+                        <ListBoxItem Content="Item3" />
+                        <ListBoxItem Content="Item4" />
+                        <ListBoxItem Content="Item5" />
+                    </ListBox>
+                </StackPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="TreeView"
+                                  TargetType="TreeView"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <TreeView MinWidth="150" MaxHeight="175">
+                    <TreeViewItem Header="Item 1" />
+                    <TreeViewItem Header="Item 2">
+                        <TreeViewItem Header="SubItem1" />
+                        <TreeViewItem Header="SubItem2" />
+                        <TreeViewItem Header="SubItem3">
+                            <TreeViewItem Header="SubItem Item1" />
+                            <TreeViewItem Header="SubItem Item2" />
+                            <TreeViewItem Header="SubItem Item3" />
+                        </TreeViewItem>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Item3" />
+                    <TreeViewItem Header="Item4" />
+                </TreeView>
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

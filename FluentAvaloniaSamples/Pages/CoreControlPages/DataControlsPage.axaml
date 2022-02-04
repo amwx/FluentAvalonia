@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluentAvaloniaSamples.Pages.DataControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="Data Controls"
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="DataGrid"
+                                  TargetType="DataGrid"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+
+                <DataGrid Name="TargetDataGrid">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" />
+                        <DataGridTextColumn Header="Region" Binding="{Binding Region}" Width="4*" />
+                        <DataGridTextColumn DisplayIndex="3" Header="Population" Binding="{Binding Population}" Width="3*" />
+                        <DataGridTextColumn DisplayIndex="2" Header="Area" Binding="{Binding Area}" Width="3*" />
+                        <DataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

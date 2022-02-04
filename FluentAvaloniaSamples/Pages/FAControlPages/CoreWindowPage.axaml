@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="2500"
+             PreviewImage="/Assets/PageIcons/BaseIcon.jpg"
+             x:Class="FluentAvaloniaSamples.Pages.CoreWindowPage">
+    <StackPanel Spacing="8">
+        <Expander Header="General Notes" IsExpanded="False">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+A special window style designed to mock the modern UWP/WinUI style window. The window has been made so the resize handles work outside the window, like normal, so they don't overlap with your content. And the titlebar retains its height when the window is Maximized.
+
+On Windows 11, the snap layout flyout still works!
+
+Not using windows? No problem, the CoreWindow class automatically falls back to a normal window object on non-Windows systems so you can safely use this type without managing it yourself
+
+To use, inherit any window objects you want from CoreWindow instead of Window, e.g., public class MainWindow : CoreWindow                
+                </x:String>
+            </TextBlock>
+        </Expander>
+
+        <Expander Header="Customization Options" IsExpanded="True">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+The normal Window properties from the Avalonia Window should not be used to customize the extended style of this window - as it may break some of the CoreWindow internal logic. However, you are still able to customize the colors and provide your own titlebar region!             
+
+The API for customizing titlebar follows the UWP design, so both CoreApplicationViewTitleBar and ApplicationViewTitleBar classes are available and apply to the default titlebar state.
+                </x:String>
+            </TextBlock>            
+        </Expander>
+
+        <ctrls:ControlExample Header="CoreApplicationViewTitleBar"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CoreWindow1.cs.txt">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+CoreApplicationViewTitleBar has the following properties:
+
+- ExtendViewIntoTitleBar - Gets or sets a value on whether or not the window contents extend into the title bar region.
+- Height - Gets the height of the titlebar
+- IsVisible - Gets a value whether the titlebar is visible.
+- SystemOverlayLeftInset - Always 0, since Avalonia currently doesn't have support for RTL layouts
+- SystemOverlayRightInset - Always returns 138. 
+
+And the following events:
+- LayoutMetricsChanged - Notifies the bounds of the titlebar have changed
+- IsVisibleChanged - Notifies the visibility of the titlebar has changed
+                </x:String>                
+            </TextBlock>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="ApplicationViewTitleBar"                              
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CoreWindow2.cs.txt">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+To customize the colors of the titlebar and caption buttons, use the ApplicationViewTitleBar class. You should NOT attempt to modify the Styles for CoreWindow
+
+This class is shared among all windows so to get a reference:
+
+ApplicationViewTitleBar.Instance   
+
+Simply edit the colors in that class to your liking and CoreWindow will automatically apply them. All properties are nullable Color (Color?) so to return to the default, simply set the desired property to null
+                </x:String>
+            </TextBlock>
+        </ctrls:ControlExample>
+        
+    </StackPanel>
+</UserControl>

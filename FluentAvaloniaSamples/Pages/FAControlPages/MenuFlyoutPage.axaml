@@ -1,0 +1,180 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="3000"
+             x:Class="FluentAvaloniaSamples.Pages.MenuFlyoutPage"
+             PreviewImage="/Assets/PageIcons/MenuFlyout.jpg">
+    <UserControl.DataTemplates> 
+        <DataTemplate DataType="{x:Type vm:TempMenuItem}">
+            <ui:MenuFlyoutItem Text="{Binding Text}" Icon="{Binding Icon}" />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TempMenuSeparator}">
+            <ui:MenuFlyoutSeparator />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TempToggleMenuItem}">
+            <ui:ToggleMenuFlyoutItem IsChecked="{Binding IsChecked, Mode=TwoWay}"
+									 Text="{Binding Text}" />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TempRadioMenuItem}">
+            <ui:RadioMenuFlyoutItem IsChecked="{Binding IsChecked, Mode=TwoWay}"
+									Text="{Binding Text}"
+                                    GroupName="{Binding GroupName}"/>
+        </DataTemplate>
+        <!-- You can also bind to the Icon property, using a converter to get an IconElement -->
+        <ui:MenuFlyoutSubItemTemplate DataType="{x:Type vm:TempSubItem}"
+									  SubItems="{Binding SubItems}"
+									  HeaderText="{Binding Text}" />
+    </UserControl.DataTemplates>
+
+    <StackPanel Spacing="8">
+
+        <Expander Header="General Notes">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+MenuFlyouts have been revamped to be more like they are in WinUI. One addition has been made...you CAN bind items to a MenuFlyout, unlike in WinUI, though this is experimental.
+Following types are included:
+- MenuFlyoutPresenter
+- MenuFlyoutItem
+- MenuFlyoutSubItem
+- ToggleMenuFlyoutItem
+- RadioMenuFlyoutItem
+
+Binding with subitems requires a special template, though, see the example below for more
+
+Note: these revamped items will not work in default menus of Avalonia, and are only supported in the MenuFlyoutPresenter included with FluentAvalonia, make sure to watch your Types!
+
+                </x:String>
+            </TextBlock>
+        </Expander>
+        
+        <ctrls:ControlExample Header="A Simple MenuFlyout attached to a Button"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/MenuFlyout.xaml.txt">
+
+            <ui:Button Content="Click me for flyout!">
+                <ui:Button.Flyout>
+                    <ui:MenuFlyout Placement="Bottom">
+                        <ui:MenuFlyoutItem Text="Item 1" Icon="Copy" />
+                        <ui:MenuFlyoutItem Text="Item 2" Icon="Paste" />
+                        <ui:MenuFlyoutSeparator />
+                        <ui:MenuFlyoutSubItem Text="SubMenu">
+                            <ui:MenuFlyoutItem Text="Subitem 1" />
+                            <ui:MenuFlyoutItem Text="Subitem 2" />
+                            <ui:MenuFlyoutItem Text="Subitem 3" />
+                        </ui:MenuFlyoutSubItem>
+                        <ui:MenuFlyoutSeparator />
+                        <ui:ToggleMenuFlyoutItem Text="Toggle Item" Icon="Bold" />
+                        <ui:MenuFlyoutSeparator />
+                        <ui:RadioMenuFlyoutItem Text="Radio Menu Item" IsChecked="True"
+                                                GroupName="Test Group"
+                                                Icon="Games"/>
+                        <ui:RadioMenuFlyoutItem Text="Radio Menu Item 2"
+                                                Icon="Icons"
+                                                GroupName="Test Group" />
+                    </ui:MenuFlyout>
+                </ui:Button.Flyout>
+            </ui:Button>            
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="MenuFlyout Binding (experimental, but generally stable)"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/MenuFlyout2.xaml.txt">
+
+            <ui:Button Content="Click me for flyout!">
+                <ui:Button.Flyout>
+                    <ui:MenuFlyout Placement="Bottom"
+                                   Items="{Binding TestMenuItems}">
+
+                    </ui:MenuFlyout>
+                </ui:Button.Flyout>
+            </ui:Button>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="MenuFlyoutItem"
+                              TargetType="ui:MenuFlyoutItem"
+                              EnableShowDefinitionLink="True">
+
+            <TextBlock Text="Represents a command in a MenuFlyout control." TextWrapping="Wrap" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:MenuFlyout&gt;
+    &lt;ui:MenuFlyoutItem Text="Item1" /&gt;
+&lt;/ui:MenuFlyout&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="ToggleMenuFlyoutItem"
+                              TargetType="ui:ToggleMenuFlyoutItem"
+                              EnableShowDefinitionLink="True">
+
+            <TextBlock Text="Represents an item in a MenuFlyout that a user can change between two states, checked or unchecked." TextWrapping="Wrap" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:MenuFlyout&gt;
+    &lt;ui:ToggleMenuFlyoutItem IsChecked="True" /&gt;
+&lt;/ui:MenuFlyout&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+            
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="MenuFlyoutSubItem"
+                              TargetType="ui:MenuFlyoutSubItem"
+                              EnableShowDefinitionLink="True">
+
+            <TextBlock Text="Represents a menu item that displays a sub-menu in a MenuFlyout control." TextWrapping="Wrap" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:MenuFlyout&gt;
+    &lt;ui:MenuFlyoutSubItem Text="SubMenu"&gt;
+        &lt;ui:MenuFlyoutItem Text="SubmenuItem1" /&gt;
+    &lt;/ui:MenuFlyoutSubItem>
+&lt;/ui:MenuFlyout&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+
+        <ctrls:ControlExample Header="MenuFlyoutSeparator"
+                              TargetType="ui:MenuFlyoutSeparator"
+                              EnableShowDefinitionLink="True">
+
+            <TextBlock Text="Represents a horizontal line that separates items in an MenuFlyout." TextWrapping="Wrap" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:MenuFlyout&gt;
+    &lt;ui:MenuFlyoutSeparator /&gt;
+&lt;/ui:MenuFlyout&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="RadioMenuFlyoutItem"
+                              TargetType="ui:RadioMenuFlyoutItem"                               
+                              EnableShowDefinitionLink="True">
+
+            <TextBlock Text="Represents a menu item that is mutually exclusive with other radio menu items in its group." TextWrapping="Wrap" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:MenuFlyout&gt;
+    &lt;!-- use the GroupName property to group radio items together--&gt;
+    &lt;ui:RadioMenuFlyoutItem Text="RadioItem1" IsChecked="True" GroupName="TestGroup" /&gt;
+    &lt;ui:RadioMenuFlyoutItem Text="RadioItem2" IsChecked="True" GroupName="TestGroup" /&gt;
+&lt;/ui:MenuFlyout&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+        </ctrls:ControlExample>
+        
+        
+    </StackPanel>
+</UserControl>

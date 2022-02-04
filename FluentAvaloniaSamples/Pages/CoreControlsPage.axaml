@@ -1,0 +1,51 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:local="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluentAvaloniaSamples.Pages.CoreControlsPage">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <Panel MinHeight="90" Name="HeaderRegion" Background="{StaticResource TopLevelPageBackgroundImage}">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="0,1365">
+                            <GradientStop Offset="0" Color="Transparent" />
+                            <GradientStop Offset="0.035" Color="{DynamicResource SolidBackgroundFillColorTertiary}" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <StackPanel>
+                    <TextBlock Text="{Binding PageHeader}" VerticalAlignment="Top"
+						   Classes="TitleTextBlockStyle"
+						   Padding="32 20 0 0"/>
+                </StackPanel>
+            </Panel>
+
+
+            <ItemsRepeater Items="{Binding CoreControlGroups}"
+                           Margin="18 0 18 18">
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="4" />
+                </ItemsRepeater.Layout>
+                
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate DataType="vm:CoreControlsGroupItem">
+                        <local:OptionsDisplayItem Header="{Binding Header}"
+                                                  Description="{Binding Description}"
+                                                  Navigates="{Binding Navigates}"
+                                                  NavigationCommand="{Binding InvokeCommand}"/>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </StackPanel>
+    </ScrollViewer>
+    
+</UserControl>

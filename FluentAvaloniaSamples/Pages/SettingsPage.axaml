@@ -3,84 +3,298 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
              x:Class="FluentAvaloniaSamples.Pages.SettingsPage">
-    <ScrollViewer Padding="10">
-        <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Stretch" Margin="10 0">
-            <TextBlock Text="App Theme" FontSize="16" FontWeight="700" Margin="5" />
-            <Button Content="Set Light Theme" Command="{Binding SetLightTheme}" Margin="3 10" />
-            <Button Content="Set Dark Theme" Command="{Binding SetDarkTheme}" Margin="3 10"/>
-            <Button Content="Set HC Theme (not supported)" Command="{Binding SetHCTheme}" Margin="3 10" IsEnabled="False"/>
+    <Design.DataContext>
+        <vm:MainViewViewModel />
+    </Design.DataContext>
 
-            <!--
-            This doesn't work yet, some stupid error is thrown and I'm not gonna deal with that right now
-            This works if you set it at startup, but fails if changed at runtime
-            <ui:NumberBox Minimum="1" Maximum="2" Value="{Binding ControlsVersion, Mode=TwoWay}"
-                          Header="ControlsVersion" SpinButtonPlacementMode="Inline" />
-            <TextBlock Text="ControlsVersion=1, use Default Fluent theme styling. New FluentAvalonia controls do not have regressed templates, but colors are remapped." TextWrapping="Wrap" />
-            <TextBlock Text="ControlsVersion=2, use new WinUI styling for all controls (default)" TextWrapping="Wrap" />-->
-			
-			<Rectangle Height="1"
-					   Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
-					   Margin="10 3" />
+    <ScrollViewer Padding="18">
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="2" 
+                    VerticalAlignment="Stretch" 
+                    Margin="10 0"
+                    Spacing="8">
 
-			<TextBlock Text="Custom AccentColor" FontSize="16" FontWeight="700" Margin="5" />
-			<CheckBox IsChecked="{Binding UseCustomAccent}" Content="Use Custom AccentColor" />
-			<ui:ColorPickerButton Color="{Binding CustomAccentColor}"
-								  IsMoreButtonVisible="False"
-								  IsCompact="True"
-								  IsAlphaEnabled="False"
-								  IsEnabled="{Binding UseCustomAccent}"/>
+            <Grid Margin="0 0 0 10"
+                  ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
 
-			<TextBlock Text="Current AccentColor" Margin="5 10 0 0" />
-			<Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*"
-				  HorizontalAlignment="Left">
-				<Border Background="{DynamicResource SystemAccentColor}"
-						Height="40" Grid.ColumnSpan="2">
-					<TextBlock Text="SystemAccentColor"
-							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
+                <DockPanel>
+                    <Image Source="/Assets/FAIcon.ico"
+                       DockPanel.Dock="Left"
+                       Height="78"/>
 
-				<Border Background="{DynamicResource SystemAccentColorLight1}"
-						Height="40" Width="90" Grid.Column="0" Grid.Row="1">
-					<TextBlock Text="Light1"
-							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
-				<Border Background="{DynamicResource SystemAccentColorLight2}"
-						Height="40" Width="90" Grid.Column="0" Grid.Row="2">
-					<TextBlock Text="Light2"
-							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
-				<Border Background="{DynamicResource SystemAccentColorLight3}"
-						Height="40" Width="90" Grid.Column="0" Grid.Row="3">
-					<TextBlock Text="Light3"
-							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
+                    <StackPanel Spacing="0" Margin="12 0">
+                        <TextBlock Text="FluentAvalonia"
+                                   Classes="TitleTextBlockStyle"/>
 
-				<Border Background="{DynamicResource SystemAccentColorDark1}"
-						Height="40" Width="90" Grid.Column="1" Grid.Row="1">
-					<TextBlock Text="Dark1"
-							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
-				<Border Background="{DynamicResource SystemAccentColorDark2}"
-						Height="40" Width="90" Grid.Column="1" Grid.Row="2">
-					<TextBlock Text="Dark2"
-							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
-				<Border Background="{DynamicResource SystemAccentColorDark3}"
-						Height="40" Width="90" Grid.Column="1" Grid.Row="3">
-					<TextBlock Text="Dark3"
-							   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
-			</Grid>
-			
+                        <TextBlock Text="{Binding CurrentVersion}"
+                                   Classes="BodyTextBlockStyle"/>
+
+                        <TextBlock Text="MIT License"
+                                   Classes="CaptionTextBlockStyle"/>
+
+                        <TextBlock Classes="CaptionTextBlockStyle"
+                                   Text="http://github.com/amwx/FluentAvalonia"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+                </DockPanel>
+
+
+                <DockPanel Name="HeaderRightContent" Grid.Column="1" Opacity="1">
+                    <DockPanel.RenderTransform>
+                        <TranslateTransform X="0" Y="0" />
+                    </DockPanel.RenderTransform>
+                    <Image Source="/Assets/avalonia-logo.ico"
+                           DockPanel.Dock="Left"
+                           Height="48"/>
+
+                    <StackPanel Margin="12 0"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Avalonia"
+                                   Classes="SubtitleTextBlockStyle"/>
+
+                        <TextBlock Text="{Binding CurrentAvaloniaVersion}"
+                                   Classes="CaptionTextBlockStyle"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+                        <TextBlock Text="https://github.com/AvaloniaUI/Avalonia"
+                                   Classes="CaptionTextBlockStyle"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+                </DockPanel>   
+            </Grid>
+            
+            <ctrls:OptionsDisplayItem Header="Theme"
+                                      Icon="DarkTheme"
+                                      Description="Change the current App Theme.">
+
+                <ctrls:OptionsDisplayItem.ActionButton>
+                    <ComboBox SelectedItem="{Binding CurrentAppTheme}"
+                              Items="{Binding AppThemes}"
+                              MinWidth="150"/>
+                </ctrls:OptionsDisplayItem.ActionButton>
+                
+            </ctrls:OptionsDisplayItem>
+
+            <ctrls:OptionsDisplayItem Header="AccentColor" 
+                                      Icon="ColorLine"
+                                      Description="Set a custom accent color for the App"
+                                      Expands="True" IsExpanded="{Binding Path=IsChecked, ElementName=CustomCheck, Mode=OneWay}">
+                <ctrls:OptionsDisplayItem.ActionButton>
+                    <CheckBox Name="CustomCheck" Content="Use Custom Accent" IsChecked="{Binding UseCustomAccent}" />
+                </ctrls:OptionsDisplayItem.ActionButton>
+
+                <ctrls:OptionsDisplayItem.Content>
+                    <StackPanel Spacing="4" >
+                        <DockPanel LastChildFill="False" Margin="24 0">
+                            <TextBlock Text="Preview"
+                                       VerticalAlignment="Center"
+                                       DockPanel.Dock="Left" />
+
+                            <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*"
+                                  HorizontalAlignment="Left"
+                                  DockPanel.Dock="Right">
+                                <Border Background="{DynamicResource SystemAccentColor}"
+                                        Height="40" Grid.ColumnSpan="2">
+                                    <TextBlock Text="SystemAccentColor"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <Border Background="{DynamicResource SystemAccentColorLight1}"
+                                        Height="40" Width="90" Grid.Column="0" Grid.Row="1">
+                                    <TextBlock Text="Light1"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Background="{DynamicResource SystemAccentColorLight2}"
+                                        Height="40" Width="90" Grid.Column="0" Grid.Row="2">
+                                    <TextBlock Text="Light2"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Background="{DynamicResource SystemAccentColorLight3}"
+                                        Height="40" Width="90" Grid.Column="0" Grid.Row="3">
+                                    <TextBlock Text="Light3"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <Border Background="{DynamicResource SystemAccentColorDark1}"
+                                        Height="40" Width="90" Grid.Column="1" Grid.Row="1">
+                                    <TextBlock Text="Dark1"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Background="{DynamicResource SystemAccentColorDark2}"
+                                        Height="40" Width="90" Grid.Column="1" Grid.Row="2">
+                                    <TextBlock Text="Dark2"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Background="{DynamicResource SystemAccentColorDark3}"
+                                        Height="40" Width="90" Grid.Column="1" Grid.Row="3">
+                                    <TextBlock Text="Dark3"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </DockPanel>
+                        
+                        <Border Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                                Height="1"
+                                Margin="-20"/>
+
+
+                        <TextBlock Text="Pre-set Colors"
+                                   Margin="24 24 0 0"/>
+
+                        <ListBox Items="{Binding PredefinedColors}"
+                                 SelectedItem="{Binding ListBoxColor}"
+                                 MaxWidth="441"
+                                 AutoScrollToSelectedItem="False"
+                                 Margin="24 0 24 12"
+                                 HorizontalAlignment="Left">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBox.Styles>
+                                <Style Selector="ListBoxItem">
+                                    <Setter Property="Width" Value="48" />
+                                    <Setter Property="Height" Value="48" />
+                                    <Setter Property="MinWidth" Value="0" />
+                                    <Setter Property="Margin" Value="1 1 0 0" />
+                                    <Setter Property="Template">
+                                        <ControlTemplate>
+                                            <Panel>
+                                                <Border CornerRadius="{StaticResource ControlCornerRadius}"
+                                                        BorderThickness="2"
+                                                        Name="Root">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="{Binding}" />
+                                                    </Border.Background>
+                                                </Border>
+
+                                                <Border Name="Check"
+                                                        Background="{DynamicResource FocusStrokeColorOuter}"
+                                                        Width="20" Height="20"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0 2 2 0">
+                                                    <ui:SymbolIcon Symbol="Checkmark"
+                                                                   Foreground="{DynamicResource SystemAccentColor}"
+                                                                   FontSize="18"/>
+                                                </Border>
+                                            </Panel>
+                                        </ControlTemplate>
+                                    </Setter>
+                                </Style>
+                                <Style Selector="ListBoxItem /template/ Border#Check">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </Style>
+                                <Style Selector="ListBoxItem:pointerover /template/ Border#Root">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource FocusStrokeColorOuter}" />
+                                </Style>
+
+                                <Style Selector="ListBoxItem:selected /template/ Border#Root">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource FocusStrokeColorOuter}" />
+                                </Style>
+                                <Style Selector="ListBoxItem:selected /template/ Border#Check">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </Style>
+                            </ListBox.Styles>
+
+                        </ListBox>
+
+                        <Border Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                                Height="1"
+                                Margin="-20"/>
+
+                        <DockPanel LastChildFill="False" Margin="24 6 0 0">
+                            <TextBlock Text="Custom Color"
+                                       VerticalAlignment="Center"
+                                       DockPanel.Dock="Left" />
+
+                            <ui:ColorPickerButton Color="{Binding CustomAccentColor}"
+                                                  IsMoreButtonVisible="True"
+                                                  UseSpectrum="True"
+                                                  UseColorWheel="False"
+                                                  UseColorTriangle="False"
+                                                  UseColorPalette="False"
+                                                  IsCompact="True" ShowAcceptDismissButtons="True"
+                                                  DockPanel.Dock="Right"/>
+                        </DockPanel>                            
+                    </StackPanel>
+                </ctrls:OptionsDisplayItem.Content>                
+            </ctrls:OptionsDisplayItem>
+
+            <Border Padding="{StaticResource ButtonPadding}"
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource OverlayCornerRadius}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Found a bug? Want a new feature, control, or sample?"
+                               Classes="BaseTextBlockStyle"/>
+                    <ui:HyperlinkButton NavigateUri="http://github.com/amwx/FluentAvalonia/issues"
+                                        Content="Github Issues" />
+                    
+                    <TextBlock Text="To clone the source repository (right-click to copy link):"                               
+                               Classes="BaseTextBlockStyle"/>
+                    <TextBlock Text="https://github.com/amwx/FluentAvalonia.git">
+                        <TextBlock.ContextFlyout>
+                            <ui:TextCommandBarFlyout />
+                        </TextBlock.ContextFlyout>
+                    </TextBlock>
+
+                    <TextBlock Text="Dependencies"
+                               Classes="BaseTextBlockStyle"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <x:String xml:space="preserve">
+All resources, brushes, and control naming come from the WinUI repository (https://github.com/microsoft/microsoft-ui-xaml) which is licensed under the MIT license. WinUI is not affiliated, and does not endorse FluentAvalonia.
+
+Avalonia is licensed under the MIT license
+                        </x:String>
+                    </TextBlock>
+
+                    <TextBlock Text="Disclaimer / License"
+                               Classes="BaseTextBlockStyle"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <x:String xml:space="preserve">
+THIS CODE AND INFORMATION IS PROVIDED ‘AS IS’ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Copyright (c) 2022 amwx
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+                        </x:String>
+                    </TextBlock>
+                    
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

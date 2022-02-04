@@ -1,0 +1,365 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+        xmlns:pg="using:FluentAvaloniaSamples.Pages"
+        xmlns:ui="using:FluentAvalonia.UI.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20" >
+            <StackPanel>
+                <!--<pg:FAControlsPageBase Height="600" Width="1280"
+                                       TargetType="ui:HyperlinkButton"
+                                            PreviewImage="/Assets/PageIcons/HyperlinkButton.jpg"
+                                            WinUINamespace="Microsoft.UI.Xaml.Controls.Nhasdf"
+                                            WinUIDocsLink="http://www.google.com"
+                                            WinUIGuidelinesLink="http://www.microsoft.com"
+                                            PageXamlSourceLink="http://www.github.com/amwx/FluentAvalonia"
+                                            PageCSharpSourceLink="http://www.github.com/AvaloniaUI/Avalonia"
+                                            Description="This is a test of a really long description that should wrap to a maximum of three (3) lines before it then trims the text to a character ellipsis and the full description is available in a ToolTip">
+                    
+                </pg:FAControlsPageBase>-->
+                <ctrls:FAControlsPageHeader Width="400"  Height="1200" Classes="smallestWidth"
+                                       TargetType="ui:HyperlinkButton"
+                                            PreviewImage="/Assets/PageIcons/HyperlinkButton.jpg"
+                                            WinUINamespace="Microsoft.UI.Xaml.Controls.Nhasdf"
+                                            WinUIDocsLink="http://www.google.com"
+                                            WinUIGuidelinesLink="http://www.microsoft.com"
+                                            PageXamlSourceLink="http://www.github.com/amwx/FluentAvalonia"
+                                            PageCSharpSourceLink="http://www.github.com/AvaloniaUI/Avalonia"
+                                            Description="This is a test of a really long description that should wrap to a maximum of three (3) lines before it then trims the text to a character ellipsis and the full description is available in a ToolTip">
+
+                </ctrls:FAControlsPageHeader>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ctrls|FAControlsPageHeader">
+        <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Width" Value="350" />
+        <Setter Property="Margin" Value="0 0 8 8" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Padding="{TemplateBinding Padding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Grid RowDefinitions="*,Auto,Auto"
+                          ColumnDefinitions="Auto,*,Auto"
+                          Name="MainGrid">
+
+                        <!-- Preview Image -->
+                        <Border Name="ImageHost"
+                                CornerRadius="{StaticResource OverlayCornerRadius}"
+                                ClipToBounds="True">
+                            <Image Source="{TemplateBinding PreviewImage}" Stretch="Fill" />
+                        </Border>
+
+                        <!-- Main Information -->
+                        <StackPanel Name="ControlInfoHost" 
+                                    Opacity="1"
+                                    Grid.Row="0">
+                            <TextBlock Text="{Binding TargetType.Name, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Grid.Row="1"
+                                       Classes="SubtitleTextBlockStyle"
+                                       Name="ControlNameText"/>
+
+                            <TextBlock Text="{Binding TargetType, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Grid.Row="2"
+                                       Classes="CaptionTextBlockStyle"
+                                       FontStyle="Italic"
+                                       Name="NamespaceText"
+                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+
+                            <TextBlock Text="{TemplateBinding Description}"
+                                       Grid.Row="3"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="CharacterEllipsis"                                       
+                                       Name="DescriptionTextBlock" />
+
+                            <StackPanel Spacing="4"
+                                        Name="PageOptionButtonsHost">
+                                
+                                <ui:Button Name="ChangeThemeButton"
+                                           Classes="AppBarButton"
+                                           HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <ui:SymbolIcon Symbol="Edit" />
+                                        <TextBlock Text="Toggle Theme" />
+                                    </StackPanel>
+                                </ui:Button>
+                                
+                                <ui:Button Name="ShowDefinitionButton"
+                                           Classes="AppBarButton"
+                                           HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <ui:SymbolIcon Symbol="CodeFilled" />
+                                        <TextBlock Text="Show Definition" />
+                                    </StackPanel>
+                                </ui:Button>
+                            
+                            </StackPanel>
+                        </StackPanel>
+
+
+                        <StackPanel Spacing="2"
+                                    Name="WinUIRelationHost" Opacity="1">
+                            <StackPanel.RenderTransform>
+                                <TranslateTransform X="0" Y="0" />
+                            </StackPanel.RenderTransform>
+                            <TextBlock Text="Related WinUI Namespace"
+                                       Classes="BodyStrongTextBlockStyle" />
+
+                            <TextBlock Text="{TemplateBinding WinUINamespace}"
+                                       Grid.Row="2"
+                                       Classes="CaptionTextBlockStyle"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontStyle="Italic"
+                                       Margin="6 0"
+                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+
+                            <StackPanel HorizontalAlignment="Center" 
+                                        Spacing="2">
+                                <ui:HyperlinkButton Content="Documentation"
+                                                    HorizontalAlignment="Center"
+                                                    NavigateUri="{TemplateBinding WinUIDocsLink}"
+                                                    Name="DocsButton"/>
+                                <ui:HyperlinkButton Content="Guidelines"
+                                                    HorizontalAlignment="Center"
+                                                    NavigateUri="{TemplateBinding WinUIGuidelinesLink}"
+                                                    Name="GuidelinesButton"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4"
+                                    Name="SamplePageLinksHost"
+                                    Opacity="1">
+                            <StackPanel.RenderTransform>
+                                <TranslateTransform X="0" Y="0" />
+                            </StackPanel.RenderTransform>
+                            <TextBlock Text="View page code on Github"
+                                       Classes="BodyStrongTextBlockStyle" />
+
+                            <StackPanel Spacing="2"
+                                        HorizontalAlignment="Center">
+                                <ui:HyperlinkButton Content="Xaml Source Code"
+                                                    HorizontalAlignment="Center"
+                                                    NavigateUri="{TemplateBinding PageXamlSourceLink}"
+                                                    Name="XamlSourceButton"
+                                                    ToolTip.Tip="{TemplateBinding PageXamlSourceLink}"/>
+                                <ui:HyperlinkButton Content="C# Source Code"
+                                                    HorizontalAlignment="Center"
+                                                    NavigateUri="{TemplateBinding PageCSharpSourceLink}"
+                                                    ToolTip.Tip="{TemplateBinding PageCSharpSourceLink}"
+                                                    Name="CSharpSourceButton"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ctrls|FAControlsPageHeader /template/ Grid#MainGrid">
+        <Setter Property="Margin" Value="12 48 12 24" />
+    </Style>
+    
+    <Style Selector="ctrls|FAControlsPageHeader /template/ Border#ImageHost">
+        <Setter Property="Height" Value="125" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Width" Value="125" />
+        <Setter Property="Height" Value="125" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Height" Duration="00:00:00.25"
+                                  Easing="0,0 0,1" />
+                <DoubleTransition Property="Opacity" Duration="00:00:00.25"
+                                  Easing="0,0 0,1" />
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ctrls|FAControlsPageHeader /template/ StackPanel#ControlInfoHost">
+        <Setter Property="Margin" Value="0 150 0 0" />
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <ThicknessTransition Property="Margin" Duration="00:00:00.25"
+                                     Easing="0,0 0,1" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader /template/ TextBlock#ControlNameText">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader /template/ TextBlock#NamespaceText">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="6 0" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader /template/ TextBlock#DescriptionTextBlock">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="6 12" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="MaxLines" Value="4" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader /template/ StackPanel#PageOptionButtonsHost">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 12" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader /template/ StackPanel#WinUIRelationHost">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="1" />
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader /template/ StackPanel#WinUIRelationHost ui|HyperlinkButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader /template/ StackPanel#SamplePageLinksHost">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="2" />
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader /template/ StackPanel#SamplePageLinksHost ui|HyperlinkButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+
+    <!-- If we have a related WinUI control -->
+    <Style Selector="ctrls|FAControlsPageHeader:winui /template/ StackPanel#WinUIRelationHost">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader:doclink /template/ StackPanel#WinUIRelationHost ui|HyperlinkButton#DocsButton">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader:guidelink /template/ StackPanel#WinUIRelationHost ui|HyperlinkButton#GuidelinesButton">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <!-- Links to github pages -->
+    <Style Selector="ctrls|FAControlsPageHeader:pagesrc /template/ StackPanel#SamplePageLinksHost">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader:xamlsrc /template/ StackPanel#SamplePageLinksHost ui|HyperlinkButton#XamlSourceButton">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader:csharpsrc /template/ StackPanel#SamplePageLinksHost ui|HyperlinkButton#CSharpSourceButton">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+
+    <!-- Height triggers -->
+    <Style Selector="ctrls|FAControlsPageHeader.smallHeight /template/ Border#ImageHost">
+        <Setter Property="Opacity" Value="0" />
+        <Setter Property="Height" Value="0" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallHeight /template/ StackPanel#ControlInfoHost">
+        <Setter Property="Margin" Value="0 -48 0 0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader.smallestHeight /template/ StackPanel#WinUIRelationHost">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallestHeight /template/ StackPanel#SamplePageLinksHost">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallestHeight /template/ StackPanel#ControlInfoHost">
+        <Setter Property="Margin" Value="0 0 0 0" />
+    </Style>
+
+
+    <!-- Small Width Trigger -->
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth">
+        <Setter Property="Width" Value="NaN" />
+        <Setter Property="Height" Value="285" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ Grid#MainGrid">
+        <Setter Property="Margin" Value="12 24" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ Border#ImageHost">
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="Grid.Row" Value="0" />
+        <Setter Property="Grid.RowSpan" Value="2" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Width" Value="170" />
+        <Setter Property="Height" Value="170" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ StackPanel#ControlInfoHost">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="0" />
+        <Setter Property="Grid.RowSpan" Value="2" />
+        <Setter Property="Margin" Value="12 0" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ TextBlock#ControlNameText">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth  /template/ TextBlock#ControlNameText">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth  /template/ TextBlock#NamespaceText">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 6 0 0" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth  /template/ TextBlock#DescriptionTextBlock">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 6" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="MaxLines" Value="4" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth  /template/ StackPanel#PageOptionButtonsHost">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 12" />
+        <Setter Property="Orientation" Value="Horizontal" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ StackPanel#WinUIRelationHost">
+        <Setter Property="Grid.Column" Value="2" />
+        <Setter Property="Grid.Row" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ StackPanel#SamplePageLinksHost">
+        <Setter Property="Grid.Column" Value="2" />
+        <Setter Property="Grid.Row" Value="1" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ StackPanel#WinUIRelationHost StackPanel">
+        <Setter Property="Orientation" Value="Vertical" />
+    </Style>
+    <Style Selector="ctrls|FAControlsPageHeader.smallWidth /template/ StackPanel#SamplePageLinksHost StackPanel">
+        <Setter Property="Orientation" Value="Vertical" />
+    </Style>
+
+
+    <!-- Smallest Width Trigger -->
+    <Style Selector="ctrls|FAControlsPageHeader.smallestWidth">
+        <Setter Property="Width" Value="NaN" />
+        <Setter Property="Height" Value="NaN" />
+    </Style>
+</Styles>

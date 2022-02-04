@@ -1,0 +1,15 @@
+﻿<UserControl.Resources>
+    <ui:CommandBarFlyout Placement="Right" x:Key="CommandBarFlyout1">
+        <ui:CommandBarButton Label="Share" Icon="Share" ToolTip.Tip="Share" Command="{Binding Share}" />
+        <ui:CommandBarButton Label="Save" Icon="Save" ToolTip.Tip="Save" Command="{Binding Save}" />
+        <ui:CommandBarButton Label="Delete" Icon="Delete" ToolTip.Tip="Delete" Command="{Binding Delete}" />
+        <ui:CommandBarFlyout.SecondaryCommands>
+            <ui:CommandBarButton Label="Resize"  Command="{Binding Resize}" />
+            <ui:CommandBarButton Label="Move" Command="{Binding Move}" />
+        </ui:CommandBarFlyout.SecondaryCommands>
+    </ui:CommandBarFlyout>
+</UserControl.Resources>
+
+<Button Name="myImageButton" Padding="0" Click="MyImageButton_Click">
+    <Image Name="Image1" Source="/Assets/rainier.jpg" Height="300" />
+</Button>

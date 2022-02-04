@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1500"
+             x:Class="FluentAvaloniaSamples.Pages.BasicInputControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="Basic Input Controls" 
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="Button"
+                                  TargetType="Button"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel>
+                    <WrapPanel>
+                        <Button Content="Regular Button" Margin="4" Width="175"/>
+                        <Button Content="AccentButton" Classes="accent" Margin="4" Width="175"/>
+                        <Button Content="Disabled Button" Margin="4" IsEnabled="False" Width="175" />                     
+                    </WrapPanel>
+                    
+                    <Border Background="{DynamicResource DividerStrokeColorDefaultBrush}"
+							Height="1"
+							Margin="6" />
+
+                    <Button Content="Button.Classes=AppBarButton" Classes="AppBarButton" />
+                    <Button Content="Disabled Classes=AppBarButton" Classes="AppBarButton" IsEnabled="False" />
+                </StackPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ToggleButton"
+                                  TargetType="ToggleButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <WrapPanel>
+                    <ToggleButton Content="Regular ToggleButton" Margin="4" Width="175" />
+                    <ToggleButton Content="Disabled ToggleButton" Margin="4" IsEnabled="False" Width="175"/>
+                </WrapPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="RepeatButton"
+                                  TargetType="RepeatButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <WrapPanel>
+                    <RepeatButton Content="Regular RepeatButton" Margin="4" Width="175" />
+                    <RepeatButton Content="Disabled RepeatButton" Margin="4" IsEnabled="False" Width="175"/>
+                </WrapPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="RadioButton"
+                                  TargetType="RepeatButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <WrapPanel>
+                    <RadioButton Content="RadioButton1" Margin="4" IsChecked="True" />
+                    <RadioButton Content="RadioButton2" Margin="4" />
+                    <RadioButton Content="Disabled" Margin="4" IsEnabled="False" />
+                </WrapPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="CheckBox"
+                                  TargetType="CheckBox"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <WrapPanel>
+                    <CheckBox Content="CheckBox" Margin="4" IsChecked="True"/>
+                    <CheckBox Content="Indeterminate" IsThreeState="True" IsChecked="{x:Null}" Margin="4"  />
+                    <CheckBox Content="Disabled" Margin="4" IsEnabled="False" />
+                </WrapPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ToggleSwitch"
+                                  TargetType="ToggleSwitch"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <ToggleSwitch OffContent="{Binding #OffContentBox.Text}"
+                              OnContent="{Binding #OnContentBox.Text}"
+                              IsEnabled="{Binding #EnabledBox.Checked}"
+                              Name="TargetToggleSwitch"/>
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="4" MinWidth="90" MaxWidth="150">
+                        <TextBlock Text="OffContent" />
+                        <TextBox Name="OffContentBox" Text="Off" />
+                        <TextBlock Text="OnContent" />
+                        <TextBox Name="OnContentBox" Text="On" />
+                        <CheckBox Name="EnabledBox" MinWidth="0" Content="IsEnabled"
+                                  IsChecked="{Binding IsEnabled, ElementName=TargetToggleSwitch, Mode=TwoWay}"/>
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

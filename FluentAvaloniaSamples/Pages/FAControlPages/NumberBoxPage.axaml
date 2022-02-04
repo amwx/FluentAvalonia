@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="2000"
+             x:Class="FluentAvaloniaSamples.Pages.NumberBoxPage"
+             PreviewImage="/Assets/PageIcons/NumberBox.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="A NumberBox that evaluates expressions">
+            <ui:NumberBox Header="Enter an expression:"
+                          PlaceholderText="1 + 2^2" AcceptsExpression="True" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:NumberBox Header="Enter an expression:" PlaceholderText="1 + 2^2" AcceptsExpression="True" /&gt;                    
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A NumberBox with spin buttons">
+            <ui:NumberBox Name="NumBox2"
+                          MinWidth="150"
+                          Header="Enter a number"
+                          Value="10"
+                          Minimum="0"
+                          Maximum="100"
+                          SpinButtonPlacementMode="{Binding #SpinPlacementBox.SelectedItem.Content}"/>
+
+
+            <ctrls:ControlExample.Options>
+                <ComboBox Name="SpinPlacementBox" SelectedIndex="1" MinWidth="120">
+                    <ComboBoxItem Content="{x:Static ui:NumberBoxSpinButtonPlacementMode.Hidden}" />
+                    <ComboBoxItem Content="{x:Static ui:NumberBoxSpinButtonPlacementMode.Inline}" />
+                    <ComboBoxItem Content="{x:Static ui:NumberBoxSpinButtonPlacementMode.Compact}" />
+                </ComboBox>
+            </ctrls:ControlExample.Options>
+            
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:NumberBox SpinButtonPlacementMode="$(SpinPlacement)" Value="$(Value)" /&gt;                    
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="SpinPlacement" Value="{Binding #NumBox2.SpinButtonPlacementMode}" />
+                <ctrls:ControlExampleSubstitution Key="Value" Value="{Binding #NumBox2.Value}" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A Formatted NumberBox using SimpleNumberFormat">
+            <ui:NumberBox Header="Enter a decimal:"
+                          Value="10"
+                          Minimum="0"
+                          Maximum="100" 
+                          SimpleNumberFormat="F2"/>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:NumberBox Value="$(Value)" SimpleNumberFormat="F2" /&gt;                    
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Value" Value="{Binding #NumBox2.Value}" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A Formatted NumberBox that Rounds to the Nearest 0.25"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NumberBox3.cs.txt"
+                              UsageNotes="avares://FluentAvaloniaSamples/Pages/SampleCode/NumberBox3UsageNotes.txt">
+            <ui:NumberBox Header="Enter an amount:" 
+                          PlaceholderText="0.00"
+                          MinWidth="150"
+                          Minimum="0" Maximum="10000"
+                          Name="FormattedNumBox"/>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:NumberBox Value="$(Value)" Name="FormattedNumBox" /&gt;                    
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Value" Value="{Binding #NumBox2.Value, Mode=OneWay}" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

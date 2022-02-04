@@ -18,7 +18,7 @@ namespace FluentAvaloniaSamples.ViewModels
         protected string GetAssemblyResource(string name)
         {
             var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using (var stream = assets.Open(new Uri($"avares://FluentAvaloniaSamples/DescriptionTexts/{name}")))
+            using (var stream = assets.Open(new Uri(name)))
             using (StreamReader reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();

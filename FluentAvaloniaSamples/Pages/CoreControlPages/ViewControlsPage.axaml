@@ -1,0 +1,155 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1400"
+             x:Class="FluentAvaloniaSamples.Pages.ViewControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="View Controls"
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="TabControl"
+                                  TargetType="TabControl"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <TabControl>
+                    <TabItem Header="Page1">
+                        <Rectangle Fill="Red" Width="100" Height="100"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </TabItem>
+                    <TabItem Header="Page2">
+                        <Ellipse Fill="Blue" Width="100" Height="70"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center" />
+                    </TabItem>
+                    <TabItem IsEnabled="False" Header="Disabled" />
+                </TabControl>              
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="TabStrip / TabStripItem"
+                                  TargetType="TabStrip"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <TabStrip>
+                    <TabStripItem Content="Page1" />
+                    <TabStripItem Content="Page2" />
+                </TabStrip>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="Expander"
+                                  TargetType="Expander"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+
+                <StackPanel Spacing="5">
+                    <Expander Header="Expand me down!">
+                        <TextBlock Text="Content" />
+                    </Expander>
+                    <Expander Header="Expand me up!" ExpandDirection="Up">
+                        <TextBlock Text="Content" />
+                    </Expander>
+                    <Expander Header="Expand me left!" ExpandDirection="Left">
+                        <TextBlock Text="Content" />
+                    </Expander>
+                    <Expander Header="Expand me right!" ExpandDirection="Right">
+                        <TextBlock Text="Content" />
+                    </Expander>
+                </StackPanel>
+
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="SplitView"
+                                  TargetType="SplitView">
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="4">
+                        <CheckBox Content="IsPaneOpen" IsChecked="{Binding #SplitView.IsPaneOpen}" />
+                        <TextBlock Text="Pane Placement" />
+                        <ComboBox MinWidth="125" Name="PanePlacementBox" SelectedIndex="0">
+                            <ComboBoxItem Content="{x:Static SplitViewPanePlacement.Left}" />
+                            <ComboBoxItem Content="{x:Static SplitViewPanePlacement.Right}" />
+                        </ComboBox>
+                        <TextBlock Text="Display Mode" />
+                        <ComboBox MinWidth="125" Name="PaneDisplayModeBox" SelectedIndex="1">
+                            <ComboBoxItem Content="{x:Static SplitViewDisplayMode.Inline}" />
+                            <ComboBoxItem Content="{x:Static SplitViewDisplayMode.CompactInline}" />
+                            <ComboBoxItem Content="{x:Static SplitViewDisplayMode.CompactOverlay}" />
+                            <ComboBoxItem Content="{x:Static SplitViewDisplayMode.Overlay}" />
+                        </ComboBox>
+                        <TextBlock Text="Pane Background" />
+                        <ComboBox Name="PaneBackgroundSelector" SelectedIndex="0">
+                            <ComboBoxItem Tag="{DynamicResource SolidBackgroundFillColorBase}">SolidBackgroundFillColorBase</ComboBoxItem>
+                            <ComboBoxItem Tag="Red">Red</ComboBoxItem>
+                            <ComboBoxItem Tag="Blue">Blue</ComboBoxItem>
+                            <ComboBoxItem Tag="Green">Green</ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock Text="{Binding Value, ElementName=OpenPaneLengthSlider, StringFormat='{}OpenPaneLength: {0}'}" />
+                        <Slider Name="OpenPaneLengthSlider" Value="256" Minimum="128" Maximum="500"
+                                Width="150" />
+
+                        <TextBlock Text="{Binding Value, ElementName=CompactPaneLengthSlider, StringFormat='{}CompactPaneLength: {0}'}" />
+                        <Slider Name="CompactPaneLengthSlider" Value="48" Minimum="24" Maximum="128"
+                                Width="150" />
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+
+                <SplitView Name="SplitView"
+                           MinHeight="400"
+                           PanePlacement="{Binding #PanePlacementBox.SelectedItem.Content}"
+                           PaneBackground="{Binding SelectedItem.Tag, ElementName=PaneBackgroundSelector}"
+                           OpenPaneLength="{Binding Value, ElementName=OpenPaneLengthSlider}"
+                           CompactPaneLength="{Binding Value, ElementName=CompactPaneLengthSlider}"
+                           DisplayMode="{Binding #PaneDisplayModeBox.SelectedItem.Content}">
+                    <SplitView.Pane>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="PANE CONTENT" FontWeight="Bold" Name="PaneHeader" Margin="5,12,0,0" />
+                            <ComboBox Width="150" Grid.Row="1">
+                                <ComboBoxItem Content="Item1"/>
+                                <ComboBoxItem Content="Item2"/>
+                                <ComboBoxItem Content="Item3"/>
+                            </ComboBox>
+                            <ListBoxItem Grid.Row="2" VerticalAlignment="Top" Margin="0 10">
+                                <StackPanel Orientation="Horizontal">
+                                    <!--Path glyph from materialdesignicons.com-->
+                                    <Border Width="48">
+                                        <Viewbox Width="24" Height="24" HorizontalAlignment="Left">
+                                            <Canvas Width="24" Height="24">
+                                                <Path Fill="{DynamicResource SystemControlForegroundBaseHighBrush}" Data="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z" />
+                                            </Canvas>
+                                        </Viewbox>
+                                    </Border>
+                                    <TextBlock Text="People" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <TextBlock Grid.Row="3" Text="Item at bottom" Margin="60,12" />
+                        </Grid>
+                    </SplitView.Pane>
+
+                    <Grid>
+                        <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                        <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                        <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" HorizontalAlignment="Right" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                        <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" VerticalAlignment="Bottom" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                        <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" VerticalAlignment="Bottom" HorizontalAlignment="Right" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                    </Grid>
+
+                </SplitView>
+
+            </ctrls:ControlExample>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

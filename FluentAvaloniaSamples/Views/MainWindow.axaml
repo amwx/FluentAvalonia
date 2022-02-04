@@ -7,30 +7,23 @@
         xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia"
         xmlns:local="clr-namespace:FluentAvaloniaSamples.ViewModels;assembly=FluentAvaloniaSamples"
         xmlns:pg="clr-namespace:FluentAvaloniaSamples.Pages;assembly=FluentAvaloniaSamples"
+        xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
         xmlns:sys="using:System" 
         xmlns:core="using:FluentAvalonia.Core"
         xmlns:sty="using:FluentAvalonia.Styling"
         xmlns:wnd="using:FluentAvalonia.UI.Core"
         xmlns:media="using:FluentAvalonia.UI.Media"
 		xmlns:input="using:FluentAvalonia.UI.Input"
-        Width="1200" Height="700"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:views="using:FluentAvaloniaSamples.Views"
+        xmlns:aedit="using:AvaloniaEdit"
+        xmlns:conv="using:FluentAvalonia.Converters"
+        Width="1280" Height="750"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
         x:Class="FluentAvaloniaSamples.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/FAIcon.ico"
         Title="FluentAvalonia Samples">
-	
-    <!--<Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-     Background="{DynamicResource TestBrush}"-->
-	
-	<Panel>		
-		<ui:NavigationView Name="NavView"
-							PaneDisplayMode="Left"
-							IsVisible="True"
-						IsBackButtonVisible="True" AlwaysShowHeader="True"
-						IsBackEnabled="{Binding #FrameView.CanGoBack}">
-			<ui:Frame Name="FrameView" />
-		</ui:NavigationView>
+	    
+	<Panel>        
+        <views:MainView />
 	</Panel>
 </Window>

@@ -1,4 +1,8 @@
-﻿using FluentAvalonia.Interop;
+﻿using System;
+using System.Reactive.Disposables;
+using Avalonia;
+using Avalonia.Controls;
+using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Controls;
 
 namespace FluentAvalonia.Core.ApplicationModel
@@ -10,6 +14,9 @@ namespace FluentAvalonia.Core.ApplicationModel
 			_owner = owner;
 		}
 
+        /// <summary>
+        /// Gets or sets whether the current view is extended into the titlebar space
+        /// </summary>
 		public bool ExtendViewIntoTitleBar
 		{
 			get => _extend;
@@ -23,6 +30,10 @@ namespace FluentAvalonia.Core.ApplicationModel
 				}
 			}
 		}
+
+        /// <summary>
+        /// Gets the height of the titlebar
+        /// </summary>
 		public double Height
 		{
 			get
@@ -30,21 +41,36 @@ namespace FluentAvalonia.Core.ApplicationModel
 				if (double.IsNaN(_height))
 					GetSystemTitleBarHeight();
 
-				return _height;
+				return _customTitleBar?.Bounds.Height ?? _height;
 			}
 		}
 
+        /// <summary>
+        /// Gets whether the 
+        /// </summary>
 		public bool IsVisible => true;
 
-		// No RTL layout, so this is always zero
-		public double SystemOverlayLeftInset => 0;
+        /// <summary>
+        /// Gets the width of the system-reserved region of the upper-left corner of the app window. This region is reserved when the current language is a right-to-left language.
+        /// </summary>
+        /// <remarks>
+        /// No RTL layout in Avalonia, this value is always 0
+        /// </remarks>
+        public double SystemOverlayLeftInset => 0;
 
-		// This is a constant, I've set the buttons to 46px in width * 3 = 138
-		public double SystemOverlayRightInset => 138;
+        /// <summary>
+        /// Gets the width of the system-reserved region of the upper-right corner of the app window. This region is reserved when the current language is a left-to-right language.
+        /// </summary>
+        /// <remarks>
+        /// This is a constant, I've set the buttons to 46px in width * 3 = 138
+        /// </remarks>
+        public double SystemOverlayRightInset => 138;
 
-		public event TypedEventHandler<CoreApplicationViewTitleBar, object> LayoutMetricsChanged;
+		public event TypedEventHandler<CoreApplicationViewTitleBar, EventArgs> LayoutMetricsChanged;
 
-		private void GetSystemTitleBarHeight()
+        public event TypedEventHandler<CoreApplicationViewTitleBar, EventArgs> IsVisibleChanged;
+
+        private void GetSystemTitleBarHeight()
 		{
 			if (_owner == null)
 			{
@@ -59,13 +85,42 @@ namespace FluentAvalonia.Core.ApplicationModel
 			//Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
 			RECT frame = new RECT();
 			Win32Interop.AdjustWindowRectExForDpi(ref frame,
-				(int)style, false, 0, (int)(_owner.PlatformImpl.RenderScaling * 96));
+				(int)style, false, 0, 96);
 
 			_height = -frame.top;
 		}
 
-		private bool _extend;
+        internal void SetCustomTitleBar(IControl ctrl)
+        {
+            _customTitleBarDisp?.Dispose();
+
+            _customTitleBar = ctrl;
+
+            if (ctrl != null)
+            {
+                _customTitleBarDisp = new CompositeDisposable(
+                    _customTitleBar.GetPropertyChangedObservable(Visual.BoundsProperty).Subscribe(OnCustomTitleBarBoundsChanged),
+                    _customTitleBar.GetPropertyChangedObservable(Visual.IsVisibleProperty).Subscribe(OnCustomTitleBarVisibleChanged));
+            }
+
+            LayoutMetricsChanged?.Invoke(this, EventArgs.Empty);
+            IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnCustomTitleBarBoundsChanged(AvaloniaPropertyChangedEventArgs obj)
+        {
+            LayoutMetricsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnCustomTitleBarVisibleChanged(AvaloniaPropertyChangedEventArgs obj)
+        {
+            IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private bool _extend;
 		private double _height = double.NaN;
 		private CoreWindow _owner;
+        private IControl _customTitleBar;
+        private IDisposable _customTitleBarDisp;
 	}
 }

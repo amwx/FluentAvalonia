@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:input="using:FluentAvalonia.UI.Input"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             x:Class="FluentAvaloniaSamples.Pages.XamlUICommandPage"
+             PreviewImage="/Assets/PageIcons/UICommand.jpg">
+    <UserControl.Resources>
+        <input:XamlUICommand x:Key="CustomXamlUICommand" 
+                             ExecuteRequested="CustomXamlUICommand_ExecuteRequested"
+                             Description="This is a custom command" Label="Custom Command"
+                             HotKey="Ctrl+D">
+            <input:XamlUICommand.IconSource>
+                <ui:SymbolIconSource Symbol="Star" />
+            </input:XamlUICommand.IconSource>
+        </input:XamlUICommand>
+    </UserControl.Resources>
+
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="Creating a Reusable Command with XamlUICommand"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/XamlUICommand.xaml.txt"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/XamlUICommand.cs.txt"
+                              UsageNotes="avares://FluentAvaloniaSamples/Pages/SampleCode/XamlUICommandUsageNotes.txt">
+            <DockPanel>
+                <ui:CommandBarButton Name="CustomButton" Command="{DynamicResource CustomXamlUICommand}"/>
+                <TextBlock Name="XamlUICommandOutput"
+                           Margin="8,0,0,0"
+                           DockPanel.Dock="Right" />
+            </DockPanel>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

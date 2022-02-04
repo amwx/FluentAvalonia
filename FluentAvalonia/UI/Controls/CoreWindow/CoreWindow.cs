@@ -49,12 +49,23 @@ namespace FluentAvalonia.UI.Controls
 				PseudoClasses.Add(":windows");
 
 				ApplicationViewTitleBar.Instance.TitleBarPropertyChanged += OnTitleBarPropertyChanged;
+
+                var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+                if (faTheme != null)
+                {
+                    faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
+                }
 			}
 		}
 
-		Type IStyleable.StyleKey => typeof(Window);
+        Type IStyleable.StyleKey => typeof(Window);
 
-		CoreApplicationViewTitleBar ICoreApplicationView.TitleBar => _titleBar;
+        /// <summary>
+        /// Gets the <see cref="CoreApplicationViewTitleBar"/> associated with this Window
+        /// </summary>
+		public CoreApplicationViewTitleBar TitleBar => _titleBar;
+
+        protected internal bool IsWindows11 { get; internal set; }
 
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
@@ -126,41 +137,42 @@ namespace FluentAvalonia.UI.Controls
 
 		public void SetTitleBar(IControl titleBar)
 		{
-#if DEBUG
 			if (Design.IsDesignMode)
 				return;
-#endif
+
 			if (!_titleBar.ExtendViewIntoTitleBar)
 				throw new InvalidOperationException("View is not extended into titlebar. Call CoreApplicationViewTitleBar.ExtendIntoTitleBar first.");
 
 			_customTitleBar = titleBar;
-			//_customTitleBarHost.Content = titleBar;
+
+            _titleBar.SetCustomTitleBar(titleBar);
 
 			PseudoClasses.Set(":customtitlebar", titleBar != null);
-
-			//_customTitleBarHost.IsVisible = titleBar != null;
-			//_defaultTitleBar.IsVisible = titleBar == null;
 		}
 
 		internal bool HitTestTitleBarRegion(Point windowPoint)
 		{
 			if (_customTitleBar != null)
 			{
-				var mat = this.TransformToVisual(_customTitleBar).Value;
-				var bnds = _customTitleBar.Bounds.TransformToAABB(mat);
-				if (bnds.Contains(windowPoint))
-				{
-					var result = this.InputHitTest(windowPoint);
+                var mat = this.TransformToVisual(_customTitleBar);
+                if (mat.HasValue)
+                {
+                    var bnds = _customTitleBar.Bounds.TransformToAABB(mat.Value);
+                    if (bnds.Contains(windowPoint))
+                    {
+                        var result = this.InputHitTest(windowPoint);
 
-					return result == _customTitleBar;// _customTitleBar.HitTestCustom(windowPoint);
-				}
+                        return result == _customTitleBar;
+                    }
+                }
 
-				return false;
+                // Default TitleBar is still *slightly* visible to the left of the caption buttons even with
+                // a custom titlebar set, so make sure we test it
+                return _defaultTitleBar.HitTestCustom(windowPoint);
 			}
 			else
 			{
 				return _defaultTitleBar.HitTestCustom(windowPoint);
-				//return _defaultTitleBar.InputHitTest(windowPoint) != null;
 			}
 		}
 
@@ -208,8 +220,20 @@ namespace FluentAvalonia.UI.Controls
 			var flAvThm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
 
 			bool foundAccent = _templateRoot.TryFindResource("SystemAccentColor", out var sysColor);
+            bool foundAccentLight2 = false;
 
-			var thm = flAvThm.RequestedTheme;
+            var thm = flAvThm.RequestedTheme;
+            object sysColorLight2 = null;
+
+            if (thm==FluentAvaloniaTheme.LightModeString)
+            {
+                _templateRoot.TryFindResource("SystemAccentColorDark1", out sysColorLight2);
+            }
+            else 
+            {
+                _templateRoot.TryFindResource("SystemAccentColorLight2", out sysColorLight2);
+            }
+            
 
 			string prefix = "FATitle_";
 			if (_templateRoot.Resources.Count == 0)
@@ -230,7 +254,7 @@ namespace FluentAvalonia.UI.Controls
 				_templateRoot.Resources.Add(prefix + "SysCaptionForegroundPressed", tb.ButtonPressedForegroundColor ?? (thm == "Light" ? Color.Parse("#87000000") : Color.Parse("#87FFFFFF")));
 
 				_templateRoot.Resources.Add(prefix + "SysCaptionBackgroundInactive", tb.ButtonInactiveBackgroundColor ?? Colors.Transparent);
-				_templateRoot.Resources.Add(prefix + "SysCaptionForegroundInactive", tb.ButtonInactiveBackgroundColor ?? Colors.Gray);
+				_templateRoot.Resources.Add(prefix + "SysCaptionForegroundInactive", tb.ButtonInactiveBackgroundColor ?? (foundAccentLight2 ? (Color)sysColorLight2 : Colors.Gray));
 			}
 			else
 			{
@@ -250,12 +274,20 @@ namespace FluentAvalonia.UI.Controls
 				_templateRoot.Resources[prefix + "SysCaptionForegroundPressed"] = tb.ButtonPressedForegroundColor ?? (thm == "Light" ? Color.Parse("#87000000") : Color.Parse("#87FFFFFF"));
 
 				_templateRoot.Resources[prefix + "SysCaptionBackgroundInactive"] = tb.ButtonInactiveBackgroundColor ?? Colors.Transparent;
-				_templateRoot.Resources[prefix + "SysCaptionForegroundInactive"] = tb.ButtonInactiveBackgroundColor ?? Colors.Gray;
+				_templateRoot.Resources[prefix + "SysCaptionForegroundInactive"] = tb.ButtonInactiveBackgroundColor ?? (foundAccentLight2 ? (Color)sysColorLight2 : Colors.Gray);
 			}
 		}
 
+        private void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
+        {
+            // We need to monitor for theme changes, because we need to update the titlebar colors appropriately
+            SetTitleBarColors();
 
-		private CoreApplicationViewTitleBar _titleBar;
+            sender.ForceWin32WindowToTheme(this);
+        }
+
+
+        private CoreApplicationViewTitleBar _titleBar;
 		private MinMaxCloseControl _systemCaptionButtons;
 		private Panel _defaultTitleBar;
 		private IControl _customTitleBar;

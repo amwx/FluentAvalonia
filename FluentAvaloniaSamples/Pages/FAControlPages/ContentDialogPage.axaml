@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
+             x:Class="FluentAvaloniaSamples.Pages.ContentDialogPage"
+             PreviewImage="/Assets/PageIcons/ContentDialog.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample TargetType="ui:ContentDialog"
+                              Header="A Simple ContentDialog"
+                              UsageNotes="avares://FluentAvaloniaSamples/Pages/SampleCode/ContentDialogUsageNotes.txt">
+
+            <StackPanel Spacing="8">
+                <ui:Button Content="Launch ContentDialog"
+                           Command="{Binding LaunchDialogCommand}"
+                           CommandParameter="False" />
+                <ui:Button Content="Launch ContentDialog with Primary Button deferral"
+                           Command="{Binding LaunchDialogCommand}"
+                           CommandParameter="True" />
+            </StackPanel>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Orientation="Vertical" Spacing="4" MaxWidth="250">
+                    <Expander Header="Enabled Buttons" IsExpanded="True">
+                        <StackPanel Orientation="Vertical">
+                            <CheckBox Content="IsPrimaryButtonEnabled" IsChecked="{Binding IsPrimaryButtonEnabled}"/>
+                            <CheckBox Content="IsSecondaryButtonEnabled" IsChecked="{Binding IsSecondaryButtonEnabled}"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Default Button">
+                        <ComboBox Name="DefButtonSelector" MinWidth="90" 
+                                  Items="{Binding ContentDialogButtons}"
+                                  SelectedItem="{Binding ContentDialogDefaultButton}" />
+                    </Expander>
+                    <Expander Header="Content">
+                        <StackPanel Orientation="Vertical" Spacing="4">
+                            <TextBlock Text="Title"/>
+                            <TextBox Text="{Binding Title}" />
+                            <TextBlock Text="Content"/>
+                            <TextBox Text="{Binding Content}" />
+                            <TextBlock Text="PrimaryButtonText"/>
+                            <TextBox Text="{Binding PrimaryButtonText}" />
+                            <TextBlock Text="SecondaryButtonText"/>
+                            <TextBox Text="{Binding SecondaryButtonText}" />
+                            <TextBlock Text="CloseButtonText"/>
+                            <TextBox Text="{Binding CloseButtonText}" />
+                        </StackPanel>
+                    </Expander>
+
+                    <StackPanel Orientation="Vertical" Margin="20 0">
+                        <CheckBox Content="FullSizeDesired" IsChecked="{Binding FullSizeDesired}" 
+                                  ToolTip.ShowDelay="100" 
+                                  ToolTip.Tip="Full size stretches the dialog to &quot;full screen&quot;. &#x0a; Though, it just stretches it to the height size of a Content Dialog. &#x0a;"/>
+                    </StackPanel>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+            
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="ContentDialog with Custom Content"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CustomContentDialog.cs.txt">
+            <StackPanel Spacing="20">
+                <TextBlock xml:space="preserve">
+This example launches a ContentDialog with a TextBox which automatically closes based on the user input.
+
+  ● write "accept" or "ok" to close the dialog with the result 'Primary'
+  ● write "dismiss" or "not ok" to close the dialog with the result 'Secondary'
+  ● write "cancel", "close" or "hide" to close the dialog with the result 'None'
+                    </TextBlock>
+                <Button Content="Show Input" Command="{Binding ShowInputDialogAsync}" />
+            </StackPanel>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

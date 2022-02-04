@@ -1,0 +1,247 @@
+﻿[1.0.0]
+-FluentAvalonia official release
+
+[1.0.5]
+-Updated Avalonia to 0.10.6
+
+*ColorPickerButton/ColorPicker
+-Fixes horizontal color preview area margin so it's not up against the edge
+-Adds border as root template control to allow corner radius
+-Fixed HSL to RGB conversion in Color2 class
+
+*IconElements / IconSources
+-Update properties to StyledProperty for styling compatibility
+
+*ImageIconSource
+-Fixed AvaloniaProperty registration copy pasta still pointing to ImageIcon
+-Added [Content] attribute to Source property
+
+*Symbol
+-Fixed Delete Symbol glyph code point
+
+*TreeViewItem
+-Fixed chevron rotation on expanding item
+
+*Other
+-Added CornerRadiusFilterConverter references to BaseResources.axaml for v2 styles
+
+[1.0.7]
+*FluentAvaloniaTheme
+-Fix crash on startup on Windows (Issue #16)
+--RequestedTheme was being set twice (once to default Light, and again by getting the system theme, causing conflicts)
+
+*NavigationView
+-Various fixes/improvements from upstream in WinUI
+-Deprecated some unused resources (v2 styles only)
+--NOTE: Some design/visual elements have changed
+
+*Frame
+-Experimental: Post animation to Dispatcher for better animation experience when navigating between pages
+
+*ButtonSpinner and NumberBox
+-Update visual styles
+
+*ComboBox
+-Tweak some styles
+
+*DatePicker / TimePicker
+-Update visual styles to match button (as in WinUI)
+
+*ContentDialog
+-Small tweaks from upstream
+
+*TextBox
+-Updated TextBox style to use FontIcons for clear & password reveal buttons
+
+*v2 Styles
+-Updated a few color/brush resources from upstream
+-Added TextBlock styles from WinUI (also added to v1 styles). Corresponding classes:
+--BaseTextBlockStyle
+--CaptionTextBlockStyle
+--BodyTextBlockStyle
+--BodyStrongTextBlockStyle
+--SubtitleTextBlockStyle
+--TitleTextBlockStyle
+--DisplayTextBlockStyle
+
+*Sample App
+-Update control example templates & colors
+
+
+[1.1.0]
+*Added Controls
+-CommandBar, CommandBarButton, CommandBarToggleButton, CommandBarSeparator, CommandBarElementContainer, CommandBarFlyout, TextCommandBarFlyout, XamlUICommand, StandardUICommand
+-Revamped MenuFlyout to better match WinUI API and experimental binding support, including:
+--MenuFlyoutItem
+--MenuFlyoutSubItem
+--MenuFlyoutSeparator
+--ToggleMenuFlyoutItem
+--RadioMenuFlyoutItem
+
+*General
+-Updated any styles to match changes in WinUI, where needed
+
+*NavigationView
+-Investigate best way to support binding multiple data templates of different data types (i.e., add DataTemplateSelector, utilize DataTemplates, etc...)
+
+*Symbol Enum
+-Added SelectAll icon
+
+*Sample App
+-Updates and refactorings
+
+*InfoBar
+-Fixed crash when setting severity (Issue #23)
+
+
+[1.1.1]
+-Removed menuScroller class from ScrollViewer inside MenuBars to match WinUI (fixed issue #27)
+
+*ContentDialog
+-Added missing public Hide() method
+-Fixed tab navigation crash (Issue #28)
+
+*CommandBarButton/CommandBarToggleButton
+-Adjusted icon margins for better alignment
+
+*NumberBox
+-Adjusts styling
+-Set Value two way binding by default
+-Added SimpleNumberFormatter property for quick .net style formatting, e.g. "F2" for two decimal places
+
+[1.1.2]
+-Upgrade to Avalonia 0.10.7
+-Various minor fixes, see PR #35 for commit history
+
+[1.1.3]
+-Added DataGrid styles, note: V2 styles only
+-Allow setting MinWidth on ToggleSwitch
+-Added temporary fix to not have NRE with certain flyouts (CommandBarFlyout & ColorPickerButton). This arose from some changes to FlyoutBase in Avalonia 0.10.7
+-Fluent v1 styles now deprecated
+
+[1.1.5]
+*New Controls
+-Added InfoBadge with NavigationView integration
+
+*New Features
+-Add support to FluentAvaloniaTheme to for new Windows 11 Segoe UI Variable font (checks for OS Build Version >= 22000)
+-Addition of High Contrast theme styles for all controls (this still needs some work, but implementation has begun and should be useable)
+-Adds remaining core Avalonia control templates for compatibility with new styles (CaptionButtons, Carousel, EmbeddableControlRoot, Label, ManagedFileChooser, NotificationCard/WindowNotificationManager, NumericUpDown, TabStrip/TabStripItem, TitleBar)
+-Replace FluentUI Icons font with WinSymbols3 by robloo for compatibility with WinUI Segoe Fluent
+
+*Fixes
+-Fixed Icons for InfoBar to more closely resemble WinUI (Issue #45)
+-Fixed ComboBox Placeholder text not showing except on hover (Issue #44)
+-Added some opacity hacks to prevent pages flashing when navigating using Frame (Issue #46)
+
+*Miscellaneous
+-Ensured Templates & Resources are valid as of Oct 12 for all controls
+-Resources in ThemeDictionaries in WinUI are now themed and removed from Control Styles
+-Use TemplatedControl.CornerRadius & TemplateBinding for all controls
+-Added recent fixes for NavigationView from WinUI
+-AcrylicBrush resources now use the WinUI Fallback color
+-Updated AvaloniaProperties to use nameof()
+-Removed warnings in codebase
+-Tweaks to IconElements, including preserving inherited Foreground when using IconSources & using AddOwner where appropriate
+
+*Deprecations/Removals
+-Fluent theme v1 now removed
+
+
+[1.1.6]
+-Added ContentDialog.Hide() (PR #54)
+-Fixes possible memory leak with ContentDialogHost not actually assigning a disposable for the root/window bounds change
+-Updates Avalonia packages to 0.10.10
+-Fixed Sample App CoreWindow pseudoclass to properly reflect Windows 11
+
+[1.1.7]
+-Changed TargetFramework from net5.0 to multitarget netstandard2.0;netstandard2.1;net5.0 (Issue #58)
+-Package update will include the ProgressBar animation hack fix currently in master
+-All EventArgs classes now inherit from System.EventArgs as is .net practice. In addition, where events ported from WinUI controls sent null, they now send EventArgs.Empty. EventHandlers that are typed <sender, object> (where null was used) are left as object for now to avoid breaking changes. In the actual v1.2 release, these EventHandlers will be changed to use EventArgs instead.
+-Introduction of UnitTest project and some unit tests
+-WinUI ICollectionView & CollectionViewSource implementation to allow grouped collection display.
+-Added initial ListView/GridView implementations
+-Moved CoreWindow implementation from Sample App to main repo
+
+[1.1.8]
+*CoreWindow
+-Ensures :windows10 pseudoclass is added on Windows 10 (Issue #61)
+
+*CommandBar
+-Hide the overflow separator if overflow is enabled but SecondaryCommands are empty (Issue #62)
+
+
+[1.2.0.part1]
+*General Changes
+-All public facing classes, properties, and methods will now have XML documentation. Along with enums, where necessary.
+-I've removed any unused items within the Win32Interop.cs file. FluentAvalonia started as my personal control library which is why that was there - but it's unnecessary to keep most of the stuff there.
+-EventArgs classes have been moved to their own file where needed, and where appropriate, enums too.
+-Added an .editorconfig file
+-Added a few unit tests - a slow, but ongoing process
+
+*UI.Controls
+-Most controls will now have their AvaloniaProperties, CLR Properties, events, and property backing fields in a separate file (identified as [ControlName].properties.cs) to improve clarity. Controls whose class size is relatively small will be exempt, however. For example, HyperlinkButton defines 1 property and doesn't have much logic - so will remain as a single class.
+-Clean up of formatting and comments in various controls
+-ColorPickerButton, SplitButton, and ToggleSplitButton have been moved to their own folder
+-Removed the ItemsSourceView within the NavigationView folder and change to use the upstream one in Avalonia. (shouldn't result in any noticable differences or breaking changes)
+-As stated in 1.1.7, cases where WinUI events use object have will now use EventArgs. 1.1.7 changed from passing null to EventArgs.Empty but didn't change the event handler because it is a breaking change. This change is now made
+
+*Color Picker
+-Changed to use ImmutablePen in the component controls
+-Dispose of the event handlers in ColorPicker to prevent leaks in ApplyTemplate
+
+*NumberBox
+-Changed some properties from DirectProperty to StyledProperty
+-Used AddOwner<>() where appropriate
+
+
+[1.2.0.part2]
+*FluentAvaloniaTheme
+-Use MicroCom WinRT interop and reduce amount of undocumented API calls used for Windows system resources
+-Changes to resources:
+--LightResources.axaml, DarkResources.axaml, and BaseResources.axaml are now ResourceDictionary types, rather than Styles
+--AccentColors, ContentControlThemeFontFamily, and SymbolThemeFontFamily are now defined inside FluentAvaloniaTheme and not exposed in any resource dictionaries (they still work exactly the same, however).
+--FluentAvaloniaTheme now searches App level resource dictionary (App.axaml) before it searches the Fluent theme resources allowing you to override values now. Note that the app level styles collection is not searched, only the resource dictionary (App.Resources)
+-New Feature: High Contrast theme will now correctly resolve the colors from Windows (and the variants on Windows 11)
+-NEW: SkipControls property added: this property is a semicolon delimited string that will let you skip certain controls when templates are loading. For example, if you never use the DataGrid or the NavigationView, you can specify those controls here and the templates will not be loaded when FluentAvaloniaTheme initializes. This is a startup value only and more on how this works will come later...
+-In order to allow the above to work, Controls.axaml was removed and a list of all control templates is provided in text file format, which is parsed at load
+-All control styles files have been updated to end with "Styles", e.g., (ButtonStyles.axaml) for consistency. Breaking change only if you reference styles files individually and don't use FluentAvaloniaTheme, otherwise, this is already handled
+
+*Breaking Changes
+-Properties have been renamed
+--UseSegoeUIOnWindows is now UseSystemFontOnWindows
+--GetUserAccentColor is now UseUserAccentColorOnWindows
+--DefaultToUserTheme is now UseSystemThemeOnWindows
+-Method renamed
+--ForceNativeTitleBarToTheme is now ForceWin32WindowToTheme - this change better reflects that it's win32 only and applies not only to the titlebar, but also the window border.
+-RequestedThemeChanged event now has it's own event args class instead of just passing a string. The new theme can be retrieved from the event args.
+
+
+[1.2.0]
+*General Changes
+-Entirely rebuilt Sample app
+--New pages, animations, and code samples
+--Uses AvaloniaEdit for code samples with syntax highlighting and copy support (#55)
+-All changes from Parts 1 + 2
+-Added missing template bindings to CalendarDatePicker (#69, timunie)
+-Added Binding to ContentTemplate in DataGridColumnHeader (#70, timunie)
+
+*CoreWindow
+-Resolved issue where titlebar colors wouldn't respect theme changes (#73)
+-Fixed issue where Titlebar would be too big on high dpi screens
+-Added TitleBar property to CoreWindow, so no casting to ICoreApplicationView is necessary
+-Other small improvements
+
+*NavigationView
+-Resolved issue where left pane items wouldn't remove top padding if back button was shown then hidden
+-Removed bottom border from TopNavigationView (#76)
+
+*NumberBox
+-Resolved issue where NumberBox wouldn't commit value on losing focus (#74)
+-Added DataValidationErrors to NumberBox template (#84, RobertBeekman)
+
+*MenuItem / MenuFlyoutItem
+-Fixed extra padding on MenuItems
+
+
+

@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="3000"
+             x:Class="FluentAvaloniaSamples.Pages.GettingStartedPage">
+    <ScrollViewer>
+        <StackPanel Spacing="8">
+            <ctrls:ControlExample Header="Getting Started - Important Namespaces">
+                <TextBlock TextWrapping="Wrap">
+                    <x:String xml:space="preserve">
+Namespace for FluentAvalonia styling
+xmlns:sty="using:FluentAvalonia.Styling"
+
+Namespace for Controls:
+xmlns:ui="using:FluentAvalonia.UI.Controls"
+xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+                    </x:String>
+                </TextBlock>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="FluentAvaloniaTheme &amp; Styles"
+                                  XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/GettingStarted.xaml.txt"
+                                  CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/GettingStarted.cs.txt">
+                <TextBlock TextWrapping="Wrap">
+                    <x:String xml:space="preserve">
+FluentAvalonia has been made independent of Avalonia and does not require you to include a reference to adding the Fluent theme from Avalonia. FluentAvalonia features the Fluent v2 styles and is compatible with ALL controls from Avalonia (except for ContextMenu, where ContextFlyout should be used instead).
+
+To include the styles, reference FluentAvaloniaTheme in your App.axaml Styles. 
+
+FluentAvaloniaTheme allows you to make runtime changes to Light/Dark mode, manage custom accent colors, and on Windows pull certain values from the User system settings.
+
+It is also HighContrast theme aware, and will respect the variants of HighContrast theme featured on Windows.
+
+It is heavily focused on Windows, but changes to theme and accent color are still supported on Mac/Linux. If you'd like to see properties from other OS's included, feel free to open an issue to discuss and a PR to include the feature.
+
+As of v1.2, FluentAvaloniaTheme now searches the Application level ResourceDictionary before searching the internal resources. This allows you to override resources at the app level now. Note that the Application level Styles are not search, only the ResourceDictionary.
+
+See below for more on the available properties, what they do, and how to change them in your app:
+                    </x:String>
+                </TextBlock>
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

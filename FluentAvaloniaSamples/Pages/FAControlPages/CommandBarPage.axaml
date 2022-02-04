@@ -1,0 +1,188 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="3500"
+             x:Class="FluentAvaloniaSamples.Pages.CommandBarPage"
+             PreviewImage="/Assets/PageIcons/CommandBar.jpg">
+
+    <StackPanel Spacing="8">
+
+        <Expander Header="General Notes">
+            <x:String xml:space="preserve">
+This is an adaptation of the CommandBar from WinUI. It may not function 100% the same, but was a prerequisite for the CommandBarFlyout, so here ya go. 
+Some notes:
+- The CommandBar will only open down (open up is not supported)
+- As in WinUI, binding to the CommandBar is not supported
+- I've added a property ItemsAlignment to control the HorizontalAlignment of the PrimaryCommands.
+- Adding submenu's to CommandBarButtons has limited support. It should work, but keyboard navigation probably doesn't, especially with MenuFlyouts.
+- Actually, in general, Keyboard Navigation probably doesn't work the same either
+- This control will receive minimal support, only in the context of something being broken. I'd rather develop a better toolbar than try to add features to a control whose general design, IMO, isn't flexible and not that great.
+            </x:String>
+        </Expander>
+        
+        <ctrls:ControlExample Header="Default CommandBar"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CommandBar1.xaml.txt">
+            <ui:CommandBar>
+                <ui:CommandBar.PrimaryCommands>
+                    <ui:CommandBarButton Icon="Save" Label="Save" />
+                    <ui:CommandBarButton Icon="Undo" Label="Undo" />
+                    <ui:CommandBarSeparator />
+                    <ui:CommandBarToggleButton Icon="Bold" Label="Bold" />
+                    <ui:CommandBarToggleButton Icon="Italic" Label="Italic" />
+                    <ui:CommandBarToggleButton Icon="Underline" Label="Underline" />
+                </ui:CommandBar.PrimaryCommands>
+                <ui:CommandBar.SecondaryCommands>
+                    <ui:CommandBarButton Icon="Cut" Label="Cut" />
+                    <ui:CommandBarButton Icon="Copy" Label="Copy" />
+                    <ui:CommandBarButton Icon="Paste" Label="Paste" />
+                </ui:CommandBar.SecondaryCommands>
+            </ui:CommandBar>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="CommandBar with Label on Right Style"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CommandBar2.xaml.txt">
+            <ui:CommandBar DefaultLabelPosition="Right">
+                <ui:CommandBar.PrimaryCommands>
+                    <ui:CommandBarButton Icon="Save" Label="Save" />
+                    <ui:CommandBarButton Icon="Undo" Label="Undo" />
+                    <ui:CommandBarSeparator />
+                    <ui:CommandBarToggleButton Icon="Bold" Label="Bold" />
+                    <ui:CommandBarToggleButton Icon="Italic" Label="Italic" />
+                    <ui:CommandBarToggleButton Icon="Underline" Label="Underline" />
+                </ui:CommandBar.PrimaryCommands>
+                <ui:CommandBar.SecondaryCommands>
+                    <ui:CommandBarButton Icon="Cut" Label="Cut" />
+                    <ui:CommandBarButton Icon="Copy" Label="Copy" />
+                    <ui:CommandBarButton Icon="Paste" Label="Paste" />
+                </ui:CommandBar.SecondaryCommands>
+            </ui:CommandBar>
+        </ctrls:ControlExample>
+    
+        <ctrls:ControlExample Header="CommandBar with Label and Toggle Items in SecondaryCommands"
+                                  XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CommandBar3.xaml.txt">
+            <ui:CommandBar DefaultLabelPosition="Right">
+                <ui:CommandBar.PrimaryCommands>
+                    <ui:CommandBarButton Icon="Save" Label="Save" />
+                    <ui:CommandBarButton Icon="Undo" Label="Undo" />
+                </ui:CommandBar.PrimaryCommands>
+                <ui:CommandBar.SecondaryCommands>
+                    <ui:CommandBarButton Icon="Cut" Label="Cut" />
+                    <ui:CommandBarButton Icon="Copy" Label="Copy" />
+                    <ui:CommandBarButton Icon="Paste" Label="Paste" />
+                    <ui:CommandBarSeparator />
+                    <ui:CommandBarToggleButton Icon="Bold" Label="Bold" />
+                    <ui:CommandBarToggleButton Icon="Italic" Label="Italic" />
+                    <ui:CommandBarToggleButton Icon="Underline" Label="Underline" />
+                </ui:CommandBar.SecondaryCommands>
+            </ui:CommandBar>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="CommandBarButton" 
+                              TargetType="ui:CommandBarButton"
+                              EnableShowDefinitionLink="True">
+            
+            <ui:CommandBarButton Label="Label" Icon="Save" />
+
+            <ctrls:ControlExample.XamlSource>
+                &lt;ui:CommandBarButton Label="Label" Icon="Save" /&gt;
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.UsageNotes>
+                <x:String xml:space="preserve">
+CommandBarButtons (WinUI equivalent AppBarButton) differ from standard buttons in several ways:
+- Their default appearance is a transparent background with a smaller size
+- You use the Label and Icon properties to set the content instead of the Content property. The Content property is ignored.
+- The button's IsCompact property controls its size
+
+Note: While CommandBarButtons can be used outside of the CommandBar, Label on the bottom display mode is the only display mode available if not used in a CommandBar, as the CommandBar is what determines where the label displays.
+
+                </x:String>
+            </ctrls:ControlExample.UsageNotes>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="CommandBarToggleButton"
+                              TargetType="ui:CommandBarToggleButton"
+                              EnableShowDefinitionLink="True">
+
+            <ui:CommandBarToggleButton Label="Label" Icon="Save" />
+
+            <ctrls:ControlExample.XamlSource>
+                &lt;ui:CommandBarToggleButton Label="Label" Icon="Save" /&gt;
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.UsageNotes>
+                <x:String xml:space="preserve">
+A CommandBarToggleButton looks like a CommandBarButton, but works like a CheckBox. It typically has two states, checked or unchecked, but can be indeterminate. 
+
+Note: In WinUI, indeterminate looks like checked, I don't handle that case so it looks unchecked. Neither is really ideal, so you if you require an indeterminate CommandBarToggleButton, you may need to provide some styling for that yourself.
+                </x:String>
+            </ctrls:ControlExample.UsageNotes>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="CommandBarSeparator"
+                              TargetType="ui:CommandBarSeparator"
+                              EnableShowDefinitionLink="True">
+
+            <ui:CommandBar DefaultLabelPosition="Right">
+                <ui:CommandBar.PrimaryCommands>
+                    <ui:CommandBarButton Icon="Save" Label="Save" />
+                    <ui:CommandBarSeparator />
+                    <ui:CommandBarButton Icon="Cut" Label="Cut" />
+                    <ui:CommandBarButton Icon="Copy" Label="Copy" />
+                    <ui:CommandBarButton Icon="Paste" Label="Paste" />
+                    <ui:CommandBarSeparator />
+                    <ui:CommandBarButton Icon="Delete" Label="Delete" />
+                </ui:CommandBar.PrimaryCommands>
+            </ui:CommandBar>
+
+            <ctrls:ControlExample.XamlSource>
+                &lt;ui:CommandBarSeparator /&gt;
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.UsageNotes>
+                <x:String xml:space="preserve">
+A CommandBarSeparator creates a vertical line to visually separate groups of commands in a CommandBar. It has a compact state with reduced padding to match the compact state of the CommandBarButton and CommandBarToggleButton controls
+                </x:String>
+            </ctrls:ControlExample.UsageNotes>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="CommandBarElementContainer"
+                              TargetType="ui:CommandBarElementContainer"
+                              EnableShowDefinitionLink="True">
+
+            <ui:CommandBar DefaultLabelPosition="Right">
+                <ui:CommandBar.PrimaryCommands>
+                    <ui:CommandBarButton Icon="Save" Label="Save" />
+                    <ui:CommandBarSeparator />
+                    <ui:CommandBarElementContainer>
+                        <ComboBox VerticalAlignment="Center" MinWidth="125">
+                            <ComboBoxItem Content="Item1" />
+                            <ComboBoxItem Content="Item1" />
+                        </ComboBox>
+                    </ui:CommandBarElementContainer>
+                </ui:CommandBar.PrimaryCommands>
+            </ui:CommandBar>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:CommandBarElementContainer&gt;
+    &lt;ComboBox /&gt;
+&lt;/ui:CommandBarElementContainer&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.UsageNotes>
+                <x:String xml:space="preserve">
+Only controls that derive from ICommandBarElement are able to be added to a CommandBar's PrimaryCommands or SecondaryCommands. If you wish to add another type of control, host it in a CommandBarElement.
+                </x:String>
+            </ctrls:ControlExample.UsageNotes>
+        </ctrls:ControlExample>
+        
+        
+        
+    </StackPanel>
+    
+</UserControl>

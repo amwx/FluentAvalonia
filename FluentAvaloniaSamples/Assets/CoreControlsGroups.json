@@ -1,0 +1,71 @@
+﻿[
+  {
+    "Header": "Controls included with Avalonia",
+    "Description": "Note that not all controls have previews here, though all controls (except ContextMenu – use ContextFlyout instead) have styles available and can be used",
+    "IconResourceKey": null,
+    "Navigates": false
+  },
+  {
+    "Header": "Basic Input Controls",
+    "Description": "Button, ToggleButton, RepeatButton, RadioButton, CheckBox, ToggleSwitch",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "BasicInputControlsPage"
+  },
+  {
+    "Header": "Text Controls",
+    "Description": "TextBox, TextBlock, AutoCompleteBox",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "TextControlsPage"
+  },
+  {
+    "Header": "List Controls",
+    "Description": "ComboBox, ListBox, TreeView",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "ListControlsPage"
+  },
+  {
+    "Header": "Date/Time Controls",
+    "Description": "Calendar, CalendarDatePicker, DatePicker, TimePicker",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "DateTimeControlsPage"
+  },
+  {
+    "Header": "Range Controls",
+    "Description": "ButtonSpinner, NumericUpDown, Slider, ProgressBar",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "RangeControlsPage"
+  },
+  {
+    "Header": "Menu Controls",
+    "Description": "Menu, MenuItem, MenuFlyout",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "MenuControlsPage"
+  },
+  {
+    "Header": "View Controls",
+    "Description": "TabControl, TabStrip, TabStripItem, Expander, SplitView",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "ViewControlsPage"
+  },
+  {
+    "Header": "Data Controls",
+    "Description": "DataGrid",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "DataControlsPage"
+  },
+  {
+    "Header": "Miscellaneous Controls",
+    "Description": "Flyout, GridSplitter, ScrollViewer, ScrollBar, ToolTip",
+    "IconResourceKey": null,
+    "Navigates": true,
+    "PageType": "MiscControlsPage"
+  }
+]

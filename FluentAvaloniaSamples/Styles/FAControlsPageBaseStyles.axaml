@@ -1,0 +1,80 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+        xmlns:pg="using:FluentAvaloniaSamples.Pages"
+        xmlns:ui="using:FluentAvalonia.UI.Controls">
+
+    <Design.PreviewWith>
+        <Border Width="1280" Height="800" Padding="20">
+            <pg:FAControlsPageBase TargetType="ui:HyperlinkButton"
+                                   PreviewImage="/Assets/PageIcons/ColorPicker.jpg"
+                                   WinUINamespace="Microsoft.UI.Xaml.Controls.Nhasdf"
+                                   WinUIDocsLink="http://www.google.com"
+                                   WinUIGuidelinesLink="http://www.microsoft.com"
+                                   PageXamlSourceLink="http://www.github.com/amwx/FluentAvalonia"
+                                   PageCSharpSourceLink="http://www.github.com/AvaloniaUI/Avalonia"
+                                   Description="This is a test of a really long description that should wrap to a maximum of three (3) lines before it then trims the text to a character ellipsis and the full description is available in a ToolTip">
+                <ctrls:ControlExample Header="A hyperlink button that handles a Click event">
+                    <ui:HyperlinkButton Content="Go to Settings"
+                                        Name="TargetClickHyperlinkButton"/>
+
+                    <ctrls:ControlExample.XamlSource>
+                        <x:String>
+                            &lt;HyperlinkButton Content="FluentAvalonia Github repo" Click="HyperlinkButton_Click" /&gt;
+                        </x:String>
+                    </ctrls:ControlExample.XamlSource>
+
+                    <ctrls:ControlExample.CSharpSource>
+                        <x:String>
+                            public void HyperlinkButton_Click(object sender, RoutedEventArgs args)
+                            {
+                            // Handle navigation logic here, for example:
+                            NavigationService.Instance.Navigate(typeof(SettingsPage));
+                            }
+                        </x:String>
+                    </ctrls:ControlExample.CSharpSource>
+                </ctrls:ControlExample>
+            </pg:FAControlsPageBase>
+        </Border>
+    </Design.PreviewWith>
+    
+    <StyleInclude Source="/Styles/FAControlsPageHeaderStyles.axaml" />
+
+    <!-- This is the base layout -->
+    <Style Selector="pg|FAControlsPageBase">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="Auto,*" Name="RootGrid"
+                      Background="{TemplateBinding Background}">                    
+                    <ctrls:FAControlsPageHeader TargetType="{TemplateBinding TargetType}"
+                                                PreviewImage="{TemplateBinding PreviewImage}"
+                                                WinUINamespace="{TemplateBinding WinUINamespace}"
+                                                WinUIDocsLink="{TemplateBinding WinUIDocsLink}"
+                                                WinUIGuidelinesLink="{TemplateBinding WinUIGuidelinesLink}"
+                                                PageXamlSourceLink="{TemplateBinding PageXamlSourceLink}"
+                                                PageCSharpSourceLink="{TemplateBinding PageCSharpSourceLink}"
+                                                Description="{TemplateBinding Description}"
+                                                Name="HeaderElement" />
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Padding="0 0 8 0"
+                                  Grid.Column="1"
+                                  Name="PageScroller">
+                        <StackPanel Name="ContentRoot">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalContentAlignment="Stretch"
+                                              VerticalContentAlignment="Stretch"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              Name="PART_ContentPresenter"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

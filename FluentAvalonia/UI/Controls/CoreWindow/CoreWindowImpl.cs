@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using FluentAvalonia.Interop;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.UI.Controls
@@ -123,6 +124,7 @@ namespace FluentAvalonia.UI.Controls
 		{
 			 _owner = wnd;
 			((IPseudoClasses)wnd.Classes).Set(":windows10", !_isWindows11);
+            _owner.IsWindows11 = _isWindows11;
 		}
 
 		private int GetResizeHandleHeight()
@@ -161,7 +163,7 @@ namespace FluentAvalonia.UI.Controls
 			var originalRet = Win32Interop.DefWindowProc(Hwnd, (uint)WM.NCHITTEST, IntPtr.Zero, lParam);
 			if (originalRet != new IntPtr(1))
 			{
-				return originalRet;
+                return originalRet;
 			}
 
 			// At this point, we know that the cursor is inside the client area so it
@@ -200,7 +202,8 @@ namespace FluentAvalonia.UI.Controls
 					if (result)
 					{
 						_fakingMaximizeButton = true;
-						return new IntPtr(9);
+
+                        return new IntPtr(9);
 					}
 				}
 			}
@@ -213,11 +216,22 @@ namespace FluentAvalonia.UI.Controls
 					_owner.FakeMaximizePressed(false);
 				}
 
-				if (WindowState != WindowState.Maximized && isOnResizeBorder)
-					return new IntPtr(12); // HT_TOP
+                if (isOnResizeBorder)
+                {
+                    if (WindowState == WindowState.Maximized)
+                    {
+                        return new IntPtr(2); // HT_CAPTION if maximized
+                    }
+                    else
+                    {
+                        return new IntPtr(12); // HT_TOP
+                    }                    
+                }
 
 				if (_owner.HitTestTitleBarRegion(point))
-					return new IntPtr(2); //HT_CAPTION
+                {
+                    return new IntPtr(2); //HT_CAPTION                                          
+                }
 			}
 
 			if (_fakingMaximizeButton)
@@ -227,8 +241,9 @@ namespace FluentAvalonia.UI.Controls
 				_owner.FakeMaximizePressed(false);
 			}
 			_fakingMaximizeButton = false;
-			// return HT_CLIENT, we're in the normal window
-			return new IntPtr(1);
+            // return HT_CLIENT, we're in the normal window
+
+            return new IntPtr(1);
 		}
 
 		private PixelPoint PointFromLParam(IntPtr lParam)

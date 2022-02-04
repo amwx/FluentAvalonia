@@ -1,0 +1,18 @@
+﻿<!-- xmlns:input="using:FluentAvalonia.UI.Input" -->
+
+<UserControl.Resources>
+	<input:XamlUICommand x:Key="CustomXamlUICommand" ExecuteRequested="CustomXamlUICommand_ExecuteRequested"
+						Description="This is a custom command" Label="Custom Command"
+						HotKey="Ctrl+D">
+		<input:XamlUICommand.IconSource>
+			<ui:SymbolIconSource Symbol="Star" />
+		</input:XamlUICommand.IconSource>
+	</input:XamlUICommand>
+</UserControl.Resources>
+
+<DockPanel>
+	<ui:CommandBarButton Name="CustomButton" Command="{DynamicResource CustomXamlUICommand}"/>
+	<TextBlock Name="XamlUICommandOutput"
+				Margin="8,0,0,0"
+				DockPanel.Dock="Right" />
+</DockPanel>

@@ -1,0 +1,8 @@
+﻿<DockPanel>
+    <StackPanel Spacing="4" Orientation="Horizontal" DockPanel.Dock="Top">
+        <ui:Button Content="Go Back" Command="{Binding #TestFrame.GoBack}" IsEnabled="{Binding #TestFrame.CanGoBack}" />
+        <ui:Button Content="Go Forward" Command="{Binding #TestFrame.GoForward}" IsEnabled="{Binding #TestFrame.CanGoForward}" />
+    </StackPanel>
+
+    <ui:Frame Name="TestFrame" /> 
+</DockPanel>

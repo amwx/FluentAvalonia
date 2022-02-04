@@ -1,0 +1,289 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:FluentAvaloniaSamples.Controls"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:aedit="using:AvaloniaEdit">
+    <Design.PreviewWith>
+        <Border Padding="20" Width="600" Height="450">
+            <local:ControlExample Header="Sample Control"
+                                  CSharpSource="asdg">
+                <ui:Button Content="Sample"
+                           Classes.accent="{Binding #Accent.IsChecked}"/>
+
+                <local:ControlExample.Options>
+                    <StackPanel>
+                        <CheckBox Name="Accent" Content="Accent" />
+                    </StackPanel>
+                </local:ControlExample.Options>
+
+            </local:ControlExample>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="FlyoutPresenter.CodeSampleCopiedFlyout">
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="FlyoutPresenter.CodeSampleCopiedFlyout.Fail">
+        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+    </Style>
+
+    <Style Selector="local|ControlExample">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel>
+                    <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1 1 1 0"
+                            CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}">
+                        <DockPanel>
+                            <Border Background="{DynamicResource ControlStrongStrokeColorDefault}"
+                                    Height="1" Margin="1 0 1 0"
+                                    VerticalAlignment="Bottom"
+                                    DockPanel.Dock="Bottom"/>
+
+                            <ui:Button Classes="AppBarButton"
+                                       Margin="8"
+                                       DockPanel.Dock="Right"
+                                       Name="OptionsMenuButton">
+                                <ui:SymbolIcon Symbol="ChevronRight" FontSize="18" />
+                            </ui:Button>
+
+                            <ContentPresenter Name="HeaderPresenter"
+                                              Content="{TemplateBinding Header}"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"                                          
+                                              TextBlock.FontSize="24"
+                                              TextBlock.FontWeight="SemiBold"
+                                              Padding="12 8"
+                                              HorizontalContentAlignment="Left"
+                                              VerticalContentAlignment="Center" />
+
+                        
+                        </DockPanel>
+                    </Border>
+
+                    <Border Name="ControlPreviewAreaHost"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1 0 1 1"
+                            Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
+                            <ContentPresenter Name="ExamplePresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="12 12 0 12"/>
+                            
+                            <Border Name="OptionsHost"
+                                    IsVisible="{Binding Options, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                    Margin="12"
+                                    Padding="8"
+                                    CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                <StackPanel>
+                                    <DockPanel LastChildFill="False">
+                                        <TextBlock Text="Options"
+                                                   DockPanel.Dock="Left"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0 3" />
+
+                                        <ui:Button Name="ShowHideOptionsButton"
+                                                   Classes="AppBarButton"
+                                                   DockPanel.Dock="Right"
+                                                   Margin="6 0 0 0">
+                                            <ui:SymbolIcon Name="OptionsChevron" />
+                                        </ui:Button>
+                                    </DockPanel>
+                                    <ContentPresenter Name="OptionPresenter"
+                                                      Content="{TemplateBinding Options}"
+                                                      HorizontalContentAlignment="Stretch"
+                                                      VerticalContentAlignment="Stretch"
+                                                      IsVisible="{TemplateBinding IsOptionsExpanded}"/>
+                                </StackPanel>
+
+
+                            </Border>
+
+
+
+                        </Grid>
+                    </Border>
+
+
+
+                    <Border Name="CodePreviewAreaHost"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1 0 1 1"
+                            Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                            MinHeight="10"
+                            CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}">
+                        <Grid ColumnDefinitions="*,Auto"
+                              RowDefinitions="Auto,Auto,Auto,Auto">
+
+                            <aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
+                                              Margin="8 32 8 8"
+                                              MinHeight="50"/>
+
+                            <aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
+                                              Grid.Row="1" Margin="8 32 8 8" 
+                                              MinHeight="50" />
+
+                            <ui:Button Name="CopyXamlButton"
+                                       DockPanel.Dock="Right"
+                                       Grid.Column="1"
+                                       Margin="8 16 8 8" Padding="4"
+                                       VerticalAlignment="Top">
+                                <ui:SymbolIcon Symbol="Copy" FontSize="18" />
+                            </ui:Button>
+
+                            <ui:Button Name="CopyCSharpButton"
+                                       Grid.Row="1" Grid.Column="1"
+                                       Margin="8 32 8 8" Padding="4"
+                                       VerticalAlignment="Top">
+                                <ui:SymbolIcon Symbol="Copy" FontSize="18" />
+                            </ui:Button>
+
+                            <TextBlock Text="Additional Notes"
+                                       Classes="BodyStrongTextBlockStyle Notes"
+                                       Grid.Row="2"
+                                       Margin="8 24 8 16"/>
+                            
+                            <TextBlock Name="UsageNotesTextBlock"
+                                       Grid.Row="3"
+                                       Classes="Notes"
+                                       Margin="8 0 8 16"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </Border>                            
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="local|ControlExample /template/ ui|SymbolIcon#OptionsChevron">
+        <Setter Property="Symbol" Value="ChevronDown" />
+    </Style>
+    <Style Selector="local|ControlExample /template/ ui|Button#ShowHideOptionsButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="local|ControlExample /template/ ContentPresenter#ExamplePresenter">
+        <Setter Property="Grid.ColumnSpan" Value="1" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <ThicknessTransition Duration="00:00:00.167" Property="Padding" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="local|ControlExample /template/ Border#OptionsHost">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="00:00:00.167" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="local|ControlExample /template/ Border#ControlPreviewAreaHost">
+        <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
+    </Style>
+
+    <Style Selector="local|ControlExample /template/ Border#CodePreviewAreaHost">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    
+    <Style Selector="local|ControlExample /template/ Border#OptionsHost">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="local|ControlExample /template/ TextBlock.Notes">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    
+    <Style Selector="local|ControlExample:codepreview /template/ Border#CodePreviewAreaHost">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="local|ControlExample:codepreview /template/ Border#ControlPreviewAreaHost">
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
+    <!-- Xaml Source TextArea -->
+    <Style Selector="local|ControlExample /template/ aedit|TextEditor#XamlTextEditor,
+                     local|ControlExample /template/ ui|Button#CopyXamlButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="local|ControlExample:xamlsource /template/ aedit|TextEditor#XamlTextEditor,
+                     local|ControlExample:xamlsource /template/ ui|Button#CopyXamlButton">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+
+    <!-- CSharp Source TextArea -->
+    <Style Selector="local|ControlExample /template/ aedit|TextEditor#CSharpTextEditor,
+                     local|ControlExample /template/ ui|Button#CopyCSharpButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="local|ControlExample:csharpsource /template/ aedit|TextEditor#CSharpTextEditor,
+                     local|ControlExample:csharpsource /template/ ui|Button#CopyCSharpButton">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    
+    <Style Selector="local|ControlExample:options /template/ Border#OptionsHost">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+
+    <!-- Usage/Additional Notes -->
+    <Style Selector="local|ControlExample:usagenotes /template/ TextBlock.Notes">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+
+    <!-- AdaptiveWidth -->    
+    <Style Selector="local|ControlExample:adaptiveW /template/ ContentPresenter#ExamplePresenter">
+        <Setter Property="Grid.ColumnSpan" Value="2" />
+        <Setter Property="Padding" Value="12 24 12 12" />
+    </Style>
+
+    <Style Selector="local|ControlExample:adaptiveW /template/ Border#OptionsHost">
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Opacity" Value="0.5" />
+        <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+    </Style>
+    <Style Selector="local|ControlExample:adaptiveW /template/ ui|Button#ShowHideOptionsButton">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="local|ControlExample:adaptiveW /template/ Border#OptionsHost:pointerover">
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <Style Selector="local|ControlExample:adaptiveW:small /template/ ui|Button#ShowHideOptionsButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    
+    <Style Selector="local|ControlExample:optionsfull /template/ ui|SymbolIcon#OptionsChevron">
+        <Setter Property="Symbol" Value="ChevronUp" />
+    </Style>
+
+    <Style Selector="local|ControlExample:adaptiveW:small /template/ Border#OptionsHost">
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="Grid.ColumnSpan" Value="2" />
+        <Setter Property="Grid.Row" Value="1" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+    </Style>
+</Styles>

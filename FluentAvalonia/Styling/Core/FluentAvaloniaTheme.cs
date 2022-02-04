@@ -121,7 +121,7 @@ namespace FluentAvalonia.Styling
         public IReadOnlyList<IStyle> Children => _controlStyles;
 
         public event EventHandler OwnerChanged;
-        public TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
+        public event TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
 
         public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
         {
@@ -683,8 +683,8 @@ namespace FluentAvalonia.Styling
         private Uri _baseUri;
         private Color? _customAccentColor;
 
-        public readonly string LightModeString = "Light";
-        public readonly string DarkModeString = "Dark";
-        public readonly string HighContrastModeString = "HighContrast";
+        public static readonly string LightModeString = "Light";
+        public static readonly string DarkModeString = "Dark";
+        public static readonly string HighContrastModeString = "HighContrast";
     }
 }

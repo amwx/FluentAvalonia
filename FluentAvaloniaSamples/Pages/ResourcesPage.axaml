@@ -1,0 +1,153 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             xmlns:conv="using:FluentAvalonia.Converters"
+             xmlns:sconv="using:FluentAvaloniaSamples.Converters"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluentAvaloniaSamples.Pages.ResourcesPage">
+    <UserControl.Resources>
+        <conv:ColorToBrushConv x:Key="CToBConv" />
+        <sconv:InverseBrushConverter x:Key="InvBrushConv" />
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Panel MinHeight="90" Name="HeaderRegion" 
+               Background="{StaticResource TopLevelPageBackgroundImage}"
+               DockPanel.Dock="Top">
+            <Rectangle>
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0"
+                                         EndPoint="0,1365">
+                        <GradientStop Offset="0" Color="Transparent" />
+                        <GradientStop Offset="0.035" Color="{DynamicResource SolidBackgroundFillColorTertiary}" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <StackPanel>
+                <TextBlock Text="Fluent v2 Resources"
+                           VerticalAlignment="Top"
+                           Classes="TitleTextBlockStyle"
+                           Padding="32 20 0 0" />
+            </StackPanel>
+
+        </Panel>
+
+        <StackPanel Spacing="4" Margin="18 9"
+                    DockPanel.Dock="Top">
+            <local:OptionsDisplayItem Description="Browse the resources used within the Fluent v2 theme" />
+
+            <local:OptionsDisplayItem Header="Search"
+                                      Description="Search for a specific resource by its ResourceKey">
+                <local:OptionsDisplayItem.ActionButton>
+                    <TextBox Name="SearchTextBox" MinWidth="200"
+                             Text="{Binding SearchText}">
+                        <TextBox.InnerRightContent>
+                            <StackPanel Orientation="Horizontal">
+                                <ui:Button Content="&#xE8BB;"
+                                           FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                           Classes="AppBarButton"
+                                           Command="{Binding $parent[TextBox].Clear}"
+                                           IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                <ui:Button Content="&#xE721;"
+                                           FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                           Classes="AppBarButton"
+                                           Command="{Binding $parent[TextBox].Clear}"
+                                           IsHitTestVisible="False"/>
+                            </StackPanel>
+                        </TextBox.InnerRightContent>
+                    </TextBox>
+                </local:OptionsDisplayItem.ActionButton>
+            </local:OptionsDisplayItem>
+        </StackPanel>
+
+        <DataGrid Items="{Binding ResourceView}"
+                  AutoGenerateColumns="False"
+                  CanUserResizeColumns="True"
+                  CanUserSortColumns="False" 
+                  MaxHeight="700"
+                  Margin="18 0">
+            <DataGrid.Styles>
+                <Style Selector="DataGridCell">
+                    <Setter Property="FontSize" Value="14" />
+                </Style>
+            </DataGrid.Styles>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Resource Key"
+                                        Width="2*" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ResourceKey}"
+                                       HorizontalAlignment="Left"
+                                       Margin="12 0"
+                                       VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="1.5*" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ResourceType}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="ResourceType"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Preview"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.DataTemplates>
+                                    <DataTemplate DataType="vm:BrushResourceItem">
+                                        <Border Background="{Binding Brush}">
+                                            <TextBlock Text="{Binding ColorCode}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="{Binding ColorCode, Converter={StaticResource InvBrushConv}, ConverterParameter={DynamicResource TextFillColorDefaultBrush}}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="vm:ColorResourceItem">
+                                        <Border Background="{Binding Color, Converter={StaticResource CToBConv}}">
+                                            <TextBlock Text="{Binding ColorCode}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="{Binding ColorCode, Converter={StaticResource InvBrushConv}, ConverterParameter={DynamicResource TextFillColorDefaultBrush}}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="vm:FontFamilyResourceItem">
+                                        <TextBlock Text="{Binding FontFamily}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="vm:PrimitiveResourceItem">
+                                        <TextBlock Text="{Binding Value}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </ContentControl.DataTemplates>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>    
+</UserControl>

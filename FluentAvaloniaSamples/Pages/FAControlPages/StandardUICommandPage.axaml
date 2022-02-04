@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="2500"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:input="using:FluentAvalonia.UI.Input"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             x:Class="FluentAvaloniaSamples.Pages.StandardUICommandPage"
+             PreviewImage="/Assets/PageIcons/UICommand.jpg">
+
+    <UserControl.Resources>
+        <input:StandardUICommand x:Key="DeleteCommand" Kind="Delete" Command="{Binding DeleteItem}" />
+    </UserControl.Resources>
+
+    <StackPanel Spacing="8">
+        <Expander Header="Defined StandardUICommands">
+            <ItemsRepeater Items="{Binding StandardCommands}">
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <ui:CommandBarButton DockPanel.Dock="Right"
+                                                    Command="{Binding Command}" />
+                            <TextBlock Text="{Binding Name}"
+                                        VerticalAlignment="Center" />
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </Expander>
+
+        <ctrls:ControlExample Header="Creating a Reusable Command with XamlUICommand"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/StandardUICommand.xaml.txt"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/StandardUICommand.cs.txt"
+                              UsageNotes="avares://FluentAvaloniaSamples/Pages/SampleCode/StandardUICommandUsageNotes.txt">
+            <StackPanel>
+                <ui:CommandBar DefaultLabelPosition="Right">
+                    <ui:CommandBar.PrimaryCommands>
+                        <ui:CommandBarButton Label="Add" Command="{Binding AddItem}" />
+                    </ui:CommandBar.PrimaryCommands>
+                    <ui:CommandBar.SecondaryCommands>
+                        <ui:CommandBarButton Command="{StaticResource DeleteCommand}"
+                                             CommandParameter="{Binding #ListBox1.SelectedItem}"/>
+                    </ui:CommandBar.SecondaryCommands>
+                </ui:CommandBar>
+                <ListBox Items="{Binding TempItems}" Name="ListBox1" VirtualizationMode="None">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="Transparent">
+                                <Panel>
+                                    <TextBlock Text="{Binding}"
+                                               VerticalAlignment="Center" />
+
+                                    <ui:CommandBarButton HorizontalAlignment="Right"
+                                                         Command="{StaticResource DeleteCommand}"
+                                                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
+                                                         HotKey="{x:Null}"
+															 />
+                                </Panel>
+
+                                <Border.ContextFlyout>
+                                    <ui:MenuFlyout>
+                                        <ui:MenuFlyoutItem Command="{StaticResource DeleteCommand}"
+                                                           CommandParameter="{Binding #ListBox1.SelectedItem}" />
+                                    </ui:MenuFlyout>
+                                </Border.ContextFlyout>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

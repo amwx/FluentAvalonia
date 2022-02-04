@@ -83,7 +83,7 @@
                                 <ColumnDefinition Width="Auto"
                                                   SharedSizeGroup="MenuItemChevron" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Name="PART_IconPresenter"
+                            <ContentPresenter Name="PART_IconPresenter" Background="Beige"
                                               Content="{TemplateBinding Icon}"
                                               Width="16"
                                               Height="16"
@@ -109,7 +109,7 @@
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center" />
-                            <ui:SymbolIcon Name="PART_ChevronPath"
+                            <ui:SymbolIcon Name="PART_ChevronPath" 
                                            Height="16"
                                            Symbol="ChevronRight"
                                            Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
@@ -127,7 +127,6 @@
                         <Border Background="{DynamicResource MenuFlyoutPresenterBackground}"
                                 BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
                                 BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
-                                Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                 MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
                                 MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
                                 HorizontalAlignment="Stretch"
@@ -138,7 +137,7 @@
                                                 Items="{TemplateBinding Items}"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"
                                                 ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+                                                Margin="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                                 Grid.IsSharedSizeScope="True" />
                             </ScrollViewer>
                         </Border>
@@ -179,7 +178,6 @@
                             <Border Background="{DynamicResource MenuFlyoutPresenterBackground}"
                                     BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
                                     BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
-                                    Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                     MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
                                     MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
                                     HorizontalAlignment="Stretch"
@@ -189,7 +187,7 @@
                                                     Items="{TemplateBinding Items}"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"
                                                     ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                    Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+                                                    Margin="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                                     Grid.IsSharedSizeScope="True" />
                                 </ScrollViewer>
                             </Border>
@@ -201,8 +199,8 @@
     </Style>
 
     <Style Selector="MenuItem">
-        <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
-        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
+        <!-- Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
+    <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
     </Style>
 
     <Style Selector="Menu > MenuItem">

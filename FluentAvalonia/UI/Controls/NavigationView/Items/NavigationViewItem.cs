@@ -65,9 +65,9 @@ namespace FluentAvalonia.UI.Controls
 
             base.OnApplyTemplate(e);
 			var x = this.Content;
-            _presenter = e.NameScope.Get<NavigationViewItemPresenter>("NVIPresenter");
+            _presenter = e.NameScope.Find<NavigationViewItemPresenter>("NVIPresenter");
 
-            _rootGrid = e.NameScope.Get<Grid>("NVIRootGrid");
+            _rootGrid = e.NameScope.Find<Grid>("NVIRootGrid");
             if (_rootGrid != null)
             {
                 var flyout = FlyoutBase.GetAttachedFlyout(_rootGrid);
@@ -105,7 +105,7 @@ namespace FluentAvalonia.UI.Controls
             //var navView = GetNavigationView;
             if (navView != null)
             {
-                _repeater = e.NameScope.Get<ItemsRepeater>("NVIMenuItemsHost");
+                _repeater = e.NameScope.Find<ItemsRepeater>("NVIMenuItemsHost");
                 if (_repeater != null)
                 {
                     (_repeater.Layout as StackLayout).DisableVirtualization = true;
@@ -119,7 +119,7 @@ namespace FluentAvalonia.UI.Controls
                 UpdateRepeaterItemsSource();
             }
 
-            _flyoutContentGrid = e.NameScope.Get<Panel>("FlyoutContentGrid");
+            _flyoutContentGrid = e.NameScope.Find<Panel>("FlyoutContentGrid");
 
             _appliedTemplate = true;
 
@@ -378,8 +378,11 @@ namespace FluentAvalonia.UI.Controls
             if (!_appliedTemplate)
                 return;
 
-			((IPseudoClasses)_presenter.Classes).Set(":selected", IsSelected);
-
+            if (_presenter != null)
+            {
+                ((IPseudoClasses)_presenter.Classes).Set(":selected", IsSelected);
+            }
+			
 			UpdateVisualStateForNavigationViewPositionChange();
 
             bool showIcon = ShouldShowIcon;
@@ -397,7 +400,10 @@ namespace FluentAvalonia.UI.Controls
             }
             else
             {
-                ((IPseudoClasses)_presenter.Classes).Set(":iconcollapsed", false);
+                if (_presenter != null)
+                {
+                    ((IPseudoClasses)_presenter.Classes).Set(":iconcollapsed", false);
+                }
             }
 
             UpdateVisualStateForToolTip();
@@ -421,10 +427,13 @@ namespace FluentAvalonia.UI.Controls
 
                 bool show = HasChildren && !(_isClosedCompact && ShouldRepeaterShowInFlyout);
                 bool expand = IsExpanded;
-                var c = this.Content;
-                ((IPseudoClasses)_presenter.Classes).Set(":chevronopen", show && expand);
-                ((IPseudoClasses)_presenter.Classes).Set(":chevronclosed", show & !expand);
-                ((IPseudoClasses)_presenter.Classes).Set(":chevronhidden", !show);
+                
+                if (_presenter != null)
+                {
+                    ((IPseudoClasses)_presenter.Classes).Set(":chevronopen", show && expand);
+                    ((IPseudoClasses)_presenter.Classes).Set(":chevronclosed", show & !expand);
+                    ((IPseudoClasses)_presenter.Classes).Set(":chevronhidden", !show);
+                }                
             }
         }
 

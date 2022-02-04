@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1000"
+             x:Class="FluentAvaloniaSamples.Pages.InfoBadgePage"
+             PreviewImage="/Assets/PageIcons/InfoBadge.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="InfoBadge embedded in NavigationView">
+            <ui:NavigationView x:Name="nvSample1" Height="300" 
+								   PaneDisplayMode="{Binding #DisplayModeBox.SelectedItem.Content}">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Home" Icon="Home"/>
+                    <ui:NavigationViewItem Content="Account" Icon="Contact"/>
+                    <ui:NavigationViewItem x:Name="InboxPage" Content="Inbox" Icon="Mail">
+                        <ui:NavigationViewItem.InfoBadge>
+                            <ui:InfoBadge x:Name="infoBadge1" Value="5"
+                                          Opacity="{Binding InfoBadgeOpacity, Mode=OneWay}" />
+                        </ui:NavigationViewItem.InfoBadge>
+                    </ui:NavigationViewItem>
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel>
+                    <CheckBox Content="InfoBadge Opacity"
+                          IsChecked="{Binding InfoBadgeOpacity}" />
+
+                    <TextBlock Text="Display Mode" />
+                    <ComboBox Name="DisplayModeBox" SelectedIndex="0">
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Left}" />
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.LeftCompact}" />
+                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Top}" />
+                    </ComboBox>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:NavigationViewItem Content="Inbox" Icon="Mail"&gt;
+    &lt;ui:NavigationViewItem.InfoBadge&gt;
+        &lt;ui:InfoBadge Name="infoBadge1" Value="5" Opacity="$(Opacity)" /&gt;
+    &lt;/ui:NavigationViewItem.InfoBadge&gt;
+&lt;/ui:NavigationViewItem&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Opacity" Value="{Binding InfoBarOpacity}" />
+            </ctrls:ControlExample.Substitutions>
+            
+        </ctrls:ControlExample>
+
+        
+        <ctrls:ControlExample Header="Different InfoBadge Styles"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/InfoBadge2.xaml.txt">
+            <StackPanel Spacing="5">
+                <TextBlock Text="Attention" />
+                <StackPanel Orientation="Horizontal" Spacing="20">
+                    <ui:InfoBadge Classes="Attention Icon" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Attention" Value="10" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Attention Dot" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <TextBlock Text="Informational" />
+                <StackPanel Orientation="Horizontal" Spacing="20">
+                    <ui:InfoBadge Classes="Informational Icon" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Informational" Value="10" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Informational Dot" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <TextBlock Text="Success" />
+                <StackPanel Orientation="Horizontal" Spacing="20">
+                    <ui:InfoBadge Classes="Success Icon" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Success" Value="10" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Success Dot" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <TextBlock Text="Caution" />
+                <StackPanel Orientation="Horizontal" Spacing="20">
+                    <ui:InfoBadge Classes="Caution Icon" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Caution" Value="10" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Caution Dot" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <TextBlock Text="Critical" />
+                <StackPanel Orientation="Horizontal" Spacing="20">
+                    <ui:InfoBadge Classes="Critical Icon" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Critical" Value="10" HorizontalAlignment="Right" />
+                    <ui:InfoBadge Classes="Critical Dot" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

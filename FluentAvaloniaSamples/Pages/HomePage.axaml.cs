@@ -1,9 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using FluentAvalonia.UI.Controls;
+using FluentAvaloniaSamples.Controls;
+using FluentAvaloniaSamples.Services;
 using FluentAvaloniaSamples.ViewModels;
 using System;
 using System.Linq;
@@ -14,47 +17,39 @@ namespace FluentAvaloniaSamples.Pages
     {
         public HomePage()
         {
-            this.InitializeComponent();
-
-			var listBox = this.FindControl<ListBox>("WhatsNewListBox");
-			if (listBox != null)
-			{
-				listBox.PointerReleased += OnListBoxPointerReleased;
-			}
+            this.InitializeComponent();			
         }
 
-		private void OnListBoxPointerReleased(object sender, PointerReleasedEventArgs e)
-		{
-			if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased &&
-				e.InitialPressMouseButton == MouseButton.Left)
-			{
-				var lbi = ((IVisual)e.Source).FindAncestorOfType<ListBoxItem>();
-				if (lbi != null)
-				{
-					var content = lbi.Content as ItemUpdateDescription;
-					if (content != null)
-					{
-						var type = AppDomain.CurrentDomain.GetAssemblies()
-							.Where(a => a.GetName().Name == "FluentAvaloniaSamples")
-							.SelectMany(a => a.GetTypes())
-							.FirstOrDefault(t => t.Name.Equals(content.PageType));
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+            AddHandler(OptionsDisplayItem.NavigationRequestedEvent, OnDisplayItemNavigationRequested);
+        }
 
-						if (type != null)
-						{
-							var frm = this.FindAncestorOfType<Frame>();
-							if (frm != null)
-							{
-								frm.Navigate(type);
-							}
-						}
-					}
-				}
-			}
-		}
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnDetachedFromVisualTree(e);
+            RemoveHandler(OptionsDisplayItem.NavigationRequestedEvent, OnDisplayItemNavigationRequested);
+        }
 
-		private void InitializeComponent()
+        private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void OnDisplayItemNavigationRequested(object sender, RoutedEventArgs e)
+        {
+            if (e.Source is OptionsDisplayItem odi)
+            {
+                if (odi.Name == "GettingStartedItem")
+                {
+                    NavigationService.Instance.Navigate(typeof(GettingStartedPage));
+                }
+                else if (odi.Name == "WhatsNewItem")
+                {
+                    NavigationService.Instance.Navigate(typeof(WhatsNewPage));
+                }
+            }
         }
     }
 }

@@ -1,0 +1,8 @@
+﻿<ui:NavigationView x:Name="nvSample2" Height="460" PaneDisplayMode="Auto">
+    <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" />
+        <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" />
+        <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" />
+        <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" />
+    </ui:NavigationView.MenuItems>
+</ui:NavigationView>

@@ -1,0 +1,18 @@
+﻿public async void ShowInputDialogAsync()
+{
+    var dialog = new ContentDialog()
+    {
+        Title = "My Dialog Title", 
+        PrimaryButtonText = "Ok", SecondaryButtonText = "Not OK", CloseButtonText = "Close"
+    };
+
+    
+    var viewModel = new MyViewModel(dialog); // Pass the dialog if you need to hide it from the ViewModel.
+
+    dialog.Content = new ContentDialogInputExample() // In our case the Content is a UserControl, but can be anything.
+    {
+        DataContext = viewModel
+    };
+
+    var result = await dialog.ShowAsync();
+}

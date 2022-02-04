@@ -1,0 +1,124 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1250"
+             x:Class="FluentAvaloniaSamples.Pages.RangeControlsPage">
+    <ScrollViewer Padding="20 0 20 20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="Range Controls"
+                       Margin="12"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Name="HeaderText" />
+
+            <ctrls:ControlExample Header="ButtonSpinner"
+                                  TargetType="ButtonSpinner"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <ButtonSpinner Name="TargetButtonSpinner"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               MinWidth="250"
+                               Content="Item1"
+                               ButtonSpinnerLocation="{Binding SelectedItem.Content, ElementName=SpinButtonLoc}" />
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="4">
+                        <CheckBox Content="AllowSpin"
+                                  IsChecked="{Binding #TargetButtonSpinner.AllowSpin}" />
+
+                        <TextBlock Text="SpinButtonLocation" />
+                        <ComboBox Name="SpinButtonLoc" MinWidth="125" SelectedIndex="1">
+                            <ComboBoxItem Content="{x:Static Location.Left}" />
+                            <ComboBoxItem Content="{x:Static Location.Right}" />
+                        </ComboBox>
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="NumericUpDown"
+                                  TargetType="NumericUpDown"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <NumericUpDown HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               MinWidth="200"
+                               AllowSpin="{Binding #AllowSpinCheck.IsChecked}"
+                               Minimum="{Binding #MinimumBox.Value}"
+                               Maximum="{Binding #MaximumBox.Value}" />
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="4">
+                        <CheckBox Content="AllowSpin" Name="AllowSpinCheck" IsChecked="True"/>
+                        <ui:NumberBox Header="Minimum" Minimum="-1000" Maximum="-1" Value="-1000"
+                                      Name="MinimumBox" SpinButtonPlacementMode="Inline"
+                                      MinWidth="125"/>
+                        <ui:NumberBox Header="Maximum" Minimum="1" Maximum="1000" Value="1000"
+                                      Name="MaximumBox" SpinButtonPlacementMode="Inline"
+                                      MinWidth="125"/>
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="Slider"
+                                  TargetType="Slider" 
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <Panel MinHeight="275">
+                    <Slider Name="TargetSlider" MaxWidth="200" MaxHeight="200" 
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Orientation="{Binding #SliderOrientationBox.SelectedItem.Content}"
+                            Minimum="0" Maximum="100"/>
+                </Panel>
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="4">
+                        <ComboBox MinWidth="125" SelectedIndex="0" Name="SliderOrientationBox">
+                            <ComboBoxItem Content="{x:Static Orientation.Horizontal}" />
+                            <ComboBoxItem Content="{x:Static Orientation.Vertical}" />
+                        </ComboBox>
+                        <CheckBox Content="IsSnapToTickEnabled" 
+                                  IsChecked="{Binding #TargetSlider.IsSnapToTickEnabled}"/>                        
+                        <ui:NumberBox Header="TickFrequency" Minimum="1" Maximum="10"
+                                      Value="{Binding #TargetSlider.TickFrequency}"
+                                      Name="TickFreqBox" SpinButtonPlacementMode="Inline"
+                                      MinWidth="125"/>
+                        <TextBlock Text="{Binding Minimum, ElementName=TargetSlider, StringFormat='Minimum: {0}'}" />
+                        <TextBlock Text="{Binding Maximum, ElementName=TargetSlider, StringFormat='Maximum: {0}'}" />
+                        <TextBlock Text="{Binding Value, ElementName=TargetSlider, StringFormat='Value: {0:N2}'}" />
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ProgressBar"
+                                  TargetType="ProgressBar"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <Panel MinHeight="275">
+                    <ProgressBar Name="TargetProgressBar" MaxWidth="200" MaxHeight="200"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Orientation="{Binding #ProgressBarOrientationBox.SelectedItem.Content}" />
+                </Panel>
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="4">
+                        <ComboBox MinWidth="125" SelectedIndex="0" Name="ProgressBarOrientationBox">
+                            <ComboBoxItem Content="{x:Static Orientation.Horizontal}" />
+                            <ComboBoxItem Content="{x:Static Orientation.Vertical}" />
+                        </ComboBox>
+                        <CheckBox Content="IsIndeterminate"
+                                  IsChecked="{Binding #TargetProgressBar.IsIndeterminate}"/>
+                        <ui:NumberBox Header="Value" Minimum="0" Maximum="100"
+                                      Value="{Binding #TargetProgressBar.Value}"
+                                      IsEnabled="{Binding !IsIndeterminate, ElementName=TargetProgressBar}"
+                                      SpinButtonPlacementMode="Inline"
+                                      MinWidth="125"/>
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

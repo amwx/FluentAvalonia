@@ -17,7 +17,10 @@ namespace FluentAvalonia.UI.Controls
 		public MenuFlyoutPresenter()
 			: base(new MenuFlyoutInteractionHandler(true))
 		{
-
+            AddHandler(MenuFlyoutItem.ClickEvent, (s, e) =>
+            {
+                int x = 0;
+            });
 		}
 
 		public MenuFlyoutPresenter(IMenuInteractionHandler handler)

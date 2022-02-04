@@ -1,0 +1,6 @@
+﻿<!-- in App.axaml -->
+<!-- Define xmlns:sty="using:FluentAvalonia.Styling" -->
+
+<App.Styles>
+    <sty:FluentAvaloniaTheme />
+</App.Styles>

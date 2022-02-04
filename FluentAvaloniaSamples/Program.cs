@@ -20,7 +20,8 @@ namespace FluentAvaloniaSamples
                 .With(new Win32PlatformOptions()
                 {
                     UseWindowsUIComposition = true,
-                    EnableMultitouch = true
+                    EnableMultitouch = true, 
+                    CompositionBackdropCornerRadius = 8f
                 });
     }
 }

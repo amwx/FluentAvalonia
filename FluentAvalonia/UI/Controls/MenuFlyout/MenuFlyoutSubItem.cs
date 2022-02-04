@@ -48,8 +48,11 @@ namespace FluentAvalonia.UI.Controls
 		/// </summary>
 		public void Close()
 		{
-			_subMenu.IsOpen = false;
-			_presenter.SelectedIndex = -1;
+            if (_subMenu != null)
+			    _subMenu.IsOpen = false;
+
+            if (_presenter != null)
+			    _presenter.SelectedIndex = -1;
 		}
 				
 		private void InitPopup()
