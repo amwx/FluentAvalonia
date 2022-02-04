@@ -211,10 +211,6 @@ namespace FluentAvaloniaSamples.Views
             {
                 _frameView.Navigate(typ, null, e.RecommendedNavigationTransitionInfo);
             }
-            //else if (e.IsSettingsInvoked)
-            //{
-            //    _frameView.Navigate(typeof(SettingsPage), null, e.RecommendedNavigationTransitionInfo);
-            //}
         }
 
         private void SetNVIIcon(NavigationViewItem item, bool selected)
@@ -273,12 +269,17 @@ namespace FluentAvaloniaSamples.Views
 
                 if (!found)
                 {
-                    // only remaining page type is core controls pages
-                    _navView.SelectedItem = _navView.MenuItems.ElementAt(1);
+                    if (e.SourcePageType == typeof(SettingsPage))
+                    {
+                        _navView.SelectedItem = _navView.FooterMenuItems.ElementAt(0);
+                    }
+                    else
+                    {
+                        // only remaining page type is core controls pages
+                        _navView.SelectedItem = _navView.MenuItems.ElementAt(1);
+                    }
                 }
-            }
-
-           
+            }           
 
             if (_frameView.BackStackDepth > 0 && !_navView.IsBackButtonVisible)
             {
