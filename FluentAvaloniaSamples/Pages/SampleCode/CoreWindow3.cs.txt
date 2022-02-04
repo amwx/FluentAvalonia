@@ -1,0 +1,61 @@
+﻿// Now we visit code behind of the MainView
+
+// The best place to do setup is in the OnOpened handler of the Window - this ensures everything
+// is initialized and ready to go.
+public override void OnOpened()
+{
+    // Helper method
+    // Note SetTitleBar is really only for the example. You can move that logic here
+    // if you're already on a CoreWindow object
+    SetTitleBar(this);
+}
+
+
+// However, if you're using a View that isn't a window, subscribe to the Opened event of the
+// owning window in OnAttachedToVisualTree
+protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+{
+    base.OnAttachedToVisualTree(e);
+
+    if (e.Root is Window b)
+    {
+        b.Opened += OnParentWindowOpened;
+    }
+}
+
+private void OnParentWindowOpened(object, EventArgs)
+{
+    // We can remove the eventhandler now, as we only need this once
+    (sender as Window).Opened -= OnParentWindowOpened;
+
+    // Helper method
+    SetTitleBar(sender as CoreWindow);
+}
+
+
+private void SetTitleBar(CoreWindow cw)
+{
+    // Grab the ICoreApplicationViewTitleBar attached to the CoreWindow object
+    // On Windows, this will never be null. On Mac/Linux, it will be - make sure
+    // to null check
+    var titleBar = cw.TitleBar;
+    if (titleBar != null)
+    {
+        // Tell CoreWindow we want to remove the default TitleBar and set our own
+        titleBar.ExtendViewIntoTitleBar = true;
+
+        // Retreive reference to the Xaml element we're using a TitleBar
+        if (this.FindControl<Grid>("TitleBarHost") is Grid g)
+        {
+            // Call SetTitleBar to tell CoreWindow the element we want to use as the TitleBar
+            cw.SetTitleBar(g);
+            // Set the margin of the Custom TitleBar so it doesn't overlap with the CaptionButtons
+            g.Margin = new Thickness(0, 0, titleBar.SystemOverlayRightInset, 0);
+
+            // You can optionally subscribe to LayoutMetricsChanged to be notified of when TitleBar bounds change
+            // Right now, it doesn't do much. It will be more important when RTL layouts are supported as that will
+            // notify you of a change in the SystemOverlay[Left/Right]Inset properties and require adjusting
+            // that margin
+        }
+    }
+}

@@ -9,6 +9,10 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Include="Pages\SampleCode\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Pages\SampleCode\CoreWindow3.cs.txt" />
+    <None Remove="Pages\SampleCode\CoreWindow3.xaml.txt" />
   </ItemGroup>  
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.12" />

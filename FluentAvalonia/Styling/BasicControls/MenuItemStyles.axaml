@@ -83,7 +83,7 @@
                                 <ColumnDefinition Width="Auto"
                                                   SharedSizeGroup="MenuItemChevron" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Name="PART_IconPresenter" Background="Beige"
+                            <ContentPresenter Name="PART_IconPresenter"
                                               Content="{TemplateBinding Icon}"
                                               Width="16"
                                               Height="16"
