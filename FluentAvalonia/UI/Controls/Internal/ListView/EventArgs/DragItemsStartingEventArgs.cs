@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-	internal delegate void DragItemsStartingEventHandler(object sender, DragItemsStartingEventArgs args);
+	public delegate void DragItemsStartingEventHandler(object sender, DragItemsStartingEventArgs args);
 
-	internal class DragItemsStartingEventArgs : EventArgs
+	public class DragItemsStartingEventArgs : EventArgs
 	{
 		public bool Cancel { get; set; }
 		public DataPackage Data { get; internal init; }
