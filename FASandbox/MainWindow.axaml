@@ -1,0 +1,84 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+        xmlns:core="using:FluentAvalonia.Core"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="FASandbox.MainWindow"
+        Title="FASandbox">
+
+    <Panel>
+        <Panel.Resources>
+            <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected">DarkSlateBlue</SolidColorBrush>
+        </Panel.Resources>
+
+        <ui:TabView CanDragTabs="True" CanReorderTabs="False" TabStripDragOver="Tv2_TabStripDragOver">
+            <ui:TabViewItem Header="Tab1">
+                Content1
+            </ui:TabViewItem>
+            <ui:TabViewItem Header="Tab2">
+                Content2
+            </ui:TabViewItem>
+            <ui:TabViewItem Header="Tab3">
+                Content3
+            </ui:TabViewItem>
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab4" />
+        </ui:TabView>
+
+        <ui:TabView Name="TabView2" CanDragTabs="True" Margin="0 200 0 0">
+            <ui:TabViewItem Header="Hello1234">
+                Content1
+            </ui:TabViewItem>
+            <ui:TabViewItem Header="Hello223465">
+                Content2
+            </ui:TabViewItem>
+            <ui:TabViewItem Header="Hello33457">
+                Content3
+            </ui:TabViewItem>
+        </ui:TabView>
+        
+        
+    </Panel>
+
+
+</Window>
