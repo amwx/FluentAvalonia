@@ -75,3 +75,4 @@
 /Styling/Controls/CommandBar/CommandBarElementContainerStyles.axaml
 /Styling/Controls/CommandBar/CommandBarFlyoutCommandBarStyles.axaml
 /Styling/Controls/InfoBadgeStyles.axaml
+/Styling/Controls/TabView/TabViewStyles.axaml
