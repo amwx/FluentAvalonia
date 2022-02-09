@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
@@ -390,12 +392,12 @@ namespace FluentAvalonia.UI.Controls.Primitives
             // the popup either remains in place or moves to the top of the
             // screen...TODO: File bug report, for now disabling preview popup
             // if dragdrop manages the drag/reorder operation
-            if (!_isInDrag)
-            {
-                //_dragReorderPopup.HorizontalOffset = _popupOffset.X;
-                //_dragReorderPopup.VerticalOffset = _popupOffset.Y;
-                //_dragReorderPopup.IsOpen = true;
-            }
+            //if (!_isInDrag)
+            //{
+            //    _dragReorderPopup.HorizontalOffset = _popupOffset.X;
+            //    _dragReorderPopup.VerticalOffset = _popupOffset.Y;
+            //    _dragReorderPopup.IsOpen = true;
+            //}
 
             // We need to clear the tooltip here otherwise it will end up showing
             // during the drag operation - and that's undesirable
@@ -427,10 +429,10 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
             ItemsPanelRoot.ChangeReorderIndex(currentDragIndex);
 
-            if (!_isInDrag && _initialPoint.HasValue)
-            {
+            //if (!_isInDrag && _initialPoint.HasValue)
+            //{
                 //_dragReorderPopup.Host?.ConfigurePosition(this, PlacementMode.Pointer, _popupOffset);
-            }           
+            //}           
         }
 
         private void EndReorder()
@@ -546,7 +548,10 @@ namespace FluentAvalonia.UI.Controls.Primitives
         private void OnDragOver(object sender, DragEventArgs e)
         {
             DragOver?.Invoke(this, e);
-
+            
+            // Related to Hack fix in DragLeave
+            _lastPoint = e.GetPosition(this);
+            
             e.Handled = true;
 
             // Don't do any reorder processing until the user tells us its ok
@@ -575,26 +580,40 @@ namespace FluentAvalonia.UI.Controls.Primitives
                     break;
             }
         }
-
+       
         private void OnDragLeave(object sender, RoutedEventArgs e)
         {
-            // This needs to be a DragEventArgs. We need to reset the ItemsPanel state here
-            // when we leave the ListView, but literally don't know when that is BECAUSE
-            // SOMEBODY DECIDED DRAG DROP NEEDS TO BE A STATIC CLASS RATHER THAN ON 
-            // THE CONTROL BASE CLASS AND THAT THIS IS JUST A SIMPLE ROUTEDEVENTARGS
-
-            // So we need to use this ugly hack to see if the leave event being fired is 
-            // actually the listview
+            // This is a disgusting hack but we need to make sure we reset the insertion point
+            // logic if we drag away from this ListView so we don't get left with a gap
+            // The problem is, the event is raised on template components and not the actual
+            // ListView - which means we don't actually know if we're leaving this control or
+            // just a component (like a border that makes up the TabItem or its close button)
+            // Searching the visual tree doesn't work because it will always return true to find
+            // a TabViewListView. Searching for a TabViewItem and cancelling if found only works
+            // if you drag leave over an emtpy space in the Tabstrip. If you drag over a tab and
+            // into the main content area, that test fails, and the listview doesn't reset
+            // Pointer events don't really work - and we don't even have that so we're caching 
+            // the last point from DragOver. But pointer is only working here if we test against
+            // the border, which means we slightly shrink the bounds of the listview and hit test
+            // We could solve this easily with the raw PointerEvents from InputManager but that
+            // shutsdown during drag drop, so there isn't really much we can do here. So hack it is.
+            // There still seems to be an issue along the bottom border when dragging back in, but
+            // at this point I'm done dealing with this issue...it works good enough
             if (e.Source is StyledElement v)
             {
-                if (v.TemplatedParent?.GetType() != typeof(TabViewItem))
+                bool isCloseButton = (v as IVisual).FindAncestorOfType<Button>() != null;
+                if (isCloseButton)
+                    return;
+                if (_lastPoint.HasValue)
                 {
-                    if (v is IVisual vis && vis.FindAncestorOfType<TabViewItem>(true) == null &&
-                        vis.FindDescendantOfType<TabViewItem>(true) == null)
+                    var rect = new Rect(Bounds.Size);
+                    rect = rect.Inflate(-2);
+                    if (!rect.Contains(_lastPoint.Value))
                     {
                         ItemsPanelRoot.ClearReorder();
+                        _lastPoint = rect.Center;
                     }
-                }
+                }               
             }            
         }
 
@@ -686,6 +705,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
             }
         }
 
+        private Point? _lastPoint;
         private TabViewItem _dragItem;
         private int _dragIndex = -1;
         private bool _isInDrag = false;

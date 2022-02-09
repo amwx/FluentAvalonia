@@ -8,7 +8,6 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FASandbox.MainWindow"
         Title="FASandbox">
-
     <Panel>
         <Panel.Resources>
             <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected">DarkSlateBlue</SolidColorBrush>
@@ -25,19 +24,19 @@
                 Content3
             </ui:TabViewItem>
             <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
-            <ui:TabViewItem Header="Tab4" />
+            <ui:TabViewItem Header="Tab5" />
+            <ui:TabViewItem Header="Tab6" />
+            <ui:TabViewItem Header="Tab7" />
+            <ui:TabViewItem Header="Tab8" />
+            <ui:TabViewItem Header="Tab9" />
+            <ui:TabViewItem Header="Tab10" />
+            <ui:TabViewItem Header="Tab11" />
+            <ui:TabViewItem Header="Tab12" />
+            <ui:TabViewItem Header="Tab13" />
+            <ui:TabViewItem Header="Tab14" />
+            <ui:TabViewItem Header="Tab15" />
+            <ui:TabViewItem Header="Tab16" />
+            <ui:TabViewItem Header="Tab17" />
             <ui:TabViewItem Header="Tab4" />
             <ui:TabViewItem Header="Tab4" />
             <ui:TabViewItem Header="Tab4" />
@@ -65,18 +64,26 @@
             <ui:TabViewItem Header="Tab4" />
         </ui:TabView>
 
-        <ui:TabView Name="TabView2" CanDragTabs="True" Margin="0 200 0 0">
+        <ui:TabView Name="TabView2" CanDragTabs="False" Margin="0 200 0 0">
             <ui:TabViewItem Header="Hello1234">
                 Content1
             </ui:TabViewItem>
-            <ui:TabViewItem Header="Hello223465">
+            <ui:TabViewItem Header="Hello223465" IsClosable="False">
                 Content2
             </ui:TabViewItem>
             <ui:TabViewItem Header="Hello33457">
                 Content3
             </ui:TabViewItem>
         </ui:TabView>
-        
+
+        <TabControl VerticalAlignment="Bottom">
+            <TabItem Header="hello">
+                <Button Content="hda" />
+            </TabItem>
+            <TabItem Header="hello" />
+            <TabItem Header="hello" />
+            
+        </TabControl>
         
     </Panel>
 
