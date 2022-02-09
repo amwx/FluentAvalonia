@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -12,20 +13,45 @@ using Avalonia.Diagnostics;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Logging;
+using Avalonia.LogicalTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public partial class TabView : TemplatedControl
+    public partial class TabView : TemplatedControl, IContentPresenterHost
     {
         public TabView()
         {
             TabItems = new AvaloniaList<object>();
 
-            // TODO: Keyboard Accelerators
+            // Keyboard Accelerators (KeyBindings in Avalonia)
+            // Require a Command, so we wire this up *slightly* differently
+            // compared to WinUI
 
-            _tabCloseButtonTooltipText = "Close tab";
+            _keyboardAcceleratorHandler = new TabViewCommand(OnKeyboardAcceleratorInvoked);
+
+            var closeTabGesture = new KeyGesture(Key.F4, KeyModifiers.Control);
+            KeyBindings.Add(new KeyBinding
+            {
+                Gesture = closeTabGesture,
+                Command = _keyboardAcceleratorHandler,
+                CommandParameter = TabViewCommandType.CtrlF4
+            });
+            KeyBindings.Add(new KeyBinding
+            {
+                Gesture = new KeyGesture(Key.Tab, KeyModifiers.Control),
+                Command = _keyboardAcceleratorHandler,
+                CommandParameter = TabViewCommandType.CtrlTab
+            });
+            KeyBindings.Add(new KeyBinding
+            {
+                Gesture = new KeyGesture(Key.Tab, KeyModifiers.Control | KeyModifiers.Shift),
+                Command = _keyboardAcceleratorHandler,
+                CommandParameter = TabViewCommandType.CtrlShftTab
+            });            
+
+            _tabCloseButtonTooltipText = "Close tab (Ctrl+F4)";
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -50,9 +76,10 @@ namespace FluentAvalonia.UI.Controls
             }
 
             _listView = e.NameScope.Find<TabViewListView>("TabListView");
-            LogicalChildren.Add(_listView);
+           
             if (_listView != null)
-            {                
+            {
+                LogicalChildren.Add(_listView);
                 _listView.SelectionChanged += OnListViewSelectionChanged;
 
                 _listView.DragItemsStarting += OnListViewDragItemsStarting;
@@ -97,6 +124,8 @@ namespace FluentAvalonia.UI.Controls
             // Again, no Loaded event, so just call Loaded here
             OnLoaded();
         }
+
+        
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -188,7 +217,8 @@ namespace FluentAvalonia.UI.Controls
             // For GamePad, we want to move focus to something in the direction of movement (other than the overlapping item)
             // For Keyboard, we cancel the focus movement.
 
-            // TODO
+            // Can ignore this...we don't have GettingFocus event, and no gamepad support
+            // so there's nothing we can actually do here
         }
 
         private void OnSelectedIndexPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
@@ -854,8 +884,10 @@ namespace FluentAvalonia.UI.Controls
                 }
             }
 
+#if DEBUG
             Logger.TryGet(LogEventLevel.Debug, "TabView")?
                 .Log("TabView", $"TabView UpdateTabWidths: \nShould Update:{shouldUpdateWidths} Fill:{fillAllAvailableSpace} - TabWidth: {tabWidth}\n");
+#endif
 
             if (shouldUpdateWidths || TabWidthMode != TabViewWidthMode.Equal)
             {
@@ -932,34 +964,40 @@ namespace FluentAvalonia.UI.Controls
             return handled;
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-            // TODO
-        }
-
-        private void OnCtrlF4Invoked() { }
-
-        private void OnCtrlTabInvoked() { }
-
-        private void OnCtrlShiftTabInvoked() { }
-
-        // Placeholders...
         internal string GetTabCloseButtonTooltipText() =>
             _tabCloseButtonTooltipText;
+
+        protected virtual void OnKeyboardAcceleratorInvoked(object parameter)
+        {
+            switch ((TabViewCommandType)parameter)
+            {
+                case TabViewCommandType.CtrlF4:
+                    RequestCloseCurrentTab();
+                    break;
+
+                case TabViewCommandType.CtrlTab:
+                    SelectNextTab(1);
+                    break;
+
+                case TabViewCommandType.CtrlShftTab:
+                    SelectNextTab(-1);
+                    break;
+            }
+        }
 
         private void UnhookEventsAndClearFields()
         {
             if (_tabContainerGrid != null)
             {
-                _tabContainerGrid.PointerEnter += OnTabStripPointerEnter;
-                _tabContainerGrid.PointerLeave += OnTabStripPointerLeave;
+                _tabContainerGrid.PointerEnter -= OnTabStripPointerEnter;
+                _tabContainerGrid.PointerLeave -= OnTabStripPointerLeave;
             }
 
             if (_listView != null)
             {
-                _listView.SelectionChanged += OnListViewSelectionChanged;
-                _listView.GotFocus += OnListViewGettingFocus;
+                LogicalChildren.Remove(_listView);
+                _listView.SelectionChanged -= OnListViewSelectionChanged;
+                _listView.GotFocus -= OnListViewGettingFocus;
 
                 _listView.DragItemsStarting -= OnListViewDragItemsStarting;
                 _listView.DragItemsCompleted -= OnListViewDragItemsCompleted;
@@ -971,16 +1009,16 @@ namespace FluentAvalonia.UI.Controls
 
             if (_addButton != null)
             {
-                _addButton.Click += OnAddButtonClick;
+                _addButton.Click -= OnAddButtonClick;
             }
 
             _itemsPresenterSizeChangedRevoker?.Dispose();
 
             if (_scrollDecreaseButton != null)
-                _scrollDecreaseButton.Click += OnScrollDecreaseClick;
+                _scrollDecreaseButton.Click -= OnScrollDecreaseClick;
 
             if (_scrollIncreaseButton != null)
-                _scrollIncreaseButton.Click += OnScrollIncreaseClick;
+                _scrollIncreaseButton.Click -= OnScrollIncreaseClick;
 
             _scrollViewerViewChangedRevoker?.Dispose();
 
@@ -1001,7 +1039,18 @@ namespace FluentAvalonia.UI.Controls
             _itemsPresenter = null;
         }
 
+        bool IContentPresenterHost.RegisterContentPresenter(IContentPresenter presenter)
+        {
+            if (presenter.Name == "TabContentPresenter")
+                return true;
 
+            return false;
+        }
+
+        IAvaloniaList<ILogical> IContentPresenterHost.LogicalChildren => LogicalChildren;
+
+
+        private TabViewCommand _keyboardAcceleratorHandler;
 
         private bool _updateTabWidthOnPointerLeave = false;
         private bool _pointerInTabstrip = false;
@@ -1045,5 +1094,30 @@ namespace FluentAvalonia.UI.Controls
 
         // (WinUI) TODO: what is the right number and should this be customizable?
         private static double c_scrollAmount = 50d;
+
+        class TabViewCommand : ICommand
+        {
+            public TabViewCommand(Action<object> execute)
+            {
+                ExecuteHandler = execute;
+            }
+
+            public event EventHandler CanExecuteChanged;
+
+            public Action<object> ExecuteHandler { get; }
+            public bool CanExecute(object parameter) => true;
+
+            public void Execute(object parameter)
+            {
+                ExecuteHandler.Invoke(parameter);
+            }
+        }
+
+        enum TabViewCommandType
+        {
+            CtrlF4,
+            CtrlTab,
+            CtrlShftTab
+        }
     }
 }
