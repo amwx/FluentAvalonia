@@ -533,9 +533,10 @@ namespace FluentAvalonia.UI.Controls
                 selIndex = lvSelIndex;
             }
 
-
             if (args is NotifyCollectionChangedEventArgs incc)
             {
+                TabItemsChanged?.Invoke(this, incc);
+
                 if (incc.Action == NotifyCollectionChangedAction.Remove)
                 {
                     _updateTabWidthOnPointerLeave = true;

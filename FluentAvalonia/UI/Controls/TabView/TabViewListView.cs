@@ -122,7 +122,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
             var tv = this.FindAncestorOfType<TabView>();
             if (tv != null)
             {
-                tv.OnItemsChanged(null);
+                tv.OnItemsChanged(e);
             }
         }
 
