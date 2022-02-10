@@ -356,6 +356,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
                 return;
 
             }
+
+            PseudoClasses.Set(":reorder", true);
             // This triggers the ItemsPanel to enter reorder state which will insert a blank space
             // where the current item in measured
             ItemsPanelRoot.EnterReorder(_dragIndex);
@@ -437,6 +439,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
         private void EndReorder()
         {
+            PseudoClasses.Set(":reorder", false);
             _dragReorderPopup.IsOpen = false;
             _isInReorder = false;
             var reorderIndex = ItemsPanelRoot.ClearReorder();
