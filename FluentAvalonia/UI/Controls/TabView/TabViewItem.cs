@@ -42,7 +42,18 @@ namespace FluentAvalonia.UI.Controls
 
         protected internal TabView ParentTabView
         {
-            get => _parentTabView?.TryGetTarget(out var target) == true ? target : null;
+            get
+            {
+                // AGH Stupid Mac build fails here because
+                // UsE oF uNaSsIgNeD lOcAl VaRiAbLe 'target'
+                // No Mac compiler, its fine, 'target' isn't used without assignment
+
+                TabView target = null;
+                if (_parentTabView?.TryGetTarget(out target) == true)
+                    return target;
+
+                return null;
+            }
             set => _parentTabView = new WeakReference<TabView>(value);
         }
 
