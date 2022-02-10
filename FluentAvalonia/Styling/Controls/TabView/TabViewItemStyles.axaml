@@ -1,6 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
         xmlns:core="using:FluentAvalonia.Core">
     <Design.PreviewWith>
         <Border Padding="20" Width="300" Height="100">
@@ -70,10 +71,6 @@
                             <!-- x:Name = "RightColumn" -->
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
-                        <Grid.RenderTransform>
-                            <ScaleTransform />
-                        </Grid.RenderTransform>
 
                         <Border Name="BottomBorderLine" />
 
@@ -201,7 +198,7 @@
     </Style>
 
     <Style Selector="ui|TabViewItem /template/ ContentControl#IconControl">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource Foreground}" />
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemIconForeground}" />
     </Style>
 
     <Style Selector="ui|TabViewItem /template/ ContentPresenter#ContentPresenter">
@@ -345,5 +342,32 @@
         <Setter Property="IsVisible" Value="False" />
     </Style>
 
+    <!-- :foreground -->
+    <Style Selector="ui|TabViewItem /template/ ContentControl#IconControl">
+        <Setter Property="TextBlock.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+    </Style>
+    <Style Selector="ui|TabViewItem /template/ ContentPresenter#ContentPresenter">
+        <Setter Property="TextBlock.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+    </Style>
+
+    <!-- Some animations -->
+    <Style Selector="uip|TabViewListView ui|TabViewItem /template/ Border#LayoutRootBorder">
+        <Setter Property="RenderTransform" Value="scale(1)" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Duration="00:00:00.25"
+                                  Property="Opacity"
+                                  Easing="0,0 0,1" />
+                <TransformOperationsTransition Duration="00:00:00.25"
+                                               Property="RenderTransform"
+                                               Easing="0,0 0,1" />
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="uip|TabViewListView:reorder ui|TabViewItem /template/ Border#LayoutRootBorder">
+        <Setter Property="RenderTransform" Value="scale(0.95)" />
+        <Setter Property="Opacity" Value="0.8" />
+    </Style>
 
 </Styles>
