@@ -98,6 +98,11 @@
     <SolidColorBrush x:Key="LayerOnAcrylicFillColorDefaultBrush" Color="{DynamicResource SystemColorWindowColor}" />
     <SolidColorBrush x:Key="LayerOnAccentAcrylicFillColorDefaultBrush" Color="{DynamicResource SystemColorWindowColor}"/>
 
+    <SolidColorBrush x:Key="LayerOnMicaAltFillColorDefaultBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="LayerOnMicaAltFillColorSecondaryBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="LayerOnMicaAltFillColorTertiaryBrush" Color="{DynamicResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="LayerOnMicaAltFillColorTransparentBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
+
     <SolidColorBrush x:Key="SolidBackgroundFillColorBaseBrush" Color="{DynamicResource SystemColorWindowColor}" />
     <SolidColorBrush x:Key="SolidBackgroundFillColorSecondaryBrush" Color="{DynamicResource SystemColorWindowColor}" />
     <SolidColorBrush x:Key="SolidBackgroundFillColorTertiaryBrush" Color="{DynamicResource SystemColorWindowColor}" />
