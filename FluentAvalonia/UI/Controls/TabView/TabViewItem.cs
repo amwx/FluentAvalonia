@@ -4,8 +4,10 @@ using System.Reactive.Disposables;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Diagnostics;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -13,6 +15,7 @@ using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls
 {
+    [PseudoClasses(":icon", ":compact", ":closecollapsed", ":borderleft", ":borderright", ":noborder", ":foreground")]
     public partial class TabViewItem : ListBoxItem
     {
         public TabViewItem()
@@ -281,6 +284,11 @@ namespace FluentAvalonia.UI.Controls
         private void UpdateForeground()
         {
             // We shouldn't have to do this here because Foreground is automatically inherited
+
+            bool isForegroundSet = this.GetDiagnostic(ForegroundProperty).Priority != Avalonia.Data.BindingPriority.Unset;
+            bool set = isForegroundSet && !IsSelected && !_isPointerOver;
+
+            PseudoClasses.Set(":foreground", set);
 
             // We only need to set the foreground state when the TabViewItem is in rest state and not selected.
            // if (!IsSelected && !_isPointerOver)
