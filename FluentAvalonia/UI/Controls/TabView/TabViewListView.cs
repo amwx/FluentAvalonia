@@ -394,12 +394,12 @@ namespace FluentAvalonia.UI.Controls.Primitives
             // the popup either remains in place or moves to the top of the
             // screen...TODO: File bug report, for now disabling preview popup
             // if dragdrop manages the drag/reorder operation
-            //if (!_isInDrag)
-            //{
-            //    _dragReorderPopup.HorizontalOffset = _popupOffset.X;
-            //    _dragReorderPopup.VerticalOffset = _popupOffset.Y;
-            //    _dragReorderPopup.IsOpen = true;
-            //}
+            if (!_isInDrag)
+            {
+                _dragReorderPopup.HorizontalOffset = _popupOffset.X;
+                _dragReorderPopup.VerticalOffset = _popupOffset.Y;
+                _dragReorderPopup.IsOpen = true;
+            }
 
             // We need to clear the tooltip here otherwise it will end up showing
             // during the drag operation - and that's undesirable
@@ -431,16 +431,19 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
             ItemsPanelRoot.ChangeReorderIndex(currentDragIndex);
 
-            //if (!_isInDrag && _initialPoint.HasValue)
-            //{
-                //_dragReorderPopup.Host?.ConfigurePosition(this, PlacementMode.Pointer, _popupOffset);
-            //}           
+            if (!_isInDrag && _initialPoint.HasValue)
+            {
+                _dragReorderPopup.Host?.ConfigurePosition(this, PlacementMode.Pointer, _popupOffset);
+            }
         }
 
         private void EndReorder()
         {
             PseudoClasses.Set(":reorder", false);
-            _dragReorderPopup.IsOpen = false;
+            if (_dragReorderPopup != null && _dragReorderPopup.IsOpen)
+            {
+                _dragReorderPopup.IsOpen = false;
+            }
             _isInReorder = false;
             var reorderIndex = ItemsPanelRoot.ClearReorder();
 
