@@ -591,6 +591,14 @@ namespace FluentAvalonia.UI.Controls
                     SetTabSeparatorOpacity(numItems - 1);
                 }
             }
+            else
+            {
+                // Added this for full collection change - Set content to first item
+                if (lvSelIndex == -1 && numItems > 0)
+                {
+                    SelectedIndex = 0;
+                }
+            }
 
             UpdateTabBottomBorderLineVisualStates();
         }

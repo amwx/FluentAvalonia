@@ -6,6 +6,7 @@ using Avalonia.LogicalTree;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Styling;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace FluentAvaloniaTests
 			//Renderer = Mock.Of<IRenderer>();
 			LayoutManager = new LayoutManager(this);
 			IsVisible = true;
+            Renderer = Mock.Of<IRenderer>();
 		}
 
         public TestRoot(Size clientSize)

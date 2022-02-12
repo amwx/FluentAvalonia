@@ -7,6 +7,7 @@ using Avalonia.Platform;
 using Avalonia.Shared.PlatformSupport;
 using Avalonia.Styling;
 using FluentAvalonia.Styling;
+using Moq;
 
 namespace FluentAvaloniaTests.Helpers
 {
@@ -50,7 +51,8 @@ namespace FluentAvaloniaTests.Helpers
                 .Bind<ITextShaperImpl>().ToConstant(new MockTextShaper())
                 .Bind<IGlobalClock>().ToConstant(new MockGlobalClock())
                 .Bind<IPlatformRenderInterface>().ToConstant(new MockPlatformRenderInterface())
-                .Bind<IFocusManager>().ToConstant(new FocusManager());
+                .Bind<IFocusManager>().ToConstant(new FocusManager())
+                .Bind<IPlatformThreadingInterface>().ToConstant(Mock.Of<IPlatformThreadingInterface>(x => x.CurrentThreadIsLoopThread == true));
 
             if (LoadCoreStyles)
             {

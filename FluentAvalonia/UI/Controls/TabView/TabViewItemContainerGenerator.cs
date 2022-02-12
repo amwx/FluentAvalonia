@@ -19,13 +19,16 @@ namespace FluentAvalonia.UI.Controls
                 return tvi;
 
             var template = Owner.FindDataTemplate(item, ItemTemplate);
-            var built = template.Build(item);
-
-            if (built is TabViewItem builtTVI)
+            if (template != null)
             {
-                builtTVI.DataContext = item;
-                return builtTVI;
-            }
+                var built = template.Build(item);
+
+                if (built is TabViewItem builtTVI)
+                {
+                    builtTVI.DataContext = item;
+                    return builtTVI;
+                }
+            }           
 
             throw new NotSupportedException("Unable to build TabViewItem with given template. Ensure DataTemplate builds a TabViewItem.");
         }
