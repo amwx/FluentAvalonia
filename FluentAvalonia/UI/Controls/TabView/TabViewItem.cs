@@ -43,6 +43,11 @@ namespace FluentAvalonia.UI.Controls
             }, RoutingStrategies.Tunnel);
         }
 
+        static TabViewItem()
+        {
+            FocusableProperty.OverrideDefaultValue<TabViewItem>(true);
+        }
+
         protected internal TabView ParentTabView
         {
             get
@@ -130,13 +135,23 @@ namespace FluentAvalonia.UI.Controls
                 tabView.TabDragCompleted += OnTabDragCompleted;
             }
 
+            // Add this to fix a bug that's clearly in WinUI, adding a new TabViewItem doesn't check
+            // the CloseButtonOverlay mode, thus new tabs ALWAYS initialize with 'Auto' even if the 
+            // TabView's CloseButtonOverlayMode is not Auto
+            var tv = ParentTabView;
+
+            if (tv != null)
+            {
+                _closeButtonOverlayMode = tv.CloseButtonOverlayMode;
+            }
+
             UpdateCloseButton();
             UpdateForeground();
             UpdateWidthModeVisualState();
             UpdateTabGeometry();
 
             // Handle TabViewItem::Loaded
-            if (ParentTabView is TabView tv)
+            if (tv != null)
             {
                 tv.SetTabSeparatorOpacity(tv.IndexFromContainer(this));
             }

@@ -128,7 +128,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
         protected override IItemContainerGenerator CreateItemContainerGenerator()
         {
-            return new ItemContainerGenerator<TabViewItem>(this, TabViewItem.HeaderProperty,
+            return new TabViewItemContainerGenerator(this, TabViewItem.HeaderProperty,
                 TabViewItem.HeaderTemplateProperty);
         }
 
@@ -458,6 +458,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
                     l.Insert(reorderIndex, oldItem);
                 }
 
+                SelectedIndex = reorderIndex;
                 _processReorder = false;
             }
 

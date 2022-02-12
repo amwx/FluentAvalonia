@@ -14,6 +14,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Logging;
 using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
 
@@ -73,6 +74,9 @@ namespace FluentAvalonia.UI.Controls
 
                 _tabContainerGrid.PointerEnter += OnTabStripPointerEnter;
                 _tabContainerGrid.PointerLeave += OnTabStripPointerLeave;
+
+                // Adding this to mimic XYFocusKeyboardNavigation in the tabstrip
+                _tabContainerGrid.KeyDown += OnTabContainerGridKeyDown;
             }
 
             _listView = e.NameScope.Find<TabViewListView>("TabListView");
@@ -124,8 +128,6 @@ namespace FluentAvalonia.UI.Controls
             // Again, no Loaded event, so just call Loaded here
             OnLoaded();
         }
-
-        
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -983,6 +985,68 @@ namespace FluentAvalonia.UI.Controls
                 case TabViewCommandType.CtrlShftTab:
                     SelectNextTab(-1);
                     break;
+            }
+        }
+
+        private void OnTabContainerGridKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Left || e.Key == Key.Right)
+            {
+                var direction = e.Key == Key.Left ? NavigationDirection.Previous : NavigationDirection.Next;
+
+                var current = FocusManager.Instance?.Current;
+
+                if (current is Control c && _tabContainerGrid.IsVisualAncestorOf(c))
+                {
+                    if (_listView != null)
+                    {
+                        if (current is TabViewItem tvi)
+                        {
+                            var index = _listView.IndexFromContainer(tvi);
+
+                            if (index == -1)
+                                return;
+
+                            index = direction == NavigationDirection.Previous ? index - 1 : index + 1;
+
+                            if (index >= 0 && index < _listView.ItemCount)
+                            {
+                                var container = _listView.ContainerFromIndex(index);
+                                if (container != null)
+                                {
+                                    FocusManager.Instance?.Focus(container, NavigationMethod.Directional);
+                                }
+                            }
+                            else if (index == _listView.ItemCount && _addButton != null)
+{
+                                FocusManager.Instance?.Focus(_addButton, NavigationMethod.Directional);
+                            }
+                        }
+                        else if (current == _addButton)
+                        {
+                            if (direction == NavigationDirection.Previous && _listView.ItemCount > 0)
+{
+                                var container = _listView.ContainerFromIndex(_listView.ItemCount - 1);
+                                if (container != null)
+                                {
+                                    FocusManager.Instance?.Focus(container, NavigationMethod.Directional);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (_listView != null && _listView.ItemCount > 0 && direction == NavigationDirection.Next)
+                    {
+                        FocusManager.Instance?.Focus(_listView.ContainerFromIndex(0), 
+                            NavigationMethod.Directional);
+                    }
+                    else if (_addButton != null)
+                    {
+                        FocusManager.Instance?.Focus(_addButton, NavigationMethod.Directional);
+                    }                    
+                }
             }
         }
 
