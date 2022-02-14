@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="FluentAvaloniaSamples.Pages.TabViewWindowingSample"
+        Title="TabViewWindowingSample">
+
+    <!-- 
+    Reordering in a TabView is handled automatically,
+    DragDrop must be implemented manually 
+    -->
+    <ui:TabView Name="TabView"
+                VerticalAlignment="Stretch"
+                AddTabButtonClick="AddTabButtonClick"
+                TabCloseRequested="TabCloseRequested"
+                AllowDropTabs="True"
+                CanReorderTabs="True"
+                CanDragTabs="True"
+                TabDroppedOutside="TabDroppedOutside"
+                TabStripDragOver="TabStripDragOver"
+                TabDragStarting="TabDragStarting"
+                TabStripDrop="TabStripDrop">
+        <ui:TabView.TabStripFooter>
+            <!-- 
+            Use this so we can set the margin in the tabstrip so it
+            doesn't end up underneath the caption buttons
+            This also forms our custom drag region for the titlebar so we
+            can still drag the window around
+            On Mac/Linux this is irrelevant since we don't replace the
+            system titlebar
+            -->
+            <Panel Name="CustomDragRegion" Background="Transparent" />
+        </ui:TabView.TabStripFooter>
+    </ui:TabView>
+</Window>
