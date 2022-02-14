@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Logging;
 
 namespace FluentAvaloniaSamples
 {
@@ -16,7 +17,7 @@ namespace FluentAvaloniaSamples
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .LogToTrace(Avalonia.Logging.LogEventLevel.Information, "FluentAvaloniaTheme")
+                .LogToTrace()
                 .With(new Win32PlatformOptions()
                 {
                     UseWindowsUIComposition = true,

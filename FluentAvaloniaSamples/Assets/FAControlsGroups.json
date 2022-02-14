@@ -91,6 +91,12 @@
         "Header": "Frame",
         "Description": "Displays Page instances, supports navigation to new pages, and maintains a navigation history to support forward and backward navigation.",
         "PageType": "FramePage"
+      },
+      {
+        "Header": "TabView",
+        "Description": "TabView provides the user with a collection of tabs that can be used to display several documents",
+        "PageType": "TabViewPage",
+        "PreviewImageSource": "/Assets/PageIcons/BaseIcon.jpg"
       }
     ]
   },

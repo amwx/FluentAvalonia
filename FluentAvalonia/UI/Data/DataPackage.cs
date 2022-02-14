@@ -7,7 +7,7 @@ namespace FluentAvalonia.UI.Data
 	/// <summary>
 	/// This class is part of the ListView logic, which has been suspended for now
 	/// </summary>
-	internal class DataPackage : IDataObject
+	public class DataPackage : IDataObject
 	{
 		public DragDropEffects RequestedOperation { get; set; }
 

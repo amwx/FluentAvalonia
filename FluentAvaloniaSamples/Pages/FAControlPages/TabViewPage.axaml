@@ -1,0 +1,178 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:spg="using:FluentAvaloniaSamples.Pages.NVSamplePages"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="3000"
+             x:Class="FluentAvaloniaSamples.Pages.TabViewPage"
+             PreviewImage="/Assets/PageIcons/SplitButton.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample TargetType="ui:TabView"
+                              Name="FirstExample"
+                              Header="A Basic TabView with Support for Adding, Closing, and Rearranging Tabs">
+
+            <ui:TabView AddTabButtonClick="TabView_AddButtonClick"
+                        TabCloseRequested="TabView_TabCloseRequested">
+                <ui:TabViewItem Header="Document 0"
+                                IconSource="Document">
+                    <spg:NVSamplePage2 />
+                </ui:TabViewItem>
+                <ui:TabViewItem Header="Document 1"
+                               IconSource="Document">
+                    <spg:NVSamplePage3 />
+                </ui:TabViewItem>
+                <ui:TabViewItem Header="Document 2"
+                               IconSource="Document">
+                    <spg:NVSamplePage6 />
+                </ui:TabViewItem>
+            </ui:TabView>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:TabView AddTabButtonClick="TabView_AddButtonClick" TabCloseRequested="TabView_TabCloseRequested" AttachedToVisualTree="TabView_Loaded" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.CSharpSource>
+                <x:String xml:spacing="preserve">
+private void TabView_AddButtonClick(TabView sender, EventArgs args)
+{
+    (sender.TabItems as IList).Add(CreateNewTab(sender.TabItems.Count()));
+}
+
+private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+{
+    (sender.TabItems as IList).Remove(args.Tab);
+}
+                </x:String>
+            </ctrls:ControlExample.CSharpSource>
+            
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample TargetType="ui:TabView"
+                              Header="A TabView Bound to a Collection of Items">
+
+            <ui:TabView AddTabButtonCommand="{Binding AddDocumentCommand}"
+                        TabCloseRequested="BindingTabView_TabCloseRequested"
+                        TabItems="{Binding Documents}">
+                <ui:TabView.TabItemTemplate>
+                    <DataTemplate x:DataType="vm:DocumentItem">
+                        <ui:TabViewItem Header="{CompiledBinding Header}"
+                                        IconSource="{CompiledBinding IconSource}"
+                                        Content="{CompiledBinding Content}" />
+                    </DataTemplate>
+                </ui:TabView.TabItemTemplate>
+            </ui:TabView>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample TargetType="ui:TabView"
+                              Header="A TabView with Keyboarding Support">
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="{Binding KeyBindingText}"
+                           TextWrapping="Wrap"/>
+                
+                <ui:TabView AddTabButtonClick="TabView_AddButtonClick"
+                            TabCloseRequested="TabView_TabCloseRequested"
+                            TabItems="{Binding KeyBindingDocuments}"
+                            MinHeight="350"
+                            SelectedItem="{Binding KeyBindingSelectedDocument}">
+                    <ui:TabView.KeyBindings>
+                        <KeyBinding Gesture="Ctrl+T" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="Add" />
+                        <KeyBinding Gesture="Ctrl+W" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="Close" />
+
+                        <KeyBinding Gesture="Ctrl+D1" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="1" />
+                        <KeyBinding Gesture="Ctrl+D2" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="2" />
+                        <KeyBinding Gesture="Ctrl+D3" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="3" />
+                        <KeyBinding Gesture="Ctrl+D4" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="4" />
+                        <KeyBinding Gesture="Ctrl+D5" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="5" />
+                        <KeyBinding Gesture="Ctrl+D6" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="6" />
+                        <KeyBinding Gesture="Ctrl+D7" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="7" />
+                        <KeyBinding Gesture="Ctrl+D8" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="8" />
+                        <KeyBinding Gesture="Ctrl+D9" Command="{Binding KeyBindingCommand}"
+                                    CommandParameter="9" />
+                    </ui:TabView.KeyBindings>
+
+                    <ui:TabView.TabItemTemplate>
+                        <DataTemplate x:DataType="vm:DocumentItem">
+                            <ui:TabViewItem Header="{CompiledBinding Header}"
+                                            IconSource="{CompiledBinding IconSource}"
+                                            Content="{CompiledBinding Content}" />
+                        </DataTemplate>
+                    </ui:TabView.TabItemTemplate>
+                </ui:TabView>
+            </StackPanel>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample TargetType="ui:TabView"
+                              Header="TabView API in Action">
+
+            <ui:TabView AddTabButtonClick="TabView_AddButtonClick"
+                        TabCloseRequested="TabView_TabCloseRequested"
+                        Name="APIInActionTabView"
+                        TabWidthMode="{Binding #TabModeBox.SelectedItem.Content}"
+                        CloseButtonOverlayMode="{Binding #CloseButtonBox.SelectedItem.Content}">
+                <ui:TabViewItem Header="Document 0"
+                                IconSource="Document">
+                    <spg:NVSamplePage2 />
+                </ui:TabViewItem>
+                <ui:TabViewItem Header="Document 1"
+                               IconSource="Document">
+                    <spg:NVSamplePage3 />
+                </ui:TabViewItem>
+                <ui:TabViewItem Header="Document 2"
+                               IconSource="Document">
+                    <spg:NVSamplePage6 />
+                </ui:TabViewItem>
+            </ui:TabView>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <Expander Header="Header/Footer">
+                        <StackPanel>
+                            <TextBlock Text="TabStripHeader" />
+                            <TextBox MinWidth="125" Text="{Binding #APIInActionTabView.TabStripHeader}" />
+                            <TextBlock Text="TabStripFooter" />
+                            <TextBox MinWidth="125" Text="{Binding #APIInActionTabView.TabStripFooter}" />
+                        </StackPanel>
+                    </Expander>
+                    
+                    <TextBlock Text="TabWidthMode" />
+                    <ComboBox MinWidth="125" Name="TabModeBox" SelectedIndex="0">
+                        <ComboBoxItem Content="{x:Static ui:TabViewWidthMode.Equal}" />
+                        <ComboBoxItem Content="{x:Static ui:TabViewWidthMode.SizeToContent}" />
+                        <ComboBoxItem Content="{x:Static ui:TabViewWidthMode.Compact}" />
+                    </ComboBox>
+
+                    <TextBlock Text="CloseButtonOverlayMode" />
+                    <ComboBox MinWidth="125" Name="CloseButtonBox" SelectedIndex="0">
+                        <ComboBoxItem Content="{x:Static ui:TabViewCloseButtonOverlayMode.Always}" />
+                        <ComboBoxItem Content="{x:Static ui:TabViewCloseButtonOverlayMode.OnPointerOver}" />
+                    </ComboBox>
+                    
+                    <CheckBox Content="CanReorderTabs"
+                              IsChecked="{Binding #APIInActionTabView.CanReorderTabs}" />
+                </StackPanel>
+            </ctrls:ControlExample.Options>            
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="TabView Windowing Sample"
+                              UsageNotes="See the TabViewWindowingSample source code for how this is implemented.">
+            <ui:Button Content="Click to launch"
+                       Click="LaunchWindowingSample"/>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

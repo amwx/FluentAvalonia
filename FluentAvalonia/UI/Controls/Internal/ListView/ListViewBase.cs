@@ -593,12 +593,8 @@ namespace FluentAvalonia.UI.Controls
 
 		protected virtual void OnDragCompleted()
 		{
-			var args = new DragItemsCompletedEventArgs
-			{
-				DropResult = _lastDropEffect,
-				Items = _dragItems
-			};
-
+            var args = new DragItemsCompletedEventArgs(_lastDropEffect, _dragItems);
+			
 			DragItemsCompleted?.Invoke(this, args);
 
 			PseudoClasses.Set(":drag", false);
