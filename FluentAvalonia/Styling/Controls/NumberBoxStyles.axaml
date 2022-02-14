@@ -199,13 +199,13 @@
 									<RepeatButton Name="PopupUpSpinButton" Focusable="False"
 												FontSize="18"
 												Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
-												Content="&#xE70E;" />
+												Content="{StaticResource ChevronUpGlyph}" />
 
 									<RepeatButton Name="PopupDownSpinButton" Focusable="False"
 												FontSize="18"
 												Classes="NumberBoxSpinButtonStyle NumberBoxPopupButton"
 												Grid.Row="1"
-												Content="&#xE70D;" />
+												Content="{StaticResource ChevronDownGlyph}" />
 								</Grid>
 							</Border>
 						</Popup>
@@ -224,14 +224,14 @@
 									Grid.Column="1"
 									FontSize="18"
 									Classes="NumberBoxSpinButtonStyle"
-									Content="&#xE70E;"
+									Content="{StaticResource ChevronUpGlyph}"
 									Margin="4"/>
 
 						<RepeatButton Name="DownSpinButton"
 									Grid.Row="1"
 									Grid.Column="2"
 									FontSize="18"
-									Content="&#xE70D;"
+									Content="{StaticResource ChevronDownGlyph}"
 									Classes="NumberBoxSpinButtonStyle"
 									Margin="0 4 4 4"/>
 
