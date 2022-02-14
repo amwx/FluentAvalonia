@@ -154,7 +154,7 @@ namespace FluentAvalonia.UI.Controls
 		{
 			if (_customTitleBar != null)
 			{
-                var mat = this.TransformToVisual(_customTitleBar);
+                var mat = _customTitleBar.TransformToVisual(this);
                 if (mat.HasValue)
                 {
                     var bnds = _customTitleBar.Bounds.TransformToAABB(mat.Value);

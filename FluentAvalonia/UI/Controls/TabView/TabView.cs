@@ -931,16 +931,16 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        protected internal IControl ContainerFromItem(object item) =>
+        public IControl ContainerFromItem(object item) =>
             _listView?.ContainerFromItem(item);
 
-        protected internal IControl ContainerFromIndex(int index) =>
+        public IControl ContainerFromIndex(int index) =>
             _listView?.ContainerFromIndex(index);
 
-        protected internal int IndexFromContainer(IControl container) =>
+        public int IndexFromContainer(IControl container) =>
             _listView?.IndexFromContainer(container) ?? -1;
 
-        protected internal object ItemFromContainer(IControl container) =>
+        public object ItemFromContainer(IControl container) =>
             _listView?.ItemFromContainer(container);
 
         private int GetItemCount() => TabItems.Count();

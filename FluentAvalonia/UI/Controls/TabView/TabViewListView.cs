@@ -236,7 +236,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
                         }
                     }
                 }
-                else
+                else if (!_isInDrag) // I didn't think PointerMoved worked during Drag, but somehow it is
                 {
                     var scrollCheck = CheckAutoScroll(e.GetPosition(Scroller));
 
@@ -413,7 +413,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
             ToolTip.SetTip(_dragItem, null);
 
             // Capture the drag item so pointer events are transferred and will work outside of the window
-            args.Pointer.Capture(_dragItem);
+            if (!_isInDrag)
+                args.Pointer.Capture(_dragItem);
         }
 
         private void HandleReorder(Point panelPoint)
@@ -489,6 +490,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
                 return;
             }
 
+            _isInDrag = true;
+
             if (hasReorder)
             {
                 BeginReorder(args);
@@ -505,10 +508,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
                 }
             }
 
-            _isInDrag = true;
-
             var dropResult = 
-                await DragDrop.DoDragDrop(args, disArgs.Data, DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link);
+                await DragDrop.DoDragDrop(args, disArgs.Data, disArgs.Data.RequestedOperation);
 
             _isInDrag = false;
             if (hasReorder)
@@ -546,7 +547,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
             {
                 e.DragEffects = DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link;
             }
-            else if (_isInReorder)
+            
+            if (_isInReorder)
             {
                 ItemsPanelRoot.EnterReorder(_dragIndex);
             }
@@ -617,8 +619,16 @@ namespace FluentAvalonia.UI.Controls.Primitives
                     rect = rect.Inflate(-2);
                     if (!rect.Contains(_lastPoint.Value))
                     {
-                        ItemsPanelRoot.ClearReorder();
-                        _lastPoint = rect.Center;
+                        if (_isInReorder)
+                        {
+                            // Keep reorder active, but return to default state
+                            ItemsPanelRoot.ChangeReorderIndex(_dragIndex);
+                        }
+                        else
+                        {
+                            ItemsPanelRoot.ClearReorder();
+                            _lastPoint = rect.Center;
+                        }
                     }
                 }               
             }            
@@ -626,6 +636,10 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
         private void OnDrop(object sender, DragEventArgs e)
         {
+            // Don't fire this event if we're the drag source
+            if (_isInDrag)
+                return;
+
             Drop?.Invoke(this, e);
            
             if (!_isInDrag)

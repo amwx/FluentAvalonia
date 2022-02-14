@@ -1931,6 +1931,8 @@
 
     <StaticResource x:Key="TabViewBorderBrush"                                      ResourceKey="CardStrokeColorDefault" />
     <StaticResource x:Key="TabViewItemBorderBrush"                                  ResourceKey="SubtleFillColorTransparentBrush" />
+
+    <!-- NOTE THIS WAS CHANGED UNTIL WE GET BRUSH TRANSFORMS IMPLEMENTED -->
     <LinearGradientBrush x:Key="TabViewSelectedItemBorderBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <!--MappingMode="Absolute" 
         <LinearGradientBrush.RelativeTransform>

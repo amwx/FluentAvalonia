@@ -162,6 +162,10 @@ namespace FluentAvalonia.UI.Controls
 
         internal void EnterReorder(int startIndex)
         {
+            // We're already in a reorder operation, dragenter was probably triggered
+            // by a TabViewItem
+            if (_insertionIndex != -1)
+                return;
             _startReorderIndex = _insertionIndex = startIndex;
             InvalidateArrange();
         }
