@@ -29,6 +29,9 @@
     <avconv:CornerRadiusFilterConverter x:Key="BottomCornerRadiusFilterConverter" Filter="BottomLeft, BottomRight"/>
     <avconv:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
 
+    <x:String x:Key="ChevronDownGlyph">&#xE70D;</x:String>
+    <x:String x:Key="ChevronUpGlyph">&#xE70E;</x:String>
+
     <!--
         Preserving for reference:
         <x:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</x:String>
