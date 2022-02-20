@@ -1,10 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
@@ -13,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
+    [PseudoClasses(":hidden", ":open")]
+    [PseudoClasses(":primary", ":secondary", ":close")]
+    [PseudoClasses(":fullsize", "nosmokelayer")]
 	/// <summary>
 	/// Presents a asyncronous dialog to the user.
 	/// </summary>
@@ -605,29 +610,44 @@ namespace FluentAvalonia.UI.Controls
 		public DialogHost()
 		{
 			Background = null;
-			HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center;
-			VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
+			HorizontalAlignment = HorizontalAlignment.Stretch;
+			VerticalAlignment = VerticalAlignment.Stretch;
+            HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            VerticalContentAlignment = VerticalAlignment.Stretch;
 		}
 
 		Type IStyleable.StyleKey => typeof(OverlayPopupHost);
 
 		protected override Size MeasureOverride(Size availableSize)
 		{
-			_ = base.MeasureOverride(availableSize);
-
-			if (this.VisualRoot is TopLevel tl)
+            Size s = Size.Empty;
+			if (VisualRoot is TopLevel tl)
 			{
-				return tl.ClientSize;
+				s= tl.ClientSize;
 			}
 			else if (VisualRoot is IControl c)
 			{
-				return c.Bounds.Size;
+				s= c.Bounds.Size;
 			}
 
-			return Size.Empty;
+            // Bug #96
+            // Measure with the constrained size, otherwise the ContentDialog will size under
+            // infinite size. Becomes an issue in case like #96 where you make a ListBox the 
+            // content of the ContentDialog, and the CD will remain taller than the window
+            // height if it's sized below
+            _ = base.MeasureOverride(s);
+
+            return s;
 		}
 
-		protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            _ = base.ArrangeOverride(finalSize);
+
+            return finalSize;
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
 		{
 			base.OnAttachedToVisualTree(e);
 			if (e.Root is IControl wb)
