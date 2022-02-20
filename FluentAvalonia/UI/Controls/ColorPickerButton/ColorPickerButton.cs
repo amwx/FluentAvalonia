@@ -104,6 +104,8 @@ namespace FluentAvalonia.UI.Controls
 
 			// Keep track of which button the flyout is active on
 			_flyoutActive = true;
+
+            FlyoutOpened?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnColorPickerColorChanged(ColorPicker sender, ColorChangedEventArgs args)
@@ -115,18 +117,17 @@ namespace FluentAvalonia.UI.Controls
 		{
 			if (_flyoutActive)
 			{
-				_flyoutActive = false;				
-			}
+                FlyoutDismissed?.Invoke(this, EventArgs.Empty);
+            }
 		}
 
 		private void OnFlyoutConfirmed(ColorPickerFlyout sender, object args)
 		{
 			if (_flyoutActive)
 			{
-				_flyoutActive = false;
-
-				Color = _flyout.ColorPicker.Color;
-			}
+                Color = _flyout.ColorPicker.Color;
+                FlyoutConfirmed?.Invoke(this, Color);
+            }
 		}
 
 		private void OnFlyoutClosed(object sender, EventArgs e)
@@ -135,7 +136,13 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_flyout.ColorPicker.ColorChanged -= OnColorPickerColorChanged;
 			}
-		}
+
+            if (_flyoutActive)
+            {
+                FlyoutClosed?.Invoke(this, EventArgs.Empty);
+                _flyoutActive = false;
+            }
+        }
 
 		private static ColorPickerFlyout _flyout;
 
