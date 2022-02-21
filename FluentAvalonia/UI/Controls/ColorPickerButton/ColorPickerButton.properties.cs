@@ -205,19 +205,21 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Raised when the color change was confirmed and the flyout closes.
         /// </summary>
-        public event TypedEventHandler<ColorPickerButton, Color> FlyoutConfirmed;
+        public event TypedEventHandler<ColorPickerButton, ColorChangedEventArgs> FlyoutConfirmed;
+
         /// <summary>
         /// Raised when the color change was dismissed and the flyout closes.
         /// </summary>
-        public event TypedEventHandler<ColorPickerButton, object> FlyoutDismissed;
+        public event TypedEventHandler<ColorPickerButton, EventArgs> FlyoutDismissed;
 
         /// <summary> Raised when the flyout opens.
         /// </summary>
-        public event TypedEventHandler<ColorPickerButton, object> FlyoutOpened;
+        public event TypedEventHandler<ColorPickerButton, EventArgs> FlyoutOpened;
+
         /// <summary>
         /// Raised when the flyout closes regardless of confirmation or dismissal.
         /// </summary>
-        public event TypedEventHandler<ColorPickerButton, object> FlyoutClosed;
+        public event TypedEventHandler<ColorPickerButton, EventArgs> FlyoutClosed;
 
         private bool _isCompact = true;
 		private bool _isAlphaEnabled = true;

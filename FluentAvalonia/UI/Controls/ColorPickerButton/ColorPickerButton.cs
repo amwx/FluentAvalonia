@@ -124,9 +124,10 @@ namespace FluentAvalonia.UI.Controls
 		private void OnFlyoutConfirmed(ColorPickerFlyout sender, object args)
 		{
 			if (_flyoutActive)
-			{
+            {
+                var oldColor = Color;
                 Color = _flyout.ColorPicker.Color;
-                FlyoutConfirmed?.Invoke(this, Color);
+                FlyoutConfirmed?.Invoke(this, new ColorChangedEventArgs(oldColor, Color));
             }
 		}
 
