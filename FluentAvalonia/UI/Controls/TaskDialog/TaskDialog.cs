@@ -233,7 +233,7 @@ namespace FluentAvalonia.UI.Controls
         {
             Opened?.Invoke(this, EventArgs.Empty);
 
-            _defaultButton.Focus();
+            _defaultButton?.Focus();
         }
 
         protected virtual void OnClosing(TaskDialogClosingEventArgs args)
