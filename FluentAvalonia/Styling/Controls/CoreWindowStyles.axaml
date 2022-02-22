@@ -47,6 +47,10 @@
 		<Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundPressed}" />
 	</Style>
 
+    <Style Selector="Button.SystemCaption:disabled /template/ Border">
+        <Setter Property="Opacity" Value="0.5" />
+    </Style>
+
 	<Style Selector="Window[IsActive=False] Button.SystemCaption /template/ Border">
 		<Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundInactive}" />
 	</Style>
@@ -98,6 +102,15 @@
 		<Setter Property="Content" Value="&#xE8BB;" />
 	</Style>
 
+    <Style Selector="Window:windows[CanResize=False] uip|MinMaxCloseControl /template/ Button#MaxRestoreButton">
+        <Setter Property="IsEnabled" Value="False" />
+    </Style>
+    <Style Selector="Window:windows:dialog uip|MinMaxCloseControl /template/ Button#MaxRestoreButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="Window:windows:dialog uip|MinMaxCloseControl /template/ Button#MinimizeButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
 
 	<Style Selector="Window:windows">
 		<Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
@@ -117,7 +130,7 @@
 								   VerticalAlignment="Top">
 								<TextBlock Name="TitleText"
 										   Text="{TemplateBinding Title}"
-										   Margin="32 0 0 0"
+										   Margin="12 0 0 0"
 										   FontSize="12"
 										   VerticalAlignment="Center"
 										   HorizontalAlignment="Left" />

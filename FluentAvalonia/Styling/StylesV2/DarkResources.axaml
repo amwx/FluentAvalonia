@@ -1945,4 +1945,50 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
+
+
+    <!-- TASK DIALOG -->
+    <!-- Dialog -->
+    <StaticResource x:Key="TaskDialogHeaderBackground" ResourceKey="LayerFillColorAltBrush" />
+    <StaticResource x:Key="TaskDialogBackground" ResourceKey="SolidBackgroundFillColorBaseBrush" />
+    <StaticResource x:Key="TaskDialogButtonAreaBackground" ResourceKey="SolidBackgroundFillColorSecondaryBrush" />
+    <StaticResource x:Key="TaskDialogProgressBarErrorColor" ResourceKey="SystemFillColorCriticalBrush" />
+    <StaticResource x:Key="TaskDialogProgressBarSuspendColor" ResourceKey="SystemFillColorCautionBrush" />
+    <StaticResource x:Key="TaskDialogProgressBarErrorBackgroundColor" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+    <StaticResource x:Key="TaskDialogProgressBarSuspendBackgroundColor" ResourceKey="SystemFillColorCautionBackgroundBrush" />
+    <StaticResource x:Key="TaskDialogFooterButtonForeground" ResourceKey="AccentTextFillColorPrimaryBrush" />
+    <StaticResource x:Key="TaskDialogFooterButtonForegroundPointerOver" ResourceKey="AccentTextFillColorPrimaryBrush" />
+    <StaticResource x:Key="TaskDialogFooterButtonForegroundPressed" ResourceKey="AccentTextFillColorPrimaryBrush" />
+    <StaticResource x:Key="TaskDialogSmokeFill" ResourceKey="SmokeFillColorDefaultBrush" />
+    <StaticResource x:Key="TaskDialogBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />
+    <Thickness x:Key="TaskDialogBorderWidth">1</Thickness>
+    <!-- Buttons -->
+    <StaticResource x:Key="TaskDialogButtonBackground" ResourceKey="ControlFillColorDefaultBrush" />
+    <StaticResource x:Key="TaskDialogButtonBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+    <StaticResource x:Key="TaskDialogButtonBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+    <StaticResource x:Key="TaskDialogButtonBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+    <StaticResource x:Key="TaskDialogButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+    <StaticResource x:Key="TaskDialogButtonForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+    <StaticResource x:Key="TaskDialogButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+    <StaticResource x:Key="TaskDialogButtonForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+    <StaticResource x:Key="TaskDialogButtonBorderBrush" ResourceKey="ControlElevationBorderBrush" />
+    <StaticResource x:Key="TaskDialogButtonBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+    <StaticResource x:Key="TaskDialogButtonBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+    <StaticResource x:Key="TaskDialogButtonBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+    <Thickness x:Key="TaskDialogButtonBorderThickness">1</Thickness>
+    <!-- Commands -->
+    <StaticResource x:Key="TaskDialogCommandBackground" ResourceKey="SystemControlTransparentBrush" />
+    <StaticResource x:Key="TaskDialogCommandBorderBrush" ResourceKey="SystemControlTransparentBrush" />
+    <Thickness x:Key="TaskDialogCommandBorderThickness">0</Thickness>
+    <StaticResource x:Key="TaskDialogCommandTextForeground" ResourceKey="AccentTextFillColorPrimaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandDescriptionForeground" ResourceKey="TextFillColorSecondaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandTextForegroundPointerOver" ResourceKey="AccentTextFillColorPrimaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandDescriptionForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandTextForegroundPressed" ResourceKey="AccentTextFillColorSecondaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandDescriptionForegroundPressed" ResourceKey="TextFillColorTertiaryBrush" />
+    <StaticResource x:Key="TaskDialogCommandBackgroundDisabled" ResourceKey="SystemControlTransparentBrush" />
+    <StaticResource x:Key="TaskDialogCommandTextForegroundDisabled" ResourceKey="AccentTextFillColorDisabledBrush" />
+    <StaticResource x:Key="TaskDialogCommandDescriptionForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
 </ResourceDictionary>

@@ -76,3 +76,4 @@
 /Styling/Controls/CommandBar/CommandBarFlyoutCommandBarStyles.axaml
 /Styling/Controls/InfoBadgeStyles.axaml
 /Styling/Controls/TabView/TabViewStyles.axaml
+/Styling/Controls/TaskDialog/TaskDialogStyles.axaml
