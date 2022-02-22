@@ -65,9 +65,48 @@ namespace FluentAvalonia.UI.Controls
         /// </summary>
 		public CoreApplicationViewTitleBar TitleBar => _titleBar;
 
+        /// <summary>
+        /// Gets or sets whether the window should show in a dialog state with the 
+        /// maximize and minimize buttons hidden.
+        /// </summary>
+        /// <remarks>
+        ///  WINDOWS only, only respected on window launch
+        /// </remarks>
+        public bool ShowAsDialog
+        {
+            get => _hideSizeButtons;
+            set
+            {
+                _hideSizeButtons = value;
+                PseudoClasses.Set(":dialog", value);
+            }
+        }
+
         protected internal bool IsWindows11 { get; internal set; }
 
-		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var sz = base.MeasureOverride(availableSize);
+
+            if (_systemCaptionButtons != null)
+            {
+                var wid = _systemCaptionButtons.DesiredSize.Width;
+                if (_customTitleBar != null)
+                {
+                    wid += _defaultTitleBar.DesiredSize.Width;
+                }
+
+                if (_titleBar.SystemOverlayRightInset != wid)
+                {
+                    _titleBar.SystemOverlayRightInset = wid;
+                    _defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
+                }
+            }
+
+            return sz;
+        }
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
 			base.OnApplyTemplate(e);
 
@@ -79,12 +118,14 @@ namespace FluentAvalonia.UI.Controls
 
 			if (_defaultTitleBar != null)
 			{
-				_defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
+				//_defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
 				_defaultTitleBar.Height = _titleBar.Height;
 			}
 
 			if (_systemCaptionButtons != null)
 			{
+                //_systemCaptionButtons.ApplyTemplate();
+
 				_systemCaptionButtons.Height = _titleBar.Height;
 			}
 
@@ -100,7 +141,7 @@ namespace FluentAvalonia.UI.Controls
 						_titleBar.Height, 0, 0);
 				}
 			}
-
+               
 			SetTitleBarColors();
 		}
 
@@ -187,6 +228,9 @@ namespace FluentAvalonia.UI.Controls
 
 		internal bool HitTestMaximizeButton(Point pos)
 		{
+            if (ShowAsDialog || !CanResize)
+                return false;
+
 			return _systemCaptionButtons.HitTestMaxButton(pos);
 		}
 
@@ -292,5 +336,6 @@ namespace FluentAvalonia.UI.Controls
 		private Panel _defaultTitleBar;
 		private IControl _customTitleBar;
 		private Border _templateRoot;
+        private bool _hideSizeButtons;
 	}
 }
