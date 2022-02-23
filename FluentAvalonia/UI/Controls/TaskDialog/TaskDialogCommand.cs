@@ -17,7 +17,7 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Gets or sets whether invoking this command should also close the dialog
         /// </summary>
-        public bool ClosesOnInvoked { get; set; }
+        public bool ClosesOnInvoked { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the description of the TaskDialogCommand
