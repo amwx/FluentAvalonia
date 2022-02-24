@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-	/// <summary>
-	/// Presents a asyncronous dialog to the user.
-	/// </summary>
-	public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
+    /// <summary>
+    /// Presents a asyncronous dialog to the user.
+    /// </summary>
+    public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 	{
 		public ContentDialog()
 		{
@@ -591,65 +591,5 @@ namespace FluentAvalonia.UI.Controls
 		private Button _primaryButton;
 		private Button _secondaryButton;
 		private Button _closeButton;
-	}
-
-	/// <summary>
-	/// Special control to host a <see cref="ContentDialog"/>
-	/// </summary>
-	/// <remarks>
-	/// This class should generally not be used outside of FluentAvalonia, and is
-	/// only public for Xaml styling support
-	/// </remarks>
-	public class DialogHost : ContentControl, IStyleable
-	{
-		public DialogHost()
-		{
-			Background = null;
-			HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center;
-			VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
-		}
-
-		Type IStyleable.StyleKey => typeof(OverlayPopupHost);
-
-		protected override Size MeasureOverride(Size availableSize)
-		{
-			_ = base.MeasureOverride(availableSize);
-
-			if (this.VisualRoot is TopLevel tl)
-			{
-				return tl.ClientSize;
-			}
-			else if (VisualRoot is IControl c)
-			{
-				return c.Bounds.Size;
-			}
-
-			return Size.Empty;
-		}
-
-		protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-		{
-			base.OnAttachedToVisualTree(e);
-			if (e.Root is IControl wb)
-			{
-				// OverlayLayer is a Canvas, so we won't get a signal to resize if the window
-				// bounds change. Subscribe to force update
-				_rootBoundsWatcher = wb.GetObservable(BoundsProperty).Subscribe(_ => OnRootBoundsChanged());
-			}
-		}
-
-		protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-		{
-			base.OnDetachedFromVisualTree(e);
-			_rootBoundsWatcher?.Dispose();
-			_rootBoundsWatcher = null;
-		}
-
-		private void OnRootBoundsChanged()
-		{
-			InvalidateMeasure();
-		}
-
-		private IDisposable _rootBoundsWatcher;
 	}
 }
