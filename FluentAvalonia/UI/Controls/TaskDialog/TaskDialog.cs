@@ -178,6 +178,7 @@ namespace FluentAvalonia.UI.Controls
 
                 overlayLayer.Children.Add(host);
                 PseudoClasses.Set(":hosted", true);
+                IsVisible = true;
 
                 OnOpened();
 
@@ -330,6 +331,7 @@ namespace FluentAvalonia.UI.Controls
                 await Task.Delay(200);
 
                 IsHitTestVisible = true;
+                IsVisible = false;
 
                 dh.Content = null;
                 ReturnDialogToParent();
