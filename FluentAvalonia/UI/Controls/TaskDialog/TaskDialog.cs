@@ -16,7 +16,7 @@ using AvButton = Avalonia.Controls.Button;
 namespace FluentAvalonia.UI.Controls
 {
     [PseudoClasses(":hosted", ":hidden", ":open")]
-    [PseudoClasses(":icon", ":footer", ":footerAuto", ":expanded")]
+    [PseudoClasses(":header", ":subheader", ":icon", ":footer", ":footerAuto", ":expanded")]
     [PseudoClasses(":progress", ":progressError", ":progressSuspend")]
     /// <summary>
     /// Represents and enhanced dialog with enhanced button, command, and progress support
@@ -75,6 +75,14 @@ namespace FluentAvalonia.UI.Controls
             else if (change.Property == IconSourceProperty)
             {
                 PseudoClasses.Set(":icon", change.NewValue.GetValueOrDefault() != null);
+            }
+            else if (change.Property == HeaderProperty)
+            {
+                PseudoClasses.Set(":header", change.NewValue.GetValueOrDefault() != null);
+            }
+            else if (change.Property == SubHeaderProperty)
+            {
+                PseudoClasses.Set(":subheader", change.NewValue.GetValueOrDefault() != null);
             }
         }
        

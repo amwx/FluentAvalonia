@@ -89,7 +89,8 @@
                             Name="ContentRoot">
                         <Grid RowDefinitions="Auto,Auto,*,Auto">
                             <Border Background="{DynamicResource TaskDialogHeaderBackground}"
-                                    Padding="{DynamicResource TaskDialogHeaderPadding}">
+                                    Padding="{DynamicResource TaskDialogHeaderPadding}"
+                                    Name="HeaderRoot">
                                 <TextBlock Text="{TemplateBinding Header}"
                                            TextWrapping="Wrap"
                                            FontSize="{DynamicResource TaskDialogHeaderFontSize}"
@@ -97,7 +98,7 @@
                             </Border>
 
                             <DockPanel Grid.Row="1"
-                                       Name="ContentHost"
+                                       Name="SubHeaderRoot"
                                        Margin="{DynamicResource TaskDialogSubHeaderPadding}">
                                 <Viewbox Name="IconHost"
                                          DockPanel.Dock="Left"
@@ -198,6 +199,12 @@
     <Style Selector="ui|TaskDialog /template/ Viewbox#IconHost">
         <Setter Property="IsVisible" Value="False" />
     </Style>
+    <Style Selector="ui|TaskDialog /template/ Border#HeaderRoot">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ui|TaskDialog /template/ DockPanel#SubHeaderRoot">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
 
     <Style Selector="ui|TaskDialog /template/ StackPanel#MoreDetailsPanel">
         <Setter Property="IsVisible" Value="False" />
@@ -212,6 +219,18 @@
 
     <Style Selector="ui|TaskDialog /template/ ProgressBar#ProgressBar">
         <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="ui|TaskDialog:header /template/ Border#HeaderRoot">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="ui|TaskDialog:subheader /template/ DockPanel#SubHeaderRoot">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="ui|TaskDialog:icon /template/ DockPanel#SubHeaderRoot">
+        <Setter Property="IsVisible" Value="True" />
     </Style>
 
     <Style Selector="ui|TaskDialog:icon /template/ Viewbox#IconHost">
