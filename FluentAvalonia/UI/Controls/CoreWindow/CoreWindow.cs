@@ -88,12 +88,22 @@ namespace FluentAvalonia.UI.Controls
         {
             var sz = base.MeasureOverride(availableSize);
 
+            // UGLY HACK: Seems with CanResize=False, the window shrinks exactly the amount
+            // we modify the window in WM_NCCALCSIZE so we need to fix that here
+            // But the content measures to the normal size - so in constrained environments
+            // like the TaskDialog, stuff gets cut off
+            if (!CanResize && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                sz = sz.WithWidth(sz.Width + 16)
+                    .WithHeight(sz.Height + 8);
+            }
+
             if (_systemCaptionButtons != null)
             {
                 var wid = _systemCaptionButtons.DesiredSize.Width;
                 if (_customTitleBar != null)
                 {
-                    wid += _defaultTitleBar.DesiredSize.Width;
+                    wid += _defaultTitleBar.Width;
                 }
 
                 if (_titleBar.SystemOverlayRightInset != wid)
