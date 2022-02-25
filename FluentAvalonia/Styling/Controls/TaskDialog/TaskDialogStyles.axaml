@@ -85,7 +85,6 @@
                             MaxWidth="{DynamicResource TaskDialogMaxWidth}"
                             MinHeight="{DynamicResource TaskDialogMinHeight}"
                             MaxHeight="{DynamicResource TaskDialogMaxHeight}"
-                            ClipToBounds="True"
                             Name="ContentRoot">
                         <Grid RowDefinitions="Auto,Auto,*,Auto">
                             <Border Background="{DynamicResource TaskDialogHeaderBackground}"
@@ -166,7 +165,8 @@
 
                             <Border Padding="{StaticResource TaskDialogButtonHostMargin}"
                                     Grid.Row="3"
-                                    Background="{DynamicResource TaskDialogButtonAreaBackground}">
+                                    Background="{DynamicResource TaskDialogButtonAreaBackground}"
+                                    Name="ButtonBorder">
                                 <ItemsPresenter Name="ButtonsHost"
                                                 KeyboardNavigation.TabNavigation="Continue">
                                     <ItemsPresenter.ItemsPanel>
@@ -278,6 +278,12 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="BoxShadow" Value="0 8 32 0 #66000000" />
+    </Style>
+    <Style Selector="ui|TaskDialog:hosted /template/ Border#HeaderRoot">
+        <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}}" />
+    </Style>
+    <Style Selector="ui|TaskDialog:hosted /template/ Border#ButtonBorder">
+        <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}}" />
     </Style>
 
     <!--Handle hidden dialog-->
