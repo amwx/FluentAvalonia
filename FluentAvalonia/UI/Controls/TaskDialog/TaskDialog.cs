@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -63,10 +64,12 @@ namespace FluentAvalonia.UI.Controls
 
                 PseudoClasses.Set(":footerAuto", val == TaskDialogFooterVisibility.Auto);
                 PseudoClasses.Set(":footer", val != TaskDialogFooterVisibility.Never);
+                PseudoClasses.Set(":expanded", val == TaskDialogFooterVisibility.Always);
             }
             else if (change.Property == IsFooterExpandedProperty)
             {
-                PseudoClasses.Set(":expanded", change.NewValue.GetValueOrDefault<bool>());
+                if (FooterVisibility != TaskDialogFooterVisibility.Always)
+                    PseudoClasses.Set(":expanded", change.NewValue.GetValueOrDefault<bool>());
             }
             else if (change.Property == ShowProgressBarProperty)
             {
@@ -230,6 +233,7 @@ namespace FluentAvalonia.UI.Controls
         internal void CompleteClosingDeferral(object result) 
         {
             IsEnabled = true;
+            _hasDeferralActive = false;
             FinalCloseDialog(result);
         }
 
@@ -271,6 +275,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 // Diable interaction with the dialog while the deferral is active
                 IsEnabled = false;
+                _hasDeferralActive = true;
             }
         }
 
@@ -499,6 +504,7 @@ namespace FluentAvalonia.UI.Controls
         private int _xamlOwnerChildIndex;
         private IControl _host;
         private TaskCompletionSource<object> _tcs;
+        internal bool _hasDeferralActive = false;
     }
 
     internal class TaskDialogWindowHost : CoreWindow
@@ -517,6 +523,17 @@ namespace FluentAvalonia.UI.Controls
 #if DEBUG
             this.AttachDevTools();
 #endif
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            // Don't allow closing the window when a Deferral is active
+            // Otherwise the deferral task will continue to run, but the 
+            // window will be dismissed
+            if (Content is TaskDialog td && td._hasDeferralActive)
+                e.Cancel = true;
         }
     }
 }
