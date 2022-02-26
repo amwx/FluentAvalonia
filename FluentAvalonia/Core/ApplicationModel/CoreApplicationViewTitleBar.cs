@@ -61,10 +61,18 @@ namespace FluentAvalonia.Core.ApplicationModel
         /// <summary>
         /// Gets the width of the system-reserved region of the upper-right corner of the app window. This region is reserved when the current language is a left-to-right language.
         /// </summary>
-        /// <remarks>
-        /// This is a constant, I've set the buttons to 46px in width * 3 = 138
-        /// </remarks>
-        public double SystemOverlayRightInset => 138;
+        public double SystemOverlayRightInset
+        {
+            get => _insetWidthRight;
+            internal set
+            {
+                if (_insetWidthRight != value)
+                {
+                    _insetWidthRight = value;
+                    LayoutMetricsChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
 		public event TypedEventHandler<CoreApplicationViewTitleBar, EventArgs> LayoutMetricsChanged;
 
@@ -122,5 +130,6 @@ namespace FluentAvalonia.Core.ApplicationModel
 		private CoreWindow _owner;
         private IControl _customTitleBar;
         private IDisposable _customTitleBarDisp;
+        private double _insetWidthRight = double.NaN;
 	}
 }

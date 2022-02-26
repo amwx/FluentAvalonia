@@ -58,6 +58,12 @@
         "Description": "Base class of a special flyout that presents with confirm/dismiss buttons",
         "PreviewImageSource": "/Assets/PageIcons/PickerFlyoutBase.jpg",
         "PageType": "PickerFlyoutBasePage"
+      },
+      {
+        "Header": "TaskDialog",
+        "Description": "An advanced dialog box",
+        "PreviewImageSource": "/Assets/PageIcons/ContentDialog.jpg",
+        "PageType": "TaskDialogPage"
       }
     ]
   },

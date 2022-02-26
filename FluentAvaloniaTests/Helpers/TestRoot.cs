@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace FluentAvaloniaTests
 {
-	public class TestRoot : Decorator, IFocusScope, ILayoutRoot, IInputRoot, IRenderRoot, IStyleHost, ILogicalRoot
+    public class TestRoot : Decorator, IFocusScope, ILayoutRoot, IInputRoot, IRenderRoot, IStyleHost, ILogicalRoot
 	{
 		public TestRoot()
 		{

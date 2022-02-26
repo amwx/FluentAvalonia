@@ -43,7 +43,17 @@ namespace FluentAvalonia.Core
             {
                 var @class = cr.TakeUntil(',');
 
-                ((IPseudoClasses)element.Classes).Set(@class.ToString(), set);
+                if (@class[@class.Length - 1] == '!')
+				{
+                    @class = @class.Slice(0, @class.Length - 1);
+                    ((IPseudoClasses)element.Classes).Set(@class.ToString(), false);
+                }
+                else
+                {
+                    ((IPseudoClasses)element.Classes).Set(@class.ToString(), set);
+                }
+
+                
 
                 if (!cr.End)
                     cr.Skip(1);

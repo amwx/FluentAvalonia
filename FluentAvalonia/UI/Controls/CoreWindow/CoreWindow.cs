@@ -42,19 +42,14 @@ namespace FluentAvalonia.UI.Controls
 				if (PlatformImpl is CoreWindowImpl cwi)
 				{
 					cwi.SetOwner(this);
+                    cwi.WindowOpened += WindowOpened_Windows;
 				}
 
 				ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
 				ExtendClientAreaToDecorationsHint = true;
 				PseudoClasses.Add(":windows");
 
-				ApplicationViewTitleBar.Instance.TitleBarPropertyChanged += OnTitleBarPropertyChanged;
-
-                var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                if (faTheme != null)
-                {
-                    faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
-                }
+                PlatformImpl.Closed += WindowClosed_Windows;
 			}
 		}
 
@@ -65,9 +60,58 @@ namespace FluentAvalonia.UI.Controls
         /// </summary>
 		public CoreApplicationViewTitleBar TitleBar => _titleBar;
 
+        /// <summary>
+        /// Gets or sets whether the window should show in a dialog state with the 
+        /// maximize and minimize buttons hidden.
+        /// </summary>
+        /// <remarks>
+        ///  WINDOWS only, only respected on window launch
+        /// </remarks>
+        public bool ShowAsDialog
+        {
+            get => _hideSizeButtons;
+            set
+            {
+                _hideSizeButtons = value;
+                PseudoClasses.Set(":dialog", value);
+            }
+        }
+
         protected internal bool IsWindows11 { get; internal set; }
 
-		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var sz = base.MeasureOverride(availableSize);
+
+            // UGLY HACK: Seems with CanResize=False, the window shrinks exactly the amount
+            // we modify the window in WM_NCCALCSIZE so we need to fix that here
+            // But the content measures to the normal size - so in constrained environments
+            // like the TaskDialog, stuff gets cut off
+            if (!CanResize && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                sz = sz.WithWidth(sz.Width + 16)
+                    .WithHeight(sz.Height + 8);
+            }
+
+            if (_systemCaptionButtons != null)
+            {
+                var wid = _systemCaptionButtons.DesiredSize.Width;
+                if (_customTitleBar != null)
+                {
+                    wid += _defaultTitleBar.Width;
+                }
+
+                if (_titleBar.SystemOverlayRightInset != wid)
+                {
+                    _titleBar.SystemOverlayRightInset = wid;
+                    _defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
+                }
+            }
+
+            return sz;
+        }
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
 			base.OnApplyTemplate(e);
 
@@ -79,12 +123,14 @@ namespace FluentAvalonia.UI.Controls
 
 			if (_defaultTitleBar != null)
 			{
-				_defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
+				//_defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
 				_defaultTitleBar.Height = _titleBar.Height;
 			}
 
 			if (_systemCaptionButtons != null)
 			{
+                //_systemCaptionButtons.ApplyTemplate();
+
 				_systemCaptionButtons.Height = _titleBar.Height;
 			}
 
@@ -100,11 +146,36 @@ namespace FluentAvalonia.UI.Controls
 						_titleBar.Height, 0, 0);
 				}
 			}
-
+               
 			SetTitleBarColors();
 		}
 
-		internal void ExtendTitleBar(bool extend)
+        private void WindowOpened_Windows(object sender, EventArgs e)
+        {
+            ApplicationViewTitleBar.Instance.TitleBarPropertyChanged += OnTitleBarPropertyChanged;
+
+            var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+            if (faTheme != null)
+            {
+                faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
+            }
+        }
+
+        private void WindowClosed_Windows()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                ApplicationViewTitleBar.Instance.TitleBarPropertyChanged -= OnTitleBarPropertyChanged;
+
+                var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+                if (faTheme != null)
+                {
+                    faTheme.RequestedThemeChanged -= OnRequestedThemeChanged;
+                }
+            }
+        }
+
+        internal void ExtendTitleBar(bool extend)
 		{
 			if (Design.IsDesignMode)
 				return;
@@ -187,6 +258,9 @@ namespace FluentAvalonia.UI.Controls
 
 		internal bool HitTestMaximizeButton(Point pos)
 		{
+            if (ShowAsDialog || !CanResize)
+                return false;
+
 			return _systemCaptionButtons.HitTestMaxButton(pos);
 		}
 
@@ -292,5 +366,6 @@ namespace FluentAvalonia.UI.Controls
 		private Panel _defaultTitleBar;
 		private IControl _customTitleBar;
 		private Border _templateRoot;
+        private bool _hideSizeButtons;
 	}
 }
