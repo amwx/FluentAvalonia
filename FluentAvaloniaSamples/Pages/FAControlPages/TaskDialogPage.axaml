@@ -1,0 +1,218 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:spg="using:FluentAvaloniaSamples.Pages.NVSamplePages"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
+             xmlns:core="using:FluentAvalonia.Core"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="3000"
+             x:Class="FluentAvaloniaSamples.Pages.TaskDialogPage"
+             PreviewImage="/Assets/PageIcons/ContentDialog.jpg">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample TargetType="ui:TaskDialog"
+                              Name="FirstExample"
+                              Header="A TaskDialog API in Action"
+                              XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/TaskDialog1.xaml.txt"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/TaskDialog1.cs.txt">
+            <StackPanel>
+                <TextBlock Text="Preview" />
+                <TextBlock Name="LastResultText" />
+                <Panel IsHitTestVisible="False"
+                       MinWidth="{DynamicResource TaskDialogMinWidth}"
+                       MaxWidth="{DynamicResource TaskDialogMaxWidth}"
+                       MinHeight="{DynamicResource TaskDialogMinHeight}"
+                       MaxHeight="{DynamicResource TaskDialogMaxHeight}">
+                    <!-- 
+                    NOTE to any who browse this source file:
+                    core:VisualStateHelper.ForcedClassesProperty is an internal thing that attempts to
+                    force pseudoclasses for debugging. This should NOT be used in general outside of this
+                    project as undesired affects may apply
+                    I'm only using it here so we can preview the dialog changes from options
+                    without launching the dialog
+                    -->
+                    <ui:TaskDialog Name="TaskDialog1"
+                                   IsVisible="True"
+                                   Title="FluentAvalonia"
+                                   Header="Header Here"
+                                   SubHeader="SubHeader"
+                                   Content="This is some sample text, but you can put more advanced content here if you like"                                   
+                                   core:VisualStateHelper.ForcedClassesProperty=":open,:hosted,:hidden!"
+                                   FooterVisibility="{Binding #FooterVisCB.SelectedItem.Content}">
+                        <ui:TaskDialog.Commands>
+                            <ui:TaskDialogCommand Text="{Binding #CommandText.Text}"
+                                                  Description="{Binding #DescText.Text}"
+                                                  IsEnabled="{Binding #CommandEnabledCheck.IsChecked}"
+                                                  DialogResult="{Binding #CommandDialogResult.Text}"/>
+                        </ui:TaskDialog.Commands>
+
+                        <ui:TaskDialog.Buttons>
+                            <ui:TaskDialogButton Text="OK" DialogResult="OK" />
+                            <ui:TaskDialogButton Text="Cancel" DialogResult="Cancel" />
+                        </ui:TaskDialog.Buttons>
+
+                        <ui:TaskDialog.Footer>
+                            <CheckBox Content="Never show me this again" />
+                        </ui:TaskDialog.Footer>
+                    </ui:TaskDialog>
+                </Panel>
+               
+                
+                
+            </StackPanel>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="8" MaxWidth="225">
+                    <Button Content="Launch Dialog"
+                            Click="LaunchAPIInActionTaskDialog"/>
+                    <CheckBox Content="Show Windowed"
+                              IsChecked="True"
+                              Name="ShowWindowedCheck" />
+                    <Expander Header="Headers">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Title (Windowed mode only)"/>
+                            <TextBox Text="{Binding #TaskDialog1.Title}" />
+
+                            <TextBlock Text="Header" />
+                            <TextBox Text="{Binding #TaskDialog1.Header}" />
+
+                            <TextBlock Text="SubHeader" />
+                            <TextBox Text="{Binding #TaskDialog1.SubHeader}" />
+
+                            <CheckBox Content="Show Icon"
+                                      Checked="TaskDialog1ShowIconChecked"
+                                      Unchecked="TaskDialog1ShowIconUnchecked"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Progress Bar">
+                        <StackPanel Spacing="4">
+                            <CheckBox Content="Show Progress Bar"
+                                      IsChecked="{Binding #TaskDialog1.ShowProgressBar}"
+                                      Name="ShowProgCheck"/>
+                            <CheckBox Content="Is Indeterminate"
+                                      Name="IndeterminateCheck"
+                                      Checked="TaskDialog1ProgressIndetChecked"
+                                      Unchecked="TaskDialog1ProgressIndetUnchecked"
+                                      IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
+                            <RadioButton Content="Normal State"
+                                         IsChecked="True"
+                                         Name="NormalCheck"
+                                         Checked="TaskDialog1ProgressNormalChecked"
+                                         Unchecked="TaskDialog1ProgressNormalUnchecked"
+                                         IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
+                            <RadioButton Content="Error State"
+                                         Name="ErrorCheck"
+                                         Checked="TaskDialog1ProgressErrorChecked"
+                                         Unchecked="TaskDialog1ProgressErrorUnchecked"
+                                         IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
+                            <RadioButton Content="Suspended State"
+                                         Name="SuspendedCheck"
+                                         Checked="TaskDialog1ProgressSuspendedChecked"
+                                         Unchecked="TaskDialog1ProgressSuspendedUnchecked"
+                                         IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Footer">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Footer Visibility" />
+                            <ComboBox Name="FooterVisCB" MinWidth="125"
+                                      SelectedIndex="2">
+                                <ComboBoxItem Content="{x:Static ui:TaskDialogFooterVisibility.Never}" />
+                                <ComboBoxItem Content="{x:Static ui:TaskDialogFooterVisibility.Auto}" />
+                                <ComboBoxItem Content="{x:Static ui:TaskDialogFooterVisibility.Always}" />
+                            </ComboBox>
+                            <CheckBox IsChecked="{Binding #TaskDialog1.IsFooterExpanded}"
+                                      Content="Footer Expanded" />
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Commands">
+                        <StackPanel Spacing="4" MaxWidth="175">
+                            <TextBlock Text="Text" />
+                            <TextBox Name="CommandText" Text="Sample Command" />
+                            <TextBlock Text="Description" />
+                            <TextBox Name="DescText" Text="This is a description of the Sample Command" />
+                            <TextBlock Text="Dialog Result" />
+                            <TextBox Name="CommandDialogResult" Text="CommandResult" />
+                            <CheckBox Content="IsEnabled"
+                                      IsChecked="True"
+                                      Name="CommandEnabledCheck"/>
+                            <CheckBox Content="ShowIcon"
+                                      Checked="TaskDialog1CommandShowIconChecked"
+                                      Unchecked="TaskDialog1CommandShowIconUnchecked"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Buttons">
+                        <StackPanel>
+                            <TextBlock Text="No limit exists on the number of buttons, but you should generally have no more than three (3)."
+                                       TextWrapping="Wrap"
+                                       MaxWidth="175"
+                                       HorizontalAlignment="Left"/>
+                            <WrapPanel>
+                                <CheckBox Content="OK" Name="OKCheck"
+                                          IsChecked="True"
+                                          Checked="TaskDialog1UpdateButtons"
+                                          Unchecked="TaskDialog1UpdateButtons" />
+                                <CheckBox Content="Cancel" Name="CancelCheck"
+                                          IsChecked="True"
+                                          Checked="TaskDialog1UpdateButtons"
+                                          Unchecked="TaskDialog1UpdateButtons" />
+                                <CheckBox Content="Yes" Name="YesCheck"
+                                          Checked="TaskDialog1UpdateButtons"
+                                          Unchecked="TaskDialog1UpdateButtons" />
+                                <CheckBox Content="No" Name="NoCheck"
+                                          Checked="TaskDialog1UpdateButtons"
+                                          Unchecked="TaskDialog1UpdateButtons" />
+                                <CheckBox Content="Retry" Name="RetryCheck"
+                                          Checked="TaskDialog1UpdateButtons"
+                                          Unchecked="TaskDialog1UpdateButtons" />
+                                <CheckBox Content="Close" Name="CloseCheck"
+                                          Checked="TaskDialog1UpdateButtons"
+                                          Unchecked="TaskDialog1UpdateButtons" />
+                                <CheckBox Content="Custom" Name="CustomCheck"
+                                          Checked="TaskDialog1UpdateButtons"
+                                          Unchecked="TaskDialog1UpdateButtons" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="title" Value="{Binding #TaskDialog1.Title}" />
+                <ctrls:ControlExampleSubstitution Key="header" Value="{Binding #TaskDialog1.Header}" />
+                <ctrls:ControlExampleSubstitution Key="subheader" Value="{Binding #TaskDialog1.Subheader}" />
+                <ctrls:ControlExampleSubstitution Key="content" Value="{Binding #TaskDialog1.Content}" />
+                <ctrls:ControlExampleSubstitution Key="footervisibility" Value="{Binding #TaskDialog1.FooterVisibility}" />
+                <ctrls:ControlExampleSubstitution Key="footerexpanded" Value="{Binding #TaskDialog1.IsFooterExpanded}" />
+                <ctrls:ControlExampleSubstitution Key="commandText" Value="{Binding #CommandText.Text}" />
+                <ctrls:ControlExampleSubstitution Key="commandDesc" Value="{Binding #DescText.Text}" />
+                <ctrls:ControlExampleSubstitution Key="commandEnabled" Value="{Binding #CommandEnabledCheck.IsChecked}" />
+                <ctrls:ControlExampleSubstitution Key="commandResult" Value="{Binding #CommandDialogResult.Text}" />
+                <ctrls:ControlExampleSubstitution Key="showProg" Value="{Binding #TaskDialog1.ShowProgressBar}" />
+            </ctrls:ControlExample.Substitutions>
+         
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A Progress TaskDialog"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/TaskDialog2.cs.txt">
+            <StackPanel Spacing="4">
+                <Button Name="ProgDiaogButton"
+                        Content="Download File"
+                        Click="LaunchProgressDialog"/>
+                <TextBlock Text="(Don't worry, nothing is actually downloaded)" />
+                <TextBlock Name="ProgressTaskResultText" />
+            </StackPanel>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="TaskDialog with Closing Deferral"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/TaskDialog3.cs.txt">
+            <StackPanel Spacing="4">
+                <TextBlock Text="A deferral is a way to delay the closing of the dialog while async tasks are performed"
+                           TextWrapping="Wrap"/>
+                <Button Content="Launch Sample"
+                        Click="LaunchDeferralDialog"/>                
+            </StackPanel>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>
