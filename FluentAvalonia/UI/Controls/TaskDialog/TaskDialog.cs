@@ -353,6 +353,7 @@ namespace FluentAvalonia.UI.Controls
             }
 
             OnClosed();
+            _host = null;
         }
 
         private void OnButtonClick(object sender, RoutedEventArgs e)

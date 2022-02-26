@@ -42,19 +42,14 @@ namespace FluentAvalonia.UI.Controls
 				if (PlatformImpl is CoreWindowImpl cwi)
 				{
 					cwi.SetOwner(this);
+                    cwi.WindowOpened += WindowOpened_Windows;
 				}
 
 				ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
 				ExtendClientAreaToDecorationsHint = true;
 				PseudoClasses.Add(":windows");
 
-				ApplicationViewTitleBar.Instance.TitleBarPropertyChanged += OnTitleBarPropertyChanged;
-
-                var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                if (faTheme != null)
-                {
-                    faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
-                }
+                PlatformImpl.Closed += WindowClosed_Windows;
 			}
 		}
 
@@ -155,7 +150,32 @@ namespace FluentAvalonia.UI.Controls
 			SetTitleBarColors();
 		}
 
-		internal void ExtendTitleBar(bool extend)
+        private void WindowOpened_Windows(object sender, EventArgs e)
+        {
+            ApplicationViewTitleBar.Instance.TitleBarPropertyChanged += OnTitleBarPropertyChanged;
+
+            var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+            if (faTheme != null)
+            {
+                faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
+            }
+        }
+
+        private void WindowClosed_Windows()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                ApplicationViewTitleBar.Instance.TitleBarPropertyChanged -= OnTitleBarPropertyChanged;
+
+                var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+                if (faTheme != null)
+                {
+                    faTheme.RequestedThemeChanged -= OnRequestedThemeChanged;
+                }
+            }
+        }
+
+        internal void ExtendTitleBar(bool extend)
 		{
 			if (Design.IsDesignMode)
 				return;

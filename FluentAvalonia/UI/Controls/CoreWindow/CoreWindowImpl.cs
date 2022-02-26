@@ -26,6 +26,8 @@ namespace FluentAvalonia.UI.Controls
 			_isWindows11 = version.BuildNumber >= 22000;
 		}
 
+        public event EventHandler WindowOpened;
+
 		protected override IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
 			switch ((WM)msg)
@@ -120,7 +122,14 @@ namespace FluentAvalonia.UI.Controls
 			return base.WndProc(hWnd, msg, wParam, lParam);
 		}
 
-		internal void SetOwner(CoreWindow wnd)
+        public override void Show(bool activate, bool isDialog)
+        {
+            base.Show(activate, isDialog);
+
+            WindowOpened?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal void SetOwner(CoreWindow wnd)
 		{
 			 _owner = wnd;
 			((IPseudoClasses)wnd.Classes).Set(":windows10", !_isWindows11);
