@@ -43,9 +43,9 @@ namespace FluentAvalonia.UI.Controls
 
 		protected override void OnConfirmed()
 		{
-			Hide();
-			Confirmed?.Invoke(this, EventArgs.Empty);
-		}
+            Confirmed?.Invoke(this, EventArgs.Empty);
+            Hide();
+        }
 
 		protected override void OnOpening(CancelEventArgs args)
 		{
@@ -57,9 +57,9 @@ namespace FluentAvalonia.UI.Controls
 
 		private void OnFlyoutDismissed(PickerFlyoutPresenter sender, object args)
 		{
-			Hide();
-			Dismissed?.Invoke(this, EventArgs.Empty);
-		}
+            Dismissed?.Invoke(this, EventArgs.Empty);
+            Hide();
+        }
 
 		private void OnFlyoutConfirmed(PickerFlyoutPresenter sender, object args)
 		{

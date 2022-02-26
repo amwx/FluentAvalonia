@@ -1,10 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
@@ -13,10 +15,13 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-    /// <summary>
-    /// Presents a asyncronous dialog to the user.
-    /// </summary>
-    public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
+    [PseudoClasses(":hidden", ":open")]
+    [PseudoClasses(":primary", ":secondary", ":close")]
+    [PseudoClasses(":fullsize", "nosmokelayer")]
+	/// <summary>
+	/// Presents a asyncronous dialog to the user.
+	/// </summary>
+	public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 	{
 		public ContentDialog()
 		{

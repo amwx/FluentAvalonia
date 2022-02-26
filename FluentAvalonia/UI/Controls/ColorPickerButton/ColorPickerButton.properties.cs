@@ -1,10 +1,12 @@
-﻿using Avalonia.Data;
+﻿using System;
+using Avalonia.Data;
 using Avalonia;
 using Avalonia.Media;
 using FluentAvalonia.UI.Media;
 using System.Collections.Generic;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -200,7 +202,26 @@ namespace FluentAvalonia.UI.Controls
 			set => SetValue(ShowAcceptDismissButtonsProperty, value);
 		}
 
-		private bool _isCompact = true;
+        /// <summary>
+        /// Raised when the color change was confirmed and the flyout closes.
+        /// </summary>
+        public event TypedEventHandler<ColorPickerButton, ColorChangedEventArgs> FlyoutConfirmed;
+
+        /// <summary>
+        /// Raised when the color change was dismissed and the flyout closes.
+        /// </summary>
+        public event TypedEventHandler<ColorPickerButton, EventArgs> FlyoutDismissed;
+
+        /// <summary> Raised when the flyout opens.
+        /// </summary>
+        public event TypedEventHandler<ColorPickerButton, EventArgs> FlyoutOpened;
+
+        /// <summary>
+        /// Raised when the flyout closes regardless of confirmation or dismissal.
+        /// </summary>
+        public event TypedEventHandler<ColorPickerButton, EventArgs> FlyoutClosed;
+
+        private bool _isCompact = true;
 		private bool _isAlphaEnabled = true;
 		private IEnumerable<Color> _customPaletteColors;
 	}
