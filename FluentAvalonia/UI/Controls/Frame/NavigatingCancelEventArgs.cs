@@ -1,4 +1,5 @@
-﻿using FluentAvalonia.UI.Media.Animation;
+﻿using Avalonia.Interactivity;
+using FluentAvalonia.UI.Media.Animation;
 using System;
 
 namespace FluentAvalonia.UI.Navigation
@@ -13,7 +14,7 @@ namespace FluentAvalonia.UI.Navigation
     /// <summary>
     /// Provides data for the OnNavigatingFrom callback that can be used to cancel a navigation request from origination.
     /// </summary>
-    public class NavigatingCancelEventArgs : EventArgs
+    public class NavigatingCancelEventArgs : RoutedEventArgs
     {
         internal NavigatingCancelEventArgs(NavigationMode mode, NavigationTransitionInfo info,
             object param, Type srcType)

@@ -3,12 +3,15 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Logging;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
+using System.Text;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -138,7 +141,6 @@ namespace FluentAvalonia.UI.Controls
         }
 
         /// <summary>
-        /// TODO: Implement this method
         /// Causes the Frame to load content represented by the specified Page, also passing a parameter to be 
         /// interpreted by the target of the navigation.
         /// </summary>
@@ -148,37 +150,180 @@ namespace FluentAvalonia.UI.Controls
         /// <param name="navOptions">Options for the navigation, including whether it is recorded in the navigation stack 
         /// and what transition animation is used.</param>
         /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; otherwise, true.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public bool NavigateToType(Type sourcePageType, object parameter, FrameNavigationOptions navOptions)
-        {
-            throw new NotImplementedException();
-        }
+        public bool NavigateToType(Type sourcePageType, object parameter, FrameNavigationOptions navOptions) =>
+            NavigateCore(new PageStackEntry(sourcePageType, parameter, navOptions?.TransitionInfoOverride),
+                NavigationMode.New, navOptions);
 
         /// <summary>
-        /// TODO: implement this method
+        /// Serializes the Frame navigation history into a string
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public string GetNavigationState() => throw new NotImplementedException();
-
-        /// <summary>
-        /// TODO: Implement this method
-        /// </summary>
-        /// <param name="navState"></param>
-        public void SetNavigationState(string navState) { }
-
-        /// <summary>
-        /// TODO: Implement this method
-        /// </summary>
-        /// <param name="navState"></param>
-        /// <param name="suppressNavigate"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void SetNavigationState(string navState, bool suppressNavigate) 
+        public string GetNavigationState()
         {
-            throw new NotImplementedException();
+            if (!IsNavigationStackEnabled)
+                throw new InvalidOperationException("Cannot retreive navigation stack when IsNavigationStackEnabled is false");
+
+            // Format of the Navigation state string - this is not the same as WinUI
+            // Full.Type.Name.Here|Serialized Parameter // First line is the current page
+            // N // Number of pages in BackStack
+            // -- BackStack Entries here, same format as above
+            // N // Number of pages in ForwardStack
+            // -- ForwardStack Entries here, same format as above
+
+            static void AppendEntry(StringBuilder sb, PageStackEntry entry)
+            {
+                sb.Append(entry.SourcePageType.AssemblyQualifiedName);
+                sb.Append('|');
+                if (entry.Parameter != null)
+                {
+                    sb.Append(entry.Parameter.ToString());
+                }
+                sb.AppendLine();
+            }
+
+            var sb = new StringBuilder();
+            
+            if (CurrentEntry != null)
+            {
+                AppendEntry(sb, CurrentEntry);
+            }
+
+            sb.AppendLine(BackStackDepth.ToString());
+
+            for (int i = 0; i < BackStackDepth; i++)
+            {
+                AppendEntry(sb, BackStack[i]);
+            }
+
+            sb.AppendLine(ForwardStack.Count.ToString());
+            
+            for (int i = 0; i < ForwardStack.Count; i++)
+            {
+                AppendEntry(sb, ForwardStack[i]);
+            }
+
+            return sb.ToString();
         }
 
-        private bool NavigateCore(PageStackEntry entry, NavigationMode mode)
+        /// <summary>
+        /// Reads and restores the navigation history of a Frame from a provided serialization string.
+        /// </summary>
+        /// <param name="navState">The serialization string that supplies the restore point for navigation history.</param>
+        public void SetNavigationState(string navState) =>
+            SetNavigationState(navState, false);
+
+        /// <summary>
+        /// Reads and restores the navigation history of a Frame from a provided serialization string,
+        /// and optionally supresses navigation to the last page type
+        /// </summary>
+        /// <param name="navState">The serialization string that supplies the restore point for navigation history.</param>
+        /// <param name="suppressNavigate">true to restore navigation history without navigating to the current page; otherwise, false.</param>
+        /// <remarks>
+        /// Calling SetNavigationState with suppressNavigate set to true, OnNavigatedTo is not called and the current page is placed into
+        /// the BackStack
+        /// </remarks>
+        public void SetNavigationState(string navState, bool suppressNavigate) 
+        {
+            if (!IsNavigationStackEnabled)
+                throw new InvalidOperationException("Cannot set navigation stack when IsNavigationStackEnabled is false");
+
+            BackStack.Clear();
+            ForwardStack.Clear();
+            CurrentEntry = null;
+            Content = null;
+            _cache.Clear();
+
+            // Format of the Navigation state string - this is not the same as WinUI
+            // Full.Type.Name.Here|Serialized Parameter // First line is the current page
+            // N // Number of pages in BackStack
+            // -- BackStack Entries here, same format as above
+            // N // Number of pages in ForwardStack
+            // -- ForwardStack Entries here, same format as above
+
+            using (var reader = new StringReader(navState))
+            {
+                var firstLine = reader.ReadLine(); // Current Page
+
+                bool addCurrentEntryToBackStack = false;
+                // Current page was null when saved, don't restore null
+                // This is the only place we're allowed to have null - since a call to
+                // Navigate(null) will fail to navigate & nothing is added to the stack
+                if (firstLine[0] != '|')
+                {
+                    var indexOfSep = firstLine.IndexOf('|');                    
+                    var pageType = Type.GetType(firstLine.Substring(0, indexOfSep));
+                    var param = firstLine.Substring(indexOfSep + 1);
+                    CurrentEntry = new PageStackEntry(pageType, param, null);
+
+                    if (!suppressNavigate)
+                    {                        
+                        var page = CreatePageAndCacheIfNecessary(pageType);
+                        CurrentEntry.Instance = page;
+
+                        SetContentAndAnimate(CurrentEntry);
+                        // We only raise the NavigatedEvent 
+                        page.RaiseEvent(new NavigationEventArgs(page, NavigationMode.New, null, param, pageType) { RoutedEvent = NavigatedToEvent });
+                    }
+                    else
+                    {
+                        addCurrentEntryToBackStack = true;
+                    }
+                }
+
+                var numBackLine = int.Parse(reader.ReadLine());
+
+                for (int i = 0; i < numBackLine; i++)
+                {
+                    var line = reader.ReadLine();
+                    var indexOfSep = line.IndexOf('|');
+                    var pageType = Type.GetType(line.Substring(0, indexOfSep));
+
+                    if (pageType == null)
+                    {
+                        // Don't fail if we get an invalid page, log & continue
+                        Logger.TryGet(LogEventLevel.Error, "Frame")?
+                            .Log("Frame", $"Attempting to parse the type '{line.Substring(0, indexOfSep)}' failed. Page was skipped");
+
+                        continue;
+                    }
+
+                    var param = line.Substring(indexOfSep + 1);
+
+                    var entry = new PageStackEntry(pageType, param, null);
+                    BackStack.Add(entry);
+                }
+
+                if (addCurrentEntryToBackStack)
+                {
+                    BackStack.Add(CurrentEntry);
+                    CurrentEntry = null;
+                }
+
+                var numForwardLine = int.Parse(reader.ReadLine());
+
+                for (int i = 0; i < numForwardLine; i++)
+                {
+                    var line = reader.ReadLine();
+                    var indexOfSep = line.IndexOf('|');
+                    var pageType = Type.GetType(line.Substring(0, indexOfSep));
+                    var param = line.Substring(indexOfSep + 1);
+
+                    if (pageType == null)
+                    {
+                        // Don't fail if we get an invalid page, log & continue
+                        Logger.TryGet(LogEventLevel.Error, "Frame")?
+                            .Log("Frame", $"Attempting to parse the type '{line.Substring(0, indexOfSep)}' failed. Page was skipped");
+
+                        continue;
+                    }
+
+                    var entry = new PageStackEntry(pageType, param, null);
+                    ForwardStack.Add(entry);
+                }
+            }
+        }
+
+        private bool NavigateCore(PageStackEntry entry, NavigationMode mode, FrameNavigationOptions options = null)
         {
             try
             {
@@ -197,9 +342,18 @@ namespace FluentAvalonia.UI.Controls
                     return false;
                 }
 
-                //Unlike WinUI/UWP, we don't have page & allow navigating from anything IControl,
-                //so we don't have Page.OnNavigatingFrom();
-                //CurrentEntry?.Instance?.OnNavigatingFrom(ea);
+                // Tell the current page we want to navigate away from it
+                if (CurrentEntry?.Instance is Control oldPage)
+                {
+                    ea.RoutedEvent = NavigatingFromEvent;
+                    oldPage.RaiseEvent(ea);
+
+                    if (ea.Cancel)
+                    {
+                        OnNavigationStopped(entry, mode);
+                        return false;
+                    }
+                }
 
                 //Navigate to new page
                 var prevEntry = CurrentEntry;
@@ -221,10 +375,27 @@ namespace FluentAvalonia.UI.Controls
                     entry.Instance = page;
                 }
 
+                var oldEntry = CurrentEntry;
                 CurrentEntry = entry;
+
+                var navEA = new NavigationEventArgs(
+                    CurrentEntry.Instance,
+                    mode, entry.NavigationTransitionInfo,
+                    entry.Parameter,
+                    entry.SourcePageType);
+
+                // Old page is now unloaded, raise OnNavigatedFrom
+                if (oldEntry != null)
+                {
+                    navEA.RoutedEvent = NavigatedFromEvent;
+                    oldEntry.Instance.RaiseEvent(navEA);
+                }
+
                 SetContentAndAnimate(entry);
 
-                if (IsNavigationStackEnabled)
+                bool addToNavStack = options?.IsNavigationStackEnabled ?? IsNavigationStackEnabled;
+
+                if (addToNavStack)
                 {
                     switch (mode)
                     {
@@ -259,16 +430,18 @@ namespace FluentAvalonia.UI.Controls
                     }
                 }
 
-                var navEA = new NavigationEventArgs(
-                    CurrentEntry.Instance,
-                    mode, entry.NavigationTransitionInfo,
-                    entry.Parameter,
-                    entry.SourcePageType);
 
                 SourcePageType = entry.SourcePageType;
                 //CurrentSourcePageType = entry.SourcePageType;
 
                 Navigated?.Invoke(this, navEA);
+
+                // New Page is loaded, let's tell the page
+                if (entry.Instance is Control newPage)
+                {
+                    navEA.RoutedEvent = NavigatedToEvent;
+                    newPage.RaiseEvent(navEA);
+                }
 
                 //Need to find compatible method for this
                 //VisualTreeHelper.CloseAllPopups();

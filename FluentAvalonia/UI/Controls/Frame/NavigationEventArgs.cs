@@ -1,4 +1,5 @@
-﻿using FluentAvalonia.UI.Media.Animation;
+﻿using Avalonia.Interactivity;
+using FluentAvalonia.UI.Media.Animation;
 using System;
 
 namespace FluentAvalonia.UI.Navigation
@@ -20,7 +21,7 @@ namespace FluentAvalonia.UI.Navigation
     /// <summary>
     /// Provides data for navigation methods and event handlers that cannot cancel the navigation request.
     /// </summary>
-    public class NavigationEventArgs : EventArgs
+    public class NavigationEventArgs : RoutedEventArgs
     {
         internal NavigationEventArgs(object content, NavigationMode mode,
             NavigationTransitionInfo navInfo, object param,

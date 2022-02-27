@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using FluentAvalonia.UI.Navigation;
 using System;
 using System.Collections.Generic;
@@ -158,7 +159,8 @@ namespace FluentAvalonia.UI.Controls
                     if (!value)
                     {
                         _backStack.Clear();
-                        _forwardStack.Clear();                     
+                        _forwardStack.Clear();
+                        _cache.Clear();
                     }
                 }
             }
@@ -187,6 +189,29 @@ namespace FluentAvalonia.UI.Controls
         /// </summary>
         public event NavigationStoppedEventHandler NavigationStopped;
 
+        /// <summary>
+        /// Indicates to a page that it is being navigated away from. Takes the place of 
+        /// Microsoft.UI.Xaml.Controls.Page.OnNavigatingFrom() method
+        /// </summary>
+        public static readonly RoutedEvent<NavigatingCancelEventArgs> NavigatingFromEvent =
+            RoutedEvent.Register<Control, NavigatingCancelEventArgs>("NavigatingFrom", 
+                RoutingStrategies.Direct);
+
+        /// <summary>
+        /// Indiates to a page that it has been navigated away from. Takes the place of
+        /// Microsoft.UI.Xaml.Controls.Page.OnNavigatedFrom() method
+        /// </summary>
+        public static readonly RoutedEvent<NavigationEventArgs> NavigatedFromEvent =
+            RoutedEvent.Register<Control, NavigationEventArgs>("NavigatedFrom",
+                RoutingStrategies.Direct);
+
+        /// <summary>
+        /// Indiates to a page that it is being navigated to. Takes the place of
+        /// Microsoft.UI.Xaml.Controls.Page.OnNavigatedTo() method
+        /// </summary>
+        public static readonly RoutedEvent<NavigationEventArgs> NavigatedToEvent =
+            RoutedEvent.Register<Control, NavigationEventArgs>("NavigatedTo",
+                RoutingStrategies.Direct);
 
         private Type _sourcePageType;
         private int _cacheSize = 10;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -8,6 +9,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using FluentAvalonia.Styling;
+using FluentAvalonia.UI.Controls;
 using FluentAvaloniaSamples.Controls;
 using FluentAvaloniaSamples.Services;
 
