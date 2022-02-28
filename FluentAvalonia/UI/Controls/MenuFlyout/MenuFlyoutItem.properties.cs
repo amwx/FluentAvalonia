@@ -42,7 +42,13 @@ namespace FluentAvalonia.UI.Controls
 		public static readonly StyledProperty<KeyGesture> HotKeyProperty =
 			Button.HotKeyProperty.AddOwner<MenuFlyoutItem>();
 
-		/// <summary>
+        /// <summary>
+        /// Defines the <see cref="InputGesture"/> property
+        /// </summary>
+        public static readonly StyledProperty<KeyGesture> InputGestureProperty =
+            AvaloniaProperty.Register<MenuFlyoutItem, KeyGesture>(nameof(InputGesture));
+        
+        /// <summary>
 		/// Gets or sets the text content of a MenuFlyoutItem.
 		/// </summary>
 		public string Text
@@ -68,6 +74,20 @@ namespace FluentAvalonia.UI.Controls
 			get => GetValue(HotKeyProperty);
 			set => SetValue(HotKeyProperty, value);
 		}
+
+        /// <summary>
+        /// Gets or sets the input gesture displayed by the MenuFlyoutItem
+        /// </summary>
+        /// <remarks>
+        /// This property is equivalent to WinUI's KeyboardAcceleratorTextOverride
+        /// property. It allows you to specify a key gesture without mapping to 
+        /// a hotkey. This property takes priority over <see cref="HotKey"/>
+        /// </remarks>
+        public KeyGesture InputGesture
+        {
+            get => GetValue(InputGestureProperty);
+            set => SetValue(InputGestureProperty, value);
+        }
 
 		/// <summary>
 		/// Gets or sets the command to invoke when the item is pressed.

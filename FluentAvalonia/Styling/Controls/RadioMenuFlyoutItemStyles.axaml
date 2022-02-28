@@ -63,7 +63,7 @@
 						<TextBlock Name="KeyboardAcceleratorTextBlock"
 									Grid.Column="2"
 									Classes="CaptionTextBlockStyle"
-									Text="{TemplateBinding HotKey, Converter={StaticResource KeyConv}}"
+									Text="{TemplateBinding InputGesture, Converter={StaticResource KeyConv}}"
 									Margin="24,0,0,0"
 									HorizontalAlignment="Right"
 								   VerticalAlignment="Center"/>
