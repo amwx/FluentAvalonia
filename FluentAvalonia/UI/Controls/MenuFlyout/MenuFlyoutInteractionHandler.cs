@@ -12,9 +12,6 @@ using System.ComponentModel;
 
 namespace FluentAvalonia.UI.Controls
 {
-	// This is mostly the same as the DefaultMenuInteractionHandler within Avalonia, however,
-	// we make some adjustments because the relationship between items is slightly different
-
 	/// <summary>
 	/// Provides the default keyboard and pointer interaction for menus.
 	/// </summary>
@@ -22,28 +19,27 @@ namespace FluentAvalonia.UI.Controls
 	[Browsable(false)]
 	internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 	{
-		private readonly bool _isContextMenu;
 		private IDisposable _inputManagerSubscription;
 		private IRenderRoot _root;
 
 		public MenuFlyoutInteractionHandler(bool isContextMenu)
-			: this(isContextMenu, Avalonia.Input.InputManager.Instance, DefaultDelayRun)
+			: this(Avalonia.Input.InputManager.Instance, DefaultDelayRun)
 		{
 		}
 
 		public MenuFlyoutInteractionHandler(
-			bool isContextMenu,
 			IInputManager inputManager,
 			Action<Action, TimeSpan> delayRun)
 		{
 			delayRun = delayRun ?? throw new ArgumentNullException(nameof(delayRun));
 
-			_isContextMenu = isContextMenu;
 			InputManager = inputManager;
 			DelayRun = delayRun;
 		}
 
-		public virtual void Attach(IMenu menu)
+        void IMenuInteractionHandler.Attach(IMenu menu) => Attach((MenuFlyoutPresenter)menu);
+
+		public virtual void Attach(MenuFlyoutPresenter menu)
 		{
 			if (Menu != null)
 			{
@@ -61,7 +57,7 @@ namespace FluentAvalonia.UI.Controls
 			Menu.AddHandler(MenuItem.PointerEnterItemEvent, PointerEnter);
 			Menu.AddHandler(MenuItem.PointerLeaveItemEvent, PointerLeave);
 
-			_root = Menu.VisualRoot;
+			_root = Menu.GetVisualRoot();
 
 			if (_root is InputElement inputRoot)
 			{
@@ -119,28 +115,28 @@ namespace FluentAvalonia.UI.Controls
 
 		protected IInputManager InputManager { get; }
 
-		protected IMenu Menu { get; private set; }
+		protected MenuFlyoutPresenter Menu { get; private set; }
 
 		protected static TimeSpan MenuShowDelay { get; } = TimeSpan.FromMilliseconds(400);
-
-		protected internal virtual void GotFocus(object sender, GotFocusEventArgs e)
+        
+        protected internal virtual void GotFocus(object sender, GotFocusEventArgs e)
 		{
-			var item = GetMenuItem(e.Source as IControl);
+			//var item = GetMenuItem(e.Source as IControl);
 
-			if (item?.Parent != null)
-			{
-				item.SelectedItem = item;
-			}
+			//if (item?.Parent != null)
+			//{
+			//	item.SelectedItem = item;
+			//}
 		}
 
 		protected internal virtual void LostFocus(object sender, RoutedEventArgs e)
 		{
-			var item = GetMenuItem(e.Source as IControl);
+			//var item = GetMenuItem(e.Source as IControl);
 
-			if (item != null)
-			{
-				item.SelectedItem = null;
-			}
+			//if (item != null)
+			//{
+			//	item.SelectedItem = null;
+			//}
 		}
 
 		protected internal virtual void KeyDown(object sender, KeyEventArgs e)
@@ -150,126 +146,133 @@ namespace FluentAvalonia.UI.Controls
 
 		protected internal virtual void KeyDown(IMenuItem item, KeyEventArgs e)
 		{
-			switch (e.Key)
-			{
-				case Key.Up:
-				case Key.Down:
-					{
-						if (item?.IsTopLevel == true)
-						{
-							if (item.HasSubMenu && !item.IsSubMenuOpen)
-							{
-								Open(item, true);
-								e.Handled = true;
-							}
-						}
-						else
-						{
-							goto default;
-						}
-						break;
-					}
+            if (item == null)
+                return;
 
-				case Key.Left:
-					{
-						if (item?.Parent is IMenuItem parent && !parent.IsTopLevel && parent.IsSubMenuOpen)
-						{
-							parent.Close();
-							parent.Focus();
-							e.Handled = true;
-						}
-						else
-						{
-							goto default;
-						}
-						break;
-					}
+            switch (e.Key)
+            {
+                case Key.Down:
+                    {
+                        var current = FocusManager.Instance.Current;
+                        if (current is MenuFlyoutItemBase mfib && mfib.Parent == Menu)
+                        {
+                            var index = Menu.ItemContainerGenerator.IndexFromContainer(mfib);
 
-				case Key.Right:
-					{
-						if (item != null && !item.IsTopLevel && item.HasSubMenu)
-						{
-							Open(item, true);
-							e.Handled = true;
-						}
-						else
-						{
-							goto default;
-						}
-						break;
-					}
+                            if (index == -1) // something's wrong
+                                return;
 
-				case Key.Enter:
-					{
-						if (item != null)
-						{
-							if (!item.HasSubMenu)
-							{
-								Click(item);
-							}
-							else
-							{
-								Open(item, true);
-							}
+                            while (true)
+                            {
+                                index += 1;
+                                if (index >= Menu.ItemCount)
+                                    index = 0;
 
-							e.Handled = true;
-						}
-						break;
-					}
+                                var cont = Menu.ItemContainerGenerator.ContainerFromIndex(index);
 
-				case Key.Escape:
-					{
-						if (item?.Parent is IMenuElement parent)
-						{
-							parent.Close();
-							parent.Focus();
-						}
-						else
-						{
-							Menu!.Close();
-						}
+                                if (cont != null && cont.Focusable && cont.IsEffectivelyEnabled)
+                                {
+                                    FocusManager.Instance.Focus(cont, NavigationMethod.Directional);
+                                    break;
+                                }
+                                else if (cont == item)
+                                {
+                                    // Failsafe to prevent infinite loop, if nothings focusable for some reason
+                                    break;
+                                }
+                            }                            
+                        }
 
-						e.Handled = true;
-						break;
-					}
+                        e.Handled = true;
+                    }
 
-				default:
-					{
-						var direction = e.Key.ToNavigationDirection();
+                    break;
 
-						if (direction?.IsDirectional() == true)
-						{
-							if (item == null && _isContextMenu)
-							{
-								if (Menu!.MoveSelection(direction.Value, true) == true)
-								{
-									e.Handled = true;
-								}
-							}
-							else if (item?.Parent?.MoveSelection(direction.Value, true) == true)
-							{
-								// If the the parent is an IMenu which successfully moved its selection,
-								// and the current menu is open then close the current menu and open the
-								// new menu.
-								if (item.IsSubMenuOpen &&
-									item.Parent is IMenu &&
-									item.Parent.SelectedItem is object)
-								{
-									item.Close();
-									Open(item.Parent.SelectedItem, true);
-								}
-								e.Handled = true;
-							}
-						}
+                case Key.Up:
+                    {
+                        var current = FocusManager.Instance.Current;
+                        if (current is MenuFlyoutItemBase mfib && mfib.Parent == Menu)
+                        {
+                            var index = Menu.ItemContainerGenerator.IndexFromContainer(mfib);
 
-						break;
-					}
-			}
+                            if (index == -1) // something's wrong
+                                return;
 
-			if (!e.Handled && item?.Parent is IMenuItem parentItem)
-			{
-				KeyDown(parentItem, e);
-			}
+                            while (true)
+                            {
+                                index -= 1;
+                                if (index < 0)
+                                    index = Menu.ItemCount - 1;
+
+                                var cont = Menu.ItemContainerGenerator.ContainerFromIndex(index);
+
+                                if (cont != null && cont.Focusable && cont.IsEffectivelyEnabled)
+                                {
+                                    FocusManager.Instance.Focus(cont, NavigationMethod.Directional);
+                                    break;
+                                }
+                                else if (cont == item)
+                                {
+                                    // Failsafe to prevent infinite loop, if nothings focusable for some reason
+                                    break;
+                                }
+                            }
+                        }
+
+                        e.Handled = true;
+                    }
+
+                    break;
+
+                case Key.Right:
+                    {
+                        if (item.HasSubMenu)
+                        {
+                            item.Open();
+                            e.Handled = true;
+                        }
+                    }
+                    break;
+
+                case Key.Left:
+                    {
+                        if (item.Parent is MenuFlyoutSubItem mfsi)
+                        {
+                            Menu.Close();
+
+                            FocusManager.Instance.Focus(item.Parent, NavigationMethod.Directional);
+                            e.Handled = true;
+                        }
+                    }
+                    break;
+
+                case Key.Enter:
+                    {
+                        var current = FocusManager.Instance.Current;
+                        if (current is MenuFlyoutItemBase mfib && mfib.Parent == Menu)
+                        {
+                            if (mfib.Focusable && mfib.IsEffectivelyEnabled)
+                            {
+                                if (mfib is MenuFlyoutSubItem mfsi)
+                                {
+                                    Open(mfsi, false);
+                                }
+                                else
+                                {
+                                    Click((IMenuItem)mfib);
+                                }
+                                e.Handled = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case Key.Escape:
+                    {
+                        Menu.Close();
+                        e.Handled = true;
+                    }
+                    break;
+            }
 		}
 
 		protected internal virtual void AccessKeyPressed(object sender, RoutedEventArgs e)
@@ -301,40 +304,23 @@ namespace FluentAvalonia.UI.Controls
 			{
 				return;
 			}
+            			
+            Menu.SelectedItem = item;
 
-			if (item.IsTopLevel)
-			{
-				if (item != item.Parent.SelectedItem &&
-					item.Parent.SelectedItem?.IsSubMenuOpen == true)
-				{
-					item.Parent.SelectedItem.Close();
-					SelectItemAndAncestors(item);
-					Open(item, false);
-				}
-				else
-				{
-					SelectItemAndAncestors(item);
-				}
-			}
-			else
-			{
-				SelectItemAndAncestors(item);
-
-				if (item.HasSubMenu)
-				{
-					OpenWithDelay(item);
-				}
-				else if (item.Parent != null)
-				{
-					foreach (var sibling in item.Parent.SubItems)
-					{
-						if (sibling.IsSubMenuOpen)
-						{
-							CloseWithDelay(sibling);
-						}
-					}
-				}
-			}
+            if (item.HasSubMenu)
+            {
+                OpenWithDelay(item);
+            }
+            else
+            {
+                foreach (var sibling in item.Parent.SubItems)
+                {
+                    if (sibling.IsSubMenuOpen)
+                    {
+                        CloseWithDelay(sibling);
+                    }
+                }
+            }              
 		}
 
 		protected internal virtual void PointerLeave(object sender, PointerEventArgs e)
@@ -347,15 +333,8 @@ namespace FluentAvalonia.UI.Controls
 			}
 
 			if (item.Parent.SelectedItem == item)
-			{
-				if (item.IsTopLevel)
-				{
-					if (!((IMenu)item.Parent).IsOpen)
-					{
-						item.Parent.SelectedItem = null;
-					}
-				}
-				else if (!item.HasSubMenu)
+			{ 
+                if (!item.HasSubMenu)
 				{
 					item.Parent.SelectedItem = null;
 				}
@@ -415,7 +394,17 @@ namespace FluentAvalonia.UI.Controls
 		{
 			if (e.Source == Menu)
 			{
-				Menu?.MoveSelection(NavigationDirection.First, true);
+                if (Menu.Presenter?.Panel is Panel p)
+                {
+                    for (int i = 0; i < p.Children.Count; i++)
+                    {
+                        if (p.Children[i].Focusable && p.Children[i].IsEffectivelyEnabled)
+                        {
+                            p.Children[i].Focus();
+                            break;
+                        }
+                    }
+                }
 			}
 		}
 
@@ -496,11 +485,6 @@ namespace FluentAvalonia.UI.Controls
 		protected void Open(IMenuItem item, bool selectFirst)
 		{
 			item.Open();
-
-			if (selectFirst)
-			{
-				item.MoveSelection(NavigationDirection.First, true);
-			}
 		}
 
 		protected void OpenWithDelay(IMenuItem item)

@@ -72,6 +72,11 @@ namespace FluentAvalonia.UI.Controls
 				SetPresenterClasses(Popup.Child, FlyoutPresenterClasses);
 			}
 			base.OnOpened();
+
+            if (Popup.Child is MenuFlyoutPresenter mfp)
+            {
+                mfp.RaiseMenuOpened();
+            }
 		}
 
 		private static void SetPresenterClasses(IControl presenter, Classes classes)

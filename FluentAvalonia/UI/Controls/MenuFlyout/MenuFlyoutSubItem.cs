@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using System;
 
 namespace FluentAvalonia.UI.Controls
@@ -41,6 +42,7 @@ namespace FluentAvalonia.UI.Controls
 		{
 			InitPopup();
 			_subMenu.IsOpen = true;
+            _presenter.RaiseMenuOpened();
 		}
 
 		/// <summary>
@@ -52,7 +54,10 @@ namespace FluentAvalonia.UI.Controls
 			    _subMenu.IsOpen = false;
 
             if (_presenter != null)
-			    _presenter.SelectedIndex = -1;
+            {
+                _presenter.SelectedIndex = -1;
+                _presenter.RaiseMenuClosed();
+            }            
 		}
 				
 		private void InitPopup()
@@ -93,37 +98,8 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Set(":submenuopen", false);
 		}
 
-		bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap)
-		{
-			if (_presenter.SelectedIndex == -1)
-			{
-				int index = 0;
-				var ct = _presenter.ItemCount;
-				for (int i = 0; i < ct; i++)
-				{
-					if (_presenter.ItemContainerGenerator.ContainerFromIndex(i).Focusable)
-					{
-						index = i;
-						break;
-					}
-				}
-
-				FocusManager.Instance.Focus(_presenter.ItemContainerGenerator.ContainerFromIndex(index), NavigationMethod.Directional);
-				_presenter.SelectedIndex = index;
-
-				return true;
-			}
-
-			var sel = _presenter?.InternalMoveSelection(direction, wrap) ?? false;
-			if (sel)
-			{
-				FocusManager.Instance.Focus(_presenter.ItemContainerGenerator.ContainerFromIndex(_presenter.SelectedIndex), NavigationMethod.Directional);
-			}
-
-			return sel;
-		}
-
-
+        bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;
+		
 		private Popup _subMenu;
 		private MenuFlyoutPresenter _presenter;
 	}

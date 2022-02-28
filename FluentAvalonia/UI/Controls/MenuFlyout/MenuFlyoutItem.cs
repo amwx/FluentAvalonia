@@ -169,7 +169,7 @@ namespace FluentAvalonia.UI.Controls
 
 		void IMenuItem.RaiseClick() => OnClick();
 
-		void ICommandSource.CanExecuteChanged(object sender, EventArgs e) => this.CanExecuteChanged(sender, e);
+		void ICommandSource.CanExecuteChanged(object sender, EventArgs e) => CanExecuteChanged(sender, e);
 		
 		void IMenuElement.Close() { }
 		
