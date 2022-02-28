@@ -4,15 +4,13 @@ using Avalonia;
 using System;
 using System.Collections.Generic;
 using Avalonia.Data;
-using System.Diagnostics;
-using Avalonia.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls
 {
 	/// <summary>
 	/// Represents a menu item that is mutually exclusive with other radio menu items in its group.
 	/// </summary>
-	public class RadioMenuFlyoutItem : ToggleMenuFlyoutItem, IStyleable
+	public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
 	{
 		static RadioMenuFlyoutItem()
 		{
@@ -29,9 +27,12 @@ namespace FluentAvalonia.UI.Controls
             RadioButton.GroupNameProperty.AddOwner<RadioMenuFlyoutItem>(x => x.GroupName,
                 (x, v) => x.GroupName = v);
 
-        public static readonly new DirectProperty<RadioMenuFlyoutItem, bool> IsCheckedProperty =
-            AvaloniaProperty.RegisterDirect<RadioMenuFlyoutItem, bool>(nameof(IsChecked),
-                x => x.IsChecked, (x, v) => x.IsChecked = v);
+        /// <summary>
+        /// Defines the <see cref="IsChecked"/> property
+        /// </summary>
+        public static readonly StyledProperty<bool> IsCheckedProperty =
+            AvaloniaProperty.Register<RadioMenuFlyoutItem, bool>(nameof(IsChecked),
+                defaultBindingMode: BindingMode.TwoWay);
 
         /// <summary>
         /// Gets or sets the name that specifies which RadioMenuFlyoutItem controls are mutually exclusive.
@@ -46,19 +47,16 @@ namespace FluentAvalonia.UI.Controls
             }
 		}
 
-        public new bool IsChecked
+        /// <summary>
+        /// Gets or sets whether this RadioMenuFlyoutItem is checked
+        /// </summary>
+        public bool IsChecked
         {
-            get => _isChecked;
-            set => SetAndRaise(IsCheckedProperty, ref _isChecked, value);
+            get => GetValue(IsCheckedProperty);
+            set => SetValue(IsCheckedProperty, value);
         }
 
-        protected internal bool IsCheckedInternal
-        {
-            get => base.IsChecked;
-            set => base.IsChecked = value;
-        }
-
-		Type IStyleable.StyleKey => typeof(RadioMenuFlyoutItem);
+        Type IStyleable.StyleKey => typeof(RadioMenuFlyoutItem);
 
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
 		{
@@ -66,35 +64,13 @@ namespace FluentAvalonia.UI.Controls
 			if (change.Property == IsCheckedProperty)
 			{
                 var newValue = change.NewValue.GetValueOrDefault<bool>();
-                if (IsCheckedInternal != newValue)
-                {
-                    _isSafeUncheck = true;
-                    IsCheckedInternal = newValue;
-                    _isSafeUncheck = false;
-                    UpdateCheckedItemInGroup();
-                }
-			}
-            else if (change.Property == ToggleMenuFlyoutItem.IsCheckedProperty)
-            {
-                if (!IsCheckedInternal)
-                {
-                    if (_isSafeUncheck)
-                    {
-                        // The uncheck is due to another radio button being checked -- that's all right.
-                        IsChecked = false;
-                    }
-                    else
-                    {
-                        // The uncheck is due to user interaction -- not allowed.
-                        IsCheckedInternal = true;
-                    }
-                }
-                else if (!IsChecked)
-                {
-                    IsChecked = true;
-                    UpdateCheckedItemInGroup();
-                }
-            }
+                PseudoClasses.Set(":checked", newValue);
+
+                if (_isSafeUncheck) // Unchecked via another item in the group
+                    return;
+                
+                UpdateCheckedItemInGroup();
+			}            
             else if (change.Property == GroupNameProperty)
             {
                 // WinUI doesn't do this here, but this fixes an issue where radio items
@@ -102,6 +78,13 @@ namespace FluentAvalonia.UI.Controls
                 UpdateCheckedItemInGroup();
             }
 		}
+
+        private void UncheckFromGroupSelection()
+        {
+            _isSafeUncheck = true;
+            IsChecked = false;
+            _isSafeUncheck = false;
+        }
 
         private void UpdateCheckedItemInGroup()
         {
@@ -115,7 +98,7 @@ namespace FluentAvalonia.UI.Controls
                 {
                     if (group.TryGetTarget(out var item))
                     {
-                        item.IsChecked = false;
+                        item.UncheckFromGroupSelection();
                     }
 
                     SelectionMap[groupName] = new WeakReference<RadioMenuFlyoutItem>(this);
@@ -124,12 +107,16 @@ namespace FluentAvalonia.UI.Controls
                 {
                     SelectionMap.Add(groupName, new WeakReference<RadioMenuFlyoutItem>(this));
                 }
-
             }
         }
 
-		private string _groupName = string.Empty;
-        private bool _isChecked = false;
+        protected override void OnClick()
+        {
+            base.OnClick();
+            IsChecked = !IsChecked;
+        }
+
+        private string _groupName = string.Empty;
         private bool _isSafeUncheck = false;
 
 		internal static readonly SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>> SelectionMap;
