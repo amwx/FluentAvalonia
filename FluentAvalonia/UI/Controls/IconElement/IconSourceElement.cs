@@ -29,14 +29,6 @@ namespace FluentAvalonia.UI.Controls
 		{
 			base.OnPropertyChanged(change);
 
-   //         if (change.Property == ForegroundProperty)
-			//{
-   //             if (IconSource != null)
-   //             {
-   //                 IconSource.Foreground = change.NewValue.GetValueOrDefault<IBrush>();
-   //             }
-   //         }
-   //         else
             if (change.Property == IconSourceProperty)
 			{
                 OnIconSourceChanged(change);
