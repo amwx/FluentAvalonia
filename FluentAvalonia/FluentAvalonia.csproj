@@ -5,6 +5,8 @@
     <Nullable>disable</Nullable>
 	<RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
 	<PackageId>FluentAvaloniaUI</PackageId>
+    <Description>Control library focused on fluent design and bringing more WinUI controls into Avalonia </Description>
+    <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
     <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
 </PropertyGroup>
 
@@ -18,8 +20,8 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.3.0-beta1</Version>
-        <AssemblyVersion>1.2.1.999</AssemblyVersion>
+        <Version>1.3.0</Version>
+        <AssemblyVersion>1.3.0.0</AssemblyVersion>        
     </PropertyGroup>
 
 
