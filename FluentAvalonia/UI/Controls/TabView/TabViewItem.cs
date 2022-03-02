@@ -11,6 +11,7 @@ using Avalonia.Diagnostics;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls
@@ -255,18 +256,20 @@ namespace FluentAvalonia.UI.Controls
             const string data = "F1 M0,{0}  a 4,4 0 0 0 4,-4  L 4,{1}  a {2},{3} 0 0 1 {4},-{5}  l {6},0  a {7},{8} 0 0 1 {9},{10}  l 0,{11}  a 4,4 0 0 0 4,4 Z";
 
             var builder = new StringBuilder();
-            builder.AppendFormat(data, height - 1,
+            // WinUI 6644
+            builder.AppendFormat(data, height,
                     leftCorner, leftCorner, leftCorner, leftCorner, leftCorner,
                     Bounds.Width - (leftCorner + rightCorner),
                     rightCorner, rightCorner, rightCorner, rightCorner,
-                    height - (4 + rightCorner + 1));
+                    height - (4 + rightCorner));
 
             TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(builder.ToString());
         }
 
         private void OnSizeChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
-            UpdateTabGeometry();
+            // WinUI #6748
+            Dispatcher.UIThread.Post(() => UpdateTabGeometry());
         }
 
         private void OnIsSelectedPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)

@@ -1,4 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System.Reactive.Linq;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Data;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -15,9 +18,15 @@ namespace FluentAvalonia.UI.Controls
                 [!FontIcon.GlyphProperty] = fis[!FontIconSource.GlyphProperty]
             };
 
-            if (fis.IsSet(TextBlock.ForegroundProperty))
+            if (fis.IsSet(IconSource.ForegroundProperty))
             {
-                fi[!TextBlock.ForegroundProperty] = fis[!TextBlock.ForegroundProperty];
+                fi.Bind(TextBlock.ForegroundProperty, fis.GetBindingObservable(IconSource.ForegroundProperty),
+                    priority: BindingPriority.LocalValue);
+            }
+            else
+            {
+                fi.Bind(TextBlock.ForegroundProperty, fis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+                    priority: BindingPriority.LocalValue);
             }
 
             return fi;
@@ -30,9 +39,15 @@ namespace FluentAvalonia.UI.Controls
                 [!PathIcon.DataProperty] = pis[!PathIconSource.DataProperty]
             };
 
-            if (pis.IsSet(TextBlock.ForegroundProperty))
+            if (pis.IsSet(IconSource.ForegroundProperty))
             {
-                pi[!TextBlock.ForegroundProperty] = pis[!TextBlock.ForegroundProperty];
+                pi.Bind(TextBlock.ForegroundProperty, pis.GetBindingObservable(IconSource.ForegroundProperty),
+                    priority: BindingPriority.LocalValue);
+            }
+            else
+            {
+                pi.Bind(TextBlock.ForegroundProperty, pis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+                    priority: BindingPriority.LocalValue);
             }
 
             return pi;
@@ -46,11 +61,17 @@ namespace FluentAvalonia.UI.Controls
                 [!TextBlock.FontSizeProperty] = sis[!TextBlock.FontSizeProperty]
             };
 
-            if (sis.IsSet(TextBlock.ForegroundProperty))
+            if (sis.IsSet(IconSource.ForegroundProperty))
             {
-                si[!TextBlock.ForegroundProperty] = sis[!TextBlock.ForegroundProperty];
+                si.Bind(TextBlock.ForegroundProperty, sis.GetBindingObservable(IconSource.ForegroundProperty),
+                    priority: BindingPriority.LocalValue);
             }
-
+            else
+            {
+                si.Bind(TextBlock.ForegroundProperty, sis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+                    priority: BindingPriority.LocalValue);
+            }
+           
             return si;
         }
 
@@ -62,9 +83,15 @@ namespace FluentAvalonia.UI.Controls
             BitmapIcon bi = new BitmapIcon();
             bi.LinkToBitmapIconSource(bis);
 
-            if (bi.IsSet(TextBlock.ForegroundProperty))
+            if (bis.IsSet(IconSource.ForegroundProperty))
             {
-                bi[!TextBlock.ForegroundProperty] = bis[!TextBlock.ForegroundProperty];
+                bi.Bind(TextBlock.ForegroundProperty, bis.GetBindingObservable(IconSource.ForegroundProperty),
+                    priority: BindingPriority.LocalValue);
+            }
+            else
+            {
+                bi.Bind(TextBlock.ForegroundProperty, bis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+                    priority: BindingPriority.LocalValue);
             }
 
             return bi;
@@ -77,9 +104,15 @@ namespace FluentAvalonia.UI.Controls
 				[!ImageIcon.SourceProperty] = iis[!ImageIconSource.SourceProperty]
 			};
 
-            if (iis.IsSet(TextBlock.ForegroundProperty))
+            if (iis.IsSet(IconSource.ForegroundProperty))
             {
-                ii[!TextBlock.ForegroundProperty] = iis[!TextBlock.ForegroundProperty];
+                ii.Bind(TextBlock.ForegroundProperty, iis.GetBindingObservable(IconSource.ForegroundProperty),
+                    priority: BindingPriority.LocalValue);
+            }
+            else
+            {
+                ii.Bind(TextBlock.ForegroundProperty, iis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+                    priority: BindingPriority.LocalValue);
             }
 
             return ii;

@@ -56,6 +56,7 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
                               Header="A TabView Bound to a Collection of Items">
 
             <ui:TabView AddTabButtonCommand="{Binding AddDocumentCommand}"
+                        AddTabButtonCommandParameter="Normal"
                         TabCloseRequested="BindingTabView_TabCloseRequested"
                         TabItems="{Binding Documents}">
                 <ui:TabView.TabItemTemplate>
@@ -75,7 +76,8 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
                 <TextBlock Text="{Binding KeyBindingText}"
                            TextWrapping="Wrap"/>
                 
-                <ui:TabView AddTabButtonClick="TabView_AddButtonClick"
+                <ui:TabView AddTabButtonCommand="{Binding AddDocumentCommand}"
+                            AddTabButtonCommandParameter="Keyboard"
                             TabCloseRequested="TabView_TabCloseRequested"
                             TabItems="{Binding KeyBindingDocuments}"
                             MinHeight="350"

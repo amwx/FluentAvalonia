@@ -16,7 +16,8 @@ namespace FluentAvalonia.UI.Controls
 		/// Defines the <see cref="IsChecked"/> Property
 		/// </summary>
 		public static readonly StyledProperty<bool> IsCheckedProperty =
-			AvaloniaProperty.Register<ToggleMenuFlyoutItem, bool>(nameof(IsChecked), defaultBindingMode: BindingMode.TwoWay);
+			AvaloniaProperty.Register<ToggleMenuFlyoutItem, bool>(nameof(IsChecked), 
+                defaultBindingMode: BindingMode.TwoWay);
 
 		/// <summary>
 		/// Gets or sets whether the ToggleMenuFlyoutItem is checked.

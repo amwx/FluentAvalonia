@@ -75,7 +75,10 @@ namespace FluentAvalonia.UI.Controls
             Dispose();
 
             if (src == null)
+            {
+                OnBitmapChanged?.Invoke(this, null);
                 return;
+            }
 
             if (src.IsAbsoluteUri && src.IsFile)
             {

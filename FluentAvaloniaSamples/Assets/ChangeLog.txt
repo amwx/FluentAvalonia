@@ -244,4 +244,38 @@
 -Fixed extra padding on MenuItems
 
 
+[1.3.0]
+*Avalonia Version
+-Upgraded Avalonia package to 0.10.13
+
+*New Controls
+-Ported TabView from WinUI
+-Added TaskDialogs
+
+*NumberBox
+-Fixed issue where icons in NumberBox popup inside ColorPicker would show invalid glyphs 
+
+*ContentDialog
+-Fixed issue where ContentDialog wouldn't size correctly if window height was smaller than dialog height
+
+*ColorPickerButton
+-Flyout events added to ColorPickerButton
+
+*Frame
+-Added support for NavigateToType(Type, object, FrameNavigationOptions) method
+-Added support for GetNavigationState()/SetNavigationState
+-Added NavigationFrom, NavigatedFrom, and NavigatedTo routed events as substitute for WinUI's methods on Page control
+
+*IconSource
+-Fixed issue where setting the Foreground on an IconSource wouldn't be respected in the actual IconElement
+
+*DataGrid
+-Fix broken DataGrid TextBlock column margin from upstream
+
+*FluentAvalonia MenuFlyout
+-Fixed weirdness with RadioMenuFlyoutItem
+-Enabled two-way binding by default on RadioMenuFlyoutItem and ToggleMenuFlyoutItem
+-Added InputGesture property to MenuFlyoutItem
+-Fixed issue where moving the mouse over a MenuFlyoutSubItem and then to another menu item would cause the sub menu to temporarily open
+-Improved Keyboard Navigation* in a MenuFlyout
 

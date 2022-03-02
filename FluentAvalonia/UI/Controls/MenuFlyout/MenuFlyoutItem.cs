@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
@@ -14,7 +15,7 @@ namespace FluentAvalonia.UI.Controls
 	/// </summary>
 	public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSource
 	{
-		protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
+        protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
 		{
 			if (_hotkey != null)
 			{
@@ -50,6 +51,10 @@ namespace FluentAvalonia.UI.Controls
 		{
 			base.OnPropertyChanged(change);
 
+            // For this, we make assumption that if you set Hotkey or assign a XamlUICommand,
+            // you won't also set the InputGesture to something different, so setting HotKey
+            // or using a XamlUICommand will automatically set the InputGesture property
+
 			if (change.Property == CommandProperty)
 			{
 				var oldCommand = change.OldValue.GetValueOrDefault() as ICommand;
@@ -67,7 +72,7 @@ namespace FluentAvalonia.UI.Controls
 						Icon = null;
 					}
 
-					if (HotKey == oldXaml.HotKey)
+					if (InputGesture == oldXaml.HotKey)
 					{
 						HotKey = null;
 					}
@@ -85,7 +90,7 @@ namespace FluentAvalonia.UI.Controls
 						Icon = new IconSourceElement { IconSource = newXaml.IconSource };
 					}
 
-					if (HotKey == null)
+					if (InputGesture == null)
 					{
 						HotKey = newXaml.HotKey;
 					}
@@ -110,10 +115,15 @@ namespace FluentAvalonia.UI.Controls
 			{
 				CanExecuteChanged(this, null);
 			}
-			else if (change.Property == HotKeyProperty)
+			else if (change.Property == InputGestureProperty)
 			{
 				PseudoClasses.Set(":hotkey", change.NewValue.GetValueOrDefault() != null);
 			}
+            else if (change.Property == HotKeyProperty)
+            {
+                var kg = change.NewValue.GetValueOrDefault<KeyGesture>();
+                InputGesture = kg;
+            }
 		}
 
 		protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -159,7 +169,7 @@ namespace FluentAvalonia.UI.Controls
 
 		void IMenuItem.RaiseClick() => OnClick();
 
-		void ICommandSource.CanExecuteChanged(object sender, EventArgs e) => this.CanExecuteChanged(sender, e);
+		void ICommandSource.CanExecuteChanged(object sender, EventArgs e) => CanExecuteChanged(sender, e);
 		
 		void IMenuElement.Close() { }
 		

@@ -10,16 +10,12 @@ namespace FluentAvalonia.UI.Controls
     [TypeConverter(typeof(IconSourceConverter))]
     public abstract class IconSource : AvaloniaObject
     {
-        static IconSource()
-        {
-        }
-
         /// <summary>
         /// Defines the <see cref="Foreground"/> property
         /// </summary>
-        public static readonly AttachedProperty<IBrush> ForegroundProperty =
-            TextBlock.ForegroundProperty.AddOwner<IconSource>();
-
+        public static readonly StyledProperty<IBrush> ForegroundProperty =
+            AvaloniaProperty.Register<IconSource, IBrush>(nameof(Foreground));
+            
         /// <summary>
         /// Gets or sets a brush that describes the foreground color.
         /// </summary>
