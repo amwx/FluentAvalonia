@@ -48,7 +48,14 @@ namespace FluentAvaloniaSamples.ViewModels
 
         private void AddDocumentExecute(object obj)
         {
-            AddDocument(Documents.Count);
+            if (obj.Equals("Keyboard"))
+            {
+                KeyBindingDocuments.Add(AddDocument(KeyBindingDocuments.Count));
+            }
+            else if (obj.Equals("Normal"))
+            {
+                Documents.Add(AddDocument(Documents.Count));
+            }
         }
 
         private void KeyBindingInvoked(object obj)
