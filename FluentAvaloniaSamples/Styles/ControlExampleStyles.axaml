@@ -6,7 +6,9 @@
     <Design.PreviewWith>
         <Border Padding="20" Width="600" Height="450">
             <local:ControlExample Header="Sample Control"
-                                  CSharpSource="asdg">
+                                  CSharpSource="asdg"
+                                  XamlSource="xaml source"
+                                  UsageNotes="usage notes">
                 <ui:Button Content="Sample"
                            Classes.accent="{Binding #Accent.IsChecked}"/>
 
@@ -26,6 +28,12 @@
     </Style>
     <Style Selector="FlyoutPresenter.CodeSampleCopiedFlyout.Fail">
         <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+    </Style>
+
+    <Style Selector="local|ControlExample /template/ Border#CodePreviewAreaHost ToggleButton.ExpanderToggleButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style Selector="local|ControlExample">
@@ -120,43 +128,45 @@
                             Background="{DynamicResource ControlFillColorSecondaryBrush}"
                             MinHeight="10"
                             CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}">
-                        <Grid ColumnDefinitions="*,Auto"
-                              RowDefinitions="Auto,Auto,Auto,Auto">
+                        <StackPanel Spacing="4">
+                            <Expander Header="Xaml Sample Code"
+                                      Name="XamlSourceExpander">
+                                <DockPanel>
+                                    <ui:Button Name="CopyXamlButton"
+                                               DockPanel.Dock="Right"
+                                               Margin="8 16 8 8" Padding="4"
+                                               VerticalAlignment="Top">
+                                        <ui:SymbolIcon Symbol="Copy" FontSize="18" />
+                                    </ui:Button>
 
-                            <aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
-                                              Margin="8 32 8 8"
-                                              MinHeight="50"/>
-
-                            <aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
-                                              Grid.Row="1" Margin="8 32 8 8" 
-                                              MinHeight="50" />
-
-                            <ui:Button Name="CopyXamlButton"
-                                       DockPanel.Dock="Right"
-                                       Grid.Column="1"
-                                       Margin="8 16 8 8" Padding="4"
-                                       VerticalAlignment="Top">
-                                <ui:SymbolIcon Symbol="Copy" FontSize="18" />
-                            </ui:Button>
-
-                            <ui:Button Name="CopyCSharpButton"
-                                       Grid.Row="1" Grid.Column="1"
-                                       Margin="8 32 8 8" Padding="4"
-                                       VerticalAlignment="Top">
-                                <ui:SymbolIcon Symbol="Copy" FontSize="18" />
-                            </ui:Button>
-
-                            <TextBlock Text="Additional Notes"
-                                       Classes="BodyStrongTextBlockStyle Notes"
-                                       Grid.Row="2"
-                                       Margin="8 24 8 16"/>
-                            
-                            <TextBlock Name="UsageNotesTextBlock"
-                                       Grid.Row="3"
-                                       Classes="Notes"
-                                       Margin="8 0 8 16"
-                                       TextWrapping="Wrap"/>
-                        </Grid>
+                                    <aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
+                                                      Margin="8 32 8 8"
+                                                      MinHeight="50"/>
+                                </DockPanel>
+                            </Expander>
+                            <Expander Header="C# Sample Code"
+                                      Name="CSharpSourceExpander">
+                                <DockPanel>
+                                    <ui:Button Name="CopyCSharpButton"
+                                               DockPanel.Dock="Right"
+                                               Margin="8 32 8 8" Padding="4"
+                                               VerticalAlignment="Top">
+                                        <ui:SymbolIcon Symbol="Copy" FontSize="18" />
+                                    </ui:Button>
+                                    <aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
+                                                      Grid.Row="1" Margin="8 32 8 8"
+                                                      MinHeight="50" />
+                                </DockPanel>
+                            </Expander>
+                            <Expander Header="Additional Notes"
+                                      Name="UsageNotesExpander">
+                                <TextBlock Name="UsageNotesTextBlock"
+                                           Grid.Row="3"
+                                           Classes="Notes"
+                                           Margin="8 0 8 16"
+                                           TextWrapping="Wrap"/>
+                            </Expander>
+                        </StackPanel>
                     </Border>                            
                 </StackPanel>
             </ControlTemplate>
@@ -203,10 +213,6 @@
         <Setter Property="IsVisible" Value="False" />
     </Style>
 
-    <Style Selector="local|ControlExample /template/ TextBlock.Notes">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-    
     <Style Selector="local|ControlExample:codepreview /template/ Border#CodePreviewAreaHost">
         <Setter Property="IsVisible" Value="True" />
     </Style>
@@ -215,39 +221,37 @@
     </Style>
 
     <!-- Xaml Source TextArea -->
-    <Style Selector="local|ControlExample /template/ aedit|TextEditor#XamlTextEditor,
-                     local|ControlExample /template/ ui|Button#CopyXamlButton">
+    <Style Selector="local|ControlExample /template/ Expander#XamlSourceExpander">
         <Setter Property="IsVisible" Value="False" />
     </Style>
-
-    <Style Selector="local|ControlExample:xamlsource /template/ aedit|TextEditor#XamlTextEditor,
-                     local|ControlExample:xamlsource /template/ ui|Button#CopyXamlButton">
-        <Setter Property="IsVisible" Value="True" />
-    </Style>
-
-
-    <!-- CSharp Source TextArea -->
-    <Style Selector="local|ControlExample /template/ aedit|TextEditor#CSharpTextEditor,
-                     local|ControlExample /template/ ui|Button#CopyCSharpButton">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-
-    <Style Selector="local|ControlExample:csharpsource /template/ aedit|TextEditor#CSharpTextEditor,
-                     local|ControlExample:csharpsource /template/ ui|Button#CopyCSharpButton">
+    <Style Selector="local|ControlExample:xamlsource /template/ Expander#XamlSourceExpander">
         <Setter Property="IsVisible" Value="True" />
     </Style>
     
+
+    <!-- CSharp Source TextArea -->
+    <Style Selector="local|ControlExample /template/ Expander#CSharpSourceExpander">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="local|ControlExample:csharpsource /template/ Expander#CSharpSourceExpander">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    
+
+    <!-- Usage/Additional Notes -->
+    <Style Selector="local|ControlExample /template/ Expander#UsageNotesExpander">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="local|ControlExample:usagenotes /template/ Expander#UsageNotesExpander">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    
+
+    <!-- Options -->
     <Style Selector="local|ControlExample:options /template/ Border#OptionsHost">
         <Setter Property="IsVisible" Value="True" />
     </Style>
-
-
-    <!-- Usage/Additional Notes -->
-    <Style Selector="local|ControlExample:usagenotes /template/ TextBlock.Notes">
-        <Setter Property="IsVisible" Value="True" />
-    </Style>
-
-
+    
     <!-- AdaptiveWidth -->    
     <Style Selector="local|ControlExample:adaptiveW /template/ ContentPresenter#ExamplePresenter">
         <Setter Property="Grid.ColumnSpan" Value="2" />
