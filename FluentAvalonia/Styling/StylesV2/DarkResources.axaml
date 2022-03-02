@@ -78,10 +78,11 @@
     <Color x:Key="LayerOnAcrylicFillColorDefault">#09FFFFFF</Color>
     <Color x:Key="LayerOnAccentAcrylicFillColorDefault">#09FFFFFF</Color>
 
-    <Color x:Key="LayerOnMicaAltFillColorDefault">#733A3A3A</Color>
-    <Color x:Key="LayerOnMicaAltFillColorSecondary">#0FFFFFFF</Color>
-    <Color x:Key="LayerOnMicaAltFillColorTertiary">#2C2C2C</Color>
-    <Color x:Key="LayerOnMicaAltFillColorTransparent">#00FFFFFF</Color>
+    <!-- Color names changed as in WinUI 6763 -->
+    <Color x:Key="LayerOnMicaBaseAltFillColorDefault">#733A3A3A</Color>
+    <Color x:Key="LayerOnMicaBaseAltFillColorSecondary">#0FFFFFFF</Color>
+    <Color x:Key="LayerOnMicaBaseAltFillColorTertiary">#2C2C2C</Color>
+    <Color x:Key="LayerOnMicaBaseAltFillColorTransparent">#00FFFFFF</Color>
 
     <Color x:Key="SolidBackgroundFillColorBase">#202020</Color>
     <Color x:Key="SolidBackgroundFillColorSecondary">#1C1C1C</Color>
@@ -190,10 +191,11 @@
     <SolidColorBrush x:Key="LayerOnAcrylicFillColorDefaultBrush" Color="{StaticResource LayerOnAcrylicFillColorDefault}" />
     <SolidColorBrush x:Key="LayerOnAccentAcrylicFillColorDefaultBrush" Color="{StaticResource LayerOnAccentAcrylicFillColorDefault}" />
 
-    <SolidColorBrush x:Key="LayerOnMicaAltFillColorDefaultBrush" Color="{StaticResource LayerOnMicaAltFillColorDefault}" />
-    <SolidColorBrush x:Key="LayerOnMicaAltFillColorSecondaryBrush" Color="{StaticResource LayerOnMicaAltFillColorSecondary}" />
-    <SolidColorBrush x:Key="LayerOnMicaAltFillColorTertiaryBrush" Color="{StaticResource LayerOnMicaAltFillColorTertiary}" />
-    <SolidColorBrush x:Key="LayerOnMicaAltFillColorTransparentBrush" Color="{StaticResource LayerOnMicaAltFillColorTransparent}" />
+    <!-- Brush names changed WinUI 6763 -->
+    <SolidColorBrush x:Key="LayerOnMicaBaseAltFillColorDefaultBrush" Color="{StaticResource LayerOnMicaBaseAltFillColorDefault}" />
+    <SolidColorBrush x:Key="LayerOnMicaBaseAltFillColorSecondaryBrush" Color="{StaticResource LayerOnMicaBaseAltFillColorSecondary}" />
+    <SolidColorBrush x:Key="LayerOnMicaBaseAltFillColorTertiaryBrush" Color="{StaticResource LayerOnMicaBaseAltFillColorTertiary}" />
+    <SolidColorBrush x:Key="LayerOnMicaBaseAltFillColorTransparentBrush" Color="{StaticResource LayerOnMicaBaseAltFillColorTransparent}" />
 
     <SolidColorBrush x:Key="SolidBackgroundFillColorBaseBrush" Color="{StaticResource SolidBackgroundFillColorBase}" />
     <SolidColorBrush x:Key="SolidBackgroundFillColorSecondaryBrush" Color="{StaticResource SolidBackgroundFillColorSecondary}" />
@@ -1878,11 +1880,13 @@
 
     <!-- TAB VIEW -->
     <StaticResource x:Key="TabViewBackground"                                       ResourceKey="SubtleFillColorTransparentBrush" />
-    <StaticResource x:Key="TabViewItemHeaderBackground"                             ResourceKey="LayerOnMicaAltFillColorTransparentBrush" />
-    <StaticResource x:Key="TabViewItemHeaderBackgroundSelected"                     ResourceKey="LayerOnMicaAltFillColorDefaultBrush" />
-    <StaticResource x:Key="TabViewItemHeaderBackgroundPointerOver"                  ResourceKey="LayerOnMicaAltFillColorSecondaryBrush" />
-    <StaticResource x:Key="TabViewItemHeaderBackgroundPressed"                      ResourceKey="LayerOnMicaAltFillColorDefaultBrush" />
-    <StaticResource x:Key="TabViewItemHeaderBackgroundDisabled"                     ResourceKey="LayerOnMicaAltFillColorTransparentBrush" />
+    <!-- Colors adjusted for next 5 items from WinUI #6763 -->
+    <StaticResource x:Key="TabViewItemHeaderBackground"                             ResourceKey="LayerOnMicaBaseAltFillColorTransparentBrush" />
+    <StaticResource x:Key="TabViewItemHeaderBackgroundSelected"                     ResourceKey="SolidBackgroundFillColorTertiaryBrush" />
+    <StaticResource x:Key="TabViewItemHeaderBackgroundPointerOver"                  ResourceKey="LayerOnMicaBaseAltFillColorSecondaryBrush" />
+    <StaticResource x:Key="TabViewItemHeaderBackgroundPressed"                      ResourceKey="LayerOnMicaBaseAltFillColorDefaultBrush" />
+    <StaticResource x:Key="TabViewItemHeaderBackgroundDisabled"                     ResourceKey="LayerOnMicaBaseAltFillColorTransparentBrush" />
+    
     <StaticResource x:Key="TabViewItemHeaderForeground"                             ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="TabViewItemHeaderForegroundPressed"                      ResourceKey="TextFillColorTertiaryBrush" />
     <StaticResource x:Key="TabViewItemHeaderForegroundSelected"                     ResourceKey="TextFillColorPrimaryBrush" />
