@@ -231,10 +231,10 @@
                                                             ShouldLoop="True"
                                                             ItemHeight="{DynamicResource TimePickerFlyoutPresenterItemHeight}"/>
                                 </ScrollViewer>
-                                <RepeatButton Name="HourUpButton"
-                                              Classes="DateTimeFlyoutButtonStyle UpButton"/>
+                                <RepeatButton Name="HourUpButton" VerticalAlignment="Top"
+                                              Classes="DateTimePickerFlyoutLoopingNavButton UpButton"/>
                                 <RepeatButton Name="HourDownButton"
-                                              Classes="DateTimeFlyoutButtonStyle DownButton"/>
+                                              Classes="DateTimePickerFlyoutLoopingNavButton DownButton"/>
 
                             </Panel>
 
@@ -247,9 +247,9 @@
                                                             ItemHeight="{DynamicResource TimePickerFlyoutPresenterItemHeight}"/>
                                 </ScrollViewer>
                                 <RepeatButton Name="MinuteUpButton"
-                                              Classes="DateTimeFlyoutButtonStyle UpButton"/>
+                                              Classes="DateTimePickerFlyoutLoopingNavButton UpButton"/>
                                 <RepeatButton Name="MinuteDownButton"
-                                              Classes="DateTimeFlyoutButtonStyle DownButton"/>
+                                              Classes="DateTimePickerFlyoutLoopingNavButton DownButton"/>
 
                             </Panel>
 
@@ -262,9 +262,9 @@
                                                             ItemHeight="{DynamicResource TimePickerFlyoutPresenterItemHeight}"/>
                                 </ScrollViewer>
                                 <RepeatButton Name="PeriodUpButton"
-                                              Classes="DateTimeFlyoutButtonStyle UpButton"/>
+                                              Classes="DateTimePickerFlyoutLoopingNavButton UpButton"/>
                                 <RepeatButton Name="PeriodDownButton"
-                                              Classes="DateTimeFlyoutButtonStyle DownButton"/>
+                                              Classes="DateTimePickerFlyoutLoopingNavButton DownButton"/>
 
                             </Panel>
 
@@ -319,7 +319,5 @@
 
     <Style Selector="TimePickerPresenter /template/ Panel:pointerover RepeatButton">
         <Setter Property="IsVisible" Value="True" />
-    </Style>
-   
-
+    </Style> 
 </Styles>
