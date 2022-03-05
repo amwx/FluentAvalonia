@@ -519,27 +519,34 @@
     <Thickness x:Key="ComboBoxDropdownBorderPadding">0</Thickness>
 
 
-    <!-- CALENDAR DATE PICKER -->
+    <!-- CALENDAR DATE PICKER (updated resources from WinUI #6228) -->
     <Thickness x:Key="CalendarDatePickerBorderThemeThickness">1</Thickness>
     <StaticResource x:Key="CalendarDatePickerForeground" ResourceKey="TextFillColorPrimaryBrush" />
     <StaticResource x:Key="CalendarDatePickerForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
     <StaticResource x:Key="CalendarDatePickerCalendarGlyphForeground" ResourceKey="TextFillColorSecondaryBrush" />
+    <StaticResource x:Key="CalendarDatePickerCalendarGlyphForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+    <StaticResource x:Key="CalendarDatePickerCalendarGlyphForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="CalendarDatePickerCalendarGlyphForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
     <StaticResource x:Key="CalendarDatePickerTextForeground" ResourceKey="TextFillColorSecondaryBrush" />
+    <StaticResource x:Key="CalendarDatePickerTextForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+    <StaticResource x:Key="CalendarDatePickerTextForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="CalendarDatePickerTextForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
     <StaticResource x:Key="CalendarDatePickerTextForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
     <StaticResource x:Key="CalendarDatePickerHeaderForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
     <StaticResource x:Key="CalendarDatePickerBackground" ResourceKey="ControlFillColorDefaultBrush" />
     <StaticResource x:Key="CalendarDatePickerBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
     <StaticResource x:Key="CalendarDatePickerBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
     <StaticResource x:Key="CalendarDatePickerBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
     <StaticResource x:Key="CalendarDatePickerBackgroundFocused" ResourceKey="ControlFillColorDefaultBrush" />
+
     <StaticResource x:Key="CalendarDatePickerBorderBrush" ResourceKey="ControlElevationBorderBrush" />
     <StaticResource x:Key="CalendarDatePickerBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
     <StaticResource x:Key="CalendarDatePickerBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
     <StaticResource x:Key="CalendarDatePickerBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
     <!--<StaticResource x:Key="CalendarDatePickerLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
-
+    
 
 
     <!-- CHECKBOX -->
@@ -1928,14 +1935,21 @@
     <StaticResource x:Key="TabViewItemHeaderPointerOverCloseButtonForeground"       ResourceKey="TextFillColorPrimaryBrush" />
     <StaticResource x:Key="TabViewItemHeaderSelectedCloseButtonForeground"          ResourceKey="TextFillColorPrimaryBrush" />
     <StaticResource x:Key="TabViewItemHeaderDisabledCloseButtonForeground"          ResourceKey="TextFillColorDisabledBrush" />
-
+    <!-- Resources added from WinUI #6787 & #6790 -->
+    <StaticResource x:Key="TabViewItemHeaderCloseButtonBorderBrush"                 ResourceKey="SubtleFillColorTransparentBrush" />
+    <StaticResource x:Key="TabViewItemHeaderCloseButtonBorderBrushPointerOver"      ResourceKey="SubtleFillColorTransparentBrush" />
+    <StaticResource x:Key="TabViewItemHeaderCloseButtonBorderBrushPressed"          ResourceKey="SubtleFillColorTransparentBrush" />
+    <StaticResource x:Key="TabViewItemHeaderCloseButtonBorderBrushSelected"         ResourceKey="SubtleFillColorTransparentBrush" />
+    <StaticResource x:Key="TabViewItemHeaderCloseButtonBorderBrushDisabled"         ResourceKey="SubtleFillColorTransparentBrush" />
+    
     <!-- Note: These theme resources below are no longer used and might be removed in a future WinUI update. -->
     <StaticResource x:Key="TabViewButtonBackgroundActiveTab"                        ResourceKey="SubtleFillColorTransparentBrush" />
     <StaticResource x:Key="TabViewButtonForegroundActiveTab"                        ResourceKey="ControlStrongFillColorDefaultBrush" />
 
     <StaticResource x:Key="TabViewBorderBrush"                                      ResourceKey="CardStrokeColorDefault" />
     <StaticResource x:Key="TabViewItemBorderBrush"                                  ResourceKey="SubtleFillColorTransparentBrush" />
-
+    <Thickness x:Key="TabViewItemHeaderCloseButtonBorderThickness">0</Thickness>
+    
     <!-- NOTE THIS WAS CHANGED UNTIL WE GET BRUSH TRANSFORMS IMPLEMENTED -->
     <LinearGradientBrush x:Key="TabViewSelectedItemBorderBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <!--MappingMode="Absolute" 

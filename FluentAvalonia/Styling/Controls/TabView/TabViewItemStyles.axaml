@@ -26,6 +26,8 @@
         <Setter Property="Height" Value="{DynamicResource TabViewItemHeaderCloseButtonHeight}"/>
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForeground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderThickness}"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <ContentPresenter Name="ContentPresenter"
@@ -34,17 +36,21 @@
                                   Content="{TemplateBinding Content}"
                                   CornerRadius="{TemplateBinding CornerRadius}"
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}" />
             </ControlTemplate>
         </Setter>
     </Style>
     <Style Selector="ui|Button.TabViewCloseButtonStyle:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackgroundPointerOver}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForegroundPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrushPointerOver}" />
     </Style>
     <Style Selector="ui|Button.TabViewCloseButtonStyle:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackgroundPressed}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForegroundPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrushPressed}" />
     </Style>
 
 
@@ -150,7 +156,7 @@
     </Style>
 
     <Style Selector="ui|TabViewItem /template/ Path#LeftRadiusRenderArc">
-        <Setter Property="Fill" Value="{DynamicResource CardStrokeColorDefault}" />
+        <Setter Property="Fill" Value="{DynamicResource TabViewBorderBrush}" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
         <Setter Property="IsVisible" Value="False" />
         <Setter Property="Margin" Value="-4 0 0 0" />
@@ -162,7 +168,7 @@
     <Style Selector="ui|TabViewItem /template/ Path#RightRadiusRenderArc">
         <Setter Property="Grid.Column" Value="2" />
         <Setter Property="IsVisible" Value="False" />
-        <Setter Property="Fill" Value="{DynamicResource CardStrokeColorDefault}" />
+        <Setter Property="Fill" Value="{DynamicResource TabViewBorderBrush}" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
         <Setter Property="Margin" Value="0 0 -4 0" />
         <Setter Property="Height" Value="4" />
@@ -263,6 +269,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource TabViewSelectedItemBorderThickness}" />
         <Setter Property="Padding" Value="{DynamicResource TabViewSelectedItemHeaderPadding}" />
+        <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
     </Style>
     <Style Selector="ui|TabViewItem:selected /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderForegroundSelected}" />
