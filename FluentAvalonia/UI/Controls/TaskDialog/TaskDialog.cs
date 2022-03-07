@@ -160,6 +160,8 @@ namespace FluentAvalonia.UI.Controls
                 }
             }
 
+            object result = null;
+
             if (showHosted || !(owner is WindowBase))
             {
                 // Hosted in OverlayLayer
@@ -188,7 +190,7 @@ namespace FluentAvalonia.UI.Controls
                 PseudoClasses.Set(":open", true);                
                 PseudoClasses.Set(":hidden", false);
 
-                return await _tcs.Task;
+                result = await _tcs.Task;
             }
             else
             {
@@ -208,10 +210,12 @@ namespace FluentAvalonia.UI.Controls
                 _host = host;
                 IsVisible = true;
 
-                var result = await host.ShowDialog<object>(owner as Window);
-
-                return result ?? TaskDialogStandardResult.None;
+                result = await host.ShowDialog<object>(owner as Window);
             }
+
+            OnClosed();
+            _host = null;
+            return result ?? TaskDialogStandardResult.None;
         }
 
         /// <summary>
@@ -351,9 +355,6 @@ namespace FluentAvalonia.UI.Controls
 
                 _tcs.TrySetResult(result);
             }
-
-            OnClosed();
-            _host = null;
         }
 
         private void OnButtonClick(object sender, RoutedEventArgs e)

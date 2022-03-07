@@ -196,7 +196,7 @@
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Background" Value="{DynamicResource LoopingSelectorUpDownButtonBackground}" />
         <Setter Property="Margin" Value="{DynamicResource LoopingSelectorUpDownButtonMargin}" />
-        <Setter Property="Content">&#xF968;</Setter> 
+        <Setter Property="Content">&#xEDDB;</Setter> 
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
     </Style>
     <Style Selector="RepeatButton.DateTimePickerFlyoutLoopingNavButton.DownButton">
@@ -205,7 +205,7 @@
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Background" Value="{DynamicResource LoopingSelectorUpDownButtonBackground}" />
         <Setter Property="Margin" Value="{DynamicResource LoopingSelectorUpDownButtonMargin}" />
-        <Setter Property="Content">&#xF262;</Setter>
+        <Setter Property="Content">&#xEDDC;</Setter>
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
     </Style>
 

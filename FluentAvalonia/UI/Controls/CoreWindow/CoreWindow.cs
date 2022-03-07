@@ -249,8 +249,11 @@ namespace FluentAvalonia.UI.Controls
 
 		internal bool HitTestCaptionButtons(Point pos)
 		{
-			if (pos.Y < 1 || _systemCaptionButtons == null)
+			if (_systemCaptionButtons == null)
 				return false;
+
+            if (WindowState != WindowState.Maximized && pos.Y <= 1)
+                return false;
 
 			var result = _systemCaptionButtons.HitTestCustom(pos);
 			return result;
