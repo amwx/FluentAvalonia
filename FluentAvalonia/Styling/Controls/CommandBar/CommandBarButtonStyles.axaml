@@ -6,11 +6,19 @@
         <Border Width="400" Padding="50" Height="400">
 			<StackPanel Spacing="5">
 				<Border Background="SteelBlue">
-					<ui:CommandBarButton Label="Button1" Icon="Save" HotKey="Ctrl+S" IsCompact="True"/>
+                    <ui:CommandBarButton Label="Button1" Icon="Save" HotKey="Ctrl+S" IsCompact="True">
+                        <ui:CommandBarButton.Flyout>
+                            <Flyout />
+                        </ui:CommandBarButton.Flyout>
+                    </ui:CommandBarButton>
 				</Border>
 
 				<ui:CommandBarOverflowPresenter>
-					<ui:CommandBarButton Label="Button1" Icon="Save" />
+					<ui:CommandBarButton Label="Button1" Icon="Save">
+                        <ui:CommandBarButton.Flyout>
+                            <Flyout />
+                        </ui:CommandBarButton.Flyout>
+                    </ui:CommandBarButton>
 					<ui:CommandBarButton Label="Button1" Icon="Save" />
 				</ui:CommandBarOverflowPresenter>
 
@@ -99,8 +107,8 @@
 								   HorizontalAlignment="Right"
 								   VerticalAlignment="Center" />
 						
-						<ui:SymbolIcon Name="SubItemChevron"
-									   Grid.Column="2" />
+						<ui:FontIcon Name="SubItemChevron"
+									 Grid.Column="2" />
 						
 					</Grid>
 					
@@ -148,10 +156,11 @@
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForeground}" />
 		<Setter Property="IsVisible" Value="False" />
 	</Style>
-	<Style Selector="ui|CommandBarButton /template/ ui|SymbolIcon#SubItemChevron">
-		<Setter Property="Symbol" Value="ChevronRight" />
-		<Setter Property="FontSize" Value="12" />
-		<Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevron}" />
+	<Style Selector="ui|CommandBarButton /template/ ui|FontIcon#SubItemChevron">
+		<Setter Property="Glyph" Value="{DynamicResource AppBarButtonOverflowFlyoutGlyph}" />
+        <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
+		<Setter Property="FontSize" Value="14" />
+		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForeground}" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="Margin" Value="-23 20 12 0" />
 		<Setter Property="IsVisible" Value="False" />
@@ -174,8 +183,11 @@
 	</Style>
 	<Style Selector="ui|CommandBarButton:pointerover /template/ TextBlock#KeyboardAcceleratorTextLabel">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPointerOver}" />
-	</Style>
-
+	</Style>   
+    <Style Selector="ui|CommandBarButton:pointerover /template/ ui|FontIcon#SubItemChevron">
+        <!-- WinUI #6831 -->
+        <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPointerOver}" />
+    </Style>
 
 	<!-- Pressed -->
 	<Style Selector="ui|CommandBarButton:pressed /template/ Border#AppBarButtonInnerBorder">
@@ -194,7 +206,10 @@
 	<Style Selector="ui|CommandBarButton:pressed /template/ TextBlock#KeyboardAcceleratorTextLabel">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPressed}" />
 	</Style>
-	
+    <Style Selector="ui|CommandBarButton:pressed /template/ ui|FontIcon#SubItemChevron">
+        <!-- WinUI #6831 -->
+        <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPressed}" />
+    </Style>
 	
 
 	<!-- Disabled -->
@@ -214,7 +229,11 @@
 	<Style Selector="ui|CommandBarButton:disabled /template/ TextBlock#KeyboardAcceleratorTextLabel">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundDisabled}" />
 	</Style>
-
+    <Style Selector="ui|CommandBarButton:disabled /template/ ui|FontIcon#SubItemChevron">
+        <!-- WinUI #6831 -->
+        <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundDisabled}" />
+    </Style>
+        
 
 	<!-- Overflow -->
 	<Style Selector="ui|CommandBarButton:overflow">
@@ -234,6 +253,12 @@
 	<Style Selector="ui|CommandBarButton:overflow /template/ TextBlock#OverflowTextLabel">
 		<Setter Property="IsVisible" Value="True" />
 	</Style>
+    <Style Selector="ui|CommandBarButton:overflow /template/ ui|FontIcon#SubItemChevron">
+        <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundDisabled}" />
+        <Setter Property="Margin" Value="{DynamicResource AppBarButtonSecondarySubItemChevronMargin}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="{DynamicResource AppBarButtonSecondarySubItemChevronFontSize}" />
+    </Style>
 
 
 	<!-- Overflow PointerOver-->
@@ -253,7 +278,7 @@
 	<Style Selector="ui|CommandBarButton:overflow:pointerover /template/ TextBlock#KeyboardAcceleratorTextLabel">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPointerOver}" />
 	</Style>
-	<Style Selector="ui|CommandBarButton:overflow:pointerover /template/ ui|SymbolIcon#SubItemChevron">
+	<Style Selector="ui|CommandBarButton:overflow:pointerover /template/ ui|FontIcon#SubItemChevron">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPointerOver}" />
 	</Style>
 	
@@ -275,7 +300,7 @@
 	<Style Selector="ui|CommandBarButton:overflow:pressed /template/ TextBlock#KeyboardAcceleratorTextLabel">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPressed}" />
 	</Style>
-	<Style Selector="ui|CommandBarButton:overflow:pressed /template/ ui|SymbolIcon#SubItemChevron">
+	<Style Selector="ui|CommandBarButton:overflow:pressed /template/ ui|FontIcon#SubItemChevron">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPressed}" />
 	</Style>
 
@@ -297,13 +322,13 @@
 	<Style Selector="ui|CommandBarButton:overflow:submenuopen /template/ TextBlock#KeyboardAcceleratorTextLabel">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundSubMenuOpened}" />
 	</Style>
-	<Style Selector="ui|CommandBarButton:overflow:submenuopen /template/ ui|SymbolIcon#SubItemChevron">
+	<Style Selector="ui|CommandBarButton:overflow:submenuopen /template/ ui|FontIcon#SubItemChevron">
 		<Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundSubMenuOpened}" />
 	</Style>
 
 	
 	<!-- Has Flyout -->
-	<Style Selector="ui|CommandBarButton:flyout /template/ ui|SymbolIcon#SubItemChevron">
+	<Style Selector="ui|CommandBarButton:flyout /template/ ui|FontIcon#SubItemChevron">
 		<Setter Property="IsVisible" Value="True" />
 	</Style>
 
