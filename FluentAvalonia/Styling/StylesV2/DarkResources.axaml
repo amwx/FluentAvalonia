@@ -1275,9 +1275,14 @@
     <StaticResource x:Key="AppBarButtonSubItemChevronForegroundPressed" ResourceKey="TextFillColorTertiaryBrush" />
     <StaticResource x:Key="AppBarButtonSubItemChevronForegroundSubMenuOpened" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="AppBarButtonSubItemChevronForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-    <!--<Visibility x:Key="AppBarButtonHasFlyoutChevronVisibility">Visible</Visibility>
-		<x:String x:Key="AppBarButtonFlyoutGlyph">&#xE974;</x:String>-->
-
+    <!--<Visibility x:Key="AppBarButtonHasFlyoutChevronVisibility">Visible</Visibility>-->
+	<x:String x:Key="AppBarButtonFlyoutGlyph">&#xE974;</x:String>
+    <!-- Added in WinUI #6831 -->
+    <x:String x:Key="AppBarButtonOverflowFlyoutGlyph">&#xE974;</x:String>
+    <!-- Fontsize increased from 12 - 14 since Fluent UI icons are smaller than Segoe Fluent -->
+    <x:Double x:Key="AppBarButtonSecondarySubItemChevronFontSize">14</x:Double>
+    <Thickness x:Key="AppBarButtonSubItemChevronMargin">-23,20,12,0</Thickness>
+    <Thickness x:Key="AppBarButtonSecondarySubItemChevronMargin">0,0,16,0</Thickness>
 
 
     <!-- COMMAND BAR (APP BAR) TOGGLEBUTTON -->
