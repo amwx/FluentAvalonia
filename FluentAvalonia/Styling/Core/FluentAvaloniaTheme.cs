@@ -383,7 +383,7 @@ namespace FluentAvalonia.Styling
         {
             if (newTheme == null)
             {
-                _requestedTheme = ResolveThemeAndInitializeSystemResources();                
+                newTheme = ResolveThemeAndInitializeSystemResources();
             }
 
             var old = _requestedTheme;
@@ -500,12 +500,12 @@ namespace FluentAvalonia.Styling
 
                         if (osInfo.BuildNumber >= 22000) // Windows 11
                         {
-                            _themeResources.Add("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable Text"));
+                            AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable Text"));
                         }
                         else // Windows 10
                         {
                             //This is defined in the BaseResources.axaml file
-                            _themeResources.Add("ContentControlThemeFontFamily", new FontFamily("Segoe UI"));
+                            AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI"));
                         }
                     }
                     catch
@@ -513,7 +513,7 @@ namespace FluentAvalonia.Styling
                         Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
                         .Log("FluentAvaloniaTheme", "Error in detecting Windows system font.");
 
-                        _themeResources.Add("ContentControlThemeFontFamily", FontFamily.Default);
+                        AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
                     }
                 }
             }
@@ -530,11 +530,11 @@ namespace FluentAvalonia.Styling
                     LoadDefaultAccentColor();
                 }
                
-                _themeResources.Add("ContentControlThemeFontFamily", FontFamily.Default);
+                AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
             }
 
             // Load the SymbolThemeFontFamily
-            _themeResources.Add("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
+            AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
 
             // If not on Windows or if not using the system them, we default to LightMode
             // if user didn't specify the theme to use
