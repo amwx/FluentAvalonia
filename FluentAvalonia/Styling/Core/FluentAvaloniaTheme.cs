@@ -391,8 +391,11 @@ namespace FluentAvalonia.Styling
             {
                 _requestedTheme = newTheme;
 
-                // Remove the old theme resources
-                _themeResources.MergedDictionaries.RemoveAt(1);
+                // Remove the old theme if any resources
+                if (_themeResources.Count > 0)
+                {
+                    _themeResources.MergedDictionaries.RemoveAt(1);
+                }
 
                 _themeResources.MergedDictionaries.Add(
                     (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
