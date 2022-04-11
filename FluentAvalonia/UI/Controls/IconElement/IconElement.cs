@@ -104,9 +104,9 @@ namespace FluentAvalonia.UI.Controls
                 }
                 catch { }
 
-                //If we've reached this point, we'll make a FontIcon
-                //Glyph can be anything (sort of), so we don't need to Try/Catch
-                return new FontIconSource() { Glyph = val };
+                // If we've reached this point, we'll make a FontIcon
+                // Glyph can be anything (sort of), so we don't need to Try/Catch
+                return new FontIcon() { Glyph = val };
 
             }
             return base.ConvertFrom(context, culture, value);
