@@ -60,8 +60,8 @@
                             <ContentPresenter Name="HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               ContentTemplate="{TemplateBinding HeaderTemplate}"                                          
-                                              TextBlock.FontSize="24"
-                                              TextBlock.FontWeight="SemiBold"
+                                              FontSize="24"
+                                              FontWeight="SemiBold"
                                               Padding="12 8"
                                               HorizontalContentAlignment="Left"
                                               VerticalContentAlignment="Center" />
@@ -139,9 +139,9 @@
                                         <ui:SymbolIcon Symbol="Copy" FontSize="18" />
                                     </ui:Button>
 
-                                    <aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
+                                    <!--<aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
                                                       Margin="8 32 8 8"
-                                                      MinHeight="50"/>
+                                                      MinHeight="50"/>-->
                                 </DockPanel>
                             </Expander>
                             <Expander Header="C# Sample Code"
@@ -153,9 +153,9 @@
                                                VerticalAlignment="Top">
                                         <ui:SymbolIcon Symbol="Copy" FontSize="18" />
                                     </ui:Button>
-                                    <aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
+                                    <!--<aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
                                                       Grid.Row="1" Margin="8 32 8 8"
-                                                      MinHeight="50" />
+                                                      MinHeight="50" />-->
                                 </DockPanel>
                             </Expander>
                             <Expander Header="Additional Notes"

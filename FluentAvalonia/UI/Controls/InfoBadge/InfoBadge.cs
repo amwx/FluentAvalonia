@@ -89,7 +89,7 @@ namespace FluentAvalonia.UI.Controls
         {
             var rc = (Rect)e.NewValue;
             var cornerRadiusValue = rc.Height / 2;
-            if (!IsSet(CornerRadiusProperty))
+            if (!IsSet(Border.CornerRadiusProperty))
             {
                 TemplateSettings.InfoBadgeCornerRadius = new CornerRadius(cornerRadiusValue);
             }

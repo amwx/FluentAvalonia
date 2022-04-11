@@ -322,10 +322,10 @@ namespace FluentAvalonia.UI.Controls
             {
                 OnItemsChanged();
             }
-            else if (change.Property == IsTextSearchEnabledProperty)
-            {
-                OnIsTextSearchEnabledChanged();
-            }
+            //else if (change.Property == IsTextSearchEnabledProperty)
+            //{
+            //    OnIsTextSearchEnabledChanged();
+            //}
             else if (change.Property == IsEditableProperty)
             {
                 OnIsEditableChanged();
@@ -865,10 +865,10 @@ namespace FluentAvalonia.UI.Controls
                 newText = string.Empty;
             }
 
-            if(IsTextSearchEnabled && _textBox!= null && TextBoxSelectionLength > 0 && TextBoxSelectionStart != _textBox.Text.Length)
-            {
-                return;
-            }
+            //if(IsTextSearchEnabled && _textBox!= null && TextBoxSelectionLength > 0 && TextBoxSelectionStart != _textBox.Text.Length)
+            //{
+            //    return;
+            //}
 
             _hasUnsubmittedText = true;
 
@@ -887,47 +887,47 @@ namespace FluentAvalonia.UI.Controls
 
             if (ItemCount > 0)
             {
-                if (IsTextSearchEnabled && _textBox != null && user)
-                {
-                    int curLen = _textBox.Text.Length;
-                    int selStart = TextBoxSelectionStart;
+                //if (IsTextSearchEnabled && _textBox != null && user)
+                //{
+                //    int curLen = _textBox.Text.Length;
+                //    int selStart = TextBoxSelectionStart;
 
-                    if (selStart == _text.Length && selStart > _textSelectionStart)
-                    {
-                        object top = TryGetMatch(text, Items, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
+                //    if (selStart == _text.Length && selStart > _textSelectionStart)
+                //    {
+                //        object top = TryGetMatch(text, Items, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
                         
-                        if (top != null)
-                        {
+                //        if (top != null)
+                //        {
                             
-                            string topString = FormatValue(top, true);
+                //            string topString = FormatValue(top, true);
 
-                            int minLength = Math.Min(topString.Length, text.Length);
-                            if (AutoCompleteSearch.Equals(text.Substring(0, minLength), topString.Substring(0, minLength)))
-                            {
-                                UpdateTextValue(topString);
+                //            int minLength = Math.Min(topString.Length, text.Length);
+                //            if (AutoCompleteSearch.Equals(text.Substring(0, minLength), topString.Substring(0, minLength)))
+                //            {
+                //                UpdateTextValue(topString);
 
-                                _textBox.SelectionStart = curLen;
-                                _textBox.SelectionEnd = topString.Length;
-                                _temporarySelectedItem = top;
+                //                _textBox.SelectionStart = curLen;
+                //                _textBox.SelectionEnd = topString.Length;
+                //                _temporarySelectedItem = top;
 
-                                if (_isDropDownOpen)
-                                {
-                                    var index = IndexOf(Items, _temporarySelectedItem);
-                                    if (index != -1)
-                                    {
-                                        TempSelectedIndex = index;
-                                    }
-                                }                                
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //When textsearch isn't enabled, still do a look up & focus the item in the popup
-                        //But don't edit the text...
-                        //TODO
-                    }
-                }
+                //                if (_isDropDownOpen)
+                //                {
+                //                    var index = IndexOf(Items, _temporarySelectedItem);
+                //                    if (index != -1)
+                //                    {
+                //                        TempSelectedIndex = index;
+                //                    }
+                //                }                                
+                //            }
+                //        }
+                //    }
+                //    else
+                //    {
+                //        //When textsearch isn't enabled, still do a look up & focus the item in the popup
+                //        //But don't edit the text...
+                //        //TODO
+                //    }
+                //}
             }
 
 

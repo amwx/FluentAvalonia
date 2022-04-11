@@ -65,7 +65,7 @@ namespace FluentAvalonia.UI.Controls
             if (_textLayout == null)
                 GenerateText();
 
-            return _textLayout.Size;
+            return _textLayout.Bounds.Size;
         }
 
         public override void Render(DrawingContext context)
@@ -75,10 +75,9 @@ namespace FluentAvalonia.UI.Controls
 
             var dstRect = new Rect(Bounds.Size);
             using (context.PushClip(dstRect))
-            using (context.PushPreTransform(Matrix.CreateTranslation(dstRect.Center.X - _textLayout.Size.Width / 2,
-                dstRect.Center.Y - _textLayout.Size.Height / 2)))
             {
-                _textLayout.Draw(context);
+                _textLayout.Draw(context, new Point(dstRect.Center.X - _textLayout.Bounds.Size.Width / 2,
+                dstRect.Center.Y - _textLayout.Bounds.Size.Height / 2));
             }
         }
 

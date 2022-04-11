@@ -99,8 +99,10 @@ namespace FluentAvalonia.UI.Controls
 		}
 
         bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;
-		
-		private Popup _subMenu;
+
+        bool IMenuItem.StaysOpenOnClick { get => false; set { } }
+
+        private Popup _subMenu;
 		private MenuFlyoutPresenter _presenter;
 	}
 }

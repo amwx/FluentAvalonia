@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Controls;
+using ToggleSplitButton = FluentAvalonia.UI.Controls.ToggleSplitButton;
 
 namespace FluentAvaloniaSamples.Pages
 {

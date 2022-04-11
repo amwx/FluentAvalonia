@@ -246,6 +246,10 @@ namespace FluentAvaloniaSamples.Controls
             _xamlTextEditor = e.NameScope.Find<TextEditor>("XamlTextEditor");
             _cSharpTextEditor = e.NameScope.Find<TextEditor>("CSharpTextEditor");
 
+            // TODO: remove this once AvaloniaEdit is compatible and samples can be turned back on
+            if (_xamlTextEditor == null || _cSharpTextEditor == null)
+                return;
+
             _usageNotesTextBlock = e.NameScope.Find<TextBlock>("UsageNotesTextBlock");
 
             SetUsageNotes();

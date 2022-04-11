@@ -16,7 +16,7 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Defines the <see cref="Foreground"/> property
         /// </summary>
-        public static readonly AttachedProperty<IBrush> ForegroundProperty =
+        public static readonly StyledProperty<IBrush> ForegroundProperty =
             TextBlock.ForegroundProperty.AddOwner<IconElement>();
 
         /// <summary>

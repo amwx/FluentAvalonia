@@ -175,6 +175,8 @@ namespace FluentAvalonia.UI.Controls
 		
 		void IMenuElement.Open() { }
 
+        bool IMenuItem.StaysOpenOnClick { get => false; set { } }
+
 		private bool _canExecute = true;
 		private KeyGesture _hotkey;
 	}

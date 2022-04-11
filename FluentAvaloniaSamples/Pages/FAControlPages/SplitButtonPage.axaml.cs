@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Controls;
 using static System.Net.Mime.MediaTypeNames;
+using SplitButton = FluentAvalonia.UI.Controls.SplitButton;
 
 namespace FluentAvaloniaSamples.Pages
 {
