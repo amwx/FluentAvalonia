@@ -33,10 +33,11 @@ namespace FluentAvalonia.Styling
         {
             get => _requestedTheme;
             set
-            {
-                _requestedTheme = value;
+            {                
                 if (_hasLoaded)
                     Refresh(value);
+                else
+                    _requestedTheme = value;
             }
         }
 
@@ -385,7 +386,7 @@ namespace FluentAvalonia.Styling
         {
             if (newTheme == null)
             {
-                newTheme = ResolveThemeAndInitializeSystemResources();
+                _requestedTheme = ResolveThemeAndInitializeSystemResources();
             }
 
             var old = _requestedTheme;
