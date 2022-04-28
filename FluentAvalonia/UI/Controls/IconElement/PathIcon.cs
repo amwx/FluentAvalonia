@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Media;
 using System.Collections.Generic;
 
@@ -50,10 +51,19 @@ namespace FluentAvalonia.UI.Controls
             //the bounds specified
             var bounds = data.Bounds;
             var destRect = new Rect(Bounds.Size);
-            var scale = Matrix.CreateScale(
-                destRect.Width / bounds.Width,
-                destRect.Height / bounds.Height);
-            var translate = Matrix.CreateTranslation(-(Vector)bounds.Position);
+
+            // Prevent divide by zero exception
+            if (bounds.Width == 0 || bounds.Height == 0 || destRect.Width == 0 || destRect.Height == 0) return;
+            
+            var scaleFactor = Math.Min(destRect.Width / bounds.Width, destRect.Height / bounds.Height);
+            
+            var offsetCenter = new Vector(
+                (bounds.Width - destRect.Width / scaleFactor) / 2,
+                (bounds.Height - destRect.Height / scaleFactor) / 2);
+            
+            var scale = Matrix.CreateScale(scaleFactor, scaleFactor);
+
+            var translate = Matrix.CreateTranslation(-(Vector)bounds.Position - offsetCenter);
 
             using (context.PushClip(destRect))
             using (context.PushPreTransform(translate * scale))
