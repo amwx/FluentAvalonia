@@ -7,7 +7,7 @@
   },
   {
     "Header": "Basic Input Controls",
-    "Description": "Button, ToggleButton, RepeatButton, RadioButton, CheckBox, ToggleSwitch",
+    "Description": "Button, ToggleButton, RepeatButton, DropDownButton, SplitButton, ToggleSplitButton, RadioButton, CheckBox, ToggleSwitch",
     "IconResourceKey": null,
     "Navigates": true,
     "PageType": "BasicInputControlsPage"

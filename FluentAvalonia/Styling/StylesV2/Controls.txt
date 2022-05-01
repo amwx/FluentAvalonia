@@ -3,6 +3,8 @@
 /Styling/BasicControls/DataValidationErrorsStyles.axaml
 /Styling/BasicControls/FocusAdornerStyles.axaml
 /Styling/BasicControls/ButtonStyles.axaml
+/Styling/BasicControls/SplitButtonStyles.axaml
+/Styling/BasicControls/DropDownButtonStyles.axaml
 /Styling/BasicControls/ToggleButtonStyles.axaml
 /Styling/BasicControls/RepeatButtonStyles.axaml
 /Styling/BasicControls/CheckBoxStyles.axaml
@@ -48,14 +50,13 @@
 /Styling/Controls/FlyoutPresenterStyles.axaml
 /Styling/BasicControls/TextBlockStyles.axaml
 
+
 [Begin FluentAvalonia Controls]
 /Styling/Controls/CoreWindowStyles.axaml
 /Styling/Controls/NavigationView/NavigationViewStyles.axaml
 /Styling/Controls/ContentDialogStyles.axaml
 /Styling/Controls/ComboBoxStyles.axaml
 /Styling/Controls/FrameStyles.axaml
-/Styling/Controls/SplitButtonStyles.axaml
-/Styling/Controls/DropDownButtonStyles.axaml
 /Styling/Controls/MenuFlyoutItemStyles.axaml
 /Styling/Controls/MenuFlyoutSubItemStyles.axaml
 /Styling/Controls/ToggleMenuFlyoutItemStyles.axaml

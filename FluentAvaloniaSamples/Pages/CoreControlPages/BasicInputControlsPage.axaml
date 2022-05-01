@@ -54,6 +54,63 @@
                 </WrapPanel>
             </ctrls:ControlExample>
 
+            <ctrls:ControlExample Header="DropDownButton"
+                                  TargetType="DropDownButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <WrapPanel>
+                    <DropDownButton Content="DropDown">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout>
+                                <MenuItem Header="MenuItem 1" />
+                                <MenuItem Header="MenuItem 2" />
+                                <MenuItem Header="MenuItem 3" />
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+                    
+                    <DropDownButton Content="Disabled DropDown" IsEnabled="False"/>
+                </WrapPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="SplitButton"
+                                 TargetType="SplitButton"
+                                 EnableShowDocsLink="True"
+                                 EnableShowDefinitionLink="True">
+                <WrapPanel>
+                    <SplitButton Content="DropDown">
+                        <SplitButton.Flyout>
+                            <MenuFlyout>
+                                <MenuItem Header="MenuItem 1" />
+                                <MenuItem Header="MenuItem 2" />
+                                <MenuItem Header="MenuItem 3" />
+                            </MenuFlyout>
+                        </SplitButton.Flyout>
+                    </SplitButton>
+
+                    <SplitButton Content="Disabled SplitButton" IsEnabled="False"/>
+                </WrapPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ToggleSplitButton"
+                                 TargetType="ToggleSplitButton"
+                                 EnableShowDocsLink="True"
+                                 EnableShowDefinitionLink="True">
+                <WrapPanel>
+                    <ToggleSplitButton Content="DropDown">
+                        <ToggleSplitButton.Flyout>
+                            <MenuFlyout>
+                                <MenuItem Header="MenuItem 1" />
+                                <MenuItem Header="MenuItem 2" />
+                                <MenuItem Header="MenuItem 3" />
+                            </MenuFlyout>
+                        </ToggleSplitButton.Flyout>
+                    </ToggleSplitButton>
+
+                    <SplitButton Content="Disabled ToggleSplitButton" IsEnabled="False"/>
+                </WrapPanel>
+            </ctrls:ControlExample>
+
             <ctrls:ControlExample Header="RadioButton"
                                   TargetType="RepeatButton"
                                   EnableShowDocsLink="True"
