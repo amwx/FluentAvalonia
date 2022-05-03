@@ -23,5 +23,35 @@ namespace FluentAvalonia.UI.Controls
             get => GetValue(DataProperty);
 			set => SetValue(DataProperty, value);
         }
+        
+        /// <summary>
+        /// Defines the <see cref="Stretch"/> property.
+        /// </summary>
+        public static readonly StyledProperty<Stretch> StretchProperty =
+            PathIcon.StretchProperty.AddOwner<PathIcon>();
+
+        /// <summary>
+        /// Gets or sets a <see cref="Stretch"/> enumeration value that describes how the shape fills its allocated space.
+        /// </summary>
+        public Stretch Stretch
+        {
+            get { return GetValue(StretchProperty); }
+            set { SetValue(StretchProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="StretchDirection"/> property.
+        /// </summary>
+        public static readonly StyledProperty<StretchDirection> StretchDirectionProperty =
+            PathIcon.StretchDirectionProperty.AddOwner<Avalonia.Controls.PathIcon>();
+        
+        /// <summary>
+        /// Gets or sets a value controlling in what direction contents will be stretched.
+        /// </summary>
+        public StretchDirection StretchDirection
+        {
+            get => GetValue(StretchDirectionProperty);
+            set => SetValue(StretchDirectionProperty, value);
+        }
     }
 }

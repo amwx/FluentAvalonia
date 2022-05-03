@@ -36,7 +36,9 @@ namespace FluentAvalonia.UI.Controls
         {
             var pi = new PathIcon
             {
-                [!PathIcon.DataProperty] = pis[!PathIconSource.DataProperty]
+                [!PathIcon.DataProperty] = pis[!PathIconSource.DataProperty],
+                [!PathIcon.StretchProperty] = pis[!PathIconSource.StretchProperty],
+                [!PathIcon.StretchDirectionProperty] = pis[!PathIconSource.StretchDirectionProperty]
             };
 
             if (pis.IsSet(IconSource.ForegroundProperty))
