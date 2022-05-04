@@ -67,6 +67,7 @@
 /Styling/Controls/PickerFlyoutPresenterStyles.axaml
 /Styling/Controls/HyperlinkButtonStyles.axaml
 /Styling/Controls/InfoBarStyles.axaml
+/Styling/Controls/PathIconStyles.axaml
 /Styling/Controls/CommandBar/CommandBarStyles.axaml
 /Styling/Controls/CommandBar/CommandBarOverflowPresenterStyles.axaml
 /Styling/Controls/CommandBar/CommandBarButtonStyles.axaml

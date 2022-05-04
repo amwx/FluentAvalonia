@@ -1,0 +1,21 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls">
+    <Design.PreviewWith>
+        <StackPanel Spacing="50" Margin="20">
+            <ui:PathIcon Height="NaN" Data="M 10 0 20 10 17 2 4 5 z" />
+            <ui:PathIcon Height="50" Data="M 10 0 20 10 17 2 4 5 z" />
+            <ui:PathIcon Height="8" Data="M 10 0 20 10 17 2 4 5 z" />
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="ui|PathIcon">
+        <Setter Property="StretchDirection" Value="Both" />
+    </Style>
+    
+    <Style Selector="ui|PathIcon[Height=NaN]">
+        <Setter Property="StretchDirection" Value="DownOnly" />
+    </Style>
+    
+</Styles>
+
