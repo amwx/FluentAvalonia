@@ -18,8 +18,9 @@ namespace FluentAvalonia.UI.Controls
         static PathIcon()
         {
             StretchProperty.OverrideDefaultValue<PathIcon>(Stretch.Uniform);
-            StretchDirectionProperty.OverrideDefaultValue<PathIcon>(StretchDirection.DownOnly);
-           
+            StretchDirectionProperty.OverrideDefaultValue<PathIcon>(StretchDirection.Both);
+            ClipToBoundsProperty.OverrideDefaultValue<PathIcon>(true);
+            
             AffectsMeasure<Shape>(StretchProperty, StretchDirectionProperty, DataProperty);
             AffectsRender<Shape>(StretchProperty, DataProperty);
         }
@@ -51,8 +52,8 @@ namespace FluentAvalonia.UI.Controls
         /// </summary>
         public Stretch Stretch
         {
-            get { return GetValue(StretchProperty); }
-            set { SetValue(StretchProperty, value); }
+            get => GetValue(StretchProperty);
+            set => SetValue(StretchProperty, value);
         }
 
         /// <summary>

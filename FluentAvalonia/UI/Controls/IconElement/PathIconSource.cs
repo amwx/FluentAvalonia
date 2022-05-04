@@ -35,8 +35,8 @@ namespace FluentAvalonia.UI.Controls
         /// </summary>
         public Stretch Stretch
         {
-            get { return GetValue(StretchProperty); }
-            set { SetValue(StretchProperty, value); }
+            get => GetValue(StretchProperty);
+            set => SetValue(StretchProperty, value);
         }
 
         /// <summary>
