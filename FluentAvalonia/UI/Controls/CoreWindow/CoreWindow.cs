@@ -45,8 +45,12 @@ namespace FluentAvalonia.UI.Controls
                     cwi.WindowOpened += WindowOpened_Windows;
 				}
 
-				ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
-				ExtendClientAreaToDecorationsHint = true;
+                // NOTE FOR FUTURE: 
+                // Do NOT enable these properties, doing so causes a clash of logic between here and
+                // the actual window logic within avalonia leading to the window shrinking when restoring
+                // from maximized or minimized state. 
+				//ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+				//ExtendClientAreaToDecorationsHint = true;
 				PseudoClasses.Add(":windows");
 
                 PlatformImpl.Closed += WindowClosed_Windows;

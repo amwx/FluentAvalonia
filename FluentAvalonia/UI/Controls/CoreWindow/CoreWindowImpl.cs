@@ -32,6 +32,10 @@ namespace FluentAvalonia.UI.Controls
 		{
 			switch ((WM)msg)
 			{
+                case WM.ACTIVATE:
+                    EnsureExtended();
+                    break;
+
 				case WM.NCCALCSIZE:
 					// Weirdness: 
 					// Windows Terminal only handles WPARAM = TRUE & only adjusts the top of the
@@ -75,7 +79,7 @@ namespace FluentAvalonia.UI.Controls
 					return HandleNCHitTest(lParam);
 
 				case WM.SIZE:
-					EnsureExtended();
+					//EnsureExtended();
 
 					if (_fakingMaximizeButton)
 					{
@@ -162,6 +166,10 @@ namespace FluentAvalonia.UI.Controls
 
 			marg.topHeight = -frame.top;
 			Win32Interop.DwmExtendFrameIntoClientArea(Handle.Handle, ref marg);
+
+            Win32Interop.SetWindowPos(Handle.Handle, IntPtr.Zero, 0, 0, 0, 0, 
+                0x0020 /*SWP_FRAMECHANGED*/ | 0x0002 /*SWP_NOMOVE*/ | 0x0200 /*SWP_NOREPOSITION*/ 
+                | 0x0001 /*SWP_NOSIZE*/ | 0x0004 /*SWP_NOZORDER*/);
 		}
 
 		protected IntPtr HandleNCHitTest(IntPtr lParam)

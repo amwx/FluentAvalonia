@@ -282,5 +282,6 @@ namespace FluentAvalonia.Interop
 		NCLBUTTONUP = 0x00A2,
 		NCHITTEST = 0x0084,
 		NCCALCSIZE = 0x0083,
+        ACTIVATE = 0x0006
 	}
 }
