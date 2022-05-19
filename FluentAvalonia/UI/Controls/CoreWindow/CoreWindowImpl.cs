@@ -79,8 +79,6 @@ namespace FluentAvalonia.UI.Controls
 					return HandleNCHitTest(lParam);
 
 				case WM.SIZE:
-					//EnsureExtended();
-
 					if (_fakingMaximizeButton)
 					{
 						// Sometimes the effect can get stuck, so if we resize, clear it
@@ -114,13 +112,60 @@ namespace FluentAvalonia.UI.Controls
 				case WM.NCLBUTTONUP:
 					if (_fakingMaximizeButton && _wasFakeMaximizeDown)
 					{
-						var point = PointToClient(PointFromLParam(lParam));
 						_owner.FakeMaximizePressed(false);
 						_wasFakeMaximizeDown = false;
 						_owner.FakeMaximizeClick();
 						return IntPtr.Zero;
 					}
 					break;
+
+                case WM.RBUTTONUP:
+                    {
+                        // Enables the system menu on right click of titlebar region
+                        // This respects custom titlebars by querying titlebar region
+                        // first
+                        var pt = PointFromLParam(lParam);
+                        if (_owner.HitTestTitleBarRegion(pt.ToPoint(RenderScaling)))
+                        {
+                            var sysMenu = Win32Interop.GetSystemMenu(hWnd, false);
+
+                            bool isMaximized = WindowState == WindowState.Maximized;
+
+                            var mii = new Win32Interop.MENUITEMINFO(MIIM.STATE);
+                            void SetState(SC item , bool enabled)
+                            {
+                                mii.fState = enabled ? 0u : 3u;
+                                Win32Interop.SetMenuItemInfo(sysMenu, (uint)item, false, ref mii);
+                            }
+                            SetState(SC.RESTORE, isMaximized);
+                            SetState(SC.MOVE, !isMaximized);
+                            SetState(SC.SIZE, !isMaximized);
+                            SetState(SC.MINIMIZE, true);
+                            SetState(SC.MAXIMIZE, !isMaximized);
+                            SetState(SC.CLOSE, true);
+                            Win32Interop.SetMenuDefaultItem(sysMenu, int.MaxValue, 0);
+
+                            unsafe
+                            {
+                                var scPt = PointToScreen(pt.ToPoint(1));
+
+                                var ret = Win32Interop.TrackPopupMenu(sysMenu, 0x0100, scPt.X, scPt.Y, 0, hWnd, (RECT*)null);
+                                if (ret)
+                                {
+                                    Win32Interop.PostMessage(hWnd, (uint)WM.SYSCOMMAND, new IntPtr(ret ? 1 : 0), IntPtr.Zero);
+                                }
+                            }   
+                        }
+                    }
+                    break;
+
+                case WM.SYSCOMMAND:
+                    // Enables ALT+SPACE to open the system menu
+                    if (((SC)wParam) == SC.KEYMENU)
+                    {
+                        return Win32Interop.DefWindowProc(hWnd, msg, wParam, lParam);
+                    }
+                    break;
 			}
 
 			return base.WndProc(hWnd, msg, wParam, lParam);
@@ -275,6 +320,11 @@ namespace FluentAvalonia.UI.Controls
 
 			return (int)(ptr.ToInt64() & 0xffffffff);
 		}
+
+        private static IntPtr MAKELPARAM(int loWord, int hiWord)
+        {
+            return new IntPtr((hiWord << 16) | (loWord & 0xFFFF));
+        }
 
 		private bool _isWindows11;
 		private CoreWindow _owner;

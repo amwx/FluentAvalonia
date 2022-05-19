@@ -49,7 +49,26 @@ namespace FluentAvalonia.Interop
 		[DllImport("dwmapi.dll", PreserveSig = true, SetLastError = true)]
 		public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE attr, ref int value, int attrSize);
 
-		public static bool GetSystemTheme(OSVERSIONINFOEX osInfo)
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetMenuItemInfo(IntPtr hMenu, uint item, bool fByPosition, ref MENUITEMINFO lpmii);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetMenuDefaultItem(IntPtr hMenu, uint uItem, uint fByPos);
+
+        [DllImport("user32.dll")]
+        public static extern unsafe bool TrackPopupMenu(IntPtr hMenu, uint uFlags,
+            int x, int y, int nReserved, IntPtr hWnd, RECT* prcRect);
+
+        public static bool GetSystemTheme(OSVERSIONINFOEX osInfo)
 		{
 			if (osInfo.MajorVersion < 10 || osInfo.BuildNumber < 17763) //1809
 				return false;
@@ -149,7 +168,42 @@ namespace FluentAvalonia.Interop
 			public int bottomHeight;
 		}
 
-		[DllImport("user32.dll")]
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct MENUITEMINFO
+        {
+            public MENUITEMINFO(MIIM pfMask)
+            {
+                cbSize = Marshal.SizeOf<MENUITEMINFO>();
+                dwTypeData = null;
+                fMask = pfMask;
+
+                fType = default;
+                fState = default;
+                wID = default;
+                hSubMenu = default;
+                hbmpChecked = default;
+                hbmpUnchecked = default;
+                dwItemData = default;
+                dwTypeData = default;
+                cch = default;
+                hbmpItem = default;
+            }
+
+            public int cbSize = Marshal.SizeOf(typeof(MENUITEMINFO));
+            public MIIM fMask;
+            public uint fType;
+            public uint fState;
+            public uint wID;
+            public IntPtr hSubMenu;
+            public IntPtr hbmpChecked;
+            public IntPtr hbmpUnchecked;
+            public IntPtr dwItemData;
+            public string dwTypeData;
+            public uint cch; // length of dwTypeData
+            public IntPtr hbmpItem;
+        }
+
+        [DllImport("user32.dll")]
 		public static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 	}
 
@@ -282,6 +336,48 @@ namespace FluentAvalonia.Interop
 		NCLBUTTONUP = 0x00A2,
 		NCHITTEST = 0x0084,
 		NCCALCSIZE = 0x0083,
-        ACTIVATE = 0x0006
-	}
+        ACTIVATE = 0x0006,
+        NCRBUTTONDOWN = 0x00A4,
+        NCRBUTTONDBLCLK = 0x00A6,
+        NCRBUTTONUP = 0x00A5,
+        SYSCOMMAND = 0x0112,
+        RBUTTONUP = 0x0205
+    }
+
+    public enum SC : uint
+    {
+        CLOSE = 0xF060,
+        CONTEXTHELP = 0xF180,
+        DEFAULT = 0xF160,
+        HOTKEY = 0xF150,
+        HSCROLL = 0xF080,
+        ISSECURE = 0x00000001,
+        KEYMENU = 0xF100,
+        MAXIMIZE = 0xF030,
+        MINIMIZE = 0xF020,
+        MONITORPOWER = 0xF170,
+        MOUSEMENU = 0xF090,
+        MOVE = 0xF010,
+        NEXTWINDOW = 0xF040,
+        PREVWINDOW = 0xF050,
+        RESTORE = 0xF120,
+        SCREENSAVE = 0xF140,
+        SIZE = 0xF000,
+        TASKLIST = 0xF130,
+        VSCROLL = 0xF070
+    }
+
+    [Flags]
+    public enum MIIM
+    {
+        BITMAP = 0x00000080,
+        CHECKMARKS = 0x00000008,
+        DATA = 0x00000020,
+        FTYPE = 0x00000100,
+        ID = 0x00000002,
+        STATE = 0x00000001,
+        STRING = 0x00000040,
+        SUBMENU = 0x00000004,
+        TYPE = 0x00000010
+    }
 }
