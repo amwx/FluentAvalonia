@@ -65,7 +65,7 @@ namespace FluentAvalonia.Interop
         public static extern bool SetMenuDefaultItem(IntPtr hMenu, uint uItem, uint fByPos);
 
         [DllImport("user32.dll")]
-        public static extern unsafe bool TrackPopupMenu(IntPtr hMenu, uint uFlags,
+        public static extern unsafe int TrackPopupMenu(IntPtr hMenu, uint uFlags,
             int x, int y, int nReserved, IntPtr hWnd, RECT* prcRect);
 
         public static bool GetSystemTheme(OSVERSIONINFOEX osInfo)

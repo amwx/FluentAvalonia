@@ -150,9 +150,9 @@ namespace FluentAvalonia.UI.Controls
                                 var scPt = PointToScreen(pt.ToPoint(1));
 
                                 var ret = Win32Interop.TrackPopupMenu(sysMenu, 0x0100, scPt.X, scPt.Y, 0, hWnd, (RECT*)null);
-                                if (ret)
+                                if (ret != 0)
                                 {
-                                    Win32Interop.PostMessage(hWnd, (uint)WM.SYSCOMMAND, new IntPtr(ret ? 1 : 0), IntPtr.Zero);
+                                    Win32Interop.PostMessage(hWnd, (uint)WM.SYSCOMMAND, new IntPtr(ret), IntPtr.Zero);
                                 }
                             }   
                         }
