@@ -189,7 +189,7 @@ namespace FluentAvalonia.Interop
                 hbmpItem = default;
             }
 
-            public int cbSize = Marshal.SizeOf(typeof(MENUITEMINFO));
+            public int cbSize;
             public MIIM fMask;
             public uint fType;
             public uint fState;
