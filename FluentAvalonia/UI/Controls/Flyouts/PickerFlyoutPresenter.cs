@@ -2,6 +2,7 @@
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
+using FluentAvalonia.UI.Controls.Primitives;
 using System;
 
 namespace FluentAvalonia.UI.Controls
@@ -16,10 +17,10 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Add(":acceptdismiss");
 		}
 
-		/// <summary>
-		/// Raised when the Confirmed button is tapped indicating the new Color should be applied
-		/// </summary>
-		public event TypedEventHandler<PickerFlyoutPresenter, object> Confirmed;
+        /// <summary>
+        /// Raised when the Confirmed button is tapped indicating the new Color should be applied
+        /// </summary>
+        public event TypedEventHandler<PickerFlyoutPresenter, object> Confirmed;
 
 		/// <summary>
 		/// Raised when the Dismiss button is tapped, indicating the new color should not be applied
@@ -66,7 +67,7 @@ namespace FluentAvalonia.UI.Controls
 			PseudoClasses.Set(":acceptdismiss", show);
 		}
 
-		private Button _acceptButton;
+        private Button _acceptButton;
 		private Button _dismissButton;
 	}
 }
