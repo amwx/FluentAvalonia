@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -257,7 +258,7 @@ namespace FluentAvalonia.UI.Controls
 
             var builder = new StringBuilder();
             // WinUI 6644
-            builder.AppendFormat(data, height,
+            builder.AppendFormat(CultureInfo.InvariantCulture, data, height,
                     leftCorner, leftCorner, leftCorner, leftCorner, leftCorner,
                     Bounds.Width - (leftCorner + rightCorner),
                     rightCorner, rightCorner, rightCorner, rightCorner,
