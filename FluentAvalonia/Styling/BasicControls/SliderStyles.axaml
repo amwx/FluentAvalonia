@@ -48,13 +48,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <!-- Elevation Brush effect really doesn't come through with this... -->
                     <Border Margin="-2"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{DynamicResource SliderOuterThumbBackground}"
-                            CornerRadius="{DynamicResource SliderThumbCornerRadius}"
-                            RenderTransform="scaleY(-1)">
+                            CornerRadius="{DynamicResource SliderThumbCornerRadius}">
                         <Ellipse Name="SliderInnerThumb"
                                  Fill="{TemplateBinding Background}"
                                  Width="{DynamicResource SliderInnerThumbWidth}"

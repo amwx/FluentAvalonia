@@ -41,16 +41,13 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
-					<!-- This is flipped (scaleY(-1)) for the elevation brush effect -->
-					<Border
-						  Name="PART_BorderElement"
-						  Background="{TemplateBinding Background}"
-						  BorderBrush="{TemplateBinding BorderBrush}"
-						  BorderThickness="{TemplateBinding BorderThickness}"
-						  CornerRadius="{TemplateBinding CornerRadius}"
-						  MinWidth="{TemplateBinding MinWidth}"
-						  MinHeight="{TemplateBinding MinHeight}"
-						  RenderTransform="scaleY(-1)">
+					<Border Name="PART_BorderElement"
+						    Background="{TemplateBinding Background}"
+						    BorderBrush="{TemplateBinding BorderBrush}"
+						    BorderThickness="{TemplateBinding BorderThickness}"
+						    CornerRadius="{TemplateBinding CornerRadius}"
+						    MinWidth="{TemplateBinding MinWidth}"
+						    MinHeight="{TemplateBinding MinHeight}">
 					</Border>
 					
 					<Border Margin="{TemplateBinding BorderThickness}">
@@ -159,8 +156,7 @@
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="-4"                            
-                            CornerRadius="{DynamicResource ComboBoxHighlightBorderCornerRadius}"
-                            RenderTransform="scaleY(-1)"/>
+                            CornerRadius="{DynamicResource ComboBoxHighlightBorderCornerRadius}"/>
                     
                     <Border Name="Background"
                             Grid.Row="1"
@@ -170,8 +166,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding CornerRadius}"
-                            MinWidth="{DynamicResource ComboBoxThemeMinWidth}"
-                            RenderTransform="scaleY(-1)"/>
+                            MinWidth="{DynamicResource ComboBoxThemeMinWidth}"/>
                     
                     <Border Name="Pill"
                             Classes="ComboBoxItemPill"

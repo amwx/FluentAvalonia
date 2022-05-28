@@ -37,43 +37,34 @@
 		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 		<Setter Property="Template">
 			<ControlTemplate>
-				<Panel>
-					<ContentPresenter Background="{TemplateBinding Background}"
-									  TextBlock.Foreground="{TemplateBinding Foreground}"
-									  Content="{TemplateBinding Content}"
-									  HorizontalContentAlignment="Stretch"
-									  VerticalContentAlignment="Stretch"
-									  CornerRadius="{TemplateBinding CornerRadius}" />
-					<Border Name="BorderElement"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							RenderTransform="scaleY(-1)"
-							CornerRadius="{TemplateBinding CornerRadius}"/>
-				</Panel>
+                <ContentPresenter Background="{TemplateBinding Background}"
+								  TextBlock.Foreground="{TemplateBinding Foreground}"
+								  Content="{TemplateBinding Content}"
+								  HorizontalContentAlignment="Stretch"
+								  VerticalContentAlignment="Stretch"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  CornerRadius="{TemplateBinding CornerRadius}" />
 			</ControlTemplate>
 		</Setter>
 	</Style>
     <Style Selector="Button.TimePickerFlyoutButtonStyle:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPointerOver}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TimePickerButtonForegroundPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPointerOver}" />
     </Style>
-	<Style Selector="TimePicker /template/ Button.TimePickerFlyoutButtonStyle:pointerover /template/ Border#BorderElement">
-		<Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPointerOver}" />
-	</Style>
+    
     <Style Selector="Button.TimePickerFlyoutButtonStyle:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPressed}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TimePickerButtonForegroundPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPressed}" />
     </Style>
-	<Style Selector="TimePicker /template/ Button.TimePickerFlyoutButtonStyle:pressed /template/ Border#BorderElement">
-		<Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPressed}" />
-	</Style>
+    
     <Style Selector="Button.TimePickerFlyoutButtonStyle:disabled /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundDisabled}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TimePickerButtonForegroundDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushDisabled}" />
     </Style>
-	<Style Selector="TimePicker /template/ Button.TimePickerFlyoutButtonStyle:disabled /template/ Border#BorderElement">
-		<Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushDisabled}" />
-	</Style>
 
     <Style Selector="ListBoxItem.DateTimePickerItem.HourItem">
         <Setter Property="Padding" Value="{DynamicResource TimePickerFlyoutPresenterItemPadding}" />

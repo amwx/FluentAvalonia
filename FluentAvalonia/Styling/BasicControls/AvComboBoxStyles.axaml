@@ -106,7 +106,6 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 MinWidth="{DynamicResource ComboBoxThemeMinWidth}"
-                                RenderTransform="scaleY(-1)"
                                 CornerRadius="{TemplateBinding CornerRadius}"/>
 
                         <Border x:Name="HighlightBackground"

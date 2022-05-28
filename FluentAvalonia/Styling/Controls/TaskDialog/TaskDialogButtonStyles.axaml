@@ -16,29 +16,21 @@
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
                         Name="Root">
-                    <Panel>
-                        <StackPanel Spacing="12" Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
-                                    Margin="{TemplateBinding Padding}">
-                            <Viewbox Width="18" Height="18" Name="IconHost">
-                                <ui:IconSourceElement IconSource="{TemplateBinding IconSource}" />
-                            </Viewbox>
-                            
-                            <ContentPresenter Name="PART_ContentPresenter"
-                                              Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              CornerRadius="{TemplateBinding CornerRadius}" />
-                        </StackPanel>
-                        
-                        
-                        <Border Name="BorderElement"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                RenderTransform="scaleY(-1)"
-                                CornerRadius="{TemplateBinding CornerRadius}"
-                                IsHitTestVisible="False" />
-                    </Panel>
+                    <StackPanel Spacing="12" Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Margin="{TemplateBinding Padding}">
+                        <Viewbox Width="18" Height="18" Name="IconHost">
+                            <ui:IconSourceElement IconSource="{TemplateBinding IconSource}" />
+                        </Viewbox>
+
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          CornerRadius="{TemplateBinding CornerRadius}" />
+                    </StackPanel>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -58,27 +50,21 @@
         <Setter Property="IsVisible" Value="True" />
     </Style>
 
-    <Style Selector="uip|TaskDialogButtonHost:pointerover /template/ Border#BorderElement">
-        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
-    </Style>
     <Style Selector="uip|TaskDialogButtonHost:pointerover /template/ Border#Root">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
     </Style>
     
-    <Style Selector="uip|TaskDialogButtonHost:pressed /template/ Border#BorderElement">
-        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
-    </Style>
     <Style Selector="uip|TaskDialogButtonHost:pressed /template/ Border#Root">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonForegroundPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
     </Style>
 
-    <Style Selector="uip|TaskDialogButtonHost:disabled /template/ Border#BorderElement">
-        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
-    </Style>
     <Style Selector="uip|TaskDialogButtonHost:disabled /template/ Border#Root">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
     </Style>
 </Styles>

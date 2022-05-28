@@ -79,7 +79,6 @@
 							BorderThickness="{TemplateBinding BorderThickness}"
 							MinWidth="{TemplateBinding MinWidth}"
 							MinHeight="{TemplateBinding MinHeight}"
-							RenderTransform="scaleY(-1)"
 							CornerRadius="{TemplateBinding CornerRadius}" />
 					
 					<Border Margin="{TemplateBinding BorderThickness}">

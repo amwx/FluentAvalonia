@@ -33,9 +33,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid ColumnDefinitions="*,Auto">
-
                     <Grid.Styles>
-
                         <Style Selector="Button.CalendarDropDown">
                             <Setter Property="Template">
                                 <ControlTemplate>

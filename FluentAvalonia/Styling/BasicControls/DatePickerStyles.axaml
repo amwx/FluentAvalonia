@@ -214,43 +214,32 @@
 		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-				<Panel>					
-					<ContentPresenter Background="{TemplateBinding Background}"
-									  TextBlock.Foreground="{TemplateBinding Foreground}"
-									  Content="{TemplateBinding Content}"
-									  HorizontalContentAlignment="Stretch"
-									  VerticalContentAlignment="Stretch"
-									  CornerRadius="{TemplateBinding CornerRadius}" />
-					<Border Name="BorderElement"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							RenderTransform="scaleY(-1)"
-							CornerRadius="{TemplateBinding CornerRadius}"/>
-				</Panel>
+                <ContentPresenter Background="{TemplateBinding Background}"
+								  TextBlock.Foreground="{TemplateBinding Foreground}"
+								  Content="{TemplateBinding Content}"
+								  HorizontalContentAlignment="Stretch"
+								  VerticalContentAlignment="Stretch"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  CornerRadius="{TemplateBinding CornerRadius}" />
             </ControlTemplate>
         </Setter>
     </Style>
     <Style Selector="DatePicker /template/ Button.DatePickerFlyoutButtonStyle:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundPointerOver}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource DatePickerButtonForegroundPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPointerOver}" />
     </Style>
-	<Style Selector="DatePicker /template/ Button.DatePickerFlyoutButtonStyle:pointerover /template/ Border#BorderElement">
-		<Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPointerOver}" />
-	</Style>
     <Style Selector="DatePicker /template/ Button.DatePickerFlyoutButtonStyle:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundPressed}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource DatePickerButtonForegroundPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPressed}" />
     </Style>
-	<Style Selector="DatePicker /template/ Button.DatePickerFlyoutButtonStyle:pressed /template/ Border#BorderElement">
-		<Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPressed}" />
-	</Style>
     <Style Selector="DatePicker /template/ Button.DatePickerFlyoutButtonStyle:disabled /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundDisabled}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource DatePickerButtonForegroundDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushDisabled}" />
     </Style>
-	<Style Selector="DatePicker /template/ Button.DatePickerFlyoutButtonStyle:disabled /template/ Border#BorderElement">
-		<Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushDisabled}" />
-	</Style>
 
     <!-- DatePicker template, only updated to pull out the button style & adjust resources -->
     <Style Selector="DatePicker">
