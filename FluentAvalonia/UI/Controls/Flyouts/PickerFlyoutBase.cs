@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls.Primitives;
+﻿using System.ComponentModel;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls.Primitives
 {
@@ -16,5 +18,15 @@ namespace FluentAvalonia.UI.Controls.Primitives
 		/// Determines if the Accept and Dismiss buttons should be shown
 		/// </summary>
 		protected virtual bool ShouldShowConfirmationButtons() => true;
-	}
+
+        protected override void OnOpening(CancelEventArgs args)
+        {
+            base.OnOpening(args);
+
+            if (Popup.Child is PickerFlyoutPresenter pfp)
+            {
+                pfp.ShowHideButtons(ShouldShowConfirmationButtons());
+            }
+        }
+    }
 }

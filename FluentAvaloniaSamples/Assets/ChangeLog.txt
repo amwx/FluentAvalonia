@@ -293,3 +293,9 @@
 -HC resource updates
 -Date/Time picker presenter icons updates for looping selector buttons
 
+
+[1.3.5]
+-Added Stretch and StretchDirection properties to PathIcon/PathIconSource (thanks to GH user timunie)
+-Fixed CoreWindow resizing down when restoring from minimized or maximized
+-Added system context menu support to CoreWindow titlebars
+-Checks ShouldShowConfirmationButtons when opening PickerFlyoutBase
