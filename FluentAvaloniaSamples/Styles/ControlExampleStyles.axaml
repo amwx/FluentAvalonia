@@ -2,7 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:FluentAvaloniaSamples.Controls"
         xmlns:ui="using:FluentAvalonia.UI.Controls"
-        xmlns:aedit="using:AvaloniaEdit">
+        >
+    <!-- xmlns:aedit="using:AvaloniaEdit" -->
     <Design.PreviewWith>
         <Border Padding="20" Width="600" Height="450">
             <local:ControlExample Header="Sample Control"

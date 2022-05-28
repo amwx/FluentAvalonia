@@ -38,12 +38,12 @@ namespace FluentAvalonia.UI.Controls
 			UpdateForeground();
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == IsOpenProperty)
 			{
-				if (change.NewValue.GetValueOrDefault<bool>())
+				if (change.GetNewValue<bool>())
 				{
 					_lastCloseReason = InfoBarCloseReason.Programmatic;
 					UpdateVisibility();

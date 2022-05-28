@@ -18,26 +18,26 @@
 	</Styles.Resources>
 	
 
-	<Style Selector="ui|GridViewItem">
+	<!--<Style Selector="ui|GridViewItem">
 		<Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
 		<Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
 		<Setter Property="Background" Value="{DynamicResource GridViewItemBackground}" />
 		<Setter Property="Foreground" Value="{DynamicResource GridViewItemForeground}" />
-		<!--<Setter Property="TabNavigation" Value="Local" />
-		<Setter Property="IsHoldingEnabled" Value="True" />-->
+		--><!--<Setter Property="TabNavigation" Value="Local" />
+		<Setter Property="IsHoldingEnabled" Value="True" />--><!--
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="Margin" Value="0,0,4,4" />
 		<Setter Property="MinWidth" Value="{DynamicResource GridViewItemMinWidth}" />
 		<Setter Property="MinHeight" Value="{DynamicResource GridViewItemMinHeight}" />
 		<Setter Property="CornerRadius" Value="{DynamicResource GridViewItemCornerRadius}" />
-		<!--<Setter Property='AllowDrop' Value='True' />
+		--><!--<Setter Property='AllowDrop' Value='True' />
 		<Setter Property='UseSystemFocusVisuals' Value='{StaticResource UseSystemFocusVisuals}' />
 		<Setter Property='FocusVisualMargin' Value='-3' />
 		<Setter Property="FocusVisualPrimaryBrush" Value="{DynamicResource GridViewItemFocusVisualPrimaryBrush}" />
 		<Setter Property="FocusVisualPrimaryThickness" Value="2" />
 		<Setter Property="FocusVisualSecondaryBrush" Value="{DynamicResource GridViewItemFocusVisualSecondaryBrush}" />
-		<Setter Property="FocusVisualSecondaryThickness" Value="1" />-->
+		<Setter Property="FocusVisualSecondaryThickness" Value="1" />--><!--
 		<Setter Property="Template">
 			<ControlTemplate>
 				<Border Name="ContentBorder"
@@ -62,9 +62,9 @@
 											  Margin="{TemplateBinding Padding}" />
 						</Panel>
 
-						<!-- The 'Xg' text simulates the amount of space one line of text will occupy.
+						--><!-- The 'Xg' text simulates the amount of space one line of text will occupy.
 									 In the DataPlaceholder state, the Content is not loaded yet so we
-									 approximate the size of the item using placeholder text. -->
+									 approximate the size of the item using placeholder text. --><!--
 						<TextBlock Name="PlaceholderTextBlock"
 								   Opacity="0"
 								   Text="Xg"
@@ -75,13 +75,13 @@
 						<Border Name="MultiSelectSquare">
 							<Border.Clip>
 								<RectangleGeometry Rect="0,0,20,20" />
-								<!--<RectangleGeometry.Transform>
+								--><!--<RectangleGeometry.Transform>
 												<TranslateTransform x:Name="MultiSelectClipTransform" />
-											</RectangleGeometry.Transform>-->
+											</RectangleGeometry.Transform>--><!--
 							</Border.Clip>
-							<!--<Border.RenderTransform>
+							--><!--<Border.RenderTransform>
 										<TranslateTransform x:Name="MultiSelectCheckBoxTransform" />
-									</Border.RenderTransform>-->
+									</Border.RenderTransform>--><!--
 							<ui:FontIcon Name="MultiSelectCheck" />
 						</Border>
 
@@ -152,9 +152,9 @@
 		<Setter Property="RenderTransform" Value="translateX(-20px)" />
 		<Setter Property="Transitions">
 			<Transitions>
-				<!--<DoubleTransition Duration="00:00:00.167" 
+				--><!--<DoubleTransition Duration="00:00:00.167" 
 										  Property="Width" 
-										  Easing="0,0 0,1" />-->
+										  Easing="0,0 0,1" />--><!--
 				<TransformOperationsTransition Duration="00:00:00.167"
 											   Property="RenderTransform"
 											   Easing="0,0 0,1"/>
@@ -191,7 +191,7 @@
 		<Setter Property="Opacity" Value="0" />
 	</Style>
 
-	<!-- PointerOver -->
+	--><!-- PointerOver --><!--
 	<Style Selector="ui|GridViewItem:pointerover /template/ Border#BorderBackground">
 		<Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPointerOver}" />
 	</Style>
@@ -209,7 +209,7 @@
 		<Setter Property="Background" Value="{DynamicResource ListViewItemSelectionIndicatorPointerOverBrush}" />
 	</Style>
 
-	<!-- Pressed -->
+	--><!-- Pressed --><!--
 	<Style Selector="ui|GridViewItem:pressed /template/ Border#BorderBackground">
 		<Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPressed}" />
 	</Style>
@@ -228,7 +228,7 @@
 	</Style>
 
 
-	<!-- Selected -->
+	--><!-- Selected --><!--
 	<Style Selector="ui|GridViewItem:selected /template/ Border#BorderBackground">
 		<Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
 	</Style>
@@ -248,7 +248,7 @@
 		<Setter Property="RenderTransform" Value="scaleY(1)" />
 	</Style>
 
-	<!-- Multiselect -->
+	--><!-- Multiselect --><!--
 	<Style Selector="ui|ListView:multiselect ui|GridViewItem /template/ Border#MultiSelectSquare">
 		<Setter Property="IsVisible" Value="True" />
 		<Setter Property="Opacity" Value="1" />
@@ -274,7 +274,7 @@
 		<Setter Property="BorderThickness" Value="0" />
 	</Style>
 
-	<!-- Selected PointerOver -->
+	--><!-- Selected PointerOver --><!--
 	<Style Selector="ui|GridViewItem:selected:pointerover /template/ Border#BorderBackground">
 		<Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPointerOver}" />
 	</Style>
@@ -289,7 +289,7 @@
 		<Setter Property="Opacity" Value="1" />
 	</Style>
 
-	<!-- Selected Pressed -->
+	--><!-- Selected Pressed --><!--
 	<Style Selector="ui|GridViewItem:selected:pressed /template/ Border#BorderBackground">
 		<Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPressed}" />
 	</Style>
@@ -308,7 +308,7 @@
 		<Setter Property="RenderTransform" Value="scaleY(0.5)" />
 	</Style>
 
-	<!-- Disabled -->
+	--><!-- Disabled --><!--
 	<Style Selector="ui|GridViewItem:disabled /template/ Border#MultiSelectSquare">
 		<Setter Property="BorderBrush" Value="{DynamicResource ListViewItemCheckBoxDisabledBorderBrush}" />
 		<Setter Property="Background" Value="{DynamicResource ListViewItemCheckBoxDisabledBrush}" />
@@ -323,7 +323,7 @@
 		<Setter Property="Background" Value="{DynamicResource ListViewItemSelectionIndicatorDisabledBrush}" />
 	</Style>
 
-	<!-- Selected Disabled -->
+	--><!-- Selected Disabled --><!--
 	<Style Selector="ui|GridViewItem:disabled:selected /template/ Border#MultiSelectSquare">
 		<Setter Property="Background" Value="{DynamicResource ListViewItemCheckBoxSelectedDisabledBrush}" />
 	</Style>
@@ -331,7 +331,7 @@
 		<Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedDisabled}" />
 	</Style>
 
-	<!-- Drag -->
+	--><!-- Drag --><!--
 	<Style Selector="ui|ListView:drag ui|GridViewItem /template/ Border#ContentBorder">
 		<Setter Property="RenderTransform" Value="scale(0.95)" />
 		<Setter Property="Opacity" Value="0.8"/>
@@ -342,9 +342,9 @@
 	</Style>
 	<Style Selector="ui|GridViewItem:dragging:multidrag">
 		<Setter Property="Opacity" Value="0.8"/>
-		<!--<Setter Property="Height" Value="0.0"/>
-				<Setter Property="Width" Value="0" />-->
-		<!--<Setter Property="MinWidth" Value="0" />
+		--><!--<Setter Property="Height" Value="0.0"/>
+				<Setter Property="Width" Value="0" />--><!--
+		--><!--<Setter Property="MinWidth" Value="0" />
 				<Setter Property="MaxWidth" Value="0" />
 				<Setter Property="IsVisible" Value="False" />
 				<Style.Animations>
@@ -354,6 +354,6 @@
 							<Setter Property="Width" Value="0" />
 						</KeyFrame>
 					</Animation>
-				</Style.Animations>-->
-	</Style>  
+				</Style.Animations>--><!--
+	</Style>-->  
 </Styles>

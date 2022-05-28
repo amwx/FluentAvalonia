@@ -5,7 +5,8 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:sty="using:FluentAvalonia.Styling"
 			 xmlns:wnd="using:FluentAvaloniaSamples.Views.Internal"
-             xmlns:aedit="using:AvaloniaEdit">
+             >
+    <!-- xmlns:aedit="using:AvaloniaEdit" -->
     <Application.Resources>
         <ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save" />
         <ui:FontIconSource x:Key="FontIcon" Glyph="F" />
@@ -34,7 +35,7 @@
 
     <Application.Styles>
         <sty:FluentAvaloniaTheme />
-        <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+        <!--<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />-->
         <StyleInclude Source="/Styles/OptionsDisplayItemStyles.axaml" />
         <StyleInclude Source="/Styles/ControlExampleStyles.axaml" />
         <StyleInclude Source="/Styles/FAControlsPageBaseStyles.axaml" />

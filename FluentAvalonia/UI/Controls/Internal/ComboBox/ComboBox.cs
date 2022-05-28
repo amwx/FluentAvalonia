@@ -301,13 +301,13 @@ namespace FluentAvalonia.UI.Controls
         }
 
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == TextProperty)
             {
-                OnTextChanged(change.NewValue.GetValueOrDefault<string>());
+                OnTextChanged(change.GetNewValue<string>());
             }
             else if (change.Property == SelectedItemProperty)
             {

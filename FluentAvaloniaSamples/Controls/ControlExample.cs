@@ -6,9 +6,9 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
 using Avalonia.Threading;
-using AvaloniaEdit;
-using AvaloniaEdit.Highlighting;
-using AvaloniaEdit.Indentation.CSharp;
+//using AvaloniaEdit;
+//using AvaloniaEdit.Highlighting;
+//using AvaloniaEdit.Indentation.CSharp;
 using FluentAvalonia.Core;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
@@ -243,12 +243,9 @@ namespace FluentAvaloniaSamples.Controls
             _copyCSharpButton = e.NameScope.Find<Button>("CopyCSharpButton");
             _copyCSharpButton.Click += OnCopyCSharpClick;
 
-            _xamlTextEditor = e.NameScope.Find<TextEditor>("XamlTextEditor");
-            _cSharpTextEditor = e.NameScope.Find<TextEditor>("CSharpTextEditor");
-
-            // TODO: remove this once AvaloniaEdit is compatible and samples can be turned back on
-            if (_xamlTextEditor == null || _cSharpTextEditor == null)
-                return;
+            // TODO: uncomment this once AvaloniaEdit is compatible and samples can be turned back on
+            //_xamlTextEditor = e.NameScope.Find<TextEditor>("XamlTextEditor");
+            //_cSharpTextEditor = e.NameScope.Find<TextEditor>("CSharpTextEditor");
 
             _usageNotesTextBlock = e.NameScope.Find<TextBlock>("UsageNotesTextBlock");
 
@@ -256,22 +253,22 @@ namespace FluentAvaloniaSamples.Controls
 
             bool isLightMode = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == FluentAvaloniaTheme.LightModeString;
 
-            _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
-            _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
+            //_xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
+            //_cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
 
-            _xamlTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
-            _cSharpTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
+            //_xamlTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
+            //_cSharpTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
 
-            _xamlTextEditor.Text = XamlSource;
-            _cSharpTextEditor.Text = CSharpSource;
+            //_xamlTextEditor.Text = XamlSource;
+            //_cSharpTextEditor.Text = CSharpSource;
 
-            _cSharpTextEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy(_cSharpTextEditor.Options);
-            _cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
+            //_cSharpTextEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy(_cSharpTextEditor.Options);
+            //_cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
 
-            // HACK: Links apparently can't be turned off (if you see this and know how, pls open a PR and fix this =D), so force links
-            //       to be the same color as attributes
-            _cSharpTextEditor.Options.EnableHyperlinks = false;
-            _xamlTextEditor.Options.EnableHyperlinks = false;
+            //// HACK: Links apparently can't be turned off (if you see this and know how, pls open a PR and fix this =D), so force links
+            ////       to be the same color as attributes
+            //_cSharpTextEditor.Options.EnableHyperlinks = false;
+            //_xamlTextEditor.Options.EnableHyperlinks = false;
 
             //_xamlTextEditor.TextArea.TextView.LinkTextForegroundBrush = new ImmutableSolidColorBrush(Color.FromRgb(255, 160, 122));
             //_xamlTextEditor.TextArea.TextView.LinkTextUnderline = false;
@@ -303,31 +300,31 @@ namespace FluentAvaloniaSamples.Controls
             {
                 if (value is ISolidColorBrush sb)
                 {
-                    var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                    _xamlTextEditor.TextArea.SelectionBrush = b;
-                    _cSharpTextEditor.TextArea.SelectionBrush = b;
+                    //var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
+                    //_xamlTextEditor.TextArea.SelectionBrush = b;
+                    //_cSharpTextEditor.TextArea.SelectionBrush = b;
                 }                
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == OptionsProperty)
             {
-                PseudoClasses.Set(":options", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":options", change.GetNewValue<IControl>() != null);
             }
             else if (change.Property == BoundsProperty)
             {
-                var wid = change.NewValue.GetValueOrDefault<Rect>().Width;
+                var wid = change.GetNewValue<Rect>().Width;
 
                 PseudoClasses.Set(":adaptiveW", wid < 725);
                 PseudoClasses.Set(":small", wid < 500);
             }
             else if (change.Property == IsOptionsExpandedProperty)
             {
-                PseudoClasses.Set(":optionsfull", change.NewValue.GetValueOrDefault<bool>());
+                PseudoClasses.Set(":optionsfull", change.GetNewValue<bool>());
             }
         }
 
@@ -338,32 +335,32 @@ namespace FluentAvaloniaSamples.Controls
 
         private void OnResourcesChanged(object sender, ResourcesChangedEventArgs e)
         {
-            if (_cSharpTextEditor != null)
-            {
-                bool isLightMode = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == FluentAvaloniaTheme.LightModeString;
+            //if (_cSharpTextEditor != null)
+            //{
+            //    bool isLightMode = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == FluentAvaloniaTheme.LightModeString;
 
-                _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
-                _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
-            }
+            //    _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
+            //    _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
+            //}
         }
 
         public void SetExampleTheme(bool isLightMode)
         {
-            if (_cSharpTextEditor != null)
-            {
-                _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
-                _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
+            //if (_cSharpTextEditor != null)
+            //{
+            //    //_xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
+            //    //_cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
 
-                if (this.TryFindResource("TextControlSelectionHighlightColor", out var value))
-                {
-                    if (value is ISolidColorBrush sb)
-                    {
-                        var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                        _xamlTextEditor.TextArea.SelectionBrush = b;
-                        _cSharpTextEditor.TextArea.SelectionBrush = b;
-                    }
-                }
-            }
+            //    if (this.TryFindResource("TextControlSelectionHighlightColor", out var value))
+            //    {
+            //        if (value is ISolidColorBrush sb)
+            //        {
+            //            //var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
+            //            //_xamlTextEditor.TextArea.SelectionBrush = b;
+            //            //_cSharpTextEditor.TextArea.SelectionBrush = b;
+            //        }
+            //    }
+            //}
         }
 
         private void OnSubstitutionValueChanged(ControlExampleSubstitution sender, object args)
@@ -407,19 +404,19 @@ namespace FluentAvaloniaSamples.Controls
                 });
             }
 
-            if (isCSharpSample && _cSharpTextEditor != null)
-            {
-                TrimAndSubstitute();
+            //if (isCSharpSample && _cSharpTextEditor != null)
+            //{
+            //    TrimAndSubstitute();
 
-                _cSharpTextEditor.Text = sampleString;
-                _cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
-            }
-            else if (_xamlTextEditor != null)
-            {
-                TrimAndSubstitute();
+            //    _cSharpTextEditor.Text = sampleString;
+            //    _cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
+            //}
+            //else if (_xamlTextEditor != null)
+            //{
+            //    TrimAndSubstitute();
 
-                _xamlTextEditor.Text = sampleString;
-            }
+            //    _xamlTextEditor.Text = sampleString;
+            //}
         }
 
         public void LaunchAvaloniaDocs(object sender, RoutedEventArgs e)
@@ -443,16 +440,16 @@ namespace FluentAvaloniaSamples.Controls
         {            
             try
             {
-                if (_cSharpTextEditor.SelectionLength > 0)
-                {
-                    // Copy the selected text
-                    _cSharpTextEditor.Copy();
-                }
-                else
-                {
-                    // Copy everything
-                    await Application.Current.Clipboard.SetTextAsync(_cSharpTextEditor.Text);
-                }
+                //if (_cSharpTextEditor.SelectionLength > 0)
+                //{
+                //    // Copy the selected text
+                //    _cSharpTextEditor.Copy();
+                //}
+                //else
+                //{
+                //    // Copy everything
+                //    await Application.Current.Clipboard.SetTextAsync(_cSharpTextEditor.Text);
+                //}
 
                 
                 ShowCopiedFlyout(sender as Button);
@@ -467,16 +464,16 @@ namespace FluentAvaloniaSamples.Controls
         {
             try
             {
-                if (_xamlTextEditor.SelectionLength > 0)
-                {
-                    // Copy the selected text
-                    _xamlTextEditor.Copy();
-                }
-                else
-                {
-                    // Copy everything
-                    await Application.Current.Clipboard.SetTextAsync(_xamlTextEditor.Text);
-                }
+                //if (_xamlTextEditor.SelectionLength > 0)
+                //{
+                //    // Copy the selected text
+                //    _xamlTextEditor.Copy();
+                //}
+                //else
+                //{
+                //    // Copy everything
+                //    await Application.Current.Clipboard.SetTextAsync(_xamlTextEditor.Text);
+                //}
                 
                 ShowCopiedFlyout(sender as Button);
             }
@@ -599,8 +596,8 @@ namespace FluentAvaloniaSamples.Controls
         private Button _expandOptionsButton;
 
         private Button _optionsMenuButton;
-        private TextEditor _xamlTextEditor;
-        private TextEditor _cSharpTextEditor;
+        //private TextEditor _xamlTextEditor;
+        //private TextEditor _cSharpTextEditor;
         private TextBlock _usageNotesTextBlock;
 
         private IList<ControlExampleSubstitution> _substitutions;
@@ -610,170 +607,170 @@ namespace FluentAvaloniaSamples.Controls
         private static readonly HashSet<string> _availableAvaloniaDocs = new HashSet<string>();
     }
 
-    public class XamlHighlightingSource : IHighlightingDefinition
-    {
-        public XamlHighlightingSource(bool isDark)
-        {
-            MainRuleSet = new HighlightingRuleSet
-            {
-                Spans =
-                {
-                    new HighlightingSpan // Comment
-                    {
-                        StartExpression = new System.Text.RegularExpressions.Regex(@"<!--"),
-                        EndExpression = new System.Text.RegularExpressions.Regex(@"-->"),
-                        SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(107,142,35) : Colors.Green) }
-                    },
-                    new HighlightingSpan // XML tag
-                    {
-                        StartExpression = new System.Text.RegularExpressions.Regex("<"),
-                        EndExpression = new System.Text.RegularExpressions.Regex(@">"),
-                        SpanColor =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
-                        SpanColorIncludesEnd = true,
-                        SpanColorIncludesStart = true,
-                        RuleSet = new HighlightingRuleSet
-                        {
-                            Rules =
-                            {
-                                new HighlightingRule // Attribute Name
-                                {
-                                     Regex = new System.Text.RegularExpressions.Regex(@"[\d\w_\-\.]+(?=(\s*=))"),
-                                     Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(135,206,250) : Colors.Red) }
-                                },
-                                new HighlightingRule // Tag Name
-                                {
-                                     Regex = new System.Text.RegularExpressions.Regex(@"(?!(\/|<))[\w\d\#]+"),
-                                     Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(87,117,202) : Color.FromRgb(163, 21, 21)) }
-                                },
-                                new HighlightingRule
-                                {
-                                    Regex = new System.Text.RegularExpressions.Regex("/"),
-                                    Color =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
-                                }
-                            },
-                            Spans =
-                            {
-                                new HighlightingSpan
-                                {
-                                    StartExpression = new System.Text.RegularExpressions.Regex("\""),
-                                    EndExpression = new System.Text.RegularExpressions.Regex("\"|(?=<)"),
-                                    SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
-                                }
-                            }
-                        }
-                    },
-                    new HighlightingSpan
-                    {
-                        StartExpression = new System.Text.RegularExpressions.Regex("\""),
-                        EndExpression = new System.Text.RegularExpressions.Regex("\""),
-                        SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
-                        SpanColorIncludesEnd = true,
-                        SpanColorIncludesStart = true
-                    },
-                }
-            };
+    //public class XamlHighlightingSource : IHighlightingDefinition
+    //{
+    //    public XamlHighlightingSource(bool isDark)
+    //    {
+    //        MainRuleSet = new HighlightingRuleSet
+    //        {
+    //            Spans =
+    //            {
+    //                new HighlightingSpan // Comment
+    //                {
+    //                    StartExpression = new System.Text.RegularExpressions.Regex(@"<!--"),
+    //                    EndExpression = new System.Text.RegularExpressions.Regex(@"-->"),
+    //                    SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(107,142,35) : Colors.Green) }
+    //                },
+    //                new HighlightingSpan // XML tag
+    //                {
+    //                    StartExpression = new System.Text.RegularExpressions.Regex("<"),
+    //                    EndExpression = new System.Text.RegularExpressions.Regex(@">"),
+    //                    SpanColor =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
+    //                    SpanColorIncludesEnd = true,
+    //                    SpanColorIncludesStart = true,
+    //                    RuleSet = new HighlightingRuleSet
+    //                    {
+    //                        Rules =
+    //                        {
+    //                            new HighlightingRule // Attribute Name
+    //                            {
+    //                                 Regex = new System.Text.RegularExpressions.Regex(@"[\d\w_\-\.]+(?=(\s*=))"),
+    //                                 Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(135,206,250) : Colors.Red) }
+    //                            },
+    //                            new HighlightingRule // Tag Name
+    //                            {
+    //                                 Regex = new System.Text.RegularExpressions.Regex(@"(?!(\/|<))[\w\d\#]+"),
+    //                                 Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(87,117,202) : Color.FromRgb(163, 21, 21)) }
+    //                            },
+    //                            new HighlightingRule
+    //                            {
+    //                                Regex = new System.Text.RegularExpressions.Regex("/"),
+    //                                Color =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
+    //                            }
+    //                        },
+    //                        Spans =
+    //                        {
+    //                            new HighlightingSpan
+    //                            {
+    //                                StartExpression = new System.Text.RegularExpressions.Regex("\""),
+    //                                EndExpression = new System.Text.RegularExpressions.Regex("\"|(?=<)"),
+    //                                SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
+    //                            }
+    //                        }
+    //                    }
+    //                },
+    //                new HighlightingSpan
+    //                {
+    //                    StartExpression = new System.Text.RegularExpressions.Regex("\""),
+    //                    EndExpression = new System.Text.RegularExpressions.Regex("\""),
+    //                    SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
+    //                    SpanColorIncludesEnd = true,
+    //                    SpanColorIncludesStart = true
+    //                },
+    //            }
+    //        };
 
-        }
+    //    }
 
-        static XamlHighlightingSource()
-        {
-            LightModeXaml = new XamlHighlightingSource(false);
-            DarkModeXaml = new XamlHighlightingSource(true);
-        }
+    //    static XamlHighlightingSource()
+    //    {
+    //        LightModeXaml = new XamlHighlightingSource(false);
+    //        DarkModeXaml = new XamlHighlightingSource(true);
+    //    }
 
 
-        public static readonly XamlHighlightingSource LightModeXaml;
-        public static readonly XamlHighlightingSource DarkModeXaml;
+    //    public static readonly XamlHighlightingSource LightModeXaml;
+    //    public static readonly XamlHighlightingSource DarkModeXaml;
 
-        public string Name => "XamlHighlightRules";
-        public HighlightingRuleSet MainRuleSet { get; }
-        public IEnumerable<HighlightingColor> NamedHighlightingColors { get; }
-        public IDictionary<string, string> Properties { get; }
+    //    public string Name => "XamlHighlightRules";
+    //    public HighlightingRuleSet MainRuleSet { get; }
+    //    public IEnumerable<HighlightingColor> NamedHighlightingColors { get; }
+    //    public IDictionary<string, string> Properties { get; }
 
-        public HighlightingColor GetNamedColor(string name)
-        {
-            throw new NotImplementedException();
-        }
+    //    public HighlightingColor GetNamedColor(string name)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public HighlightingRuleSet GetNamedRuleSet(string name)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    public HighlightingRuleSet GetNamedRuleSet(string name)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 
-    public class CSharpHighlightingSource : IHighlightingDefinition
-    {
-        public CSharpHighlightingSource(bool isDark)
-        {            
-            MainRuleSet = new HighlightingRuleSet
-            {
-                Rules =
-                {
-                    new HighlightingRule // blue keywords
-                    {
-                        Regex = new System.Text.RegularExpressions.Regex("\\b(this|base|as|is|new|sizeof|typeof|stackalloc|default|true|false|get|set|add|remove|ref|out)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
-                    },
-                    new HighlightingRule // purple keywords
-                    {
-                        Regex = new System.Text.RegularExpressions.Regex("\\b(switch|else|if|case|break|return|for|foreach|while|do|continue|try|catch|finally)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(Color.FromRgb(216,160,223)) }, // TODO...
-                    },
-                    new HighlightingRule // value types (also blue)
-                    {
-                        Regex = new System.Text.RegularExpressions.Regex("\\b(bool|byte|char|decimal|double|enum|float|int|long|sbyte|short|struct|uint|ushort|ulong)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
-                    },
-                    new HighlightingRule // other blue stuff
-                    {
-                        Regex = new System.Text.RegularExpressions.Regex("\\b(class|delegate|object|string|void|abstract|const|override|readonly|sealed|static|partial|virtual|async|public|protected|private|internal|namespace|using|null|nameof|explicit|implicit|operator)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
-                    },
-                },
-                Spans =
-                {
-                    new HighlightingSpan // Comment
-                    {
-                        StartExpression = new System.Text.RegularExpressions.Regex(@"//"),
-                        EndExpression = new Regex("$"),
-                        SpanColorIncludesStart = true,
-                        SpanColorIncludesEnd = true,
-                        SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(89,166,74) : Colors.Green) }
-                    },
-                    new HighlightingSpan // String or carh
-                    {
-                        StartExpression = new System.Text.RegularExpressions.Regex("(\"|')"),
-                        EndExpression = new System.Text.RegularExpressions.Regex("(\"|')"),
-                        SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(214,157,133) : Color.FromRgb(162,21,21)) }, 
-                        SpanColorIncludesEnd = true,
-                        SpanColorIncludesStart = true
-                    }
-                }
-            };
-        }
+    //public class CSharpHighlightingSource : IHighlightingDefinition
+    //{
+    //    public CSharpHighlightingSource(bool isDark)
+    //    {            
+    //        MainRuleSet = new HighlightingRuleSet
+    //        {
+    //            Rules =
+    //            {
+    //                new HighlightingRule // blue keywords
+    //                {
+    //                    Regex = new System.Text.RegularExpressions.Regex("\\b(this|base|as|is|new|sizeof|typeof|stackalloc|default|true|false|get|set|add|remove|ref|out)\\b"),
+    //                    Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
+    //                },
+    //                new HighlightingRule // purple keywords
+    //                {
+    //                    Regex = new System.Text.RegularExpressions.Regex("\\b(switch|else|if|case|break|return|for|foreach|while|do|continue|try|catch|finally)\\b"),
+    //                    Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(Color.FromRgb(216,160,223)) }, // TODO...
+    //                },
+    //                new HighlightingRule // value types (also blue)
+    //                {
+    //                    Regex = new System.Text.RegularExpressions.Regex("\\b(bool|byte|char|decimal|double|enum|float|int|long|sbyte|short|struct|uint|ushort|ulong)\\b"),
+    //                    Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
+    //                },
+    //                new HighlightingRule // other blue stuff
+    //                {
+    //                    Regex = new System.Text.RegularExpressions.Regex("\\b(class|delegate|object|string|void|abstract|const|override|readonly|sealed|static|partial|virtual|async|public|protected|private|internal|namespace|using|null|nameof|explicit|implicit|operator)\\b"),
+    //                    Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
+    //                },
+    //            },
+    //            Spans =
+    //            {
+    //                new HighlightingSpan // Comment
+    //                {
+    //                    StartExpression = new System.Text.RegularExpressions.Regex(@"//"),
+    //                    EndExpression = new Regex("$"),
+    //                    SpanColorIncludesStart = true,
+    //                    SpanColorIncludesEnd = true,
+    //                    SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(89,166,74) : Colors.Green) }
+    //                },
+    //                new HighlightingSpan // String or carh
+    //                {
+    //                    StartExpression = new System.Text.RegularExpressions.Regex("(\"|')"),
+    //                    EndExpression = new System.Text.RegularExpressions.Regex("(\"|')"),
+    //                    SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(214,157,133) : Color.FromRgb(162,21,21)) }, 
+    //                    SpanColorIncludesEnd = true,
+    //                    SpanColorIncludesStart = true
+    //                }
+    //            }
+    //        };
+    //    }
 
-        static CSharpHighlightingSource()
-        {
-            CSharpLightMode = new CSharpHighlightingSource(false);
-            CSharpDarkMode = new CSharpHighlightingSource(true);
-        }
+    //    static CSharpHighlightingSource()
+    //    {
+    //        CSharpLightMode = new CSharpHighlightingSource(false);
+    //        CSharpDarkMode = new CSharpHighlightingSource(true);
+    //    }
 
-        public static readonly CSharpHighlightingSource CSharpLightMode;
-        public static readonly CSharpHighlightingSource CSharpDarkMode;
+    //    public static readonly CSharpHighlightingSource CSharpLightMode;
+    //    public static readonly CSharpHighlightingSource CSharpDarkMode;
 
-        public string Name => "C#Highlighting";
-        public HighlightingRuleSet MainRuleSet { get; }
-        public IEnumerable<HighlightingColor> NamedHighlightingColors { get; }
-        public IDictionary<string, string> Properties { get; }
+    //    public string Name => "C#Highlighting";
+    //    public HighlightingRuleSet MainRuleSet { get; }
+    //    public IEnumerable<HighlightingColor> NamedHighlightingColors { get; }
+    //    public IDictionary<string, string> Properties { get; }
 
-        public HighlightingColor GetNamedColor(string name)
-        {
-            throw new NotImplementedException();
-        }
+    //    public HighlightingColor GetNamedColor(string name)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public HighlightingRuleSet GetNamedRuleSet(string name)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    public HighlightingRuleSet GetNamedRuleSet(string name)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

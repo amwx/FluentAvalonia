@@ -47,19 +47,19 @@ namespace FluentAvalonia.UI.Controls
 			AttachItems();
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == DefaultLabelPositionProperty)
 			{
-				var newVal = change.NewValue.GetValueOrDefault<CommandBarDefaultLabelPosition>();
+				var newVal = change.GetNewValue<CommandBarDefaultLabelPosition>();
 				PseudoClasses.Set(":labelright", newVal == CommandBarDefaultLabelPosition.Right);
 				PseudoClasses.Set(":labelbottom", newVal == CommandBarDefaultLabelPosition.Bottom);
 				PseudoClasses.Set(":labelcollapsed", newVal == CommandBarDefaultLabelPosition.Collapsed);
 			}
 			else if (change.Property == ClosedDisplayModeProperty)
 			{
-				var newVal = change.NewValue.GetValueOrDefault<CommandBarClosedDisplayMode>();
+				var newVal = change.GetNewValue<CommandBarClosedDisplayMode>();
 				PseudoClasses.Set(":compact", newVal == CommandBarClosedDisplayMode.Compact);
 				PseudoClasses.Set(":minimal", newVal == CommandBarClosedDisplayMode.Minimal);
 				PseudoClasses.Set(":hidden", newVal == CommandBarClosedDisplayMode.Hidden);

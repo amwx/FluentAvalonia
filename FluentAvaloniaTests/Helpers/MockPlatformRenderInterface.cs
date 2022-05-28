@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Platform;
 using Avalonia.Visuals.Media.Imaging;
 using Moq;
+using Avalonia.Media.Imaging;
 
 namespace FluentAvaloniaTests.Helpers
 {

@@ -142,7 +142,7 @@ namespace FluentAvalonia.UI.Controls
             return base.MeasureOverride(availableSize);
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
@@ -223,16 +223,17 @@ namespace FluentAvalonia.UI.Controls
             // so there's nothing we can actually do here
         }
 
-        private void OnSelectedIndexPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnSelectedIndexPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
+            var (oldV, newV) = change.GetOldAndNewValue<int>();
             // We update previous selected and adjacent on the left tab
             // as well as current selected and adjacent on the left tab
             // to show/hide tabSeparator accordingly.
             UpdateSelectedIndex();
-            SetTabSeparatorOpacity(change.OldValue.GetValueOrDefault<int>());
-            SetTabSeparatorOpacity(change.OldValue.GetValueOrDefault<int>() - 1);
-            SetTabSeparatorOpacity(change.NewValue.GetValueOrDefault<int>() - 1);
-            SetTabSeparatorOpacity(change.NewValue.GetValueOrDefault<int>());
+            SetTabSeparatorOpacity(oldV);
+            SetTabSeparatorOpacity(oldV - 1);
+            SetTabSeparatorOpacity(newV - 1);
+            SetTabSeparatorOpacity(newV);
 
             UpdateTabBottomBorderLineVisualStates();
         }
@@ -295,12 +296,12 @@ namespace FluentAvalonia.UI.Controls
             }
         }
                 
-        private void OnSelectedItemPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnSelectedItemPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             UpdateSelectedItem();
         }
 
-        private void OnTabItemsSourcePropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnTabItemsSourcePropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             UpdateListViewItemContainerTransitions();
         }
@@ -310,11 +311,11 @@ namespace FluentAvalonia.UI.Controls
             // IGNORE
         }
 
-        private void OnTabWidthModePropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnTabWidthModePropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             UpdateTabWidths();
 
-            var newValue = change.NewValue.GetValueOrDefault<TabViewWidthMode>();
+            var newValue = change.GetNewValue<TabViewWidthMode>();
             // Switch the visual states of all tab items to the correct TabViewWidthMode
             int itemCount = TabItems.Count();
             for (int i = 0; i < itemCount; i++)
@@ -326,9 +327,9 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        private void OnCloseButtonOverlayModePropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnCloseButtonOverlayModePropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            var newValue = change.NewValue.GetValueOrDefault<TabViewCloseButtonOverlayMode>();
+            var newValue = change.GetNewValue<TabViewCloseButtonOverlayMode>();
             // Switch the visual states of all tab items to the correct TabViewWidthMode
             int itemCount = TabItems.Count();
             for (int i = 0; i < itemCount; i++)

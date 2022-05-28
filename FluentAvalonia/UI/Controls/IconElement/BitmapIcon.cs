@@ -3,7 +3,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Skia;
-using Avalonia.Visuals.Media.Imaging;
 using SkiaSharp;
 using System;
 
@@ -17,7 +16,7 @@ namespace FluentAvalonia.UI.Controls
             UnlinkFromBitmapIconSource();
         }
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == UriSourceProperty)
@@ -25,7 +24,7 @@ namespace FluentAvalonia.UI.Controls
 				if (_bis != null)
 					throw new InvalidOperationException("Cannot edit properties of BitmapIcon if BitmapIconSource is linked");
 
-				CreateBitmap(change.NewValue.GetValueOrDefault<Uri>());
+				CreateBitmap(change.GetNewValue<Uri>());
 				InvalidateVisual();
 			}
 			else if (change.Property == ShowAsMonochromeProperty)

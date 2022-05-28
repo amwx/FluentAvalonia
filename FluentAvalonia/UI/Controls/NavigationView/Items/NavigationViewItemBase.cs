@@ -67,7 +67,7 @@ namespace FluentAvalonia.UI.Controls
             _navView = new WeakReference<NavigationView>(navView);
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
             if (change.Property == IsSelectedProperty)

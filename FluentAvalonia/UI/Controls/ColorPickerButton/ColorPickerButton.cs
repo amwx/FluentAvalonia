@@ -65,13 +65,13 @@ namespace FluentAvalonia.UI.Controls
 			_flyout.Dismissed -= OnFlyoutDismissed;
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == ColorProperty)
 			{
-				ColorChanged?.Invoke(this, new ColorChangedEventArgs(change.OldValue.GetValueOrDefault<Color2>(),
-					change.NewValue.GetValueOrDefault<Color2>()));
+                var (oldV, newV) = change.GetOldAndNewValue<Color2>();
+				ColorChanged?.Invoke(this, new ColorChangedEventArgs(oldV, newV));
 			}
 		}
 

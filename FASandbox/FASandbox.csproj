@@ -7,10 +7,10 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.999-cibuild0019812-beta" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.999-cibuild0019812-beta" />
+    <PackageReference Include="Avalonia" Version="0.10.999-cibuild0020719-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.999-cibuild0020719-beta" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.999-cibuild0019812-beta" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.999-cibuild0020719-beta" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />

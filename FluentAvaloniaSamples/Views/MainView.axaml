@@ -5,9 +5,10 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:local="using:FluentAvaloniaSamples.Controls"
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
-             xmlns:aedit="using:AvaloniaEdit"
+             
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluentAvaloniaSamples.Views.MainView">
+    <!-- xmlns:aedit="using:AvaloniaEdit" -->
     <UserControl.Styles>
         <Style Selector="ui|NavigationView.SampleAppNav">
             <Setter Property="IsPaneToggleButtonVisible" Value="False" />
@@ -212,9 +213,9 @@
                                                            Classes="SubtitleTextBlockStyle"
                                                            Margin="12 4"/>
 
-                                                <aedit:TextEditor Name="TextEditor"
+                                                <!--<aedit:TextEditor Name="TextEditor"
                                                                   Margin="12 0"
-                                                                  Background="Transparent" />
+                                                                  Background="Transparent" />-->
                                             </StackPanel>
                                         </ScrollViewer>
 

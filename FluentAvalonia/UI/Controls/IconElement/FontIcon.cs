@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls
     /// </summary>
     public partial class FontIcon : IconElement
     {       
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
             if (change.Property == TextBlock.ForegroundProperty ||
                 change.Property == TextBlock.FontSizeProperty ||

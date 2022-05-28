@@ -14,8 +14,8 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Styling;
 using Avalonia.Threading;
-using AvaloniaEdit;
-using AvaloniaEdit.Indentation.CSharp;
+//using AvaloniaEdit;
+//using AvaloniaEdit.Indentation.CSharp;
 using FluentAvalonia.Core.Attributes;
 using FluentAvalonia.UI.Controls;
 using Button = FluentAvalonia.UI.Controls.Button;
@@ -64,10 +64,10 @@ namespace FluentAvaloniaSamples.Controls
 
             base.OnApplyTemplate(e);
 
-            _textEditor = e.NameScope.Find<TextEditor>("TextEditor");
+            //_textEditor = e.NameScope.Find<TextEditor>("TextEditor");
 
-            _textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
-            _textEditor.SyntaxHighlighting = CSharpHighlightingSource.CSharpDarkMode;
+            //_textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
+            //_textEditor.SyntaxHighlighting = CSharpHighlightingSource.CSharpDarkMode;
 
             _closeButton = e.NameScope.Find<Button>("CloseButton");
             _closeButton.Click += OnCloseClick;
@@ -80,8 +80,8 @@ namespace FluentAvaloniaSamples.Controls
             Inheritance = null;
             PseudoclassesList = null;
 
-            if (_textEditor != null)
-                _textEditor.Text = null;
+            //if (_textEditor != null)
+            //    _textEditor.Text = null;
 
             Opacity = 0;
             IsVisible = true;
@@ -124,7 +124,7 @@ namespace FluentAvaloniaSamples.Controls
                 if (value is ISolidColorBrush sb)
                 {
                     var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                    _textEditor.TextArea.SelectionBrush = b;
+                    //_textEditor.TextArea.SelectionBrush = b;
                 }
             }
         }
@@ -178,15 +178,15 @@ namespace FluentAvaloniaSamples.Controls
 
                     var src = GeneratePseudoSource(t);
 
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        Inheritance = inheritance;
-                        PseudoclassesList = ps;
-                        _textEditor.Text = src;
+                    //Dispatcher.UIThread.Post(() =>
+                    //{
+                    //    Inheritance = inheritance;
+                    //    PseudoclassesList = ps;
+                    //    _textEditor.Text = src;
 
-                        _textEditor.TextArea.IndentationStrategy.IndentLines(_textEditor.Document, 0, _textEditor.Document.LineCount);
+                    //    _textEditor.TextArea.IndentationStrategy.IndentLines(_textEditor.Document, 0, _textEditor.Document.LineCount);
 
-                    }, DispatcherPriority.Background);
+                    //}, DispatcherPriority.Background);
 
                     return true;
                 }
@@ -472,6 +472,6 @@ namespace FluentAvaloniaSamples.Controls
         }
 
         private Button _closeButton;
-        private TextEditor _textEditor;
+        //private TextEditor _textEditor;
     }
 }

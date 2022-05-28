@@ -223,7 +223,7 @@ namespace FluentAvalonia.UI.Controls
 		public void RecycleElement(ElementFactoryRecycleArgs args)
         {
 			var element = args.Element;
-			IDataTemplate selectedTemplate = _dataTemplate ?? element.GetValue(OriginTemplateProperty);
+			IDataTemplate selectedTemplate = _dataTemplate ?? element.GetValue<IDataTemplate>(OriginTemplateProperty);
 
 			var recPool = RecyclePool.GetPoolInstance(selectedTemplate);
 
