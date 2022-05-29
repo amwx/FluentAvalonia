@@ -392,7 +392,7 @@ namespace FluentAvalonia.Styling
             var old = _requestedTheme;
             if (!string.Equals(newTheme, old, StringComparison.OrdinalIgnoreCase))
             {
-                _requestedTheme = newTheme;
+                _requestedTheme = newTheme ?? _requestedTheme;
 
                 // Remove the old theme if any resources
                 if (_themeResources.Count > 0)
