@@ -384,10 +384,7 @@ namespace FluentAvalonia.Styling
 
         private void Refresh(string newTheme)
         {
-            if (newTheme == null)
-            {
-                _requestedTheme = ResolveThemeAndInitializeSystemResources();
-            }
+            newTheme ??= ResolveThemeAndInitializeSystemResources();
 
             var old = _requestedTheme;
             if (!string.Equals(newTheme, old, StringComparison.OrdinalIgnoreCase))
