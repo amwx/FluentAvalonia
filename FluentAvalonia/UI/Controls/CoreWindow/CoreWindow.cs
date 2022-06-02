@@ -1,8 +1,10 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -13,6 +15,8 @@ using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls.Primitives;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -78,6 +82,29 @@ namespace FluentAvalonia.UI.Controls
             {
                 _hideSizeButtons = value;
                 PseudoClasses.Set(":dialog", value);
+            }
+        }
+
+        public IApplicationSplashScreen SplashScreen
+        {
+            get => _splashContext?.SplashScreen;
+            set
+            {
+                if (value == null)
+                {
+                    if (_splashContext != null)
+                    {
+                        _splashContext.Host.SplashScreen = null;
+                    }
+
+                    _splashContext = null;
+                    PseudoClasses.Set(":splashScreen", false);
+                }
+                else
+                {
+                    _splashContext = new SplashScreenContext(value);
+                    PseudoClasses.Set(":splashScreen", true);
+                }
             }
         }
 
@@ -152,7 +179,105 @@ namespace FluentAvalonia.UI.Controls
 			}
                
 			SetTitleBarColors();
+
+            if (SplashScreen != null)
+            {
+                var host = e.NameScope.Find<CoreSplashScreen>("SplashHost");
+                if (host != null)
+                {
+                    _splashContext.Host = host;
+                }
+            }
 		}
+
+        protected override async void OnOpened(EventArgs e)
+        {
+            if (_splashContext != null && !Design.IsDesignMode)
+            {
+                Presenter.IsVisible = false;
+                PseudoClasses.Set(":splashOpen", true);
+                var time = DateTime.Now;
+
+                _splashContext.RunJobs();
+
+                var delta = DateTime.Now - time;
+                if (delta.TotalMilliseconds < _splashContext.SplashScreen.MinimumShowTime)
+                {
+                    await Task.Delay(Math.Max(1, _splashContext.SplashScreen.MinimumShowTime - (int)delta.TotalMilliseconds));
+                }
+
+                LoadApp();
+            }
+
+            base.OnOpened(e);
+        }
+
+        private async void LoadApp()
+        {
+            Presenter.IsVisible = true;
+
+            var aniSplash = new Animation
+            {
+                Duration = TimeSpan.FromMilliseconds(250),
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Cue = new Cue(0d),
+                        Setters =
+                        {
+                            new Setter(OpacityProperty, 1d)
+                        }
+                    },
+                    new KeyFrame
+                    {
+                        Cue = new Cue(1d),
+                        Setters =
+                        {
+                            new Setter(OpacityProperty, 0d),
+                        },
+                        KeySpline = new KeySpline(0,0,0,1)
+                    }
+                }
+            };
+
+            var aniCP = new Animation
+            {
+                Duration = TimeSpan.FromMilliseconds(167),
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Cue = new Cue(0d),
+                        Setters =
+                        {
+                            new Setter(OpacityProperty, 0d)
+                        }
+                    },
+                    new KeyFrame
+                    {
+                        Cue = new Cue(1d),
+                        Setters =
+                        {
+                            new Setter(OpacityProperty, 1d),
+                        },
+                        KeySpline = new KeySpline(0,0,0,1)
+                    }
+                }
+            };
+
+            await Task.WhenAll(aniSplash.RunAsync(_splashContext.Host, null),
+                aniCP.RunAsync((Animatable)Presenter, null));
+
+            PseudoClasses.Set(":splashOpen", false);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            _splashContext?.TryCancel();
+        }
 
         private void WindowOpened_Windows(object sender, EventArgs e)
         {
@@ -367,12 +492,60 @@ namespace FluentAvalonia.UI.Controls
             sender.ForceWin32WindowToTheme(this);
         }
 
-
+        private SplashScreenContext _splashContext;
         private CoreApplicationViewTitleBar _titleBar;
 		private MinMaxCloseControl _systemCaptionButtons;
 		private Panel _defaultTitleBar;
 		private IControl _customTitleBar;
 		private Border _templateRoot;
         private bool _hideSizeButtons;
+
+        // Special class to manage SplashScreen. We specifically do this so we only add 1 pointer
+        // to CoreWindow if no splash screen is used, instead of all of what's used here
+        private class SplashScreenContext
+        {
+            public SplashScreenContext(IApplicationSplashScreen splash)
+            {
+                _splashCTS = new CancellationTokenSource();
+                _splashScreen = splash;
+            }
+
+            public IApplicationSplashScreen SplashScreen => _splashScreen;
+
+            public CoreSplashScreen Host
+            {
+                get => _splashHost;
+                set
+                {
+                    _splashHost = value;
+                    _splashHost.SplashScreen = SplashScreen;
+                }
+            }
+
+            public async void RunJobs()
+            {
+                _splashCTS = new CancellationTokenSource();
+                await Task.Run(() =>
+                {
+                    SplashScreen.RunTasks();
+                }, _splashCTS.Token);
+                _splashCTS.Dispose();
+                _splashCTS = null;
+            }
+
+            public void TryCancel()
+            {
+                if (_splashCTS != null)
+                {
+                    _splashCTS.Cancel();
+                    _splashCTS.Dispose();
+                    _splashCTS = null;
+                }               
+            }
+
+            private CancellationTokenSource _splashCTS;
+            private IApplicationSplashScreen _splashScreen;
+            private CoreSplashScreen _splashHost;
+        }
 	}
 }

@@ -2014,4 +2014,9 @@
     <StaticResource x:Key="TaskDialogCommandBackgroundDisabled" ResourceKey="SystemControlTransparentBrush" />
     <StaticResource x:Key="TaskDialogCommandTextForegroundDisabled" ResourceKey="AccentTextFillColorDisabledBrush" />
     <StaticResource x:Key="TaskDialogCommandDescriptionForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+
+    <!-- CoreWindow > CoreSplashScreen -->
+    <StaticResource x:Key="CoreSplashScreenBackground" ResourceKey="SystemAccentColor" />
+    <StaticResource x:Key="CoreSplashScreenForeground" ResourceKey="TextOnAccentFillColorPrimary" />
 </ResourceDictionary>
