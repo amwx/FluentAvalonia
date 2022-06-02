@@ -29,6 +29,14 @@ namespace FluentAvalonia.Styling
             _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
         }
 
+        /// <summary>
+        /// Gets or sets the desired theme mode (Light, Dark, or HighContrast) for the app
+        /// </summary>
+        /// <remarks>
+        /// If <see cref="PreferSystemTheme"/> is set to true, on startup this value will
+        /// be overwritten with the system theme unless the attempt to read from the system
+        /// fails, in which case setting this can provide a fallback. 
+        /// </remarks>
         public string RequestedTheme
         {
             get => _requestedTheme;
@@ -419,7 +427,7 @@ namespace FluentAvalonia.Styling
             {
                 _requestedTheme = newTheme;
 
-                // Remove the old theme if any resources
+                // Remove the old theme of any resources
                 if (_themeResources.Count > 0)
                 {
                     _themeResources.MergedDictionaries.RemoveAt(1);
@@ -444,7 +452,7 @@ namespace FluentAvalonia.Styling
 
         private string ResolveThemeAndInitializeSystemResources()
         {
-            string theme = _requestedTheme;
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -458,22 +466,16 @@ namespace FluentAvalonia.Styling
             {
                 theme = ResolveMacOSSystemSettings();
             }
-            else
-            {
-                theme = string.IsNullOrEmpty(theme) ? LightModeString : theme;
-            }
 
             // Load the SymbolThemeFontFamily
             AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
 
-            // If not on Windows or if not using the system them, we default to LightMode
-            // if user didn't specify the theme to use
             return theme;
         }
 
         private string ResolveWindowsSystemSettings()
         {
-            string theme = LightModeString;
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
             IAccessibilitySettings accessibility = null;
             try
             {
@@ -531,16 +533,9 @@ namespace FluentAvalonia.Styling
                     {
                         Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
                             .Log("FluentAvaloniaTheme", "Detecting system theme failed, defaulting to Light mode");
-
-                        theme = LightModeString;
                     }
                 }                
             }
-            else
-            {
-                theme = string.IsNullOrEmpty(theme) ? LightModeString : theme;
-            }
-
 
             if (CustomAccentColor != null)
             {
@@ -586,7 +581,7 @@ namespace FluentAvalonia.Styling
 
         private string ResolveMacOSSystemSettings()
         {
-            string theme = LightModeString;
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
             try
             {
                 // https://stackoverflow.com/questions/25207077/how-to-detect-if-os-x-is-in-dark-mode
@@ -635,7 +630,7 @@ namespace FluentAvalonia.Styling
 
         private string ResolveLinuxSystemSettings()
         {
-            string theme = LightModeString;
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
             try
             {
                 var p = new Process
