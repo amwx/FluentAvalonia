@@ -194,7 +194,6 @@ namespace FluentAvalonia.UI.Controls
         {
             if (_splashContext != null && !Design.IsDesignMode)
             {
-                Presenter.IsVisible = false;
                 PseudoClasses.Set(":splashOpen", true);
                 var time = DateTime.Now;
 

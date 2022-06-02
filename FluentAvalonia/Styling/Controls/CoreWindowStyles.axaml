@@ -272,7 +272,8 @@
 											  HorizontalAlignment="Stretch"
 											  VerticalAlignment="Stretch"
 											  Content="{TemplateBinding Content}"
-											  ContentTemplate="{TemplateBinding ContentTemplate}" />
+											  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              IsVisible="False"/>
                             
                             <ui:CoreSplashScreen Name="SplashHost" />
 
