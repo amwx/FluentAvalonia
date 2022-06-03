@@ -16,15 +16,28 @@ RequestedTheme = "HighContrast";
 
 // On Windows the following properties are available, which all default to true:
 
+// ** NEW
+// Resolving system theme and accent color is now supported on MacOS and Linux (only system theme). See PR #152 for the caveats as this may
+// not always work on linux (requires gsettings). If system lookup fails for whatever reason, the value of RequestedTheme is checked
+// before falling back to light mode by default.
+
+// Set the app theme to whatever the system theme is, respects HighContrast mode only on Windows
+public bool PreferSystemTheme { get; set; } = true
+
+// Use the current User System Accent Color as the Accent Color in the app (Windows/MacOS only). 
+public bool PreferUserAccentColor { get; set; } = true;
+
 // Use the System font as the primary font for the App. On Windows 10, this is Segoe UI. On Windows 11, this is Segoe UI Variable Text
 // This value is only respected on startup
 public bool UseSystemFontOnWindows { get; set; } = true;
 
 // Use the current User System Accent Color as the Accent Color in the app
+[Obsolete("PreferUserAccentColor")]
 public bool UseUserAccentColorOnWindows { get; set; } = true;
 
 // Set the app theme to whatever the Windows theme is, respects HighContrast mode
 // This value is only respected on startup
+[Obsolete("UsePreferSystemTheme")]
 public bool UseSystemThemeOnWindows { get; set; } = true;
 
 
@@ -49,7 +62,6 @@ public Color? CustomAccentColor { get; set; }
 CustomAccentColor = Colors.Orange;
 
 // To return to default, set the property to null;
-// On Mac/Linux, and Windows with (UseUserAccentColorOnWindows = false), the default color is SlateBlue. Otherwise it returns to the System defined accent.
 
 
 // NEW in v1.2, if there are controls you don't use, you can use this property to skip loading their template
