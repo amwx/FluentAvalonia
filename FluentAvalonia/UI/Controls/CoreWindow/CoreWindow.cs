@@ -192,7 +192,7 @@ namespace FluentAvalonia.UI.Controls
 
         protected override async void OnOpened(EventArgs e)
         {
-            if (_splashContext != null && !Design.IsDesignMode)
+            if (_splashContext != null && !_splashContext.HasShownSplashScreen && !Design.IsDesignMode)
             {
                 PseudoClasses.Set(":splashOpen", true);
                 var time = DateTime.Now;
@@ -269,6 +269,7 @@ namespace FluentAvalonia.UI.Controls
                 aniCP.RunAsync((Animatable)Presenter, null));
 
             PseudoClasses.Set(":splashOpen", false);
+            _splashContext.HasShownSplashScreen = true;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -510,6 +511,8 @@ namespace FluentAvalonia.UI.Controls
             }
 
             public IApplicationSplashScreen SplashScreen => _splashScreen;
+
+            public bool HasShownSplashScreen { get; set; }
 
             public CoreSplashScreen Host
             {
