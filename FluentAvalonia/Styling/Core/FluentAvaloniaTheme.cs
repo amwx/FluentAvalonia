@@ -29,6 +29,14 @@ namespace FluentAvalonia.Styling
             _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
         }
 
+        /// <summary>
+        /// Gets or sets the desired theme mode (Light, Dark, or HighContrast) for the app
+        /// </summary>
+        /// <remarks>
+        /// If <see cref="PreferSystemTheme"/> is set to true, on startup this value will
+        /// be overwritten with the system theme unless the attempt to read from the system
+        /// fails, in which case setting this can provide a fallback. 
+        /// </remarks>
         public string RequestedTheme
         {
             get => _requestedTheme;
@@ -55,12 +63,41 @@ namespace FluentAvalonia.Styling
         /// <remarks>
         /// If false, this defaults to SlateBlue as SystemAccentColor unless overridden
         /// </remarks>
-        public bool UseUserAccentColorOnWindows { get; set; } = true;
+        [Obsolete("Use PreferUserAccentColor instead")]
+        public bool UseUserAccentColorOnWindows
+        {
+            get => PreferUserAccentColor;
+            set => PreferUserAccentColor = value;
+        }
 
         /// <summary>
         /// Gets or sets whether to use the current Windows system theme. Respects Light, Dark, and HighContrast modes
         /// </summary>
-        public bool UseSystemThemeOnWindows { get; set; } = true;
+        [Obsolete("Use PreferSystemTheme instead")]
+        public bool UseSystemThemeOnWindows
+        {
+            get => PreferSystemTheme;
+            set => PreferSystemTheme = value;
+        }
+
+        /// <summary>
+        /// Gets or sets whether to use the current system theme (light or dark mode).
+        /// </summary>
+        /// <remarks>
+        /// This property is respected on Windows, MacOS, and Linux. However, on linux,
+        /// it requires 'gtk-theme' setting to work and the current theme to be appended
+        /// with '-dark'.
+        /// Also note, that high contrast theme will only resolve here on Windows.
+        /// </remarks>
+        public bool PreferSystemTheme { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether to use the current user's accent color as the resource SystemAccentColor
+        /// </summary>
+        /// <remarks>
+        /// This property has no effect on Linux
+        /// </remarks>
+        public bool PreferUserAccentColor { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a semi-colon (;) delimited string of controls that should be skipped when loading the control templates
@@ -240,29 +277,28 @@ namespace FluentAvalonia.Styling
         /// </summary>
         public void InvalidateThemingFromSystemThemeChanged()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (PreferUserAccentColor)
             {
-                if (UseUserAccentColorOnWindows)
-                {                   
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
                     try
                     {
                         IUISettings3 settings = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
 
                         TryLoadWindowsAccentColor(settings);
                     }
-                    catch
-                    {
-
-                    }                   
+                    catch { }
                 }
-
-                if (UseSystemThemeOnWindows)
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    Refresh(null);
+                    TryLoadMacOSAccentColor();
                 }
-            }
+            }           
 
-            // Ignore this on non-Windows OSs as it has no effect
+            if (PreferSystemTheme)
+            {
+                Refresh(null);
+            }
         }
 
         /// <summary>
@@ -391,7 +427,7 @@ namespace FluentAvalonia.Styling
             {
                 _requestedTheme = newTheme;
 
-                // Remove the old theme if any resources
+                // Remove the old theme of any resources
                 if (_themeResources.Count > 0)
                 {
                     _themeResources.MergedDictionaries.RemoveAt(1);
@@ -416,47 +452,72 @@ namespace FluentAvalonia.Styling
 
         private string ResolveThemeAndInitializeSystemResources()
         {
-            string theme = _requestedTheme;
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                IAccessibilitySettings accessibility = null;
-                try
-                {
-                    accessibility = WinRTInterop.CreateInstance<IAccessibilitySettings>("Windows.UI.ViewManagement.AccessibilitySettings");
-                }
-                catch
-                {
-                    Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
-                            .Log("FluentAvaloniaTheme", "Unable to create instance of ComObject IAccessibilitySettings");
-                }
+                theme = ResolveWindowsSystemSettings();
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                theme = ResolveLinuxSystemSettings();               
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                theme = ResolveMacOSSystemSettings();
+            }
 
-                IUISettings3 uiSettings3 = null;
+            // Load the SymbolThemeFontFamily
+            AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
+
+            return theme;
+        }
+
+        private string ResolveWindowsSystemSettings()
+        {
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
+            IAccessibilitySettings accessibility = null;
+            try
+            {
+                accessibility = WinRTInterop.CreateInstance<IAccessibilitySettings>("Windows.UI.ViewManagement.AccessibilitySettings");
+            }
+            catch
+            {
+                Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                        .Log("FluentAvaloniaTheme", "Unable to create instance of ComObject IAccessibilitySettings");
+            }
+
+            IUISettings3 uiSettings3 = null;
+            try
+            {
+                uiSettings3 = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
+            }
+            catch
+            {
+                Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                        .Log("FluentAvaloniaTheme", "Unable to create instance of ComObject IUISettings");
+            }
+
+            if (PreferSystemTheme)
+            {
+                bool isHighContrast = false;
                 try
                 {
-                    uiSettings3 = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
-                }
-                catch
-                {
-                    Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
-                            .Log("FluentAvaloniaTheme", "Unable to create instance of ComObject IUISettings");
-                }
-                
-                if (UseSystemThemeOnWindows)
-                {
-                    try
-                    {                        
-                        int isUsingHighContrast = accessibility.HighContrast;
-                        if (isUsingHighContrast == 1)
-                        {
-                            theme = HighContrastModeString;
-                        }
-                    }
-                    catch
+                    int isUsingHighContrast = accessibility.HighContrast;
+                    if (isUsingHighContrast == 1)
                     {
-                        Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
-                            .Log("FluentAvaloniaTheme", "Unable to retrieve High contrast settings.");
+                        theme = HighContrastModeString;
+                        isHighContrast = true;
                     }
+                }
+                catch
+                {
+                    Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                        .Log("FluentAvaloniaTheme", "Unable to retrieve High contrast settings.");
+                }
 
+                if (!isHighContrast)
+                {
                     try
                     {
                         var background = (Color2)uiSettings3.GetColorValue(UIColorType.Background);
@@ -472,75 +533,142 @@ namespace FluentAvalonia.Styling
                     {
                         Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
                             .Log("FluentAvaloniaTheme", "Detecting system theme failed, defaulting to Light mode");
-
-                        theme = LightModeString;
                     }
-                }
-                else
-                {
-                    theme = string.IsNullOrEmpty(theme) ? LightModeString : theme;
-                }
-                
-                if (CustomAccentColor != null)
-                {
-                    LoadCustomAccentColor();
-                }
-                else if (UseUserAccentColorOnWindows)
-                {
-                    TryLoadWindowsAccentColor(uiSettings3);
-                }
-                else
-                {
-                    LoadDefaultAccentColor();
-                }
+                }                
+            }
 
-                if (UseSystemFontOnWindows)
-                {
-                    try
-                    {
-                        Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
-                        Win32Interop.RtlGetVersion(ref osInfo);
-
-                        if (osInfo.BuildNumber >= 22000) // Windows 11
-                        {
-                            AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable Text"));
-                        }
-                        else // Windows 10
-                        {
-                            //This is defined in the BaseResources.axaml file
-                            AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI"));
-                        }
-                    }
-                    catch
-                    {
-                        Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
-                        .Log("FluentAvaloniaTheme", "Error in detecting Windows system font.");
-
-                        AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
-                    }
-                }
+            if (CustomAccentColor != null)
+            {
+                LoadCustomAccentColor();
+            }
+            else if (PreferUserAccentColor)
+            {
+                TryLoadWindowsAccentColor(uiSettings3);
             }
             else
             {
-                theme = string.IsNullOrEmpty(theme) ? LightModeString : theme;
-
-                if (CustomAccentColor != null)
-                {
-                    LoadCustomAccentColor();
-                }
-                else
-                {
-                    LoadDefaultAccentColor();
-                }
-               
-                AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
+                LoadDefaultAccentColor();
             }
 
-            // Load the SymbolThemeFontFamily
-            AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
+            if (UseSystemFontOnWindows)
+            {
+                try
+                {
+                    Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
+                    Win32Interop.RtlGetVersion(ref osInfo);
 
-            // If not on Windows or if not using the system them, we default to LightMode
-            // if user didn't specify the theme to use
+                    if (osInfo.BuildNumber >= 22000) // Windows 11
+                    {
+                        AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable Text"));
+                    }
+                    else // Windows 10
+                    {
+                        //This is defined in the BaseResources.axaml file
+                        AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI"));
+                    }
+                }
+                catch
+                {
+                    Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                    .Log("FluentAvaloniaTheme", "Error in detecting Windows system font.");
+
+                    AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
+                }
+            }
+
+            return theme;
+        }
+
+        private string ResolveMacOSSystemSettings()
+        {
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
+            try
+            {
+                // https://stackoverflow.com/questions/25207077/how-to-detect-if-os-x-is-in-dark-mode
+                var p = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true,
+                        FileName = "defaults",
+                        Arguments = "read -g AppleInterfaceStyle"
+                    },
+                };
+
+                p.Start();
+                var str = p.StandardOutput.ReadToEnd().Trim();
+                p.WaitForExit();
+
+                if (str.Equals("Dark", StringComparison.OrdinalIgnoreCase))
+                {
+                    theme = DarkModeString;
+                }
+            }
+            catch { }
+
+            if (CustomAccentColor != null)
+            {
+                LoadCustomAccentColor();
+            }
+            else if (PreferUserAccentColor)
+            {
+                TryLoadMacOSAccentColor();
+            }
+            else
+            {
+                LoadDefaultAccentColor();
+            }
+
+            AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
+
+            return theme;
+        }
+
+        private string ResolveLinuxSystemSettings()
+        {
+            string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
+            try
+            {
+                var p = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true,
+                        FileName = "gsettings",
+                        Arguments = "get org.gnome.desktop.interface gtk-theme"
+                    },
+                };
+
+                p.Start();
+                var str = p.StandardOutput.ReadToEnd().Trim();
+                p.WaitForExit();
+
+                if (str.IndexOf("-dark", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    theme = DarkModeString;
+                }
+            }
+            catch { }
+
+            if (CustomAccentColor != null)
+            {
+                LoadCustomAccentColor();
+            }
+            else
+            {
+                LoadDefaultAccentColor();
+            }
+
+            AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
+
             return theme;
         }
 
@@ -586,17 +714,29 @@ namespace FluentAvalonia.Styling
         {
             if (!_customAccentColor.HasValue)
             {
-                if (UseUserAccentColorOnWindows && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                if (PreferUserAccentColor)
                 {
-                    try
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     {
-                        var settings = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
-                        TryLoadWindowsAccentColor(settings);
+                        try
+                        {
+                            var settings = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
+                            TryLoadWindowsAccentColor(settings);
+                        }
+                        catch
+                        {
+                            LoadDefaultAccentColor();
+                        }
                     }
-                    catch 
+                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        TryLoadMacOSAccentColor();
+                    }
+                    else
                     {
                         LoadDefaultAccentColor();
                     }
+                    
                 }
                 else
                 {
@@ -649,6 +789,86 @@ namespace FluentAvalonia.Styling
                 AddOrUpdateSystemResource("SystemAccentColorDark1", Color.Parse("#43339C"));
                 AddOrUpdateSystemResource("SystemAccentColorDark2", Color.Parse("#33238C"));
                 AddOrUpdateSystemResource("SystemAccentColorDark3", Color.Parse("#1D115C"));
+            }
+        }
+
+        private void TryLoadMacOSAccentColor()
+        {
+            try
+            {
+                // https://stackoverflow.com/questions/51695755/how-can-i-determine-the-macos-10-14-accent-color/51695756#51695756
+                // The following assumes MacOS 11 (Big Sur) for color matching
+                var p = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true,
+                        FileName = "defaults",
+                        Arguments = "read -g AppleAccentColor"
+                    },
+                };
+
+                p.Start();
+                var str = p.StandardOutput.ReadToEnd().Trim();
+                p.WaitForExit();
+
+                if (str.StartsWith("\'"))
+                {
+                    str = str.Substring(1, str.Length - 2);
+                }
+
+                int accentColor = int.MinValue;
+                int.TryParse(str, out accentColor);
+
+                Color2 aColor;
+                switch (accentColor)
+                {
+                    case 0: // red
+                        aColor = Color2.FromRGB(255, 82, 89);
+                        break;
+
+                    case 1: // orange
+                        aColor = Color2.FromRGB(248, 131, 28);
+                        break;
+
+                    case 2: // yellow
+                        aColor = Color2.FromRGB(253, 186, 45);
+                        break;
+
+                    case 3: // green
+                        aColor = Color2.FromRGB(99, 186, 71);
+                        break;
+
+                    case 5: //purple
+                        aColor = Color2.FromRGB(164, 82, 167);
+                        break;
+
+                    case 6: // pink
+                        aColor = Color2.FromRGB(248, 80, 158);
+                        break;
+
+                    default: // blue, multicolor (maps to blue), graphite (maps to blue)
+                        aColor = Color2.FromRGB(16, 125, 254);
+                        break;
+                }
+
+                AddOrUpdateSystemResource("SystemAccentColor", aColor);
+
+                AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.LightenPercent(0.15f));
+                AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)aColor.LightenPercent(0.30f));
+                AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)aColor.LightenPercent(0.45f));
+
+                AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)aColor.LightenPercent(-0.15f));
+                AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)aColor.LightenPercent(-0.30f));
+                AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)aColor.LightenPercent(-0.45f));
+            }
+            catch
+            {
+                LoadDefaultAccentColor();
             }
         }
 
