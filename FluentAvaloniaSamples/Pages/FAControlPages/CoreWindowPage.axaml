@@ -75,6 +75,14 @@ By default, CoreWindow does not support Icons. However, with the ability set you
                 </x:String>
             </TextBlock>
         </ctrls:ControlExample>
-        
+
+        <ctrls:ControlExample Header="*Experimental* Adding a Splash Screen"
+                              CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/CoreWindow4.cs.txt">
+            <TextBlock TextWrapping="Wrap">
+                <x:String xml:space="preserve">
+As an experimental feature, adding a UWP like splash screen to do background loading tasks before the main window opens is now possible. 
+                </x:String>
+            </TextBlock>
+        </ctrls:ControlExample>
     </StackPanel>
 </UserControl>
