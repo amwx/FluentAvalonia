@@ -4,6 +4,13 @@
 		xmlns:ui="using:FluentAvalonia.UI.Controls"
 		xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
 
+    <Styles.Resources>
+        <x:Double x:Key="SplashScreenImageWidth">128</x:Double>
+        <x:Double x:Key="SplashScreenImageHeight">128</x:Double>
+        <x:Double x:Key="SplashScreenTextSize">32</x:Double>
+        <FontWeight x:Key="SplashScreenTextFontWeight">SemiBold</FontWeight>
+    </Styles.Resources>
+
 	<!-- This template should generally not be modified. Use the customization APIs to
 		 modify the appearance of a CoreWindow instance 
 		 Use ApplicationViewTitleBar.Instance to modify the colors here
@@ -205,4 +212,118 @@
 		<Setter Property="Width" Value="10" />
 	</Style>
 
+
+    <!-- SplashScreen Support -->
+    <Style Selector="Window:splashScreen">
+        <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+                    <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+                    <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+                    <VisualLayerManager>
+                        <VisualLayerManager.ChromeOverlayLayer>
+                            <TitleBar />
+                        </VisualLayerManager.ChromeOverlayLayer>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </VisualLayerManager>
+                    <ui:CoreSplashScreen Name="SplashHost" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Window:windows:splashScreen">
+        <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <VisualLayerManager>
+                    <!-- Because we use the System Border, we don't specify anything like that here.-->
+                    <Border Background="{TemplateBinding Background}"
+							Padding="{TemplateBinding Padding}"
+							Name="RootBorder">
+                        <Panel>
+                            <Panel Name="DefaultTitleBar"
+								   Height="32"
+								   VerticalAlignment="Top">
+                                <TextBlock Name="TitleText"
+										   Text="{TemplateBinding Title}"
+										   Margin="12 0 0 0"
+										   FontSize="12"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Left" />
+                            </Panel>
+
+                            <ContentPresenter Name="PART_ContentPresenter"
+											  ClipToBounds="False"
+											  Margin="0 0 0 0"
+											  HorizontalAlignment="Stretch"
+											  VerticalAlignment="Stretch"
+											  Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              IsVisible="False"/>
+                            
+                            <ui:CoreSplashScreen Name="SplashHost" />
+
+                            <!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
+                            <uip:MinMaxCloseControl HorizontalAlignment="Right"
+													VerticalAlignment="Top"
+													Name="SystemCaptionButtons"/>
+
+                        </Panel>
+                    </Border>
+                </VisualLayerManager>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    
+
+    <Style Selector="Window:splashScreen /template/ ui|CoreSplashScreen">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="Window:splashScreen:splashOpen /template/ ui|CoreSplashScreen">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+
+    <Style Selector="ui|CoreSplashScreen">
+        <Setter Property="Background" Value="{DynamicResource CoreSplashScreenBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource CoreSplashScreenForeground}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel Name="Root"
+                       Background="{TemplateBinding Background}">
+                    <TextBlock Name="AppNameText"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="{DynamicResource SplashScreenTextSize}"
+                               FontWeight="{DynamicResource SplashScreenTextFontWeight}"/>
+                    <Image Name="AppImageHost"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Width="{DynamicResource SplashScreenImageWidth}"
+                           Height="{DynamicResource SplashScreenImageWidth}" />
+                    <ContentPresenter Name="ContentHost"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalContentAlignment="Stretch" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </Style>    
 </Styles>

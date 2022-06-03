@@ -59,9 +59,18 @@ namespace FluentAvaloniaSamples.Views
         {
             base.OnAttachedToVisualTree(e);
 
+            // Changed for SplashScreens:
+            // -- If using a SplashScreen, the window will be available when this is attached
+            //    and we can just call OnParentWindowOpened
+            // -- If not using a SplashScreen (like before), the window won't be initialized
+            //    yet and setting our custom titlebar won't work... so wait for the 
+            //    WindowOpened event first
             if (e.Root is Window b)
             {
-                b.Opened += OnParentWindowOpened;
+                if (!b.IsActive)
+                    b.Opened += OnParentWindowOpened;
+                else
+                    OnParentWindowOpened(b, null);
             }
 
             _windowIconControl = this.FindControl<IControl>("WindowIcon");
@@ -169,7 +178,8 @@ namespace FluentAvaloniaSamples.Views
 
         private void OnParentWindowOpened(object sender, EventArgs e)
         {
-            (sender as Window).Opened -= OnParentWindowOpened;
+            if (e != null)
+                (sender as Window).Opened -= OnParentWindowOpened;
 
             if (sender is CoreWindow cw)
             {
