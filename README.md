@@ -6,7 +6,7 @@ Bringing more of Fluent design and WinUI controls into Avalonia.
 ![GitHub repo size](https://img.shields.io/github/repo-size/amwx/FluentAvalonia?color=%234682B4)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/amwx/FluentAvalonia?color=%23483D8B)
 
-Currently Targets: Avalonia 0.10.13 & multitargets netstandard2.0;netstandard2.1;net5.0
+Currently Targets: Avalonia 0.10.13 & multitargets netstandard2.0;netstandard2.1;net6.0
 
 Note: Windows 7, 8/8.1 are not supported by FluentAvalonia.
 
