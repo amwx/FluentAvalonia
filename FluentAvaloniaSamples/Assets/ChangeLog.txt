@@ -299,3 +299,32 @@
 -Fixed CoreWindow resizing down when restoring from minimized or maximized
 -Added system context menu support to CoreWindow titlebars
 -Checks ShouldShowConfirmationButtons when opening PickerFlyoutBase
+
+
+
+[1.4.0]
+*TabView
+-Fixed crash with TabViewItem with cultures that don't use '.' as decimal separator (#143)
+
+*FluentAvaloniaTheme
+-Prevent crash when calling InvalidateThemeingFromSystemThemeChange (thanks to GH user PhantomGamers, #150)
+-Add Support for retreiving system theme and accent color on MacOS and Linux (#152)
+
+*Frame
+-Don't remove pages from Cache when they're loaded (thanks to GH user PhantomGamers, #151)
+
+*CoreWindow
+-Added experimental support for UWP-like splashscreen (#154)
+
+*FluentAvalonia.UI.Controls.MenuFlyout
+-Fixed issue where MenuFlyoutItems would be misaligned if used with RadioMenuFlyoutItem
+
+*ColorPickerButton
+-Changed Color property to nullable (BREAKING)
+-Changed ColorChanged and FlyoutConfirmed events args to ColorButtonColorChangedEventArgs (BREAKING)
+-Removed ColorPicker from template (it was unneeded), and simplfied template
+-Add missed resource for swatch outline for dark theme
+
+*General
+-Moved target framework from net5.0 to net6.0
+-Removed Avalonia.Diagnostics from release builds (thanks to GH user PhantomGamers, #153)
