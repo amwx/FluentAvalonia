@@ -1419,6 +1419,10 @@
     <StaticResource x:Key="ColorPickerMoreButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="ColorPickerColorPaletteItemBorderBrushPointerOver" ResourceKey="ControlStrokeColorDefaultBrush" />
 
+    <!-- COLORPICKER BUTTON -->
+    <StaticResource x:Key="ColorPickerButtonOutline" ResourceKey="ControlStrokeColorDefaultBrush" />
+
+
 
     <!-- SPLIT BUTTON -->
     <StaticResource x:Key="SplitButtonBackground" ResourceKey="ControlFillColorDefaultBrush" />
