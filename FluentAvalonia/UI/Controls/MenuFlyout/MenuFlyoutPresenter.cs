@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Generators;
 using Avalonia.Controls.Platform;
 using Avalonia.Controls.Primitives;
@@ -97,7 +96,16 @@ namespace FluentAvalonia.UI.Controls
 
 					_toggleCount++;                    
                 }
-				else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
+                else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
+                {
+                    if (rmfi.Icon != null)
+                    {
+                        _iconCount++;
+                    }
+
+                    _toggleCount++;
+                }
+                else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
 				{
 					if (mfi.Icon != null)
 					{
@@ -122,8 +130,17 @@ namespace FluentAvalonia.UI.Controls
 					}
 
 					_toggleCount--;
-				}
-				else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
+                }
+                else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
+                {
+                    if (rmfi.Icon != null)
+                    {
+                        _iconCount--;
+                    }
+
+                    _toggleCount--;
+                }
+                else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
 				{
 					if (mfi.Icon != null)
 					{
