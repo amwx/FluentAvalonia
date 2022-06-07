@@ -603,10 +603,7 @@ namespace FluentAvalonia.Styling
                 var str = p.StandardOutput.ReadToEnd().Trim();
                 p.WaitForExit();
 
-                if (str.Equals("Dark", StringComparison.OrdinalIgnoreCase))
-                {
-                    theme = DarkModeString;
-                }
+                theme = str.Equals("Dark", StringComparison.OrdinalIgnoreCase) ? DarkModeString : LightModeString;
             }
             catch { }
 
