@@ -319,11 +319,20 @@
 *FluentAvalonia.UI.Controls.MenuFlyout
 -Fixed issue where MenuFlyoutItems would be misaligned if used with RadioMenuFlyoutItem
 
+*ListBoxItem
+-Temporary fix for #116 to the SelectionIndicator to try to prevent the rendering artifacts by setting the margin to {2.5,0,0,0} and turning off layout rounding
+
 *ColorPickerButton
 -Changed Color property to nullable (BREAKING)
 -Changed ColorChanged and FlyoutConfirmed events args to ColorButtonColorChangedEventArgs (BREAKING)
 -Removed ColorPicker from template (it was unneeded), and simplfied template
 -Add missed resource for swatch outline for dark theme
+-Added FlyoutPlacement property to control placement of flyout
+
+*ColorPicker
+-Fixed issue where Hue ramp slider would sometimes stay all black
+-Fixed issue where switching to expanded mode while still on Text entry tab would remain on that tab even though it was hidden
+-Updates to styles and colors
 
 *General
 -Moved target framework from net5.0 to net6.0
