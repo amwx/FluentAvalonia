@@ -43,27 +43,27 @@ namespace FluentAvaloniaSamples.Views
 
     public class MainWindow : CoreWindow
     {
-		public MainWindow()
+        public MainWindow()
         {
-			InitializeComponent();
+            InitializeComponent();
             SplashScreen = new SampleAppSplashScreen();
 #if DEBUG
-			this.AttachDevTools();
+            this.AttachDevTools();
 #endif
             MinWidth = 450;
             MinHeight = 400;
-            		
-		}
 
-		protected override void OnOpened(EventArgs e)
-		{
-			base.OnOpened(e);
+        }
+
+        protected override void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
 
             var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
             thm.RequestedThemeChanged += OnRequestedThemeChanged;
 
             // Enable Mica on Windows 11
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OperatingSystem.IsWindows())
             {
                 // TODO: add Windows version to CoreWindow
                 if (IsWindows11 && thm.RequestedTheme != FluentAvaloniaTheme.HighContrastModeString)
@@ -74,8 +74,9 @@ namespace FluentAvaloniaSamples.Views
                     TryEnableMicaEffect(thm);
                 }
             }
-                        
-            thm.ForceWin32WindowToTheme(this);
+
+            if (OperatingSystem.IsWindows())
+                thm.ForceWin32WindowToTheme(this);
 
             var screen = Screens.ScreenFromVisual(this);
             if (screen != null)
@@ -125,7 +126,7 @@ namespace FluentAvaloniaSamples.Views
 
         private void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OperatingSystem.IsWindows())
             {
                 // TODO: add Windows version to CoreWindow
                 if (IsWindows11 && args.NewTheme != FluentAvaloniaTheme.HighContrastModeString)

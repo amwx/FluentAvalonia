@@ -15,7 +15,7 @@ namespace FluentAvaloniaTests.ControlTests
 		//{
 		//	var cw = new CoreWindow();
 
-		//	if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+		//	if (OperatingSystem.IsWindows())
 		//	{
 		//		Assert.IsType<CoreWindowImpl>(cw.PlatformImpl);
 		//	}

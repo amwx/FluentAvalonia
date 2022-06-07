@@ -330,7 +330,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
 
         private void UpdateDragInfo()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OperatingSystem2.IsWindows())
             {
                 _cxDrag = Win32Interop.GetSystemMetrics(68 /*SM_CXDRAG*/);
                 _cyDrag = Win32Interop.GetSystemMetrics(69 /*SM_CYDRAG*/);

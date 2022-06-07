@@ -189,8 +189,7 @@ namespace FluentAvalonia.UI.Controls
                     var op1 = stack.Pop().Value;
                     var op2 = stack.Pop().Value;
 
-                    double? result = 0;
-
+                    double? result;
                     switch (token.Char)
                     {
                         case '-':

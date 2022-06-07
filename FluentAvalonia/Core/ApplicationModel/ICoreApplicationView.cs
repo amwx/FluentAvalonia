@@ -1,10 +1,12 @@
-﻿namespace FluentAvalonia.Core.ApplicationModel
+﻿#nullable enable
+
+namespace FluentAvalonia.Core.ApplicationModel
 {
-	public interface ICoreApplicationView
-	{
+    public interface ICoreApplicationView
+    {
         /// <summary>
         /// Gets the <see cref="CoreApplicationViewTitleBar"/> associated with this Window
         /// </summary>
-		CoreApplicationViewTitleBar TitleBar { get; }
-	}
+		CoreApplicationViewTitleBar? TitleBar { get; }
+    }
 }

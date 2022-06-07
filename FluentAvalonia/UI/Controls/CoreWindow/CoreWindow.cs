@@ -14,52 +14,72 @@ using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls.Primitives;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public static class WindowImplSolver
-	{
-		public static IWindowImpl GetWindowImpl()
-		{
-			if (Design.IsDesignMode)
-				return PlatformManager.CreateWindow();
+    public static class WindowImplSolver
+    {
+        public static IWindowImpl GetWindowImpl()
+        {
+            if (Design.IsDesignMode)
+                return PlatformManager.CreateWindow();
 
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-				return new CoreWindowImpl();
+            if (OperatingSystem2.IsWindows10AtLeast())
+                /* Avalonia.Win32.dll can be trimmed on non-Windows 
+                 * platforms to reduce the size of the program, 
+                 * but the type Avalonia.Win32.WindowImpl 
+                 * cannot be loaded within this function
+                 */
+                return GetWin32WindowImpl();
 
-			return PlatformManager.CreateWindow();
-		}
-	}
+            return PlatformManager.CreateWindow();
+        }
 
-	public class CoreWindow : Window, IStyleable, ICoreApplicationView
-	{
-		public CoreWindow()
-			:base (WindowImplSolver.GetWindowImpl())
-		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !Design.IsDesignMode)
-			{
-				_titleBar = new CoreApplicationViewTitleBar(this);
+        [SupportedOSPlatform("Windows10.0")]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static IWindowImpl GetWin32WindowImpl() => new CoreWindowImpl();
+    }
 
-				if (PlatformImpl is CoreWindowImpl cwi)
-				{
-					cwi.SetOwner(this);
-                    cwi.WindowOpened += WindowOpened_Windows;
-				}
+    public class CoreWindow : Window, IStyleable, ICoreApplicationView
+    {
+        public CoreWindow()
+            : base(WindowImplSolver.GetWindowImpl())
+        {
+            if (OperatingSystem2.IsWindows() && !Design.IsDesignMode)
+            {
+                InitializeWin32();
+            }
+        }
 
-                // NOTE FOR FUTURE: 
-                // Do NOT enable these properties, doing so causes a clash of logic between here and
-                // the actual window logic within avalonia leading to the window shrinking when restoring
-                // from maximized or minimized state. 
-				//ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
-				//ExtendClientAreaToDecorationsHint = true;
-				PseudoClasses.Add(":windows");
+        [SupportedOSPlatform("Windows")]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void InitializeWin32()
+        {
+            _titleBar = new CoreApplicationViewTitleBar(this);
 
-                PlatformImpl.Closed += WindowClosed_Windows;
-			}
-		}
+            if (PlatformImpl is CoreWindowImpl cwi)
+            {
+#pragma warning disable CA1416 // Verify platform compatibility
+                cwi.SetOwner(this);
+                cwi.WindowOpened += WindowOpened_Windows;
+#pragma warning restore CA1416 // Verify platform compatibility
+            }
+
+            // NOTE FOR FUTURE: 
+            // Do NOT enable these properties, doing so causes a clash of logic between here and
+            // the actual window logic within avalonia leading to the window shrinking when restoring
+            // from maximized or minimized state. 
+            //ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+            //ExtendClientAreaToDecorationsHint = true;
+            PseudoClasses.Add(":windows");
+
+            PlatformImpl.Closed += WindowClosed_Windows;
+        }
 
         Type IStyleable.StyleKey => typeof(Window);
 
@@ -108,7 +128,8 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        protected internal bool IsWindows11 { get; internal set; }
+        [SupportedOSPlatformGuard("windows10.0.22000")]
+        protected internal bool IsWindows11 => OperatingSystem2.IsWindows11AtLeast();
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -118,7 +139,7 @@ namespace FluentAvalonia.UI.Controls
             // we modify the window in WM_NCCALCSIZE so we need to fix that here
             // But the content measures to the normal size - so in constrained environments
             // like the TaskDialog, stuff gets cut off
-            if (!CanResize && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!CanResize && OperatingSystem2.IsWindows())
             {
                 sz = sz.WithWidth(sz.Width + 16)
                     .WithHeight(sz.Height + 8);
@@ -143,42 +164,42 @@ namespace FluentAvalonia.UI.Controls
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-		{
-			base.OnApplyTemplate(e);
+        {
+            base.OnApplyTemplate(e);
 
-			_templateRoot = e.NameScope.Find<Border>("RootBorder");
+            _templateRoot = e.NameScope.Find<Border>("RootBorder");
 
-			_systemCaptionButtons = e.NameScope.Find<MinMaxCloseControl>("SystemCaptionButtons");
+            _systemCaptionButtons = e.NameScope.Find<MinMaxCloseControl>("SystemCaptionButtons");
 
-			_defaultTitleBar = e.NameScope.Find<Panel>("DefaultTitleBar");
+            _defaultTitleBar = e.NameScope.Find<Panel>("DefaultTitleBar");
 
-			if (_defaultTitleBar != null)
-			{
-				//_defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
-				_defaultTitleBar.Height = _titleBar.Height;
-			}
+            if (_defaultTitleBar != null)
+            {
+                //_defaultTitleBar.Margin = new Avalonia.Thickness(0, 0, _titleBar.SystemOverlayRightInset, 0);
+                _defaultTitleBar.Height = _titleBar.Height;
+            }
 
-			if (_systemCaptionButtons != null)
-			{
+            if (_systemCaptionButtons != null)
+            {
                 //_systemCaptionButtons.ApplyTemplate();
 
-				_systemCaptionButtons.Height = _titleBar.Height;
-			}
+                _systemCaptionButtons.Height = _titleBar.Height;
+            }
 
-			if (_titleBar != null && Presenter != null)
-			{
-				if (_titleBar.ExtendViewIntoTitleBar)
-				{
-					(Presenter as ContentPresenter).Margin = new Thickness();
-				}
-				else
-				{
-					(Presenter as ContentPresenter).Margin = new Thickness(0,
-						_titleBar.Height, 0, 0);
-				}
-			}
-               
-			SetTitleBarColors();
+            if (_titleBar != null && Presenter != null)
+            {
+                if (_titleBar.ExtendViewIntoTitleBar)
+                {
+                    (Presenter as ContentPresenter).Margin = new Thickness();
+                }
+                else
+                {
+                    (Presenter as ContentPresenter).Margin = new Thickness(0,
+                        _titleBar.Height, 0, 0);
+                }
+            }
+
+            SetTitleBarColors();
 
             if (SplashScreen != null)
             {
@@ -188,7 +209,7 @@ namespace FluentAvalonia.UI.Controls
                     _splashContext.Host = host;
                 }
             }
-		}
+        }
 
         protected override async void OnOpened(EventArgs e)
         {
@@ -292,7 +313,7 @@ namespace FluentAvalonia.UI.Controls
 
         private void WindowClosed_Windows()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OperatingSystem2.IsWindows())
             {
                 ApplicationViewTitleBar.Instance.TitleBarPropertyChanged -= OnTitleBarPropertyChanged;
 
@@ -305,55 +326,55 @@ namespace FluentAvalonia.UI.Controls
         }
 
         internal void ExtendTitleBar(bool extend)
-		{
-			if (Design.IsDesignMode)
-				return;
+        {
+            if (Design.IsDesignMode)
+                return;
 
-			if (extend)
-			{
-				if (Presenter != null)
-				{
-					(Presenter as ContentPresenter).Margin = new Thickness();
-				}
-			}
-			else
-			{
-				if (Presenter != null)
-				{
-					(Presenter as ContentPresenter).Margin = new Thickness(0,
-						_titleBar.Height, 0, 0);
-				}
-			}
+            if (extend)
+            {
+                if (Presenter != null)
+                {
+                    (Presenter as ContentPresenter).Margin = new Thickness();
+                }
+            }
+            else
+            {
+                if (Presenter != null)
+                {
+                    (Presenter as ContentPresenter).Margin = new Thickness(0,
+                        _titleBar.Height, 0, 0);
+                }
+            }
 
-			// TODO:
-			// 1  Per UWP TitleBar customization docs, the system still reserves a little bit of space
-			//    to the left of the caption buttons, even if a custom titlebar is set
-			// 2  A custom titlebar can still have elements on top of it (but not in it) and it will still work,
-			//    says to use a higher z-order
-			// 3  If no custom titlebar is set, the default remains, sized along the top border the height
-			//    of the caption buttons [DONE]
-			PseudoClasses.Set(":extended", extend);
-		}
+            // TODO:
+            // 1  Per UWP TitleBar customization docs, the system still reserves a little bit of space
+            //    to the left of the caption buttons, even if a custom titlebar is set
+            // 2  A custom titlebar can still have elements on top of it (but not in it) and it will still work,
+            //    says to use a higher z-order
+            // 3  If no custom titlebar is set, the default remains, sized along the top border the height
+            //    of the caption buttons [DONE]
+            PseudoClasses.Set(":extended", extend);
+        }
 
-		public void SetTitleBar(IControl titleBar)
-		{
-			if (Design.IsDesignMode)
-				return;
+        public void SetTitleBar(IControl titleBar)
+        {
+            if (Design.IsDesignMode)
+                return;
 
-			if (!_titleBar.ExtendViewIntoTitleBar)
-				throw new InvalidOperationException("View is not extended into titlebar. Call CoreApplicationViewTitleBar.ExtendIntoTitleBar first.");
+            if (!_titleBar.ExtendViewIntoTitleBar)
+                throw new InvalidOperationException("View is not extended into titlebar. Call CoreApplicationViewTitleBar.ExtendIntoTitleBar first.");
 
-			_customTitleBar = titleBar;
+            _customTitleBar = titleBar;
 
             _titleBar.SetCustomTitleBar(titleBar);
 
-			PseudoClasses.Set(":customtitlebar", titleBar != null);
-		}
+            PseudoClasses.Set(":customtitlebar", titleBar != null);
+        }
 
-		internal bool HitTestTitleBarRegion(Point windowPoint)
-		{
-			if (_customTitleBar != null)
-			{
+        internal bool HitTestTitleBarRegion(Point windowPoint)
+        {
+            if (_customTitleBar != null)
+            {
                 var mat = _customTitleBar.TransformToVisual(this);
                 if (mat.HasValue)
                 {
@@ -369,120 +390,119 @@ namespace FluentAvalonia.UI.Controls
                 // Default TitleBar is still *slightly* visible to the left of the caption buttons even with
                 // a custom titlebar set, so make sure we test it
                 return _defaultTitleBar.HitTestCustom(windowPoint);
-			}
-			else
-			{
-				return _defaultTitleBar.HitTestCustom(windowPoint);
-			}
-		}
+            }
+            else
+            {
+                return _defaultTitleBar.HitTestCustom(windowPoint);
+            }
+        }
 
-		internal bool HitTestCaptionButtons(Point pos)
-		{
-			if (_systemCaptionButtons == null)
-				return false;
+        internal bool HitTestCaptionButtons(Point pos)
+        {
+            if (_systemCaptionButtons == null)
+                return false;
 
             if (WindowState != WindowState.Maximized && pos.Y <= 1)
                 return false;
 
-			var result = _systemCaptionButtons.HitTestCustom(pos);
-			return result;
-		}
+            var result = _systemCaptionButtons.HitTestCustom(pos);
+            return result;
+        }
 
-		internal bool HitTestMaximizeButton(Point pos)
-		{
+        internal bool HitTestMaximizeButton(Point pos)
+        {
             if (ShowAsDialog || !CanResize)
                 return false;
 
-			return _systemCaptionButtons.HitTestMaxButton(pos);
-		}
+            return _systemCaptionButtons.HitTestMaxButton(pos);
+        }
 
-		internal void FakeMaximizeHover(bool hover)
-		{
-			_systemCaptionButtons.FakeMaximizeHover(hover);
-		}
+        internal void FakeMaximizeHover(bool hover)
+        {
+            _systemCaptionButtons.FakeMaximizeHover(hover);
+        }
 
-		internal void FakeMaximizePressed(bool pressed)
-		{
-			_systemCaptionButtons.FakeMaximizePressed(pressed);
-		}
+        internal void FakeMaximizePressed(bool pressed)
+        {
+            _systemCaptionButtons.FakeMaximizePressed(pressed);
+        }
 
-		internal void FakeMaximizeClick()
-		{
-			_systemCaptionButtons.FakeMaximizeClick();
-		}
+        internal void FakeMaximizeClick()
+        {
+            _systemCaptionButtons.FakeMaximizeClick();
+        }
 
-		private void OnTitleBarPropertyChanged(object sender, EventArgs e)
-		{
-			SetTitleBarColors();			
-		}
+        private void OnTitleBarPropertyChanged(object sender, EventArgs e)
+        {
+            SetTitleBarColors();
+        }
 
-		private void SetTitleBarColors()
-		{
-			if (_templateRoot == null)
-				return;
+        private void SetTitleBarColors()
+        {
+            if (_templateRoot == null)
+                return;
 
-			var tb = ApplicationViewTitleBar.Instance;
+            var tb = ApplicationViewTitleBar.Instance;
 
-			var flAvThm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+            var flAvThm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
 
-			bool foundAccent = _templateRoot.TryFindResource("SystemAccentColor", out var sysColor);
+            bool foundAccent = _templateRoot.TryFindResource("SystemAccentColor", out var sysColor);
             bool foundAccentLight2 = false;
 
             var thm = flAvThm.RequestedTheme;
-            object sysColorLight2 = null;
-
-            if (thm==FluentAvaloniaTheme.LightModeString)
+            object sysColorLight2;
+            if (thm == FluentAvaloniaTheme.LightModeString)
             {
                 _templateRoot.TryFindResource("SystemAccentColorDark1", out sysColorLight2);
             }
-            else 
+            else
             {
                 _templateRoot.TryFindResource("SystemAccentColorLight2", out sysColorLight2);
             }
-            
 
-			string prefix = "FATitle_";
-			if (_templateRoot.Resources.Count == 0)
-			{
-				_templateRoot.Resources.Add(prefix + "TitleBarBackground", tb.BackgroundColor ?? Colors.Transparent);
-				_templateRoot.Resources.Add(prefix + "TitleBarForeground", tb.ForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White));
 
-				_templateRoot.Resources.Add(prefix + "TitleBarBackgroundInactive", tb.InactiveBackgroundColor ?? Colors.Transparent);
-				_templateRoot.Resources.Add(prefix + "TitleBarForegroundInactive", tb.InactiveForegroundColor ?? Colors.Gray);
+            string prefix = "FATitle_";
+            if (_templateRoot.Resources.Count == 0)
+            {
+                _templateRoot.Resources.Add(prefix + "TitleBarBackground", tb.BackgroundColor ?? Colors.Transparent);
+                _templateRoot.Resources.Add(prefix + "TitleBarForeground", tb.ForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White));
 
-				_templateRoot.Resources.Add(prefix + "SysCaptionBackground", tb.ButtonBackgroundColor ?? Colors.Transparent);
-				_templateRoot.Resources.Add(prefix + "SysCaptionForeground", tb.ButtonForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White));
+                _templateRoot.Resources.Add(prefix + "TitleBarBackgroundInactive", tb.InactiveBackgroundColor ?? Colors.Transparent);
+                _templateRoot.Resources.Add(prefix + "TitleBarForegroundInactive", tb.InactiveForegroundColor ?? Colors.Gray);
 
-				_templateRoot.Resources.Add(prefix + "SysCaptionBackgroundHover", tb.ButtonHoverBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#17000000")));
-				_templateRoot.Resources.Add(prefix + "SysCaptionForegroundHover", tb.ButtonHoverForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White));
+                _templateRoot.Resources.Add(prefix + "SysCaptionBackground", tb.ButtonBackgroundColor ?? Colors.Transparent);
+                _templateRoot.Resources.Add(prefix + "SysCaptionForeground", tb.ButtonForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White));
 
-				_templateRoot.Resources.Add(prefix + "SysCaptionBackgroundPressed", tb.ButtonPressedBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#34000000")));
-				_templateRoot.Resources.Add(prefix + "SysCaptionForegroundPressed", tb.ButtonPressedForegroundColor ?? (thm == "Light" ? Color.Parse("#87000000") : Color.Parse("#87FFFFFF")));
+                _templateRoot.Resources.Add(prefix + "SysCaptionBackgroundHover", tb.ButtonHoverBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#17000000")));
+                _templateRoot.Resources.Add(prefix + "SysCaptionForegroundHover", tb.ButtonHoverForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White));
 
-				_templateRoot.Resources.Add(prefix + "SysCaptionBackgroundInactive", tb.ButtonInactiveBackgroundColor ?? Colors.Transparent);
-				_templateRoot.Resources.Add(prefix + "SysCaptionForegroundInactive", tb.ButtonInactiveBackgroundColor ?? (foundAccentLight2 ? (Color)sysColorLight2 : Colors.Gray));
-			}
-			else
-			{
-				_templateRoot.Resources[prefix + "TitleBarBackground"]= tb.BackgroundColor ?? Colors.Transparent;
-				_templateRoot.Resources[prefix + "TitleBarForeground"] = tb.ForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White);
+                _templateRoot.Resources.Add(prefix + "SysCaptionBackgroundPressed", tb.ButtonPressedBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#34000000")));
+                _templateRoot.Resources.Add(prefix + "SysCaptionForegroundPressed", tb.ButtonPressedForegroundColor ?? (thm == "Light" ? Color.Parse("#87000000") : Color.Parse("#87FFFFFF")));
 
-				_templateRoot.Resources[prefix + "TitleBarBackgroundInactive"] = tb.InactiveBackgroundColor ?? Colors.Transparent;
-				_templateRoot.Resources[prefix + "TitleBarForegroundInactive"] = tb.InactiveForegroundColor ?? Colors.Gray;
+                _templateRoot.Resources.Add(prefix + "SysCaptionBackgroundInactive", tb.ButtonInactiveBackgroundColor ?? Colors.Transparent);
+                _templateRoot.Resources.Add(prefix + "SysCaptionForegroundInactive", tb.ButtonInactiveBackgroundColor ?? (foundAccentLight2 ? (Color)sysColorLight2 : Colors.Gray));
+            }
+            else
+            {
+                _templateRoot.Resources[prefix + "TitleBarBackground"] = tb.BackgroundColor ?? Colors.Transparent;
+                _templateRoot.Resources[prefix + "TitleBarForeground"] = tb.ForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White);
 
-				_templateRoot.Resources[prefix + "SysCaptionBackground"] = tb.ButtonBackgroundColor ?? Colors.Transparent;
-				_templateRoot.Resources[prefix + "SysCaptionForeground"] = tb.ButtonForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White);
+                _templateRoot.Resources[prefix + "TitleBarBackgroundInactive"] = tb.InactiveBackgroundColor ?? Colors.Transparent;
+                _templateRoot.Resources[prefix + "TitleBarForegroundInactive"] = tb.InactiveForegroundColor ?? Colors.Gray;
 
-				_templateRoot.Resources[prefix + "SysCaptionBackgroundHover"] = tb.ButtonHoverBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#17000000"));
-				_templateRoot.Resources[prefix + "SysCaptionForegroundHover"]= tb.ButtonHoverForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White);
+                _templateRoot.Resources[prefix + "SysCaptionBackground"] = tb.ButtonBackgroundColor ?? Colors.Transparent;
+                _templateRoot.Resources[prefix + "SysCaptionForeground"] = tb.ButtonForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White);
 
-				_templateRoot.Resources[prefix + "SysCaptionBackgroundPressed"] = tb.ButtonPressedBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#34000000"));
-				_templateRoot.Resources[prefix + "SysCaptionForegroundPressed"] = tb.ButtonPressedForegroundColor ?? (thm == "Light" ? Color.Parse("#87000000") : Color.Parse("#87FFFFFF"));
+                _templateRoot.Resources[prefix + "SysCaptionBackgroundHover"] = tb.ButtonHoverBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#17000000"));
+                _templateRoot.Resources[prefix + "SysCaptionForegroundHover"] = tb.ButtonHoverForegroundColor ?? (thm == "Light" ? Colors.Black : Colors.White);
 
-				_templateRoot.Resources[prefix + "SysCaptionBackgroundInactive"] = tb.ButtonInactiveBackgroundColor ?? Colors.Transparent;
-				_templateRoot.Resources[prefix + "SysCaptionForegroundInactive"] = tb.ButtonInactiveBackgroundColor ?? (foundAccentLight2 ? (Color)sysColorLight2 : Colors.Gray);
-			}
-		}
+                _templateRoot.Resources[prefix + "SysCaptionBackgroundPressed"] = tb.ButtonPressedBackgroundColor ?? (foundAccent ? ((Color)sysColor) : Color.Parse("#34000000"));
+                _templateRoot.Resources[prefix + "SysCaptionForegroundPressed"] = tb.ButtonPressedForegroundColor ?? (thm == "Light" ? Color.Parse("#87000000") : Color.Parse("#87FFFFFF"));
+
+                _templateRoot.Resources[prefix + "SysCaptionBackgroundInactive"] = tb.ButtonInactiveBackgroundColor ?? Colors.Transparent;
+                _templateRoot.Resources[prefix + "SysCaptionForegroundInactive"] = tb.ButtonInactiveBackgroundColor ?? (foundAccentLight2 ? (Color)sysColorLight2 : Colors.Gray);
+            }
+        }
 
         private void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
         {
@@ -494,10 +514,10 @@ namespace FluentAvalonia.UI.Controls
 
         private SplashScreenContext _splashContext;
         private CoreApplicationViewTitleBar _titleBar;
-		private MinMaxCloseControl _systemCaptionButtons;
-		private Panel _defaultTitleBar;
-		private IControl _customTitleBar;
-		private Border _templateRoot;
+        private MinMaxCloseControl _systemCaptionButtons;
+        private Panel _defaultTitleBar;
+        private IControl _customTitleBar;
+        private Border _templateRoot;
         private bool _hideSizeButtons;
 
         // Special class to manage SplashScreen. We specifically do this so we only add 1 pointer
@@ -542,12 +562,12 @@ namespace FluentAvalonia.UI.Controls
                     _splashCTS.Cancel();
                     _splashCTS.Dispose();
                     _splashCTS = null;
-                }               
+                }
             }
 
             private CancellationTokenSource _splashCTS;
             private IApplicationSplashScreen _splashScreen;
             private CoreSplashScreen _splashHost;
         }
-	}
+    }
 }

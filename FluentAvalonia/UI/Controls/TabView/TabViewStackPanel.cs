@@ -140,7 +140,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (i == _insertionIndex)
                 {
-                    double wid = 0;
+                    double wid;
                     if (i == 0)
                     {
                         wid = children[0].DesiredSize.Width;

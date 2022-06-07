@@ -1463,16 +1463,13 @@ namespace FluentAvalonia.UI.Controls
                 var actWid = GetTopNavigationViewActualWidth;
                 var desWid = MeasureTopNavigationViewDesiredWidth(Size.Infinity);
                 Debug.Assert(desWid <= actWid);
-
-                // Calculate selected item size
-                var selItemIndex = _itemNotFound;
-                var selItemWidth = 0d;
                 if (SelectedItem != null)
                 {
-                    selItemIndex = _topDataProvider.IndexOf(SelectedItem);
+                    // Calculate selected item size
+                    var selItemIndex = _topDataProvider.IndexOf(SelectedItem);
                     if (selItemIndex != _itemNotFound)
                     {
-                        selItemWidth = _topDataProvider.GetWidthForItem(selItemIndex);
+                        var selItemWidth = _topDataProvider.GetWidthForItem(selItemIndex);
                     }
                 }
 
@@ -1554,10 +1551,9 @@ namespace FluentAvalonia.UI.Controls
             //         </NavigationView.MenuItems>
             if (SelectedItem == null)
             {
-                bool foundFirstSelected = false;
 
                 // firstly check Menu items
-                foundFirstSelected = UpdateSelectedItemFromMenuItems(_menuItems);
+                var foundFirstSelected = UpdateSelectedItemFromMenuItems(_menuItems);
 
                 UpdateSelectedItemFromMenuItems(_footerMenuItems, foundFirstSelected);
             }
@@ -3580,8 +3576,8 @@ namespace FluentAvalonia.UI.Controls
 
         private void UpdateContentBindingsForPaneDisplayMode()
         {
-            ContentControl asb = null;
-            ContentControl not = null;
+            ContentControl not;
+            ContentControl asb;
             if (!IsTopNavigationView)
             {
                 asb = _leftNavAutoSuggestBoxPresenter;

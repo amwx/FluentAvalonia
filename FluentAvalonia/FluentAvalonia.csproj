@@ -3,50 +3,44 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <Nullable>disable</Nullable>
-	<RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
-	<PackageId>FluentAvaloniaUI</PackageId>
+    <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
+    <PackageId>FluentAvaloniaUI</PackageId>
     <Description>Control library focused on fluent design and bringing more WinUI controls into Avalonia </Description>
     <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
     <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
-</PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<LangVersion>latest</LangVersion>
-	</PropertyGroup>
-
-    <PropertyGroup>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.4.0</Version>
-        <AssemblyVersion>1.4.0.0</AssemblyVersion>        
-    </PropertyGroup>
-
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-    <ItemGroup>
-        <AvaloniaResource Include="Assets\*.*" />
-	    <AvaloniaResource Include="Fonts\*.*" />
-    </ItemGroup>
-    <ItemGroup>
-      <AvaloniaResource Include="Styling\StylesV2\Controls.txt" />
-    </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Avalonia" Version="0.10.15" />
-		<PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
-		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.15" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.15" />
-		<PackageReference Include="MicroCom.CodeGenerator.MSBuild" Version="0.10.4" />
-		<PackageReference Include="MicroCom.Runtime" Version="0.10.4" />
-        <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />
-	</ItemGroup>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>1.4.0</Version>
+    <AssemblyVersion>1.4.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\*.*" />
+    <AvaloniaResource Include="Fonts\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Styling\StylesV2\Controls.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" />
+    <PackageReference Include="MicroCom.CodeGenerator.MSBuild" />
+    <PackageReference Include="MicroCom.Runtime" />
+    <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />
+  </ItemGroup>
 </Project>

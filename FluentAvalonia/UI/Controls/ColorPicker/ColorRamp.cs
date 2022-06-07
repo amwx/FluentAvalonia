@@ -249,7 +249,7 @@ namespace FluentAvalonia.UI.Controls
 
         private void SetComponentFromPosition(Point pt)
         {
-            double perc = 0;
+            double perc;
             if (Orientation == Orientation.Horizontal)
             {
                 perc = (pt.X-1) / (Bounds.Width - 2);

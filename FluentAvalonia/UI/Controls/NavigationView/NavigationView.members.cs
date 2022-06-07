@@ -203,7 +203,6 @@ namespace FluentAvalonia.UI.Controls
         private IndexPath GetIndexPathForContainer(NavigationViewItemBase nvib)
         {
             var path = new List<int>(4);
-            bool isInFooterMenu = false;
 
             IControl child = nvib;
             var parent = nvib.GetVisualParent();
@@ -255,8 +254,7 @@ namespace FluentAvalonia.UI.Controls
                     path.Insert(0, parentIR.GetElementIndex(child));
                 }
 
-            isInFooterMenu = parent == _leftNavFooterMenuRepeater || parent == _topNavFooterMenuRepeater;
-
+            var isInFooterMenu = parent == _leftNavFooterMenuRepeater || parent == _topNavFooterMenuRepeater;
             path.Insert(0, isInFooterMenu ? _footerMenuBlockIndex : _mainMenuBlockIndex);
 
             return IndexPath.CreateFromIndices(path);

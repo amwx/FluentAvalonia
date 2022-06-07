@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Disposables;
+using System.Runtime.Versioning;
 using Avalonia;
 using Avalonia.Controls;
 using FluentAvalonia.Interop;
@@ -7,43 +8,44 @@ using FluentAvalonia.UI.Controls;
 
 namespace FluentAvalonia.Core.ApplicationModel
 {
-	public sealed class CoreApplicationViewTitleBar
-	{
-		public CoreApplicationViewTitleBar(CoreWindow owner)
-		{
-			_owner = owner;
-		}
+    [SupportedOSPlatform("Windows")]
+    public sealed class CoreApplicationViewTitleBar
+    {
+        public CoreApplicationViewTitleBar(CoreWindow owner)
+        {
+            _owner = owner;
+        }
 
         /// <summary>
         /// Gets or sets whether the current view is extended into the titlebar space
         /// </summary>
 		public bool ExtendViewIntoTitleBar
-		{
-			get => _extend;
-			set
-			{
-				if (_extend != value)
-				{
-					_extend = value;
-					_owner.ExtendTitleBar(value);
-					LayoutMetricsChanged?.Invoke(this, null);
-				}
-			}
-		}
+        {
+            get => _extend;
+            set
+            {
+                if (_extend != value)
+                {
+                    _extend = value;
+                    _owner.ExtendTitleBar(value);
+                    LayoutMetricsChanged?.Invoke(this, null);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the height of the titlebar
         /// </summary>
 		public double Height
-		{
-			get
-			{
-				if (double.IsNaN(_height))
-					GetSystemTitleBarHeight();
+        {
+            get
+            {
+                if (double.IsNaN(_height))
+                    GetSystemTitleBarHeight();
 
-				return _customTitleBar?.Bounds.Height ?? _height;
-			}
-		}
+                return _customTitleBar?.Bounds.Height ?? _height;
+            }
+        }
 
         /// <summary>
         /// Gets whether the 
@@ -74,29 +76,29 @@ namespace FluentAvalonia.Core.ApplicationModel
             }
         }
 
-		public event TypedEventHandler<CoreApplicationViewTitleBar, EventArgs> LayoutMetricsChanged;
+        public event TypedEventHandler<CoreApplicationViewTitleBar, EventArgs> LayoutMetricsChanged;
 
         public event TypedEventHandler<CoreApplicationViewTitleBar, EventArgs> IsVisibleChanged;
 
         private void GetSystemTitleBarHeight()
-		{
-			if (_owner == null)
-			{
-				_height = 32;
-				return;
-			}
+        {
+            if (_owner == null)
+            {
+                _height = 32;
+                return;
+            }
 
-			// WS_OVERLAPPEDWINDOW
-			var style = 0x00000000L | 0x00C00000L | 0x00080000L | 0x00040000L | 0x00020000L | 0x00010000L;
+            // WS_OVERLAPPEDWINDOW
+            var style = 0x00000000L | 0x00C00000L | 0x00080000L | 0x00040000L | 0x00020000L | 0x00010000L;
 
-			// This is causing the window to appear solid but is completely transparent. Weird...
-			//Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
-			RECT frame = new RECT();
-			Win32Interop.AdjustWindowRectExForDpi(ref frame,
-				(int)style, false, 0, 96);
+            // This is causing the window to appear solid but is completely transparent. Weird...
+            //Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
+            RECT frame = new RECT();
+            Win32Interop.AdjustWindowRectExForDpi(ref frame,
+                (int)style, false, 0, 96);
 
-			_height = -frame.top;
-		}
+            _height = -frame.top;
+        }
 
         internal void SetCustomTitleBar(IControl ctrl)
         {
@@ -126,10 +128,10 @@ namespace FluentAvalonia.Core.ApplicationModel
         }
 
         private bool _extend;
-		private double _height = double.NaN;
-		private CoreWindow _owner;
+        private double _height = double.NaN;
+        private CoreWindow _owner;
         private IControl _customTitleBar;
         private IDisposable _customTitleBarDisp;
         private double _insetWidthRight = double.NaN;
-	}
+    }
 }

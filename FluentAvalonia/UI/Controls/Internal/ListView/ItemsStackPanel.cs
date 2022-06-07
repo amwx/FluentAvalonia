@@ -1163,10 +1163,10 @@ namespace FluentAvalonia.UI.Controls
 			{
 				if (_groupHeaderContainers == null)
 					_groupHeaderContainers = new List<IControl>();
-				// Keep GroupHeader order in sync with container list
+                // Keep GroupHeader order in sync with container list
 
-				IControl container = null;
-				if (Owner._itemsControl is ListViewBase lvb)
+                IControl container;
+                if (Owner._itemsControl is ListViewBase lvb)
 				{
 					// We'll fire this event even if we're not virtualizing, since technically this is 
 					// still an ItemsStackPanel

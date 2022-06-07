@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace FluentAvalonia.Styling
 {
@@ -41,7 +42,7 @@ namespace FluentAvalonia.Styling
         {
             get => _requestedTheme;
             set
-            {                
+            {
                 if (_hasLoaded)
                     Refresh(value);
                 else
@@ -238,7 +239,7 @@ namespace FluentAvalonia.Styling
             Owner = owner;
 
             (_themeResources as IResourceProvider).AddOwner(owner);
-           // (_systemResources as IResourceProvider).AddOwner(owner);
+            // (_systemResources as IResourceProvider).AddOwner(owner);
 
             for (int i = 0; i < Children.Count; i++)
             {
@@ -258,7 +259,7 @@ namespace FluentAvalonia.Styling
                 Owner = null;
 
                 (_themeResources as IResourceProvider).RemoveOwner(owner);
-               // (_systemResources as IResourceProvider).RemoveOwner(owner);
+                // (_systemResources as IResourceProvider).RemoveOwner(owner);
 
                 for (int i = 0; i < Children.Count; i++)
                 {
@@ -279,7 +280,7 @@ namespace FluentAvalonia.Styling
         {
             if (PreferUserAccentColor)
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                if (OperatingSystem2.IsWindows())
                 {
                     try
                     {
@@ -289,11 +290,11 @@ namespace FluentAvalonia.Styling
                     }
                     catch { }
                 }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                else if (OperatingSystem2.IsMacOS())
                 {
                     TryLoadMacOSAccentColor();
                 }
-            }           
+            }
 
             if (PreferSystemTheme)
             {
@@ -307,6 +308,7 @@ namespace FluentAvalonia.Styling
         /// <param name="window">The window to force</param>
         /// <param name="theme">The theme to use, or null to use the current RequestedTheme</param>
         /// <exception cref="ArgumentNullException">If window is null</exception>
+        [SupportedOSPlatform("Windows")]
         public void ForceWin32WindowToTheme(Window window, string theme = null)
         {
             if (window == null)
@@ -314,9 +316,6 @@ namespace FluentAvalonia.Styling
 
             try
             {
-                Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
-                Win32Interop.RtlGetVersion(ref osInfo);
-
                 if (string.IsNullOrEmpty(theme))
                 {
                     theme = IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : LightModeString;
@@ -326,7 +325,7 @@ namespace FluentAvalonia.Styling
                     theme = IsValidRequestedTheme(theme) ? theme : IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : LightModeString;
                 }
 
-                Win32Interop.ApplyTheme(window.PlatformImpl.Handle.Handle, theme.Equals(DarkModeString, StringComparison.OrdinalIgnoreCase), osInfo);
+                Win32Interop.ApplyTheme(window.PlatformImpl.Handle.Handle, theme.Equals(DarkModeString, StringComparison.OrdinalIgnoreCase), OperatingSystem2.Version());
             }
             catch
             {
@@ -365,7 +364,7 @@ namespace FluentAvalonia.Styling
             _themeResources.MergedDictionaries.Add(
                 (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
+            if (OperatingSystem2.IsWindows() && string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
             {
                 TryLoadHighContrastThemeColors();
             }
@@ -374,7 +373,7 @@ namespace FluentAvalonia.Styling
 
             // ALL keyword should only be used in UnitTests since it doesn't load anything
             if (SkipControls != "ALL")
-			{
+            {
                 string[] controls = hasControlsToSkip ? SkipControls.Split(';') : null;
                 var prefix = "avares://FluentAvalonia";
                 // Now load all the Avalonia Controls
@@ -438,7 +437,7 @@ namespace FluentAvalonia.Styling
 
                 if (string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    if (OperatingSystem2.IsWindows())
                     {
                         TryLoadHighContrastThemeColors();
                     }
@@ -454,15 +453,15 @@ namespace FluentAvalonia.Styling
         {
             string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OperatingSystem2.IsWindows())
             {
                 theme = ResolveWindowsSystemSettings();
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            else if (OperatingSystem2.IsLinux())
             {
-                theme = ResolveLinuxSystemSettings();               
+                theme = ResolveLinuxSystemSettings();
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            else if (OperatingSystem2.IsMacOS())
             {
                 theme = ResolveMacOSSystemSettings();
             }
@@ -534,7 +533,7 @@ namespace FluentAvalonia.Styling
                         Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
                             .Log("FluentAvaloniaTheme", "Detecting system theme failed, defaulting to Light mode");
                     }
-                }                
+                }
             }
 
             if (CustomAccentColor != null)
@@ -554,10 +553,7 @@ namespace FluentAvalonia.Styling
             {
                 try
                 {
-                    Win32Interop.OSVERSIONINFOEX osInfo = new Win32Interop.OSVERSIONINFOEX { OSVersionInfoSize = Marshal.SizeOf(typeof(Win32Interop.OSVERSIONINFOEX)) };
-                    Win32Interop.RtlGetVersion(ref osInfo);
-
-                    if (osInfo.BuildNumber >= 22000) // Windows 11
+                    if (OperatingSystem2.IsWindows11AtLeast()) // Windows 11
                     {
                         AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable Text"));
                     }
@@ -674,7 +670,7 @@ namespace FluentAvalonia.Styling
 
         private void TryLoadHighContrastThemeColors()
         {
-            IUISettings settings = null;
+            IUISettings settings;
             try
             {
                 settings = WinRTInterop.CreateInstance<IUISettings>("Windows.UI.ViewManagement.UISettings");
@@ -707,7 +703,7 @@ namespace FluentAvalonia.Styling
             TryAddResource("SystemColorButtonTextColor", UIElementType.ButtonText);
             TryAddResource("SystemColorHighlightColor", UIElementType.Highlight);
             TryAddResource("SystemColorHighlightTextColor", UIElementType.HighlightText);
-            TryAddResource("SystemColorHotlightColor", UIElementType.Hotlight);            
+            TryAddResource("SystemColorHotlightColor", UIElementType.Hotlight);
         }
 
         private void LoadCustomAccentColor()
@@ -716,7 +712,7 @@ namespace FluentAvalonia.Styling
             {
                 if (PreferUserAccentColor)
                 {
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    if (OperatingSystem2.IsWindows())
                     {
                         try
                         {
@@ -728,7 +724,7 @@ namespace FluentAvalonia.Styling
                             LoadDefaultAccentColor();
                         }
                     }
-                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    else if (OperatingSystem2.IsMacOS())
                     {
                         TryLoadMacOSAccentColor();
                     }
@@ -736,7 +732,7 @@ namespace FluentAvalonia.Styling
                     {
                         LoadDefaultAccentColor();
                     }
-                    
+
                 }
                 else
                 {
