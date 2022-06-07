@@ -8,7 +8,6 @@ using FluentAvalonia.UI.Controls;
 
 namespace FluentAvalonia.Core.ApplicationModel
 {
-    [SupportedOSPlatform("Windows")]
     public sealed class CoreApplicationViewTitleBar
     {
         public CoreApplicationViewTitleBar(CoreWindow owner)
@@ -88,16 +87,19 @@ namespace FluentAvalonia.Core.ApplicationModel
                 return;
             }
 
-            // WS_OVERLAPPEDWINDOW
-            var style = 0x00000000L | 0x00C00000L | 0x00080000L | 0x00040000L | 0x00020000L | 0x00010000L;
+            if (OperatingSystem2.IsWindows())
+            {
+                // WS_OVERLAPPEDWINDOW
+                var style = 0x00000000L | 0x00C00000L | 0x00080000L | 0x00040000L | 0x00020000L | 0x00010000L;
 
-            // This is causing the window to appear solid but is completely transparent. Weird...
-            //Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
-            RECT frame = new RECT();
-            Win32Interop.AdjustWindowRectExForDpi(ref frame,
-                (int)style, false, 0, 96);
+                // This is causing the window to appear solid but is completely transparent. Weird...
+                //Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
+                RECT frame = new RECT();
+                Win32Interop.AdjustWindowRectExForDpi(ref frame,
+                    (int)style, false, 0, 96);
 
-            _height = -frame.top;
+                _height = -frame.top;
+            }
         }
 
         internal void SetCustomTitleBar(IControl ctrl)

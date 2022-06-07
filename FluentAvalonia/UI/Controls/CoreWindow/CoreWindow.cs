@@ -509,7 +509,8 @@ namespace FluentAvalonia.UI.Controls
             // We need to monitor for theme changes, because we need to update the titlebar colors appropriately
             SetTitleBarColors();
 
-            sender.ForceWin32WindowToTheme(this);
+            if (OperatingSystem2.IsWindows())
+                sender.ForceWin32WindowToTheme(this);
         }
 
         private SplashScreenContext _splashContext;
