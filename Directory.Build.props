@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <NoWarn>NU1507</NoWarn>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 </Project>
