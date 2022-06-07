@@ -2,11 +2,11 @@
 using Avalonia.Data;
 using Avalonia;
 using Avalonia.Media;
-using FluentAvalonia.UI.Media;
 using System.Collections.Generic;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using FluentAvalonia.Core;
+using Avalonia.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -15,8 +15,8 @@ namespace FluentAvalonia.UI.Controls
 		/// <summary>
 		/// Defines the <see cref="Color"/> property
 		/// </summary>
-		public static readonly StyledProperty<Color2> ColorProperty =
-			AvaloniaProperty.Register<ColorPickerButton, Color2>(nameof(Color),
+		public static readonly StyledProperty<Color?> ColorProperty =
+			AvaloniaProperty.Register<ColorPickerButton, Color?>(nameof(Color),
 				defaultBindingMode: BindingMode.TwoWay);
 
 		/// <summary>
@@ -82,11 +82,18 @@ namespace FluentAvalonia.UI.Controls
 		public static readonly StyledProperty<bool> ShowAcceptDismissButtonsProperty =
 			AvaloniaProperty.Register<ColorPickerButton, bool>(nameof(ShowAcceptDismissButtons), defaultValue: true);
 
+        /// <summary>
+        /// Defines the <see cref="FlyoutPlacement"/> property
+        /// </summary>
+        public static readonly StyledProperty<FlyoutPlacementMode> FlyoutPlacementProperty =
+            AvaloniaProperty.Register<ColorPickerButton, FlyoutPlacementMode>(nameof(FlyoutPlacement),
+                defaultValue: FlyoutPlacementMode.Bottom);
+
 
 		/// <summary>
 		/// Gets or sets the current <see cref="Avalonia.Media.Color"/> of the ColorPickerButton
 		/// </summary>
-		public Color Color
+		public Color? Color
 		{
 			get => GetValue(ColorProperty);
 			set => SetValue(ColorProperty, value);
@@ -203,9 +210,18 @@ namespace FluentAvalonia.UI.Controls
 		}
 
         /// <summary>
+        /// Gets or sets the placement for the color picker flyout
+        /// </summary>
+        public FlyoutPlacementMode FlyoutPlacement
+        {
+            get => GetValue(FlyoutPlacementProperty);
+            set => SetValue(FlyoutPlacementProperty, value);
+        }
+
+        /// <summary>
         /// Raised when the color change was confirmed and the flyout closes.
         /// </summary>
-        public event TypedEventHandler<ColorPickerButton, ColorChangedEventArgs> FlyoutConfirmed;
+        public event TypedEventHandler<ColorPickerButton, ColorButtonColorChangedEventArgs> FlyoutConfirmed;
 
         /// <summary>
         /// Raised when the color change was dismissed and the flyout closes.
@@ -220,6 +236,11 @@ namespace FluentAvalonia.UI.Controls
         /// Raised when the flyout closes regardless of confirmation or dismissal.
         /// </summary>
         public event TypedEventHandler<ColorPickerButton, EventArgs> FlyoutClosed;
+
+        /// <summary>
+        /// Fired when the current <see cref="Color"/> property changes
+        /// </summary>
+        public event TypedEventHandler<ColorPickerButton, ColorButtonColorChangedEventArgs> ColorChanged;
 
         private bool _isCompact = true;
 		private bool _isAlphaEnabled = true;

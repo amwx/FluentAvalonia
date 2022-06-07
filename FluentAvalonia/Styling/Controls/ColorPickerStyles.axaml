@@ -32,6 +32,13 @@
         <DataTemplate x:Key="ColorSpectrumTabContent">
             <ui:ColorSpectrum />
         </DataTemplate>
+
+        <!-- Icons used in TabControl of ColorPicker -->
+        <!-- Icon Credit: materialdesignicons.com, Austin Andrews (palette-advanced) -->
+        <StreamGeometry x:Key="ColorSpectrumGeometry">M22,22H10V20H22V22M2,22V20H9V22H2M18,18V10H22V18H18M18,3H22V9H18V3M2,18V3H16V18H2M9,14.56A3,3 0 0,0 12,11.56C12,9.56 9,6.19 9,6.19C9,6.19 6,9.56 6,11.56A3,3 0 0,0 9,14.56Z</StreamGeometry>
+        <StreamGeometry x:Key="ColorTriangleGeometry">M 512,12 C 379.40721,12 252.20453,64.690004 158.44727,158.44727 64.689998,252.20452 12,379.40721 12,512 12,644.59279 64.689998,771.79548 158.44727,865.55273 252.20453,959.30999 379.40721,1012 512,1012 644.59279,1012 771.79547,959.30999 865.55273,865.55273 959.31,771.79548 1012,644.59279 1012,512 1012,379.40721 959.31,252.20452 865.55273,158.44727 771.79547,64.690004 644.59279,12 512,12 Z M 512,91.755859 C 623.47114,91.755859 730.3362,136.0198 809.1582,214.8418 887.68289,293.36648 931.88037,399.72647 932.21289,510.74219 L 242.02148,190.06445 C 317.39159,126.8518 412.847,91.755859 512,91.755859 Z M 241.20312,190.76953 V 833.02539 L 932.24219,511.95508 C 932.24219,511.9701 932.24414,511.98498 932.24414,512 932.24414,623.47113 887.9802,730.33621 809.1582,809.1582 730.3362,887.9802 623.47114,932.24414 512,932.24414 400.52886,932.24414 293.6638,887.9802 214.8418,809.1582 136.0198,730.33621 91.755859,623.47113 91.755859,512 91.755859,400.52887 136.0198,293.66379 214.8418,214.8418 223.29566,206.38793 232.13301,198.41637 241.20312,190.76953 Z</StreamGeometry>
+        <!-- Icon Credit: materialdesignicons.com, Colton Wiscombe (tune-variant) -->
+        <StreamGeometry x:Key="ColorSliderGeometry">M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z</StreamGeometry>
     </Styles.Resources>
     
     <Style Selector="ui|NumberBox.ColorPicker">
@@ -56,9 +63,12 @@
                              TextAlignment="{TemplateBinding TextAlignment}">
                         <TextBox.InnerLeftContent>
                             <Border Background="{DynamicResource ColorPickerComponentLabelBackground}"
+                                    Width="32"
+                                    CornerRadius="{Binding $parent[TextBox].CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
 									Name="Label">
                                 <TextBlock Text="{Binding $parent[ui:NumberBox].Header}"
                                            VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
                                            FontWeight="SemiBold" Margin="9 4"
                                            Name="Comp1Label"/>
                             </Border>
@@ -202,7 +212,8 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
-                <UniformGrid Rows="1" />
+                <UniformGrid Rows="1"
+                             Background="{DynamicResource ColorPickerTabsBackground}"/>
             </ItemsPanelTemplate>
         </Setter>        
     </Style>
@@ -226,7 +237,7 @@
                                       TextBlock.FontSize="{TemplateBinding FontSize}"
                                       TextBlock.FontWeight="{TemplateBinding FontWeight}"
                                       TextBlock.Foreground="{TemplateBinding Foreground}"
-                                      CornerRadius="{DynamicResource ControlCornerRadius}"/>
+                                      CornerRadius="{TemplateBinding CornerRadius}"/>
                     <Border Name="SelectionIndicator"
                             VerticalAlignment="Bottom"
                             Margin="{DynamicResource ColorPickerTabItemSelectionIndicatorMargin}"
@@ -377,8 +388,12 @@
                                         <TabItem Name="SpectrumTab"
                                                  IsVisible="{TemplateBinding UseSpectrum}">
                                             <TabItem.Header>
-                                                <!-- Icon Credit: materialdesignicons.com, Austin Andrews (palette-advanced) -->
-                                                <ui:PathIcon Data="M22,22H10V20H22V22M2,22V20H9V22H2M18,18V10H22V18H18M18,3H22V9H18V3M2,18V3H16V18H2M9,14.56A3,3 0 0,0 12,11.56C12,9.56 9,6.19 9,6.19C9,6.19 6,9.56 6,11.56A3,3 0 0,0 9,14.56Z" />
+                                                <ui:IconSourceElement Width="18" Height="18">
+                                                    <ui:IconSourceElement.IconSource>
+                                                        <ui:PathIconSource Stretch="Fill" 
+                                                                           Data="{StaticResource ColorSpectrumGeometry}" />
+                                                    </ui:IconSourceElement.IconSource>
+                                                </ui:IconSourceElement>
                                             </TabItem.Header>
                                         </TabItem>
                                         <TabItem Name="WheelTab"
@@ -393,20 +408,12 @@
                                         <TabItem Name="TriangleTab"
                                                  IsVisible="{TemplateBinding UseColorTriangle}">
                                             <TabItem.Header>
-                                                <Panel>
-                                                    <!-- TODO: probably could make a better icon for this... -->
-													<Ellipse Stroke="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}, Path=Foreground}"
-															 StrokeThickness="2"
-															 Width="18" Height="18" Margin="-1 0 0 0" />
-                                                    <!--<ui:FontIcon Glyph="&#xF645;"
-                                                                 FontSize="20"
-                                                                 FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                     />-->
-                                                    <ui:PathIcon Data="M1,21H23L12,2"
-                                                                 Width="14" Height="12"
-                                                                 Margin="1 0 0 0"
-                                                                 RenderTransform="rotate(90deg)"/>
-                                                </Panel>
+                                                <ui:IconSourceElement Width="18" Height="18">
+                                                    <ui:IconSourceElement.IconSource>
+                                                        <ui:PathIconSource Stretch="Fill" 
+                                                                           Data="{StaticResource ColorTriangleGeometry}" />
+                                                    </ui:IconSourceElement.IconSource>
+                                                </ui:IconSourceElement>
                                             </TabItem.Header>
                                         </TabItem>
                                         <TabItem Name="PaletteTab"
@@ -444,9 +451,12 @@
                                         </TabItem>
                                         <TabItem Name="TextEntryTab">
                                             <TabItem.Header>
-                                                <!-- Icon Credit: materialdesignicons.com, Colton Wiscombe (tune-variant) -->
-                                                <ui:PathIcon
-                                                        Data="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z" />
+                                                <ui:IconSourceElement Width="18" Height="18">
+                                                    <ui:IconSourceElement.IconSource>
+                                                        <ui:PathIconSource Stretch="Fill" 
+                                                                           Data="{StaticResource ColorSliderGeometry}" />
+                                                    </ui:IconSourceElement.IconSource>
+                                                </ui:IconSourceElement>
                                             </TabItem.Header>
                                             <Panel Name="TextEntryTabHost" />
                                         </TabItem>

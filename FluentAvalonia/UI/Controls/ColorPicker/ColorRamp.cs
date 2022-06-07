@@ -173,6 +173,17 @@ namespace FluentAvalonia.UI.Controls
 						});
 					}
 				}
+                else
+                {
+                    for (int i = 0, idx=0; i <= 360; i += 60, idx++)
+                    {
+                        _lgb.GradientStops[idx] = new GradientStop
+                        {
+                            Color = Color.WithHue(i).WithAlpha(255),
+                            Offset = i / 360.0
+                        };
+                    }
+                }
 			}
 			else
 			{
