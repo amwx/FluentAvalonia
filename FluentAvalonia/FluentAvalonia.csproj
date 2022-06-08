@@ -9,28 +9,17 @@
     <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
     <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>1.4.0</Version>
+    <AssemblyVersion>1.4.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.4.0</Version>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <AvaloniaResource Include="Assets\*.*" />
     <AvaloniaResource Include="Fonts\*.*" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AvaloniaResource Include="Styling\StylesV2\Controls.txt" />
   </ItemGroup>
 
@@ -42,5 +31,6 @@
     <PackageReference Include="MicroCom.CodeGenerator.MSBuild" />
     <PackageReference Include="MicroCom.Runtime" />
     <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
   </ItemGroup>
 </Project>
