@@ -1,19 +1,12 @@
-﻿<ui:NavigationView x:Name="nvSample6" PaneDisplayMode="Left" Height="460">
+﻿<ui:NavigationView x:Name="nvSample5" Height="460">
     <ui:NavigationView.MenuItems>
-        <ui:NavigationViewItem Content="Home" Tag="SamplePage1" Icon="Home" />
-        <ui:NavigationViewItem Content="Account" Tag="SamplePage2" Icon="Home">
-            <ui:NavigationViewItem.MenuItems>
-                <ui:NavigationViewItem Content="Mail" Icon="Mail" Tag="SamplePage3" />
-                <ui:NavigationViewItem Content="Calendar" Icon="Calendar" Tag="SamplePage4" />
-            </ui:NavigationViewItem.MenuItems>
-        </ui:NavigationViewItem>
-        <ui:NavigationViewItem Content="Document options" 
-                                Tag="SamplePage3" Icon="Document" 
-                                SelectsOnInvoked="False">
-            <ui:NavigationViewItem.MenuItems>
-                <ui:NavigationViewItem Content="Create new" Icon="New" Tag="SamplePage5" />
-                <ui:NavigationViewItem Content="Upload file" Icon="Upload" Tag="SamplePage6" />
-            </ui:NavigationViewItem.MenuItems>
-        </ui:NavigationViewItem>
+        <ui:NavigationViewItem Content="Browse" Tag="SamplePage1" Icon="Library" />
+        <ui:NavigationViewItem Content="Track an Order" Tag="SamplePage2" Icon="Map" />
+        <ui:NavigationViewItem Content="Order History" Tag="SamplePage3" Icon="Tag" />
     </ui:NavigationView.MenuItems>
+    <ui:NavigationView.FooterMenuItems>
+        <ui:NavigationViewItem Content="Account" Tag="SamplePage4" Icon="Contact" />
+        <ui:NavigationViewItem Content="Your Cart" Tag="SamplePage5" Icon="Shop" />
+        <ui:NavigationViewItem Content="Help" Tag="SamplePage6" Icon="Help" />
+    </ui:NavigationView.FooterMenuItems>
 </ui:NavigationView>
