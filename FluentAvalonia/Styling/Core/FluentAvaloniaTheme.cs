@@ -603,10 +603,7 @@ namespace FluentAvalonia.Styling
                 var str = p.StandardOutput.ReadToEnd().Trim();
                 p.WaitForExit();
 
-                if (str.Equals("Dark", StringComparison.OrdinalIgnoreCase))
-                {
-                    theme = DarkModeString;
-                }
+                theme = str.Equals("Dark", StringComparison.OrdinalIgnoreCase) ? DarkModeString : LightModeString;
             }
             catch { }
 
@@ -651,9 +648,16 @@ namespace FluentAvalonia.Styling
                 var str = p.StandardOutput.ReadToEnd().Trim();
                 p.WaitForExit();
 
-                if (str.IndexOf("-dark", StringComparison.OrdinalIgnoreCase) != -1)
+                if (p.ExitCode == 0)
                 {
-                    theme = DarkModeString;
+                    if (str.IndexOf("-dark", StringComparison.OrdinalIgnoreCase) != -1)
+                    {
+                        theme = DarkModeString;
+                    }
+                    else
+                    {
+                        theme = LightModeString;
+                    }
                 }
             }
             catch { }
