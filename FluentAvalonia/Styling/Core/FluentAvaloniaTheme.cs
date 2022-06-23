@@ -751,7 +751,7 @@ namespace FluentAvalonia.Styling
             }
 
             Color2 col = _customAccentColor.Value;
-            AddOrUpdateSystemResource("SystemAccentColor", _customAccentColor.Value);
+            AddOrUpdateSystemResource("SystemAccentColor", (Color)_customAccentColor.Value);
 
             AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)col.LightenPercent(0.15f));
             AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)col.LightenPercent(0.30f));
@@ -860,7 +860,7 @@ namespace FluentAvalonia.Styling
                         break;
                 }
 
-                AddOrUpdateSystemResource("SystemAccentColor", aColor);
+                AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor);
 
                 AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.LightenPercent(0.15f));
                 AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)aColor.LightenPercent(0.30f));

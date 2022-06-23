@@ -337,3 +337,11 @@
 *General
 -Moved target framework from net5.0 to net6.0
 -Removed Avalonia.Diagnostics from release builds (thanks to GH user PhantomGamers, #153)
+
+
+[1.4.1]
+*FluentAvaloniaTheme
+-Fixed crash on Mac from invalid cast with Color vs Color2
+
+*General
+-Added <GenerateDocumentationFile> to csproj to enable Xml docs with nuget package
