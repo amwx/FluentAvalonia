@@ -582,30 +582,33 @@ namespace FluentAvalonia.Styling
         private string ResolveMacOSSystemSettings()
         {
             string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
-            try
+            if (PreferSystemTheme)
             {
-                // https://stackoverflow.com/questions/25207077/how-to-detect-if-os-x-is-in-dark-mode
-                var p = new Process
+                try
                 {
-                    StartInfo = new ProcessStartInfo
+                    // https://stackoverflow.com/questions/25207077/how-to-detect-if-os-x-is-in-dark-mode
+                    var p = new Process
                     {
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true,
-                        FileName = "defaults",
-                        Arguments = "read -g AppleInterfaceStyle"
-                    },
-                };
+                        StartInfo = new ProcessStartInfo
+                        {
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            CreateNoWindow = true,
+                            UseShellExecute = false,
+                            RedirectStandardError = true,
+                            RedirectStandardOutput = true,
+                            FileName = "defaults",
+                            Arguments = "read -g AppleInterfaceStyle"
+                        },
+                    };
 
-                p.Start();
-                var str = p.StandardOutput.ReadToEnd().Trim();
-                p.WaitForExit();
+                    p.Start();
+                    var str = p.StandardOutput.ReadToEnd().Trim();
+                    p.WaitForExit();
 
-                theme = str.Equals("Dark", StringComparison.OrdinalIgnoreCase) ? DarkModeString : LightModeString;
+                    theme = str.Equals("Dark", StringComparison.OrdinalIgnoreCase) ? DarkModeString : LightModeString;
+                }
+                catch { }
             }
-            catch { }
 
             if (CustomAccentColor != null)
             {
@@ -628,39 +631,42 @@ namespace FluentAvalonia.Styling
         private string ResolveLinuxSystemSettings()
         {
             string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
-            try
+            if (PreferSystemTheme)
             {
-                var p = new Process
+                try
                 {
-                    StartInfo = new ProcessStartInfo
+                    var p = new Process
                     {
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true,
-                        FileName = "gsettings",
-                        Arguments = "get org.gnome.desktop.interface gtk-theme"
-                    },
-                };
+                        StartInfo = new ProcessStartInfo
+                        {
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            CreateNoWindow = true,
+                            UseShellExecute = false,
+                            RedirectStandardError = true,
+                            RedirectStandardOutput = true,
+                            FileName = "gsettings",
+                            Arguments = "get org.gnome.desktop.interface gtk-theme"
+                        },
+                    };
 
-                p.Start();
-                var str = p.StandardOutput.ReadToEnd().Trim();
-                p.WaitForExit();
+                    p.Start();
+                    var str = p.StandardOutput.ReadToEnd().Trim();
+                    p.WaitForExit();
 
-                if (p.ExitCode == 0)
-                {
-                    if (str.IndexOf("-dark", StringComparison.OrdinalIgnoreCase) != -1)
+                    if (p.ExitCode == 0)
                     {
-                        theme = DarkModeString;
-                    }
-                    else
-                    {
-                        theme = LightModeString;
+                        if (str.IndexOf("-dark", StringComparison.OrdinalIgnoreCase) != -1)
+                        {
+                            theme = DarkModeString;
+                        }
+                        else
+                        {
+                            theme = LightModeString;
+                        }
                     }
                 }
+                catch { }
             }
-            catch { }
 
             if (CustomAccentColor != null)
             {
