@@ -58,12 +58,12 @@ namespace FluentAvalonia.UI.Controls
 
         Type IStyleable.StyleKey => typeof(RadioMenuFlyoutItem);
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == IsCheckedProperty)
 			{
-                var newValue = change.NewValue.GetValueOrDefault<bool>();
+                var newValue = change.GetNewValue<bool>();
                 PseudoClasses.Set(":checked", newValue);
 
                 if (_isSafeUncheck) // Unchecked via another item in the group

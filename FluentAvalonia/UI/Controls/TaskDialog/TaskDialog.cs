@@ -54,13 +54,13 @@ namespace FluentAvalonia.UI.Controls
             SetCommands();
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == FooterVisibilityProperty)
             {
-                var val = change.NewValue.GetValueOrDefault<TaskDialogFooterVisibility>();
+                var val = change.GetNewValue<TaskDialogFooterVisibility>();
 
                 PseudoClasses.Set(":footerAuto", val == TaskDialogFooterVisibility.Auto);
                 PseudoClasses.Set(":footer", val != TaskDialogFooterVisibility.Never);
@@ -69,23 +69,23 @@ namespace FluentAvalonia.UI.Controls
             else if (change.Property == IsFooterExpandedProperty)
             {
                 if (FooterVisibility != TaskDialogFooterVisibility.Always)
-                    PseudoClasses.Set(":expanded", change.NewValue.GetValueOrDefault<bool>());
+                    PseudoClasses.Set(":expanded", change.GetNewValue<bool>());
             }
             else if (change.Property == ShowProgressBarProperty)
             {
-                PseudoClasses.Set(":progress", change.NewValue.GetValueOrDefault<bool>());
+                PseudoClasses.Set(":progress", change.GetNewValue<bool>());
             }
             else if (change.Property == IconSourceProperty)
             {
-                PseudoClasses.Set(":icon", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":icon", change.NewValue != null);
             }
             else if (change.Property == HeaderProperty)
             {
-                PseudoClasses.Set(":header", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":header", change.NewValue != null);
             }
             else if (change.Property == SubHeaderProperty)
             {
-                PseudoClasses.Set(":subheader", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":subheader", change.NewValue != null);
             }
         }
        

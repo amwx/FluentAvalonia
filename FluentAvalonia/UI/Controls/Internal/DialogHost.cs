@@ -60,12 +60,12 @@ namespace FluentAvalonia.UI.Controls
 			_rootBoundsWatcher = null;
 		}
 
-        protected override void OnPointerEnter(PointerEventArgs e)
+        protected override void OnPointerEntered(PointerEventArgs e)
         {
             e.Handled = true;
         }
 
-        protected override void OnPointerLeave(PointerEventArgs e)
+        protected override void OnPointerExited(PointerEventArgs e)
         {
             e.Handled = true;
         }

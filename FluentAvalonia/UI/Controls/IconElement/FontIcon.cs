@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls
     /// </summary>
     public partial class FontIcon : IconElement
     {       
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
             if (change.Property == TextBlock.ForegroundProperty ||
                 change.Property == TextBlock.FontSizeProperty ||
@@ -33,7 +33,7 @@ namespace FluentAvalonia.UI.Controls
                 GenerateText();
             }
 
-            return _textLayout.Size;
+            return _textLayout.Bounds.Size;
         }
 
         public override void Render(DrawingContext context)
@@ -43,10 +43,10 @@ namespace FluentAvalonia.UI.Controls
 
             var dstRect = new Rect(Bounds.Size);
             using (context.PushClip(dstRect))
-            using (context.PushPreTransform(Matrix.CreateTranslation(dstRect.Center.X - _textLayout.Size.Width / 2,
-                dstRect.Center.Y - _textLayout.Size.Height / 2)))
             {
-                _textLayout.Draw(context);
+                var pt = new Point(dstRect.Center.X - _textLayout.Bounds.Width / 2, 
+                                   dstRect.Center.Y - _textLayout.Bounds.Height / 2);
+                _textLayout.Draw(context, pt);
             }
         }
 

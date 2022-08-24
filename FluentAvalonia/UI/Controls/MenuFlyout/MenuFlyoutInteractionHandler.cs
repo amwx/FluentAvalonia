@@ -54,8 +54,8 @@ namespace FluentAvalonia.UI.Controls
 			Menu.PointerReleased += PointerReleased;
 			Menu.AddHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
 			Menu.AddHandler(MenuBase.MenuOpenedEvent, MenuOpened);
-			Menu.AddHandler(MenuItem.PointerEnterItemEvent, PointerEnter);
-			Menu.AddHandler(MenuItem.PointerLeaveItemEvent, PointerLeave);
+			Menu.AddHandler(MenuItem.PointerEnteredItemEvent, PointerEnter);
+			Menu.AddHandler(MenuItem.PointerExitedItemEvent, PointerLeave);
 
 			_root = Menu.GetVisualRoot();
 
@@ -89,8 +89,8 @@ namespace FluentAvalonia.UI.Controls
 			Menu.PointerReleased -= PointerReleased;
 			Menu.RemoveHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
 			Menu.RemoveHandler(MenuBase.MenuOpenedEvent, MenuOpened);
-			Menu.RemoveHandler(MenuItem.PointerEnterItemEvent, PointerEnter);
-			Menu.RemoveHandler(MenuItem.PointerLeaveItemEvent, PointerLeave);
+			Menu.RemoveHandler(MenuItem.PointerEnteredItemEvent, PointerEnter);
+			Menu.RemoveHandler(MenuItem.PointerExitedItemEvent, PointerLeave);
 
 			if (_root is InputElement inputRoot)
 			{

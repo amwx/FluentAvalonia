@@ -76,38 +76,38 @@ namespace FluentAvalonia.UI.Controls
 
 		internal IPanel Panel => _itemsPanel;
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 
 			if (change.Property == HeaderProperty)
 			{
-				_headerControl.Content = change.NewValue.GetValueOrDefault();
+				_headerControl.Content = change.NewValue;
 
 				InvalidateMeasure();
 			}
 			else if (change.Property == HeaderTemplateProperty)
 			{
-				_headerControl.ContentTemplate = change.NewValue.GetValueOrDefault<IDataTemplate>();
+				_headerControl.ContentTemplate = change.GetNewValue<IDataTemplate>();
 
 				InvalidateMeasure();
 			}
 			else if (change.Property == FooterProperty)
 			{
 
-				_footerControl.Content = change.NewValue.GetValueOrDefault();
+				_footerControl.Content = change.NewValue;
 
 				InvalidateMeasure();
 			}
 			else if (change.Property == FooterTemplateProperty)
 			{
-				_footerControl.ContentTemplate = change.NewValue.GetValueOrDefault<IDataTemplate>();
+				_footerControl.ContentTemplate = change.GetNewValue<IDataTemplate>();
 
 				InvalidateMeasure();
 			}
 			else if (change.Property == TemplatedParentProperty)
 			{
-				change.NewValue.GetValueOrDefault<IItemsPresenterHost>()?.RegisterItemsPresenter(this);
+				change.GetNewValue<IItemsPresenterHost>()?.RegisterItemsPresenter(this);
 			}
 		}
 

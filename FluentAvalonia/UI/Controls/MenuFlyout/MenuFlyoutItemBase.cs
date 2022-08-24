@@ -12,19 +12,19 @@ namespace FluentAvalonia.UI.Controls
 			FocusableProperty.OverrideDefaultValue<MenuFlyoutItemBase>(true);
 		}
 
-        protected override void OnPointerEnter(PointerEventArgs e)
+        protected override void OnPointerEntered(PointerEventArgs e)
         {
-            base.OnPointerEnter(e);
+            base.OnPointerEntered(e);
             var point = e.GetCurrentPoint(null);
-            RaiseEvent(new PointerEventArgs(MenuItem.PointerEnterItemEvent, this, e.Pointer, VisualRoot, point.Position,
+            RaiseEvent(new PointerEventArgs(MenuItem.PointerEnteredItemEvent, this, e.Pointer, VisualRoot, point.Position,
                 e.Timestamp, point.Properties, e.KeyModifiers));
         }
 
-        protected override void OnPointerLeave(PointerEventArgs e)
+        protected override void OnPointerExited(PointerEventArgs e)
         {
-            base.OnPointerLeave(e);
+            base.OnPointerExited(e);
             var point = e.GetCurrentPoint(null);
-            RaiseEvent(new PointerEventArgs(MenuItem.PointerLeaveItemEvent, this, e.Pointer, VisualRoot, point.Position,
+            RaiseEvent(new PointerEventArgs(MenuItem.PointerExitedItemEvent, this, e.Pointer, VisualRoot, point.Position,
                 e.Timestamp, point.Properties, e.KeyModifiers));
         }
 
@@ -32,8 +32,8 @@ namespace FluentAvalonia.UI.Controls
         {
             base.OnPointerCaptureLost(e);
 
-            RaiseEvent(new PointerEventArgs(MenuItem.PointerLeaveItemEvent, this, e.Pointer, VisualRoot, new Point(),
-                0, null, KeyModifiers.None));
+            RaiseEvent(new PointerEventArgs(MenuItem.PointerExitedItemEvent, this, e.Pointer, VisualRoot, new Point(),
+                0, default, KeyModifiers.None));
         }
     }
 }

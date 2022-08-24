@@ -195,13 +195,13 @@ namespace FluentAvalonia.UI.Controls
 			InitEvents();
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 
 			if (change.Property == SelectionModeProperty)
 			{
-				var newValue = change.NewValue.GetValueOrDefault<ListViewSelectionMode>();
+				var newValue = change.GetNewValue<ListViewSelectionMode>();
 
 				UpdateVisualStateForSelectionModeChange(newValue);
 			}

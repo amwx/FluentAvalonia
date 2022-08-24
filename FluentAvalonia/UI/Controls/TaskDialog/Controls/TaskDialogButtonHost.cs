@@ -31,13 +31,13 @@ namespace FluentAvalonia.UI.Controls.Primitives
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == IconSourceProperty)
             {
-                PseudoClasses.Set(":icon", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":icon", change.NewValue != null);
             }
         }
     }

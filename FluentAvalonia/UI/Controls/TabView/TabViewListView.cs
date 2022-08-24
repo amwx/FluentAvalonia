@@ -94,7 +94,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
             Scroller = e.NameScope.Find<ScrollViewer>("ScrollViewer");
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
             if (change.Property == BoundsProperty)

@@ -60,14 +60,14 @@ public partial class ColorPickerButton : TemplatedControl, IStyleable
 		_flyout.Dismissed -= OnFlyoutDismissed;
 	}
 
-	protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+	protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 	{
 		base.OnPropertyChanged(change);
 		if (change.Property == ColorProperty)
 		{
 			ColorChanged?.Invoke(this, new ColorButtonColorChangedEventArgs(
-                change.OldValue.GetValueOrDefault<Color?>(),
-				change.NewValue.GetValueOrDefault<Color?>()));
+                change.GetOldValue<Color?>(),
+				change.GetNewValue<Color?>()));
 		}
 	}
 

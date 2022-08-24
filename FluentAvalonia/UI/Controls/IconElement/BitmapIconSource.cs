@@ -49,13 +49,13 @@ namespace FluentAvalonia.UI.Controls
 
         public event EventHandler<object> OnBitmapChanged;
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 
 			if (change.Property == UriSourceProperty)
 			{
-				CreateBitmap(change.NewValue.GetValueOrDefault<Uri>());
+				CreateBitmap(change.GetNewValue<Uri>());
 			}
 			else if (change.Property == ShowAsMonochromeProperty)
 			{

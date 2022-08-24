@@ -47,7 +47,7 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 
@@ -57,8 +57,8 @@ namespace FluentAvalonia.UI.Controls
 
 			if (change.Property == CommandProperty)
 			{
-				var oldCommand = change.OldValue.GetValueOrDefault() as ICommand;
-				var newCommand = change.NewValue.GetValueOrDefault() as ICommand;
+				var oldCommand = change.GetOldValue<ICommand>();
+				var newCommand = change.GetNewValue<ICommand>();
 
 				if (oldCommand is XamlUICommand oldXaml)
 				{
@@ -117,11 +117,11 @@ namespace FluentAvalonia.UI.Controls
 			}
 			else if (change.Property == InputGestureProperty)
 			{
-				PseudoClasses.Set(":hotkey", change.NewValue.GetValueOrDefault() != null);
+				PseudoClasses.Set(":hotkey", change.NewValue != null);
 			}
             else if (change.Property == HotKeyProperty)
             {
-                var kg = change.NewValue.GetValueOrDefault<KeyGesture>();
+                var kg = change.GetNewValue<KeyGesture>();
                 InputGesture = kg;
             }
 		}

@@ -30,12 +30,12 @@ namespace FluentAvalonia.UI.Controls
 
 		Type IStyleable.StyleKey => typeof(ToggleMenuFlyoutItem);
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == IsCheckedProperty)
 			{
-				PseudoClasses.Set(":checked", change.NewValue.GetValueOrDefault<bool>());
+				PseudoClasses.Set(":checked", change.GetNewValue<bool>());
 			}
 		}
 

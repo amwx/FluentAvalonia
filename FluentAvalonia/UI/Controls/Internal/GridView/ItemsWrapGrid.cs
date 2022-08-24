@@ -159,7 +159,7 @@ namespace FluentAvalonia.UI.Controls
 			return finalSize;
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 
@@ -167,7 +167,7 @@ namespace FluentAvalonia.UI.Controls
 			{
 				if (_context != null)
 				{
-					_context.ItemWidth = change.NewValue.GetValueOrDefault<double>();
+					_context.ItemWidth = change.GetNewValue<double>();
 					InvalidateMeasure();
 				}
 			}
@@ -175,7 +175,7 @@ namespace FluentAvalonia.UI.Controls
 			{
 				if (_context != null)
 				{
-					_context.ItemHeight = change.NewValue.GetValueOrDefault<double>();
+					_context.ItemHeight = change.GetNewValue<double>();
 					InvalidateMeasure();
 				}
 			}
@@ -183,7 +183,7 @@ namespace FluentAvalonia.UI.Controls
 			{
 				if (_context != null)
 				{
-					_context.MaxRowsOrColumns = change.NewValue.GetValueOrDefault<int>();
+					_context.MaxRowsOrColumns = change.GetNewValue<int>();
 					InvalidateMeasure();
 				}
 			}

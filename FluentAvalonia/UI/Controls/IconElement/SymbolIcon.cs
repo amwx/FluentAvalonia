@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 
@@ -45,16 +46,16 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(FontSizeProperty, value);
         }
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
-			if (change.Property == TextBlock.FontSizeProperty ||
+			if (change.Property == TextElement.FontSizeProperty ||
 				change.Property == SymbolProperty)
 			{
 				GenerateText();
 				InvalidateMeasure();
 			}
-			else if (change.Property == TextBlock.ForegroundProperty)
+			else if (change.Property == TextElement.ForegroundProperty)
 			{
 				GenerateText();
 			}
@@ -65,7 +66,7 @@ namespace FluentAvalonia.UI.Controls
             if (_textLayout == null)
                 GenerateText();
 
-            return _textLayout.Size;
+            return _textLayout.Bounds.Size;
         }
 
         public override void Render(DrawingContext context)
@@ -75,10 +76,10 @@ namespace FluentAvalonia.UI.Controls
 
             var dstRect = new Rect(Bounds.Size);
             using (context.PushClip(dstRect))
-            using (context.PushPreTransform(Matrix.CreateTranslation(dstRect.Center.X - _textLayout.Size.Width / 2,
-                dstRect.Center.Y - _textLayout.Size.Height / 2)))
             {
-                _textLayout.Draw(context);
+                var pt = new Point(dstRect.Center.X - _textLayout.Bounds.Width / 2,
+                    dstRect.Center.Y - _textLayout.Bounds.Height / 2);
+                _textLayout.Draw(context, pt);
             }
         }
 

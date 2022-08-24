@@ -141,7 +141,7 @@
                                   Content="{TemplateBinding Content}"
                                   HorizontalContentAlignment="Center"
                                   VerticalContentAlignment="Center"
-                                  TextBlock.FontSize="16"
+                                  TextElement.FontSize="16"
                                   Padding="{TemplateBinding Padding}"
                                   Background="{TemplateBinding Background}"
                                   BorderBrush="{TemplateBinding BorderBrush}"

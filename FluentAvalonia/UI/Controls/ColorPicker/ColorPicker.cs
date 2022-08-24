@@ -211,14 +211,14 @@ namespace FluentAvalonia.UI.Controls
 			UpdateColorAndControls(Color, ColorUpdateReason.Initial);
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == ColorProperty)
 			{
 				if (!_ignoreColorChange)
 				{
-					UpdateColorAndControls(change.NewValue.GetValueOrDefault<Color2>(), ColorUpdateReason.Programmatic);
+					UpdateColorAndControls(change.GetNewValue<Color2>(), ColorUpdateReason.Programmatic);
 				}
 			}
 		}

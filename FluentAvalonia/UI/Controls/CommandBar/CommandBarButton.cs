@@ -12,26 +12,26 @@ namespace FluentAvalonia.UI.Controls
 	{
 		Type IStyleable.StyleKey => typeof(CommandBarButton);
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == IconProperty)
 			{
-				PseudoClasses.Set(":icon", change.NewValue.GetValueOrDefault() != null);
+				PseudoClasses.Set(":icon", change.NewValue != null);
 			}
 			else if (change.Property == LabelProperty)
 			{
-				PseudoClasses.Set(":label", change.NewValue.GetValueOrDefault() != null);
+				PseudoClasses.Set(":label", change.NewValue != null);
 			}
 			else if (change.Property == FlyoutProperty)
 			{
-				if (change.OldValue.GetValueOrDefault() is FlyoutBase oldFB)
+				if (change.OldValue is FlyoutBase oldFB)
 				{
 					oldFB.Closed -= OnFlyoutClosed;
 					oldFB.Opened -= OnFlyoutOpened;
 				}
 
-				if (change.NewValue.GetValueOrDefault() is FlyoutBase newFB)
+				if (change.NewValue is FlyoutBase newFB)
 				{
 					newFB.Closed += OnFlyoutClosed;
 					newFB.Opened += OnFlyoutOpened;
@@ -47,15 +47,15 @@ namespace FluentAvalonia.UI.Controls
 			}
 			else if (change.Property == HotKeyProperty)
 			{
-				PseudoClasses.Set(":hotkey", change.NewValue.GetValueOrDefault() != null);
+				PseudoClasses.Set(":hotkey", change.NewValue != null);
 			}
 			else if (change.Property == IsCompactProperty)
 			{
-				PseudoClasses.Set(":compact", change.NewValue.GetValueOrDefault<bool>());
+				PseudoClasses.Set(":compact", change.GetNewValue<bool>());
 			}
 			else if (change.Property == CommandProperty)
 			{
-				if (change.OldValue.GetValueOrDefault() is XamlUICommand xamlComOld)
+				if (change.OldValue is XamlUICommand xamlComOld)
 				{
 					if (Label == xamlComOld.Label)
 					{
@@ -77,7 +77,7 @@ namespace FluentAvalonia.UI.Controls
 					}
 				}
 
-				if (change.NewValue.GetValueOrDefault() is XamlUICommand xamlCom)
+				if (change.NewValue is XamlUICommand xamlCom)
 				{
 					if (string.IsNullOrEmpty(Label))
 					{

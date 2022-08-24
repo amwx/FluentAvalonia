@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Generators;
 using Avalonia.Controls.Templates;
+using Avalonia.Styling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +17,56 @@ namespace FluentAvalonia.UI.Controls
 			_owner = owner;
 		}
 
-		public IEnumerable<ItemContainerInfo> Containers => _containers?.Values ?? Enumerable.Empty<ItemContainerInfo>();
+        event EventHandler<ItemContainerEventArgs> IItemContainerGenerator.Materialized
+        {
+            add
+            {
+                throw new NotImplementedException();
+            }
+
+            remove
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        event EventHandler<ItemContainerEventArgs> IItemContainerGenerator.Dematerialized
+        {
+            add
+            {
+                throw new NotImplementedException();
+            }
+
+            remove
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        event EventHandler<ItemContainerEventArgs> IItemContainerGenerator.Recycled
+        {
+            add
+            {
+                throw new NotImplementedException();
+            }
+
+            remove
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<ItemContainerInfo> Containers => _containers?.Values ?? Enumerable.Empty<ItemContainerInfo>();
 
 		IDataTemplate IItemContainerGenerator.ItemTemplate { get; set; }
 
 		Type IItemContainerGenerator.ContainerType => null;
 
 		internal bool HasVirtualizingPanel { get; set; }
+        IEnumerable<ItemContainerInfo> IItemContainerGenerator.Containers { get; }
+        ControlTheme IItemContainerGenerator.ItemContainerTheme { get; set; }
 
-		public event EventHandler<ItemContainerEventArgs> Materialized;
+        public event EventHandler<ItemContainerEventArgs> Materialized;
 		public event EventHandler<ItemContainerEventArgs> Dematerialized;
 		public event EventHandler<ItemContainerEventArgs> Recycled;
 
@@ -231,8 +273,47 @@ namespace FluentAvalonia.UI.Controls
 			throw new NotImplementedException();
 		}
 
-		
-		private ListViewBase _owner;
+        ItemContainerInfo IItemContainerGenerator.Materialize(int index, object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<ItemContainerInfo> IItemContainerGenerator.Dematerialize(int startingIndex, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IItemContainerGenerator.InsertSpace(int index, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<ItemContainerInfo> IItemContainerGenerator.RemoveRange(int startingIndex, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IItemContainerGenerator.TryRecycle(int oldIndex, int newIndex, object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<ItemContainerInfo> IItemContainerGenerator.Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        IControl IItemContainerGenerator.ContainerFromIndex(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IItemContainerGenerator.IndexFromContainer(IControl container)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ListViewBase _owner;
 		private Queue<IControl> _recyclePool;
 		private SortedDictionary<int, ItemContainerInfo> _containers;
 	}

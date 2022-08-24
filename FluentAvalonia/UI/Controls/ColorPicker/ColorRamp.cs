@@ -26,7 +26,7 @@ namespace FluentAvalonia.UI.Controls
             FocusableProperty.OverrideDefaultValue<ColorRamp>(true);
         }
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == BorderBrushProperty ||
@@ -418,7 +418,7 @@ namespace FluentAvalonia.UI.Controls
 			b.TileMode = TileMode.Tile;
 			// b.SourceRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
 			b.DestinationRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
-			b.BitmapInterpolationMode = Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality;
+			b.BitmapInterpolationMode = BitmapInterpolationMode.HighQuality;
 			return b.ToImmutable();
 			
 			//_checkBrush = b;//.ToImmutable();

@@ -148,6 +148,8 @@ namespace FluentAvalonia.UI.Controls
 			}
 		}
 
+        bool IMenuItem.StaysOpenOnClick { get => false; set { } }
+
 		private ICommand _command;
 	}
 }

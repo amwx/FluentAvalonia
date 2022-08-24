@@ -117,6 +117,8 @@ namespace FluentAvalonia.UI.Controls
 		void IMenuItem.RaiseClick()
 		{ }
 
+        bool IMenuItem.StaysOpenOnClick { get => false; set { } }
+
 		private IEnumerable _items;
 	}
 }

@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
@@ -69,7 +70,7 @@ namespace FluentAvalonia.UI.Controls
 
         public IVisual TabSeparator { get; private set; }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
@@ -81,7 +82,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 OnIsSelectedPropertyChanged(change);
             }
-            else if (change.Property == TextBlock.ForegroundProperty)
+            else if (change.Property == TextElement.ForegroundProperty)
             {
                 OnForegroundPropertyChanged(change);
             }
@@ -209,9 +210,9 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        protected override void OnPointerEnter(PointerEventArgs e)
+        protected override void OnPointerEntered(PointerEventArgs e)
         {
-            base.OnPointerEnter(e);
+            base.OnPointerEntered(e);
 
             _isPointerOver = true;
 
@@ -224,9 +225,9 @@ namespace FluentAvalonia.UI.Controls
             HideLeftAdjacentTabSeparator();
         }
 
-        protected override void OnPointerLeave(PointerEventArgs e)
+        protected override void OnPointerExited(PointerEventArgs e)
         {
-            base.OnPointerLeave(e);
+            base.OnPointerExited(e);
 
             _isPointerOver = false;
             _isMiddlePointerButtonPressed = false;
@@ -267,17 +268,17 @@ namespace FluentAvalonia.UI.Controls
             TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(builder.ToString());
         }
 
-        private void OnSizeChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnSizeChanged(AvaloniaPropertyChangedEventArgs change)
         {
             // WinUI #6748
             Dispatcher.UIThread.Post(() => UpdateTabGeometry());
         }
 
-        private void OnIsSelectedPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnIsSelectedPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             // Ignore AutomationPeer
 
-            if (change.NewValue.GetValueOrDefault<bool>())
+            if (change.GetNewValue<bool>())
             {
                 SetValue(ZIndexProperty, 20);
 
@@ -295,7 +296,7 @@ namespace FluentAvalonia.UI.Controls
             UpdateForeground();
         }
 
-        private void OnForegroundPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        private void OnForegroundPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             UpdateForeground();
         }
@@ -410,17 +411,17 @@ namespace FluentAvalonia.UI.Controls
             CloseRequested?.Invoke(this, args);
         }
 
-        private void OnCloseButtonClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnCloseButtonClick(object sender, RoutedEventArgs e)
         {
             RequestClose();
         }
 
-        private void OnIsClosablePropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> args)
+        private void OnIsClosablePropertyChanged(AvaloniaPropertyChangedEventArgs args)
         {
             UpdateCloseButton();
         }
 
-        private void OnHeaderPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> args)
+        private void OnHeaderPropertyChanged(AvaloniaPropertyChangedEventArgs args)
         {
             OnHeaderChanged();
         }
@@ -478,7 +479,7 @@ namespace FluentAvalonia.UI.Controls
             }
         }
 
-        private void OnIconSourcePropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> args)
+        private void OnIconSourcePropertyChanged(AvaloniaPropertyChangedEventArgs args)
         {
             OnIconSourceChanged();
         }
