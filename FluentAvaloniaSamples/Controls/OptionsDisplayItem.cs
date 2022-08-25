@@ -102,7 +102,7 @@ namespace FluentAvaloniaSamples.Controls
             remove => RemoveHandler(NavigationRequestedEvent, value);
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
@@ -111,22 +111,22 @@ namespace FluentAvaloniaSamples.Controls
                 if (Expands)
                     throw new InvalidOperationException("Control cannot both Navigate and Expand");
 
-                PseudoClasses.Set(":navigates", change.NewValue.GetValueOrDefault<bool>());
+                PseudoClasses.Set(":navigates", change.GetNewValue<bool>());
             }
             else if (change.Property == ExpandsProperty)
             {
                 if (Navigates)
                     throw new InvalidOperationException("Control cannot both Navigate and Expand");
 
-                PseudoClasses.Set(":expands", change.NewValue.GetValueOrDefault<bool>());
+                PseudoClasses.Set(":expands", change.GetNewValue<bool>());
             }
             else if (change.Property == IsExpandedProperty)
             {
-                PseudoClasses.Set(":expanded", change.NewValue.GetValueOrDefault<bool>());
+                PseudoClasses.Set(":expanded", change.GetNewValue<bool>());
             }
             else if (change.Property == IconProperty)
             {
-                PseudoClasses.Set(":icon", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":icon", change.NewValue != null);
             }
         }
 

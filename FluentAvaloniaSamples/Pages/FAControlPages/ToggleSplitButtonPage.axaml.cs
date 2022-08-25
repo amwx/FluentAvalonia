@@ -12,7 +12,7 @@ namespace FluentAvaloniaSamples.Pages
         {
             InitializeComponent();
 
-            TargetType = typeof(ToggleSplitButton);
+            //TargetType = typeof(ToggleSplitButton);
             WinUINamespace = "Microsoft.UI.Xaml.Controls.ToggleSplitButton";
             WinUIDocsLink = new Uri("https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.togglesplitbutton?view=winui-3.0");
             WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/controls/buttons");

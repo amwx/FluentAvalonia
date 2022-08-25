@@ -255,8 +255,8 @@ namespace FluentAvaloniaSamples.Controls
             _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
             _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
 
-            _xamlTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
-            _cSharpTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
+            //_xamlTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
+           // _cSharpTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
 
             _xamlTextEditor.Text = XamlSource;
             _cSharpTextEditor.Text = CSharpSource;
@@ -300,30 +300,30 @@ namespace FluentAvaloniaSamples.Controls
                 if (value is ISolidColorBrush sb)
                 {
                     var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                    _xamlTextEditor.TextArea.SelectionBrush = b;
-                    _cSharpTextEditor.TextArea.SelectionBrush = b;
+                    //_xamlTextEditor.TextArea.SelectionBrush = b;
+                    //_cSharpTextEditor.TextArea.SelectionBrush = b;
                 }                
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == OptionsProperty)
             {
-                PseudoClasses.Set(":options", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":options", change.NewValue != null);
             }
             else if (change.Property == BoundsProperty)
             {
-                var wid = change.NewValue.GetValueOrDefault<Rect>().Width;
+                var wid = change.GetNewValue<Rect>().Width;
 
                 PseudoClasses.Set(":adaptiveW", wid < 725);
                 PseudoClasses.Set(":small", wid < 500);
             }
             else if (change.Property == IsOptionsExpandedProperty)
             {
-                PseudoClasses.Set(":optionsfull", change.NewValue.GetValueOrDefault<bool>());
+                PseudoClasses.Set(":optionsfull", change.GetNewValue<bool>());
             }
         }
 
@@ -355,8 +355,8 @@ namespace FluentAvaloniaSamples.Controls
                     if (value is ISolidColorBrush sb)
                     {
                         var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                        _xamlTextEditor.TextArea.SelectionBrush = b;
-                        _cSharpTextEditor.TextArea.SelectionBrush = b;
+                        //_xamlTextEditor.TextArea.SelectionBrush = b;
+                        //_cSharpTextEditor.TextArea.SelectionBrush = b;
                     }
                 }
             }
@@ -618,13 +618,13 @@ namespace FluentAvaloniaSamples.Controls
                     {
                         StartExpression = new System.Text.RegularExpressions.Regex(@"<!--"),
                         EndExpression = new System.Text.RegularExpressions.Regex(@"-->"),
-                        SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(107,142,35) : Colors.Green) }
+                        //SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(107,142,35) : Colors.Green) }
                     },
                     new HighlightingSpan // XML tag
                     {
                         StartExpression = new System.Text.RegularExpressions.Regex("<"),
                         EndExpression = new System.Text.RegularExpressions.Regex(@">"),
-                        SpanColor =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
+                        //SpanColor =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
                         SpanColorIncludesEnd = true,
                         SpanColorIncludesStart = true,
                         RuleSet = new HighlightingRuleSet
@@ -634,17 +634,17 @@ namespace FluentAvaloniaSamples.Controls
                                 new HighlightingRule // Attribute Name
                                 {
                                      Regex = new System.Text.RegularExpressions.Regex(@"[\d\w_\-\.]+(?=(\s*=))"),
-                                     Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(135,206,250) : Colors.Red) }
+                                     //Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(135,206,250) : Colors.Red) }
                                 },
                                 new HighlightingRule // Tag Name
                                 {
                                      Regex = new System.Text.RegularExpressions.Regex(@"(?!(\/|<))[\w\d\#]+"),
-                                     Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(87,117,202) : Color.FromRgb(163, 21, 21)) }
+                                     //Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(87,117,202) : Color.FromRgb(163, 21, 21)) }
                                 },
                                 new HighlightingRule
                                 {
                                     Regex = new System.Text.RegularExpressions.Regex("/"),
-                                    Color =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
+                                    //Color =new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(121,121,121) : Colors.Blue) },
                                 }
                             },
                             Spans =
@@ -653,7 +653,7 @@ namespace FluentAvaloniaSamples.Controls
                                 {
                                     StartExpression = new System.Text.RegularExpressions.Regex("\""),
                                     EndExpression = new System.Text.RegularExpressions.Regex("\"|(?=<)"),
-                                    SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
+                                    //SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
                                 }
                             }
                         }
@@ -662,7 +662,7 @@ namespace FluentAvaloniaSamples.Controls
                     {
                         StartExpression = new System.Text.RegularExpressions.Regex("\""),
                         EndExpression = new System.Text.RegularExpressions.Regex("\""),
-                        SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
+                        //SpanColor = new HighlightingColor { Foreground =new SimpleHighlightingBrush(isDark ? Color.FromRgb(255,160,122) : Colors.Blue) },
                         SpanColorIncludesEnd = true,
                         SpanColorIncludesStart = true
                     },
@@ -708,22 +708,22 @@ namespace FluentAvaloniaSamples.Controls
                     new HighlightingRule // blue keywords
                     {
                         Regex = new System.Text.RegularExpressions.Regex("\\b(this|base|as|is|new|sizeof|typeof|stackalloc|default|true|false|get|set|add|remove|ref|out)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
+                        //Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
                     },
                     new HighlightingRule // purple keywords
                     {
                         Regex = new System.Text.RegularExpressions.Regex("\\b(switch|else|if|case|break|return|for|foreach|while|do|continue|try|catch|finally)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(Color.FromRgb(216,160,223)) }, // TODO...
+                        //Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(Color.FromRgb(216,160,223)) }, // TODO...
                     },
                     new HighlightingRule // value types (also blue)
                     {
                         Regex = new System.Text.RegularExpressions.Regex("\\b(bool|byte|char|decimal|double|enum|float|int|long|sbyte|short|struct|uint|ushort|ulong)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
+                        //Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
                     },
                     new HighlightingRule // other blue stuff
                     {
                         Regex = new System.Text.RegularExpressions.Regex("\\b(class|delegate|object|string|void|abstract|const|override|readonly|sealed|static|partial|virtual|async|public|protected|private|internal|namespace|using|null|nameof|explicit|implicit|operator)\\b"),
-                        Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
+                       // Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(86,156,214) : Colors.Blue) },
                     },
                 },
                 Spans =
@@ -734,13 +734,13 @@ namespace FluentAvaloniaSamples.Controls
                         EndExpression = new Regex("$"),
                         SpanColorIncludesStart = true,
                         SpanColorIncludesEnd = true,
-                        SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(89,166,74) : Colors.Green) }
+                        //SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(89,166,74) : Colors.Green) }
                     },
                     new HighlightingSpan // String or carh
                     {
                         StartExpression = new System.Text.RegularExpressions.Regex("(\"|')"),
                         EndExpression = new System.Text.RegularExpressions.Regex("(\"|')"),
-                        SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(214,157,133) : Color.FromRgb(162,21,21)) }, 
+                        //SpanColor = new HighlightingColor { Foreground = new SimpleHighlightingBrush(isDark ? Color.FromRgb(214,157,133) : Color.FromRgb(162,21,21)) }, 
                         SpanColorIncludesEnd = true,
                         SpanColorIncludesStart = true
                     }

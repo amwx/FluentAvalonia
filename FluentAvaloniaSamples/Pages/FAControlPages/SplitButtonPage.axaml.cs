@@ -13,7 +13,7 @@ namespace FluentAvaloniaSamples.Pages
         {
             InitializeComponent();
 
-            TargetType = typeof(SplitButton);
+            //TargetType = typeof(SplitButton);
             WinUINamespace = "Microsoft.UI.Xaml.Controls.SplitButton";
             WinUIDocsLink = new Uri("https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.splitbutton?view=winui-3.0");
             WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/controls/buttons#create-a-split-button");

@@ -124,7 +124,7 @@ namespace FluentAvaloniaSamples.Controls
                 if (value is ISolidColorBrush sb)
                 {
                     var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                    _textEditor.TextArea.SelectionBrush = b;
+                    //_textEditor.TextArea.SelectionBrush = b;
                 }
             }
         }

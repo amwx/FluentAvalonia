@@ -50,7 +50,7 @@
                                                   Content="{TemplateBinding Content}"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Bottom"
-                                                  TextBlock.FontSize="10"
+                                                  TextElement.FontSize="10"
                                                   Padding="0 4"
                                                   Margin="0 -15 0 3"
                                                   DockPanel.Dock="Bottom">

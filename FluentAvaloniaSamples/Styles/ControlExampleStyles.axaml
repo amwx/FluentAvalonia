@@ -60,8 +60,8 @@
                             <ContentPresenter Name="HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               ContentTemplate="{TemplateBinding HeaderTemplate}"                                          
-                                              TextBlock.FontSize="24"
-                                              TextBlock.FontWeight="SemiBold"
+                                              TextElement.FontSize="24"
+                                              TextElement.FontWeight="SemiBold"
                                               Padding="12 8"
                                               HorizontalContentAlignment="Left"
                                               VerticalContentAlignment="Center" />
