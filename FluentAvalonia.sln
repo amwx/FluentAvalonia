@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvaloniaTests", "FluentAvaloniaTests\FluentAvaloniaTests.csproj", "{8AE77DED-A81D-43DC-B4A2-AE03ED1C20F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FASandbox", "FASandbox\FASandbox.csproj", "{3CD8ED83-02E7-4949-9C48-531E142A2695}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FASandbox", "FASandbox\FASandbox.csproj", "{3CD8ED83-02E7-4949-9C48-531E142A2695}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
