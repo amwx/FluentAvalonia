@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Input;
 using Avalonia.Platform;
-using Avalonia.Shared.PlatformSupport;
 using Avalonia.Styling;
 using FluentAvalonia.Styling;
 using Moq;
@@ -48,9 +47,9 @@ namespace FluentAvaloniaTests.Helpers
                 .Bind<IStyler>().ToConstant(new Styler())
                 .BindToSelf<IGlobalStyles>(this)
                 .Bind<IFontManagerImpl>().ToConstant(new MockFontManager())
-                .Bind<ITextShaperImpl>().ToConstant(new MockTextShaper())
+                //.Bind<ITextShaperImpl>().ToConstant(new MockTextShaper())
                 .Bind<IGlobalClock>().ToConstant(new MockGlobalClock())
-                .Bind<IPlatformRenderInterface>().ToConstant(new MockPlatformRenderInterface())
+                //.Bind<IPlatformRenderInterface>().ToConstant(new MockPlatformRenderInterface())
                 .Bind<IFocusManager>().ToConstant(new FocusManager())
                 .Bind<IPlatformThreadingInterface>().ToConstant(Mock.Of<IPlatformThreadingInterface>(x => x.CurrentThreadIsLoopThread == true));
 

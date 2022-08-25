@@ -36,6 +36,11 @@ namespace FluentAvaloniaTests.Helpers
             return new MockGlyphTypeface();
         }
 
+        public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch, FontFamily fontFamily, CultureInfo culture, out Typeface typeface)
+        {
+            throw new NotImplementedException();
+        }
+
         private readonly string _defaultFamilyName;
     }
 
