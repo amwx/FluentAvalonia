@@ -153,7 +153,7 @@
                                 <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}" Height="1"
                                            Grid.ColumnSpan="2" VerticalAlignment="Top" />
                                 
-                                <ui:Button Content="&#xF296;"
+                                <Button Content="&#xF296;"
                                            FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                            FontSize="20"
                                            HorizontalAlignment="Stretch"
@@ -161,7 +161,7 @@
                                            Classes="PickerAcceptDismiss" 
                                            Name="ConfirmButton"/>
 
-                                <ui:Button Content="&#xF36B;"
+                                <Button Content="&#xF36B;"
                                            FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                            FontSize="18"
                                            HorizontalAlignment="Stretch"

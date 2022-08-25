@@ -16,7 +16,7 @@
 
 
 
-    <Style Selector="ui|Button.TabViewCloseButtonStyle">
+    <Style Selector="Button.TabViewCloseButtonStyle">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
@@ -42,12 +42,12 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ui|Button.TabViewCloseButtonStyle:pointerover /template/ ContentPresenter">
+    <Style Selector="Button.TabViewCloseButtonStyle:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackgroundPointerOver}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForegroundPointerOver}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrushPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.TabViewCloseButtonStyle:pressed /template/ ContentPresenter">
+    <Style Selector="Button.TabViewCloseButtonStyle:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackgroundPressed}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForegroundPressed}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrushPressed}" />
@@ -130,7 +130,7 @@
                                                   ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                   TextBlock.FontWeight="{TemplateBinding FontWeight}" />
 
-                                <ui:Button Name="CloseButton"
+                                <Button Name="CloseButton"
                                            Grid.Column="2"
                                            Margin="{DynamicResource TabViewItemHeaderCloseMargin}"
                                            Content="&#xE711;"
@@ -224,7 +224,7 @@
     <Style Selector="ui|TabViewItem:pointerover /template/ ContentControl#IconControl">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemIconForegroundPointerOver}" />
     </Style>
-    <Style Selector="ui|TabViewItem:pointerover /template/ ui|Button#CloseButton">
+    <Style Selector="ui|TabViewItem:pointerover /template/ Button#CloseButton">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderPointerOverCloseButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderPointerOverCloseButtonForeground}" />
     </Style>
@@ -242,7 +242,7 @@
     <Style Selector="ui|TabViewItem:pressed /template/ ContentControl#IconControl">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemIconForegroundPressed}" />
     </Style>
-    <Style Selector="ui|TabViewItem:pressed /template/ ui|Button#CloseButton">
+    <Style Selector="ui|TabViewItem:pressed /template/ Button#CloseButton">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderPressedCloseButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderPressedCloseButtonForeground}" />
     </Style>
@@ -278,7 +278,7 @@
     <Style Selector="ui|TabViewItem:selected /template/ ContentControl#IconControl">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemIconForegroundSelected}" />
     </Style>
-    <Style Selector="ui|TabViewItem:selected /template/ ui|Button#CloseButton">
+    <Style Selector="ui|TabViewItem:selected /template/ Button#CloseButton">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderSelectedCloseButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderSelectedCloseButtonForeground}" />
     </Style>
@@ -303,7 +303,7 @@
     <Style Selector="ui|TabViewItem:disabled /template/ ContentControl#IconControl">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderForegroundDisabled}" />
     </Style>
-    <Style Selector="ui|TabViewItem:disabled /template/ ui|Button#CloseButton">
+    <Style Selector="ui|TabViewItem:disabled /template/ Button#CloseButton">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderDisabledCloseButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderDisabledCloseButtonForeground}" />
     </Style>
@@ -329,7 +329,7 @@
 
 
     <!-- :closecollapsed -->
-    <Style Selector="ui|TabViewItem:closecollapsed /template/ ui|Button#CloseButton">
+    <Style Selector="ui|TabViewItem:closecollapsed /template/ Button#CloseButton">
         <Setter Property="IsVisible" Value="False" />
     </Style>
 

@@ -97,7 +97,7 @@
         <ui:Symbol x:Key="InfoBarCloseButtonSymbol">Dismiss</ui:Symbol>
     </Styles.Resources>
 
-    <Style Selector="ui|Button.InfoBarCloseButtonStyle">
+    <Style Selector="Button.InfoBarCloseButtonStyle">
         <Setter Property="Background" Value="{DynamicResource AppBarButtonBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForeground}" />
@@ -121,17 +121,17 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ui|Button.InfoBarCloseButtonStyle:pointerover /template/ ContentPresenter">
+    <Style Selector="Button.InfoBarCloseButtonStyle:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource AppBarButtonBackgroundPointerOver}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPointerOver}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.InfoBarCloseButtonStyle:pressed /template/ ContentPresenter">
+    <Style Selector="Button.InfoBarCloseButtonStyle:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource AppBarButtonBackgroundPressed}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPressed}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
     </Style>
-    <Style Selector="ui|Button.InfoBarCloseButtonStyle:disabled /template/ ContentPresenter">
+    <Style Selector="Button.InfoBarCloseButtonStyle:disabled /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource AppBarButtonBackgroundDisabled}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushDisabled}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundDisabled}" />
@@ -219,7 +219,7 @@
                                               HorizontalContentAlignment="Stretch"
                                               VerticalContentAlignment="Stretch" />
 
-                            <ui:Button Name="CloseButton"
+                            <Button Name="CloseButton"
                                        VerticalAlignment="Center"
                                        Grid.Column="2"
                                        Command="{TemplateBinding CloseButtonCommand}"
@@ -233,7 +233,7 @@
                                     <ui:SymbolIcon Symbol="{StaticResource InfoBarCloseButtonSymbol}" />
                                 </Viewbox>
 
-                            </ui:Button>
+                            </Button>
 
                         </Grid>
 
@@ -338,7 +338,7 @@
 
 
     <!-- CloseButton, visible is default -->
-    <Style Selector="ui|InfoBar:closehidden /template/ ui|Button#CloseButton">
+    <Style Selector="ui|InfoBar:closehidden /template/ Button#CloseButton">
         <Setter Property="IsVisible" Value="False" />
     </Style>
 

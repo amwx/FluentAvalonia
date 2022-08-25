@@ -35,7 +35,7 @@
 	as needed, and everything will still continue to work, we just won't have two Popups	
 	-->
 
-	<Style Selector="ui|Button.CBEllipsisButton.CBFlyout">
+	<Style Selector="Button.CBEllipsisButton.CBFlyout">
 		<Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackground}" />
 		<Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForeground}" />
 		<Setter Property="BorderBrush" Value="{DynamicResource CommandBarFlyoutAppBarButtonBorderBrush}" />
@@ -66,15 +66,15 @@
 			</ControlTemplate>
 		</Setter>
 	</Style>
-	<Style Selector="ui|Button.CBEllipsisButton.CBFlyout:pointerover /template/ ContentPresenter">
+	<Style Selector="Button.CBEllipsisButton.CBFlyout:pointerover /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundPointerOver}" />
 		<Setter Property="TextBlock.Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPointerOver}" />
 	</Style>
-	<Style Selector="ui|Button.CBEllipsisButton.CBFlyout:pressed /template/ ContentPresenter">
+	<Style Selector="Button.CBEllipsisButton.CBFlyout:pressed /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundPressed}" />
 		<Setter Property="TextBlock.Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPressed}" />
 	</Style>
-	<Style Selector="ui|Button.CBEllipsisButton.CBFlyout:disabled /template/ ContentPresenter">
+	<Style Selector="Button.CBEllipsisButton.CBFlyout:disabled /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundDisabled}" />
 		<Setter Property="TextBlock.Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundDisabled}" />
 	</Style>
@@ -121,7 +121,7 @@
 								</ItemsControl.ItemsPanel>
 							</ItemsControl>
 
-							<ui:Button Name="MoreButton"
+							<Button Name="MoreButton"
 										Foreground="{TemplateBinding Foreground}"
 										Grid.Column="1"
 										Classes="CBEllipsisButton CBFlyout">
@@ -129,7 +129,7 @@
 												FontSize="24"
 												Height="{StaticResource AppBarExpandButtonCircleDiameter}"
 												Name="EllipsisIcon"/>
-							</ui:Button>
+							</Button>
 
 							<Border Name="OpenBorder"
 									Grid.ColumnSpan="2"

@@ -9,9 +9,9 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="4">
-                <ui:Button Classes="PaneToggleButtonStyle" />
-				<ui:Button Classes="NavigationViewPaneSearchButtonStyle" />
-				<ui:Button Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop" />
+                <Button Classes="PaneToggleButtonStyle" />
+				<Button Classes="NavigationViewPaneSearchButtonStyle" />
+				<Button Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop" />
                 <TextBlock Text="Header Style" Classes="NavigationViewItemHeaderTextStyle" />
                 <ContentControl Classes="NavigationViewTitleHeaderContentControlTextStyle" Content="Title" />
             </StackPanel>
@@ -102,7 +102,7 @@
     <!-- - - - - Pane ToggleButton Style - - - - - -->
     <!-- - - - - - - - - - - - - - - - - - - - - - -->
 
-    <Style Selector="ui|Button.PaneToggleButtonStyle">
+    <Style Selector="Button.PaneToggleButtonStyle">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
         <Setter Property="MinHeight" Value="{StaticResource PaneToggleButtonHeight}" />
@@ -155,32 +155,32 @@
     </Style>
 
     <!-- pointerover -->
-    <Style Selector="ui|Button.PaneToggleButtonStyle:pointerover /template/ Border#LayoutRoot">
+    <Style Selector="Button.PaneToggleButtonStyle:pointerover /template/ Border#LayoutRoot">
         <Setter Property="Background" Value="{DynamicResource NavigationViewButtonBackgroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.PaneToggleButtonStyle:pointerover /template/ ContentPresenter#ContentPresenter">
+    <Style Selector="Button.PaneToggleButtonStyle:pointerover /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource NavigationViewButtonForegroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.PaneToggleButtonStyle:pointerover /template/ TextBlock#Icon">
+    <Style Selector="Button.PaneToggleButtonStyle:pointerover /template/ TextBlock#Icon">
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundPointerOver}" />
     </Style>
 
     <!-- pressed -->
-    <Style Selector="ui|Button.PaneToggleButtonStyle:pressed /template/ Border#LayoutRoot">
+    <Style Selector="Button.PaneToggleButtonStyle:pressed /template/ Border#LayoutRoot">
         <Setter Property="Background" Value="{DynamicResource NavigationViewButtonBackgroundPressed}" />
     </Style>
-    <Style Selector="ui|Button.PaneToggleButtonStyle:pressed /template/ ContentPresenter#ContentPresenter">
+    <Style Selector="Button.PaneToggleButtonStyle:pressed /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource NavigationViewButtonForegroundPressed}" />
     </Style>
-    <Style Selector="ui|Button.PaneToggleButtonStyle:pressed /template/ TextBlock#Icon">
+    <Style Selector="Button.PaneToggleButtonStyle:pressed /template/ TextBlock#Icon">
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundPressed}" />
     </Style>
 
     <!-- disabled -->
-    <Style Selector="ui|Button.PaneToggleButtonStyle:disabled /template/ Border#LayoutRoot">
+    <Style Selector="Button.PaneToggleButtonStyle:disabled /template/ Border#LayoutRoot">
         <Setter Property="Background" Value="{DynamicResource NavigationViewButtonBackgroundDisabled}" />
     </Style>
-    <Style Selector="ui|Button.PaneToggleButtonStyle:disabled /template/ ContentPresenter#ContentPresenter">
+    <Style Selector="Button.PaneToggleButtonStyle:disabled /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource NavigationViewButtonForegroundDisabled}" />
     </Style>
 
@@ -192,7 +192,7 @@
     <!-- - - - - Search Button Style - - - - -->
     <!-- - - - - - - - - - - - - - - - - - - -->
 
-    <Style Selector="ui|Button.NavigationViewPaneSearchButtonStyle">
+    <Style Selector="Button.NavigationViewPaneSearchButtonStyle">
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="Content" Value="&#xE11A;"/>
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
@@ -206,17 +206,17 @@
     Here tho, StaticResource aliases tend not to play well with theme changing when they're located
     outside of the resource dictionary they're pointing too since they only evaluate once and
     aren't aware of theme changes, so we override here -->
-    <Style Selector="ui|Button.NavigationViewPaneSearchButtonStyle:pointerover /template/ ContentPresenter">
+    <Style Selector="Button.NavigationViewPaneSearchButtonStyle:pointerover /template/ ContentPresenter">
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrushPointerOver}" />
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource NavigationViewItemForegroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.NavigationViewPaneSearchButtonStyle:pressed /template/ ContentPresenter">
+    <Style Selector="Button.NavigationViewPaneSearchButtonStyle:pressed /template/ ContentPresenter">
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrushPressed}" />
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPressed}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource NavigationViewItemForegroundPressed}" />
     </Style>
-    <Style Selector="ui|Button.NavigationViewPaneSearchButtonStyle:disabled /template/ ContentPresenter">
+    <Style Selector="Button.NavigationViewPaneSearchButtonStyle:disabled /template/ ContentPresenter">
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrushDisabled}" />
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundDisabled}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource NavigationViewItemForegroundDisabled}" />
@@ -226,7 +226,7 @@
     <!-- - - - - Overflow Button Style - - - - -->
     <!-- - - - - - - - - - - - - - - - - - - - -->
 
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop">
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
@@ -255,35 +255,35 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop /template/ Rectangle#PointerRectangle">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop /template/ Rectangle#PointerRectangle">
         <Setter Property="Fill" Value="Transparent" />
         <Setter Property="IsVisible" Value="False" />
     </Style>
 
     <!-- pointerover -->
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ Rectangle#PointerRectangle">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ Rectangle#PointerRectangle">
         <Setter Property="Fill" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ Panel#RootGrid">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ Panel#RootGrid">
         <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ ui|FontIcon#Icon">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pointerover /template/ ui|FontIcon#Icon">
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundPointerOver}" />
     </Style>
 
     <!-- pressed -->
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Rectangle#PointerRectangle">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Rectangle#PointerRectangle">
         <Setter Property="Fill" Value="{DynamicResource NavigationViewItemBackgroundPressed}" />
     </Style>
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Panel#RootGrid">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ Panel#RootGrid">
         <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPressed}" />
     </Style>
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ ui|FontIcon#Icon">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:pressed /template/ ui|FontIcon#Icon">
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundPressed}" />
     </Style>
 
     <!-- disabled -->
-    <Style Selector="ui|Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:disabled /template/ ui|FontIcon#Icon">
+    <Style Selector="Button.NavigationViewOverflowButtonStyleWhenPaneOnTop:disabled /template/ ui|FontIcon#Icon">
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundDisabled}" />
     </Style>
 

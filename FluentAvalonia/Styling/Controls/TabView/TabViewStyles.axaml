@@ -62,7 +62,7 @@
 
 
     <!-- TabView Button style (add button) -->
-    <Style Selector="ui|Button.TabViewButtonStyle">
+    <Style Selector="Button.TabViewButtonStyle">
         <Setter Property="Background" Value="{DynamicResource TabViewButtonBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource TabViewButtonForeground}"/>
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
@@ -82,15 +82,15 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ui|Button.TabViewButtonStyle:pointerover /template/ ContentPresenter">
+    <Style Selector="Button.TabViewButtonStyle:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TabViewButtonBackgroundPointerOver}"/>
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewButtonForegroundPointerOver}"/>
     </Style>
-    <Style Selector="ui|Button.TabViewButtonStyle:pressed /template/ ContentPresenter">
+    <Style Selector="Button.TabViewButtonStyle:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TabViewButtonBackgroundPressed}"/>
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewButtonForegroundPressed}"/>
     </Style>
-    <Style Selector="ui|Button.TabViewButtonStyle:disabled /template/ ContentPresenter">
+    <Style Selector="Button.TabViewButtonStyle:disabled /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource TabViewButtonBackgroundDisabled}"/>
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewButtonForegroundDisabled}"/>
     </Style>
@@ -152,7 +152,7 @@
                                  Grid.Column="2"
                                  Padding="{DynamicResource TabViewItemAddButtonContainerPadding}"
                                  VerticalAlignment="Bottom">
-                            <ui:Button Name="AddButton"
+                            <Button Name="AddButton"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Content="&#xE710;"

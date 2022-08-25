@@ -41,7 +41,7 @@
 	headaches for me in trying to make this work :D
 	-->
 
-	<Style Selector="ui|Button.CBEllipsisButton">
+	<Style Selector="Button.CBEllipsisButton">
 		<Setter Property="Background" Value="{DynamicResource AppBarButtonBackground}" />
 		<Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrush}" />
 		<Setter Property="BorderThickness" Value="0" />
@@ -73,17 +73,17 @@
 			</ControlTemplate>
 		</Setter>
 	</Style>
-	<Style Selector="ui|Button.CBEllipsisButton:pointerover /template/ ContentPresenter">
+	<Style Selector="Button.CBEllipsisButton:pointerover /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource AppBarButtonBackgroundPointerOver}" />
 		<Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
 		<Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPointerOver}" />
 	</Style>
-	<Style Selector="ui|Button.CBEllipsisButton:pressed /template/ ContentPresenter">
+	<Style Selector="Button.CBEllipsisButton:pressed /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource AppBarButtonBackgroundPressed}" />
 		<Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
 		<Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPressed}" />
 	</Style>
-	<Style Selector="ui|Button.CBEllipsisButton:disabled /template/ ContentPresenter">
+	<Style Selector="Button.CBEllipsisButton:disabled /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource AppBarButtonBackgroundDisabled}" />
 		<Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundDisabled}" />
 		<Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushDisabled}" />
@@ -141,7 +141,7 @@
 
 							</Grid>
 
-							<ui:Button Name="MoreButton"
+							<Button Name="MoreButton"
 									   Foreground="{TemplateBinding Foreground}"
 									   Grid.Column="1"
 									   Classes="CBEllipsisButton">
@@ -149,7 +149,7 @@
 											   FontSize="24"
 											   Height="{StaticResource AppBarExpandButtonCircleDiameter}"
 											   Name="EllipsisIcon"/>
-							</ui:Button>
+							</Button>
 
 							<Border Name="OpenBorder"
 									Grid.ColumnSpan="2"
@@ -179,7 +179,7 @@
 		<Setter Property="MinHeight" Value="{DynamicResource AppBarThemeCompactHeight}" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 	</Style>
-	<Style Selector="ui|CommandBar /template/ ui|Button#MoreButton">
+	<Style Selector="ui|CommandBar /template/ Button#MoreButton">
 		<Setter Property="Padding" Value="{DynamicResource CommandBarMoreButtonMargin}" />
 		<!--<Setter Property="MinHeight" Value="{DynamicResource AppBarThemeCompactHeight}" />-->
 		<Setter Property="VerticalAlignment" Value="Top" />
@@ -189,7 +189,7 @@
 		<Setter Property="BorderBrush" Value="{DynamicResource CommandBarBorderBrushOpen}" />
 		<Setter Property="IsVisible" Value="False" />
 	</Style>
-	<Style Selector="ui|CommandBar:disabled /template/ ui|Button#MoreButton ui|SymbolIcon">
+	<Style Selector="ui|CommandBar:disabled /template/ Button#MoreButton ui|SymbolIcon">
 		<Setter Property="Foreground" Value="{DynamicResource CommandBarEllipsisIconForegroundDisabled}" />
 	</Style>
 
@@ -228,7 +228,7 @@
 		<Setter Property="IsEnabled" Value="False" />
 		<Setter Property="Opacity" Value="0" />
 	</Style>
-	<Style Selector="ui|CommandBar:minimal /template/ ui|Button#MoreButton">
+	<Style Selector="ui|CommandBar:minimal /template/ Button#MoreButton">
 		<Setter Property="Padding" Value="14 11 14 0" />
 		<Setter Property="MinHeight" Value="{DynamicResource AppBarThemeMinimalHeight}" />
 		<Setter Property="VerticalAlignment" Value="Top" />
@@ -247,7 +247,7 @@
 		<Setter Property="IsEnabled" Value="True" />
 		<Setter Property="Opacity" Value="1" />
 	</Style>
-	<Style Selector="ui|CommandBar:minimal:open /template/ ui|Button#MoreButton">
+	<Style Selector="ui|CommandBar:minimal:open /template/ Button#MoreButton">
 		<Setter Property="Padding" Value="14 11 14 0" />
 		<Setter Property="MinHeight" Value="{DynamicResource AppBarThemeMinimalHeight}" />
 	</Style>
@@ -268,7 +268,7 @@
 	</Style>
 	
 	
-	<Style Selector="ui|CommandBar:open /template/ ui|Button#MoreButton">
+	<Style Selector="ui|CommandBar:open /template/ Button#MoreButton">
 		<Setter Property="VerticalAlignment" Value="Stretch" />
 	</Style>
 

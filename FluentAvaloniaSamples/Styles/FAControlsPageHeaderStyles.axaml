@@ -83,23 +83,23 @@
                             <StackPanel Spacing="4"
                                         Name="PageOptionButtonsHost">
                                 
-                                <ui:Button Name="ChangeThemeButton"
+                                <Button Name="ChangeThemeButton"
                                            Classes="AppBarButton"
                                            HorizontalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Spacing="12">
                                         <ui:SymbolIcon Symbol="Edit" />
                                         <TextBlock Text="Toggle Theme" />
                                     </StackPanel>
-                                </ui:Button>
+                                </Button>
                                 
-                                <ui:Button Name="ShowDefinitionButton"
+                                <Button Name="ShowDefinitionButton"
                                            Classes="AppBarButton"
                                            HorizontalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Spacing="12">
                                         <ui:SymbolIcon Symbol="CodeFilled" />
                                         <TextBlock Text="Show Definition" />
                                     </StackPanel>
-                                </ui:Button>
+                                </Button>
                             
                             </StackPanel>
                         </StackPanel>

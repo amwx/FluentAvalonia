@@ -9,9 +9,9 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="4">
-                <ui:Button Classes="NavigationBackButtonNormalStyle" />
-                <ui:Button Classes="NavigationBackButtonNormalStyle" IsEnabled="False" />
-                <ui:Button Classes="NavigationBackButtonNormalStyle SmallStyle" />
+                <Button Classes="NavigationBackButtonNormalStyle" />
+                <Button Classes="NavigationBackButtonNormalStyle" IsEnabled="False" />
+                <Button Classes="NavigationBackButtonNormalStyle SmallStyle" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -22,7 +22,7 @@
     </Styles.Resources>
 
 
-    <Style Selector="ui|Button.NavigationBackButtonNormalStyle">
+    <Style Selector="Button.NavigationBackButtonNormalStyle">
         <Setter Property="Background" Value="{DynamicResource NavigationViewBackButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
@@ -51,29 +51,29 @@
     </Style>
 
     <!-- pointerover -->
-    <Style Selector="ui|Button.NavigationBackButtonNormalStyle:pointerover /template/ Border#Root">
+    <Style Selector="Button.NavigationBackButtonNormalStyle:pointerover /template/ Border#Root">
         <Setter Property="Background" Value="{DynamicResource NavigationViewButtonBackgroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.NavigationBackButtonNormalStyle:pointerover /template/ ui|FontIcon#Content">
+    <Style Selector="Button.NavigationBackButtonNormalStyle:pointerover /template/ ui|FontIcon#Content">
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundPointerOver}" />
     </Style>
 
     <!-- pressed -->
-    <Style Selector="ui|Button.NavigationBackButtonNormalStyle:pressed /template/ Border#Root">
+    <Style Selector="Button.NavigationBackButtonNormalStyle:pressed /template/ Border#Root">
         <Setter Property="Background" Value="{DynamicResource NavigationViewButtonBackgroundPressed}" />
     </Style>
-    <Style Selector="ui|Button.NavigationBackButtonNormalStyle:pressed /template/ ui|FontIcon#Content">
+    <Style Selector="Button.NavigationBackButtonNormalStyle:pressed /template/ ui|FontIcon#Content">
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundPressed}" />
     </Style>
 
     <!-- disabled -->
-    <Style Selector="ui|Button.NavigationBackButtonNormalStyle:disabled /template/ ui|FontIcon#Content">
+    <Style Selector="Button.NavigationBackButtonNormalStyle:disabled /template/ ui|FontIcon#Content">
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundDisabled}" />
     </Style>
 
 
     <!-- Small Style (unused?) -->
-    <Style Selector="ui|Button.NavigationBackButtonNormalStyle.SmallStyle">
+    <Style Selector="Button.NavigationBackButtonNormalStyle.SmallStyle">
 		<Setter Property="Margin" Value="4,2,0,2" />
     </Style>
 

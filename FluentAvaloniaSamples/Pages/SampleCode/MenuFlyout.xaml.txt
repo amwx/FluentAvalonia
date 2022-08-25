@@ -1,4 +1,4 @@
-﻿<ui:Button.Flyout>
+﻿<Button.Flyout>
     <ui:MenuFlyout Placement="Bottom">
         <ui:MenuFlyoutItem Text="Item 1" Icon="Copy" />
         <ui:MenuFlyoutItem Text="Item 2" Icon="Paste" />
@@ -18,4 +18,4 @@
                                 Icon="Icons"
                                 GroupName="Test Group" />
     </ui:MenuFlyout>
-</ui:Button.Flyout>
+</Button.Flyout>

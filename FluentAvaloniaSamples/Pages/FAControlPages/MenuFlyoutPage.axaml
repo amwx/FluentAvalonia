@@ -54,8 +54,8 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
         <ctrls:ControlExample Header="A Simple MenuFlyout attached to a Button"
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/MenuFlyout.xaml.txt">
 
-            <ui:Button Content="Click me for flyout!">
-                <ui:Button.Flyout>
+            <Button Content="Click me for flyout!">
+                <Button.Flyout>
                     <ui:MenuFlyout Placement="Bottom">
                         <ui:MenuFlyoutItem Text="Item 1" Icon="Copy" />
                         <ui:MenuFlyoutItem Text="Item 2" Icon="Paste" />
@@ -75,8 +75,8 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
                                                 Icon="Icons"
                                                 GroupName="Test Group" />
                     </ui:MenuFlyout>
-                </ui:Button.Flyout>
-            </ui:Button>            
+                </Button.Flyout>
+            </Button>            
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="MenuFlyout Binding (experimental, but generally stable)"

@@ -38,18 +38,18 @@
                         <Panel Name="ButtonHolderGrid"
                                Margin="{DynamicResource NavigationViewButtonHolderGridMargin}" Grid.Row="1">
                             
-                            <ui:Button Name="NavigationViewBackButton"
+                            <Button Name="NavigationViewBackButton"
                                        Classes="NavigationBackButtonNormalStyle"
                                        Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerPaneToggleButtonWidth}"
                                        VerticalAlignment="Top"
                                        IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.BackButtonVisibility}"
                                        IsEnabled="{TemplateBinding IsBackEnabled}"
                                        ToolTip.Tip="Go Back" />
-                            <ui:Button Name="NavigationViewCloseButton"
+                            <Button Name="NavigationViewCloseButton"
                                        Classes="NavigationBackButtonNormalStyle"
                                        VerticalAlignment="Top"
                                        ToolTip.Tip="Close Navigation" />
-                            <ui:Button Name="TogglePaneButton"
+                            <Button Name="TogglePaneButton"
                                        Classes="PaneToggleButtonStyle"
                                        HorizontalAlignment="Center"
                                        IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.PaneToggleButtonVisibility}"
@@ -61,7 +61,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Classes="NavigationViewItemHeaderTextStyle" />
-                            </ui:Button>
+                            </Button>
                             <Panel Name="PaneTitleHolder" IsVisible="False" Height="40">
                                 <ContentControl Name="PaneTitlePresenter"
                                                 Margin="{DynamicResource NavigationViewPaneTitlePresenterMargin}"
@@ -141,13 +141,13 @@
                                         </ItemsRepeater>
                                     </ScrollViewer>
 
-                                    <ui:Button Name="TopNavOverflowButton"
+                                    <Button Name="TopNavOverflowButton"
                                                Grid.Column="4"
                                                Content="More"
                                                Margin="{DynamicResource TopNavigationViewOverflowButtonMargin}"
                                                Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop"
                                                IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OverflowButtonVisibility}">                                        
-                                        <ui:Button.Flyout>
+                                        <Button.Flyout>
                                             <Flyout Placement="BottomEdgeAlignedRight"
                                                     FlyoutPresenterClasses="NavViewFlyoutStyle">
 												<ItemsRepeater Name="TopNavMenuItemsOverflowHost">
@@ -156,9 +156,9 @@
 													</ItemsRepeater.Layout>
 												</ItemsRepeater>
                                             </Flyout>
-                                        </ui:Button.Flyout>
+                                        </Button.Flyout>
 
-                                    </ui:Button>
+                                    </Button>
 
                                     <ContentControl Name="PaneCustomContentOnTopPane"
                                                     KeyboardNavigation.IsTabStop="True"
@@ -262,7 +262,7 @@
                                                         HorizontalContentAlignment="Stretch"
                                                         VerticalContentAlignment="Center" />
 
-                                        <ui:Button Name="PaneAutoSuggestButton"
+                                        <Button Name="PaneAutoSuggestButton"
                                                    Classes="NavigationViewPaneSearchButtonStyle"
                                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerPaneToggleButtonWidth}" />
                                     </Panel>
@@ -409,7 +409,7 @@
         <Setter Property="Margin" Value="0 0 0 8" />
     </Style>
 	
-    <Style Selector="ui|NavigationView /template/ SplitView ui|Button#PaneAutoSuggestButton">
+    <Style Selector="ui|NavigationView /template/ SplitView Button#PaneAutoSuggestButton">
         <Setter Property="IsVisible" Value="False" />
     </Style>
 
@@ -467,7 +467,7 @@
     <Style Selector="ui|NavigationView:closedcompact /template/ SplitView ContentControl#PaneAutoSuggestBoxPresenter">
         <Setter Property="IsVisible" Value="False" />
     </Style>
-    <Style Selector="ui|NavigationView:closedcompact /template/ SplitView ui|Button#PaneAutoSuggestButton">
+    <Style Selector="ui|NavigationView:closedcompact /template/ SplitView Button#PaneAutoSuggestButton">
         <Setter Property="IsVisible" Value="True" />
     </Style>
 
@@ -475,7 +475,7 @@
     <Style Selector="ui|NavigationView:listsizecompact /template/ SplitView Grid#PaneContentGrid">
         <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CompactPaneLength}" />
     </Style>
-    <Style Selector="ui|NavigationView:listsizecompact /template/ ui|Button TextBlock#PaneTitleTextBlock">
+    <Style Selector="ui|NavigationView:listsizecompact /template/ Button TextBlock#PaneTitleTextBlock">
         <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="ui|NavigationView:listsizecompact /template/ SplitView ContentControl#PaneHeaderContentBorder">

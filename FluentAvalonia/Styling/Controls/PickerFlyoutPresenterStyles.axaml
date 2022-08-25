@@ -11,7 +11,7 @@
         <x:Double x:Key="PickerAcceptDismissRegionHeight">35</x:Double>
     </Styles.Resources>
 
-    <Style Selector="ui|Button.FlyoutAcceptDismiss">
+    <Style Selector="Button.FlyoutAcceptDismiss">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Background" Value="{DynamicResource PickerFlyoutPresenterAcceptDismissBackground}" />
@@ -31,10 +31,10 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ui|Button.FlyoutAcceptDismiss:pointerover /template/ ContentPresenter">
+    <Style Selector="Button.FlyoutAcceptDismiss:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource PickerFlyoutPresenterAcceptDismissBackgroundPointerOver}" />
     </Style>
-    <Style Selector="ui|Button.FlyoutAcceptDismiss:pressed /template/ ContentPresenter">
+    <Style Selector="Button.FlyoutAcceptDismiss:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource PickerFlyoutPresenterAcceptDismissBackgroundPressed}" />
     </Style>
  
@@ -61,18 +61,18 @@
                                DockPanel.Dock="Bottom"
                                Height="{DynamicResource PickerAcceptDismissRegionHeight}">
                             <UniformGrid Columns="2">
-                                <ui:Button Name="AcceptButton"
+                                <Button Name="AcceptButton"
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
                                            Classes="FlyoutAcceptDismiss">
                                     <ui:SymbolIcon Symbol="Checkmark" FontSize="20" />
-                                </ui:Button>
-                                <ui:Button Name="DismissButton"
+                                </Button>
+                                <Button Name="DismissButton"
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
                                            Classes="FlyoutAcceptDismiss">
                                     <ui:SymbolIcon Symbol="Dismiss" FontSize="16" />
-                                </ui:Button>
+                                </Button>
                             </UniformGrid>
 
                             <Rectangle Width="1" 
