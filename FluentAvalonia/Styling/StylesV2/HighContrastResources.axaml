@@ -1025,14 +1025,24 @@
     <StaticResource x:Key="TextControlForegroundFocused" ResourceKey="SystemControlForegroundBaseHighBrush" />
     <StaticResource x:Key="TextControlPlaceholderForegroundFocused" ResourceKey="SystemControlForegroundBaseMediumLowBrush" />
 
-    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,2">
+    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" 
+                         StartPoint="0,0" EndPoint="0,2"
+                         TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="0.5" Color="{StaticResource ControlStrongStrokeColorDefault}"/>
             <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="TextControlElevationBorderFocusedBrush" StartPoint="0,0" EndPoint="0,2">
+    <LinearGradientBrush x:Key="TextControlElevationBorderFocusedBrush" 
+                         StartPoint="0,0" EndPoint="0,2"
+                         TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="1.0" Color="{DynamicResource SystemAccentColorLight2}"/>
             <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}"/>

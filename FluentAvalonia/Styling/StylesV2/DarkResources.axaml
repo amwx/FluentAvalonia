@@ -243,7 +243,11 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AccentControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,3">
+    <LinearGradientBrush x:Key="AccentControlElevationBorderBrush" 
+                         StartPoint="0,0" EndPoint="0,3">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="0.33" Color="{StaticResource ControlStrokeColorOnAccentSecondary}"/>
             <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorOnAccentDefault}"/>
@@ -257,8 +261,7 @@
     <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.75" />
     <x:Boolean x:Key="UseSystemFocusVisuals">True</x:Boolean>
     <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
-    <!-- This is reversed for elevation brush hack, fix when transforms to brushes are supported -->
-    <Thickness x:Key="TextControlBorderThemeThicknessFocused">1,2,1,1</Thickness>
+    <Thickness x:Key="TextControlBorderThemeThicknessFocused">1,1,1,2</Thickness>
     <Thickness x:Key="TextControlThemePadding">10,5,6,6</Thickness>
     <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="{StaticResource SolidBackgroundFillColorBase}" />
     <StaticResource x:Key="DefaultTextForegroundThemeBrush" ResourceKey="TextFillColorPrimaryBrush" />
@@ -981,14 +984,24 @@
 
     <!-- TEXTBOX -->
     <!-- NOTE TO SELF: Elevation brushes are different by light/dark theme!!!! -->
-    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,2">
+    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" 
+                         StartPoint="0,0" EndPoint="0,2"
+                         TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="0.5" Color="{StaticResource ControlStrongStrokeColorDefault}"/>
             <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="TextControlElevationBorderFocusedBrush" StartPoint="0,0" EndPoint="0,2">
+    <LinearGradientBrush x:Key="TextControlElevationBorderFocusedBrush" 
+                         StartPoint="0,0" EndPoint="0,2"
+                          TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>        
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="1.0" Color="{DynamicResource SystemAccentColorLight2}"/>
             <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}"/>

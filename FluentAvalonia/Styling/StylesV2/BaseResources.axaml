@@ -1,15 +1,15 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:avconv="using:Avalonia.Controls.Converters">
-
+    
     <!-- New FluentUI Icons from Microsoft, embedded in assembly - see v1.1.5 PR for details
          NOTE: Changing this font, will break design of most FluentAvalonia controls
 		 This font has been adapted, thanks to robloo to use the FluentSystemIcons font, but
 		 match the same unicode code points from WinUI Segoe Fluent
 	-->
-    <!--<FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>-->
-    <!--<FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>-->
-
+    <!--<FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>
+    <FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>-->
+    
     <!-- Updated to new corner radius -->
     <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
     <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
@@ -40,5 +40,6 @@
         <x:String x:Key="ControlFastAnimationAfterDuration">00:00:00.168</x:String>
         <x:String x:Key="ControlFasterAnimationDuration">00:00:00.083</x:String>-->
 
+   
 	
 </ResourceDictionary>
