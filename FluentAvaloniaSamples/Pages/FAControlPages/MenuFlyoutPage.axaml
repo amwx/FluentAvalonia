@@ -82,14 +82,14 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
         <ctrls:ControlExample Header="MenuFlyout Binding (experimental, but generally stable)"
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/MenuFlyout2.xaml.txt">
 
-            <ui:Button Content="Click me for flyout!">
-                <ui:Button.Flyout>
+            <Button Content="Click me for flyout!">
+                <Button.Flyout>
                     <ui:MenuFlyout Placement="Bottom"
                                    Items="{Binding TestMenuItems}">
 
                     </ui:MenuFlyout>
-                </ui:Button.Flyout>
-            </ui:Button>
+                </Button.Flyout>
+            </Button>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="MenuFlyoutItem"

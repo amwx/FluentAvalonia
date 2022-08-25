@@ -18,7 +18,6 @@ using AvaloniaEdit;
 using AvaloniaEdit.Indentation.CSharp;
 using FluentAvalonia.Core.Attributes;
 using FluentAvalonia.UI.Controls;
-using Button = FluentAvalonia.UI.Controls.Button;
 
 namespace FluentAvaloniaSamples.Controls
 {

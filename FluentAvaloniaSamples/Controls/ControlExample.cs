@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Button = FluentAvalonia.UI.Controls.Button;
 
 namespace FluentAvaloniaSamples.Controls
 {
