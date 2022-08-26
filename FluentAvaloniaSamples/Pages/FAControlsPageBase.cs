@@ -20,7 +20,7 @@ namespace FluentAvaloniaSamples.Pages
         public FAControlsPageBase()
         {
             PageXamlSourceLink = new Uri($"{GithubPrefixString}/{GetType().Name}.axaml");
-            PageCSharpSourceLink = new Uri($"{GithubPrefixString}/{GetType().Name}.cs");
+            PageCSharpSourceLink = new Uri($"{GithubPrefixString}/{GetType().Name}.axaml.cs");
         }
 
         public static readonly StyledProperty<Type> TargetTypeProperty =
@@ -95,7 +95,7 @@ namespace FluentAvaloniaSamples.Pages
             set => SetValue(PageCSharpSourceLinkProperty, value);
         }
 
-        public static string GithubPrefixString => "https://github.com/amwx/FluentAvalonia/tree/master/FluentAvaloniaSamples/Pages";
+        public static string GithubPrefixString => "https://github.com/amwx/FluentAvalonia/tree/master/FluentAvaloniaSamples/Pages/FAControlPages";
 
         Type IStyleable.StyleKey => typeof(FAControlsPageBase);
 
