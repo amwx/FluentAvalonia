@@ -39,8 +39,7 @@
     <!-- Shared Menu items -->
     <Thickness x:Key="MenuBarItemButtonPadding">10,4,10,4</Thickness>
     <Thickness x:Key="MenuBarItemMargin">4,4,4,4</Thickness>
-    <x:Double x:Key="MenuFlyoutSeparatorHeight">1</x:Double>
-    <Thickness x:Key="MenuFlyoutPresenterThemePadding">0,2,0,2</Thickness>
+    <x:Double x:Key="MenuFlyoutSeparatorHeight">1</x:Double>    
     <x:Double x:Key="MenuFlyoutThemeMinHeight">32</x:Double>
     <Thickness x:Key="MenuFlyoutItemChevronMargin">24,0,0,0</Thickness>
     <Thickness x:Key="MenuFlyoutSeparatorThemePadding">-4,1,-4,1</Thickness>

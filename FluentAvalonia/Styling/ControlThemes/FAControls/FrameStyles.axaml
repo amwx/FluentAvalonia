@@ -1,12 +1,8 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sys="clr-namespace:System;assembly=netstandard"
-             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
 
-    <Style Selector="ui|Frame">
+    <ControlTheme x:Key="{x:Type ui:Frame}" TargetType="ui:Frame">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Template">
@@ -24,6 +20,5 @@
                                   BorderThickness="{TemplateBinding BorderThickness}" />
             </ControlTemplate>
         </Setter>
-    </Style>
-    
-</Styles>
+    </ControlTheme>    
+</ResourceDictionary>

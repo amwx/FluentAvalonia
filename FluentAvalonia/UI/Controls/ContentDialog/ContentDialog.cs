@@ -45,6 +45,8 @@ namespace FluentAvalonia.UI.Controls
 			_secondaryButton.Click += OnButtonClick;
 			_closeButton = e.NameScope.Get<Button>("CloseButton");
 			_closeButton.Click += OnButtonClick;
+
+            SetupDialog();
 		}
 
 		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -106,7 +108,7 @@ namespace FluentAvalonia.UI.Controls
 
 			//Failsafe incase this wasn't able to be called in ShowAsync b/c template
 			//hadn't been applied yet
-			SetupDialog();
+			//SetupDialog();
 		}
 
 		public async Task<ContentDialogResult> ShowAsync(ContentDialogPlacement placement = ContentDialogPlacement.Popup)

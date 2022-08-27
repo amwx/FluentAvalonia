@@ -378,6 +378,12 @@ namespace FluentAvalonia.UI.Controls
 
         private void UpdateSpinButtonPlacement()
         {
+            // v2: 
+            // Control themes don't support nested /template/ which was previously used here
+            // So we set :spinvisible and :spinpopup on the TextBox too since the TextBox
+            // is already a custom style for the NumberBox. Will keep the pseudoclasses on
+            // the NumberBox too for external styles that may want this info.
+            // :spincollapsed will not be set on TextBox
             var sbm = SpinButtonPlacementMode;
 
             if (sbm == NumberBoxSpinButtonPlacementMode.Inline)
@@ -385,18 +391,36 @@ namespace FluentAvalonia.UI.Controls
                 PseudoClasses.Set(":spinvisible", true);
                 PseudoClasses.Set(":spinpopup", false);
                 PseudoClasses.Set(":spincollapsed", false);
+
+                if (_textBox != null)
+                {
+                    ((IPseudoClasses)_textBox.Classes).Set(":spinvisible", true);
+                    ((IPseudoClasses)_textBox.Classes).Set(":spinpopup", false);
+                }
             }
             else if (sbm == NumberBoxSpinButtonPlacementMode.Compact)
             {
                 PseudoClasses.Set(":spinvisible", false);
                 PseudoClasses.Set(":spinpopup", true);
                 PseudoClasses.Set(":spincollapsed", false);
+
+                if (_textBox != null)
+                {
+                    ((IPseudoClasses)_textBox.Classes).Set(":spinvisible", false);
+                    ((IPseudoClasses)_textBox.Classes).Set(":spinpopup", true);
+                }
             }
             else
             {
                 PseudoClasses.Set(":spinvisible", false);
                 PseudoClasses.Set(":spinpopup", false);
                 PseudoClasses.Set(":spincollapsed", true);
+
+                if (_textBox != null)
+                {
+                    ((IPseudoClasses)_textBox.Classes).Set(":spinvisible", false);
+                    ((IPseudoClasses)_textBox.Classes).Set(":spinpopup", false);
+                }
             }
         }
 

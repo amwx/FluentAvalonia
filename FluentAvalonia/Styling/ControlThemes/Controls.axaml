@@ -47,6 +47,17 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ManagedFileChooserStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/FlyoutPresenterStyles.axaml" />
 
+
+                <!-- FluentAvalonia Controls -->
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/HyperlinkButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/ContentDialogStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/PickerFlyoutPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBadgeStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBarStyles.axaml" />
+                <!--<ResourceInclude Source="/Styling/ControlThemes/FAControls/CoreWindowStyles.axaml" />-->
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NumberBoxStyles.axaml" />
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
