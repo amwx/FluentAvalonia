@@ -944,7 +944,7 @@
         <StaticResource x:Key="ScrollBarPanningThumbBackgroundColor" ResourceKey="ControlStrongFillColorDefault" />
         <StaticResource x:Key="ScrollViewerScrollBarsSeparatorBackground" ResourceKey="ControlFillColorTransparentBrush"/>-->
 
-    <Thickness x:Key="ScrollBarTrackBorderThemeThickness">0</Thickness>
+    <x:Double x:Key="ScrollBarTrackBorderThemeThickness">0</x:Double>
     <Thickness x:Key="ScrollBarPanningBorderThemeThickness">1</Thickness>
     <StaticResource x:Key="ScrollBarBackground" ResourceKey="SubtleFillColorTransparentBrush" />
     <StaticResource x:Key="ScrollBarBackgroundPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />

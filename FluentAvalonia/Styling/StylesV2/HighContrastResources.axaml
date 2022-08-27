@@ -902,7 +902,7 @@
 
 
     <!-- SCROLLBAR -->
-    <Thickness x:Key="ScrollBarTrackBorderThemeThickness">1</Thickness>
+    <x:Double x:Key="ScrollBarTrackBorderThemeThickness">0</x:Double>
     <Thickness x:Key="ScrollBarPanningBorderThemeThickness">1</Thickness>
     <StaticResource x:Key="ScrollBarBackground" ResourceKey="SystemControlTransparentBrush" />
     <StaticResource x:Key="ScrollBarBackgroundPointerOver" ResourceKey="SystemControlTransparentBrush" />
