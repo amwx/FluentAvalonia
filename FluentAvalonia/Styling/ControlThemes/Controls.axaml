@@ -45,6 +45,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/NumericUpDownStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ExpanderStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ManagedFileChooserStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/FlyoutPresenterStyles.axaml" />
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

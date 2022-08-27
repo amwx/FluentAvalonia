@@ -58,7 +58,17 @@
     <x:Double x:Key="TabItemHeaderFontSize">24</x:Double>
     <Thickness x:Key="TabItemMargin">12,0,12,0</Thickness>
     <FontWeight x:Key="TabItemHeaderThemeFontWeight">SemiLight</FontWeight>
-    
+
+    <!-- Flyouts -->
+    <Thickness x:Key="FlyoutBorderThemeThickness">1</Thickness>
+    <Thickness x:Key="FlyoutContentPadding">16,15,16,17</Thickness>
+    <Thickness x:Key="MenuFlyoutPresenterThemePadding">0,2,0,2</Thickness>
+    <Thickness x:Key="MenuFlyoutPresenterBorderThemeThickness">1</Thickness>
+    <x:Double x:Key="MenuFlyoutSubItemPopupHorizontalOffset">-4</x:Double>
+    <Thickness x:Key="MenuFlyoutScrollerMargin">0,4,0,4</Thickness>
+    <Thickness x:Key="MenuIconPresenterMargin">0,0,12,0</Thickness>
+    <Thickness x:Key="MenuInputGestureTextMargin">24,0,0,0</Thickness>
+
     <!--
         Preserving for reference:
         <x:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</x:String>
