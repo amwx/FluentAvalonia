@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace FluentAvalonia.UI.Controls;
 
-namespace FluentAvalonia.UI.Controls
+public class MenuFlyoutSeparator : MenuFlyoutItemBase
 {
-	public class MenuFlyoutSeparator : MenuFlyoutItemBase
+	static MenuFlyoutSeparator()
 	{
-		static MenuFlyoutSeparator()
-		{
-			FocusableProperty.OverrideDefaultValue<MenuFlyoutSeparator>(false);
-		}
+		FocusableProperty.OverrideDefaultValue<MenuFlyoutSeparator>(false);
 	}
 }

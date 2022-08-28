@@ -46,6 +46,8 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ExpanderStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ManagedFileChooserStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/FlyoutPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DatePickerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TimePickerStyles.axaml" />
 
 
                 <!-- FluentAvalonia Controls -->
@@ -57,6 +59,24 @@
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBarStyles.axaml" />
                 <!--<ResourceInclude Source="/Styling/ControlThemes/FAControls/CoreWindowStyles.axaml" />-->
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/NumberBoxStyles.axaml" />
+                
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutSubItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/ToggleMenuFlyoutItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/RadioMenuFlyoutItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutSeparatorStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarToggleButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarElementContainerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarOverflowPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarSeparatorStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarFlyoutCommandBarStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewListViewStyles.axaml" />
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -8,158 +8,203 @@ using Avalonia.LogicalTree;
 using Avalonia.Styling;
 using System;
 
-namespace FluentAvalonia.UI.Controls
+namespace FluentAvalonia.UI.Controls;
+
+/// <summary>
+/// Displays the content of a <see cref="MenuFlyout"/> control.
+/// </summary>
+public class MenuFlyoutPresenter : MenuBase, IStyleable
 {
-    /// <summary>
-    /// Displays the content of a <see cref="MenuFlyout"/> control.
-    /// </summary>
-    public class MenuFlyoutPresenter : MenuBase, IStyleable
+    public MenuFlyoutPresenter()
+        : base(new MenuFlyoutInteractionHandler(true))
     {
-        public MenuFlyoutPresenter()
-            : base(new MenuFlyoutInteractionHandler(true))
+        KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Cycle);
+    }
+
+    public MenuFlyoutPresenter(IMenuInteractionHandler handler)
+        : base(handler) { }
+
+    Type IStyleable.StyleKey => typeof(Avalonia.Controls.MenuFlyoutPresenter);
+
+    /// <summary>
+    /// Closes the MenuFlyout.
+    /// </summary>
+    /// <remarks>
+    /// This method should generally not be called directly and is present for the
+    /// MenuInteractionHandler. Close Flyouts by calling Hide() on the Flyout object directly.
+    /// </remarks>
+    public override void Close()
+    {
+        // DefaultMenuInteractionHandler calls this
+        var host = this.FindLogicalAncestorOfType<Popup>();
+        if (host != null)
         {
-            KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Cycle);
-        }
-
-        public MenuFlyoutPresenter(IMenuInteractionHandler handler)
-            : base(handler) { }
-
-        Type IStyleable.StyleKey => typeof(Avalonia.Controls.MenuFlyoutPresenter);
-
-        /// <summary>
-        /// Closes the MenuFlyout.
-        /// </summary>
-        /// <remarks>
-        /// This method should generally not be called directly and is present for the
-        /// MenuInteractionHandler. Close Flyouts by calling Hide() on the Flyout object directly.
-        /// </remarks>
-        public override void Close()
-        {
-            // DefaultMenuInteractionHandler calls this
-            var host = this.FindLogicalAncestorOfType<Popup>();
-            if (host != null)
+            for (int i = 0; i < LogicalChildren.Count; i++)
             {
-                for (int i = 0; i < LogicalChildren.Count; i++)
+                if (LogicalChildren[i] is IMenuItem item)
                 {
-                    if (LogicalChildren[i] is IMenuItem item)
-                    {
-                        item.IsSubMenuOpen = false;
-                    }
+                    item.IsSubMenuOpen = false;
                 }
-
-                SelectedIndex = -1;
-                host.IsOpen = false;
-
-                RaiseMenuClosed();
             }
-        }
 
-        /// <summary>
-        /// This method has no functionality
-        /// </summary>
-        /// <exception cref="NotSupportedException" />
-        public override void Open()
-        {
-            throw new NotSupportedException("Use MenuFlyout.ShowAt(Control) instead");
-        }
+            SelectedIndex = -1;
+            host.IsOpen = false;
 
-        protected override IItemContainerGenerator CreateItemContainerGenerator()
-        {
-            return new MenuFlyoutPresenterItemContainerGenerator(this);
+            RaiseMenuClosed();
         }
+    }
 
-        internal void RaiseMenuOpened()
-        {
-            RaiseEvent(new RoutedEventArgs(MenuOpenedEvent) { Source = this });
-        }
+    /// <summary>
+    /// This method has no functionality
+    /// </summary>
+    /// <exception cref="NotSupportedException" />
+    public override void Open()
+    {
+        throw new NotSupportedException("Use MenuFlyout.ShowAt(Control) instead");
+    }
 
-        internal void RaiseMenuClosed()
-        {
-            RaiseEvent(new RoutedEventArgs(MenuClosedEvent) { Source = this });
-        }
+    protected override IItemContainerGenerator CreateItemContainerGenerator()
+    {
+        return new MenuFlyoutPresenterItemContainerGenerator(this);
+    }
 
-        internal bool InternalMoveSelection(NavigationDirection dir, bool wrap) =>
-            MoveSelection(dir, wrap);
-        
+    internal void RaiseMenuOpened()
+    {
+        RaiseEvent(new RoutedEventArgs(MenuOpenedEvent) { Source = this });
+    }
+
+    internal void RaiseMenuClosed()
+    {
+        RaiseEvent(new RoutedEventArgs(MenuClosedEvent) { Source = this });
+    }
+
+    internal bool InternalMoveSelection(NavigationDirection dir, bool wrap) =>
+        MoveSelection(dir, wrap);
+    
 		protected override void OnContainersMaterialized(ItemContainerEventArgs e)
 		{
 			base.OnContainersMaterialized(e);
 
+        // v2 Change: ControlThemes means we can't use styling on the MFP to apply the 
+        // Icon/Toggle adjustments and we have to put them directly on the items
+
+        int iconCount = _iconCount;
+        int toggleCount = _toggleCount;
 			for (int i = 0; i < e.Containers.Count; i++)
 			{
 				if (e.Containers[i].ContainerControl is ToggleMenuFlyoutItem tmfi)
 				{
 					if (tmfi.Icon != null)
 					{
-						_iconCount++;
+						iconCount++;
 					}
 
-					_toggleCount++;                    
-                }
-                else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
+					toggleCount++;                    
+            }
+            else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
+            {
+                if (rmfi.Icon != null)
                 {
-                    if (rmfi.Icon != null)
-                    {
-                        _iconCount++;
-                    }
-
-                    _toggleCount++;
+                    iconCount++;
                 }
-                else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
+
+                toggleCount++;
+            }
+            else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
 				{
 					if (mfi.Icon != null)
 					{
-						_iconCount++;
+						iconCount++;
 					}
 				}
-			}
+            else if (e.Containers[i].ContainerControl is MenuFlyoutSubItem mfsi)
+            {
+                if (mfsi.Icon != null)
+                {
+                    iconCount++;
+                }
+            }
+        }
 
-			UpdateVisualState();
+        // Only run the update IF something has changed
+        if (_iconCount != iconCount || _toggleCount != toggleCount)
+        {
+            _toggleCount = toggleCount;
+            _iconCount = iconCount;
+
+            UpdateVisualState();
+        }			
 		}
 
 		protected override void OnContainersDematerialized(ItemContainerEventArgs e)
 		{
 			base.OnContainersDematerialized(e);
-			for (int i = 0; i < e.Containers.Count; i++)
+
+        // v2 Change: ControlThemes means we can't use styling on the MFP to apply the 
+        // Icon/Toggle adjustments and we have to put them directly on the items
+
+        int iconCount = _iconCount;
+        int toggleCount = _toggleCount;
+        for (int i = 0; i < e.Containers.Count; i++)
 			{
 				if (e.Containers[i].ContainerControl is ToggleMenuFlyoutItem tmfi)
 				{
 					if (tmfi.Icon != null)
 					{
-						_iconCount--;
+						iconCount--;
 					}
 
-					_toggleCount--;
-                }
-                else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
+					toggleCount--;
+            }
+            else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
+            {
+                if (rmfi.Icon != null)
                 {
-                    if (rmfi.Icon != null)
-                    {
-                        _iconCount--;
-                    }
-
-                    _toggleCount--;
+                    iconCount--;
                 }
-                else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
+
+                toggleCount--;
+            }
+            else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
 				{
 					if (mfi.Icon != null)
 					{
-						_iconCount--;
+						iconCount--;
 					}
-
 				}
-			}
+            else if (e.Containers[i].ContainerControl is MenuFlyoutSubItem mfsi)
+            {
+                if (mfsi.Icon != null)
+                {
+                    iconCount--;
+                }
+            }
+        }
 
-			UpdateVisualState();
+        if (_toggleCount != toggleCount || _iconCount != iconCount)
+        {
+            _iconCount = iconCount;
+            _toggleCount = toggleCount;
+            UpdateVisualState();
+        }
 		}
 
 		private void UpdateVisualState()
 		{
-			PseudoClasses.Set(":icons", _iconCount > 0);
-			PseudoClasses.Set(":toggle", _toggleCount > 0);
+        // v2 Change: ControlThemes means we can't use styling on the MFP to apply the 
+        // Icon/Toggle adjustments and we have to put them directly on the items
+
+        const string iconClass = ":icons";
+        const string toggleClass = ":toggle";
+        bool icon = _iconCount > 0;
+        bool toggle = _toggleCount > 0;
+        foreach(var item in ItemContainerGenerator.Containers)
+        {
+            ((IPseudoClasses)item.ContainerControl.Classes).Set(iconClass, icon);
+            ((IPseudoClasses)item.ContainerControl.Classes).Set(toggleClass, toggle);
+        }
 		}
 
 		private int _iconCount = 0;
 		private int _toggleCount = 0;
 	}	
-}
