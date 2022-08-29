@@ -1,7 +1,7 @@
 ﻿namespace FluentAvalonia.UI.Controls
 {
 	/// <summary>
-	/// Defines the source of the change in color of a <see cref="ColorPicker"/>
+	/// Defines the source of the change in color of a <see cref="FAColorPicker"/>
 	/// </summary>
 	public enum ColorUpdateReason
     {

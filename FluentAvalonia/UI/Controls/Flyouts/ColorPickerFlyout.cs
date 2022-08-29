@@ -14,7 +14,7 @@ namespace FluentAvalonia.UI.Controls
 		/// <summary>
 		/// Gets the <see cref="ColorPicker"/> that this flyout hosts
 		/// </summary>
-		public ColorPicker ColorPicker => _picker ??= new ColorPicker();
+		public FAColorPicker ColorPicker => _picker ??= new FAColorPicker();
 
 		/// <summary>
 		/// Raised when the Confirmed button is tapped indicating the new Color should be applied
@@ -29,7 +29,7 @@ namespace FluentAvalonia.UI.Controls
 		protected override Control CreatePresenter()
 		{
 			if (_picker == null)
-				_picker = new ColorPicker();
+				_picker = new FAColorPicker();
 
 			var pfp = new PickerFlyoutPresenter()
 			{
@@ -71,6 +71,6 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		private bool _showButtons = true;
-		private ColorPicker _picker;
+		private FAColorPicker _picker;
 	}
 }

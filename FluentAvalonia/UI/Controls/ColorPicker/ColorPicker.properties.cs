@@ -8,92 +8,92 @@ using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public partial class ColorPicker
+	public partial class FAColorPicker
 	{
 		/// <summary>
 		/// Defines the <see cref="PreviousColor"/> property
 		/// </summary>
 		public static readonly StyledProperty<Color2> PreviousColorProperty =
-			AvaloniaProperty.Register<ColorPicker, Color2>(nameof(PreviousColor),
+			AvaloniaProperty.Register<FAColorPicker, Color2>(nameof(PreviousColor),
 				Colors.Red, defaultBindingMode: BindingMode.TwoWay);
 
 		/// <summary>
 		/// Defines the <see cref="Color"/> property
 		/// </summary>
 		public static readonly StyledProperty<Color2> ColorProperty =
-			AvaloniaProperty.Register<ColorPicker, Color2>(nameof(Color),
+			AvaloniaProperty.Register<FAColorPicker, Color2>(nameof(Color),
 				Colors.Red, defaultBindingMode: BindingMode.TwoWay);
 
 		/// <summary>
 		/// Defines the <see cref="ColorTextType"/> property
 		/// </summary>
-		public static readonly DirectProperty<ColorPicker, ColorTextType> ColorTextTypeProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, ColorTextType>(nameof(ColorTextType),
+		public static readonly DirectProperty<FAColorPicker, ColorTextType> ColorTextTypeProperty =
+			AvaloniaProperty.RegisterDirect<FAColorPicker, ColorTextType>(nameof(ColorTextType),
 				x => x.ColorTextType, (x, v) => x.ColorTextType = v);
 
 		/// <summary>
 		/// Defines the <see cref="Component"/> property
 		/// </summary>
-		public static readonly DirectProperty<ColorPicker, ColorSpectrumComponents> ComponentProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, ColorSpectrumComponents>(nameof(Component),
+		public static readonly DirectProperty<FAColorPicker, ColorSpectrumComponents> ComponentProperty =
+			AvaloniaProperty.RegisterDirect<FAColorPicker, ColorSpectrumComponents>(nameof(Component),
 				x => x.Component, (x, v) => x.Component = v);
 
 		/// <summary>
 		/// Defines the <see cref="IsMoreButtonVisible"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> IsMoreButtonVisibleProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsMoreButtonVisible));
+			AvaloniaProperty.Register<FAColorPicker, bool>(nameof(IsMoreButtonVisible));
 
 		/// <summary>
 		/// Defines the <see cref="IsCompact"/> property
 		/// </summary>
-		public static readonly DirectProperty<ColorPicker, bool> IsCompactProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, bool>(nameof(IsCompact),
+		public static readonly DirectProperty<FAColorPicker, bool> IsCompactProperty =
+			AvaloniaProperty.RegisterDirect<FAColorPicker, bool>(nameof(IsCompact),
 				x => x.IsCompact, (x, v) => x.IsCompact = v);
 
 		/// <summary>
 		/// Defines the <see cref="IsAlphaEnabled"/> property
 		/// </summary>
-		public static readonly DirectProperty<ColorPicker, bool> IsAlphaEnabledProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, bool>(nameof(IsAlphaEnabled),
+		public static readonly DirectProperty<FAColorPicker, bool> IsAlphaEnabledProperty =
+			AvaloniaProperty.RegisterDirect<FAColorPicker, bool>(nameof(IsAlphaEnabled),
 				x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
 
 		/// <summary>
 		/// Defines the <see cref="UseSpectrum"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseSpectrumProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseSpectrum), defaultValue: true);
+			AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseSpectrum), defaultValue: true);
 
 		/// <summary>
 		/// Defines the <see cref="UseColorWheel"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseColorWheelProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorWheel));
+			AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseColorWheel));
 
 		/// <summary>
 		/// Defines the <see cref="UseColorTriangle"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseColorTriangleProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorTriangle));
+			AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseColorTriangle));
 
 		/// <summary>
 		/// Defines the <see cref="UseColorPalette"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseColorPaletteProperty =
-			AvaloniaProperty.Register<ColorPicker, bool>(nameof(UseColorPalette));
+			AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseColorPalette));
 
 		/// <summary>
 		/// Defines the <see cref="CustomPaletteColors"/> property
 		/// </summary>
-		public static readonly DirectProperty<ColorPicker, IEnumerable<Color>> CustomPaletteColorsProperty =
-			AvaloniaProperty.RegisterDirect<ColorPicker, IEnumerable<Color>>(nameof(CustomPaletteColors),
+		public static readonly DirectProperty<FAColorPicker, IEnumerable<Color>> CustomPaletteColorsProperty =
+			AvaloniaProperty.RegisterDirect<FAColorPicker, IEnumerable<Color>>(nameof(CustomPaletteColors),
 				x => x.CustomPaletteColors, (x, v) => x.CustomPaletteColors = v);
 
 		/// <summary>
 		/// Defines the <see cref="PaletteColumnCount"/> property
 		/// </summary>
 		public static readonly StyledProperty<int> PaletteColumnCountProperty =
-			AvaloniaProperty.Register<ColorPicker, int>(nameof(PaletteColumnCount), defaultValue: 10);
+			AvaloniaProperty.Register<FAColorPicker, int>(nameof(PaletteColumnCount), defaultValue: 10);
 
 		/// <summary>
 		/// Gets or sets the color used as the previous color
@@ -245,7 +245,7 @@ namespace FluentAvalonia.UI.Controls
 		/// <summary>
 		/// Event raised when the <see cref="Color"/> property changes
 		/// </summary>
-		public event TypedEventHandler<ColorPicker, ColorChangedEventArgs> ColorChanged;
+		public event TypedEventHandler<FAColorPicker, ColorChangedEventArgs> ColorChanged;
 
 
 		private ColorTextType _textType;

@@ -10,7 +10,7 @@ using System;
 namespace FluentAvalonia.UI.Controls
 {
 	/// <summary>
-	/// Defines the control used in the Color Palette of a <see cref="ColorPicker"/> to
+	/// Defines the control used in the Color Palette of a <see cref="FAColorPicker"/> to
 	/// preview or select a color
 	/// </summary>
 	public partial class ColorPaletteItem : Control
@@ -71,7 +71,7 @@ namespace FluentAvalonia.UI.Controls
 				_isPressed = false;
 				InvalidateVisual();
 
-				var cp = this.FindAncestorOfType<ColorPicker>();
+				var cp = this.FindAncestorOfType<FAColorPicker>();
 				if (cp != null)
 				{
 					cp.Color = Color;

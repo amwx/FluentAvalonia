@@ -11,7 +11,7 @@ namespace FluentAvaloniaSamples.Pages
         {
             InitializeComponent();
 
-            TargetType = typeof(ColorPicker);
+            TargetType = typeof(FAColorPicker);
             WinUINamespace = "Microsoft.UI.Xaml.Controls.ColorPicker";
             WinUIDocsLink = new Uri("https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.colorpicker?view=winui-3.0");
             WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/controls/color-picker");

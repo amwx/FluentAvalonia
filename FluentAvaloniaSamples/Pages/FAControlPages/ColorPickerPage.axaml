@@ -10,7 +10,7 @@
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="Standard ColorPicker">
 
-            <ui:ColorPicker Name="Picker" UseSpectrum="True" UseColorWheel="True"
+            <ui:FAColorPicker Name="Picker" UseSpectrum="True" UseColorWheel="True"
                             Color="{Binding CurrentColor, Mode=TwoWay}"
                             UseColorTriangle="True" IsCompact="True"
                             UseColorPalette="True" CustomPaletteColors="{Binding PaletteColors}" />

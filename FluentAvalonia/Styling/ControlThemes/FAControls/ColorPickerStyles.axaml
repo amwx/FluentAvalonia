@@ -7,7 +7,7 @@
                     xmlns:avconv="using:Avalonia.Controls.Converters">
     <Design.PreviewWith>
         <Border Padding="0">
-            <ui:ColorPicker UseSpectrum="True" UseColorWheel="True" IsCompact="False"
+            <ui:FAColorPicker UseSpectrum="True" UseColorWheel="True" IsCompact="False"
                             UseColorTriangle="True" UseColorPalette="True"
                             IsMoreButtonVisible="True"/>
         </Border>
@@ -323,7 +323,7 @@
 
     <!-- END dependency styles -->
 
-    <ControlTheme x:Key="{x:Type ui:ColorPicker}" TargetType="ui:ColorPicker">
+    <ControlTheme x:Key="{x:Type ui:FAColorPicker}" TargetType="ui:FAColorPicker">
         <Setter Property="MinWidth" Value="250" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -688,10 +688,10 @@
                                     </TextBox.InnerLeftContent>
                                     <TextBox.ContextFlyout>
                                         <MenuFlyout>
-                                            <MenuItem Header="#RRGGBB" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"/>
-                                            <MenuItem Header="#AARRGGBB" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
-                                            <MenuItem Header="rgb( r, g, b )" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
-                                            <MenuItem Header="rgba( r, g, b, a )" Command="{Binding $parent[ui:ColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
+                                            <MenuItem Header="#RRGGBB" Command="{Binding $parent[ui:FAColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"/>
+                                            <MenuItem Header="#AARRGGBB" Command="{Binding $parent[ui:FAColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
+                                            <MenuItem Header="rgb( r, g, b )" Command="{Binding $parent[ui:FAColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
+                                            <MenuItem Header="rgba( r, g, b, a )" Command="{Binding $parent[ui:FAColorPicker].OnHexTextContextMenuItemClick}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}" />
                                             <MenuItem Header="-" />
                                             <MenuItem x:Name="TextBoxContextMenuCutItem" Header="Cut" Command="{Binding $parent[TextBox].Cut}" IsEnabled="{Binding $parent[TextBox].CanCut}" InputGesture="{x:Static TextBox.CutGesture}" />
                                             <MenuItem x:Name="TextBoxContextMenuCopyItem" Header="Copy" Command="{Binding $parent[TextBox].Copy}" IsEnabled="{Binding $parent[TextBox].CanCopy}" InputGesture="{x:Static TextBox.CopyGesture}"/>

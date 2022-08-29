@@ -6,7 +6,7 @@
 	/// <remarks>
 	/// The values are defined by the X-Axis, then Y-Axis. The remaining component
 	/// of the given color space is displayed in the third component slider of the
-	/// <see cref="ColorPicker"/>
+	/// <see cref="FAColorPicker"/>
 	/// </remarks>
 	public enum ColorSpectrumComponents
     {

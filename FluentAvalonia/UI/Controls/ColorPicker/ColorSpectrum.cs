@@ -16,7 +16,7 @@ namespace FluentAvalonia.UI.Controls
 {
 	/// <summary>
 	/// Defines the control for displaying the interactive ways of modifying a color within
-	/// a <see cref="ColorPicker"/>
+	/// a <see cref="FAColorPicker"/>
 	/// </summary>
 	/// <remarks>
 	/// This control handles displaying the regular Color Spectrum, the Color Wheel, and

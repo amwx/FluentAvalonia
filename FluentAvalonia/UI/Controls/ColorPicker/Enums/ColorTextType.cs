@@ -1,7 +1,7 @@
 ﻿namespace FluentAvalonia.UI.Controls
 {
 	/// <summary>
-	/// Defines values for how the text should display in the Color TextBox of a <see cref="ColorPicker"/>
+	/// Defines values for how the text should display in the Color TextBox of a <see cref="FAColorPicker"/>
 	/// </summary>
 	public enum ColorTextType
     {

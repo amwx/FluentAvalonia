@@ -10,7 +10,7 @@ using System;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// A button that hides a <see cref="ColorPicker"/> within a <see cref="Flyout"/>
+/// A button that hides a <see cref="FAColorPicker"/> within a <see cref="Flyout"/>
 /// </summary>
 public partial class ColorPickerButton : TemplatedControl, IStyleable
 {
@@ -107,7 +107,7 @@ public partial class ColorPickerButton : TemplatedControl, IStyleable
         FlyoutOpened?.Invoke(this, EventArgs.Empty);
 	}
 
-	private void OnColorPickerColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+	private void OnColorPickerColorChanged(FAColorPicker sender, ColorChangedEventArgs args)
 	{
 		Color = args.NewColor;
 	}

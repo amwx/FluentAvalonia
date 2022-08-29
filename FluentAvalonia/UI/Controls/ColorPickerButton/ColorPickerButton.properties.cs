@@ -23,58 +23,58 @@ namespace FluentAvalonia.UI.Controls
 		/// Defines the <see cref="IsMoreButtonVisible"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> IsMoreButtonVisibleProperty =
-			ColorPicker.IsMoreButtonVisibleProperty.AddOwner<ColorPickerButton>();
+			FAColorPicker.IsMoreButtonVisibleProperty.AddOwner<ColorPickerButton>();
 
 		/// <summary>
 		/// Defines the <see cref="IsCompact"/> property
 		/// </summary>
 		public static readonly DirectProperty<ColorPickerButton, bool> IsCompactProperty =
-			ColorPicker.IsCompactProperty.AddOwner<ColorPickerButton>(x => x.IsCompact,
+			FAColorPicker.IsCompactProperty.AddOwner<ColorPickerButton>(x => x.IsCompact,
 				(x, v) => x.IsCompact = v);
 
 		/// <summary>
 		/// Defines the <see cref="IsAlphaEnabled"/> property
 		/// </summary>
 		public static readonly DirectProperty<ColorPickerButton, bool> IsAlphaEnabledProperty =
-			ColorPicker.IsCompactProperty.AddOwner<ColorPickerButton>(
+			FAColorPicker.IsCompactProperty.AddOwner<ColorPickerButton>(
 				x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
 
 		/// <summary>
 		/// Defines the <see cref="UseSpectrum"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseSpectrumProperty =
-			ColorPicker.UseSpectrumProperty.AddOwner<ColorPickerButton>();
+			FAColorPicker.UseSpectrumProperty.AddOwner<ColorPickerButton>();
 
 		/// <summary>
 		/// Defines the <see cref="UseColorWheel"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseColorWheelProperty =
-			ColorPicker.UseColorWheelProperty.AddOwner<ColorPickerButton>();
+			FAColorPicker.UseColorWheelProperty.AddOwner<ColorPickerButton>();
 
 		/// <summary>
 		/// Defines the <see cref="UseColorTriangle"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseColorTriangleProperty =
-			ColorPicker.UseColorTriangleProperty.AddOwner<ColorPickerButton>();
+			FAColorPicker.UseColorTriangleProperty.AddOwner<ColorPickerButton>();
 
 		/// <summary>
 		/// Defines the <see cref="UseColorPalette"/> property
 		/// </summary>
 		public static readonly StyledProperty<bool> UseColorPaletteProperty =
-			ColorPicker.UseColorPaletteProperty.AddOwner<ColorPickerButton>();
+			FAColorPicker.UseColorPaletteProperty.AddOwner<ColorPickerButton>();
 
 		/// <summary>
 		/// Defines the <see cref="CustomPaletteColors"/> property
 		/// </summary>
 		public static readonly DirectProperty<ColorPickerButton, IEnumerable<Color>> CustomPaletteColorsProperty =
-			ColorPicker.CustomPaletteColorsProperty.AddOwner<ColorPickerButton>(x => x.CustomPaletteColors,
+			FAColorPicker.CustomPaletteColorsProperty.AddOwner<ColorPickerButton>(x => x.CustomPaletteColors,
 				(x, v) => x.CustomPaletteColors = v);
 
 		/// <summary>
 		/// Define sthe <see cref="PaletteColumnCount"/> property
 		/// </summary>
 		public static readonly StyledProperty<int> PaletteColumnCountProperty =
-			ColorPicker.PaletteColumnCountProperty.AddOwner<ColorPickerButton>();
+			FAColorPicker.PaletteColumnCountProperty.AddOwner<ColorPickerButton>();
 
 		/// <summary>
 		/// Defines the <see cref="ShowAcceptDismissButtons"/> property
@@ -100,7 +100,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets whether the More button is visible in the <see cref="ColorPicker"/>
+		/// Gets or sets whether the More button is visible in the <see cref="FAColorPicker"/>
 		/// </summary>
 		public bool IsMoreButtonVisible
 		{
@@ -109,7 +109,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets whether the <see cref="ColorPicker"/> is in a compact state
+		/// Gets or sets whether the <see cref="FAColorPicker"/> is in a compact state
 		/// </summary>
 		public bool IsCompact
 		{
@@ -124,7 +124,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets whether the user can edit the alpha in the <see cref="ColorPicker"/>
+		/// Gets or sets whether the user can edit the alpha in the <see cref="FAColorPicker"/>
 		/// </summary>
 		public bool IsAlphaEnabled
 		{
@@ -139,7 +139,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets whether the <see cref="ColorPicker"/> should allow using the 
+		/// Gets or sets whether the <see cref="FAColorPicker"/> should allow using the 
 		/// Color Spectrum display for selecting a color
 		/// </summary>
 		public bool UseSpectrum
@@ -149,7 +149,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets whether the <see cref="ColorPicker"/> should allow using the
+		/// Gets or sets whether the <see cref="FAColorPicker"/> should allow using the
 		/// Color Wheel display for selecting a color
 		/// </summary>
 		public bool UseColorWheel
@@ -159,7 +159,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets whether the <see cref="ColorPicker"/> should allow using the 
+		/// Gets or sets whether the <see cref="FAColorPicker"/> should allow using the 
 		/// HSV Color Triangle display for selecting a color
 		/// </summary>
 		public bool UseColorTriangle
@@ -169,7 +169,7 @@ namespace FluentAvalonia.UI.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets whether the <see cref="ColorPicker"/> should allow showing the
+		/// Gets or sets whether the <see cref="FAColorPicker"/> should allow showing the
 		/// color palette of pre-defined colors
 		/// </summary>
 		public bool UseColorPalette
@@ -180,7 +180,7 @@ namespace FluentAvalonia.UI.Controls
 
 		/// <summary>
 		/// Gets or sets a collection of colors to be used in the Custom Color Palette display
-		/// of the <see cref="ColorPicker"/>
+		/// of the <see cref="FAColorPicker"/>
 		/// </summary>
 		public IEnumerable<Color> CustomPaletteColors
 		{
@@ -190,7 +190,7 @@ namespace FluentAvalonia.UI.Controls
 
 		/// <summary>
 		/// Gets or sets the number of columns to use in the Custom Color Palette display 
-		/// of the <see cref="ColorPicker"/>
+		/// of the <see cref="FAColorPicker"/>
 		/// </summary>
 		public int PaletteColumnCount
 		{
