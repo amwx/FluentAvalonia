@@ -5,8 +5,11 @@
         xmlns:ui="using:FluentAvalonia.UI.Controls"
         xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
         xmlns:core="using:FluentAvalonia.Core"
+        xmlns:sys="using:System"
+        xmlns:local="using:FASandbox"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FASandbox.MainWindow"
         Title="FASandbox">
+
     
 </Window>
