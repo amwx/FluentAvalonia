@@ -20,12 +20,12 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Raised when the Confirmed button is tapped indicating the new Color should be applied
         /// </summary>
-        public event TypedEventHandler<PickerFlyoutPresenter, object> Confirmed;
+        public event TypedEventHandler<PickerFlyoutPresenter, EventArgs> Confirmed;
 
 		/// <summary>
 		/// Raised when the Dismiss button is tapped, indicating the new color should not be applied
 		/// </summary>
-		public event TypedEventHandler<PickerFlyoutPresenter, object> Dismissed;
+		public event TypedEventHandler<PickerFlyoutPresenter, EventArgs> Dismissed;
 
 		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
