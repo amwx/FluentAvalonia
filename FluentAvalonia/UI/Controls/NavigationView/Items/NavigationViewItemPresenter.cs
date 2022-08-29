@@ -1,9 +1,12 @@
-﻿using Avalonia;
+﻿using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls.Primitives
 {
@@ -22,7 +25,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
             TemplateSettings = new NavigationViewItemPresenterTemplateSettings();
         }
 
-		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
 

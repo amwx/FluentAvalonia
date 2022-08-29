@@ -77,7 +77,14 @@
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewItemStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewListViewStyles.axaml" />
-                
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewSharedStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewBackButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemHeaderStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemSeparatorStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>

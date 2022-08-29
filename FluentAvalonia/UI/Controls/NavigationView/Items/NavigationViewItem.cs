@@ -317,9 +317,8 @@ namespace FluentAvalonia.UI.Controls
 
         private void UpdateVisualStateForNavigationViewPositionChange()
         {
-            //Classes aren't styleable in Avalonia, so we must also propagate the state to
-            //the NVIPresenter
-            //Debug.WriteLine($"{this.Content} -- {Position}");
+            // v2: We no longer need to propagate the styles with ControlThemes, however,
+            // for compat and external support we will still set the pseudoclasses
             switch (Position)
             {
                 case NavigationViewRepeaterPosition.LeftNav:
