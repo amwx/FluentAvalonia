@@ -78,6 +78,9 @@
 
                     <Border Margin="{TemplateBinding BorderThickness}">
                         <Grid ColumnDefinitions="Auto,*,Auto" >
+                            <ContentPresenter Grid.Column="0"
+                                              Grid.ColumnSpan="1"
+                                              Content="{TemplateBinding InnerLeftContent}"/>
                             <DockPanel x:Name="PART_InnerDockPanel"
                                        Grid.Column="1"
                                        Grid.ColumnSpan="1"
@@ -175,7 +178,7 @@
                                  TextAlignment="{TemplateBinding TextAlignment}"
                                  Classes="clearButton"
                                  Theme="{StaticResource NumberBoxTextBoxStyle}"
-                                CornerRadius="{TemplateBinding CornerRadius}"/>
+                                 CornerRadius="{TemplateBinding CornerRadius}"/>
 
                         <Popup Name="UpDownPopup" Focusable="False"
                                WindowManagerAddShadowHint="False"

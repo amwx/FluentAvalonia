@@ -9,6 +9,8 @@ using FluentAvalonia.UI.Media;
 using System.Threading.Tasks;
 using FluentAvalonia.Core;
 using Avalonia.Media.Immutable;
+using AvColor = Avalonia.Media.Color;
+using Avalonia.Platform;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -472,164 +474,176 @@ namespace FluentAvalonia.UI.Controls
 
         private void DrawWheelBitmap()
         {
-            //using (var dc = (_tempBitmap as RenderTargetBitmap).CreateDrawingContext(null))
-            //using (var skDC = (dc as ISkiaDrawingContextImpl).SkCanvas)
-            //{
-            //    SKRect rect = SKRect.Create(0, 0, _tempBitmap.PixelSize.Width, _tempBitmap.PixelSize.Height);
-            //    SKPoint center = new SKPoint(rect.MidX, rect.MidY);
-            //    float radius = (rect.Width / 2f) - ((float)WheelPadding / 2f);
+            using (var dc = (_tempBitmap as RenderTargetBitmap).CreateDrawingContext(null))
+            {
+                var leaseFeature = dc.GetFeature<ISkiaSharpApiLeaseFeature>();
+                if (leaseFeature == null)
+                    throw new NotSupportedException("Skia must be the render backend for the FAColorPicker");
 
-            //    SKShader spectrum = SKShader.CreateSweepGradient(center,
-            //        new SKColor[]
-            //        {
-            //            new SKColor(255, 0, 0),
-            //            new SKColor(255, 0, 255),
-            //            new SKColor(0, 0, 255),
-            //            new SKColor(0, 255, 255),
-            //            new SKColor(0, 255, 0),
-            //            new SKColor(255, 255, 0),
-            //            new SKColor(255, 0, 0)
-            //        });
+                using var lease = leaseFeature.Lease();
+                var skDC = lease.SkCanvas;
 
-            //    SKPaint paint = new SKPaint();
-            //    paint.Shader = spectrum;
-            //    paint.Style = SKPaintStyle.StrokeAndFill;
-            //    paint.StrokeWidth = 1f;
-            //    paint.IsAntialias = true;
+                SKRect rect = SKRect.Create(0, 0, _tempBitmap.PixelSize.Width, _tempBitmap.PixelSize.Height);
+                SKPoint center = new SKPoint(rect.MidX, rect.MidY);
+                float radius = (rect.Width / 2f) - ((float)WheelPadding / 2f);
 
-            //    skDC.DrawCircle(center, radius, paint);
+                SKShader spectrum = SKShader.CreateSweepGradient(center,
+                    new SKColor[]
+                    {
+                        new SKColor(255, 0, 0),
+                        new SKColor(255, 0, 255),
+                        new SKColor(0, 0, 255),
+                        new SKColor(0, 255, 255),
+                        new SKColor(0, 255, 0),
+                        new SKColor(255, 255, 0),
+                        new SKColor(255, 0, 0)
+                    });
 
-            //    spectrum.Dispose();
+                SKPaint paint = new SKPaint();
+                paint.Shader = spectrum;
+                paint.Style = SKPaintStyle.StrokeAndFill;
+                paint.StrokeWidth = 1f;
+                paint.IsAntialias = true;
 
-            //    var grad = SKShader.CreateRadialGradient(center, radius,
-            //        new SKColor[] { SKColor.Parse("#FFFFFFFF"), SKColor.Parse("#00FFFFFF") },
-            //        new float[] { 0, 1 }, SKShaderTileMode.Clamp);
+                skDC.DrawCircle(center, radius, paint);
 
-            //    paint.Shader = grad;
-            //    paint.Style = SKPaintStyle.Fill;
-            //    paint.IsAntialias = true;
+                spectrum.Dispose();
 
-            //    skDC.DrawCircle(center, radius, paint);
+                var grad = SKShader.CreateRadialGradient(center, radius,
+                    new SKColor[] { SKColor.Parse("#FFFFFFFF"), SKColor.Parse("#00FFFFFF") },
+                    new float[] { 0, 1 }, SKShaderTileMode.Clamp);
 
-            //    paint.Dispose();
-            //    grad.Dispose();
-            //}
+                paint.Shader = grad;
+                paint.Style = SKPaintStyle.Fill;
+                paint.IsAntialias = true;
+
+                skDC.DrawCircle(center, radius, paint);
+
+                paint.Dispose();
+                grad.Dispose();
+            }
         }
 
         private void DrawTriangleWheelBitmap()
         {
-    //        using (var dc = (_tempBitmap as RenderTargetBitmap).CreateDrawingContext(null))
-    //        using (var skDC = (dc as ISkiaDrawingContextImpl).SkCanvas)
-    //        {
-    //            SKRect rect = SKRect.Create(0, 0, _tempBitmap.PixelSize.Width, _tempBitmap.PixelSize.Height);
-    //            SKPoint center = new SKPoint(rect.MidX, rect.MidY);
-    //            float radius = (rect.Width / 2f) - ((float)WheelPadding / 2f);
+            using (var dc = (_tempBitmap as RenderTargetBitmap).CreateDrawingContext(null))
+            {
+                var leaseFeature = dc.GetFeature<ISkiaSharpApiLeaseFeature>();
+                if (leaseFeature == null)
+                    throw new NotSupportedException("Skia must be the render backend for the FAColorPicker");
 
-    //            //Apply scale to TriangleWheelThickness
-    //            var wheelThicc = TriangleWheelThickness * (rect.Width / 500);
+                using var lease = leaseFeature.Lease();
+                var skDC = lease.SkCanvas;
 
-    //            SKShader spectrum = SKShader.CreateSweepGradient(center,
-    //                new SKColor[]
-    //                {
-    //                    new SKColor(255, 0, 0),
-    //                    new SKColor(255, 0, 255),
-    //                    new SKColor(0, 0, 255),
-    //                    new SKColor(0, 255, 255),
-    //                    new SKColor(0, 255, 0),
-    //                    new SKColor(255, 255, 0),
-    //                    new SKColor(255, 0, 0)
-    //                });
-				
-				//SKPaint paint = new SKPaint();
-    //            paint.Shader = spectrum;
-    //            paint.Style = SKPaintStyle.Fill;
-    //            paint.StrokeWidth = 1f;
-    //            paint.IsAntialias = true;
+                SKRect rect = SKRect.Create(0, 0, _tempBitmap.PixelSize.Width, _tempBitmap.PixelSize.Height);
+                SKPoint center = new SKPoint(rect.MidX, rect.MidY);
+                float radius = (rect.Width / 2f) - ((float)WheelPadding / 2f);
 
-    //            skDC.DrawCircle(center, radius, paint);
+                //Apply scale to TriangleWheelThickness
+                var wheelThicc = TriangleWheelThickness * (rect.Width / 500);
 
-    //            spectrum.Dispose();
+                SKShader spectrum = SKShader.CreateSweepGradient(center,
+                    new SKColor[]
+                    {
+                        new SKColor(255, 0, 0),
+                        new SKColor(255, 0, 255),
+                        new SKColor(0, 0, 255),
+                        new SKColor(0, 255, 255),
+                        new SKColor(0, 255, 0),
+                        new SKColor(255, 255, 0),
+                        new SKColor(255, 0, 0)
+                    });
 
-    //            var grad = SKShader.CreateColor(SKColors.Black);
-    //            paint.Shader = grad;
-    //            paint.BlendMode = SKBlendMode.DstOut;
+                SKPaint paint = new SKPaint();
+                paint.Shader = spectrum;
+                paint.Style = SKPaintStyle.Fill;
+                paint.StrokeWidth = 1f;
+                paint.IsAntialias = true;
 
-    //            skDC.DrawCircle(center, radius - wheelThicc, paint);
+                skDC.DrawCircle(center, radius, paint);
 
-    //            grad.Dispose();
+                spectrum.Dispose();
 
-    //            // -- Now draw the Triangle
-    //            paint.BlendMode = SKBlendMode.SrcOver; //Restore to default
-    //            paint.Style = SKPaintStyle.StrokeAndFill;
+                var grad = SKShader.CreateColor(SKColors.Black);
+                paint.Shader = grad;
+                paint.BlendMode = SKBlendMode.DstOut;
 
-    //            rect.Inflate(-wheelThicc + (float)WheelPadding / 2,
-    //                -wheelThicc + (float)WheelPadding / 2);
+                skDC.DrawCircle(center, radius - wheelThicc, paint);
 
-    //            radius -= wheelThicc;
+                grad.Dispose();
 
-    //            Color.GetHSVf(out float hue, out float s, out float v, out float _);
-    //            var h = hue * MathF.PI / 180;
-    //            float third = MathF.PI * (2f / 3f);
-    //            var hx = rect.MidX + radius * MathF.Cos(h);
-    //            var hy = rect.MidY - radius * MathF.Sin(h);
+                // -- Now draw the Triangle
+                paint.BlendMode = SKBlendMode.SrcOver; //Restore to default
+                paint.Style = SKPaintStyle.StrokeAndFill;
 
-    //            var sx = rect.MidX + radius * MathF.Cos(h - third);
-    //            var sy = rect.MidY - radius * MathF.Sin(h - third);
+                rect.Inflate(-wheelThicc + (float)WheelPadding / 2,
+                    -wheelThicc + (float)WheelPadding / 2);
 
-    //            var vx = rect.MidX + radius * MathF.Cos(h + third);
-    //            var vy = rect.MidY - radius * MathF.Sin(h + third);
+                radius -= wheelThicc;
 
-    //            SKPath path = new SKPath();
-    //            path.MoveTo(hx, hy);
-    //            path.LineTo(sx, sy);
-    //            path.LineTo(vx, vy);
-    //            path.Close();
+                Color.GetHSVf(out float hue, out float s, out float v, out float _);
+                var h = hue * MathF.PI / 180;
+                float third = MathF.PI * (2f / 3f);
+                var hx = rect.MidX + radius * MathF.Cos(h);
+                var hy = rect.MidY - radius * MathF.Sin(h);
 
-    //            //Black Triangle
-    //            //Transparent - Color(Hue)
-    //            //Transparent to White (composited)
+                var sx = rect.MidX + radius * MathF.Cos(h - third);
+                var sy = rect.MidY - radius * MathF.Sin(h - third);
 
-    //            var colShader = SKShader.CreateColor(SKColors.Black);
-    //            var xMid = (sx + vx) / 2;
-    //            var yMid = (sy + vy) / 2;
-    //            var hShader = SKShader.CreateLinearGradient(new SKPoint(xMid, yMid), new SKPoint(hx, hy),
-    //                new SKColor[]
-    //                {
-    //                    SKColor.FromHsv(hue,100,100,0),
-    //                    SKColor.FromHsv(hue,100,100)
-    //                }, SKShaderTileMode.Clamp);
+                var vx = rect.MidX + radius * MathF.Cos(h + third);
+                var vy = rect.MidY - radius * MathF.Sin(h + third);
 
+                SKPath path = new SKPath();
+                path.MoveTo(hx, hy);
+                path.LineTo(sx, sy);
+                path.LineTo(vx, vy);
+                path.Close();
 
-    //            xMid = (hx + sx) / 2;
-    //            yMid = (hy + sy) / 2;
-    //            var wShader = SKShader.CreateLinearGradient(new SKPoint(vx, vy), new SKPoint(xMid, yMid),
-    //                new SKColor[]
-    //                {
-    //                    SKColors.White,
-    //                    SKColor.Parse("#00FFFFFF")
-    //                }, SKShaderTileMode.Clamp);
+                //Black Triangle
+                //Transparent - Color(Hue)
+                //Transparent to White (composited)
 
-    //            paint.Shader = colShader;
-    //            paint.Style = SKPaintStyle.StrokeAndFill;
-
-    //            skDC.DrawPath(path, paint);
+                var colShader = SKShader.CreateColor(SKColors.Black);
+                var xMid = (sx + vx) / 2;
+                var yMid = (sy + vy) / 2;
+                var hShader = SKShader.CreateLinearGradient(new SKPoint(xMid, yMid), new SKPoint(hx, hy),
+                    new SKColor[]
+                    {
+                        SKColor.FromHsv(hue,100,100,0),
+                        SKColor.FromHsv(hue,100,100)
+                    }, SKShaderTileMode.Clamp);
 
 
-    //            paint.Shader = hShader;
-    //            skDC.DrawPath(path, paint);
+                xMid = (hx + sx) / 2;
+                yMid = (hy + sy) / 2;
+                var wShader = SKShader.CreateLinearGradient(new SKPoint(vx, vy), new SKPoint(xMid, yMid),
+                    new SKColor[]
+                    {
+                        SKColors.White,
+                        SKColor.Parse("#00FFFFFF")
+                    }, SKShaderTileMode.Clamp);
 
-    //            paint.Shader = wShader;
-    //            paint.BlendMode = SKBlendMode.Plus;
-    //            skDC.DrawPath(path, paint);
+                paint.Shader = colShader;
+                paint.Style = SKPaintStyle.StrokeAndFill;
 
-    //            wShader.Dispose();
-    //            hShader.Dispose();
-    //            colShader.Dispose();
+                skDC.DrawPath(path, paint);
 
-    //            path.Dispose();
 
-    //            paint.Dispose();
-    //        }
+                paint.Shader = hShader;
+                skDC.DrawPath(path, paint);
+
+                paint.Shader = wShader;
+                paint.BlendMode = SKBlendMode.Plus;
+                skDC.DrawPath(path, paint);
+
+                wShader.Dispose();
+                hShader.Dispose();
+                colShader.Dispose();
+
+                path.Dispose();
+
+                paint.Dispose();
+            }
         }
 
         private void RenderSelectorRects(DrawingContext context, double width, double height)

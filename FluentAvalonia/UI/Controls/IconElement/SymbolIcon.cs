@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -85,6 +86,12 @@ namespace FluentAvalonia.UI.Controls
 
         private void GenerateText()
         {
+            // v2: BUG: Seems inherited properties don't trigger a prop change notification
+            // when attached anymore (may be TextElement or ControlTheme related, not sure)
+            // so defer generation of TextLayout until first measure.
+            if (!((IVisual)this).IsAttachedToVisualTree)
+                return;
+
             var glyph = char.ConvertFromUtf32((int)Symbol).ToString();
 
             _textLayout = new TextLayout(glyph, 

@@ -1,11 +1,9 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sys="clr-namespace:System;assembly=netstandard"
-             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
-             xmlns:conv="using:FluentAvalonia.Converters">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=netstandard"
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    xmlns:media="clr-namespace:FluentAvalonia.UI.Media;assembly=FluentAvalonia"
+                    xmlns:conv="using:FluentAvalonia.Converters">
 
     <Design.PreviewWith>
         <Border Padding="50">
@@ -13,16 +11,14 @@
         </Border>
     </Design.PreviewWith>
 
-    <Styles.Resources>
-        <conv:ColorToBrushConv x:Key="ColorBrushConv" />
-    </Styles.Resources>
+    <conv:ColorToBrushConv x:Key="ColorBrushConv" />
 
-    <Style Selector="ui|ColorPickerButton">
+    <ControlTheme x:Key="{x:Type ui:ColorPickerButton}" TargetType="ui:ColorPickerButton">
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="MinWidth" Value="50" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
-		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Button Name="MainButton"
@@ -46,5 +42,6 @@
                 </Button>
             </ControlTemplate>
         </Setter>
-    </Style>
-</Styles>
+    </ControlTheme>
+
+</ResourceDictionary>
