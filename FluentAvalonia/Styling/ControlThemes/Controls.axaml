@@ -85,6 +85,11 @@
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemPresenterStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewStyles.axaml" />
+
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogCommandStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogButtonStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>

@@ -1,0 +1,95 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    xmlns:core="using:FluentAvalonia.Core"
+                    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
+
+    <Design.PreviewWith>
+        <Border Padding="50">
+            <uip:TaskDialogCommandHost Content="Content" Description="Description" />
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type uip:TaskDialogCommandHost}" TargetType="uip:TaskDialogCommandHost">
+        <Setter Property="Background" Value="{DynamicResource TaskDialogCommandBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TaskDialogCommandBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource TaskDialogCommandBorderThickness}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        Name="Root">
+                    <Border.Transitions>
+                        <Transitions>
+                            <BrushTransition Duration="00:00:00.083" Property="Background" />
+                        </Transitions>
+                    </Border.Transitions>
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Viewbox Width="18" Height="18" Margin="0 0 12 0" Name="IconHost"
+                                 IsVisible="False">
+                            <ui:IconSourceElement IconSource="{Binding IconSource}" />
+                        </Viewbox>
+                        <StackPanel Spacing="2" Grid.Column="1">
+                            <TextBlock Text="{Binding Text}"
+                                       FontWeight="SemiBold"
+                                       Name="Text"
+                                       Foreground="{DynamicResource TaskDialogCommandTextForeground}"/>
+                            <TextBlock Text="{Binding Description}"
+                                       FontSize="12"
+                                       TextWrapping="Wrap"
+                                       Name="Description"
+                                       Foreground="{DynamicResource TaskDialogCommandDescriptionForeground}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:icon /template/ Viewbox#IconHost">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ Border#Root">
+                <Setter Property="Background" Value="{DynamicResource TaskDialogCommandBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#Text">
+                <Setter Property="Foreground" Value="{DynamicResource TaskDialogCommandTextForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#Description">
+                <Setter Property="Foreground" Value="{DynamicResource TaskDialogCommandDescriptionForegroundPointerOver}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ Border#Root">
+                <Setter Property="Background" Value="{DynamicResource TaskDialogCommandBackgroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#Text">
+                <Setter Property="Foreground" Value="{DynamicResource TaskDialogCommandTextForegroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#Description">
+                <Setter Property="Foreground" Value="{DynamicResource TaskDialogCommandDescriptionForegroundPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:disabled">
+            <Style Selector="^ /template/ Border#Root">
+                <Setter Property="Background" Value="{DynamicResource TaskDialogCommandBackgroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#Text">
+                <Setter Property="Foreground" Value="{DynamicResource TaskDialogCommandTextForegroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#Description">
+                <Setter Property="Foreground" Value="{DynamicResource TaskDialogCommandDescriptionForegroundDisabled}" />
+            </Style>
+        </Style>
+    </ControlTheme>
+    
+</ResourceDictionary>
