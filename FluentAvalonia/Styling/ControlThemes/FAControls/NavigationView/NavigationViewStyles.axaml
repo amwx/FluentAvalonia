@@ -8,6 +8,8 @@
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem Icon="Save" Content="Save" />
                 </ui:NavigationView.MenuItems>
+                
+                <TextBlock Text="CONTENT" Margin="20" />
             </ui:NavigationView>
         </Border>
     </Design.PreviewWith>
@@ -431,13 +433,13 @@
             </Style>
         </Style>
 
-        <Style Selector="^ /template/ SplitView Border#ContentGridBorder">
+        <Style Selector="^:topnavminimal  /template/ SplitView Border#ContentGridBorder">
             <Setter Property="BorderThickness" Value="{DynamicResource TopNavigationViewContentGridBorderThickness}" />
             <Setter Property="CornerRadius" Value="{DynamicResource TopNavigationViewContentGridCornerRadius}" />
             <Setter Property="Margin" Value="{DynamicResource TopNavigationViewContentMargin}" />
         </Style>
 
-        <Style Selector="^ /template/ SplitView ContentControl#HeaderContent">
+        <Style Selector="^:headercollapsed /template/ SplitView ContentControl#HeaderContent">
             <Setter Property="IsVisible" Value="False" />
         </Style>
 
