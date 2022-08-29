@@ -11,7 +11,7 @@ using System.Windows.Input;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Represents a command in a <see cref="MenuFlyout"/> control.
+/// Represents a command in a <see cref="FAMenuFlyout"/> control.
 /// </summary>
 public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSource
 {

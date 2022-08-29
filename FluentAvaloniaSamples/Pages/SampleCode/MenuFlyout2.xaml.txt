@@ -1,10 +1,10 @@
 ﻿<Button Content="Click me for flyout!">
     <Button.Flyout>
 
-        <ui:MenuFlyout Placement="Bottom"
+        <ui:FAMenuFlyout Placement="Bottom"
                         Items="{Binding TestMenuItems}">
 
-        </ui:MenuFlyout>
+        </ui:FAMenuFlyout>
     </Button.Flyout>
 </Button>
 

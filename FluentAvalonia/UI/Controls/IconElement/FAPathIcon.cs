@@ -10,16 +10,16 @@ namespace FluentAvalonia.UI.Controls
     /// <summary>
     /// Represents an icon that uses a vector path as its content.
     /// </summary>
-    public class PathIcon : IconElement
+    public class FAPathIcon : FAIconElement
     {
         private Matrix _transform = Matrix.Identity;
         private Geometry _renderedGeometry;
 
-        static PathIcon()
+        static FAPathIcon()
         {
-            StretchProperty.OverrideDefaultValue<PathIcon>(Stretch.Uniform);
-            StretchDirectionProperty.OverrideDefaultValue<PathIcon>(StretchDirection.Both);
-            ClipToBoundsProperty.OverrideDefaultValue<PathIcon>(true);
+            StretchProperty.OverrideDefaultValue<FAPathIcon>(Stretch.Uniform);
+            StretchDirectionProperty.OverrideDefaultValue<FAPathIcon>(StretchDirection.Both);
+            ClipToBoundsProperty.OverrideDefaultValue<FAPathIcon>(true);
             
             AffectsMeasure<Shape>(StretchProperty, StretchDirectionProperty, DataProperty);
             AffectsRender<Shape>(StretchProperty, DataProperty);
@@ -29,7 +29,7 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="Data"/> property
         /// </summary>
         public static StyledProperty<Geometry> DataProperty =
-            AvaloniaProperty.Register<PathIcon, Geometry>(nameof(Data));
+            AvaloniaProperty.Register<FAPathIcon, Geometry>(nameof(Data));
 
         /// <summary>
         /// Gets or sets a Geometry that specifies the shape to be drawn. 
@@ -45,7 +45,7 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="Stretch"/> property.
         /// </summary>
         public static readonly StyledProperty<Stretch> StretchProperty =
-            Shape.StretchProperty.AddOwner<PathIcon>();
+            Shape.StretchProperty.AddOwner<FAPathIcon>();
 
         /// <summary>
         /// Gets or sets a <see cref="Stretch"/> enumeration value that describes how the shape fills its allocated space.

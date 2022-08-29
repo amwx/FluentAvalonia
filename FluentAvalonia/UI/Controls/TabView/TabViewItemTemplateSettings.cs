@@ -8,8 +8,8 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Defines the <see cref="IconElement"/> property
         /// </summary>
-        public static readonly StyledProperty<IconElement> IconElementProperty =
-            AvaloniaProperty.Register<TabViewItemTemplateSettings, IconElement>(nameof(IconElement));
+        public static readonly StyledProperty<FAIconElement> IconElementProperty =
+            AvaloniaProperty.Register<TabViewItemTemplateSettings, FAIconElement>(nameof(IconElement));
         
         /// <summary>
         /// Defines the <see cref="TabGeometry"/> property
@@ -20,7 +20,7 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Gets the IconElement that relates to the IconSource of the current TabViewItem
         /// </summary>
-        public IconElement IconElement
+        public FAIconElement IconElement
         {
             get => GetValue(IconElementProperty);
             internal set => SetValue(IconElementProperty, value);

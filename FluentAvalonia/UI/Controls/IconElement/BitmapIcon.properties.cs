@@ -3,7 +3,7 @@ using System;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public partial class BitmapIcon : IconElement
+    public partial class BitmapIcon : FAIconElement
     {
         /// <summary>
         /// Defines the <see cref="UriSource"/> property

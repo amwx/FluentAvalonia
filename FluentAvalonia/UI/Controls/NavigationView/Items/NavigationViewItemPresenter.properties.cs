@@ -9,8 +9,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
         /// <summary>
         /// Defines the <see cref="Icon"/> property
         /// </summary>
-        public static readonly StyledProperty<IconElement> IconProperty =
-            AvaloniaProperty.Register<NavigationViewItemPresenter, IconElement>(nameof(Icon));
+        public static readonly StyledProperty<FAIconElement> IconProperty =
+            AvaloniaProperty.Register<NavigationViewItemPresenter, FAIconElement>(nameof(Icon));
 
         /// <summary>
         /// Defines the <see cref="TemplateSettings"/> property
@@ -27,7 +27,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
         /// <summary>
         /// Gets or sets the icon in a NavigationView item.
         /// </summary>
-        public IconElement Icon
+        public FAIconElement Icon
         {
             get => GetValue(IconProperty);
             set => SetValue(IconProperty, value);

@@ -24,8 +24,8 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Defines the <see cref="Icon"/> property
         /// </summary>
-        public static readonly StyledProperty<IconElement> IconProperty =
-            AvaloniaProperty.Register<NavigationViewItem, IconElement>(nameof(Icon));
+        public static readonly StyledProperty<FAIconElement> IconProperty =
+            AvaloniaProperty.Register<NavigationViewItem, FAIconElement>(nameof(Icon));
 
         /// <summary>
         /// Defines the <see cref="IsChildSelected"/> property
@@ -88,7 +88,7 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Gets or sets the icon to show next to the menu item text.
         /// </summary>
-        public IconElement Icon
+        public FAIconElement Icon
         {
             get => GetValue(IconProperty);
             set => SetValue(IconProperty, value);

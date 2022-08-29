@@ -57,7 +57,7 @@
 
 
         <ctrls:ControlExample Header="PathIcon"
-                              TargetType="ui:PathIcon">
+                              TargetType="ui:PathIconSource">
             <ui:IconSourceElement IconSource="{StaticResource SamplePathIcon}"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>

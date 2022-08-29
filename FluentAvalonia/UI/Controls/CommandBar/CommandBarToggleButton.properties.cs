@@ -17,8 +17,8 @@ public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, 
 	/// <summary>
 	/// Defines the <see cref="Icon"/> property
 	/// </summary>
-	public static readonly StyledProperty<IconElement> IconProperty =
-		AvaloniaProperty.Register<CommandBarToggleButton, IconElement>(nameof(Icon));
+	public static readonly StyledProperty<FAIconElement> IconProperty =
+		AvaloniaProperty.Register<CommandBarToggleButton, FAIconElement>(nameof(Icon));
 
 	/// <summary>
 	/// Defines the <see cref="Label"/> property
@@ -60,7 +60,7 @@ public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, 
 	/// <summary>
 	/// Gets or sets the graphic content of the command bar toggle button.
 	/// </summary>
-	public IconElement Icon
+	public FAIconElement Icon
 	{
 		get => GetValue(IconProperty);
 		set => SetValue(IconProperty, value);

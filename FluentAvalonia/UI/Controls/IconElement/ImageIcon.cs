@@ -8,7 +8,7 @@ namespace FluentAvalonia.UI.Controls
 	/// <summary>
 	/// Represents an icon that uses an <see cref="Avalonia.Media.IImage"/> as its content.
 	/// </summary>
-	public class ImageIcon : IconElement
+	public class ImageIcon : FAIconElement
 	{
 		/// <summary>
 		/// Defines the <see cref="Source"/> property

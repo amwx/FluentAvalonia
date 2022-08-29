@@ -11,17 +11,17 @@ using System;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Displays the content of a <see cref="MenuFlyout"/> control.
+/// Displays the content of a <see cref="FAMenuFlyout"/> control.
 /// </summary>
-public class MenuFlyoutPresenter : MenuBase, IStyleable
+public class FAMenuFlyoutPresenter : MenuBase, IStyleable
 {
-    public MenuFlyoutPresenter()
+    public FAMenuFlyoutPresenter()
         : base(new MenuFlyoutInteractionHandler(true))
     {
         KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Cycle);
     }
 
-    public MenuFlyoutPresenter(IMenuInteractionHandler handler)
+    public FAMenuFlyoutPresenter(IMenuInteractionHandler handler)
         : base(handler) { }
 
     Type IStyleable.StyleKey => typeof(Avalonia.Controls.MenuFlyoutPresenter);

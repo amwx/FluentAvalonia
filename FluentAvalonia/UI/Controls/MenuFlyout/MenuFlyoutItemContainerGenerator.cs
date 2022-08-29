@@ -20,7 +20,7 @@ internal class MenuFlyoutPresenterItemContainerGenerator : ItemContainerGenerato
 		if (item is MenuFlyoutItemBase mfib)
 			return mfib;
 
-		if (Owner is MenuFlyoutPresenter presenter)
+		if (Owner is FAMenuFlyoutPresenter presenter)
 		{
 			var template = Owner.FindDataTemplate(item, ItemTemplate);
 

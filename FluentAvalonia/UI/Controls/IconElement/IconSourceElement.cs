@@ -8,7 +8,7 @@ namespace FluentAvalonia.UI.Controls
     /// <summary>
     /// Represents an icon that uses an IconSource as its content.
     /// </summary>
-    public class IconSourceElement : IconElement
+    public class IconSourceElement : FAIconElement
     {
         /// <summary>
         /// Defines the <see cref="IconSource"/> property

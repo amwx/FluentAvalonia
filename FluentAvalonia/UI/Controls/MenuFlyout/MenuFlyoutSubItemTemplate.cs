@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
 /// Represents a <see cref="IDataTemplate"/> that is used to generate items in a 
-/// <see cref="MenuFlyout"/>
+/// <see cref="FAMenuFlyout"/>
 /// </summary>
 public class MenuFlyoutSubItemTemplate : ITreeDataTemplate
 {

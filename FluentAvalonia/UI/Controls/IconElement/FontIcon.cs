@@ -8,7 +8,7 @@ namespace FluentAvalonia.UI.Controls
     /// <summary>
     /// Represents an icon that uses a glyph from the specified font.
     /// </summary>
-    public partial class FontIcon : IconElement
+    public partial class FontIcon : FAIconElement
     {       
 		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{

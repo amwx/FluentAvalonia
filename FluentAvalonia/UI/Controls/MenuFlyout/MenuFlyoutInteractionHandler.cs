@@ -37,9 +37,9 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 		DelayRun = delayRun;
 	}
 
-void IMenuInteractionHandler.Attach(IMenu menu) => Attach((MenuFlyoutPresenter)menu);
+void IMenuInteractionHandler.Attach(IMenu menu) => Attach((FAMenuFlyoutPresenter)menu);
 
-	public virtual void Attach(MenuFlyoutPresenter menu)
+	public virtual void Attach(FAMenuFlyoutPresenter menu)
 	{
 		if (Menu != null)
 		{
@@ -115,7 +115,7 @@ void IMenuInteractionHandler.Attach(IMenu menu) => Attach((MenuFlyoutPresenter)m
 
 	protected IInputManager InputManager { get; }
 
-	protected MenuFlyoutPresenter Menu { get; private set; }
+	protected FAMenuFlyoutPresenter Menu { get; private set; }
 
 	protected static TimeSpan MenuShowDelay { get; } = TimeSpan.FromMilliseconds(400);
     

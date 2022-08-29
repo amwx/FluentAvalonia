@@ -12,7 +12,7 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="Data"/> property
         /// </summary>
         public static StyledProperty<Geometry> DataProperty =
-            PathIcon.DataProperty.AddOwner<PathIconSource>();
+            FAPathIcon.DataProperty.AddOwner<PathIconSource>();
 
         /// <summary>
         /// Gets or sets a Geometry that specifies the shape to be drawn. 
@@ -28,7 +28,7 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="Stretch"/> property.
         /// </summary>
         public static readonly StyledProperty<Stretch> StretchProperty =
-            PathIcon.StretchProperty.AddOwner<PathIcon>();
+            FAPathIcon.StretchProperty.AddOwner<FAPathIcon>();
 
         /// <summary>
         /// Gets or sets a <see cref="Stretch"/> enumeration value that describes how the shape fills its allocated space.
@@ -43,7 +43,7 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="StretchDirection"/> property.
         /// </summary>
         public static readonly StyledProperty<StretchDirection> StretchDirectionProperty =
-            PathIcon.StretchDirectionProperty.AddOwner<Avalonia.Controls.PathIcon>();
+            FAPathIcon.StretchDirectionProperty.AddOwner<Avalonia.Controls.PathIcon>();
         
         /// <summary>
         /// Gets or sets a value controlling in what direction contents will be stretched.

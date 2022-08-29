@@ -12,13 +12,13 @@ namespace FluentAvalonia.UI.Controls
     /// Represents the base class for an icon UI element.
     /// </summary>
     [TypeConverter(typeof(IconElementConverter))]
-    public class IconElement : Control
+    public class FAIconElement : Control
     {
         /// <summary>
         /// Defines the <see cref="Foreground"/> property
         /// </summary>
         public static readonly AttachedProperty<IBrush> ForegroundProperty =
-            TextElement.ForegroundProperty.AddOwner<IconElement>();
+            TextElement.ForegroundProperty.AddOwner<FAIconElement>();
 
         /// <summary>
         /// Gets or sets a brush that describes the foreground color.
@@ -91,9 +91,9 @@ namespace FluentAvalonia.UI.Controls
                 }
 
                 //Try a PathIcon
-                if (PathIcon.IsDataValid(val, out Geometry g))
+                if (FAPathIcon.IsDataValid(val, out Geometry g))
                 {
-                    return new PathIcon() { Data = g };
+                    return new FAPathIcon() { Data = g };
                 }
 
                 try

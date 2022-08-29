@@ -32,13 +32,13 @@ namespace FluentAvalonia.UI.Controls
             return fi;
         }
 
-        public static PathIcon CreatePathIconFromPathIconSource(PathIconSource pis)
+        public static FAPathIcon CreatePathIconFromPathIconSource(PathIconSource pis)
         {
-            var pi = new PathIcon
+            var pi = new FAPathIcon
             {
-                [!PathIcon.DataProperty] = pis[!PathIconSource.DataProperty],
-                [!PathIcon.StretchProperty] = pis[!PathIconSource.StretchProperty],
-                [!PathIcon.StretchDirectionProperty] = pis[!PathIconSource.StretchDirectionProperty]
+                [!FAPathIcon.DataProperty] = pis[!PathIconSource.DataProperty],
+                [!FAPathIcon.StretchProperty] = pis[!PathIconSource.StretchProperty],
+                [!FAPathIcon.StretchDirectionProperty] = pis[!PathIconSource.StretchDirectionProperty]
             };
 
             if (pis.IsSet(IconSource.ForegroundProperty))
@@ -120,7 +120,7 @@ namespace FluentAvalonia.UI.Controls
             return ii;
 		}
 
-        public static IconElement CreateFromUnknown(IconSource src)
+        public static FAIconElement CreateFromUnknown(IconSource src)
         {
             if (src is BitmapIconSource bis)
             {

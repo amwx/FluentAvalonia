@@ -4,7 +4,7 @@ using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls
 {
-    public partial class FontIcon : IconElement
+    public partial class FontIcon : FAIconElement
     {
         /// <summary>
         /// Defines the <see cref="FontFamily"/> property

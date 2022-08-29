@@ -58,7 +58,7 @@ namespace FluentAvalonia.UI.Controls
                 }
 
                 //Try a PathIcon
-                if (PathIcon.IsDataValid(val, out Geometry g))
+                if (FAPathIcon.IsDataValid(val, out Geometry g))
                 {
                     return new PathIconSource() { Data = g };
                 }

@@ -4,9 +4,9 @@
 
     <Design.PreviewWith>
         <Border Padding="50">
-            <ui:MenuFlyoutPresenter>
+            <ui:FAMenuFlyoutPresenter>
                 <ui:MenuFlyoutItem Text="Hello" Icon="SaveFilled" InputGesture="Ctrl+k"/>
-            </ui:MenuFlyoutPresenter>
+            </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
 

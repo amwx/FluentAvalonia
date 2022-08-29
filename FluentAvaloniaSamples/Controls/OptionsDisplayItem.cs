@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using IconElement = FluentAvalonia.UI.Controls.IconElement;
+using FAIconElement = FluentAvalonia.UI.Controls.FAIconElement;
 
 namespace FluentAvaloniaSamples.Controls
 {
@@ -17,8 +17,8 @@ namespace FluentAvaloniaSamples.Controls
         public static readonly StyledProperty<string> DescriptionProperty =
             AvaloniaProperty.Register<OptionsDisplayItem, string>(nameof(Description));
 
-        public static readonly StyledProperty<IconElement> IconProperty =
-            AvaloniaProperty.Register<OptionsDisplayItem, IconElement>(nameof(Icon));
+        public static readonly StyledProperty<FAIconElement> IconProperty =
+            AvaloniaProperty.Register<OptionsDisplayItem, FAIconElement>(nameof(Icon));
 
         public static readonly StyledProperty<bool> NavigatesProperty =
             AvaloniaProperty.Register<OptionsDisplayItem, bool>(nameof(Navigates));
@@ -51,7 +51,7 @@ namespace FluentAvaloniaSamples.Controls
             set => SetValue(DescriptionProperty, value);
         }
 
-        public IconElement Icon
+        public FAIconElement Icon
         {
             get => GetValue(IconProperty);
             set => SetValue(IconProperty, value);

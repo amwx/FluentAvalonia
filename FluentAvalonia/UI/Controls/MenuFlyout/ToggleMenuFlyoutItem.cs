@@ -7,7 +7,7 @@ using System;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Represents an item in a <see cref="MenuFlyout"/> that a user can change 
+/// Represents an item in a <see cref="FAMenuFlyout"/> that a user can change 
 /// between two states, checked or unchecked.
 /// </summary>
 public class ToggleMenuFlyoutItem : MenuFlyoutItem, IStyleable

@@ -20,8 +20,8 @@ public partial class MenuFlyoutItem
 	/// <summary>
 	/// Defines the <see cref="Icon"/> property
 	/// </summary>
-	public static readonly StyledProperty<IconElement> IconProperty =
-		AvaloniaProperty.Register<MenuFlyoutItem, IconElement>(nameof(Icon));
+	public static readonly StyledProperty<FAIconElement> IconProperty =
+		AvaloniaProperty.Register<MenuFlyoutItem, FAIconElement>(nameof(Icon));
 
 	/// <summary>
 	/// Defines the <see cref="Command"/> property
@@ -60,7 +60,7 @@ public static readonly StyledProperty<KeyGesture> InputGestureProperty =
 	/// <summary>
 	/// Gets or sets the graphic content of the menu flyout item.
 	/// </summary>
-	public IconElement Icon
+	public FAIconElement Icon
 	{
 		get => GetValue(IconProperty);
 		set => SetValue(IconProperty, value);

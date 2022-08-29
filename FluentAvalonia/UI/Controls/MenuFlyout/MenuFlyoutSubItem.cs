@@ -8,7 +8,7 @@ using System;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Represents a menu item that displays a sub-menu in a <see cref="MenuFlyout"/> control.
+/// Represents a menu item that displays a sub-menu in a <see cref="FAMenuFlyout"/> control.
 /// </summary>
 public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 {
@@ -64,7 +64,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 	{
 		if (_subMenu == null)
 		{
-			_presenter = new MenuFlyoutPresenter()
+			_presenter = new FAMenuFlyoutPresenter()
 			{
 				[!ItemsControl.ItemsProperty] = this[!ItemsProperty],
 				[!ItemsControl.ItemTemplateProperty] = this[!ItemTemplateProperty]
@@ -101,5 +101,5 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;
 		
 	private Popup _subMenu;
-	private MenuFlyoutPresenter _presenter;
+	private FAMenuFlyoutPresenter _presenter;
 }

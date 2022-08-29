@@ -19,8 +19,8 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 	/// <summary>
 	/// Defines the <see cref="Icon"/> property
 	/// </summary>
-	public static readonly StyledProperty<IconElement> IconProperty =
-		AvaloniaProperty.Register<MenuFlyoutItem, IconElement>(nameof(Icon));
+	public static readonly StyledProperty<FAIconElement> IconProperty =
+		AvaloniaProperty.Register<MenuFlyoutItem, FAIconElement>(nameof(Icon));
 
 	/// <summary>
 	/// Defines the <see cref="Items"/> property
@@ -47,7 +47,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 	/// <summary>
 	/// Gets or sets the graphic content of the menu flyout subitem.
 	/// </summary>
-	public IconElement Icon
+	public FAIconElement Icon
 	{
 		get => GetValue(IconProperty);
 		set => SetValue(IconProperty, value);

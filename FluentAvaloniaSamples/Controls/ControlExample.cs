@@ -228,7 +228,7 @@ namespace FluentAvaloniaSamples.Controls
                         l.Add(defItem);
                     }
 
-                    _optionsMenuButton.Flyout = new FluentAvalonia.UI.Controls.MenuFlyout
+                    _optionsMenuButton.Flyout = new FluentAvalonia.UI.Controls.FAMenuFlyout
                     {
                         Items = l,
                         Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft

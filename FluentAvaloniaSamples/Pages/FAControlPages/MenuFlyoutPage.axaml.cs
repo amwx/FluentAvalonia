@@ -11,7 +11,7 @@ namespace FluentAvaloniaSamples.Pages
         {
             InitializeComponent();
 
-            TargetType = typeof(MenuFlyout);
+            TargetType = typeof(FAMenuFlyout);
             WinUINamespace = "Microsoft.UI.Xaml.Controls.DropDownButton";
             WinUIDocsLink = new Uri("https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.xaml.controls.menuflyout");
             WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/controls/menus");

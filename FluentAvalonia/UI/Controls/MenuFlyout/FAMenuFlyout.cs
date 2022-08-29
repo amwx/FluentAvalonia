@@ -11,9 +11,9 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a flyout that displays a menu of commands.
 /// </summary>
-public class MenuFlyout : FlyoutBase
+public class FAMenuFlyout : FlyoutBase
 {
-	public MenuFlyout()
+	public FAMenuFlyout()
 	{
 		_items = new AvaloniaList<object>();
 	}
@@ -21,15 +21,15 @@ public class MenuFlyout : FlyoutBase
 	/// <summary>
 	/// Defines the <see cref="Items"/> property
 	/// </summary>
-	public static readonly DirectProperty<MenuFlyout, IEnumerable> ItemsProperty =
-		ItemsControl.ItemsProperty.AddOwner<MenuFlyout>(x => x.Items,
+	public static readonly DirectProperty<FAMenuFlyout, IEnumerable> ItemsProperty =
+		ItemsControl.ItemsProperty.AddOwner<FAMenuFlyout>(x => x.Items,
 			(x, v) => x.Items = v);
 
 	/// <summary>
 	/// Defines the <see cref="ItemTemplate"/> property
 	/// </summary>
 	public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
-		ItemsControl.ItemTemplateProperty.AddOwner<MenuFlyout>();
+		ItemsControl.ItemTemplateProperty.AddOwner<FAMenuFlyout>();
 
 	/// <summary>
 	/// Gets or sets the items of the MenuFlyout
@@ -58,7 +58,7 @@ public class MenuFlyout : FlyoutBase
 
 	protected override Control CreatePresenter()
 	{
-		return new MenuFlyoutPresenter
+		return new FAMenuFlyoutPresenter
 		{
 			[!ItemsControl.ItemsProperty] = this[!ItemsProperty],
 			[!ItemsControl.ItemTemplateProperty] = this[!ItemTemplateProperty]
@@ -73,7 +73,7 @@ public class MenuFlyout : FlyoutBase
 		}
 		base.OnOpened();
 
-    if (Popup.Child is MenuFlyoutPresenter mfp)
+    if (Popup.Child is FAMenuFlyoutPresenter mfp)
     {
         mfp.RaiseMenuOpened();
     }

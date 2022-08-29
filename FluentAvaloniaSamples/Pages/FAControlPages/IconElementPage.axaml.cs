@@ -15,7 +15,7 @@ namespace FluentAvaloniaSamples.Pages
         {
             InitializeComponent();
 
-            TargetType = typeof(IconElement);
+            TargetType = typeof(FAIconElement);
             WinUINamespace = "Microsoft.UI.Xaml.Controls.IconElement";
             WinUIDocsLink = new Uri("https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.iconelement?view=winui-3.0");
             WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/style/icons");

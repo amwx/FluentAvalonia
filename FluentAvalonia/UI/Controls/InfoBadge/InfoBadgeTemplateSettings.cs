@@ -17,8 +17,8 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Defines the <see cref="IconElement"/> property
         /// </summary>
-        public static readonly StyledProperty<IconElement> IconElementProperty =
-            AvaloniaProperty.Register<InfoBadgeTemplateSettings, IconElement>(nameof(IconElement));
+        public static readonly StyledProperty<FAIconElement> IconElementProperty =
+            AvaloniaProperty.Register<InfoBadgeTemplateSettings, FAIconElement>(nameof(IconElement));
 
         /// <summary>
         /// Gets or sets the corner radius for an InfoBadge.
@@ -32,7 +32,7 @@ namespace FluentAvalonia.UI.Controls
         /// <summary>
         /// Gets or sets the icon element for an InfoBadge.
         /// </summary>
-        public IconElement IconElement
+        public FAIconElement IconElement
         {
             get => GetValue(IconElementProperty);
             internal set => SetValue(IconElementProperty, value);

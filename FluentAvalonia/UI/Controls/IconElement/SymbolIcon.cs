@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls
     /// <summary>
     /// Represents an icon that uses a glyph from the SymbolThemeFontFamily resource as its content.
     /// </summary>
-    public class SymbolIcon : IconElement
+    public class SymbolIcon : FAIconElement
     {
         static SymbolIcon()
         {
@@ -67,7 +67,7 @@ namespace FluentAvalonia.UI.Controls
             if (_textLayout == null)
                 GenerateText();
 
-            return _textLayout.Bounds.Size;
+            return _textLayout?.Bounds.Size ?? Size.Empty;
         }
 
         public override void Render(DrawingContext context)
