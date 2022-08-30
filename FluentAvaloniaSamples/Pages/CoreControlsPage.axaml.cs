@@ -1,22 +1,20 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using FluentAvaloniaSamples.ViewModels;
 
-namespace FluentAvaloniaSamples.Pages
+namespace FluentAvaloniaSamples.Pages;
+
+public partial class CoreControlsPage : UserControl
 {
-    public partial class CoreControlsPage : UserControl
+    public CoreControlsPage()
     {
-        public CoreControlsPage()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            DataContext = new CoreControlsPageViewModel();
-        }
+        DataContext = new CoreControlsPageViewModel();
+    }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

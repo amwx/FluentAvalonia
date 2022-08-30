@@ -3,100 +3,99 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using System;
 
-namespace FluentAvalonia.UI.Controls
+namespace FluentAvalonia.UI.Controls;
+
+/// <summary>
+/// Represents a control for indicating notifications, alerts, new content, 
+/// or to attract focus to an area within an app.
+/// </summary>
+public partial class InfoBadge : TemplatedControl
 {
-    /// <summary>
-    /// Represents a control for indicating notifications, alerts, new content, 
-    /// or to attract focus to an area within an app.
-    /// </summary>
-    public partial class InfoBadge : TemplatedControl
+    public InfoBadge()
     {
-        public InfoBadge()
+        TemplateSettings = new InfoBadgeTemplateSettings();
+    }
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        OnDisplayKindPropertiesChanged();
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        var defaultDesSize = base.MeasureOverride(availableSize);
+
+        if (defaultDesSize.Width < defaultDesSize.Height)
         {
-            TemplateSettings = new InfoBadgeTemplateSettings();
+            return new Size(defaultDesSize.Height, defaultDesSize.Height);
         }
 
-        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-        {
-            base.OnApplyTemplate(e);
+        return defaultDesSize;
+    }
 
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == ValueProperty)
+        {
+            if (Value < -1)
+                throw new ArgumentOutOfRangeException(nameof(Value));
+        }
+        else if (change.Property == ValueProperty || change.Property == IconSourceProperty)
+        {
             OnDisplayKindPropertiesChanged();
         }
-
-        protected override Size MeasureOverride(Size availableSize)
+        else if (change.Property == BoundsProperty)
         {
-            var defaultDesSize = base.MeasureOverride(availableSize);
-
-            if (defaultDesSize.Width < defaultDesSize.Height)
-            {
-                return new Size(defaultDesSize.Height, defaultDesSize.Height);
-            }
-
-            return defaultDesSize;
+            OnBoundsChanged(change);
         }
+    }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    private void OnDisplayKindPropertiesChanged()
+    {
+        var icoSource = IconSource;
+        if (Value >= 0)
         {
-            base.OnPropertyChanged(change);
+            PseudoClasses.Set(":value", true);
 
-            if (change.Property== ValueProperty)
-            {
-                if (Value < -1)
-                    throw new ArgumentOutOfRangeException(nameof(Value));
-            }
-            else if (change.Property == ValueProperty || change.Property == IconSourceProperty)
-            {
-                OnDisplayKindPropertiesChanged();
-            }
-            else if (change.Property == BoundsProperty)
-			{
-                OnBoundsChanged(change);
-			}
+            PseudoClasses.Set(":fonticon", false);
+            PseudoClasses.Set(":icon", false);
+            PseudoClasses.Set(":dot", false);
         }
-
-        private void OnDisplayKindPropertiesChanged()
+        else if (icoSource != null)
         {
-            var icoSource = IconSource;
-            if (Value >= 0)
-            {
-                PseudoClasses.Set(":value", true);
+            TemplateSettings.IconElement = IconHelpers.CreateFromUnknown(icoSource);
 
-                PseudoClasses.Set(":fonticon", false);
-                PseudoClasses.Set(":icon", false);
-                PseudoClasses.Set(":dot", false);
-            }
-            else if (icoSource != null)
-            {
-                TemplateSettings.IconElement = IconHelpers.CreateFromUnknown(icoSource);
+            PseudoClasses.Set(":fonticon", icoSource is FontIconSource);
+            PseudoClasses.Set(":icon", icoSource is not FontIconSource);
 
-                PseudoClasses.Set(":fonticon", icoSource is FontIconSource);
-                PseudoClasses.Set(":icon", icoSource is not FontIconSource);
-
-                PseudoClasses.Set(":value", false);
-                PseudoClasses.Set(":dot", false);
-            }
-            else
-            {
-                PseudoClasses.Set(":dot", true);
-
-                PseudoClasses.Set(":value", false);
-                PseudoClasses.Set(":fonticon", false);
-                PseudoClasses.Set(":icon", false);
-            }
+            PseudoClasses.Set(":value", false);
+            PseudoClasses.Set(":dot", false);
         }
-
-        private void OnBoundsChanged(AvaloniaPropertyChangedEventArgs e)
+        else
         {
-            var rc = (Rect)e.NewValue;
-            var cornerRadiusValue = rc.Height / 2;
-            if (!IsSet(CornerRadiusProperty))
-            {
-                TemplateSettings.InfoBadgeCornerRadius = new CornerRadius(cornerRadiusValue);
-            }
-            else
-            {
-                TemplateSettings.InfoBadgeCornerRadius = new CornerRadius();
-            }
+            PseudoClasses.Set(":dot", true);
+
+            PseudoClasses.Set(":value", false);
+            PseudoClasses.Set(":fonticon", false);
+            PseudoClasses.Set(":icon", false);
+        }
+    }
+
+    private void OnBoundsChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        var rc = (Rect)e.NewValue;
+        var cornerRadiusValue = rc.Height / 2;
+        if (!IsSet(CornerRadiusProperty))
+        {
+            TemplateSettings.InfoBadgeCornerRadius = new CornerRadius(cornerRadiusValue);
+        }
+        else
+        {
+            TemplateSettings.InfoBadgeCornerRadius = new CornerRadius();
         }
     }
 }

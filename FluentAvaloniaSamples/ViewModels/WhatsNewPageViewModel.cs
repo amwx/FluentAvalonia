@@ -4,108 +4,107 @@ using System.IO;
 using Avalonia;
 using Avalonia.Platform;
 
-namespace FluentAvaloniaSamples.ViewModels
+namespace FluentAvaloniaSamples.ViewModels;
+
+public class WhatsNewPageViewModel : ViewModelBase
 {
-    public class WhatsNewPageViewModel : ViewModelBase
+    public WhatsNewPageViewModel()
     {
-        public WhatsNewPageViewModel()
+        Versions = new List<FAVersionInfo>();
+
+        using (var stream = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(new Uri("avares://FluentAvaloniaSamples/Assets/ChangeLog.txt")))
+        using (var sr = new StreamReader(stream))
         {
-            Versions = new List<FAVersionInfo>();
-
-            using (var stream = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(new Uri("avares://FluentAvaloniaSamples/Assets/ChangeLog.txt")))
-            using (var sr = new StreamReader(stream))
+            FAVersionInfo currentVersion = null;
+            bool hasVersion = false;
+            while (sr.Peek() != -1)
             {
-                FAVersionInfo currentVersion = null;
-                bool hasVersion = false;
-                while (sr.Peek() != -1)
+
+                var line = sr.ReadLine();
+                if (line.StartsWith('#')) // Comment
+                    continue;
+
+                if (string.IsNullOrEmpty(line)) // Empty line
+                    continue;
+
+                if (line.StartsWith('['))
                 {
-
-                    var line = sr.ReadLine();
-                    if (line.StartsWith('#')) // Comment
-                        continue;
-
-                    if (string.IsNullOrEmpty(line)) // Empty line
-                        continue;
-
-                    if (line.StartsWith('['))
+                    if (!hasVersion)
                     {
-                        if (!hasVersion)
-                        {
-                            currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
-                            hasVersion = true;
-                        }
-                        else
-                        {
-                            // new version found
+                        currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
+                        hasVersion = true;
+                    }
+                    else
+                    {
+                        // new version found
 
-                            Versions.Insert(0, currentVersion);
-                            currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
-                        }
-
-                        continue;
+                        Versions.Insert(0, currentVersion);
+                        currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
                     }
 
-                    currentVersion.ChangeItems.Add(ReadLine(line));
+                    continue;
                 }
 
-                Versions.Insert(0, currentVersion);
+                currentVersion.ChangeItems.Add(ReadLine(line));
             }
 
-
-            CurrentVersion = Versions[0];
+            Versions.Insert(0, currentVersion);
         }
 
-        public List<FAVersionInfo> Versions { get; }
 
-        public FAVersionInfo CurrentVersion
+        CurrentVersion = Versions[0];
+    }
+
+    public List<FAVersionInfo> Versions { get; }
+
+    public FAVersionInfo CurrentVersion
+    {
+        get => _version;
+        set => RaiseAndSetIfChanged(ref _version, value);
+    }
+
+    private FAChangeItemBase ReadLine(string line)
+    {
+        if (line.StartsWith('*'))
         {
-            get => _version;
-            set => RaiseAndSetIfChanged(ref _version, value);
+            return new FAChangeItemHeader { Header = line.Substring(1) };
         }
-
-        private FAChangeItemBase ReadLine(string line)
+        else if (line.StartsWith("--"))
         {
-            if (line.StartsWith('*'))
-            {
-                return new FAChangeItemHeader { Header = line.Substring(1) };
-            }
-            else if (line.StartsWith("--"))
-            {
-                return new FAChangeSubItem { Text = line.Substring(2) };
-            }
-            else
-            {
-                return new FAChangeItemDescription { Text = line.Substring(1) };
-            }
+            return new FAChangeSubItem { Text = line.Substring(2) };
         }
-
-        private FAVersionInfo _version;
+        else
+        {
+            return new FAChangeItemDescription { Text = line.Substring(1) };
+        }
     }
 
-    public class FAVersionInfo
-    {
-        public string Version { get; set; }
+    private FAVersionInfo _version;
+}
 
-        public List<FAChangeItemBase> ChangeItems { get; } = new List<FAChangeItemBase>();
-    }
+public class FAVersionInfo
+{
+    public string Version { get; set; }
 
-    public class FAChangeItemBase
-    {
+    public List<FAChangeItemBase> ChangeItems { get; } = new List<FAChangeItemBase>();
+}
 
-    }
+public class FAChangeItemBase
+{
 
-    public class FAChangeItemHeader : FAChangeItemBase
-    {
-        public string Header { get; set; }
-    }
+}
 
-    public class FAChangeItemDescription : FAChangeItemBase
-    {
-        public string Text { get; set; }
-    }
+public class FAChangeItemHeader : FAChangeItemBase
+{
+    public string Header { get; set; }
+}
 
-    public class FAChangeSubItem : FAChangeItemBase
-    {
-        public string Text { get; set; }
-    }
+public class FAChangeItemDescription : FAChangeItemBase
+{
+    public string Text { get; set; }
+}
+
+public class FAChangeSubItem : FAChangeItemBase
+{
+    public string Text { get; set; }
 }

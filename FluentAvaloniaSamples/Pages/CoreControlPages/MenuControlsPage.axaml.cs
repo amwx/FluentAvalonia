@@ -1,19 +1,17 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace FluentAvaloniaSamples.Pages
-{
-    public partial class MenuControlsPage : UserControl
-    {
-        public MenuControlsPage()
-        {
-            InitializeComponent();
-        }
+namespace FluentAvaloniaSamples.Pages;
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+public partial class MenuControlsPage : UserControl
+{
+    public MenuControlsPage()
+    {
+        InitializeComponent();
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

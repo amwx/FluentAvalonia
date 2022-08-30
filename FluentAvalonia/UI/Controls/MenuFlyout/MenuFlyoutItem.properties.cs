@@ -11,144 +11,144 @@ namespace FluentAvalonia.UI.Controls;
 
 public partial class MenuFlyoutItem
 {
-	/// <summary>
-	/// Defines the <see cref="Text"/> property
-	/// </summary>
-	public static readonly StyledProperty<string> TextProperty =
-		AvaloniaProperty.Register<MenuFlyoutItem, string>(nameof(Text));
+    /// <summary>
+    /// Defines the <see cref="Text"/> property
+    /// </summary>
+    public static readonly StyledProperty<string> TextProperty =
+        AvaloniaProperty.Register<MenuFlyoutItem, string>(nameof(Text));
 
-	/// <summary>
-	/// Defines the <see cref="Icon"/> property
-	/// </summary>
-	public static readonly StyledProperty<FAIconElement> IconProperty =
-		AvaloniaProperty.Register<MenuFlyoutItem, FAIconElement>(nameof(Icon));
+    /// <summary>
+    /// Defines the <see cref="Icon"/> property
+    /// </summary>
+    public static readonly StyledProperty<FAIconElement> IconProperty =
+        AvaloniaProperty.Register<MenuFlyoutItem, FAIconElement>(nameof(Icon));
 
-	/// <summary>
-	/// Defines the <see cref="Command"/> property
-	/// </summary>
-	public static readonly DirectProperty<MenuFlyoutItem, ICommand> CommandProperty =
-		Button.CommandProperty.AddOwner<MenuFlyoutItem>(x => x.Command,
-			(x, v) => x.Command = v);
+    /// <summary>
+    /// Defines the <see cref="Command"/> property
+    /// </summary>
+    public static readonly DirectProperty<MenuFlyoutItem, ICommand> CommandProperty =
+        Button.CommandProperty.AddOwner<MenuFlyoutItem>(x => x.Command,
+            (x, v) => x.Command = v);
 
-	/// <summary>
-	/// Defines the <see cref="CommandParameter"/> property
-	/// </summary>
-	public static readonly StyledProperty<object> CommandParameterProperty =
-		Button.CommandParameterProperty.AddOwner<MenuFlyoutItem>();
+    /// <summary>
+    /// Defines the <see cref="CommandParameter"/> property
+    /// </summary>
+    public static readonly StyledProperty<object> CommandParameterProperty =
+        Button.CommandParameterProperty.AddOwner<MenuFlyoutItem>();
 
-	/// <summary>
-	/// Defines the <see cref="HotKey"/> property
-	/// </summary>
-	public static readonly StyledProperty<KeyGesture> HotKeyProperty =
-		Button.HotKeyProperty.AddOwner<MenuFlyoutItem>();
+    /// <summary>
+    /// Defines the <see cref="HotKey"/> property
+    /// </summary>
+    public static readonly StyledProperty<KeyGesture> HotKeyProperty =
+        Button.HotKeyProperty.AddOwner<MenuFlyoutItem>();
 
-/// <summary>
-/// Defines the <see cref="InputGesture"/> property
-/// </summary>
-public static readonly StyledProperty<KeyGesture> InputGestureProperty =
-    AvaloniaProperty.Register<MenuFlyoutItem, KeyGesture>(nameof(InputGesture));
-    
-/// <summary>
-	/// Gets or sets the text content of a MenuFlyoutItem.
-	/// </summary>
-	public string Text
-	{
-		get => GetValue(TextProperty);
-		set => SetValue(TextProperty, value);
-	}
+    /// <summary>
+    /// Defines the <see cref="InputGesture"/> property
+    /// </summary>
+    public static readonly StyledProperty<KeyGesture> InputGestureProperty =
+        AvaloniaProperty.Register<MenuFlyoutItem, KeyGesture>(nameof(InputGesture));
 
-	/// <summary>
-	/// Gets or sets the graphic content of the menu flyout item.
-	/// </summary>
-	public FAIconElement Icon
-	{
-		get => GetValue(IconProperty);
-		set => SetValue(IconProperty, value);
-	}
+    /// <summary>
+    /// Gets or sets the text content of a MenuFlyoutItem.
+    /// </summary>
+    public string Text
+    {
+        get => GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
+    }
 
-	/// <summary>
-	/// Gets or sets the KeyGesture that should invoke this MenuFlyoutItem
-	/// </summary>
-	public KeyGesture HotKey
-	{
-		get => GetValue(HotKeyProperty);
-		set => SetValue(HotKeyProperty, value);
-	}
+    /// <summary>
+    /// Gets or sets the graphic content of the menu flyout item.
+    /// </summary>
+    public FAIconElement Icon
+    {
+        get => GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
+    }
 
-/// <summary>
-/// Gets or sets the input gesture displayed by the MenuFlyoutItem
-/// </summary>
-/// <remarks>
-/// This property is equivalent to WinUI's KeyboardAcceleratorTextOverride
-/// property. It allows you to specify a key gesture without mapping to 
-/// a hotkey. This property takes priority over <see cref="HotKey"/>
-/// </remarks>
-public KeyGesture InputGesture
-{
-    get => GetValue(InputGestureProperty);
-    set => SetValue(InputGestureProperty, value);
-}
+    /// <summary>
+    /// Gets or sets the KeyGesture that should invoke this MenuFlyoutItem
+    /// </summary>
+    public KeyGesture HotKey
+    {
+        get => GetValue(HotKeyProperty);
+        set => SetValue(HotKeyProperty, value);
+    }
 
-	/// <summary>
-	/// Gets or sets the command to invoke when the item is pressed.
-	/// </summary>
-	public ICommand Command
-	{
-		get => _command;
-		set => SetAndRaise(CommandProperty, ref _command, value);
-	}
+    /// <summary>
+    /// Gets or sets the input gesture displayed by the MenuFlyoutItem
+    /// </summary>
+    /// <remarks>
+    /// This property is equivalent to WinUI's KeyboardAcceleratorTextOverride
+    /// property. It allows you to specify a key gesture without mapping to 
+    /// a hotkey. This property takes priority over <see cref="HotKey"/>
+    /// </remarks>
+    public KeyGesture InputGesture
+    {
+        get => GetValue(InputGestureProperty);
+        set => SetValue(InputGestureProperty, value);
+    }
 
-	/// <summary>
-	/// Gets or sets the parameter to pass to the <see cref="Command"/> property.
-	/// </summary>
-	public object CommandParameter
-	{
-		get => GetValue(CommandParameterProperty);
-		set => SetValue(CommandParameterProperty, value);
-	}
+    /// <summary>
+    /// Gets or sets the command to invoke when the item is pressed.
+    /// </summary>
+    public ICommand Command
+    {
+        get => _command;
+        set => SetAndRaise(CommandProperty, ref _command, value);
+    }
 
-	protected override bool IsEnabledCore => base.IsEnabledCore && _canExecute;
+    /// <summary>
+    /// Gets or sets the parameter to pass to the <see cref="Command"/> property.
+    /// </summary>
+    public object CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
 
-/// <summary>
-/// Defines the <see cref="Click"/> event
-/// </summary>
-public static readonly RoutedEvent<RoutedEventArgs> ClickEvent = MenuItem.ClickEvent;
+    protected override bool IsEnabledCore => base.IsEnabledCore && _canExecute;
 
-	/// <summary>
-	/// Raised when this MenuFlyoutItem is invoked
-	/// </summary>
-	public event EventHandler<RoutedEventArgs> Click
-	{
-		add => AddHandler(ClickEvent, value);
-		remove => RemoveHandler(ClickEvent, value);
-	}
+    /// <summary>
+    /// Defines the <see cref="Click"/> event
+    /// </summary>
+    public static readonly RoutedEvent<RoutedEventArgs> ClickEvent = MenuItem.ClickEvent;
 
-	bool IMenuItem.HasSubMenu => false;
+    /// <summary>
+    /// Raised when this MenuFlyoutItem is invoked
+    /// </summary>
+    public event EventHandler<RoutedEventArgs> Click
+    {
+        add => AddHandler(ClickEvent, value);
+        remove => RemoveHandler(ClickEvent, value);
+    }
 
-	bool IMenuItem.IsPointerOverSubMenu => false;
+    bool IMenuItem.HasSubMenu => false;
 
-	bool IMenuItem.IsSubMenuOpen { get => false; set { } }
+    bool IMenuItem.IsPointerOverSubMenu => false;
 
-	public bool IsTopLevel => false;
+    bool IMenuItem.IsSubMenuOpen { get => false; set { } }
 
-	IMenuItem IMenuElement.SelectedItem { get => null; set { } }
+    public bool IsTopLevel => false;
 
-	IEnumerable<IMenuItem> IMenuElement.SubItems => null;
+    IMenuItem IMenuElement.SelectedItem { get => null; set { } }
 
-	IMenuElement IMenuItem.Parent
-	{
-		get
-		{
-			if (this.FindLogicalAncestorOfType<MenuFlyoutSubItem>() is MenuFlyoutSubItem mfsi)
-			{
-				return mfsi;
-			}
+    IEnumerable<IMenuItem> IMenuElement.SubItems => null;
 
-			return Parent as IMenuElement;
-		}
-	}
+    IMenuElement IMenuItem.Parent
+    {
+        get
+        {
+            if (this.FindLogicalAncestorOfType<MenuFlyoutSubItem>() is MenuFlyoutSubItem mfsi)
+            {
+                return mfsi;
+            }
 
-bool IMenuItem.StaysOpenOnClick { get => false; set { } }
+            return Parent as IMenuElement;
+        }
+    }
 
-	private ICommand _command;
+    bool IMenuItem.StaysOpenOnClick { get => false; set { } }
+
+    private ICommand _command;
 }

@@ -1,27 +1,20 @@
-using System;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
-using FluentAvaloniaSamples.Controls;
-using FluentAvaloniaSamples.Services;
 using FluentAvaloniaSamples.ViewModels;
 
-namespace FluentAvaloniaSamples.Pages
+namespace FluentAvaloniaSamples.Pages;
+
+public partial class NewControlsPage : UserControl
 {
-    public partial class NewControlsPage : UserControl
+    public NewControlsPage()
     {
-        public NewControlsPage()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            DataContext = new NewControlsPageViewModel();
-        }
+        DataContext = new NewControlsPageViewModel();
+    }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

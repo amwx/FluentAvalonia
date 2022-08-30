@@ -6,18 +6,18 @@ namespace FASandbox;
 
 public partial class MainWindow : Window
 {
-	public MainWindow()
-	{
+    public MainWindow()
+    {
         InitializeComponent();
 
 #if DEBUG
         this.AttachDevTools();
 #endif
         DataContext = new MainWindowViewModel();
-	}
+    }
 
     private void InitializeComponent()
-	{
-		AvaloniaXamlLoader.Load(this);
-	}
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 }

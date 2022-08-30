@@ -1,98 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace FluentAvalonia.UI.Controls
+namespace FluentAvalonia.UI.Controls;
+
+/// <summary>
+/// Provides data for the <see cref="SelectionModel.ChildrenRequested"/> event.
+/// </summary>
+public class SelectionModelChildrenRequestedEventArgs : EventArgs
 {
-    /// <summary>
-    /// Provides data for the <see cref="SelectionModel.ChildrenRequested"/> event.
-    /// </summary>
-    public class SelectionModelChildrenRequestedEventArgs : EventArgs
+    private object _source;
+    private IndexPath _sourceIndexPath;
+    private IndexPath _finalIndexPath;
+    private bool _throwOnAccess;
+
+    internal SelectionModelChildrenRequestedEventArgs(
+        object source,
+        IndexPath sourceIndexPath,
+        IndexPath finalIndexPath,
+        bool throwOnAccess)
     {
-        private object _source;
-        private IndexPath _sourceIndexPath;
-        private IndexPath _finalIndexPath;
-        private bool _throwOnAccess;
+        source = source ?? throw new ArgumentNullException(nameof(source));
+        Initialize(source, sourceIndexPath, finalIndexPath, throwOnAccess);
+    }
 
-        internal SelectionModelChildrenRequestedEventArgs(
-            object source,
-            IndexPath sourceIndexPath,
-            IndexPath finalIndexPath,
-            bool throwOnAccess)
+    /// <summary>
+    /// Gets or sets an observable which produces the children of the <see cref="Source"/>
+    /// object.
+    /// </summary>
+    public IObservable<object> Children { get; set; }
+
+    /// <summary>
+    /// Gets the object whose children are being requested.
+    /// </summary>        
+    public object Source
+    {
+        get
         {
-            source = source ?? throw new ArgumentNullException(nameof(source));
-            Initialize(source, sourceIndexPath, finalIndexPath, throwOnAccess);
-        }
-
-        /// <summary>
-        /// Gets or sets an observable which produces the children of the <see cref="Source"/>
-        /// object.
-        /// </summary>
-        public IObservable<object> Children { get; set; }
-
-        /// <summary>
-        /// Gets the object whose children are being requested.
-        /// </summary>        
-        public object Source
-        {
-            get
+            if (_throwOnAccess)
             {
-                if (_throwOnAccess)
-                {
-                    throw new ObjectDisposedException(nameof(SelectionModelChildrenRequestedEventArgs));
-                }
-
-                return _source!;
-            }
-        }
-
-        /// <summary>
-        /// Gets the index of the object whose children are being requested.
-        /// </summary>        
-        public IndexPath SourceIndex
-        {
-            get
-            {
-                if (_throwOnAccess)
-                {
-                    throw new ObjectDisposedException(nameof(SelectionModelChildrenRequestedEventArgs));
-                }
-
-                return _sourceIndexPath;
-            }
-        }
-
-        /// <summary>
-        /// Gets the index of the final object which is being attempted to be retrieved.
-        /// </summary>
-        public IndexPath FinalIndex
-        {
-            get
-            {
-                if (_throwOnAccess)
-                {
-                    throw new ObjectDisposedException(nameof(SelectionModelChildrenRequestedEventArgs));
-                }
-
-                return _finalIndexPath;
-            }
-        }
-
-        internal void Initialize(
-            object source,
-            IndexPath sourceIndexPath,
-            IndexPath finalIndexPath,
-            bool throwOnAccess)
-        {
-            if (!throwOnAccess && source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
+                throw new ObjectDisposedException(nameof(SelectionModelChildrenRequestedEventArgs));
             }
 
-            _source = source;
-            _sourceIndexPath = sourceIndexPath;
-            _finalIndexPath = finalIndexPath;
-            _throwOnAccess = throwOnAccess;
+            return _source!;
         }
+    }
+
+    /// <summary>
+    /// Gets the index of the object whose children are being requested.
+    /// </summary>        
+    public IndexPath SourceIndex
+    {
+        get
+        {
+            if (_throwOnAccess)
+            {
+                throw new ObjectDisposedException(nameof(SelectionModelChildrenRequestedEventArgs));
+            }
+
+            return _sourceIndexPath;
+        }
+    }
+
+    /// <summary>
+    /// Gets the index of the final object which is being attempted to be retrieved.
+    /// </summary>
+    public IndexPath FinalIndex
+    {
+        get
+        {
+            if (_throwOnAccess)
+            {
+                throw new ObjectDisposedException(nameof(SelectionModelChildrenRequestedEventArgs));
+            }
+
+            return _finalIndexPath;
+        }
+    }
+
+    internal void Initialize(
+        object source,
+        IndexPath sourceIndexPath,
+        IndexPath finalIndexPath,
+        bool throwOnAccess)
+    {
+        if (!throwOnAccess && source == null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        _source = source;
+        _sourceIndexPath = sourceIndexPath;
+        _finalIndexPath = finalIndexPath;
+        _throwOnAccess = throwOnAccess;
     }
 }

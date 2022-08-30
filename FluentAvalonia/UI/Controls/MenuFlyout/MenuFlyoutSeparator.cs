@@ -2,8 +2,8 @@
 
 public class MenuFlyoutSeparator : MenuFlyoutItemBase
 {
-	static MenuFlyoutSeparator()
-	{
-		FocusableProperty.OverrideDefaultValue<MenuFlyoutSeparator>(false);
-	}
+    static MenuFlyoutSeparator()
+    {
+        FocusableProperty.OverrideDefaultValue<MenuFlyoutSeparator>(false);
+    }
 }

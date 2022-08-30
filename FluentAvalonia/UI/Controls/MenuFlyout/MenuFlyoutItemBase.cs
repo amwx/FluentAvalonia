@@ -7,10 +7,10 @@ namespace FluentAvalonia.UI.Controls;
 
 public class MenuFlyoutItemBase : TemplatedControl
 {
-	static MenuFlyoutItemBase()
-	{
-		FocusableProperty.OverrideDefaultValue<MenuFlyoutItemBase>(true);
-	}
+    static MenuFlyoutItemBase()
+    {
+        FocusableProperty.OverrideDefaultValue<MenuFlyoutItemBase>(true);
+    }
 
     protected override void OnPointerEntered(PointerEventArgs e)
     {

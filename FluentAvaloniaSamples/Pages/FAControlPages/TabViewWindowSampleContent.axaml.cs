@@ -1,25 +1,23 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace FluentAvaloniaSamples.Pages
+namespace FluentAvaloniaSamples.Pages;
+
+public partial class TabViewWindowSampleContent : UserControl
 {
-    public partial class TabViewWindowSampleContent : UserControl
+    public TabViewWindowSampleContent()
     {
-        public TabViewWindowSampleContent()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        public TabViewWindowSampleContent(string header)
-            : this()
-        {
-            this.FindControl<TextBlock>("HeaderContent").Text = header;
-        }
+    public TabViewWindowSampleContent(string header)
+        : this()
+    {
+        this.FindControl<TextBlock>("HeaderContent").Text = header;
+    }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

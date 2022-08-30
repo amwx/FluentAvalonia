@@ -1,13 +1,19 @@
 ﻿using System;
 
-namespace FluentAvalonia.Styling
+namespace FluentAvalonia.Styling;
+
+/// <summary>
+/// Data for the <see cref="FluentAvaloniaTheme.RequestedThemeChanged"/> event
+/// </summary>
+public class RequestedThemeChangedEventArgs : EventArgs
 {
-    public class RequestedThemeChangedEventArgs : EventArgs
+    internal RequestedThemeChangedEventArgs(string theme)
     {
-        internal RequestedThemeChangedEventArgs(string theme)
-        {
-            NewTheme = theme;
-        }
-        public string NewTheme { get; }
+        NewTheme = theme;
     }
+
+    /// <summary>
+    /// The name of the new theme (Light, Dark, or HighContrast)
+    /// </summary>
+    public string NewTheme { get; }
 }

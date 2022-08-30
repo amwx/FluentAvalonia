@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace FluentAvaloniaSamples.ViewModels
+namespace FluentAvaloniaSamples.ViewModels;
+
+public class FAControlsGroupItem
 {
-    public class FAControlsGroupItem
-    {
-        public string Header { get; set; }
+    public string Header { get; set; }
 
-        public List<FAControlsItem> Controls { get; init; }
-    }
+    public List<FAControlsItem> Controls { get; init; }
 }

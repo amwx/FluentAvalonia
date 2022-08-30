@@ -1,21 +1,20 @@
-﻿namespace FluentAvaloniaSamples.ViewModels
+﻿namespace FluentAvaloniaSamples.ViewModels;
+
+public class InfoBadgePageViewModel : ViewModelBase
 {
-    public class InfoBadgePageViewModel : ViewModelBase
+    public bool IsInfoBarEnabled
     {
-        public bool IsInfoBarEnabled
+        get => _isEnabled;
+        set
         {
-            get => _isEnabled;
-            set
+            if (RaiseAndSetIfChanged(ref _isEnabled, value))
             {
-                if (RaiseAndSetIfChanged(ref _isEnabled, value))
-                {
-                    RaisePropertyChanged(nameof(InfoBarOpacity));
-                }
+                RaisePropertyChanged(nameof(InfoBarOpacity));
             }
         }
-
-        public double InfoBarOpacity => IsInfoBarEnabled ? 1d : 0d;
-
-        private bool _isEnabled = true;
     }
+
+    public double InfoBarOpacity => IsInfoBarEnabled ? 1d : 0d;
+
+    private bool _isEnabled = true;
 }

@@ -21,6 +21,7 @@ dotnet_style_object_initializer = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 dotnet_style_namespace_match_folder = true:suggestion
+dotnet_style_prefer_conditional_expression_over_assignment = true:silent
 
 # C# files
 [*.cs]
@@ -149,7 +150,7 @@ csharp_wrap_before_ternary_opsigns = false
 csharp_prefer_braces= when_multiline:silent
 csharp_using_directive_placement = outside_namespace:silent
 csharp_prefer_simple_using_statement = true:suggestion
-csharp_style_namespace_declarations = block_scoped:silent
+csharp_style_namespace_declarations = file_scoped:warning
 csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_prefer_top_level_statements = true:silent
 csharp_style_expression_bodied_lambdas = true:silent

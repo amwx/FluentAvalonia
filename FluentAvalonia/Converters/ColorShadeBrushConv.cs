@@ -7,24 +7,23 @@ using System.Globalization;
 
 namespace FluentAvalonia.Converters;
 
-public class ColorToBrushConv : IValueConverter
+public class ColorShadeBrushConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is Color c)
-            return new SolidColorBrush(c);
+        var color = (Color2)value;
 
-        if (value is Color2 c2)
-            return new SolidColorBrush(c2);
+        float amount;
+        if (!float.TryParse(parameter.ToString(), out amount))
+        {
+            amount = 0;
+        }
 
-        return BindingOperations.DoNothing;
+        return new SolidColorBrush(color.LightenPercent(amount));
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is ISolidColorBrush sc)
-            return sc.Color;
-
         return BindingOperations.DoNothing;
     }
 }

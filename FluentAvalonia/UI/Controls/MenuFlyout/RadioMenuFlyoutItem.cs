@@ -12,13 +12,13 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
 {
-	static RadioMenuFlyoutItem()
-	{
-		if (SelectionMap == null)
-		{
-			SelectionMap = new SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>>();
-		}
-	}
+    static RadioMenuFlyoutItem()
+    {
+        if (SelectionMap == null)
+        {
+            SelectionMap = new SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>>();
+        }
+    }
 
     /// <summary>
     /// Defines the <see cref="GroupName"/> property
@@ -38,14 +38,14 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
     /// Gets or sets the name that specifies which RadioMenuFlyoutItem controls are mutually exclusive.
     /// </summary>
     public string GroupName
-	{
+    {
         get => _groupName;
-		set
+        set
         {
             value ??= string.Empty;
             SetAndRaise(GroupNameProperty, ref _groupName, value);
         }
-	}
+    }
 
     /// <summary>
     /// Gets or sets whether this RadioMenuFlyoutItem is checked
@@ -58,26 +58,26 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
 
     Type IStyleable.StyleKey => typeof(RadioMenuFlyoutItem);
 
-	protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-	{
-		base.OnPropertyChanged(change);
-		if (change.Property == IsCheckedProperty)
-		{
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if (change.Property == IsCheckedProperty)
+        {
             var newValue = change.GetNewValue<bool>();
             PseudoClasses.Set(":checked", newValue);
 
             if (_isSafeUncheck) // Unchecked via another item in the group
                 return;
-                
+
             UpdateCheckedItemInGroup();
-		}            
+        }
         else if (change.Property == GroupNameProperty)
         {
             // WinUI doesn't do this here, but this fixes an issue where radio items
             // would misbehave if IsChecked as assigned before group
             UpdateCheckedItemInGroup();
         }
-	}
+    }
 
     private void UncheckFromGroupSelection()
     {
@@ -119,6 +119,6 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
     private string _groupName = string.Empty;
     private bool _isSafeUncheck = false;
 
-	internal static readonly SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>> SelectionMap;
+    internal static readonly SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>> SelectionMap;
 }
 

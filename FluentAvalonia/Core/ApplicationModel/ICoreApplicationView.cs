@@ -1,10 +1,9 @@
-﻿namespace FluentAvalonia.Core.ApplicationModel
+﻿namespace FluentAvalonia.Core.ApplicationModel;
+
+public interface ICoreApplicationView
 {
-	public interface ICoreApplicationView
-	{
-        /// <summary>
-        /// Gets the <see cref="CoreApplicationViewTitleBar"/> associated with this Window
-        /// </summary>
-		CoreApplicationViewTitleBar TitleBar { get; }
-	}
+    /// <summary>
+    /// Gets the <see cref="CoreApplicationViewTitleBar"/> associated with this Window
+    /// </summary>
+	CoreApplicationViewTitleBar TitleBar { get; }
 }

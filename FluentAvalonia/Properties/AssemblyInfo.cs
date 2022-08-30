@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("FluentAvaloniaTests")]
+[assembly: InternalsVisibleTo("FluentAvaloniaTests")]

@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace FluentAvalonia.UI.Controls
+namespace FluentAvalonia.UI.Controls;
+
+/// <summary>
+/// Provides event data for the NavigationView.BackRequested event.
+/// </summary>
+public class NavigationViewBackRequestedEventArgs : EventArgs
 {
-    /// <summary>
-    /// Provides event data for the NavigationView.BackRequested event.
-    /// </summary>
-    public class NavigationViewBackRequestedEventArgs : EventArgs
-    {
-    }
 }

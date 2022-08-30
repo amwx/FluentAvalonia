@@ -2,333 +2,331 @@
 using Avalonia.Controls;
 using FluentAvalonia.Interop;
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace FluentAvalonia.UI.Controls
+namespace FluentAvalonia.UI.Controls;
+
+internal class CoreWindowImpl : Avalonia.Win32.WindowImpl
 {
-	internal class CoreWindowImpl : Avalonia.Win32.WindowImpl
-	{
-		public CoreWindowImpl()
-		{
-			Win32Interop.OSVERSIONINFOEX version = new Win32Interop.OSVERSIONINFOEX
-			{
-				OSVersionInfoSize = Marshal.SizeOf<Win32Interop.OSVERSIONINFOEX>()
-			};
-
-			Win32Interop.RtlGetVersion(ref version);
-
-			if (version.MajorVersion < 10)
-			{
-				throw new NotSupportedException("Windows versions earlier than 10 are not supported");
-			}
-
-			_isWindows11 = version.BuildNumber >= 22000;
-		}
-
-        public event EventHandler WindowOpened;
-
-		protected override IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
-		{
-			switch ((WM)msg)
-			{
-                case WM.ACTIVATE:
-                    EnsureExtended();
-                    break;
-
-				case WM.NCCALCSIZE:
-					// Weirdness: 
-					// Windows Terminal only handles WPARAM = TRUE & only adjusts the top of the
-					// rgrc[0] RECT & gets the correct result
-					// Firefox, on the other hand, handles BOTH times WM_NCCALCSIZE is called,
-					// and modifies the RECT.
-					// HERE, I've gotten Firefox's method to work but I can resize from the Window shadows again!
-
-					if (wParam != IntPtr.Zero) //wParam == TRUE
-					{
-						var ncParams = Marshal.PtrToStructure<NCCALCSIZE_PARAMS>(lParam);
-
-						var originalTop = ncParams.rgrc[0].top;
-
-						var ret = Win32Interop.DefWindowProc(hWnd, (uint)WM.NCCALCSIZE, wParam, lParam);
-						if (ret != IntPtr.Zero)
-							return ret;
-
-						var newSize = ncParams.rgrc[0];
-						newSize.top = originalTop;
-
-						if (WindowState == WindowState.Maximized)
-						{
-							newSize.top += GetResizeHandleHeight();
-						}
-
-						newSize.left += 8;
-						newSize.right -= 8;
-						newSize.bottom -= 8;
-
-						ncParams.rgrc[0] = newSize;
-
-						Marshal.StructureToPtr(ncParams, lParam, true);
-
-						return IntPtr.Zero;
-					}
-
-					return IntPtr.Zero;
-
-				case WM.NCHITTEST:
-					return HandleNCHitTest(lParam);
-
-				case WM.SIZE:
-					if (_fakingMaximizeButton)
-					{
-						// Sometimes the effect can get stuck, so if we resize, clear it
-						_owner.FakeMaximizePressed(false);
-						_wasFakeMaximizeDown = false;
-					}
-					break;
-
-				case WM.NCMOUSEMOVE:
-					if (_fakingMaximizeButton)
-					{
-						var point = PointToClient(PointFromLParam(lParam));
-						_owner.FakeMaximizeHover(_owner.HitTestMaximizeButton(point));
-						return IntPtr.Zero;
-					}
-					break;
-
-				case WM.NCLBUTTONDOWN:
-					if (_fakingMaximizeButton)
-					{
-						var point = PointToClient(PointFromLParam(lParam));
-						_owner.FakeMaximizePressed(_owner.HitTestMaximizeButton(point));
-						_wasFakeMaximizeDown = true;
-
-						// This is important. If we don't tell the System we've handled this, we'll get that
-						// classic Win32 button showing when we mouse press, and that's not good
-						return IntPtr.Zero;
-					}
-					break;
-
-				case WM.NCLBUTTONUP:
-					if (_fakingMaximizeButton && _wasFakeMaximizeDown)
-					{
-						_owner.FakeMaximizePressed(false);
-						_wasFakeMaximizeDown = false;
-						_owner.FakeMaximizeClick();
-						return IntPtr.Zero;
-					}
-					break;
-
-                case WM.RBUTTONUP:
-                    {
-                        // Enables the system menu on right click of titlebar region
-                        // This respects custom titlebars by querying titlebar region
-                        // first
-                        var pt = PointFromLParam(lParam);
-                        if (_owner.HitTestTitleBarRegion(pt.ToPoint(RenderScaling)))
-                        {
-                            var sysMenu = Win32Interop.GetSystemMenu(hWnd, false);
-
-                            bool isMaximized = WindowState == WindowState.Maximized;
-
-                            var mii = new Win32Interop.MENUITEMINFO(MIIM.STATE);
-                            void SetState(SC item , bool enabled)
-                            {
-                                mii.fState = enabled ? 0u : 3u;
-                                Win32Interop.SetMenuItemInfo(sysMenu, (uint)item, false, ref mii);
-                            }
-                            SetState(SC.RESTORE, isMaximized);
-                            SetState(SC.MOVE, !isMaximized);
-                            SetState(SC.SIZE, !isMaximized);
-                            SetState(SC.MINIMIZE, true);
-                            SetState(SC.MAXIMIZE, !isMaximized);
-                            SetState(SC.CLOSE, true);
-                            Win32Interop.SetMenuDefaultItem(sysMenu, int.MaxValue, 0);
-
-                            unsafe
-                            {
-                                var scPt = PointToScreen(pt.ToPoint(1));
-
-                                var ret = Win32Interop.TrackPopupMenu(sysMenu, 0x0100, scPt.X, scPt.Y, 0, hWnd, (RECT*)null);
-                                if (ret != 0)
-                                {
-                                    Win32Interop.PostMessage(hWnd, (uint)WM.SYSCOMMAND, new IntPtr(ret), IntPtr.Zero);
-                                }
-                            }   
-                        }
-                    }
-                    break;
-
-                case WM.SYSCOMMAND:
-                    // Enables ALT+SPACE to open the system menu
-                    if (((SC)wParam) == SC.KEYMENU)
-                    {
-                        return Win32Interop.DefWindowProc(hWnd, msg, wParam, lParam);
-                    }
-                    break;
-			}
-
-			return base.WndProc(hWnd, msg, wParam, lParam);
-		}
-
-        public override void Show(bool activate, bool isDialog)
+    public CoreWindowImpl()
+    {
+        Win32Interop.OSVERSIONINFOEX version = new Win32Interop.OSVERSIONINFOEX
         {
-            base.Show(activate, isDialog);
+            OSVersionInfoSize = Marshal.SizeOf<Win32Interop.OSVERSIONINFOEX>()
+        };
 
-            WindowOpened?.Invoke(this, EventArgs.Empty);
+        Win32Interop.RtlGetVersion(ref version);
+
+        if (version.MajorVersion < 10)
+        {
+            throw new NotSupportedException("Windows versions earlier than 10 are not supported");
         }
 
-        internal void SetOwner(CoreWindow wnd)
-		{
-			 _owner = wnd;
-			((IPseudoClasses)wnd.Classes).Set(":windows10", !_isWindows11);
-            _owner.IsWindows11 = _isWindows11;
-		}
+        _isWindows11 = version.BuildNumber >= 22000;
+    }
 
-		private int GetResizeHandleHeight()
-		{
-			// TODO GetSystemMetricsForDPI (Win 10 1607 / 10.0.14393 and later)
-			return Win32Interop.GetSystemMetrics(92 /* SM_CXPADDEDBORDER */) +
-				Win32Interop.GetSystemMetrics(33/* SM_CYSIZEFRAME */);
-		}
+    public event EventHandler WindowOpened;
 
-		private void EnsureExtended()
-		{
-			// We completely ignore anything for extending client area in Avalonia Window impl b/c
-			// we're doing super specialized stuff to ensure the best experience interacting with
-			// the window and mimic-ing a "modern app"
-			var marg = new Win32Interop.MARGINS();
+    protected override IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+    {
+        switch ((WM)msg)
+        {
+            case WM.ACTIVATE:
+                EnsureExtended();
+                break;
 
-			// WS_OVERLAPPEDWINDOW
-			var style = 0x00000000L | 0x00C00000L | 0x00080000L | 0x00040000L | 0x00020000L | 0x00010000L;
+            case WM.NCCALCSIZE:
+                // Weirdness: 
+                // Windows Terminal only handles WPARAM = TRUE & only adjusts the top of the
+                // rgrc[0] RECT & gets the correct result
+                // Firefox, on the other hand, handles BOTH times WM_NCCALCSIZE is called,
+                // and modifies the RECT.
+                // HERE, I've gotten Firefox's method to work but I can resize from the Window shadows again!
 
-			// This is causing the window to appear solid but is completely transparent. Weird...
-			//Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
-
-			RECT frame = new RECT();
-			Win32Interop.AdjustWindowRectExForDpi(ref frame,
-				(int)style, false, 0, (int)(RenderScaling * 96));
-
-			marg.topHeight = -frame.top;
-			Win32Interop.DwmExtendFrameIntoClientArea(Handle.Handle, ref marg);
-
-            Win32Interop.SetWindowPos(Handle.Handle, IntPtr.Zero, 0, 0, 0, 0, 
-                0x0020 /*SWP_FRAMECHANGED*/ | 0x0002 /*SWP_NOMOVE*/ | 0x0200 /*SWP_NOREPOSITION*/ 
-                | 0x0001 /*SWP_NOSIZE*/ | 0x0004 /*SWP_NOZORDER*/);
-		}
-
-		protected IntPtr HandleNCHitTest(IntPtr lParam)
-		{
-			// Because we still have the System Border (which technically extends beyond the actual window
-			// into where the Drop shadows are), we can use DefWindowProc here to handle resizing, except
-			// on the top. We'll handle that below
-			var originalRet = Win32Interop.DefWindowProc(Hwnd, (uint)WM.NCHITTEST, IntPtr.Zero, lParam);
-			if (originalRet != new IntPtr(1))
-			{
-                return originalRet;
-			}
-
-			// At this point, we know that the cursor is inside the client area so it
-			// has to be either the little border at the top of our custom title bar,
-			// the drag bar or something else in the XAML island. But the XAML Island
-			// handles WM_NCHITTEST on its own so actually it cannot be the XAML
-			// Island. Then it must be the drag bar or the little border at the top
-			// which the user can use to move or resize the window.
-
-			var point = PointToClient(PointFromLParam(lParam));
-
-			RECT rcWindow;
-			Win32Interop.GetWindowRect(Hwnd, out rcWindow);
-
-			// On the Top border, the resize handle overlaps with the Titlebar area, which matches
-			// a typical Win32 window or modern app window
-			var resizeBorderHeight = GetResizeHandleHeight();
-			bool isOnResizeBorder = point.Y < resizeBorderHeight;
-
-			// Make sure the caption buttons still get precedence
-			// This is where things get tricky too. On Win11, we still want to suppor the snap
-			// layout feature when hovering over the Maximize button. Unfortunately no API exists
-			// yet to call that manually if using a custom titlebar. But, if we return HT_MAXBUTTON
-			// here, the pointer events no longer enter the window
-			// See https://github.com/dotnet/wpf/issues/4825 for more on this...
-			// To hack our way into making this work, we'll return HT_MAXBUTTON here, but manually
-			// manage the state and handle stuff through the WM_NCLBUTTON... events
-			// This only applies on Windows 11, Windows 10 will work normally b/c no snap layout thing
-
-			if (_owner.HitTestCaptionButtons(point))
-			{
-				if (_isWindows11)
-				{
-					var result = _owner.HitTestMaximizeButton(point);
-
-					if (result)
-					{
-						_fakingMaximizeButton = true;
-
-                        return new IntPtr(9);
-					}
-				}
-			}
-			else
-			{
-				if (_fakingMaximizeButton)
-				{
-					_fakingMaximizeButton = false;
-					_owner.FakeMaximizeHover(false);
-					_owner.FakeMaximizePressed(false);
-				}
-
-                if (isOnResizeBorder)
+                if (wParam != IntPtr.Zero) //wParam == TRUE
                 {
+                    var ncParams = Marshal.PtrToStructure<NCCALCSIZE_PARAMS>(lParam);
+
+                    var originalTop = ncParams.rgrc[0].top;
+
+                    var ret = Win32Interop.DefWindowProc(hWnd, (uint)WM.NCCALCSIZE, wParam, lParam);
+                    if (ret != IntPtr.Zero)
+                        return ret;
+
+                    var newSize = ncParams.rgrc[0];
+                    newSize.top = originalTop;
+
                     if (WindowState == WindowState.Maximized)
                     {
-                        return new IntPtr(2); // HT_CAPTION if maximized
+                        newSize.top += GetResizeHandleHeight();
                     }
-                    else
-                    {
-                        return new IntPtr(12); // HT_TOP
-                    }                    
+
+                    newSize.left += 8;
+                    newSize.right -= 8;
+                    newSize.bottom -= 8;
+
+                    ncParams.rgrc[0] = newSize;
+
+                    Marshal.StructureToPtr(ncParams, lParam, true);
+
+                    return IntPtr.Zero;
                 }
 
-				if (_owner.HitTestTitleBarRegion(point))
+                return IntPtr.Zero;
+
+            case WM.NCHITTEST:
+                return HandleNCHitTest(lParam);
+
+            case WM.SIZE:
+                if (_fakingMaximizeButton)
                 {
-                    return new IntPtr(2); //HT_CAPTION                                          
+                    // Sometimes the effect can get stuck, so if we resize, clear it
+                    _owner.FakeMaximizePressed(false);
+                    _wasFakeMaximizeDown = false;
                 }
-			}
+                break;
 
-			if (_fakingMaximizeButton)
-			{
-				_fakingMaximizeButton = false;
-				_owner.FakeMaximizeHover(false);
-				_owner.FakeMaximizePressed(false);
-			}
-			_fakingMaximizeButton = false;
-            // return HT_CLIENT, we're in the normal window
+            case WM.NCMOUSEMOVE:
+                if (_fakingMaximizeButton)
+                {
+                    var point = PointToClient(PointFromLParam(lParam));
+                    _owner.FakeMaximizeHover(_owner.HitTestMaximizeButton(point));
+                    return IntPtr.Zero;
+                }
+                break;
 
-            return new IntPtr(1);
-		}
+            case WM.NCLBUTTONDOWN:
+                if (_fakingMaximizeButton)
+                {
+                    var point = PointToClient(PointFromLParam(lParam));
+                    _owner.FakeMaximizePressed(_owner.HitTestMaximizeButton(point));
+                    _wasFakeMaximizeDown = true;
 
-		private PixelPoint PointFromLParam(IntPtr lParam)
-		{
-			return new PixelPoint((short)(ToInt32(lParam) & 0xffff), (short)(ToInt32(lParam) >> 16));
-		}
+                    // This is important. If we don't tell the System we've handled this, we'll get that
+                    // classic Win32 button showing when we mouse press, and that's not good
+                    return IntPtr.Zero;
+                }
+                break;
 
-		private static int ToInt32(IntPtr ptr)
-		{
-			if (IntPtr.Size == 4)
-				return ptr.ToInt32();
+            case WM.NCLBUTTONUP:
+                if (_fakingMaximizeButton && _wasFakeMaximizeDown)
+                {
+                    _owner.FakeMaximizePressed(false);
+                    _wasFakeMaximizeDown = false;
+                    _owner.FakeMaximizeClick();
+                    return IntPtr.Zero;
+                }
+                break;
 
-			return (int)(ptr.ToInt64() & 0xffffffff);
-		}
+            case WM.RBUTTONUP:
+                {
+                    // Enables the system menu on right click of titlebar region
+                    // This respects custom titlebars by querying titlebar region
+                    // first
+                    var pt = PointFromLParam(lParam);
+                    if (_owner.HitTestTitleBarRegion(pt.ToPoint(RenderScaling)))
+                    {
+                        var sysMenu = Win32Interop.GetSystemMenu(hWnd, false);
 
-        private static IntPtr MAKELPARAM(int loWord, int hiWord)
-        {
-            return new IntPtr((hiWord << 16) | (loWord & 0xFFFF));
+                        bool isMaximized = WindowState == WindowState.Maximized;
+
+                        var mii = new Win32Interop.MENUITEMINFO(MIIM.STATE);
+                        void SetState(SC item, bool enabled)
+                        {
+                            mii.fState = enabled ? 0u : 3u;
+                            Win32Interop.SetMenuItemInfo(sysMenu, (uint)item, false, ref mii);
+                        }
+                        SetState(SC.RESTORE, isMaximized);
+                        SetState(SC.MOVE, !isMaximized);
+                        SetState(SC.SIZE, !isMaximized);
+                        SetState(SC.MINIMIZE, true);
+                        SetState(SC.MAXIMIZE, !isMaximized);
+                        SetState(SC.CLOSE, true);
+                        Win32Interop.SetMenuDefaultItem(sysMenu, int.MaxValue, 0);
+
+                        unsafe
+                        {
+                            var scPt = PointToScreen(pt.ToPoint(1));
+
+                            var ret = Win32Interop.TrackPopupMenu(sysMenu, 0x0100, scPt.X, scPt.Y, 0, hWnd, (RECT*)null);
+                            if (ret != 0)
+                            {
+                                Win32Interop.PostMessage(hWnd, (uint)WM.SYSCOMMAND, new IntPtr(ret), IntPtr.Zero);
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case WM.SYSCOMMAND:
+                // Enables ALT+SPACE to open the system menu
+                if (((SC)wParam) == SC.KEYMENU)
+                {
+                    return Win32Interop.DefWindowProc(hWnd, msg, wParam, lParam);
+                }
+                break;
         }
 
-		private bool _isWindows11;
-		private CoreWindow _owner;
-		private bool _fakingMaximizeButton;
-		private bool _wasFakeMaximizeDown;
-	}
+        return base.WndProc(hWnd, msg, wParam, lParam);
+    }
+
+    public override void Show(bool activate, bool isDialog)
+    {
+        base.Show(activate, isDialog);
+
+        WindowOpened?.Invoke(this, EventArgs.Empty);
+    }
+
+    internal void SetOwner(CoreWindow wnd)
+    {
+        _owner = wnd;
+        ((IPseudoClasses)wnd.Classes).Set(":windows10", !_isWindows11);
+        _owner.IsWindows11 = _isWindows11;
+    }
+
+    private int GetResizeHandleHeight()
+    {
+        // TODO GetSystemMetricsForDPI (Win 10 1607 / 10.0.14393 and later)
+        return Win32Interop.GetSystemMetrics(92 /* SM_CXPADDEDBORDER */) +
+            Win32Interop.GetSystemMetrics(33/* SM_CYSIZEFRAME */);
+    }
+
+    private void EnsureExtended()
+    {
+        // We completely ignore anything for extending client area in Avalonia Window impl b/c
+        // we're doing super specialized stuff to ensure the best experience interacting with
+        // the window and mimic-ing a "modern app"
+        var marg = new Win32Interop.MARGINS();
+
+        // WS_OVERLAPPEDWINDOW
+        var style = 0x00000000L | 0x00C00000L | 0x00080000L | 0x00040000L | 0x00020000L | 0x00010000L;
+
+        // This is causing the window to appear solid but is completely transparent. Weird...
+        //Win32Interop.GetWindowLongPtr(Hwnd, -16).ToInt32();
+
+        RECT frame = new RECT();
+        Win32Interop.AdjustWindowRectExForDpi(ref frame,
+            (int)style, false, 0, (int)(RenderScaling * 96));
+
+        marg.topHeight = -frame.top;
+        Win32Interop.DwmExtendFrameIntoClientArea(Handle.Handle, ref marg);
+
+        Win32Interop.SetWindowPos(Handle.Handle, IntPtr.Zero, 0, 0, 0, 0,
+            0x0020 /*SWP_FRAMECHANGED*/ | 0x0002 /*SWP_NOMOVE*/ | 0x0200 /*SWP_NOREPOSITION*/
+            | 0x0001 /*SWP_NOSIZE*/ | 0x0004 /*SWP_NOZORDER*/);
+    }
+
+    protected IntPtr HandleNCHitTest(IntPtr lParam)
+    {
+        // Because we still have the System Border (which technically extends beyond the actual window
+        // into where the Drop shadows are), we can use DefWindowProc here to handle resizing, except
+        // on the top. We'll handle that below
+        var originalRet = Win32Interop.DefWindowProc(Hwnd, (uint)WM.NCHITTEST, IntPtr.Zero, lParam);
+        if (originalRet != new IntPtr(1))
+        {
+            return originalRet;
+        }
+
+        // At this point, we know that the cursor is inside the client area so it
+        // has to be either the little border at the top of our custom title bar,
+        // the drag bar or something else in the XAML island. But the XAML Island
+        // handles WM_NCHITTEST on its own so actually it cannot be the XAML
+        // Island. Then it must be the drag bar or the little border at the top
+        // which the user can use to move or resize the window.
+
+        var point = PointToClient(PointFromLParam(lParam));
+
+        RECT rcWindow;
+        Win32Interop.GetWindowRect(Hwnd, out rcWindow);
+
+        // On the Top border, the resize handle overlaps with the Titlebar area, which matches
+        // a typical Win32 window or modern app window
+        var resizeBorderHeight = GetResizeHandleHeight();
+        bool isOnResizeBorder = point.Y < resizeBorderHeight;
+
+        // Make sure the caption buttons still get precedence
+        // This is where things get tricky too. On Win11, we still want to suppor the snap
+        // layout feature when hovering over the Maximize button. Unfortunately no API exists
+        // yet to call that manually if using a custom titlebar. But, if we return HT_MAXBUTTON
+        // here, the pointer events no longer enter the window
+        // See https://github.com/dotnet/wpf/issues/4825 for more on this...
+        // To hack our way into making this work, we'll return HT_MAXBUTTON here, but manually
+        // manage the state and handle stuff through the WM_NCLBUTTON... events
+        // This only applies on Windows 11, Windows 10 will work normally b/c no snap layout thing
+
+        if (_owner.HitTestCaptionButtons(point))
+        {
+            if (_isWindows11)
+            {
+                var result = _owner.HitTestMaximizeButton(point);
+
+                if (result)
+                {
+                    _fakingMaximizeButton = true;
+
+                    return new IntPtr(9);
+                }
+            }
+        }
+        else
+        {
+            if (_fakingMaximizeButton)
+            {
+                _fakingMaximizeButton = false;
+                _owner.FakeMaximizeHover(false);
+                _owner.FakeMaximizePressed(false);
+            }
+
+            if (isOnResizeBorder)
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    return new IntPtr(2); // HT_CAPTION if maximized
+                }
+                else
+                {
+                    return new IntPtr(12); // HT_TOP
+                }
+            }
+
+            if (_owner.HitTestTitleBarRegion(point))
+            {
+                return new IntPtr(2); //HT_CAPTION                                          
+            }
+        }
+
+        if (_fakingMaximizeButton)
+        {
+            _fakingMaximizeButton = false;
+            _owner.FakeMaximizeHover(false);
+            _owner.FakeMaximizePressed(false);
+        }
+        _fakingMaximizeButton = false;
+        // return HT_CLIENT, we're in the normal window
+
+        return new IntPtr(1);
+    }
+
+    private PixelPoint PointFromLParam(IntPtr lParam)
+    {
+        return new PixelPoint((short)(ToInt32(lParam) & 0xffff), (short)(ToInt32(lParam) >> 16));
+    }
+
+    private static int ToInt32(IntPtr ptr)
+    {
+        if (IntPtr.Size == 4)
+            return ptr.ToInt32();
+
+        return (int)(ptr.ToInt64() & 0xffffffff);
+    }
+
+    private static IntPtr MAKELPARAM(int loWord, int hiWord)
+    {
+        return new IntPtr((hiWord << 16) | (loWord & 0xFFFF));
+    }
+
+    private bool _isWindows11;
+    private CoreWindow _owner;
+    private bool _fakingMaximizeButton;
+    private bool _wasFakeMaximizeDown;
 }
