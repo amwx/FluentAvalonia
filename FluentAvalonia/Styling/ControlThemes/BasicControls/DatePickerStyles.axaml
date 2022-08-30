@@ -64,15 +64,6 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^:selected">
-            <Setter Property="IsHitTestVisible" Value="False" />
-
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="{DynamicResource LoopingSelectorItemForegroundSelected}"/>
-            </Style>            
-        </Style>
-
         <Style Selector="^:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource LoopingSelectorItemBackgroundPointerOver}" />
             <Setter Property="Foreground" Value="{DynamicResource LoopingSelectorItemForegroundPointerOver}"/>
@@ -80,6 +71,15 @@
         <Style Selector="^:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource LoopingSelectorItemBackgroundPressed}" />
             <Setter Property="Foreground" Value="{DynamicResource LoopingSelectorItemForegroundPressed}"/>
+        </Style>
+
+        <Style Selector="^:selected">
+            <Setter Property="IsHitTestVisible" Value="False" />
+
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{DynamicResource LoopingSelectorItemForegroundSelected}"/>
+            </Style>            
         </Style>
 
         <Style Selector="^.MonthItem">
@@ -452,11 +452,13 @@
                                        Grid.ColumnSpan="2"/>
                             <Button Name="AcceptButton" Grid.Column="0"
                                     Theme="{StaticResource DateTimeFlyoutButtonStyle}"
-                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    Margin="{DynamicResource DatePickerFlyoutPresenterAcceptMargin}">
                                 <ui:SymbolIcon Symbol="Checkmark" FontSize="18" />
                             </Button>
                             <Button Name="DismissButton" Grid.Column="1"
                                     Theme="{StaticResource DateTimeFlyoutButtonStyle}"
+                                    Margin="{DynamicResource DatePickerFlyoutPresenterDismissMargin}"
                                     FontSize="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <ui:SymbolIcon Symbol="Dismiss" FontSize="16" />
                             </Button>

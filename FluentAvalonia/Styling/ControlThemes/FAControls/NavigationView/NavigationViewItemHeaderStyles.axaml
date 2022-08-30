@@ -20,7 +20,9 @@
                         but we can't do that here, so this will have to do
                         -->
                         <Panel.Transitions>
-                            <DoubleTransition Duration="00:00:00.2" Property="Height" />
+                            <Transitions>
+                                <DoubleTransition Duration="00:00:00.2" Property="Height" />
+                            </Transitions>
                         </Panel.Transitions>
 
                         <TextBlock Name="HeaderText"
@@ -32,8 +34,10 @@
                                    Foreground="{TemplateBinding Foreground}"
                                    Opacity="1">
                             <TextBlock.Transitions>
-                                <DoubleTransition Duration="00:00:00.2" Property="Opacity"
-                                                  Easing="0,0.35 0.15,1"/>
+                                <Transitions>
+                                    <DoubleTransition Duration="00:00:00.2" Property="Opacity"
+                                                      Easing="0,0.35 0.15,1"/>
+                                </Transitions>
                             </TextBlock.Transitions>
                         </TextBlock>
                     </Panel>

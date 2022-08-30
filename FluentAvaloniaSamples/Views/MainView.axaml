@@ -50,7 +50,7 @@
                                                   Content="{TemplateBinding Content}"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Bottom"
-                                                  TextElement.FontSize="10"
+                                                  FontSize="10"
                                                   Padding="0 4"
                                                   Margin="0 -15 0 3"
                                                   DockPanel.Dock="Bottom">
@@ -76,24 +76,24 @@
             </Setter>
         </Style>
         <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#ContentPresenter">
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         </Style>
         <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#Icon">
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         </Style>
 
         <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pressed /template/ ContentPresenter#ContentPresenter">
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
         <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pressed /template/ ContentPresenter#Icon">
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
 
         <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:selected /template/ ContentPresenter#ContentPresenter">
             <Setter Property="IsVisible" Value="False" />
         </Style>
         <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:selected /template/ ContentPresenter#Icon">
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
         </Style>
 
         <!-- AutoCompleteBox -->
@@ -103,12 +103,12 @@
                     <StackPanel Orientation="Horizontal">
                         <Button Content="&#xE8BB;" 
                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                   Classes="AppBarButton"
+                                   Theme="{StaticResource TransparentButton}"
                                    Command="{Binding $parent[TextBox].Clear}"
                                    IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                         <Button Content="&#xE721;"
                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                   Classes="AppBarButton"
+                                   Theme="{StaticResource TransparentButton}"
                                    Command="{Binding $parent[TextBox].Clear}"
                                    IsHitTestVisible="False"/>
                     </StackPanel>
@@ -184,7 +184,7 @@
                                         <ScrollViewer>
                                             <StackPanel>
                                                 <TextBlock Text="{Binding TargetType.Name, RelativeSource={RelativeSource TemplatedParent}}"
-                                                           Classes="TitleTextBlockStyle"
+                                                           Theme="{StaticResource TitleTextBlockStyle}"
                                                            Margin="12 8 12 0"  />
                                                 <TextBlock Text="{Binding TargetType, RelativeSource={RelativeSource TemplatedParent}}"
                                                            Classes="CaptionTextBlockStyle"
@@ -193,7 +193,7 @@
                                                            FontStyle="Italic"/>
 
                                                 <TextBlock Text="Inheritance"
-                                                           Classes="SubtitleTextBlockStyle"
+                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
                                                            Margin="12 4"/>
 
                                                 <TextBlock Text="{TemplateBinding Inheritance}"
@@ -201,7 +201,7 @@
                                                            TextWrapping="Wrap" />
 
                                                 <TextBlock Text="Pseudoclasses"
-                                                           Classes="SubtitleTextBlockStyle"
+                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
                                                            Margin="12 4"/>
 
                                                 <TextBlock Text="{TemplateBinding PseudoclassesList}"
@@ -209,7 +209,7 @@
                                                            TextWrapping="Wrap" />
 
                                                 <TextBlock Text="Definition"
-                                                           Classes="SubtitleTextBlockStyle"
+                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
                                                            Margin="12 4"/>
 
                                                 <aedit:TextEditor Name="TextEditor"
@@ -222,7 +222,7 @@
                                         <Button Name="CloseButton"
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Top"
-                                                   Classes="AppBarButton"
+                                                   Theme="{StaticResource TransparentButton}"
                                                    Margin="12">
                                             <ui:SymbolIcon Symbol="Dismiss" FontSize="18" />
                                         </Button>

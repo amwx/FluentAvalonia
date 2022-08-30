@@ -53,13 +53,14 @@
                                   EnableShowDocsLink="True"
                                   EnableShowDefinitionLink="True">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="BaseTextBlockStyle" Classes="BaseTextBlockStyle" />
-                    <TextBlock Text="CaptionTextBlockStyle" Classes="CaptionTextBlockStyle" />
-                    <TextBlock Text="BodyTextBlockStyle" Classes="BodyTextBlockStyle" />
-                    <TextBlock Text="BodyStrongTextBlockStyle" Classes="BodyStrongTextBlockStyle" />
-                    <TextBlock Text="SubtitleTextBlockStyle" Classes="SubtitleTextBlockStyle" />
-                    <TextBlock Text="TitleTextBlockStyle" Classes="TitleTextBlockStyle" />
-                    <TextBlock Text="DisplayTextBlockStyle" Classes="DisplayTextBlockStyle" />
+                    <TextBlock Text="To use, use Theme property to the name below" Margin="0 0 0 15" />
+                    <TextBlock Text="BaseTextBlockStyle" Theme="{StaticResource BaseTextBlockStyle}" />
+                    <TextBlock Text="CaptionTextBlockStyle" Theme="{StaticResource CaptionTextBlockStyle}" />
+                    <TextBlock Text="BodyTextBlockStyle" Theme="{StaticResource BodyTextBlockStyle}" />
+                    <TextBlock Text="BodyStrongTextBlockStyle" Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock Text="SubtitleTextBlockStyle" Theme="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock Text="TitleTextBlockStyle" Theme="{StaticResource TitleTextBlockStyle}" />
+                    <TextBlock Text="DisplayTextBlockStyle" Theme="{StaticResource DisplayTextBlockStyle}" />
                 </StackPanel>
             </ctrls:ControlExample>
 

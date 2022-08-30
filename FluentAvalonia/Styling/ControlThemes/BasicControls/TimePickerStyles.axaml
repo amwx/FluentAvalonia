@@ -305,11 +305,13 @@
                                     Grid.ColumnSpan="2" />
                             <Button Name="AcceptButton" Grid.Column="0"
                                     Theme="{StaticResource DateTimeFlyoutButtonStyle}"
+                                    Margin="{DynamicResource DatePickerFlyoutPresenterAcceptMargin}"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <ui:SymbolIcon Symbol="Checkmark" FontSize="18" />
                             </Button>
                             <Button Name="DismissButton" Grid.Column="1"
                                     Theme="{StaticResource DateTimeFlyoutButtonStyle}"
+                                     Margin="{DynamicResource DatePickerFlyoutPresenterDismissMargin}"
                                     FontSize="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <ui:SymbolIcon Symbol="Dismiss" FontSize="16" />
                             </Button>

@@ -50,7 +50,7 @@
                                     VerticalAlignment="Bottom"
                                     DockPanel.Dock="Bottom"/>
 
-                            <Button Classes="AppBarButton"
+                            <Button Theme="{StaticResource TransparentButton}"
                                        Margin="8"
                                        DockPanel.Dock="Right"
                                        Name="OptionsMenuButton">
@@ -60,8 +60,8 @@
                             <ContentPresenter Name="HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               ContentTemplate="{TemplateBinding HeaderTemplate}"                                          
-                                              TextElement.FontSize="24"
-                                              TextElement.FontWeight="SemiBold"
+                                              FontSize="24"
+                                              FontWeight="SemiBold"
                                               Padding="12 8"
                                               HorizontalContentAlignment="Left"
                                               VerticalContentAlignment="Center" />
