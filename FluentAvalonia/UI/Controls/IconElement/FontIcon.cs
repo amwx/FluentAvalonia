@@ -1,5 +1,5 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 
@@ -12,11 +12,11 @@ public partial class FontIcon : FAIconElement
 {
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        if (change.Property == TextBlock.ForegroundProperty ||
-            change.Property == TextBlock.FontSizeProperty ||
-            change.Property == TextBlock.FontFamilyProperty ||
-            change.Property == TextBlock.FontWeightProperty ||
-            change.Property == TextBlock.FontStyleProperty ||
+        if (change.Property == TextElement.ForegroundProperty ||
+            change.Property == TextElement.FontSizeProperty ||
+            change.Property == TextElement.FontFamilyProperty ||
+            change.Property == TextElement.FontWeightProperty ||
+            change.Property == TextElement.FontStyleProperty ||
             change.Property == GlyphProperty)
         {
             GenerateText();

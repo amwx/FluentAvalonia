@@ -1,4 +1,6 @@
-﻿using Avalonia;
+﻿using System;
+using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
@@ -27,7 +29,7 @@ public class SymbolIcon : FAIconElement
     /// Defines the <see cref="FontSize"/> property
     /// </summary>
     public static readonly StyledProperty<double> FontSizeProperty =
-        TextBlock.FontSizeProperty.AddOwner<SymbolIcon>();
+        TextElement.FontSizeProperty.AddOwner<SymbolIcon>();
 
     /// <summary>
     /// Gets or sets the <see cref="FluentAvalonia.UI.Controls.Symbol"/> this icon displays
@@ -58,8 +60,17 @@ public class SymbolIcon : FAIconElement
         }
         else if (change.Property == TextElement.ForegroundProperty)
         {
-            GenerateText();
+            GenerateText();            
         }
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        // Force invalidation of text for inherited properties now that we've attached to the tree
+        if (_textLayout != null)
+            GenerateText();
     }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -86,12 +97,6 @@ public class SymbolIcon : FAIconElement
 
     private void GenerateText()
     {
-        // v2: BUG: Seems inherited properties don't trigger a prop change notification
-        // when attached anymore (may be TextElement or ControlTheme related, not sure)
-        // so defer generation of TextLayout until first measure.
-        if (!((IVisual)this).IsAttachedToVisualTree)
-            return;
-
         var glyph = char.ConvertFromUtf32((int)Symbol).ToString();
 
         _textLayout = new TextLayout(glyph,

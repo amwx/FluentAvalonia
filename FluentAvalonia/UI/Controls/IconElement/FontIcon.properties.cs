@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls;
@@ -10,25 +11,25 @@ public partial class FontIcon : FAIconElement
     /// Defines the <see cref="FontFamily"/> property
     /// </summary>
     public static readonly StyledProperty<FontFamily> FontFamilyProperty =
-        TextBlock.FontFamilyProperty.AddOwner<FontIcon>();
+        TextElement.FontFamilyProperty.AddOwner<FontIcon>();
 
     /// <summary>
     /// Defines the <see cref="FontSize"/> property
     /// </summary>
     public static readonly StyledProperty<double> FontSizeProperty =
-        TextBlock.FontSizeProperty.AddOwner<FontIcon>();
+        TextElement.FontSizeProperty.AddOwner<FontIcon>();
 
     /// <summary>
     /// Defines the <see cref="FontWeight"/> property
     /// </summary>
     public static readonly StyledProperty<FontWeight> FontWeightProperty =
-        TextBlock.FontWeightProperty.AddOwner<FontIcon>();
+        TextElement.FontWeightProperty.AddOwner<FontIcon>();
 
     /// <summary>
     /// Defines the <see cref="FontStyle"/> property
     /// </summary>
     public static readonly StyledProperty<FontStyle> FontStyleProperty =
-        TextBlock.FontStyleProperty.AddOwner<FontIcon>();
+        TextElement.FontStyleProperty.AddOwner<FontIcon>();
 
     /// <summary>
     /// Defines the <see cref="Glyph"/> property

@@ -1,5 +1,5 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -18,7 +18,7 @@ public class SymbolIconSource : IconSource
     /// Defines the <see cref="FontSize"/> property
     /// </summary>
     public static readonly StyledProperty<double> FontSizeProperty =
-       TextBlock.FontSizeProperty.AddOwner<SymbolIconSource>();
+       TextElement.FontSizeProperty.AddOwner<SymbolIconSource>();
 
     /// <summary>
     /// Gets or sets the <see cref="FluentAvalonia.UI.Controls.Symbol"/> this icon displays
