@@ -108,7 +108,7 @@ namespace FluentAvaloniaSamples.Pages
             _headerElement = e.NameScope.Find<FAControlsPageHeader>("HeaderElement");
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
             if (change.Property == WinUINamespaceProperty)
@@ -125,13 +125,13 @@ namespace FluentAvaloniaSamples.Pages
             }
             else if (change.Property == PageXamlSourceLinkProperty)
             {
-                var value = change.NewValue.GetValueOrDefault<Uri>();
+                var value = change.GetNewValue<Uri>();
                 PseudoClasses.Set(":pagesrc", value != null || PageCSharpSourceLink != null);
                 PseudoClasses.Set(":xamlsrc", value != null);
             }
             else if (change.Property == PageCSharpSourceLinkProperty)
             {
-                var value = change.NewValue.GetValueOrDefault<Uri>();
+                var value = change.GetNewValue<Uri>();
                 PseudoClasses.Set(":pagesrc", value != null || PageXamlSourceLink != null);
                 PseudoClasses.Set(":csharpsrc", value != null);
             }
