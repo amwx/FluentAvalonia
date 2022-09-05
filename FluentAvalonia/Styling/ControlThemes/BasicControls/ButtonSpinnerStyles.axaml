@@ -52,7 +52,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             MinHeight="{TemplateBinding MinHeight}"
                             Name="LayoutRoot">
                         <Grid ColumnDefinitions="Auto,*,Auto">
