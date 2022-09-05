@@ -20,10 +20,10 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate>
-            <Border x:Name="RootBorder" 
-                    Background="{TemplateBinding Background}" 
+            <Border x:Name="RootBorder"
+                    Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}" 
+                    BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{TemplateBinding CornerRadius}"
                     ClipToBounds="True">
               <Grid x:Name="InnerGrid">
@@ -32,12 +32,12 @@
                   <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 
-                <ContentPresenter x:Name="PART_ContentPresenter" 
+                <ContentPresenter x:Name="PART_ContentPresenter"
                                   Grid.Column="0" 
-                                  Content="{TemplateBinding Content}" 
+                                  Content="{TemplateBinding Content}"
                                   ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Padding="{TemplateBinding Padding}" 
-                                  RecognizesAccessKey="True" 
+                                  Padding="{TemplateBinding Padding}"
+                                  RecognizesAccessKey="True"
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
 
