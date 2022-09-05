@@ -37,6 +37,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ProgressBarStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/RadioButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SliderStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SplitButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SplitViewStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TabControlStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TabStripStyles.axaml" />
