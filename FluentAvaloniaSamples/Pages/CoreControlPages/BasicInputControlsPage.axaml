@@ -54,6 +54,21 @@
 
             </ctrls:ControlExample>
 
+            <ctrls:ControlExample Header="DropDownButton"
+                                  TargetType="DropDownButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="5">
+
+                    <WrapPanel>
+                        <DropDownButton Content="Regular DropDownButton" Margin="4" />
+                        <DropDownButton Content="Disabled DropDownButton" Margin="4" IsEnabled="False" />
+                    </WrapPanel>
+
+                </StackPanel>
+
+            </ctrls:ControlExample>
+
             <ctrls:ControlExample Header="SplitButton"
                                   TargetType="SplitButton"
                                   EnableShowDocsLink="True"

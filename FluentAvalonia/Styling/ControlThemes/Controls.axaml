@@ -26,6 +26,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/RepeatButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/GridSplitterStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ComboBoxStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DropDownButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarDatePickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml" />
