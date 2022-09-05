@@ -33,57 +33,57 @@
     <Style Selector="^:pointerover /template/ ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundPointerOver}" />
       <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushPointerOver}" />
-      <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundPointerOver}" />
+      <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundPointerOver}" />
     </Style>
 
     <Style Selector="^:pressed /template/ ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundPressed}" />
       <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushPressed}" />
-      <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundPressed}" />
+      <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundPressed}" />
     </Style>
 
     <Style Selector="^:disabled /template/ ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundDisabled}" />
       <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushDisabled}" />
-      <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundDisabled}" />
+      <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundDisabled}" />
     </Style>
 
     <Style Selector="^[Tag=flyout-open] /template/ ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundPressed}" />
       <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushPressed}" />
-      <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundPressed}" />
+      <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundPressed}" />
     </Style>
 
     <Style Selector="^[Tag=checked]">
       <Style Selector="^ /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundChecked}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushChecked}" />
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundChecked}" />
+        <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundChecked}" />
       </Style>
 
       <Style Selector="^:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundCheckedPointerOver}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushCheckedPointerOver}" />
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundCheckedPointerOver}" />
+        <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundCheckedPointerOver}" />
       </Style>
 
       <Style Selector="^:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundCheckedPressed}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushCheckedPressed}" />
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundCheckedPressed}" />
+        <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundCheckedPressed}" />
       </Style>
 
       <Style Selector="^:disabled /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundCheckedDisabled}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushCheckedDisabled}" />
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundCheckedDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundCheckedDisabled}" />
       </Style>
     </Style>
 
     <Style Selector="^[Tag=checked-flyout-open] /template/ ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource SplitButtonBackgroundCheckedPressed}" />
       <Setter Property="BorderBrush" Value="{DynamicResource SplitButtonBorderBrushCheckedPressed}" />
-      <Setter Property="TextElement.Foreground" Value="{DynamicResource SplitButtonForegroundCheckedPressed}" />
+      <Setter Property="Foreground" Value="{DynamicResource SplitButtonForegroundCheckedPressed}" />
     </Style>
   </ControlTheme>
 
