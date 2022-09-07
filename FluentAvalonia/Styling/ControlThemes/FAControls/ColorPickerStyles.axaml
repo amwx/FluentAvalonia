@@ -4,7 +4,8 @@
                     xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
                     xmlns:sty="using:FluentAvalonia.Styling"
                     xmlns:conv="using:FluentAvalonia.Converters"
-                    xmlns:avconv="using:Avalonia.Controls.Converters">
+                    xmlns:avconv="using:Avalonia.Controls.Converters"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="0">
             <ui:FAColorPicker UseSpectrum="True" UseColorWheel="True" IsCompact="False"
@@ -484,7 +485,7 @@
                                                                                ItemsStretch="Fill"/>
                                                         </ItemsRepeater.Layout>
                                                         <ItemsRepeater.ItemTemplate>
-                                                            <DataTemplate>
+                                                            <DataTemplate x:DataType="Color">
                                                                 <ui:ColorPaletteItem Color="{Binding}"
                                                                                      BorderBrushPointerOver="{DynamicResource ColorPickerColorPaletteItemBorderBrushPointerOver}"
                                                                                      BorderThicknessPointerOver="1"
