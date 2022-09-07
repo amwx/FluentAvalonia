@@ -1,0 +1,67 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="using:Avalonia.Controls.Converters">
+
+<!--
+Note the following changes from upstream Avalonia:
+ 1. ColorViewTabBackgroundCornerRadius was modified to match Fluent v2 ControlCornerRadius
+ 2. All PathIcon controls for tab headers were replaced by FontIcon using the symbol font
+ 3. The content-area background and border brushes were modified to match Fluent v2 content overlays
+ 4. The selector/thumb brushes used in upstream Avalonia Fluent v1 no longer exist
+    - SystemControlBackgroundChromeWhiteBrush -> ColorControlLightSelectorBrush (new resource)
+    - SystemControlBackgroundChromeBlackHighBrush -> ColorControlDarkSelectorBrush (new resource)
+    - SystemControlForegroundBaseHighBrush -> ColorControlDefaultSelectorBrush (new resource)
+ 5. Separated out ColorViewColorModelRadioButtonTheme and converted to a ControlTheme
+ 6. Added new ColorViewPaletteListBoxTheme to customize ListBox for the ColorPicker itself
+ 7. Added new ColorViewPaletteListBoxItemTheme to customize ListBoxItem containers for the ColorPicker itself
+ 8. Added new resources to control tab/content area background and border in the ColorView
+    Used these resources in both ColorView and ColorPicker to change styles
+-->
+
+  <!-- Shared Resources -->
+  <VisualBrush x:Key="ColorControlCheckeredBackgroundBrush"
+               TileMode="Tile"
+               Stretch="Uniform"
+               DestinationRect="0,0,8,8">
+    <VisualBrush.Visual>
+      <Image Width="8" Height="8">
+        <Image.Source>
+          <DrawingImage>
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                  <GeometryDrawing Geometry="M0,0 L2,0 2,2, 0,2Z"
+                                   Brush="Transparent" />
+                  <GeometryDrawing Geometry="M0,1 L2,1 2,2, 1,2 1,0 0,0Z"
+                                   Brush="#19808080" />
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+          </DrawingImage>
+        </Image.Source>
+      </Image>
+    </VisualBrush.Visual>
+  </VisualBrush>
+
+  <!-- Shared Converters -->
+  <converters:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+  <converters:ToBrushConverter x:Key="ToBrushConverter" />
+  <converters:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
+  <converters:CornerRadiusFilterConverter x:Key="RightCornerRadiusFilterConverter" Filter="TopRight, BottomRight"/>
+  <converters:CornerRadiusFilterConverter x:Key="TopCornerRadiusFilterConverter" Filter="TopLeft, TopRight"/>
+  <converters:CornerRadiusFilterConverter x:Key="BottomCornerRadiusFilterConverter" Filter="BottomLeft, BottomRight"/>
+  <converters:CornerRadiusToDoubleConverter x:Key="TopLeftCornerRadiusConverter" Corner="TopLeft" />
+  <converters:CornerRadiusToDoubleConverter x:Key="BottomRightCornerRadiusConverter" Corner="BottomRight" />
+
+  <ResourceDictionary.MergedDictionaries>
+
+    <!-- Primitives -->
+    <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPreviewer.axaml" />
+    <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorSlider.axaml" />
+    <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorSpectrum.axaml" />
+
+    <!-- Controls -->
+    <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPicker.axaml" />
+    <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorView.axaml" />
+
+  </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

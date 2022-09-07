@@ -86,7 +86,7 @@
 
                 <Grid ColumnDefinitions="Auto,Auto">
                     <ColorView Grid.Column="0" />
-                    <ColorPicker Grid.Column="1" />
+                    <ColorPicker Grid.Column="1" Margin="200,0,0,0" />
                 </Grid>
 
             </ctrls:ControlExample>

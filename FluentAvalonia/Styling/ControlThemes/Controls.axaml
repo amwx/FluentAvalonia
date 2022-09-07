@@ -50,7 +50,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/FlyoutPresenterStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DatePickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TimePickerStyles.axaml" />
-                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPickerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPickerStyles.axaml" />
 
                 <!-- FluentAvalonia Controls -->
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
