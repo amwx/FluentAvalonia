@@ -132,14 +132,6 @@
       </ControlTemplate>
     </Setter>
 
-    <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Transitions">
-        <Transitions>
-          <BrushTransition Duration="00:00:00.083" Property="Background" />
-        </Transitions>
-      </Setter>
-    </Style>
-
     <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundPointerOver}" />
       <Setter Property="BorderBrush" Value="{DynamicResource ToggleButtonBorderBrushPointerOver}" />
