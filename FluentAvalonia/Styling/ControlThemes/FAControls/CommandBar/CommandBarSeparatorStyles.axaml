@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
     
     <Thickness x:Key="AppBarSeparatorMargin">2,8,2,8</Thickness>
     <Thickness x:Key="AppBarOverflowSeparatorMargin">0,4,0,4</Thickness>

@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="using:FluentAvalonia.UI.Controls">
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="30">
             <Calendar DisplayMode="Month" />
@@ -355,7 +356,7 @@
     </ControlTheme>
 
 
-    <ControlTheme TargetType="CalendarItem" x:Key="{x:Type CalendarItem}">        
+    <ControlTheme TargetType="CalendarItem" x:Key="{x:Type CalendarItem}" x:DataType="CalendarItem">        
         <Setter Property="DayTitleTemplate">
             <Template>
                 <TextBlock Text="{Binding}"
