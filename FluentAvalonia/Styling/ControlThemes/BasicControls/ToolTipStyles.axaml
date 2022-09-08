@@ -68,7 +68,7 @@
                                       MaxWidth="{TemplateBinding MaxWidth}"
                                       Content="{TemplateBinding Content}"
                                       ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      TextBlock.TextWrapping="Wrap"/>
+                                      TextWrapping="Wrap"/>
                 </Border>
             </ControlTemplate>
         </Setter>

@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Data;
 
 namespace FluentAvalonia.UI.Controls;
@@ -11,21 +12,21 @@ internal static class IconHelpers
     {
         var fi = new FontIcon
         {
-            [!TextBlock.FontWeightProperty] = fis[!TextBlock.FontWeightProperty],
-            [!TextBlock.FontStyleProperty] = fis[!TextBlock.FontStyleProperty],
-            [!TextBlock.FontFamilyProperty] = fis[!TextBlock.FontFamilyProperty],
-            [!TextBlock.FontSizeProperty] = fis[!TextBlock.FontSizeProperty],
+            [!TextElement.FontWeightProperty] = fis[!TextElement.FontWeightProperty],
+            [!TextElement.FontStyleProperty] = fis[!TextElement.FontStyleProperty],
+            [!TextElement.FontFamilyProperty] = fis[!TextElement.FontFamilyProperty],
+            [!TextElement.FontSizeProperty] = fis[!TextElement.FontSizeProperty],
             [!FontIcon.GlyphProperty] = fis[!FontIconSource.GlyphProperty]
         };
 
         if (fis.IsSet(IconSource.ForegroundProperty))
         {
-            fi.Bind(TextBlock.ForegroundProperty, fis.GetBindingObservable(IconSource.ForegroundProperty),
+            fi.Bind(TextElement.ForegroundProperty, fis.GetBindingObservable(IconSource.ForegroundProperty),
                 priority: BindingPriority.LocalValue);
         }
         else
         {
-            fi.Bind(TextBlock.ForegroundProperty, fis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+            fi.Bind(TextElement.ForegroundProperty, fis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
                 priority: BindingPriority.LocalValue);
         }
 
@@ -43,12 +44,12 @@ internal static class IconHelpers
 
         if (pis.IsSet(IconSource.ForegroundProperty))
         {
-            pi.Bind(TextBlock.ForegroundProperty, pis.GetBindingObservable(IconSource.ForegroundProperty),
+            pi.Bind(TextElement.ForegroundProperty, pis.GetBindingObservable(IconSource.ForegroundProperty),
                 priority: BindingPriority.LocalValue);
         }
         else
         {
-            pi.Bind(TextBlock.ForegroundProperty, pis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+            pi.Bind(TextElement.ForegroundProperty, pis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
                 priority: BindingPriority.LocalValue);
         }
 
@@ -60,17 +61,17 @@ internal static class IconHelpers
         var si = new SymbolIcon
         {
             [!SymbolIcon.SymbolProperty] = sis[!SymbolIconSource.SymbolProperty],
-            [!TextBlock.FontSizeProperty] = sis[!TextBlock.FontSizeProperty]
+            [!TextElement.FontSizeProperty] = sis[!TextElement.FontSizeProperty]
         };
 
         if (sis.IsSet(IconSource.ForegroundProperty))
         {
-            si.Bind(TextBlock.ForegroundProperty, sis.GetBindingObservable(IconSource.ForegroundProperty),
+            si.Bind(TextElement.ForegroundProperty, sis.GetBindingObservable(IconSource.ForegroundProperty),
                 priority: BindingPriority.LocalValue);
         }
         else
         {
-            si.Bind(TextBlock.ForegroundProperty, sis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+            si.Bind(TextElement.ForegroundProperty, sis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
                 priority: BindingPriority.LocalValue);
         }
 
@@ -87,12 +88,12 @@ internal static class IconHelpers
 
         if (bis.IsSet(IconSource.ForegroundProperty))
         {
-            bi.Bind(TextBlock.ForegroundProperty, bis.GetBindingObservable(IconSource.ForegroundProperty),
+            bi.Bind(TextElement.ForegroundProperty, bis.GetBindingObservable(IconSource.ForegroundProperty),
                 priority: BindingPriority.LocalValue);
         }
         else
         {
-            bi.Bind(TextBlock.ForegroundProperty, bis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+            bi.Bind(TextElement.ForegroundProperty, bis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
                 priority: BindingPriority.LocalValue);
         }
 
@@ -108,12 +109,12 @@ internal static class IconHelpers
 
         if (iis.IsSet(IconSource.ForegroundProperty))
         {
-            ii.Bind(TextBlock.ForegroundProperty, iis.GetBindingObservable(IconSource.ForegroundProperty),
+            ii.Bind(TextElement.ForegroundProperty, iis.GetBindingObservable(IconSource.ForegroundProperty),
                 priority: BindingPriority.LocalValue);
         }
         else
         {
-            ii.Bind(TextBlock.ForegroundProperty, iis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
+            ii.Bind(TextElement.ForegroundProperty, iis.GetBindingObservable(IconSource.ForegroundProperty).Skip(1),
                 priority: BindingPriority.LocalValue);
         }
 

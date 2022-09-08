@@ -253,7 +253,7 @@
 
                             <ContentPresenter Name="ContentPresenter"
                                               Grid.Column="1"
-                                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              Foreground="{TemplateBinding Foreground}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

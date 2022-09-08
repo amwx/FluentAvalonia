@@ -68,7 +68,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
@@ -83,7 +83,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPressed}" />
@@ -98,7 +98,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundSubMenuOpened}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundSubMenuOpened}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundSubMenuOpened}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronSubMenuOpened}" />
@@ -113,7 +113,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />

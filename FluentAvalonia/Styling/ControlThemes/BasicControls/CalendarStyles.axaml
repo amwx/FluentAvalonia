@@ -390,7 +390,7 @@
                             <Setter Property="Template">
                                 <ControlTemplate>
                                     <ContentPresenter Name="Text"
-													  TextBlock.Foreground="{TemplateBinding Foreground}"
+													  Foreground="{TemplateBinding Foreground}"
 													  Background="{TemplateBinding Background}"
 													  BorderBrush="{DynamicResource }"
 													  BorderThickness="{TemplateBinding BorderThickness}"
@@ -408,15 +408,15 @@
                         <Style Selector="Button.CalendarHeader:pointerover /template/ ContentPresenter#Text">
                             <Setter Property="Background" Value="{DynamicResource CalendarViewNavigationButtonBackgroundPointerOver}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource CalendarViewNavigationButtonBorderBrushPointerOver}" />
-                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource CalendarViewHeaderNavigationButtonForegroundPointerOver}" />
+                            <Setter Property="Foreground" Value="{DynamicResource CalendarViewHeaderNavigationButtonForegroundPointerOver}" />
                         </Style>
                         <Style Selector="Button.CalendarHeader:pressed /template/ ContentPresenter#Text">
                             <Setter Property="Background" Value="{DynamicResource CalendarViewNavigationButtonBackgroundPressed}" />
-                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource CalendarViewHeaderNavigationButtonForegroundPressed}" />
+                            <Setter Property="Foreground" Value="{DynamicResource CalendarViewHeaderNavigationButtonForegroundPressed}" />
 
                         </Style>
                         <Style Selector="Button.CalendarHeader:disabled /template/ ContentPresenter#Text">
-                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource CalendarViewHeaderNavigationButtonForegroundDisabled}" />
+                            <Setter Property="Foreground" Value="{DynamicResource CalendarViewHeaderNavigationButtonForegroundDisabled}" />
                         </Style>
 
                         <!-- Button Style for the Nav Buttons (up/down) -->
@@ -435,15 +435,15 @@
                         <Style Selector="Button.CalendarNavigation:pointerover /template/ ContentPresenter#Text">
                             <Setter Property="Background" Value="{DynamicResource CalendarViewNavigationButtonBackgroundPointerOver}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource CalendarViewNavigationButtonBorderBrushPointerOver}" />
-                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource CalendarViewNavigationButtonForegroundPointerOver}" />
+                            <Setter Property="Foreground" Value="{DynamicResource CalendarViewNavigationButtonForegroundPointerOver}" />
                         </Style>
                         <Style Selector="Button.CalendarNavigation:pressed /template/ ContentPresenter#Text">
                             <Setter Property="Background" Value="{DynamicResource CalendarViewNavigationButtonBackgroundPressed}" />
-                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource CalendarViewNavigationButtonForegroundPressed}" />
+                            <Setter Property="Foreground" Value="{DynamicResource CalendarViewNavigationButtonForegroundPressed}" />
 
                         </Style>
                         <Style Selector="Button.CalendarNavigation:disabled /template/ ContentPresenter#Text">
-                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource CalendarViewNavigationButtonForegroundDisabled}" />
+                            <Setter Property="Foreground" Value="{DynamicResource CalendarViewNavigationButtonForegroundDisabled}" />
                         </Style>
                     </Border.Styles>
                     <!--  To keep calendar from resizing when switching DisplayMode

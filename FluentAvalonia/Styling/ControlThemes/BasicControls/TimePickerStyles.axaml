@@ -59,7 +59,7 @@
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundDisabled}" />
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource TimePickerButtonForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushDisabled}" />
             </Style>
         </Style>
@@ -162,7 +162,7 @@
 
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ ContentPresenter#HeaderContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource TimePickerHeaderForegroundDisabled}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TimePickerHeaderForegroundDisabled}"/>
             </Style>
             <Style Selector="^ /template/ Rectangle">
                 <Setter Property="Fill" Value="{DynamicResource TimePickerSpacerFillDisabled}"/>
@@ -175,10 +175,10 @@
             </Style>
             <!-- Add this here to override the :hasnotime & still allow :pointerover to activate to match WinUI -->
             <Style Selector="^ /template/ Button#FlyoutButton:pointerover TextBlock">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource TimePickerButtonForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ Button#FlyoutButton:pressed TextBlock">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource TimePickerButtonForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPressed}" />
             </Style>
         </Style>
 

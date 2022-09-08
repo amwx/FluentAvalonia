@@ -94,7 +94,7 @@
 
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource RadioButtonForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource RadioButtonForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource RadioButtonBackgroundPointerOver}" />
@@ -123,7 +123,7 @@
 
         <Style Selector="^:pressed">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource RadioButtonForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource RadioButtonForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource RadioButtonBackgroundPressed}" />
@@ -156,7 +156,7 @@
 
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource RadioButtonForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource RadioButtonForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource RadioButtonBackgroundDisabled}" />

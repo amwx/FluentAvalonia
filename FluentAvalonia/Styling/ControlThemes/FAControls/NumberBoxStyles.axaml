@@ -34,7 +34,7 @@
                 <ContentPresenter Background="{TemplateBinding Background}"
                                   BorderBrush="{TemplateBinding BorderBrush}"
                                   BorderThickness="{TemplateBinding BorderThickness}"
-                                  TextBlock.Foreground="{TemplateBinding Foreground}"
+                                  Foreground="{TemplateBinding Foreground}"
                                   Padding="{TemplateBinding Padding}"
                                   CornerRadius="{TemplateBinding CornerRadius}"
                                   Content="{TemplateBinding Content}"
@@ -46,15 +46,15 @@
         <Style Selector="^:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ControlFillColorTransparent}" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ControlFillColorTransparent}" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
         </Style>
         <Style Selector="^:disabled /template/ ContentPresenter">
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
         </Style>
     </ControlTheme>
 
@@ -254,7 +254,7 @@
         </Setter>
 
         <Style Selector="^:disabled /template/ ContentPresenter#HeaderPresenter">
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextControlHeaderForegroundDisabled}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextControlHeaderForegroundDisabled}" />
         </Style>
 
         <Style Selector="^:spinvisible">

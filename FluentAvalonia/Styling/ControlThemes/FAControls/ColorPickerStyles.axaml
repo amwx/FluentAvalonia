@@ -289,11 +289,11 @@
 
         <Style Selector="^:selected /template/ ContentPresenter#ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ColorPickerTabItemBackgroundSelected}" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource ColorPickerTabItemForegroundSelected}" />
+            <Setter Property="Foreground" Value="{DynamicResource ColorPickerTabItemForegroundSelected}" />
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ColorPickerTabItemBackgroundPointerOver}" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource ColorPickerTabItemForegroundPointerOver}" />
+            <Setter Property="Foreground" Value="{DynamicResource ColorPickerTabItemForegroundPointerOver}" />
         </Style>
 
         <Style Selector="^:selected /template/ Border#SelectionIndicator">

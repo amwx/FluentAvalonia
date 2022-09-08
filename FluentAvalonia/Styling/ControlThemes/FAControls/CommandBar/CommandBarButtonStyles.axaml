@@ -92,7 +92,7 @@
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
 											  Content="{TemplateBinding Icon}"
-											  TextBlock.Foreground="{TemplateBinding Foreground}" />
+											  Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 
                         <TextBlock Name="TextLabel"
@@ -152,7 +152,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#Content">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
@@ -175,7 +175,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPressed}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#Content">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
@@ -198,7 +198,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushDisabled}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#Content">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundDisabled}" />
@@ -246,7 +246,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
@@ -268,7 +268,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushPressed}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPressed}" />
@@ -290,7 +290,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrushSubMenuOpened}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundSubMenuOpened}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundSubMenuOpened}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundSubMenuOpened}" />

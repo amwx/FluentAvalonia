@@ -85,7 +85,7 @@
 
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundUncheckedPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundUncheckedPointerOver}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundUncheckedPointerOver}" />
@@ -102,7 +102,7 @@
 
         <Style Selector="^:pressed">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundUncheckedPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundUncheckedPressed}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundUncheckedPressed}" />
@@ -119,7 +119,7 @@
 
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundUncheckedDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundUncheckedDisabled}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundUncheckedDisabled}" />
@@ -137,7 +137,7 @@
 
         <Style Selector="^:checked">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundChecked}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundChecked}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundChecked}" />
@@ -155,7 +155,7 @@
 
 
             <Style Selector="^:pointerover /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundCheckedPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundCheckedPointerOver}" />
             </Style>
             <Style Selector="^:pointerover /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundCheckedPointerOver}" />
@@ -172,7 +172,7 @@
 
 
             <Style Selector="^:pressed /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundCheckedPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundCheckedPressed}" />
             </Style>
             <Style Selector="^:pressed /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundCheckedPressed}" />
@@ -189,7 +189,7 @@
 
 
             <Style Selector="^:disabled /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundCheckedDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundCheckedDisabled}" />
             </Style>
             <Style Selector="^:disabled /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundCheckedDisabled}" />
@@ -207,7 +207,7 @@
 
         <Style Selector="^:indeterminate">
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminate}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminate}" />
             </Style>
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundIndeterminate}" />
@@ -225,7 +225,7 @@
 
 
             <Style Selector="^:pointerover /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminatePointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminatePointerOver}" />
             </Style>
             <Style Selector="^:pointerover /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundIndeterminatePointerOver}" />
@@ -243,7 +243,7 @@
 
             
             <Style Selector="^:pressed /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminatePressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminatePressed}" />
             </Style>
             <Style Selector="^:pressed /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundIndeterminatePressed}" />
@@ -261,7 +261,7 @@
 
             
             <Style Selector="^:disabled /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminateDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminateDisabled}" />
             </Style>
             <Style Selector="^:disabled /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundIndeterminateDisabled}" />

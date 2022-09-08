@@ -198,7 +198,7 @@ public partial class InfoBar : ContentControl
 
     private void UpdateForeground()
     {
-        PseudoClasses.Set(":foregroundset", this.GetValue(TextBlock.ForegroundProperty) != AvaloniaProperty.UnsetValue);
+        PseudoClasses.Set(":foregroundset", this.GetValue(TextElement.ForegroundProperty) != AvaloniaProperty.UnsetValue);
     }
 
     private Button _closeButton;
