@@ -1,0 +1,103 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Thickness x:Key="DataGridTextColumnCellTextBlockMargin">12 0</Thickness>
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridCellStyles.axaml" />
+        <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridColumnHeaderStyles.axaml" />
+        <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridRowGroupHeaderStyles.axaml" />
+        <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridRowHeaderStyles.axaml" />
+        <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridRowStyles.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+   
+
+    <ControlTheme x:Key="{x:Type DataGrid}" TargetType="DataGrid">
+        <Setter Property="RowBackground" Value="Transparent" />
+        <Setter Property="AlternatingRowBackground" Value="Transparent" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DataGridGridLinesBrush}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource DataGridGridLinesBrush}" />
+        <Setter Property="DropLocationIndicatorTemplate">
+            <Template>
+                <Rectangle Fill="{DynamicResource DataGridDropLocationIndicatorBackground}"
+                           Width="2" />
+            </Template>
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="DataGridBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,*,Auto,Auto">
+                        <DataGridColumnHeader Name="PART_TopLeftCornerHeader"
+                                              Theme="{StaticResource DataGridTopLeftColumnHeader}" />
+                        <DataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"
+                                                        Grid.Column="1"
+                                                        Grid.Row="0" Grid.ColumnSpan="2" />
+                        <Rectangle Name="PART_ColumnHeadersAndRowsSeparator"
+                                   Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0"
+                                   VerticalAlignment="Bottom"
+                                   Height="1"
+                                   Fill="{DynamicResource DataGridGridLinesBrush}" />
+
+                        <DataGridRowsPresenter Name="PART_RowsPresenter"
+                                               Grid.Row="1"
+                                               Grid.RowSpan="2"
+                                               Grid.ColumnSpan="3" Grid.Column="0">
+                            <DataGridRowsPresenter.GestureRecognizers>
+                                <ScrollGestureRecognizer CanHorizontallyScroll="True" CanVerticallyScroll="True" />
+                            </DataGridRowsPresenter.GestureRecognizers>
+                        </DataGridRowsPresenter>
+                        <Rectangle Name="PART_BottomRightCorner"
+                                   Fill="{DynamicResource DataGridScrollBarsSeparatorBackground}"
+                                   Grid.Column="2"
+                                   Grid.Row="2" />
+                        <ScrollBar Name="PART_VerticalScrollbar"
+                                   Orientation="Vertical"
+                                   Grid.Column="2"
+                                   Grid.Row="1"
+                                   Width="{DynamicResource ScrollBarSize}" />
+
+                        <Grid Grid.Column="1"
+                              Grid.Row="2"
+                              ColumnDefinitions="Auto,*">
+                            <Rectangle Name="PART_FrozenColumnScrollBarSpacer" />
+                            <ScrollBar Name="PART_HorizontalScrollbar"
+                                       Grid.Column="1"
+                                       Orientation="Horizontal"
+                                       Height="{DynamicResource ScrollBarSize}" />
+                        </Grid>
+                        <Border Name="PART_DisabledVisualElement"
+                                Grid.ColumnSpan="3" Grid.Column="0"
+                                Grid.Row="0" Grid.RowSpan="4"
+                                IsHitTestVisible="False"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="2"
+                                Background="{DynamicResource DataGridDisabledVisualElementBackground}"
+                                IsVisible="{Binding !$parent[DataGrid].IsEnabled}" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:empty-columns">
+            <Style Selector="^ /template/ DataGridColumnHeader#PART_TopLeftCornerHeader">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>
