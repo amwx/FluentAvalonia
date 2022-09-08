@@ -22,12 +22,12 @@
                     <WrapPanel>
                         <Button Content="Regular Button" Margin="4" Width="175"/>
                         <Button Content="AccentButton" Classes="accent" Margin="4" Width="175"/>
-                        <Button Content="Disabled Button" Margin="4" IsEnabled="False" Width="175" />                     
+                        <Button Content="Disabled Button" Margin="4" IsEnabled="False" Width="175" />
                     </WrapPanel>
-                    
+
                     <Border Background="{DynamicResource DividerStrokeColorDefaultBrush}"
-							Height="1"
-							Margin="6" />
+                            Height="1"
+                            Margin="6" />
 
                     <Button Content="Button (Theme = TransparentButton)" Theme="{StaticResource TransparentButton}" />
                     <Button Content="Disabled (Theme = TransparentButton)" Theme="{StaticResource TransparentButton}" IsEnabled="False" />
@@ -45,11 +45,56 @@
                     </WrapPanel>
 
                     <Border Background="{DynamicResource DividerStrokeColorDefaultBrush}"
-							Height="1"
-							Margin="6" />
-                    
+                            Height="1"
+                            Margin="6" />
+
                     <ToggleButton Content="Theme = TransparentToggleButton" Theme="{StaticResource TransparentToggleButton}" />
                     <ToggleButton Content="Theme = TransparentToggleButton" Theme="{StaticResource TransparentToggleButton}" IsEnabled="False" />
+                </StackPanel>
+
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="DropDownButton"
+                                  TargetType="DropDownButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="5">
+
+                    <WrapPanel>
+                        <DropDownButton Content="Regular DropDownButton" Margin="4" />
+                        <DropDownButton Content="Disabled DropDownButton" Margin="4" IsEnabled="False" />
+                    </WrapPanel>
+
+                </StackPanel>
+
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="SplitButton"
+                                  TargetType="SplitButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="5">
+
+                    <WrapPanel>
+                        <SplitButton Content="Regular SplitButton" Margin="4" />
+                        <SplitButton Content="Disabled SplitButton" Margin="4" IsEnabled="False" />
+                    </WrapPanel>
+
+                </StackPanel>
+
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ToggleSplitButton"
+                                  TargetType="ToggleSplitButton"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="5">
+
+                    <WrapPanel>
+                        <ToggleSplitButton Content="Regular ToggleSplitButton" Margin="4" />
+                        <ToggleSplitButton Content="Disabled ToggleSplitButton" Margin="4" IsEnabled="False" />
+                    </WrapPanel>
+
                 </StackPanel>
 
             </ctrls:ControlExample>
@@ -65,8 +110,8 @@
                     </WrapPanel>
                     
                     <Border Background="{DynamicResource DividerStrokeColorDefaultBrush}"
-							Height="1"
-							Margin="6" />
+                            Height="1"
+                            Margin="6" />
 
                     <RepeatButton Content="Theme = TransparentRepeatButton" Theme="{StaticResource TransparentRepeatButton}" />
                     <RepeatButton Content="Theme = TransparentRepeatButton" Theme="{StaticResource TransparentRepeatButton}" IsEnabled="False" />

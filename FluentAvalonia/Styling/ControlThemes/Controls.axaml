@@ -26,6 +26,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/RepeatButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/GridSplitterStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ComboBoxStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DropDownButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarDatePickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml" />
@@ -37,6 +38,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ProgressBarStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/RadioButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SliderStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SplitButtonStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SplitViewStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TabControlStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TabStripStyles.axaml" />
@@ -48,7 +50,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/FlyoutPresenterStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DatePickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TimePickerStyles.axaml" />
-
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPickerStyles.axaml" />
 
                 <!-- FluentAvalonia Controls -->
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
@@ -59,7 +61,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBarStyles.axaml" />
                 <!--<ResourceInclude Source="/Styling/ControlThemes/FAControls/CoreWindowStyles.axaml" />-->
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/NumberBoxStyles.axaml" />
-                
+
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutItemStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutSubItemStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/ToggleMenuFlyoutItemStyles.axaml" />
@@ -96,7 +98,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
-    
+
     <StyleInclude Source="/Styling/ControlThemes/BasicControls/FocusAdornerStyles.axaml" />
     <StyleInclude Source="/Styling/ControlThemes/BasicControls/UserControlStyles.axaml" />
     <StyleInclude Source="/Styling/Controls/CoreWindowStyles.axaml" />
