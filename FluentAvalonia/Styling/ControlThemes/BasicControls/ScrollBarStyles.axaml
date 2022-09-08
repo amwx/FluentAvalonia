@@ -1,13 +1,14 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    xmlns:aconv="using:Avalonia.Controls.Converters"
                     x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="50">
             <Panel Width="125" Height="170">
                 <ScrollBar Orientation="Vertical" HorizontalAlignment="Right" AllowAutoHide="False" Margin="0 0 0 20" />
 
-                <ScrollBar IsEnabled="False" Orientation="Horizontal" VerticalAlignment="Bottom" AllowAutoHide="False" />
+                <ScrollBar IsEnabled="True" Orientation="Horizontal" VerticalAlignment="Bottom" AllowAutoHide="False" />
             </Panel>
         </Border>
     </Design.PreviewWith>
@@ -25,13 +26,15 @@
     <x:Double x:Key="ScrollBarVerticalThumbMinWidth">8</x:Double>
     <x:Double x:Key="ScrollBarHorizontalThumbMinWidth">30</x:Double>
     <x:Double x:Key="ScrollBarHorizontalThumbMinHeight">8</x:Double>
-    <Thickness x:Key="ScrollBarThumbStrokeThickness">6</Thickness>
+    <!-- Changed this to a double, since we use a Rectangle
+         Also changed from 6 to 1 b/c this is apparently different
+    -->
+    <x:Double x:Key="ScrollBarThumbStrokeThickness">1</x:Double>
     <!-- Upped this from 8-12, Fluent icons are smaller than MDL2 -->
     <x:Double x:Key="ScrollBarButtonArrowIconFontSize">12</x:Double>
     <!--<x:String x:Key="ScrollBarExpandBeginTime">00:00:00.40</x:String>
         <x:String x:Key="ScrollBarContractBeginTime">00:00:00.50</x:String>-->
-    <!-- Doubled this, seems more correct -->
-    <x:Double x:Key="ScrollBarCornerRadius">6</x:Double>
+    <CornerRadius x:Key="ScrollBarCornerRadius">6</CornerRadius>
     <!-- WinUI Animates to ScrollBar[Orientation]ThumbMin{Width/Height} for expand collapse 
          edited the scale transform to 0.35 to approximate this
          Width/Height are NOT set on the Thumb control for this to be achieved
@@ -39,6 +42,8 @@
     <TransformOperations x:Key="VerticalSmallScrollThumbScaleTransform">scaleX(0.35) translateX(-2px)</TransformOperations>
     <TransformOperations x:Key="HorizontalSmallScrollThumbScaleTransform">scaleY(0.35) translateY(-2px)</TransformOperations>
 
+    <aconv:CornerRadiusToDoubleConverter x:Key="TopLeftCornerRadiusToDoubleConv" Corner="TopLeft" />
+    
     <ControlTheme x:Key="ScrollBarThumb" TargetType="Thumb">
         <Setter Property="Background" Value="{DynamicResource ScrollBarPanningThumbBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ScrollBarThumbBorderBrush}" />
@@ -141,18 +146,18 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid x:Name="Root">
-                        <Border x:Name="VerticalRoot"
+                        <Border Name="VerticalRoot"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}">
                             <Grid RowDefinitions="Auto,*,Auto">
 
-                                <Rectangle Name="TrackRect"
+                                <Rectangle Name="TrackRect" 
                                            Fill="{DynamicResource ScrollBarTrackFill}"
                                            Stroke="{DynamicResource ScrollBarTrackStroke}"
                                            StrokeThickness="{DynamicResource ScrollBarTrackBorderThemeThickness}"
                                            Opacity="0"
-                                           RadiusX="{DynamicResource ScrollBarCornerRadius}"
-                                           RadiusY="{DynamicResource ScrollBarCornerRadius}"
+                                           RadiusX="{Binding Source={StaticResource ScrollBarCornerRadius}, Converter={StaticResource TopLeftCornerRadiusToDoubleConv}}"
+                                           RadiusY="{Binding Source={StaticResource ScrollBarCornerRadius}, Converter={StaticResource TopLeftCornerRadiusToDoubleConv}}"
                                            Grid.RowSpan="3"
                                            Margin="0">
                                     <Rectangle.Transitions>
@@ -231,7 +236,7 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid x:Name="Root">
-                        <Border x:Name="VerticalRoot"
+                        <Border Name="VerticalRoot"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}">
                             <Grid ColumnDefinitions="Auto,*,Auto">
@@ -241,8 +246,8 @@
                                            Stroke="{DynamicResource ScrollBarTrackStroke}"
                                            StrokeThickness="{DynamicResource ScrollBarTrackBorderThemeThickness}"
                                            Opacity="0"
-                                           RadiusX="{DynamicResource ScrollBarCornerRadius}"
-                                           RadiusY="{DynamicResource ScrollBarCornerRadius}"
+                                           RadiusX="{Binding Source={StaticResource ScrollBarCornerRadius}, Converter={StaticResource TopLeftCornerRadiusToDoubleConv}}"
+                                           RadiusY="{Binding Source={StaticResource ScrollBarCornerRadius}, Converter={StaticResource TopLeftCornerRadiusToDoubleConv}}"
                                            Grid.ColumnSpan="3"
                                            Margin="0">
                                     <Rectangle.Transitions>
