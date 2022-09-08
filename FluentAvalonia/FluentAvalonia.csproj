@@ -22,8 +22,8 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.4.1</Version>
-        <AssemblyVersion>1.4.1.0</AssemblyVersion>        
+        <Version>2.0.0-preview1</Version>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>        
     </PropertyGroup>
 
 
@@ -38,15 +38,13 @@
         <AvaloniaResource Include="Assets\*.*" />
 	    <AvaloniaResource Include="Fonts\*.*" />
     </ItemGroup>
-    <ItemGroup>
-      <AvaloniaResource Include="Styling\StylesV2\Controls.txt" />
-    </ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia" Version="0.10.15" />
-		<PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
-		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.15" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.15" />
+		<PackageReference Include="Avalonia" Version="11.0.0-preview1" />
+		<PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview1" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview1" />
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview1" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview1" />
 		<PackageReference Include="MicroCom.CodeGenerator.MSBuild" Version="0.10.4" />
 		<PackageReference Include="MicroCom.Runtime" Version="0.10.4" />
         <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />

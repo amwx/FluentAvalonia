@@ -38,8 +38,8 @@
                     <TextBlock Text="{Binding #TestFrame.ForwardStack.Count, StringFormat='{}Items in Forward Stack: {0}'}" HorizontalAlignment="Right" />
                     <TextBlock Text="{Binding #TestFrame.CanGoForward, StringFormat='{}Can Go Forward: {0}'}" HorizontalAlignment="Right" />
 
-                    <ui:Button Content="Go Back" Command="{Binding #TestFrame.GoBack}" IsEnabled="{Binding #TestFrame.CanGoBack}" />
-                    <ui:Button Content="Go Forward" Command="{Binding #TestFrame.GoForward}" IsEnabled="{Binding #TestFrame.CanGoForward}" />
+                    <Button Content="Go Back" Command="{Binding #TestFrame.GoBack}" IsEnabled="{Binding #TestFrame.CanGoBack}" />
+                    <Button Content="Go Forward" Command="{Binding #TestFrame.GoForward}" IsEnabled="{Binding #TestFrame.CanGoForward}" />
 
 
 

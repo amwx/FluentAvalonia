@@ -19,24 +19,6 @@
         "PageType": "HyperlinkButtonPage"
       },
       {
-        "Header": "SplitButton",
-        "Description": "A two-part button that displays a Flyout when its secondary part is clicked.",
-        "PreviewImageSource": "/Assets/PageIcons/SplitButton.jpg",
-        "PageType": "SplitButtonPage"
-      },
-      {
-        "Header": "ToggleSplitButton",
-        "Description": "A version of the SplitButton where the activation target toggles on/off",
-        "PreviewImageSource": "/Assets/PageIcons/ToggleSplitButton.jpg",
-        "PageType": "ToggleSplitButtonPage"
-      },
-      {
-        "Header": "DropDownButton",
-        "Description": "A button that displays a flyout of choices when clicked.",
-        "PreviewImageSource": "/Assets/PageIcons/DropDownButton.jpg",
-        "PageType": "DropDownButtonPage"
-      },
-      {
         "Header": "NumberBox",
         "Description": "A text control used for numeric input and evaluation of algebraic equations.",
         "PreviewImageSource": "/Assets/PageIcons/NumberBox.jpg",

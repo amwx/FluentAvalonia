@@ -1,0 +1,331 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia"
+                    xmlns:core="using:FluentAvalonia.Core">
+
+    <Design.PreviewWith>
+        <Border Padding="20" Width="300" Height="100">
+            <StackPanel Spacing="20" HorizontalAlignment="Left">
+                <ui:TabViewItem Header="Hello" IconSource="Save"
+                                core:VisualStateHelper.ForcedClassesProperty=""/>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Resources in TabViewStyles.axaml -->
+
+    <ControlTheme x:Key="TabViewCloseButtonStyle" TargetType="Button">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource TabViewItemHeaderCloseFontSize}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+        <Setter Property="Width" Value="{DynamicResource TabViewItemHeaderCloseButtonWidth}"/>
+        <Setter Property="Height" Value="{DynamicResource TabViewItemHeaderCloseButtonHeight}"/>
+        <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForeground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderThickness}"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter Name="ContentPresenter"
+                                  Background="{TemplateBinding Background}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Content="{TemplateBinding Content}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}" />
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackgroundPointerOver}" />
+            <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForegroundPointerOver}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrushPointerOver}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderCloseButtonBackgroundPressed}" />
+            <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderCloseButtonForegroundPressed}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemHeaderCloseButtonBorderBrushPressed}" />
+        </Style>
+    </ControlTheme>
+
+
+    <ControlTheme x:Key="{x:Type ui:TabViewItem}" TargetType="ui:TabViewItem">
+        <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackground}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="{DynamicResource TabViewItemMinHeight}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource TabViewItemBorderThickness}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TabViewItemBorderBrush}" />
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="LayoutRootBorder"
+                        Padding="{TemplateBinding Padding}">
+                    <Grid Name="LayoutRoot">
+
+                        <Grid.ColumnDefinitions>
+                            <!-- x:Name = "LeftColumn" -->
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <!-- x:Name = "RightColumn" -->
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Switched to background here as Avalonia won't render border brush with 1 edge set w/ 1px width -->
+                        <!--<Setter Property="BorderBrush" Value="{DynamicResource TabViewBorderBrush}" />
+                            <Setter Property="BorderThickness" Value="1" />-->
+                        <Border Name="BottomBorderLine"
+                                Background="{DynamicResource TabViewBorderBrush}"
+                                Height="1"
+                                Grid.ColumnSpan="3"
+                                VerticalAlignment="Bottom"/>
+
+                        <Path Name="LeftRadiusRenderArc"
+                              Fill="{DynamicResource TabViewBorderBrush}"
+                              VerticalAlignment="Bottom"
+                              IsVisible="False"
+                              Margin="-4 0 0 0"
+                              Height="4"
+                              Width="4"
+                              Data="M4 0C4 1.19469 3.47624 2.26706 2.64582 3H0C1.65685 3 3 1.65685 3 0H4Z" />
+
+                        <Path Name="RightRadiusRenderArc"
+                              Grid.Column="2"
+                              IsVisible="False"
+                              Fill="{DynamicResource TabViewBorderBrush}"
+                              VerticalAlignment="Bottom"
+                              Margin="0 0 -4 0"
+                              Height="4"
+                              Width="4"
+                              Data="M0 0C0 1.19469 0.523755 2.26706 1.35418 3H4C2.34315 3 1 1.65685 1 0H0Z"/>
+
+                        <Path Name="SelectedBackgroundPath"
+                              Grid.ColumnSpan="3"
+                              Fill="{DynamicResource TabViewItemHeaderBackgroundSelected}"
+                              VerticalAlignment="Bottom"
+                              Margin="-4 0"
+                              IsVisible="False"
+                              Data="{Binding TabViewTemplateSettings.TabGeometry, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                        <!-- Switched to background here as Avalonia won't render border brush with 1 edge set w/ 1px width -->
+                        <Border Name="TabSeparator"
+                                HorizontalAlignment="Right"
+                                Width="1"
+                                Grid.Column="1"
+                                Background="{DynamicResource TabViewItemSeparator}"
+                                Margin="{DynamicResource TabViewItemSeparatorMargin}"/>
+
+                        <Border Name="TabContainerBorder"
+                                Grid.Column="1"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                TemplatedControl.IsTemplateFocusTarget="True"
+                                Padding="{DynamicResource TabViewItemHeaderPadding}"
+                                CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopCornerRadiusFilterConverter}}">
+                            <Grid Name="TabContainer">
+                                <Grid.ColumnDefinitions>
+                                    <!-- x:Name = "IconColumn" -->
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Since we can't change the icon column in the styles, to avoid locking it in
+                                code, we use this Rectangle as the sizer for the column -->
+                                <Rectangle HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"
+                                           Name="IconColumn" />
+
+                                <Viewbox Name="IconBox"
+                                         MaxWidth="{DynamicResource TabViewItemHeaderIconSize}"
+                                         MaxHeight="{DynamicResource TabViewItemHeaderIconSize}"
+                                         Margin="{DynamicResource TabViewItemHeaderIconMargin}"
+                                         IsVisible="False">
+                                    <ContentControl Name="IconControl"
+                                                    Content="{Binding TabViewTemplateSettings.IconElement, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    KeyboardNavigation.IsTabStop="False"
+                                                    Foreground="{DynamicResource TabViewItemIconForeground}"/>
+                                </Viewbox>
+
+                                <!-- If we template bind the ContentPresenter's Content property to the TabViewItem.Header property
+                                 we unfortunately run into the following issue if the header is [null] or empty:
+                                 The TabViewItem.Content property will be implictly bound to the Content property of the ContentPresenter.
+                                 To prevent this, we explicitly set a default empty content here and update the content in code behind. -->
+
+                                <ContentPresenter Name="ContentPresenter"
+                                                  Grid.Column="1"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Content=""
+                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                  FontWeight="{TemplateBinding FontWeight}"
+                                                  FontSize="{DynamicResource TabViewItemHeaderFontSize}"
+                                                  Foreground="{DynamicResource TabViewItemHeaderForeground}"/>
+
+                                <Button Name="CloseButton"
+                                        Grid.Column="2"
+                                        Margin="{DynamicResource TabViewItemHeaderCloseMargin}"
+                                        Content="&#xE711;"
+                                        Theme="{StaticResource TabViewCloseButtonStyle}"
+                                        KeyboardNavigation.IsTabStop="False"/>
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ Border#TabContainerBorder">
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentControl#IconControl">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemIconForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ Button#CloseButton">
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderPointerOverCloseButtonBackground}" />
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderPointerOverCloseButtonForeground}" />
+            </Style>
+            <Style Selector="^ /template/ Border#TabSeparator">
+                <Setter Property="Opacity" Value="0" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ Border#TabContainerBorder">
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderForegroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentControl#IconControl">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemIconForegroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ Button#CloseButton">
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderPressedCloseButtonBackground}" />
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderPressedCloseButtonForeground}" />
+            </Style>
+            <Style Selector="^ /template/ Border#TabSeparator">
+                <Setter Property="Opacity" Value="0" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:selected">
+            <Style Selector="^ /template/ Border#BottomBorderLine">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ Path#LeftRadiusRenderArc">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ Path#RightRadiusRenderArc">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ Path#SelectedBackgroundPath">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="Fill" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
+            </Style>
+            <Style Selector="^ /template/ Border#TabContainerBorder">
+                <Setter Property="Margin" Value="{DynamicResource TabViewSelectedItemHeaderMargin}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
+                <Setter Property="BorderThickness" Value="{DynamicResource TabViewSelectedItemBorderThickness}" />
+                <Setter Property="Padding" Value="{DynamicResource TabViewSelectedItemHeaderPadding}" />
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderForegroundSelected}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </Style>
+            <Style Selector="^ /template/ ContentControl#IconControl">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemIconForegroundSelected}" />
+            </Style>
+            <Style Selector="^ /template/ Button#CloseButton">
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderSelectedCloseButtonBackground}" />
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderSelectedCloseButtonForeground}" />
+            </Style>
+            <Style Selector="^ /template/ Border#LayoutRootBorder">
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+
+            <!-- 
+                :pointerover :selected 
+                :pressed :selected
+                Same changes as just :selected, so we'll let that work for us
+            -->
+        </Style>
+
+        <Style Selector="^:disabled">
+            <Style Selector="^ /template/ Border#TabContainerBorder">
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderForegroundDisabled}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </Style>
+            <Style Selector="^ /template/ ContentControl#IconControl">
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderForegroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ Button#CloseButton">
+                <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderDisabledCloseButtonBackground}" />
+                <Setter Property="Foreground" Value="{DynamicResource TabViewItemHeaderDisabledCloseButtonForeground}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:icon /template/ Viewbox#IconBox">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        
+        
+        <Style Selector="^:compact">
+            <Style Selector="^ /template/ Viewbox#IconBox">
+                <Setter Property="Margin" Value="0" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#IconColumn">
+                <Setter Property="Width" Value="{DynamicResource TabViewItemHeaderIconSize}" />
+            </Style>
+        </Style>
+
+        <!-- :closecollapsed -->
+        <Style Selector="^:closecollapsed /template/ Button#CloseButton">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+
+
+        <!-- :borderleft -->
+        <Style Selector="^:borderleft /template/ Border#BottomBorderLine">
+            <Setter Property="Margin" Value="0 0 2 0" />
+        </Style>
+
+        <!-- :borderright -->
+        <Style Selector="^:borderright /template/ Border#BottomBorderLine">
+            <Setter Property="Margin" Value="2 0 0 0" />
+        </Style>
+
+        <!-- :noborder -->
+        <Style Selector="^:noborder /template/ Border#BottomBorderLine">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        
+        <Style Selector="^:foreground">
+            <Style Selector="^ /template/ ContentControl#IconControl">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+            </Style>
+        </Style>
+    </ControlTheme>    
+</ResourceDictionary>

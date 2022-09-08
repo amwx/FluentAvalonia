@@ -1,20 +1,19 @@
 ﻿using System;
 
-namespace FluentAvalonia.UI.Controls
+namespace FluentAvalonia.UI.Controls;
+
+/// <summary>
+/// Provides data for the Closed event.
+/// </summary>
+public class ContentDialogClosedEventArgs : EventArgs
 {
     /// <summary>
-    /// Provides data for the Closed event.
+    /// Gets the <see cref="ContentDialogResult"/> of the button click event.
     /// </summary>
-    public class ContentDialogClosedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Gets the <see cref="ContentDialogResult"/> of the button click event.
-        /// </summary>
-        public ContentDialogResult Result { get; }
+    public ContentDialogResult Result { get; }
 
-        internal ContentDialogClosedEventArgs(ContentDialogResult res)
-        {
-            Result = res;
-        }
+    internal ContentDialogClosedEventArgs(ContentDialogResult res)
+    {
+        Result = res;
     }
 }

@@ -28,9 +28,9 @@ Xaml inside the control example:
                     </Panel>
 
                     <Border.ContextFlyout>
-                        <ui:MenuFlyout>
+                        <ui:FAMenuFlyout>
                             <ui:MenuFlyoutItem Command="{StaticResource DeleteCommand}" CommandParameter="{Binding #ListBox1.SelectedItem}" />
-                        </ui:MenuFlyout>
+                        </ui:FAMenuFlyout>
                     </Border.ContextFlyout>
                 </Border>
             </DataTemplate>

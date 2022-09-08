@@ -1,12 +1,12 @@
-﻿<ui:Button Content="Click me for flyout!">
-    <ui:Button.Flyout>
+﻿<Button Content="Click me for flyout!">
+    <Button.Flyout>
 
-        <ui:MenuFlyout Placement="Bottom"
+        <ui:FAMenuFlyout Placement="Bottom"
                         Items="{Binding TestMenuItems}">
 
-        </ui:MenuFlyout>
-    </ui:Button.Flyout>
-</ui:Button>
+        </ui:FAMenuFlyout>
+    </Button.Flyout>
+</Button>
 
 <!-- Define the DataTemplates for the items -->
 <UserControl.DataTemplates>

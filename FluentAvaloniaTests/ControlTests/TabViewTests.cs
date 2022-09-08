@@ -212,9 +212,9 @@ namespace FluentAvaloniaTests.ControlTests
 
             Assert.False(button.IsVisible);
 
-            secondItem.RaiseEvent(new PointerEventArgs(InputElement.PointerEnterEvent, button, null, Context.Root, new Point(), 0, null, KeyModifiers.None));
+            //secondItem.RaiseEvent(new PointerEventArgs(InputElement.PointerEnterEvent, button, null, Context.Root, new Point(), 0, null, KeyModifiers.None));
             Assert.True(button.IsVisible);
-            secondItem.RaiseEvent(new PointerEventArgs(InputElement.PointerLeaveEvent, button, null, Context.Root, new Point(), 0, null, KeyModifiers.None));
+            //secondItem.RaiseEvent(new PointerEventArgs(InputElement.PointerLeaveEvent, button, null, Context.Root, new Point(), 0, null, KeyModifiers.None));
 
             Context.TabView.CloseButtonOverlayMode = TabViewCloseButtonOverlayMode.Auto; //Auto is default state, same as Always
         }

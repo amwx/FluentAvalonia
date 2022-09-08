@@ -228,7 +228,11 @@
     <SolidColorBrush x:Key="SystemColorGrayTextColorBrush" Color="#FF00FF" />
 
     <!-- Elevation border brushes (See note above for hack to get same effect)-->
-    <LinearGradientBrush x:Key="ControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,3">
+    <LinearGradientBrush x:Key="ControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,3"
+                         TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="0.33" Color="{StaticResource ControlStrokeColorSecondary}" />
             <GradientStop Offset="1" Color="{StaticResource ControlStrokeColorDefault}" />
@@ -243,7 +247,11 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AccentControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,3">
+    <LinearGradientBrush x:Key="AccentControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,3"
+                         TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="0.33" Color="{StaticResource ControlStrokeColorOnAccentSecondary}"/>
             <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorOnAccentDefault}"/>
@@ -255,8 +263,7 @@
     <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.75" />
     <x:Boolean x:Key="UseSystemFocusVisuals">True</x:Boolean>
     <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
-    <!-- This is reversed for elevation brush hack, fix when transforms to brushes are supported -->
-    <Thickness x:Key="TextControlBorderThemeThicknessFocused">1,2,1,1</Thickness>
+    <Thickness x:Key="TextControlBorderThemeThicknessFocused">1,1,1,2</Thickness>
     <Thickness x:Key="TextControlThemePadding">10,5,6,6</Thickness>
     <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="{StaticResource SolidBackgroundFillColorBase}" />
     <StaticResource x:Key="DefaultTextForegroundThemeBrush" ResourceKey="TextFillColorPrimaryBrush" />
@@ -937,7 +944,7 @@
         <StaticResource x:Key="ScrollBarPanningThumbBackgroundColor" ResourceKey="ControlStrongFillColorDefault" />
         <StaticResource x:Key="ScrollViewerScrollBarsSeparatorBackground" ResourceKey="ControlFillColorTransparentBrush"/>-->
 
-    <Thickness x:Key="ScrollBarTrackBorderThemeThickness">0</Thickness>
+    <x:Double x:Key="ScrollBarTrackBorderThemeThickness">0</x:Double>
     <Thickness x:Key="ScrollBarPanningBorderThemeThickness">1</Thickness>
     <StaticResource x:Key="ScrollBarBackground" ResourceKey="SubtleFillColorTransparentBrush" />
     <StaticResource x:Key="ScrollBarBackgroundPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
@@ -1034,20 +1041,24 @@
 
     <!-- TEXTBOX -->
     <!-- NOTE TO SELF: Elevation brushes are different by light/dark theme!!!! -->
-    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" StartPoint="0,0" EndPoint="0,2">
-        <!--<LinearGradientBrush.RelativeTransform>MappingMode="Absolute" 
-                <ScaleTransform ScaleY="-1" CenterY="0.5"/>
-            </LinearGradientBrush.RelativeTransform>-->
+    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" 
+                         StartPoint="0,0" EndPoint="0,2"
+                         TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="0.5" Color="{DynamicResource ControlStrongStrokeColorDefault}"/>
             <GradientStop Offset="1.0" Color="{DynamicResource ControlStrokeColorDefault}"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="TextControlElevationBorderFocusedBrush" StartPoint="0,1.5" EndPoint="0,2.5">
-        <!--<LinearGradientBrush.RelativeTransform>MappingMode="Absolute" 
-                <ScaleTransform ScaleY="-1" CenterY="0.5"/>
-            </LinearGradientBrush.RelativeTransform>-->
+    <LinearGradientBrush x:Key="TextControlElevationBorderFocusedBrush" 
+                         StartPoint="0,1.5" EndPoint="0,2.5"
+                         TransformOrigin="50%,50%">
+        <LinearGradientBrush.Transform>
+            <ScaleTransform ScaleY="-1" />
+        </LinearGradientBrush.Transform>
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="1.0" Color="{DynamicResource SystemAccentColorDark1}"/>
             <GradientStop Offset="1.0" Color="{DynamicResource ControlStrokeColorDefault}"/>
@@ -1459,6 +1470,19 @@
     <!-- Content -->
     <StaticResource x:Key="ExpanderContentBackground" ResourceKey="CardBackgroundFillColorSecondaryBrush" />
     <StaticResource x:Key="ExpanderContentBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+
+
+
+
+    <!-- AVALONIA COLOR PICKER -->
+    <StaticResource x:Key="ColorControlLightSelectorBrush" ResourceKey="TextFillColorPrimaryBrush" />
+    <StaticResource x:Key="ColorControlDarkSelectorBrush" ResourceKey="TextFillColorInverseBrush" />
+    <StaticResource x:Key="ColorControlDefaultSelectorBrush" ResourceKey="TextFillColorPrimaryBrush" />
+    <SolidColorBrush x:Key="ColorViewContentBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ColorViewContentBorderBrush" Color="Transparent" />
+    <StaticResource x:Key="ColorViewTabBackgroundBrush" ResourceKey="ControlFillColorDefaultBrush" />
+    <SolidColorBrush x:Key="ColorViewTabBorderBrush" Color="Transparent" />
+
 
 
 
@@ -1901,26 +1925,28 @@
     <StaticResource x:Key="DataGridGridLinesBrush" ResourceKey="DividerStrokeColorDefaultBrush" />
     <StaticResource x:Key="DataGridColumnHeaderForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="DataGridColumnHeaderBackgroundBrush" ResourceKey="ControlFillColorDefaultBrush" />
-    <StaticResource x:Key="DataGridColumnHeaderHoveredBackgroundColor" ResourceKey="ControlFillColorSecondaryBrush" />
-    <StaticResource x:Key="DataGridColumnHeaderPressedBackgroundColor" ResourceKey="ControlFillColorTertiaryBrush" />
+    <StaticResource x:Key="DataGridColumnHeaderHoveredBackgroundBrush" ResourceKey="ControlFillColorSecondaryBrush" />
+    <StaticResource x:Key="DataGridColumnHeaderPressedBackgroundBrush" ResourceKey="ControlFillColorTertiaryBrush" />
     <StaticResource x:Key="DataGridDetailsPresenterBackgroundBrush" ResourceKey="SolidBackgroundFillColorBase" />
     <StaticResource x:Key="DataGridRowInvalidBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
-    <StaticResource x:Key="DataGridRowSelectedUnfocusedBackgroundColor" ResourceKey="AccentFillColorDefaultBrush" />
+    <StaticResource x:Key="DataGridRowSelectedUnfocusedBackgroundBrush" ResourceKey="AccentFillColorDefaultBrush" />
     <StaticResource x:Key="DataGridRowSelectedUnfocusedBackgroundOpacity" ResourceKey="ListAccentLowOpacity" />
-    <StaticResource x:Key="DataGridRowSelectedHoveredUnfocusedBackgroundColor" ResourceKey="AccentFillColorDefaultBrush" />
+    <StaticResource x:Key="DataGridRowSelectedHoveredUnfocusedBackgroundBrush" ResourceKey="AccentFillColorDefaultBrush" />
     <StaticResource x:Key="DataGridRowSelectedHoveredUnfocusedBackgroundOpacity" ResourceKey="ListAccentMediumOpacity" />
-    <StaticResource x:Key="DataGridRowSelectedBackgroundColor" ResourceKey="AccentFillColorDefaultBrush" />
+    <StaticResource x:Key="DataGridRowSelectedBackgroundBrush" ResourceKey="AccentFillColorDefaultBrush" />
     <StaticResource x:Key="DataGridRowSelectedBackgroundOpacity" ResourceKey="ListAccentLowOpacity" />
-    <StaticResource x:Key="DataGridRowSelectedHoveredBackgroundColor" ResourceKey="AccentFillColorDefaultBrush" />
+    <StaticResource x:Key="DataGridRowSelectedHoveredBackgroundBrush" ResourceKey="AccentFillColorDefaultBrush" />
     <StaticResource x:Key="DataGridRowSelectedHoveredBackgroundOpacity" ResourceKey="ListAccentMediumOpacity" />
     <StaticResource x:Key="DataGridRowHeaderBackgroundBrush" ResourceKey="ControlFillColorDefaultBrush" />
     <StaticResource x:Key="DataGridRowGroupHeaderForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="DataGridRowGroupHeaderBackgroundBrush" ResourceKey="SolidBackgroundFillColorBaseBrush" />
     <StaticResource x:Key="DataGridRowGroupHeaderHoveredBackgroundBrush" ResourceKey="SubtleFillColorSecondaryBrush" />
     <StaticResource x:Key="DataGridRowGroupHeaderPressedBackgroundBrush" ResourceKey="SubtleFillColorTertiaryBrush" />
+    <StaticResource x:Key="DataGridRowHoveredBackgroundColor" ResourceKey="SubtleFillColorSecondaryBrush" />
     <SolidColorBrush x:Key="DataGridDropLocationIndicatorBackground" Color="#3F4346" />
     <StaticResource x:Key="DataGridScrollBarsSeparatorBackground" ResourceKey="ControlFillColorTertiaryBrush" />
     <SolidColorBrush x:Key="DataGridDisabledVisualElementBackground" Color="#8CFFFFFF" />
+    <StaticResource x:Key="DataGridRowBackgroundBrush" ResourceKey="SubtleFillColorTransparentBrush" />
 
 
 

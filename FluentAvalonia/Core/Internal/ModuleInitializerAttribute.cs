@@ -1,8 +1,7 @@
 ﻿#if !NET5_0_OR_GREATER
-namespace System.Runtime.CompilerServices
+namespace System.Runtime.CompilerServices;
+
+public class ModuleInitializerAttribute : Attribute
 {
-    public class ModuleInitializerAttribute : Attribute
-    {
-    }
 }
 #endif

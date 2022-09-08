@@ -1,0 +1,215 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
+
+    <x:Double x:Key="SplashScreenImageWidth">128</x:Double>
+    <x:Double x:Key="SplashScreenImageHeight">128</x:Double>
+    <x:Double x:Key="SplashScreenTextSize">32</x:Double>
+    <FontWeight x:Key="SplashScreenTextFontWeight">SemiBold</FontWeight>
+
+    <!-- This template should generally not be modified. Use the customization APIs to
+		 modify the appearance of a CoreWindow instance 
+		 Use ApplicationViewTitleBar.Instance to modify the colors here
+		 Use ICoreApplicationView (get from AvaloniaLocator) .TitleBar to extend the view or set your
+		 own custom title bar region
+	-->
+
+    <ControlTheme x:Key="FASystemCaption" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackground}" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width" Value="46" />
+        <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForeground}" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
+                    <TextBlock FontFamily="{TemplateBinding FontFamily}"
+							   VerticalAlignment="Center"
+							   HorizontalAlignment="Center"
+								 Text="{TemplateBinding Content}"
+								   UseLayoutRounding="True"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^:pointerover /template/ Border">
+                <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundHover}" />
+            </Style>
+            <Style Selector="^:pointerover /template/ TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundHover}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ Border">
+                <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:disabled /template/ Border">
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+
+        <!-- Close Button -->
+        <Style Selector="^.Close">
+            <Style Selector="^:pointerover /template/ Border">
+                <Setter Property="Background" Value="#e81123" />
+            </Style>
+            <Style Selector="^:pointerover /template/ TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+            <Style Selector="^:pressed /template/ Border">
+                <Setter Property="Background" Value="#f1707a" />
+            </Style>
+            <Style Selector="^:pressed /template/ TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme TargetType="uip:MinMaxCloseControl"
+                  x:Key="{x:Type uip:MinMaxCloseControl}">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="MinimizeButton"
+							Classes="SystemCaption"
+                            Content="&#xE921;"/>
+                    <Button Name="MaxRestoreButton"
+							Classes="SystemCaption"
+                            Content="&#xE15B;"/>
+                    <Button Name="CloseButton"
+							Classes="SystemCaption Close"
+                            Content="&#xE8BB;"/>
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:maximized">
+            <Style Selector="^ /template/ Button#MaxRestoreButton">
+                <Setter Property="Content" Value="&#xE923;" />
+                <!-- Icon seems a little too small, so we'll up the font size here to make it look more correct -->
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme TargetType="ui:CoreWindow" x:Key="{x:Type ui:CoreWindow}">
+        <Setter Property="Background" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <VisualLayerManager>
+                    <!-- Because we use the System Border, we don't specify anything like that here.-->
+                    <Border Background="{TemplateBinding Background}"
+							Padding="{TemplateBinding Padding}"
+							Name="RootBorder">
+                        <Panel>
+                            <Panel Name="DefaultTitleBar"
+								   Height="32"
+								   VerticalAlignment="Top"
+                                   Background="{DynamicResource FATitle_TitleBarBackground}">
+                                <TextBlock Name="TitleText"
+										   Text="{TemplateBinding Title}"
+										   Margin="12 0 0 0"
+										   FontSize="12"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Left"
+                                           Foreground="{DynamicResource FATitle_TitleBarForeground}"/>
+                            </Panel>
+
+                            <ContentPresenter Name="PART_ContentPresenter"
+											  ClipToBounds="False"
+											  Margin="0 0 0 0"
+											  HorizontalAlignment="Stretch"
+											  VerticalAlignment="Stretch"
+											  Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                            <!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
+                            <uip:MinMaxCloseControl HorizontalAlignment="Right"
+													VerticalAlignment="Top"
+													Name="SystemCaptionButtons"/>
+
+                        </Panel>
+                    </Border>
+                </VisualLayerManager>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^[IsActive=False]">
+            <Style Selector="^ /template/ Panel#DefaultTitleBar">
+                <Setter Property="Background" Value="{DynamicResource FATitle_TitleBarBackgroundInactive}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#TitleText">
+                <Setter Property="Foreground" Value="{DynamicResource FATitle_TitleBarForegroundInactive}" />
+            </Style>
+
+            <Style Selector="^ Button.SystemCaption /template/ Border">
+                <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundInactive}" />
+            </Style>
+            <Style Selector="^ Button.SystemCaption /template/ TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundInactive}" />
+            </Style>
+
+            <Style Selector="^:windows10">
+                <Style Selector="^ /template/ Border#RootBorder">
+                    <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultSolid}" />
+                    <Setter Property="BorderThickness" Value="0 0.5 0 0" />
+                </Style>
+            </Style>
+        </Style>
+
+        <Style Selector="^[CanResize=False]">
+            <Style Selector="^ uip|MinMaxCloseControl /template/ Button#MaxRestoreButton">
+                <Setter Property="IsEnabled" Value="False" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:dialog">
+            <Style Selector="^ uip|MinMaxCloseControl /template/ Button#MaxRestoreButton">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ uip|MinMaxCloseControl /template/ Button#MinimizeButton">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:windows10 /template/ Border#RootBorder">
+            <!-- This will show if custom accent color setting is used in Settings page-->
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="BorderThickness" Value="0 0.5 0 0" />
+        </Style>
+
+        <Style Selector="^[WindowState=Maximized]:windows10 /template/ Border#RootBorder">
+            <Setter Property="BorderThickness" Value="0 0 0 0" />
+        </Style>
+
+        <Style Selector="^:extended /template/ TextBlock#TitleText">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:extended:customtitlebar /template/ Panel#DefaultTitleBar">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Width" Value="10" />
+        </Style>
+
+        <!--<Style Selector="^:splashScreen">
+            
+        </Style>-->
+    </ControlTheme>
+    
+</ResourceDictionary>

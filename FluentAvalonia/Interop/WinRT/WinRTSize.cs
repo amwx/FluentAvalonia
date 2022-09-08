@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
-namespace FluentAvalonia.Interop.WinRT
+namespace FluentAvalonia.Interop.WinRT;
+
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
+internal struct WinRTSize
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    internal struct WinRTSize
-    {
-        public float Width;
-        public float Height;
-    }
+    public float Width;
+    public float Height;
 }

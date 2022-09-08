@@ -54,9 +54,9 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
         <ctrls:ControlExample Header="A Simple MenuFlyout attached to a Button"
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/MenuFlyout.xaml.txt">
 
-            <ui:Button Content="Click me for flyout!">
-                <ui:Button.Flyout>
-                    <ui:MenuFlyout Placement="Bottom">
+            <Button Content="Click me for flyout!">
+                <Button.Flyout>
+                    <ui:FAMenuFlyout Placement="Bottom">
                         <ui:MenuFlyoutItem Text="Item 1" Icon="Copy" />
                         <ui:MenuFlyoutItem Text="Item 2" Icon="Paste" />
                         <ui:MenuFlyoutSeparator />
@@ -74,22 +74,22 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
                         <ui:RadioMenuFlyoutItem Text="Radio Menu Item 2"
                                                 Icon="Icons"
                                                 GroupName="Test Group" />
-                    </ui:MenuFlyout>
-                </ui:Button.Flyout>
-            </ui:Button>            
+                    </ui:FAMenuFlyout>
+                </Button.Flyout>
+            </Button>            
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="MenuFlyout Binding (experimental, but generally stable)"
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/MenuFlyout2.xaml.txt">
 
-            <ui:Button Content="Click me for flyout!">
-                <ui:Button.Flyout>
-                    <ui:MenuFlyout Placement="Bottom"
+            <Button Content="Click me for flyout!">
+                <Button.Flyout>
+                    <ui:FAMenuFlyout Placement="Bottom"
                                    Items="{Binding TestMenuItems}">
 
-                    </ui:MenuFlyout>
-                </ui:Button.Flyout>
-            </ui:Button>
+                    </ui:FAMenuFlyout>
+                </Button.Flyout>
+            </Button>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="MenuFlyoutItem"
@@ -100,9 +100,9 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:MenuFlyout&gt;
+&lt;ui:FAMenuFlyout&gt;
     &lt;ui:MenuFlyoutItem Text="Item1" /&gt;
-&lt;/ui:MenuFlyout&gt;
+&lt;/ui:FAMenuFlyout&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 
@@ -116,9 +116,9 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:MenuFlyout&gt;
+&lt;ui:FAMenuFlyout&gt;
     &lt;ui:ToggleMenuFlyoutItem IsChecked="True" /&gt;
-&lt;/ui:MenuFlyout&gt;
+&lt;/ui:FAMenuFlyout&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
             
@@ -132,11 +132,11 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:MenuFlyout&gt;
+&lt;ui:FAMenuFlyout&gt;
     &lt;ui:MenuFlyoutSubItem Text="SubMenu"&gt;
         &lt;ui:MenuFlyoutItem Text="SubmenuItem1" /&gt;
     &lt;/ui:MenuFlyoutSubItem>
-&lt;/ui:MenuFlyout&gt;
+&lt;/ui:FAMenuFlyout&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>
@@ -150,9 +150,9 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:MenuFlyout&gt;
+&lt;ui:FAMenuFlyout&gt;
     &lt;ui:MenuFlyoutSeparator /&gt;
-&lt;/ui:MenuFlyout&gt;
+&lt;/ui:FAMenuFlyout&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>
@@ -165,11 +165,11 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:MenuFlyout&gt;
+&lt;ui:FAMenuFlyout&gt;
     &lt;!-- use the GroupName property to group radio items together--&gt;
     &lt;ui:RadioMenuFlyoutItem Text="RadioItem1" IsChecked="True" GroupName="TestGroup" /&gt;
     &lt;ui:RadioMenuFlyoutItem Text="RadioItem2" IsChecked="True" GroupName="TestGroup" /&gt;
-&lt;/ui:MenuFlyout&gt;
+&lt;/ui:FAMenuFlyout&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 

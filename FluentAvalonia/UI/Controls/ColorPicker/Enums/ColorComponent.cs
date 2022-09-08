@@ -1,13 +1,12 @@
-﻿namespace FluentAvalonia.UI.Controls
+﻿namespace FluentAvalonia.UI.Controls;
+
+public enum ColorComponent
 {
-	public enum ColorComponent
-    {
-        Hue,
-        Saturation,
-        Value,
-        Red,
-        Green,
-        Blue,
-        Alpha
-    }
+    Hue,
+    Saturation,
+    Value,
+    Red,
+    Green,
+    Blue,
+    Alpha
 }

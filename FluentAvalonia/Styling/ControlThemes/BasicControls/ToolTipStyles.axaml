@@ -1,0 +1,80 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
+
+    <Design.PreviewWith>
+        <Grid RowDefinitions="Auto,Auto"
+              ColumnDefinitions="Auto,Auto"
+              HorizontalAlignment="Center">
+            <Border Grid.Column="0"
+                    Grid.Row="1"
+                    Background="{DynamicResource SystemControlBackgroundAccentBrush}"
+                    Margin="5"
+                    Padding="50"
+                    ToolTip.Tip="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
+                <TextBlock>Hover Here</TextBlock>
+            </Border>
+            <CheckBox Grid.Column="1"
+                      Margin="5"
+                      Grid.Row="0"
+                      IsChecked="{Binding ElementName=Border, Path=(ToolTip.IsOpen)}"
+                      Content="ToolTip Open" />
+            <Border Name="Border"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Background="{DynamicResource SystemControlBackgroundAccentBrush}"
+                    Margin="5"
+                    Padding="50"
+                    ToolTip.Placement="Bottom">
+                <ToolTip.Tip>
+                    <StackPanel>
+                        <TextBlock Classes="h1">ToolTip</TextBlock>
+                        <TextBlock Classes="h2">A control which pops up a hint when a control is hovered</TextBlock>
+                    </StackPanel>
+                </ToolTip.Tip>
+                <TextBlock>ToolTip bottom placement</TextBlock>
+            </Border>
+        </Grid>
+    </Design.PreviewWith>
+    
+    <Thickness x:Key="ToolTipBorderPadding">9,6,9,8</Thickness>
+    <x:Double x:Key="ToolTipMaxWidth">320</x:Double>
+    <Thickness x:Key="ToolTipBorderThemeThickness">1</Thickness>
+    <x:Double x:Key="ToolTipContentThemeFontSize">12</x:Double>
+
+    <ControlTheme x:Key="{x:Type ToolTip}" TargetType="ToolTip">
+        <Setter Property="Foreground" Value="{DynamicResource ToolTipForegroundBrush}" />
+        <Setter Property="Background" Value="{DynamicResource ToolTipBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ToolTipBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource ToolTipBorderThemeThickness}" />
+        <Setter Property="FontSize" Value="{DynamicResource ToolTipContentThemeFontSize}" />
+        <Setter Property="Padding" Value="{DynamicResource ToolTipBorderPadding}" />
+        <Setter Property="MaxWidth" Value="{DynamicResource ToolTipMaxWidth}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+            </Transitions>
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="PART_LayoutRoot"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Padding="{TemplateBinding Padding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      MaxWidth="{TemplateBinding MaxWidth}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      TextWrapping="Wrap"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:open">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

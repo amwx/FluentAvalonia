@@ -10,7 +10,7 @@
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="Standard ColorPicker">
 
-            <ui:ColorPicker Name="Picker" UseSpectrum="True" UseColorWheel="True"
+            <ui:FAColorPicker Name="Picker" UseSpectrum="True" UseColorWheel="True"
                             Color="{Binding CurrentColor, Mode=TwoWay}"
                             UseColorTriangle="True" IsCompact="True"
                             UseColorPalette="True" CustomPaletteColors="{Binding PaletteColors}" />
@@ -19,10 +19,10 @@
                 <StackPanel Spacing="3">
                     <TextBlock Text="Set Color to..." />
                     <StackPanel Orientation="Horizontal" Spacing="3">
-                        <ui:Button Content="White" Command="{Binding SetColorCommand}" CommandParameter="#FFFFFF" />
-                        <ui:Button Content="Red" Command="{Binding SetColorCommand}" CommandParameter="#FF0000" />
-                        <ui:Button Content="Green" Command="{Binding SetColorCommand}" CommandParameter="#00FF00" />
-                        <ui:Button Content="Blue" Command="{Binding SetColorCommand}" CommandParameter="#0000FF" />
+                        <Button Content="White" Command="{Binding SetColorCommand}" CommandParameter="#FFFFFF" />
+                        <Button Content="Red" Command="{Binding SetColorCommand}" CommandParameter="#FF0000" />
+                        <Button Content="Green" Command="{Binding SetColorCommand}" CommandParameter="#00FF00" />
+                        <Button Content="Blue" Command="{Binding SetColorCommand}" CommandParameter="#0000FF" />
                     </StackPanel>
                     <CheckBox IsChecked="{Binding #Picker.IsAlphaEnabled}" Content="IsAlphaEnabled" />
                     <CheckBox IsChecked="{Binding #Picker.IsMoreButtonVisible}" Content="IsMoreButtonVisible" />

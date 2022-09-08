@@ -147,14 +147,14 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
 
 
         <ctrls:ControlExample Header="PathIcon"
-                              TargetType="ui:PathIcon">
-            <ui:PathIcon Name="PathIcon"
+                              TargetType="ui:FAPathIcon">
+            <ui:FAPathIcon Name="PathIcon"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Center"
                          Data="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z" />
 
             <ctrls:ControlExample.XamlSource>
-                &lt;ui:PathIcon Data="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z" /&gt;
+                &lt;ui:FAPathIcon Data="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z" /&gt;
             </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>
 

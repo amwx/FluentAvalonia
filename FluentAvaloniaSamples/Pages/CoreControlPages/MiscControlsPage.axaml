@@ -78,6 +78,19 @@
                 </Border>
 
             </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="ColorPicker"
+                                  TargetType="ColorPicker"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+
+                <Grid ColumnDefinitions="Auto,Auto">
+                    <ColorView Grid.Column="0" />
+                    <ColorPicker Grid.Column="1" Margin="200,0,0,0" />
+                </Grid>
+
+            </ctrls:ControlExample>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

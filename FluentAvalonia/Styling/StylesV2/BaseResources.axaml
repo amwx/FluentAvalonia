@@ -1,15 +1,15 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:avconv="using:Avalonia.Controls.Converters">
-
+    
     <!-- New FluentUI Icons from Microsoft, embedded in assembly - see v1.1.5 PR for details
          NOTE: Changing this font, will break design of most FluentAvalonia controls
 		 This font has been adapted, thanks to robloo to use the FluentSystemIcons font, but
 		 match the same unicode code points from WinUI Segoe Fluent
 	-->
-    <!--<FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>-->
-    <!--<FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>-->
-
+    <!--<FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>
+    <FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>-->
+    
     <!-- Updated to new corner radius -->
     <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
     <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
@@ -28,9 +28,45 @@
     <avconv:CornerRadiusFilterConverter x:Key="RightCornerRadiusFilterConverter" Filter="TopRight, BottomRight"/>
     <avconv:CornerRadiusFilterConverter x:Key="BottomCornerRadiusFilterConverter" Filter="BottomLeft, BottomRight"/>
     <avconv:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
-
+    <avconv:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
+    
     <x:String x:Key="ChevronDownGlyph">&#xE70D;</x:String>
     <x:String x:Key="ChevronUpGlyph">&#xE70E;</x:String>
+
+    <Thickness x:Key="HelperButtonThemePadding">0,0,-2,0</Thickness>
+    <Thickness x:Key="ButtonPadding">11,5,11,6</Thickness>
+
+    <!-- Shared Menu items -->
+    <Thickness x:Key="MenuBarItemButtonPadding">10,4,10,4</Thickness>
+    <Thickness x:Key="MenuBarItemMargin">4,4,4,4</Thickness>
+    <x:Double x:Key="MenuFlyoutSeparatorHeight">1</x:Double>    
+    <x:Double x:Key="MenuFlyoutThemeMinHeight">32</x:Double>
+    <Thickness x:Key="MenuFlyoutItemChevronMargin">24,0,0,0</Thickness>
+    <Thickness x:Key="MenuFlyoutSeparatorThemePadding">-4,1,-4,1</Thickness>
+    <Thickness x:Key="MenuFlyoutItemMargin">4,2,4,2</Thickness>
+    <Thickness x:Key="MenuFlyoutItemThemePadding">11,8,11,9</Thickness>
+    <Thickness x:Key="MenuFlyoutItemThemePaddingNarrow">11,4,11,5</Thickness>
+
+    <!-- TabStrip/TabControl -->
+    <Thickness x:Key="TabControlTopPlacementItemMargin">0 0 0 2</Thickness>
+    <x:Double x:Key="TabItemMinHeight">48</x:Double>
+    <x:Double x:Key="TabItemVerticalPipeHeight">24</x:Double>
+    <x:Double x:Key="TabItemPipeThickness">2</x:Double>
+    <Thickness x:Key="TabItemHeaderMargin">12,0,12,0</Thickness>
+    <FontFamily x:Key="TabItemHeaderItemFontFamily">XamlAutoFontFamily</FontFamily>
+    <x:Double x:Key="TabItemHeaderFontSize">24</x:Double>
+    <Thickness x:Key="TabItemMargin">12,0,12,0</Thickness>
+    <FontWeight x:Key="TabItemHeaderThemeFontWeight">SemiLight</FontWeight>
+
+    <!-- Flyouts -->
+    <Thickness x:Key="FlyoutBorderThemeThickness">1</Thickness>
+    <Thickness x:Key="FlyoutContentPadding">16,15,16,17</Thickness>
+    <Thickness x:Key="MenuFlyoutPresenterThemePadding">0,2,0,2</Thickness>
+    <Thickness x:Key="MenuFlyoutPresenterBorderThemeThickness">1</Thickness>
+    <x:Double x:Key="MenuFlyoutSubItemPopupHorizontalOffset">-4</x:Double>
+    <Thickness x:Key="MenuFlyoutScrollerMargin">0,4,0,4</Thickness>
+    <Thickness x:Key="MenuIconPresenterMargin">0,0,12,0</Thickness>
+    <Thickness x:Key="MenuInputGestureTextMargin">24,0,0,0</Thickness>
 
     <!--
         Preserving for reference:
@@ -40,5 +76,6 @@
         <x:String x:Key="ControlFastAnimationAfterDuration">00:00:00.168</x:String>
         <x:String x:Key="ControlFasterAnimationDuration">00:00:00.083</x:String>-->
 
+   
 	
 </ResourceDictionary>

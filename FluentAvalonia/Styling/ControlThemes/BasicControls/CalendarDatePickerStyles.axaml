@@ -1,0 +1,96 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    x:CompileBindings="True">
+    <Design.PreviewWith>
+        <Border Padding="30">
+            <CalendarDatePicker />
+        </Border>
+    </Design.PreviewWith>
+    
+    <Thickness x:Key="CalendarDatePickerTopHeaderMargin">0,0,0,8</Thickness>
+
+    <ControlTheme x:Key="CalendarDropDownButton" TargetType="Button">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel Height="28"
+                       Width="24"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0"
+                       ClipToBounds="False">
+
+                    <ui:FontIcon Name="CalendarIcon"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Glyph="&#xE787;"
+                                 FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                 FontSize="16" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type CalendarDatePicker}" TargetType="CalendarDatePicker">
+        <Setter Property="Background" Value="{DynamicResource CalendarDatePickerBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerForeground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource CalendarDatePickerBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource CalendarDatePickerBorderThemeThickness}"/>
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox Name="PART_TextBox"
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             Padding="{TemplateBinding Padding}"
+                             Watermark="{TemplateBinding Watermark}"
+                             UseFloatingWatermark="{TemplateBinding UseFloatingWatermark}"
+                             DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}"
+                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                             Grid.Column="0">
+                        <TextBox.InnerRightContent>
+                            <Button Name="PART_Button"
+									Grid.Column="1"
+									Width="32"
+									Theme="{StaticResource CalendarDropDownButton}"
+									Foreground="{TemplateBinding Foreground}"
+									Background="Transparent"
+									BorderThickness="0"
+									Margin="2,0,2,0"
+									Padding="0"
+									ClipToBounds="False"
+									Focusable="False"/>
+                        </TextBox.InnerRightContent>
+                    </TextBox>
+                    
+                    <Popup Name="PART_Popup"
+                           WindowManagerAddShadowHint="False"
+                           PlacementTarget="{TemplateBinding}"
+						   PlacementMode="AnchorAndGravity"
+						   PlacementAnchor="Bottom"
+						   PlacementGravity="Bottom"
+                           IsLightDismissEnabled="True">
+                        <Border Name="DropDownRoot"
+                                Background="{DynamicResource FlyoutPresenterBackground}"
+                                CornerRadius="{DynamicResource OverlayCornerRadius}">
+                            <Calendar Name="PART_Calendar"
+									  FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
+									  IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
+									  SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
+									  DisplayDate="{TemplateBinding DisplayDate}"
+									  DisplayDateStart="{TemplateBinding DisplayDateStart}"
+									  DisplayDateEnd="{TemplateBinding DisplayDateEnd}"
+                                      CornerRadius="{DynamicResource OverlayCornerRadius}"/>
+                        </Border>
+
+                    </Popup>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

@@ -13,10 +13,10 @@
                               UsageNotes="avares://FluentAvaloniaSamples/Pages/SampleCode/ContentDialogUsageNotes.txt">
 
             <StackPanel Spacing="8">
-                <ui:Button Content="Launch ContentDialog"
+                <Button Content="Launch ContentDialog"
                            Command="{Binding LaunchDialogCommand}"
                            CommandParameter="False" />
-                <ui:Button Content="Launch ContentDialog with Primary Button deferral"
+                <Button Content="Launch ContentDialog with Primary Button deferral"
                            Command="{Binding LaunchDialogCommand}"
                            CommandParameter="True" />
             </StackPanel>

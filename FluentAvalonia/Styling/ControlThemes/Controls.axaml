@@ -1,0 +1,107 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataValidationErrorsStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ToggleButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/AutoCompleteBoxStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TextBlockStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TextBoxStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ScrollBarStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ScrollViewerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/EmbeddableControlRootStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/LabelStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ItemsControlStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/OverlayPopupHostStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/PopupRootStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ToolTipStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowNotificationManagerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CarouselStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ContentControlStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/NativeMenuBarStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ButtonSpinnerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/RepeatButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/GridSplitterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ComboBoxStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DropDownButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarDatePickerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/CheckBoxStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ListBoxStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/MenuStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/MenuItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/NotificationCardStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ProgressBarStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/RadioButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SliderStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SplitButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/SplitViewStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TabControlStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TabStripStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TreeViewStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ToggleSwitchStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/NumericUpDownStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ExpanderStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ManagedFileChooserStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/FlyoutPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DatePickerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TimePickerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPickerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridStyles.axaml" />
+
+                <!-- FluentAvalonia Controls -->
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/HyperlinkButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/ContentDialogStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/PickerFlyoutPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBadgeStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBarStyles.axaml" />
+                <!--<ResourceInclude Source="/Styling/ControlThemes/FAControls/CoreWindowStyles.axaml" />-->
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NumberBoxStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutSubItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/ToggleMenuFlyoutItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/RadioMenuFlyoutItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutSeparatorStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarToggleButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarElementContainerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarOverflowPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarSeparatorStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/CommandBar/CommandBarFlyoutCommandBarStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TabView/TabViewListViewStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewSharedStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewBackButtonStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemHeaderStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemSeparatorStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemPresenterStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewItemStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/NavigationView/NavigationViewStyles.axaml" />
+
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogCommandStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogButtonStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/ColorPickerStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/ColorPickerButtonStyles.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <StyleInclude Source="/Styling/ControlThemes/BasicControls/FocusAdornerStyles.axaml" />
+    <StyleInclude Source="/Styling/ControlThemes/BasicControls/UserControlStyles.axaml" />
+    <StyleInclude Source="/Styling/Controls/CoreWindowStyles.axaml" />
+    <StyleInclude Source="/Styling/Controls/PathIconStyles.axaml" />
+</Styles>

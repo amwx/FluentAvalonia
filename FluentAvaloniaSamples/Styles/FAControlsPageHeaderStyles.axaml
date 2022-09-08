@@ -64,12 +64,12 @@
                                     Grid.Row="0">
                             <TextBlock Text="{Binding TargetType.Name, RelativeSource={RelativeSource TemplatedParent}}"
                                        Grid.Row="1"
-                                       Classes="SubtitleTextBlockStyle"
+                                       Theme="{StaticResource SubtitleTextBlockStyle}"
                                        Name="ControlNameText"/>
 
                             <TextBlock Text="{Binding TargetType, RelativeSource={RelativeSource TemplatedParent}}"
                                        Grid.Row="2"
-                                       Classes="CaptionTextBlockStyle"
+                                       Theme="{StaticResource CaptionTextBlockStyle}"
                                        FontStyle="Italic"
                                        Name="NamespaceText"
                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
@@ -83,23 +83,23 @@
                             <StackPanel Spacing="4"
                                         Name="PageOptionButtonsHost">
                                 
-                                <ui:Button Name="ChangeThemeButton"
-                                           Classes="AppBarButton"
+                                <Button Name="ChangeThemeButton"
+                                           Theme="{StaticResource TransparentButton}"
                                            HorizontalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Spacing="12">
                                         <ui:SymbolIcon Symbol="Edit" />
                                         <TextBlock Text="Toggle Theme" />
                                     </StackPanel>
-                                </ui:Button>
+                                </Button>
                                 
-                                <ui:Button Name="ShowDefinitionButton"
-                                           Classes="AppBarButton"
-                                           HorizontalAlignment="Center">
+                                <Button Name="ShowDefinitionButton"
+                                        Theme="{StaticResource TransparentButton}"
+                                        HorizontalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Spacing="12">
                                         <ui:SymbolIcon Symbol="CodeFilled" />
                                         <TextBlock Text="Show Definition" />
                                     </StackPanel>
-                                </ui:Button>
+                                </Button>
                             
                             </StackPanel>
                         </StackPanel>
@@ -111,11 +111,11 @@
                                 <TranslateTransform X="0" Y="0" />
                             </StackPanel.RenderTransform>
                             <TextBlock Text="Related WinUI Namespace"
-                                       Classes="BodyStrongTextBlockStyle" />
+                                       Theme="{StaticResource BodyStrongTextBlockStyle}" />
 
                             <TextBlock Text="{TemplateBinding WinUINamespace}"
                                        Grid.Row="2"
-                                       Classes="CaptionTextBlockStyle"
+                                       Theme="{StaticResource CaptionTextBlockStyle}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontStyle="Italic"
@@ -142,7 +142,7 @@
                                 <TranslateTransform X="0" Y="0" />
                             </StackPanel.RenderTransform>
                             <TextBlock Text="View page code on Github"
-                                       Classes="BodyStrongTextBlockStyle" />
+                                       Theme="{StaticResource BodyStrongTextBlockStyle}" />
 
                             <StackPanel Spacing="2"
                                         HorizontalAlignment="Center">

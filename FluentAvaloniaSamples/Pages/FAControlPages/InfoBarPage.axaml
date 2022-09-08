@@ -146,7 +146,7 @@ $(Action)
                         <ComboBoxItem Content="Custom Icon" />
                     </ComboBox>
 
-                    <ui:Button Content="Set Foreground" Margin="0 5"
+                    <Button Content="Set Foreground" Margin="0 5"
                                Name="Bar4ForegroundButton"
                                Command="{Binding $parent[pg:InfoBarPage].SetForeground}"/>
 

@@ -6,11 +6,15 @@ Bringing more of Fluent design and WinUI controls into Avalonia.
 ![GitHub repo size](https://img.shields.io/github/repo-size/amwx/FluentAvalonia?color=%234682B4)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/amwx/FluentAvalonia?color=%23483D8B)
 
-Currently Targets: Avalonia 0.10.13 & multitargets netstandard2.0;netstandard2.1;net6.0
+NOTE: Master branch is now focused on v2, which is Avalonia 11.0-preview1 Compatible.
+The current stable version is 1.4.2 (see accompanying stable branch for package)
+Stable package currently targets: Avalonia 0.10.18 & multitargets netstandard2.0;netstandard2.1;net6.0
+
+Be aware, there may be bugs/issues with the Sample App during the preview phases of v2/11.0
 
 Note: Windows 7, 8/8.1 are not supported by FluentAvalonia.
 
-Check out the (newly refreshed) sample app for a demo, with code examples, for more!
+Check out the sample app for a demo, with code examples, for more!
 
 ![image](https://user-images.githubusercontent.com/40413319/152464696-65a4de6f-1a06-4cca-9f80-c545ad0585ce.png)
 

@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
+        
+    <ControlTheme x:Key="{x:Type ui:CommandBarOverflowPresenter}"
+                  TargetType="ui:CommandBarOverflowPresenter">
+        <Setter Property="Background" Value="{DynamicResource CommandBarOverflowPresenterBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CommandBarOverflowPresenterBorderBrush}" />
+        <Setter Property="Padding" Value="{DynamicResource CommandBarOverflowPresenterBorderPadding}" />
+        <Setter Property="MaxWidth" Value="{DynamicResource CommandBarOverflowMaxWidth}" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="LayoutRoot"
+						Background="{TemplateBinding Background}"
+						Padding="{TemplateBinding Padding}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{DynamicResource CommandBarOverflowPresenterBorderThickness}"
+						CornerRadius="{TemplateBinding CornerRadius}">
+                    <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+								  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                        <ItemsPresenter Name="ItemsPresenter"
+										Margin="{DynamicResource CommandBarOverflowPresenterMargin}"
+										Items="{TemplateBinding Items}"
+										KeyboardNavigation.TabNavigation="Cycle" />
+                    </ScrollViewer>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

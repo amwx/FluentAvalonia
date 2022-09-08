@@ -1,0 +1,157 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=netstandard"
+                    x:CompileBindings="True">
+
+    <Design.PreviewWith>
+        <Border Padding="20"
+                Width="400"
+                Height="200">
+            <Menu VerticalAlignment="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Disabled"
+                              IsEnabled="False" />
+                    <MenuItem Header="New"
+                              InputGesture="Ctrl+N">
+                        <MenuItem Header="XML" />
+                    </MenuItem>
+                    <MenuItem Header="Open">
+                        <MenuItem.Icon>
+                            <CheckBox BorderThickness="0"
+                                      IsHitTestVisible="False"
+                                      IsChecked="True" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="Exit"
+                              InputGesture="Alt+F4" />
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Go To">
+                        <MenuItem Header="Go To Line" />
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="View">
+                    <MenuItem Header="Designer"
+                              InputGesture="Shift+F7">
+                        <MenuItem.Icon>
+                            <TextBlock>😊</TextBlock>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Project">
+                    <MenuItem Header="Add class" />
+                </MenuItem>
+            </Menu>
+        </Border>
+    </Design.PreviewWith>
+
+    <x:Double x:Key="MenuBarHeight">40</x:Double>
+
+    <ControlTheme x:Key="MenuBarItemStyle" TargetType="MenuItem">
+        <Setter Property="Background" Value="{DynamicResource MenuBarItemBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource MenuBarItemBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource MenuBarItemBorderThickness}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <!-- Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
+        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
+        <Setter Property="Margin" Value="{DynamicResource MenuBarItemMargin}" />
+        <Setter Property="Padding" Value="{DynamicResource MenuBarItemButtonPadding}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="PART_LayoutRoot"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Panel>
+                        <ContentPresenter Name="PART_HeaderPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Stretch"
+                                          Margin="{TemplateBinding Padding}">
+                            <ContentPresenter.DataTemplates>
+                                <DataTemplate DataType="sys:String">
+                                    <AccessText Text="{Binding}" />
+                                </DataTemplate>
+                            </ContentPresenter.DataTemplates>
+                        </ContentPresenter>
+                        <Popup Name="PART_Popup"
+                               WindowManagerAddShadowHint="False"
+                               MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                               IsLightDismissEnabled="True"
+                               IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+                               OverlayInputPassThroughElement="{Binding $parent[Menu]}">
+                            <Border Background="{DynamicResource MenuFlyoutPresenterBackground}"
+                                    BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
+                                    BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
+                                    MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+                                    MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+                                    HorizontalAlignment="Stretch"
+                                    CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                <ScrollViewer>
+                                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                                    Items="{TemplateBinding Items}"
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                    Margin="{DynamicResource MenuFlyoutPresenterThemePadding}"
+                                                    Grid.IsSharedSizeScope="True" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:selected">
+            <Style Selector="^ /template/ Border#PART_LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
+            </Style>
+        </Style>
+
+        <!--  Listen for PART_LayoutRoot:pointerover, so it will not be triggered when subitem is pressed  -->
+        <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
+            <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPressed}" />
+            <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:disabled">
+            <Style Selector="^ /template/ Border#PART_LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
+            </Style>
+        </Style>
+    </ControlTheme>
+    
+    
+
+    <ControlTheme x:Key="{x:Type Menu}" TargetType="Menu">
+        <Setter Property="Background" Value="{DynamicResource MenuBarBackground}"/>
+        <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
+        <Setter Property="Height" Value="{DynamicResource MenuBarHeight}"/>
+        <Setter Property="ItemContainerTheme" Value="{StaticResource MenuBarItemStyle}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        HorizontalAlignment="Stretch"
+                        Padding="{TemplateBinding Padding}">
+                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                    Items="{TemplateBinding Items}"
+                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                    VerticalAlignment="Stretch"
+                                    KeyboardNavigation.TabNavigation="Continue" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

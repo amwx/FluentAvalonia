@@ -173,7 +173,7 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
 
         <ctrls:ControlExample Header="TabView Windowing Sample"
                               UsageNotes="See the TabViewWindowingSample source code for how this is implemented.">
-            <ui:Button Content="Click to launch"
+            <Button Content="Click to launch"
                        Click="LaunchWindowingSample"/>
         </ctrls:ControlExample>
     </StackPanel>

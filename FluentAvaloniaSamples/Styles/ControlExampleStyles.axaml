@@ -9,7 +9,7 @@
                                   CSharpSource="asdg"
                                   XamlSource="xaml source"
                                   UsageNotes="usage notes">
-                <ui:Button Content="Sample"
+                <Button Content="Sample"
                            Classes.accent="{Binding #Accent.IsChecked}"/>
 
                 <local:ControlExample.Options>
@@ -50,18 +50,18 @@
                                     VerticalAlignment="Bottom"
                                     DockPanel.Dock="Bottom"/>
 
-                            <ui:Button Classes="AppBarButton"
+                            <Button Theme="{StaticResource TransparentButton}"
                                        Margin="8"
                                        DockPanel.Dock="Right"
                                        Name="OptionsMenuButton">
                                 <ui:SymbolIcon Symbol="ChevronRight" FontSize="18" />
-                            </ui:Button>
+                            </Button>
 
                             <ContentPresenter Name="HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               ContentTemplate="{TemplateBinding HeaderTemplate}"                                          
-                                              TextBlock.FontSize="24"
-                                              TextBlock.FontWeight="SemiBold"
+                                              FontSize="24"
+                                              FontWeight="SemiBold"
                                               Padding="12 8"
                                               HorizontalContentAlignment="Left"
                                               VerticalContentAlignment="Center" />
@@ -98,12 +98,12 @@
                                                    FontWeight="SemiBold"
                                                    Margin="0 3" />
 
-                                        <ui:Button Name="ShowHideOptionsButton"
+                                        <Button Name="ShowHideOptionsButton"
                                                    Classes="AppBarButton"
                                                    DockPanel.Dock="Right"
                                                    Margin="6 0 0 0">
                                             <ui:SymbolIcon Name="OptionsChevron" />
-                                        </ui:Button>
+                                        </Button>
                                     </DockPanel>
                                     <ContentPresenter Name="OptionPresenter"
                                                       Content="{TemplateBinding Options}"
@@ -132,12 +132,12 @@
                             <Expander Header="Xaml Sample Code"
                                       Name="XamlSourceExpander">
                                 <DockPanel>
-                                    <ui:Button Name="CopyXamlButton"
+                                    <Button Name="CopyXamlButton"
                                                DockPanel.Dock="Right"
                                                Margin="8 16 8 8" Padding="4"
                                                VerticalAlignment="Top">
                                         <ui:SymbolIcon Symbol="Copy" FontSize="18" />
-                                    </ui:Button>
+                                    </Button>
 
                                     <aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
                                                       Margin="8 32 8 8"
@@ -147,12 +147,12 @@
                             <Expander Header="C# Sample Code"
                                       Name="CSharpSourceExpander">
                                 <DockPanel>
-                                    <ui:Button Name="CopyCSharpButton"
+                                    <Button Name="CopyCSharpButton"
                                                DockPanel.Dock="Right"
                                                Margin="8 32 8 8" Padding="4"
                                                VerticalAlignment="Top">
                                         <ui:SymbolIcon Symbol="Copy" FontSize="18" />
-                                    </ui:Button>
+                                    </Button>
                                     <aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
                                                       Grid.Row="1" Margin="8 32 8 8"
                                                       MinHeight="50" />
@@ -176,7 +176,7 @@
     <Style Selector="local|ControlExample /template/ ui|SymbolIcon#OptionsChevron">
         <Setter Property="Symbol" Value="ChevronDown" />
     </Style>
-    <Style Selector="local|ControlExample /template/ ui|Button#ShowHideOptionsButton">
+    <Style Selector="local|ControlExample /template/ Button#ShowHideOptionsButton">
         <Setter Property="IsVisible" Value="False" />
     </Style>
 
@@ -265,7 +265,7 @@
         <Setter Property="Opacity" Value="0.5" />
         <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
     </Style>
-    <Style Selector="local|ControlExample:adaptiveW /template/ ui|Button#ShowHideOptionsButton">
+    <Style Selector="local|ControlExample:adaptiveW /template/ Button#ShowHideOptionsButton">
         <Setter Property="IsVisible" Value="True" />
     </Style>
 
@@ -273,7 +273,7 @@
         <Setter Property="Opacity" Value="1" />
     </Style>
 
-    <Style Selector="local|ControlExample:adaptiveW:small /template/ ui|Button#ShowHideOptionsButton">
+    <Style Selector="local|ControlExample:adaptiveW:small /template/ Button#ShowHideOptionsButton">
         <Setter Property="IsVisible" Value="False" />
     </Style>
     

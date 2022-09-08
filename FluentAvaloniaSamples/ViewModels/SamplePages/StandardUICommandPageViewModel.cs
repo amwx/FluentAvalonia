@@ -3,56 +3,55 @@ using System.Collections.Generic;
 using Avalonia.Collections;
 using FluentAvalonia.UI.Input;
 
-namespace FluentAvaloniaSamples.ViewModels
+namespace FluentAvaloniaSamples.ViewModels;
+
+public class StandardUICommandPageViewModel : ViewModelBase
 {
-    public class StandardUICommandPageViewModel : ViewModelBase
+    public StandardUICommandPageViewModel()
     {
-        public StandardUICommandPageViewModel()
+        var coms = Enum.GetValues<StandardUICommandKind>();
+        StandardCommands = new List<StandardCommandItem>(coms.Length);
+        foreach (var item in coms)
         {
-            var coms = Enum.GetValues<StandardUICommandKind>();
-            StandardCommands = new List<StandardCommandItem>(coms.Length);
-            foreach (var item in coms)
-            {
-                if (item == StandardUICommandKind.None)
-                    continue;
+            if (item == StandardUICommandKind.None)
+                continue;
 
-                StandardCommands.Add(new StandardCommandItem
-                {
-                    Name = item.ToString(),
-                    Command = new StandardUICommand(item)
-                });
-            }
-
-            TempItems = new AvaloniaList<string>(10);
-            for (int i = 0; i < 10; i++)
+            StandardCommands.Add(new StandardCommandItem
             {
-                TempItems.Add($"Temp item {i + 1}");
-            }
+                Name = item.ToString(),
+                Command = new StandardUICommand(item)
+            });
         }
 
-        public IList<StandardCommandItem> StandardCommands { get; }
-
-        public AvaloniaList<string> TempItems { get; set; }
-
-        public void DeleteItem(object param)
+        TempItems = new AvaloniaList<string>(10);
+        for (int i = 0; i < 10; i++)
         {
-            if (param != null)
-            {
-                TempItems.Remove(param.ToString());
-            }
+            TempItems.Add($"Temp item {i + 1}");
         }
-
-        public void AddItem()
-        {
-            TempItems.Add($"New Item {++_addCounter}");
-        }
-
-        private int _addCounter = 0;
     }
 
-    public class StandardCommandItem
+    public IList<StandardCommandItem> StandardCommands { get; }
+
+    public AvaloniaList<string> TempItems { get; set; }
+
+    public void DeleteItem(object param)
     {
-        public string Name { get; set; }
-        public StandardUICommand Command { get; set; }
+        if (param != null)
+        {
+            TempItems.Remove(param.ToString());
+        }
     }
+
+    public void AddItem()
+    {
+        TempItems.Add($"New Item {++_addCounter}");
+    }
+
+    private int _addCounter = 0;
+}
+
+public class StandardCommandItem
+{
+    public string Name { get; set; }
+    public StandardUICommand Command { get; set; }
 }

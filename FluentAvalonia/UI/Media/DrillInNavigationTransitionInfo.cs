@@ -6,56 +6,55 @@ using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
 
-namespace FluentAvalonia.UI.Media.Animation
+namespace FluentAvalonia.UI.Media.Animation;
+
+/// <summary>
+/// Specifies the animation to run when a user navigates forward in a logical hierarchy, 
+/// like from a master list to a detail page.
+/// </summary>
+public class DrillInNavigationTransitionInfo : NavigationTransitionInfo
 {
-	/// <summary>
-	/// Specifies the animation to run when a user navigates forward in a logical hierarchy, 
-	/// like from a master list to a detail page.
-	/// </summary>
-	public class DrillInNavigationTransitionInfo : NavigationTransitionInfo
+    /// <summary>
+    /// Gets or sets whether the animation should drill in (false) or drill out (true)
+    /// </summary>
+    public bool IsReversed { get; set; } = false; //Zoom out if true
+
+    //Zoom & Fade
+    public async override void RunAnimation(Animatable ctrl)
     {
-        /// <summary>
-        /// Gets or sets whether the animation should drill in (false) or drill out (true)
-        /// </summary>
-        public bool IsReversed { get; set; } = false; //Zoom out if true
-
-        //Zoom & Fade
-        public async override void RunAnimation(Animatable ctrl)
+        var animation = new Avalonia.Animation.Animation
         {
-            var animation = new Avalonia.Animation.Animation
+            Easing = new SplineEasing(0.1, 0.9, 0.2, 1.0),
+            Children =
             {
-                Easing = new SplineEasing(0.1, 0.9, 0.2, 1.0),
-                Children =
+                new KeyFrame
                 {
-                    new KeyFrame
+                    Setters =
                     {
-                        Setters =
-                        {
-                            new Setter(Visual.OpacityProperty, 0.0),
-                            new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.5 : 0.0),
-                            new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.5 : 0.0)
-                        },
-                        Cue = new Cue(0d)
+                        new Setter(Visual.OpacityProperty, 0.0),
+                        new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.5 : 0.0),
+                        new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.5 : 0.0)
                     },
-                    new KeyFrame
-                    {
-                        Setters =
-                        {
-                            new Setter(Visual.OpacityProperty, 1.0),
-                            new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.0 : 1.0),
-                            new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.0 : 1.0)
-                        },
-                        Cue = new Cue(1d)
-                    }
+                    Cue = new Cue(0d)
                 },
-                Duration = TimeSpan.FromSeconds(0.67),
-				FillMode = FillMode.Forward
-			};
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter(Visual.OpacityProperty, 1.0),
+                        new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.0 : 1.0),
+                        new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.0 : 1.0)
+                    },
+                    Cue = new Cue(1d)
+                }
+            },
+            Duration = TimeSpan.FromSeconds(0.67),
+            FillMode = FillMode.Forward
+        };
 
-            await animation.RunAsync(ctrl, null);
+        await animation.RunAsync(ctrl, null);
 
-			(ctrl as IVisual).Opacity = 1;
-		}
+        (ctrl as IVisual).Opacity = 1;
     }
-
 }
+

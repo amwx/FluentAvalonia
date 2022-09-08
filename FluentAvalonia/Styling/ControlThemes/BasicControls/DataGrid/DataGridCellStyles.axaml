@@ -1,0 +1,96 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ControlTheme x:Key="DataGridCellTextBlockTheme" TargetType="TextBlock">
+      <Setter Property="Margin" Value="12,0,12,0" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </ControlTheme>
+    <ControlTheme x:Key="DataGridCellTextBoxTheme" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+      <Setter Property="VerticalAlignment" Value="Stretch" />
+      <Setter Property="Background" Value="Transparent" />
+      <Style Selector="^ /template/ DataValidationErrors">
+        <Setter Property="Theme" Value="{StaticResource TooltipDataValidationErrors}" />
+      </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type DataGridCell}" TargetType="DataGridCell">
+      <Setter Property="Background" Value="{DynamicResource DataGridCellBackgroundBrush}" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="VerticalContentAlignment" Value="Stretch" />
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="MinHeight" Value="32" />
+      <Setter Property="Focusable" Value="False" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="CellBorder"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}">
+            <Grid x:Name="PART_CellRoot" ColumnDefinitions="*,Auto">
+
+              <Rectangle Name="CurrencyVisual"
+                         IsVisible="False"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Fill="Transparent"
+                         IsHitTestVisible="False"
+                         Stroke="{DynamicResource DataGridCurrencyVisualPrimaryBrush}"
+                         StrokeThickness="1" />
+              <Grid Grid.Column="0" 
+                    Name="FocusVisual" 
+                    IsHitTestVisible="False"
+                    IsVisible="False">
+                <Rectangle HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="Transparent"
+                           IsHitTestVisible="False"
+                           Stroke="{DynamicResource DataGridCellFocusVisualPrimaryBrush}"
+                           StrokeThickness="2" />
+                <Rectangle Margin="2"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="Transparent"
+                           IsHitTestVisible="False"
+                           Stroke="{DynamicResource DataGridCellFocusVisualSecondaryBrush}"
+                           StrokeThickness="1" />
+              </Grid>
+
+              <ContentPresenter Grid.Column="0" 
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Foreground="{TemplateBinding Foreground}" />
+
+              <Rectangle Grid.Column="0" 
+                         Name="InvalidVisualElement"
+                         IsVisible="False"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         IsHitTestVisible="False"
+                         Stroke="{DynamicResource DataGridCellInvalidBrush}"
+                         StrokeThickness="1" />
+
+              <Rectangle Name="PART_RightGridLine"
+                         Grid.Column="1"
+                         Width="1"
+                         VerticalAlignment="Stretch"
+                         Fill="{DynamicResource DataGridFillerColumnGridLinesBrush}" />
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:current /template/ Rectangle#CurrencyVisual">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
+      <Style Selector="^:focus /template/ Grid#FocusVisual">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
+      <Style Selector="^:invalid /template/ Rectangle#InvalidVisualElement">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
+    </ControlTheme>
+
+</ResourceDictionary>

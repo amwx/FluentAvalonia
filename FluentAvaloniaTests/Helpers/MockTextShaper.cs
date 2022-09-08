@@ -1,37 +1,37 @@
-﻿using System;
-using System.Globalization;
-using Avalonia.Media.TextFormatting.Unicode;
-using Avalonia.Media;
-using Avalonia.Platform;
-using Avalonia.Utilities;
+﻿//using System;
+//using System.Globalization;
+//using Avalonia.Media.TextFormatting.Unicode;
+//using Avalonia.Media;
+//using Avalonia.Platform;
+//using Avalonia.Utilities;
 
-namespace FluentAvaloniaTests.Helpers
-{
-    public class MockTextShaper : ITextShaperImpl
-    {
-        public GlyphRun ShapeText(ReadOnlySlice<char> text, Typeface typeface, double fontRenderingEmSize, CultureInfo culture)
-        {
-            var glyphTypeface = typeface.GlyphTypeface;
-            var glyphIndices = new ushort[text.Length];
-            var glyphCount = 0;
+//namespace FluentAvaloniaTests.Helpers
+//{
+//    public class MockTextShaper : ITextShaperImpl
+//    {
+//        public GlyphRun ShapeText(ReadOnlySlice<char> text, Typeface typeface, double fontRenderingEmSize, CultureInfo culture)
+//        {
+//            var glyphTypeface = typeface.GlyphTypeface;
+//            var glyphIndices = new ushort[text.Length];
+//            var glyphCount = 0;
 
-            for (var i = 0; i < text.Length;)
-            {
-                var index = i;
+//            for (var i = 0; i < text.Length;)
+//            {
+//                var index = i;
 
-                var codepoint = Codepoint.ReadAt(text, i, out var count);
+//                var codepoint = Codepoint.ReadAt(text, i, out var count);
 
-                i += count;
+//                i += count;
 
-                var glyph = glyphTypeface.GetGlyph(codepoint);
+//                var glyph = glyphTypeface.GetGlyph(codepoint);
 
-                glyphIndices[index] = glyph;
+//                glyphIndices[index] = glyph;
 
-                glyphCount++;
-            }
+//                glyphCount++;
+//            }
 
-            return new GlyphRun(glyphTypeface, fontRenderingEmSize,
-                new ReadOnlySlice<ushort>(glyphIndices.AsMemory(0, glyphCount)), characters: text);
-        }
-    }
-}
+//            return new GlyphRun(glyphTypeface, fontRenderingEmSize,
+//                new ReadOnlySlice<ushort>(glyphIndices.AsMemory(0, glyphCount)), characters: text);
+//        }
+//    }
+//}

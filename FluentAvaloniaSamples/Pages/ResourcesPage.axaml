@@ -48,12 +48,12 @@
                              Text="{Binding SearchText}">
                         <TextBox.InnerRightContent>
                             <StackPanel Orientation="Horizontal">
-                                <ui:Button Content="&#xE8BB;"
+                                <Button Content="&#xE8BB;"
                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                                            Classes="AppBarButton"
                                            Command="{Binding $parent[TextBox].Clear}"
                                            IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-                                <ui:Button Content="&#xE721;"
+                                <Button Content="&#xE721;"
                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                                            Classes="AppBarButton"
                                            Command="{Binding $parent[TextBox].Clear}"
