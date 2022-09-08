@@ -54,7 +54,6 @@
 								   Grid.Column="1"
 								   Text="{TemplateBinding Text}"
 								   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
-								   Foreground="{TemplateBinding Foreground}"
 								   VerticalAlignment="Center"
 								   HorizontalAlignment="Stretch" />
 
