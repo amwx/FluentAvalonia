@@ -9,6 +9,8 @@ namespace FluentAvalonia.UI.Controls;
 
 public partial class InfoBar : ContentControl
 {
+    private const string SR_InfoBarCloseButtonTooltip = "InfoBarCloseButtonTooltip";
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _appliedTemplate = false;
@@ -24,7 +26,7 @@ public partial class InfoBar : ContentControl
         {
             _closeButton.Click += OnCloseButtonClick;
 
-            ToolTip.SetTip(_closeButton, "Close");
+            ToolTip.SetTip(_closeButton, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_InfoBarCloseButtonTooltip));
         }
 
         _appliedTemplate = true;
