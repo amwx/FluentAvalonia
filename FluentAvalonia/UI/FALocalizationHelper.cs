@@ -48,14 +48,17 @@ public class FALocalizationHelper
     {
         // Don't allow InvariantCulture - default to en-us in that case
         if (ci == CultureInfo.InvariantCulture)
-            ci = new CultureInfo("en-us");
+            ci = new CultureInfo(s_enUS);
 
         if (_mappings.ContainsKey(resName))
         {
             if (_mappings[resName].ContainsKey(ci.Name))
             {
-                var value = _mappings[resName][ci.Name];
-                return value;
+                return _mappings[resName][ci.Name];
+            }
+            else if (_mappings[resName].ContainsKey(s_enUS))
+            {
+                return _mappings[resName][s_enUS];
             }
         }
 
@@ -64,6 +67,7 @@ public class FALocalizationHelper
 
     // <ResourceName, Entries>
     private readonly LocalizationMap _mappings;
+    private static readonly string s_enUS = "en-US";
 
     /// <summary>
     /// Dictionary of language entries for a resource name. &lt;language, value&gt; where
