@@ -80,6 +80,8 @@ public partial class NavigationView : HeaderedContentControl
             {
                 _paneToggleButton.Click += OnPaneToggleButtonClick;
 
+                SetPaneToggleButtonAutomationName();
+
                 //KeyboardAccelerator Win+Back
             }
 
@@ -156,10 +158,18 @@ public partial class NavigationView : HeaderedContentControl
             _topNavOverflowButton = e.NameScope.Get<Button>("TopNavOverflowButton");
             if (_topNavOverflowButton != null)
             {
+                // Newest style doesn't have content, only an icon, so we'll skip setting that here like WinUI
+                // TODO: Automation
                 var flyout = _topNavOverflowButton.Flyout;
                 if (flyout != null)
                 {
                     flyout.Closing += OnFlyoutClosing;
+                }
+
+                var tip = ToolTip.GetTip(_topNavOverflowButton);
+                if (tip != null)
+                {
+                    ToolTip.SetTip(_topNavOverflowButton, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationOverflowButtonToolTip));
                 }
             }
 
@@ -224,12 +234,20 @@ public partial class NavigationView : HeaderedContentControl
             if (_paneSearchButton != null)
             {
                 _paneSearchButton.Click += OnPaneSearchButtonClick;
+
+                var searchButtonName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationViewSearchButtonName);
+                // TODO: Automation
+                ToolTip.SetTip(_paneSearchButton, searchButtonName);
             }
 
             _backButton = e.NameScope.Get<Button>("NavigationViewBackButton");
             if (_backButton != null)
             {
                 _backButton.Click += OnBackButtonClicked;
+
+                // TODO: Automation
+
+                ToolTip.SetTip(_backButton, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationBackButtonToolTip));
             }
 
             //titlebar
@@ -238,6 +256,8 @@ public partial class NavigationView : HeaderedContentControl
             if (_closeButton != null)
             {
                 _closeButton.Click += OnPaneToggleButtonClick;
+
+                ToolTip.SetTip(_closeButton, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationButtonOpenName));
             }
 
             if (_paneContentGrid != null)
@@ -1064,6 +1084,7 @@ public partial class NavigationView : HeaderedContentControl
             }
         }
 
+        SetPaneToggleButtonAutomationName();
         UpdatePaneTabFocusNavigation();
         UpdateSettingsItemToolTip();
         UpdatePaneTitleFrameworkElementParents();
@@ -3306,13 +3327,15 @@ public partial class NavigationView : HeaderedContentControl
 
         _settingsItem.Icon = new SymbolIcon { Symbol = Symbol.Settings };
 
-        _settingsItem.Tag = "Settings";
+        var localizedSettingsName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_SettingsButtonName);
+
+        _settingsItem.Tag = localizedSettingsName;
         UpdateSettingsItemToolTip();
 
         // Add the name only in case of horizontal nav
         if (!IsTopNavigationView)
         {
-            _settingsItem.Content = "Settings";
+            _settingsItem.Content = localizedSettingsName;
         }
         else
         {
@@ -3357,7 +3380,7 @@ public partial class NavigationView : HeaderedContentControl
             }
             else
             {
-                ToolTip.SetTip(_settingsItem, "Settings");
+                ToolTip.SetTip(_settingsItem, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_SettingsButtonName));
             }
         }
     }
@@ -4043,6 +4066,26 @@ public partial class NavigationView : HeaderedContentControl
             _openPaneWidth = Math.Max(0, Math.Min(width, OpenPaneLength));
 
             TemplateSettings.OpenPaneWidth = _openPaneWidth;
+        }
+    }
+
+    private void SetPaneToggleButtonAutomationName()
+    {
+        // TODO: Automation
+        string navigationName;
+        if (IsPaneOpen)
+        {
+            navigationName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationButtonOpenName);
+        }
+        else
+        {
+            navigationName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationButtonClosedName);
+        }
+
+
+        if (_paneToggleButton != null)
+        {
+            ToolTip.SetTip(_paneToggleButton, navigationName);
         }
     }
 }
