@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using Avalonia;
+using Avalonia.Platform;
 
 namespace FluentAvalonia.UI;
 
@@ -16,9 +19,10 @@ public class FALocalizationHelper
 {
     private FALocalizationHelper()
     {
-        var json = File.ReadAllText("D:/repos/Localization_NavigationView.json");
+        using var al = AvaloniaLocator.Current.GetService<IAssetLoader>()
+            .Open(new Uri("avares://FluentAvalonia/Assets/ControlStrings.json"));
 
-        _mappings = JsonSerializer.Deserialize<Dictionary<string, LocalizationEntry>>(json);
+        _mappings = JsonSerializer.Deserialize<LocalizationMap>(al);        
     }
 
     static FALocalizationHelper()
@@ -50,7 +54,8 @@ public class FALocalizationHelper
         {
             if (_mappings[resName].ContainsKey(ci.Name))
             {
-                return _mappings[resName][ci.Name];
+                var value = _mappings[resName][ci.Name];
+                return value;
             }
         }
 
@@ -58,7 +63,7 @@ public class FALocalizationHelper
     }
 
     // <ResourceName, Entries>
-    private readonly Dictionary<string, LocalizationEntry> _mappings;
+    private readonly LocalizationMap _mappings;
 
     /// <summary>
     /// Dictionary of language entries for a resource name. &lt;language, value&gt; where
@@ -66,6 +71,19 @@ public class FALocalizationHelper
     /// </summary>
     public class LocalizationEntry : Dictionary<string, string>
     {
+        public LocalizationEntry()
+            : base(StringComparer.InvariantCultureIgnoreCase)
+        {
 
+        }
+    }
+
+    private class LocalizationMap : Dictionary<string, LocalizationEntry>
+    {
+        public LocalizationMap()
+            : base(StringComparer.InvariantCultureIgnoreCase)
+        {
+
+        }
     }
 }
