@@ -52,7 +52,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             CommandParameter = TabViewCommandType.CtrlShftTab
         });
 
-        _tabCloseButtonTooltipText = "Close tab (Ctrl+F4)";
+        _tabCloseButtonTooltipText = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewCloseButtonTooltipWithKA);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -113,9 +113,11 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
         _addButton = e.NameScope.Find<Button>("AddButton");
         if (_addButton != null)
         {
+            // TODO: Automation
+
             if (ToolTip.GetTip(_addButton) == null)
             {
-                ToolTip.SetTip(_addButton, "Add new tab");
+                ToolTip.SetTip(_addButton, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewAddButtonTooltip));
             }
 
             _addButton.Click += OnAddButtonClick;
@@ -420,13 +422,15 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             if (button.Name == "ScrollDecreaseButton")
             {
                 _scrollDecreaseButton = button;
-                ToolTip.SetTip(_scrollDecreaseButton, "Scroll tab list backward");
+                ToolTip.SetTip(_scrollDecreaseButton, 
+                    FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewScrollDecreaseButtonTooltip));
                 _scrollDecreaseButton.Click += OnScrollDecreaseClick;
             }
             else if (button.Name == "ScrollIncreaseButton")
             {
                 _scrollIncreaseButton = button;
-                ToolTip.SetTip(_scrollIncreaseButton, "Scroll tab list forward");
+                ToolTip.SetTip(_scrollIncreaseButton, 
+                    FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewScrollIncreaseButtonTooltip));
                 _scrollIncreaseButton.Click += OnScrollIncreaseClick;
             }
         }
