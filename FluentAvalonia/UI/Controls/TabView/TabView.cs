@@ -1172,6 +1172,11 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
     // (WinUI) TODO: what is the right number and should this be customizable?
     private static double c_scrollAmount = 50d;
 
+    private static readonly string SR_TabViewCloseButtonTooltipWithKA = "TabViewCloseButtonTooltipWithKA";
+    private static readonly string SR_TabViewAddButtonTooltip = "TabViewAddButtonTooltip";
+    private static readonly string SR_TabViewScrollDecreaseButtonTooltip = "TabViewScrollDecreaseButtonTooltip";
+    private static readonly string SR_TabViewScrollIncreaseButtonTooltip = "TabViewScrollIncreaseButtonTooltip";
+
     class TabViewCommand : ICommand
     {
         public TabViewCommand(Action<object> execute)
