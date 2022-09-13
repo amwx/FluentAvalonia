@@ -8,40 +8,17 @@
             <ui:TeachingTip Title="Change themes without hassle"
                             Subtitle="It's easier than ever to see control samples in both light and dark themes!"
                             IconSource="Refresh" IsLightDismissEnabled="False"
-                            IsOpen="True" HeroContentPlacement="Auto"
+                            IsOpen="True" HeroContentPlacement="Auto" 
+                            ActionButtonContent="Action" CloseButtonContent="Close"
                             core:VisualStateHelper.ForcedClassesProperty=":bottom">
                 <ui:TeachingTip.HeroContent>
-                    <Border Width="100" Height="100" Background="Red"
-                            />
+                    <Border Width="100" Height="100" Background="Red" />
                 </ui:TeachingTip.HeroContent>
             </ui:TeachingTip>
         </Border>
     </Design.PreviewWith>
 
-    <StaticResource x:Key="TeachingTipBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush"/>
-    <SolidColorBrush x:Key="TeachingTipTopHighlightBrush" Color="#0DFFFFFF"/>
-    <StaticResource x:Key="TeachingTipTransientBackground" ResourceKey="SolidBackgroundFillColorTertiaryBrush"/>
-    <StaticResource x:Key="TeachingTipForegroundBrush" ResourceKey="TextFillColorPrimaryBrush"/>
-    <StaticResource x:Key="TeachingTipBackgroundBrush" ResourceKey="SolidBackgroundFillColorTertiaryBrush"/>
-    <StaticResource x:Key="TeachingTipTitleForegroundBrush" ResourceKey="TextFillColorPrimaryBrush"/>
-    <StaticResource x:Key="TeachingTipSubtitleForegroundBrush" ResourceKey="TextFillColorPrimaryBrush"/>
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBorderBrushPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBorderBrushPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-    <StaticResource x:Key="TeachingTipAlternateCloseButtonBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-    <Thickness x:Key="TeachingTipAlternateCloseButtonBorderThickness">1</Thickness>
-
-
-
-
+    
     <x:Double x:Key="TeachingTipMinHeight">40</x:Double>
     <x:Double x:Key="TeachingTipMaxHeight">520</x:Double>
     <x:Double x:Key="TeachingTipMinWidth">320</x:Double>
@@ -326,6 +303,7 @@
             <Style Selector="^ /template/ Button#ActionButton">
                 <Setter Property="IsVisible" Value="True" />
                 <Setter Property="Grid.ColumnSpan" Value="2" />
+                <Setter Property="Grid.Column" Value="0" />
                 <Setter Property="Margin" Value="{DynamicResource TeachingTipButtonPanelMargin}" />
             </Style>
             <Style Selector="^:closeButton /template/ Button#CloseButton">
@@ -348,13 +326,14 @@
         <Style Selector="^:closeButton:actionButton">
             <Style Selector="^ /template/ Button#CloseButton">
                 <Setter Property="IsVisible" Value="True" />
-                <Setter Property="Grid.ColumnSpan" Value="2" />
-                <Setter Property="Grid.Column" Value="0" />
-                <Setter Property="Margin" Value="{DynamicResource TeachingTipButtonPanelMargin}" />
+                <Setter Property="Grid.ColumnSpan" Value="1" />
+                <Setter Property="Grid.Column" Value="1" />
+                <Setter Property="Margin" Value="{DynamicResource TeachingTipRightButtonMargin}" />
             </Style>
             <Style Selector="^ /template/ Button#ActionButton">
                 <Setter Property="IsVisible" Value="True" />
-                <Setter Property="Grid.ColumnSpan" Value="0" />
+                <Setter Property="Grid.ColumnSpan" Value="1" />
+                <Setter Property="Grid.Column" Value="0" />
                 <Setter Property="Margin" Value="{DynamicResource TeachingTipLeftButtonMargin}" />
             </Style>
         </Style>

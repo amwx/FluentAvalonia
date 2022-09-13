@@ -2235,6 +2235,9 @@ public partial class TeachingTip : ContentControl
 
     private void TrySetCenterPoint(Control element, double x, double y)
     {
+        if (element == null)
+            return;
+
         // TODO:
         var visual = ElementComposition.GetElementVisual(element);
         if (visual != null)
