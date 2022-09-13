@@ -11,7 +11,16 @@ public partial class RangeControlsPage : UserControl
 
         this.FindControl<ButtonSpinner>("TargetButtonSpinner").Spin += (s, e) =>
         {
-            (s as ButtonSpinner).Content = values[++_currentIndex];
+            _currentIndex = _currentIndex + (e.Direction == SpinDirection.Increase ? 1 : -1);
+            if(_currentIndex < 0)
+            {
+                _currentIndex = values.Length - 1;
+            }
+            else if (_currentIndex >= values.Length)
+            {
+                _currentIndex = 0;
+            }
+            (s as ButtonSpinner).Content = values[_currentIndex];
         };
     }
 
