@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="using:FluentAvalonia.UI.Controls"
                     xmlns:core="using:FluentAvalonia.Core"
-                    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
+                    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="20">
             <Border BorderBrush="#35EFEFEF" BorderThickness="1">
@@ -267,7 +268,7 @@
             </Style>
 
 
-            <Style Selector="^:hidden /template/ Panel#LayoutRoot">
+            <!--<Style Selector="^:hidden /template/ Panel#LayoutRoot">
                 <Style.Animations>
                     <Animation Duration="00:00:00.167" FillMode="Forward">
                         <KeyFrame Cue="0%">
@@ -295,13 +296,13 @@
                 </Style.Animations>
             </Style>
 
-            <!--Handle open dialog-->
+            --><!--Handle open dialog--><!--
             <Style Selector="^:open /template/ Panel#LayoutRoot">
                 <Setter Property="IsVisible" Value="True"/>
                 <Style.Animations>
-                    <!-- Animation applies with priority of LocalValue
+                    --><!-- Animation applies with priority of LocalValue
                  To overrule the IsVisible=False in :hidden, set
-                 IsVisible=True in BOTH KeyFrames here -->
+                 IsVisible=True in BOTH KeyFrames here --><!--
                     <Animation Duration="00:00:00.250" FillMode="Forward">
                         <KeyFrame Cue="0%">
                             <Setter Property="IsVisible" Value="True"/>
@@ -327,7 +328,7 @@
                         </KeyFrame>
                     </Animation>
                 </Style.Animations>
-            </Style>
+            </Style>-->
             
         </Style>
         

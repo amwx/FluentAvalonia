@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using System;
 using Avalonia.Rendering;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls.Primitives;
 
@@ -28,24 +29,24 @@ public class MinMaxCloseControl : TemplatedControl
 
         base.OnApplyTemplate(e);
 
-        _minimizeButton = e.NameScope.Find<Avalonia.Controls.Button>("MinimizeButton");
+        _minimizeButton = e.NameScope.Find<Button>("MinimizeButton");
         if (_minimizeButton != null)
             _minimizeButton.Click += OnButtonClick;
 
-        _maximizeButton = e.NameScope.Find<Avalonia.Controls.Button>("MaxRestoreButton");
+        _maximizeButton = e.NameScope.Find<Button>("MaxRestoreButton");
         if (_maximizeButton != null)
             _maximizeButton.Click += OnButtonClick;
 
-        _closeButton = e.NameScope.Find<Avalonia.Controls.Button>("CloseButton");
+        _closeButton = e.NameScope.Find<Button>("CloseButton");
         if (_closeButton != null)
             _closeButton.Click += OnButtonClick;
     }
 
-    internal Avalonia.Controls.Button MinimizeButton => _minimizeButton;
+    internal Button MinimizeButton => _minimizeButton;
 
-    internal Avalonia.Controls.Button MaximizeButton => _maximizeButton;
+    internal Button MaximizeButton => _maximizeButton;
 
-    internal Avalonia.Controls.Button CloseButton => _closeButton;
+    internal Button CloseButton => _closeButton;
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -102,7 +103,30 @@ public class MinMaxCloseControl : TemplatedControl
     internal bool HitTestMaxButton(Point pos)
     {
         if (_maximizeButton != null)
-            return _maximizeButton.HitTestCustom(pos);
+        {
+            // v2 Bug in compositing renderer prevents HitTestCustom
+
+            var test = (VisualRoot as IInputElement)?.InputHitTest(pos);
+            if (test == _maximizeButton)
+            {
+                return true;
+            }
+            else
+            {
+                var vis = test as IVisual;
+                
+                while (vis != null)
+                {
+                    if (vis == _maximizeButton)
+                        return true;
+
+                    vis = vis.VisualParent;
+                }
+            }
+
+            //return _maximizeButton.HitTestCustom(pos);
+        }
+
 
         return false;
     }
@@ -133,7 +157,7 @@ public class MinMaxCloseControl : TemplatedControl
 
     private IDisposable _windowStateObservable;
     private CoreWindow _owner;
-    private Avalonia.Controls.Button _minimizeButton;
-    private Avalonia.Controls.Button _maximizeButton;
-    private Avalonia.Controls.Button _closeButton;
+    private Button _minimizeButton;
+    private Button _maximizeButton;
+    private Button _closeButton;
 }

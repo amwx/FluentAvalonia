@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="20">
             <Border>
@@ -87,7 +88,7 @@
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
 											  Content="{TemplateBinding Icon}"
-											  TextBlock.Foreground="{TemplateBinding Foreground}" />
+											  Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 
                         <TextBlock Name="TextLabel"
@@ -136,7 +137,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#Content">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPointerOver}" />
@@ -158,7 +159,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPressed}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#Content">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
@@ -180,7 +181,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushDisabled}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#Content">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundDisabled}" />
@@ -202,7 +203,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushChecked}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#Content">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundChecked}" />
+                <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundChecked}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundChecked}" />
@@ -220,7 +221,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPointerOver}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPointerOver}" />
@@ -243,7 +244,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedPressed}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPressed}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPressed}" />
@@ -266,7 +267,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedDisabled}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedDisabled}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedDisabled}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedDisabled}" />
@@ -313,7 +314,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForegroundPointerOver}" />
@@ -335,7 +336,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushPressed}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundPressed}" />
@@ -358,7 +359,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushChecked}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#Content">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#TextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForeground}" />
@@ -374,7 +375,7 @@
                         <Setter Property="BorderBrush" Value="Transparent" />
                     </Style>
                     <Style Selector="^ /template/ ContentPresenter#Content">
-                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPointerOver}" />
+                        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPointerOver}" />
                     </Style>
                     <Style Selector="^ /template/ TextBlock#TextLabel">
                         <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPointerOver}" />
@@ -397,7 +398,7 @@
                         <Setter Property="BorderBrush" Value="{DynamicResource AppBarToggleButtonBorderBrushCheckedPressed}" />
                     </Style>
                     <Style Selector="^ /template/ ContentPresenter#Content">
-                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPressed}" />
+                        <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonOverflowLabelForegroundCheckedPressed}" />
                     </Style>
                     <Style Selector="^ /template/ TextBlock#TextLabel">
                         <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonForegroundCheckedPressed}" />

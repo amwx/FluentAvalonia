@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="50" Width="350">
             <StackPanel Spacing="5">
@@ -106,7 +107,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPointerOverBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPointerOverBrush}" />
@@ -122,7 +123,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPressedBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPressedBrush}" />
@@ -138,7 +139,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />
@@ -154,7 +155,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderForeground}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderForeground}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderBrush}" />
@@ -170,7 +171,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPointerOverBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderForegroundPointerOver}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPointerOverBrush}" />
@@ -187,7 +188,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPressedBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderForegroundPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPressed}" />
                 </Style>
                 <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPressedBrush}" />
@@ -204,7 +205,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
                 </Style>
                 <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />

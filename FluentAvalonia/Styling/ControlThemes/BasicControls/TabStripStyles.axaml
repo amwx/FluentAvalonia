@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="20">
             <TabStrip>
@@ -56,9 +57,9 @@
 										  Content="{TemplateBinding Content}"
 										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-										  TextBlock.FontFamily="{TemplateBinding FontFamily}"
-										  TextBlock.FontSize="{TemplateBinding FontSize}"
-										  TextBlock.FontWeight="{TemplateBinding FontWeight}" />
+										  FontFamily="{TemplateBinding FontFamily}"
+										  FontSize="{TemplateBinding FontSize}"
+										  FontWeight="{TemplateBinding FontWeight}" />
                         <Rectangle Name="PART_SelectedPipe"
                                    Fill="{DynamicResource AccentFillColorDefaultBrush}"
                                    RadiusX="2"
@@ -75,7 +76,7 @@
 
         <Style Selector="^:selected">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
             <Style Selector="^ /template/ Rectangle#PART_SelectedPipe">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
@@ -83,27 +84,27 @@
 
         <Style Selector="^:pointerover /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
 
         <Style Selector="^:selected:pointerover /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
 
         <Style Selector="^:pressed /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         </Style>
 
         <Style Selector="^:pressed /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         </Style>
 
         <Style Selector="^ /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
         </Style>        
     </ControlTheme>    
 </ResourceDictionary>

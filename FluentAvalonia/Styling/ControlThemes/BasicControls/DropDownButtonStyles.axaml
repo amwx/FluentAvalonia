@@ -1,0 +1,86 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True"
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+
+    <x:Double x:Key="DropDownButtonMinHeight">32</x:Double>
+
+    <ControlTheme x:Key="{x:Type DropDownButton}" TargetType="DropDownButton">
+      <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+      <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
+      <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThemeThickness}" />
+      <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+      <Setter Property="MinHeight" Value="{DynamicResource DropDownButtonMinHeight}" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate>
+            <Border x:Name="RootBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    ClipToBounds="True">
+              <Grid x:Name="InnerGrid">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <ContentPresenter x:Name="PART_ContentPresenter"
+                                  Grid.Column="0" 
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Padding="{TemplateBinding Padding}"
+                                  RecognizesAccessKey="True"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                <ui:FontIcon Name="DropDownGlyph"
+                             Grid.Column="1"
+                             UseLayoutRounding="False"
+                             IsHitTestVisible="False"
+                             Foreground="{DynamicResource ComboBoxDropDownGlyphForeground}"
+                             Margin="0,0,10,0"
+                             FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                             FontSize="12"
+                             Glyph="&#xE70D;"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+
+      <!--  PointerOver State  -->
+      <Style Selector="^:pointerover /template/ Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
+      </Style>
+
+      <!--  Pressed State  -->
+      <Style Selector="^:pressed /template/ Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPressed}" />
+      </Style>
+
+      <!--  Disabled State  -->
+      <Style Selector="^:disabled /template/ Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
+      </Style>
+      <Style Selector="^:disabled /template/ ui|FontIcon#DropDownGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
+      </Style>
+    </ControlTheme>
+
+</ResourceDictionary>

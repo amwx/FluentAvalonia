@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="20">
             <ListBox SelectedIndex="0">
@@ -126,7 +127,7 @@
                 <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
             </Style>
             <Style Selector="^ /template/ Rectangle#SelectionIndicator">
                 <Setter Property="IsVisible" Value="True" />
@@ -136,7 +137,7 @@
                 <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
             </Style>
             <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
             </Style>
 
 
@@ -145,7 +146,7 @@
                     <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPointerOver}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ Border#SelectionIndicator">
                     <Setter Property="Background" Value="{DynamicResource ListViewItemSelectionIndicatorPointerOverBrush}" />
@@ -157,7 +158,7 @@
                     <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPressed}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPressed}" />
                 </Style>
                 <Style Selector="^ /template/ Border#SelectionIndicator">
                     <Setter Property="Background" Value="{DynamicResource ListViewItemSelectionIndicatorPressedBrush}" />

@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
 
     <Design.PreviewWith>
         <Border Padding="50">
@@ -44,7 +45,6 @@
                         <TextBlock Name="TextBlock"
 								   Text="{TemplateBinding Text}"
 								   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
-								   Foreground="{TemplateBinding Foreground}"
 								   VerticalAlignment="Center"
 								   HorizontalAlignment="Stretch" />
 
@@ -67,7 +67,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
@@ -82,7 +82,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPressed}" />
@@ -97,7 +97,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundSubMenuOpened}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundSubMenuOpened}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundSubMenuOpened}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronSubMenuOpened}" />
@@ -112,7 +112,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />

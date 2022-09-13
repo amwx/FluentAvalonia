@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="5">
@@ -102,7 +103,7 @@
                                           Grid.Column="0"
                                           Grid.ColumnSpan="2"
                                           IsVisible="False"
-                                          TextBlock.FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
+                                          FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
                                           Margin="{DynamicResource ComboBoxTopHeaderMargin}"
                                           VerticalAlignment="Top" />-->
                         <Border x:Name="Background"
@@ -220,7 +221,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource ComboBoxForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource ComboBoxForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ Border#Background">
                 <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundPressed}" />
@@ -296,7 +297,7 @@
                         <ContentPresenter Name="ContentPresenter"
                                           Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          TextBlock.Foreground="{TemplateBinding Foreground}"
+                                          Foreground="{TemplateBinding Foreground}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Margin="{TemplateBinding Padding}"

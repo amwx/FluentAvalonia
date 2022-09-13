@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+                    xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
 
     <Design.PreviewWith>
         <Border Padding="50">
@@ -53,7 +54,6 @@
 								   Grid.Column="1"
 								   Text="{TemplateBinding Text}"
 								   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
-								   Foreground="{TemplateBinding Foreground}"
 								   VerticalAlignment="Center"
 								   HorizontalAlignment="Stretch" />
 
@@ -84,7 +84,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
@@ -102,7 +102,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPressed}" />
@@ -120,7 +120,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#IconContent">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />

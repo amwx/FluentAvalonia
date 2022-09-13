@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=netstandard">
+                    xmlns:sys="clr-namespace:System;assembly=netstandard"
+                    x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel Spacing="20">
@@ -52,7 +53,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             MinHeight="{TemplateBinding MinHeight}"
                             Name="LayoutRoot">
                         <Grid ColumnDefinitions="Auto,*,Auto">

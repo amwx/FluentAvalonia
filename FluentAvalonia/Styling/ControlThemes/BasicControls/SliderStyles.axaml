@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
 
     <Design.PreviewWith>
         <Border Padding="50" ClipToBounds="False">
@@ -95,8 +96,8 @@
                                 <!-- Hide the header b/c property doesn't exist in Avalonia -->
                                 <!--<ContentPresenter x:Name="HeaderContentPresenter" 
                                               Grid.Row="0" 
-                                              TextBlock.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
-                                              TextBlock.Foreground="{DynamicResource SliderHeaderForeground}"
+                                              FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
+                                              Foreground="{DynamicResource SliderHeaderForeground}"
                                               Margin="{DynamicResource SliderTopHeaderMargin}"
 											  />-->
 
@@ -205,8 +206,8 @@
                                 <!-- Hide the header b/c property doesn't exist in Avalonia -->
                                 <!--<ContentPresenter x:Name="HeaderContentPresenter" 
                                               Grid.Row="0" 
-                                              TextBlock.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
-                                              TextBlock.Foreground="{DynamicResource SliderHeaderForeground}"
+                                              FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
+                                              Foreground="{DynamicResource SliderHeaderForeground}"
                                               Margin="{DynamicResource SliderTopHeaderMargin}" />-->
                                 <Grid x:Name="SliderContainer" Grid.Row="1">
                                     <Grid.Styles>
@@ -314,7 +315,7 @@
 
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ ContentPresenter#HeaderContentPresenter">
-                <Setter Property="TextBlock.Foreground" Value="{DynamicResource SliderHeaderForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource SliderHeaderForegroundDisabled}" />
             </Style>
 
             <Style Selector="^ /template/ RepeatButton#PART_DecreaseButton">

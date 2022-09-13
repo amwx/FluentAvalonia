@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-                    xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia">
+                    xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia"
+                    x:CompileBindings="True">
 
     <!-- Change from WinUI:
         Must setting H padding here so ItemsPresenter sits slightly offset so the curve on the 
@@ -60,15 +61,15 @@
 
         <Style Selector="^:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource TabViewButtonBackgroundPointerOver}"/>
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewButtonForegroundPointerOver}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TabViewButtonForegroundPointerOver}"/>
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource TabViewButtonBackgroundPressed}"/>
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewButtonForegroundPressed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TabViewButtonForegroundPressed}"/>
         </Style>
         <Style Selector="^:disabled /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource TabViewButtonBackgroundDisabled}"/>
-            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewButtonForegroundDisabled}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TabViewButtonForegroundDisabled}"/>
         </Style>
     </ControlTheme>
 

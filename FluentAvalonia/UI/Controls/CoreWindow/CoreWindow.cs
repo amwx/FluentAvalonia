@@ -9,6 +9,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls.Primitives;
@@ -367,11 +368,44 @@ public class CoreWindow : Window, IStyleable, ICoreApplicationView
 
             // Default TitleBar is still *slightly* visible to the left of the caption buttons even with
             // a custom titlebar set, so make sure we test it
-            return _defaultTitleBar.HitTestCustom(windowPoint);
+            // v2 - see below
+            return DefaultHitTest(windowPoint);
         }
         else
         {
-            return _defaultTitleBar.HitTestCustom(windowPoint);
+            // v2 - New bug with compositing renderer
+            // Using .HitTestCustom fails since TransformedBounds are never set
+            // So use new logic to avoid HitTestCustom
+            return DefaultHitTest(windowPoint);
+        }
+
+        bool DefaultHitTest(Point pt)
+        {
+            var mat = _defaultTitleBar.TransformToVisual(this);
+            var bnds = _defaultTitleBar.Bounds.TransformToAABB(mat.Value);
+            if (bnds.Contains(windowPoint))
+            {
+                var result = this.InputHitTest(windowPoint);
+
+                if (result == _defaultTitleBar)
+                {
+                    return true;
+                }
+                else
+                {
+                    // We may have hit the TextBlock title, work upwards and see
+                    var vis = result as IVisual;
+                    while (vis != null)
+                    {
+                        if (vis == _defaultTitleBar)
+                            return true;
+
+                        vis = vis.VisualParent;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 
@@ -383,8 +417,33 @@ public class CoreWindow : Window, IStyleable, ICoreApplicationView
         if (WindowState != WindowState.Maximized && pos.Y <= 1)
             return false;
 
-        var result = _systemCaptionButtons.HitTestCustom(pos);
-        return result;
+        // v2 - Bug in Compositing Renderer prevent usage of HitTestCustom
+        // var result = _systemCaptionButtons.HitTestCustom(pos);
+        return HitTest(pos);
+
+        bool HitTest(Point p)
+        {
+            var result = this.InputHitTest(p);
+
+            if (result == _systemCaptionButtons)
+            {
+                return true;
+            }
+            else
+            {
+                // We may have hit the TextBlock title, work upwards and see
+                var vis = result as IVisual;
+                while (vis != null)
+                {
+                    if (vis == _systemCaptionButtons)
+                        return true;
+
+                    vis = vis.VisualParent;
+                }
+            }
+
+            return false;
+        }
     }
 
     internal bool HitTestMaximizeButton(Point pos)
