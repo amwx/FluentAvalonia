@@ -1978,7 +1978,6 @@
     <!-- TEACHING TIP -->
     <StaticResource x:Key="TeachingTipBorderBrush" ResourceKey="SystemColorWindowTextColorBrush"/>
     <SolidColorBrush x:Key="TeachingTipTopHighlightBrush" Color="Transparent"/>
-    <StaticResource x:Key="TeachingTipTransientBackground" ResourceKey="SystemColorWindowColorBrush"/>
     <StaticResource x:Key="TeachingTipForegroundBrush" ResourceKey="SystemColorWindowTextColorBrush"/>
     <StaticResource x:Key="TeachingTipBackgroundBrush" ResourceKey="SystemColorWindowColorBrush"/>
     <StaticResource x:Key="TeachingTipTitleForegroundBrush" ResourceKey="SystemColorWindowTextColorBrush"/>
