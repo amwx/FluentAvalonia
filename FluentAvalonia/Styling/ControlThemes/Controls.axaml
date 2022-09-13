@@ -93,6 +93,8 @@
 
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/ColorPickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/ColorPickerButtonStyles.axaml" />
+
+                <ResourceInclude Source="/Styling/ControlThemes/FAControls/TeachingTipStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
