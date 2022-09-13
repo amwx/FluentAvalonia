@@ -744,4 +744,12 @@ public partial class NavigationView : HeaderedContentControl
     private const int _itemNotFound = -1;
 
     private double _openPaneWidth = 320; //WinUI #5800
+
+    // Localization String Resources
+    private static readonly string SR_SettingsButtonName = "SettingsButtonName";
+    private static readonly string SR_NavigationOverflowButtonToolTip = "NavigationOverflowButtonToolTip";
+    private static readonly string SR_NavigationViewSearchButtonName = "NavigationViewSearchButtonName";
+    private static readonly string SR_NavigationBackButtonToolTip = "NavigationViewBackButtonToolTip";
+    private static readonly string SR_NavigationButtonOpenName = "NavigationButtonOpenName";
+    private static readonly string SR_NavigationButtonClosedName = "NavigationButtonClosedName";
 }
