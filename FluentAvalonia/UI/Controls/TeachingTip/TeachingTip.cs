@@ -95,10 +95,12 @@ public partial class TeachingTip : ContentControl
         _closeButton.Click += OnCloseButtonClicked;
 
         _alternateCloseButton.Click += OnCloseButtonClicked;
-        // TODO: When FALocalization is merged in to this branch
-        //AutomationProperties.SetName(_alternateCloseButton, FALocalizationHelper.GetLocalizedStringResource(SR_TeachingTipAlternateCloseButtonName));
-        ToolTip.SetTip(_alternateCloseButton, "Close");
-            //FALocalizationHelper.GetLocalizedStringResource(SR_TeachingTipAlternateCloseButtonTooltip));
+
+        AutomationProperties.SetName(_alternateCloseButton, 
+            FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TeachingTipAlternateCloseButtonName));
+        ToolTip.SetTip(_alternateCloseButton, 
+            FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TeachingTipAlternateCloseButtonTooltip));
+
 
         _actionButton.Click += OnActionButtonClicked;
 
