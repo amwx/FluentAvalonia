@@ -1508,7 +1508,11 @@ public partial class TeachingTip : ContentControl
             // reset the scale after the popup has closed so that if the teaching tip is re-shown the render pass does not use the
             // small scale.
 
-            // TODO: tailOcclusionGrid.Scale({ 1.0f,1.0f,1.0f });
+            var ev = ElementComposition.GetElementVisual(_tailOcclusionGrid);
+            if (ev != null)
+            {
+                ev.Scale = Vector3.One;
+            }
         }
     }
 
@@ -1663,7 +1667,7 @@ public partial class TeachingTip : ContentControl
             _expandAnimation.SetScalarParameter("Width", s_defaultTipHeightAndWidth);
             _expandAnimation.SetScalarParameter("Height", s_defaultTipHeightAndWidth);
         }
-
+        
         _expandEasingFunction = new SplineEasing(0.1, 0.9, 0.2, 1);
 
         _expandAnimation.InsertExpressionKeyFrame(0.0f, "Vector3(Min(0.01, 20.0 / Width), Min(0.01, 20.0 / Height), 1.0)");
@@ -1671,7 +1675,8 @@ public partial class TeachingTip : ContentControl
         _expandAnimation.Duration = _expandAnimationDuration;
         _expandAnimation.Target = s_ScaleTargetName;
 
-        // TODO: This isn't working for some reason
+        // TODO: This doesn't work because "Translation" is not a valid Target in Avalonia (yet)
+        // Also probably not needed since this is likely related to shadows - which we don't have
         //_expandElevationAnimation = compositor.CreateVector3KeyFrameAnimation();
         //_expandElevationAnimation.InsertExpressionKeyFrame(1.0f, "Vector3(this.Target.Translation.X, this.Target.Translation.Y, contentElevation)", (Easing)_expandEasingFunction);
         //_expandElevationAnimation.SetScalarParameter("contentElevation", _contentElevation);
@@ -1707,7 +1712,8 @@ public partial class TeachingTip : ContentControl
         _contractAnimation.Duration = _contractAnimationDuration;
         _contractAnimation.Target = s_ScaleTargetName;
 
-        // TODO: This doesn't seem to work, the expression is throwing an error
+        // TODO: This doesn't seem to work, the expression is throwing an error - it doesn't like the 'f' in 0.01f
+        // But like ExpandAnimation, we don't need this
         //_contractElevationAnimation = compositor.CreateVector3KeyFrameAnimation();
         //_contractElevationAnimation.InsertExpressionKeyFrame(1.0f, "Vector3(this.Target.Translation.X, this.Target.Translation.Y, 0.01f)", (Easing)_contractEasingFunction);
         //_contractElevationAnimation.SetScalarParameter("contentElevation", _contentElevation);
@@ -1723,6 +1729,11 @@ public partial class TeachingTip : ContentControl
         }
 
         // TODO: We really need ScopedBatch animations to do this right
+
+        // HACK: CenterPoint on CompositionVisual resets after animation probably because the element is in a popup
+        // and is completely removed upon closing. So we call UpdateTail here to reset the CenterPoint so the opening
+        // animation is correct if the TeachingTip is opened more than once. This does not happen in WinUI
+        UpdateTail();
 
         if (_expandAnimation != null)
         {
@@ -1774,7 +1785,7 @@ public partial class TeachingTip : ContentControl
         {
             CreateContractAnimation();
         }
-
+        
         // TODO: Need ScopedBatch to do this right
         if (_contractAnimation != null)
         {
