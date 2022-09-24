@@ -16,6 +16,7 @@ using Avalonia.Rendering.Composition;
 using Avalonia.Rendering.Composition.Animations;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Internal;
 
 namespace FluentAvalonia.UI.Controls;
@@ -1456,20 +1457,26 @@ public partial class TeachingTip : ContentControl
 
         if (attachDeferralCompletedHandler)
         {
-            // TODO: Deferral
-
-            if (!args.Cancel)
+            var deferral = new Deferral(() =>
             {
-                ClosePopupWithAnimationIfAvailable();
-            }
-            else
-            {
-                // The developer has changed the Cancel property to true, indicating that they wish to Cancel the
-                // closing of this tip, so we need to revert the IsOpen property to true.
-                IsOpen = true;
-            }
+                Dispatcher.UIThread.VerifyAccess();
+                if (!args.Cancel)
+                {
+                    ClosePopupWithAnimationIfAvailable();
+                }
+                else
+                {
+                    // The developer has changed the Cancel property to true, indicating that they wish to Cancel the
+                    // closing of this tip, so we need to revert the IsOpen property to true.
+                    IsOpen = true;
+                }
+            });
 
+            args.SetDeferral(deferral);
+
+            args.IncrementDeferralCount();
             Closing?.Invoke(this, args);
+            args.DecrementDeferralCount();
         }
         else
         {
@@ -1594,13 +1601,16 @@ public partial class TeachingTip : ContentControl
 
     private void SetViewportChangedEvent(Control target)
     {
-        if (_tipFollowsTarget)
-        {
-            if (target != null)
-                target.EffectiveViewportChanged += OnTargetLayoutUpdated;
+        // This seems to only be used in the TeachingTipTestHooks stuff from WinUI so this is always false
+        // in normal operation I guess??
 
-            _effectiveViewportChangedRevoker = new EffectiveViewportRevoker(this, OnTargetLayoutUpdated);
-        }
+        //if (_tipFollowsTarget)
+        //{
+        //    if (target != null)
+        //        target.EffectiveViewportChanged += OnTargetLayoutUpdated;
+
+        //    _effectiveViewportChangedRevoker = new EffectiveViewportRevoker(this, OnTargetLayoutUpdated);
+        //}
     }
 
     private void RevokeViewportChangedEvent()
@@ -1751,14 +1761,14 @@ public partial class TeachingTip : ContentControl
             //}
         }
 
-        if (_expandElevationAnimation != null)
-        {
-            if (_contentRootGrid != null)
-            {
-                ElementComposition.GetElementVisual(_contentRootGrid)?.StartAnimationGroup(_expandElevationAnimation);
-                _isExpandAnimationPlaying = true;
-            }
-        }
+        //if (_expandElevationAnimation != null)
+        //{
+        //    if (_contentRootGrid != null)
+        //    {
+        //        ElementComposition.GetElementVisual(_contentRootGrid)?.StartAnimationGroup(_expandElevationAnimation);
+        //        _isExpandAnimationPlaying = true;
+        //    }
+        //}
 
         _scopedBatch.Completed += () =>
         {
@@ -1802,14 +1812,14 @@ public partial class TeachingTip : ContentControl
             //    _isContractAnimationPlaying = true;
             //}
         }
-        if (_contractElevationAnimation != null)
-        {
-            if (_contentRootGrid != null)
-            {
-                ElementComposition.GetElementVisual(_contentRootGrid)?.StartAnimationGroup(_contractElevationAnimation);
-                _isContractAnimationPlaying = true;
-            }
-        }
+        //if (_contractElevationAnimation != null)
+        //{
+        //    if (_contentRootGrid != null)
+        //    {
+        //        ElementComposition.GetElementVisual(_contentRootGrid)?.StartAnimationGroup(_contractElevationAnimation);
+        //        _isContractAnimationPlaying = true;
+        //    }
+        //}
 
         _scopedBatch.Completed += () =>
         {
@@ -2316,7 +2326,7 @@ public partial class TeachingTip : ContentControl
     private Border _container;
     private Popup _popup;
     private Popup _lightDismissIndicatorPopup;
-    private ContentControl _popupContentControl;
+    // [Unused]  private ContentControl _popupContentControl;
 
     private Control _rootElement;
     private Grid _tailOcclusionGrid;
@@ -2327,16 +2337,16 @@ public partial class TeachingTip : ContentControl
     private Button _alternateCloseButton;
     private Button _closeButton;
     private Path _tailPolygon;
-    //private Grid _tailEdgeBorder;
-    //private Control _titleTextBlock;
-    //private Control _subTitleTextBlock;
+    // [Unused] private Grid _tailEdgeBorder;
+    // [Unused] private Control _titleTextBlock;
+    // [Unused] private Control _subTitleTextBlock;
 
     private IInputElement _previouslyFocusedElement;
 
     private KeyFrameAnimation _expandAnimation;
     private KeyFrameAnimation _contractAnimation;
-    private KeyFrameAnimation _expandElevationAnimation;
-    private KeyFrameAnimation _contractElevationAnimation;
+    // [Unused] private KeyFrameAnimation _expandElevationAnimation;
+    // [Unused] private KeyFrameAnimation _contractElevationAnimation;
     private IEasing _expandEasingFunction;
     private IEasing _contractEasingFunction;
     private readonly ScopedBatchHelper _scopedBatch = new ScopedBatchHelper();
@@ -2357,21 +2367,21 @@ public partial class TeachingTip : ContentControl
     private bool _isExpandAnimationPlaying;
     private bool _isContractAnimationPlaying;
 
-    private bool _hasF6BeenInvoked;
+    // [Unused] private bool _hasF6BeenInvoked;
 
-    private bool _useTextWindowBounds;
-    private Rect _testWindowBoundsInCoreWindowSpace;
-    private bool _useTestScreenBounds;
-    private Rect _testScreenBoundsInCoreWindowSpace;
+    // [Unused] private bool _useTextWindowBounds;
+    // [Unused] private Rect _testWindowBoundsInCoreWindowSpace;
+    // [Unused] private bool _useTestScreenBounds;
+    // [Unused] private Rect _testScreenBoundsInCoreWindowSpace;
 
-    private bool _tipShouldHaveShadow = true;
+    // [Unused] private bool _tipShouldHaveShadow = true;
 
-    private bool _tipFollowsTarget;
+    // [Unused] private bool _tipFollowsTarget;
     private bool _returnTopForOutOfWindowPlacement = true;
 
-    private float _contentElevation = 32f;
-    private float _tailElevation = 0f;
-    private bool _tailShadowTargetsShadowTarget;
+    // [Unused] private float _contentElevation = 32f;
+    // [Unused] private float _tailElevation = 0f;
+    // [Unused] private bool _tailShadowTargetsShadowTarget;
 
     private TimeSpan _expandAnimationDuration = TimeSpan.FromMilliseconds(300);
     private TimeSpan _contractAnimationDuration = TimeSpan.FromMilliseconds(200);
@@ -2459,9 +2469,9 @@ public partial class TeachingTip : ContentControl
 
 
     private static readonly string s_ScaleTargetName = "Scale";
-    private static readonly string s_translationTargetName = "Translation";
+   // [Unused] private static readonly string s_translationTargetName = "Translation";
 
-    private static readonly string s_teachingTipHighlightBrushName = "TeachingTipTopHighlightBrush";
+    // [Unused] private static readonly string s_teachingTipHighlightBrushName = "TeachingTipTopHighlightBrush";
 
     //It is possible this should be exposed as a property, but you can adjust what it does with margin.
     private static readonly float s_untargetedTipWindowEdgeMargin = 24;
