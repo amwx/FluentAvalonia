@@ -1402,10 +1402,10 @@ public partial class TeachingTip : ContentControl
             _xamlRootChangedRevoker = c.GetObservable(BoundsProperty).Subscribe(XamlRootChanged);
         }
 
-        // if IsAnimationsEnabled
-        StartExpandToOpen();
-        // else
-        // SetIsIdle(true);
+        if (FAUISettings.AreAnimationsEnabled())
+            StartExpandToOpen();
+        else
+            SetIsIdle(true);
 
         // TODO: Automation stuff...
     }
@@ -1488,10 +1488,10 @@ public partial class TeachingTip : ContentControl
     {
         if (_popup?.IsOpen == true)
         {
-            // if IsAnimationsEnabled
-            StartContractToClose();
-            // else
-            // ClosePopup();
+            if (FAUISettings.AreAnimationsEnabled())
+                StartContractToClose();
+            else
+                ClosePopup();
 
             // Under normal circumstances we would have launched an animation just now, if we did not then we should make sure
             // that the idle state is correct.
