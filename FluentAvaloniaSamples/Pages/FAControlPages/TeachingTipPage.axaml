@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1200"
+             x:Class="FluentAvaloniaSamples.Pages.TeachingTipPage"
+             PreviewImage="/Assets/PageIcons/NavView.jpg">
+
+    <StackPanel Spacing="8">
+
+        <!--XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/TeachingTip1.xaml.txt"
+        CSharpSource="avares://FluentAvaloniaSamples/Pages/SampleCode/TeachingTip1.cs.txt"-->
+        <ctrls:ControlExample TargetType="ui:TeachingTip"
+                              Header="Basic Targeted TeachingTip"
+                              UsageNotes="More complete examples will be available in the future">
+
+            <Panel>
+                <Button Content="Show TeachingTip" 
+                        Name="ShowTipButton" />
+
+                <ui:TeachingTip Target="{Binding ElementName=ShowTipButton}"
+                                IsLightDismissEnabled="False"
+                                Content="TeachingTip content"
+                                Title="TeachingTip Title"
+                                Subtitle="TeachingTip subtitle"
+                                ActionButtonContent="Action Button"
+                                PreferredPlacement="Right"
+                                HeroContentPlacement="Bottom"
+                                Name="TeachingTip">
+                    <ui:TeachingTip.HeroContent>
+                        <Border Width="100" Height="100"
+                                Background="DarkSlateBlue">
+                            <TextBlock Text="Hero Content"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       FontWeight="SemiBold"/>
+                        </Border>
+                    </ui:TeachingTip.HeroContent>
+                </ui:TeachingTip>
+            </Panel>
+            
+        </ctrls:ControlExample>
+    </StackPanel>
+    
+</UserControl>

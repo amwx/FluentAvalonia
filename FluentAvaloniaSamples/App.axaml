@@ -39,7 +39,7 @@
         <StyleInclude Source="/Styles/ControlExampleStyles.axaml" />
         <StyleInclude Source="/Styles/FAControlsPageBaseStyles.axaml" />
 
-        <Style Selector="PopupRoot">
+        <!--<Style Selector="PopupRoot">
             <Setter Property="TransparencyLevelHint" Value="AcrylicBlur" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="TransparencyBackgroundFallback" Value="Transparent" />
@@ -49,7 +49,7 @@
                 <SolidColorBrush Color="{DynamicResource SolidBackgroundFillColorBase}"
                                  Opacity="0.725"/>
             </Setter>
-        </Style>
+        </Style>-->
 
 		
     </Application.Styles>
