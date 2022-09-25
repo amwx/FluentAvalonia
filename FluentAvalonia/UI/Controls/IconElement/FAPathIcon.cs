@@ -2,118 +2,36 @@ using System;
 using Avalonia;
 using Avalonia.Media;
 using System.Collections.Generic;
-using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
 /// Represents an icon that uses a vector path as its content.
 /// </summary>
-public class FAPathIcon : FAIconElement
+public partial class FAPathIcon : FAIconElement
 {
-    private Matrix _transform = Matrix.Identity;
-    private Geometry _renderedGeometry;
-
     static FAPathIcon()
     {
         StretchProperty.OverrideDefaultValue<FAPathIcon>(Stretch.Uniform);
         StretchDirectionProperty.OverrideDefaultValue<FAPathIcon>(StretchDirection.Both);
         ClipToBoundsProperty.OverrideDefaultValue<FAPathIcon>(true);
-
-        AffectsMeasure<Shape>(StretchProperty, StretchDirectionProperty, DataProperty);
-        AffectsRender<Shape>(StretchProperty, DataProperty);
     }
 
-    /// <summary>
-    /// Defines the <see cref="Data"/> property
-    /// </summary>
-    public static StyledProperty<Geometry> DataProperty =
-        AvaloniaProperty.Register<FAPathIcon, Geometry>(nameof(Data));
-
-    /// <summary>
-    /// Gets or sets a Geometry that specifies the shape to be drawn. 
-    /// In XAML. this can also be set using a string that describes Move and draw commands syntax.
-    /// </summary>
-    public Geometry Data
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        get => GetValue(DataProperty);
-        set => SetValue(DataProperty, value);
-    }
+        base.OnPropertyChanged(change);
 
-    /// <summary>
-    /// Defines the <see cref="Stretch"/> property.
-    /// </summary>
-    public static readonly StyledProperty<Stretch> StretchProperty =
-        Shape.StretchProperty.AddOwner<FAPathIcon>();
-
-    /// <summary>
-    /// Gets or sets a <see cref="Stretch"/> enumeration value that describes how the shape fills its allocated space.
-    /// </summary>
-    public Stretch Stretch
-    {
-        get => GetValue(StretchProperty);
-        set => SetValue(StretchProperty, value);
-    }
-
-    /// <summary>
-    /// Defines the <see cref="StretchDirection"/> property.
-    /// </summary>
-    public static readonly StyledProperty<StretchDirection> StretchDirectionProperty =
-        Viewbox.StretchDirectionProperty.AddOwner<Avalonia.Controls.PathIcon>();
-
-    /// <summary>
-    /// Gets or sets a value controlling in what direction contents will be stretched.
-    /// </summary>
-    public StretchDirection StretchDirection
-    {
-        get => GetValue(StretchDirectionProperty);
-        set => SetValue(StretchDirectionProperty, value);
-    }
-
-    /// <summary>
-    /// Gets a value that represents the final rendered <see cref="Geometry"/> of the shape.
-    /// </summary>
-    private Geometry RenderedGeometry
-    {
-        get
+        if (change.Property == StretchProperty || 
+            change.Property == StretchDirectionProperty ||
+            change.Property == DataProperty)
         {
-            if (_renderedGeometry == null && Data != null)
-            {
-                if (_transform == Matrix.Identity)
-                {
-                    _renderedGeometry = Data;
-                }
-                else
-                {
-                    _renderedGeometry = Data.Clone();
-
-                    if (_renderedGeometry.Transform == null ||
-                        _renderedGeometry.Transform.Value == Matrix.Identity)
-                    {
-                        _renderedGeometry.Transform = new MatrixTransform(_transform);
-                    }
-                    else
-                    {
-                        _renderedGeometry.Transform = new MatrixTransform(
-                            _renderedGeometry.Transform.Value * _transform);
-                    }
-                }
-            }
-
-            return _renderedGeometry;
+            InvalidateMeasure();
         }
     }
 
-    protected override Size MeasureOverride(Size availableSize)
-    {
-        if (Data is null)
-        {
-            return base.MeasureOverride(availableSize);
-        }
-
-        return CalculateSizeAndTransform(availableSize, Data.Bounds, Stretch, StretchDirection).size;
-    }
+    protected override Size MeasureOverride(Size availableSize) =>
+        Data != null ? CalculateSizeAndTransform(availableSize, Data.Bounds, Stretch, StretchDirection).size :
+        base.MeasureOverride(availableSize);
 
     protected override Size ArrangeOverride(Size finalSize)
     {
@@ -124,7 +42,6 @@ public class FAPathIcon : FAIconElement
             if (_transform != transform)
             {
                 _transform = transform;
-                _renderedGeometry = null;
             }
 
             return finalSize;
@@ -183,9 +100,11 @@ public class FAPathIcon : FAIconElement
             case Stretch.Uniform:
                 sx = sy = Math.Min(sx, sy);
                 break;
+
             case Stretch.UniformToFill:
                 sx = sy = Math.Max(sx, sy);
                 break;
+
             case Stretch.Fill:
                 if (double.IsInfinity(availableSize.Width))
                 {
@@ -220,9 +139,6 @@ public class FAPathIcon : FAIconElement
                     sy = 1.0;
                 break;
 
-            case StretchDirection.Both:
-                break;
-
             default:
                 break;
         }
@@ -250,9 +166,11 @@ public class FAPathIcon : FAIconElement
                 }
 
                 break;
+
             case Stretch.Fill:
                 translate = Matrix.CreateTranslation(-(Vector)shapeBounds.Position);
                 break;
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(Stretch), stretch, null);
         }
@@ -264,9 +182,11 @@ public class FAPathIcon : FAIconElement
 
     public override void Render(DrawingContext context)
     {
-        var geometry = RenderedGeometry;
+        var geometry = Data;//RenderedGeometry;
         if (geometry == null)
             return;
+
+        using var s = context.PushPreTransform(_transform);
 
         context.DrawGeometry(Foreground, null, geometry);
     }
@@ -307,4 +227,6 @@ public class FAPathIcon : FAIconElement
             return false;
         }
     }
+
+    private Matrix _transform = Matrix.Identity;
 }
