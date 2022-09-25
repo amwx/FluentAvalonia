@@ -1,5 +1,8 @@
 ﻿namespace FluentAvalonia.Core;
 
+/// <summary>
+/// Provides settings related to the behavior of UI elements, like animation, etc.
+/// </summary>
 public class FAUISettings
 {
     static FAUISettings()

@@ -4,15 +4,26 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Provides data for the <see cref="TeachingTip.Closing"/> event.
+/// </summary>
 public class TeachingTipClosingEventArgs : CancelEventArgs
 {
-    public TeachingTipClosingEventArgs(TeachingTipCloseReason reason)
+    internal TeachingTipClosingEventArgs(TeachingTipCloseReason reason)
     {
         Reason = reason;
     }
 
+    /// <summary>
+    /// Gets a constant that specifies whether the cause of the Closing event was due to 
+    /// user interaction (Close button click), light-dismissal, or programmatic closure.
+    /// </summary>
     public TeachingTipCloseReason Reason { get; }
 
+
+    /// <summary>
+    /// Gets a <see cref="Deferral"/> object for managing the work done in the Closing event handler.
+    /// </summary>
     public Deferral GetDeferral()
     {
         _deferralCount++;
