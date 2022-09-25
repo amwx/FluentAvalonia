@@ -46,6 +46,11 @@
         "Description": "An advanced dialog box",
         "PreviewImageSource": "/Assets/PageIcons/ContentDialog.jpg",
         "PageType": "TaskDialogPage"
+      },
+      {
+        "Header": "TeachingTip",
+        "Description": "A content-rich flyout for guiding users and enabling teaching moments",
+        "PageType": "TeachingTipPage"
       }
     ]
   },

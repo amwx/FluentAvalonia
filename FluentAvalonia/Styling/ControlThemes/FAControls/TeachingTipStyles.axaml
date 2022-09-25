@@ -1,0 +1,552 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    xmlns:core="using:FluentAvalonia.Core">
+
+    <Design.PreviewWith>
+        <Border Padding="50" Width="300" Height="300">
+            <ui:TeachingTip Title="Change themes without hassle"
+                            Subtitle="It's easier than ever to see control samples in both light and dark themes!"
+                            IconSource="Refresh" IsLightDismissEnabled="False"
+                            IsOpen="True" HeroContentPlacement="Auto" 
+                            ActionButtonContent="Action" CloseButtonContent="Close"
+                            core:VisualStateHelper.ForcedClassesProperty=":bottom">
+                <ui:TeachingTip.HeroContent>
+                    <Border Width="100" Height="100" Background="Red" />
+                </ui:TeachingTip.HeroContent>
+            </ui:TeachingTip>
+        </Border>
+    </Design.PreviewWith>
+
+    
+    <x:Double x:Key="TeachingTipMinHeight">40</x:Double>
+    <x:Double x:Key="TeachingTipMaxHeight">520</x:Double>
+    <x:Double x:Key="TeachingTipMinWidth">320</x:Double>
+    <x:Double x:Key="TeachingTipMaxWidth">336</x:Double>
+    <Thickness x:Key="TeachingTipButtonPanelMargin">0,12,0,0</Thickness>
+    <Thickness x:Key="TeachingTipRightButtonMargin">4,12,0,0</Thickness>
+    <Thickness x:Key="TeachingTipLeftButtonMargin">0,12,4,0</Thickness>
+    <Thickness x:Key="TeachingTipMainContentPresentMargin">0,12,0,0</Thickness>
+    <Thickness x:Key="TeachingTipMainContentAbsentMargin">0,0,0,0</Thickness>
+    <Thickness x:Key="TeachingTipTitleStackPanelMarginWithHeaderCloseButton">0,0,28,0</Thickness>
+    <Thickness x:Key="TeachingTipTitleStackPanelMarginWithFooterCloseButton">0,0,0,0</Thickness>
+    <Thickness x:Key="TeachingTipIconPresenterMarginWithIcon">0,0,12,0</Thickness>
+    <Thickness x:Key="TeachingTipIconPresenterMarginWithoutIcon">0,0,0,0</Thickness>
+    <Thickness x:Key="TeachingTipContentBorderThicknessTop">1,1,1,0</Thickness>
+    <Thickness x:Key="TeachingTipContentBorderThicknessBottom">1,0,1,1</Thickness>
+    <Thickness x:Key="TeachingTipContentBorderThicknessLeft">1,1,0,1</Thickness>
+    <Thickness x:Key="TeachingTipContentBorderThicknessRight">0,1,1,1</Thickness>
+    <Thickness x:Key="TeachingTipContentBorderThicknessUntargeted">1,1,1,1</Thickness>
+    <Thickness x:Key="TeachingTipTailPolygonMarginTop">0,-1,0,0</Thickness>
+    <Thickness x:Key="TeachingTipTailPolygonMarginBottom">0,0,0,-1</Thickness>
+    <Thickness x:Key="TeachingTipTailPolygonMarginLeft">-1,0,0,0</Thickness>
+    <Thickness x:Key="TeachingTipTailPolygonMarginRight">0,0,-1,0</Thickness>
+    <GridLength x:Key="TeachingTipTailShortSideLength">8</GridLength>
+    <GridLength x:Key="TeachingTipTailMargin">10</GridLength>
+    <x:Double x:Key="TeachingTipAlternateCloseButtonSize">40</x:Double>
+    <x:Double x:Key="TeachingTipAlternateCloseButtonGlyphSize">16</x:Double>
+    <Thickness x:Key="TeachingTipContentMargin">12</Thickness>
+    <x:Double x:Key="TeachingTipTopHighlightHeight">1</x:Double>
+    <x:Double x:Key="TeachingTipBorderThickness">1</x:Double>
+    <Thickness x:Key="TeachingTipTopHighlightOffsetForBorder">0,1,0,0</Thickness>
+
+
+    <ControlTheme x:Key="AlternateCloseButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="{DynamicResource TeachingTipAlternateCloseButtonSize}" />
+        <Setter Property="Height" Value="{DynamicResource TeachingTipAlternateCloseButtonSize}" />
+        <Setter Property="Background" Value="{DynamicResource TeachingTipAlternateCloseButtonBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource TeachingTipAlternateCloseButtonForeground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TeachingTipAlternateCloseButtonBorderBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource TeachingTipAlternateCloseButtonGlyphSize}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource TeachingTipAlternateCloseButtonBorderThickness}" />
+        <Setter Property="Content" Value="&#xE711;"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Name="ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"                                      
+                                      FontFamily="{TemplateBinding FontFamily}"
+                                      FontSize="{TemplateBinding FontSize}"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      TemplatedControl.IsTemplateFocusTarget="True" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TeachingTipAlternateCloseButtonBackgroundPointerOver}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TeachingTipAlternateCloseButtonBorderBrushPointerOver}" />
+            <Setter Property="Foreground" Value="{DynamicResource TeachingTipAlternateCloseButtonForegroundPointerOver}" />
+        </Style>
+
+        <Style Selector="^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TeachingTipAlternateCloseButtonBackgroundPressed}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TeachingTipAlternateCloseButtonBorderBrushPressed}" />
+            <Setter Property="Foreground" Value="{DynamicResource TeachingTipAlternateCloseButtonForegroundPressed}" />
+        </Style>
+
+        <Style Selector="^:disabled /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TeachingTipAlternateCloseButtonBackgroundDisabled}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TeachingTipAlternateCloseButtonBorderBrushDisabled}" />
+            <Setter Property="Foreground" Value="{DynamicResource TeachingTipAlternateCloseButtonForegroundDisabled}" />
+        </Style>
+    </ControlTheme>
+    
+    
+
+    <ControlTheme x:Key="{x:Type ui:TeachingTip}" TargetType="ui:TeachingTip">
+        <Setter Property="Background" Value="{DynamicResource TeachingTipBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TeachingTipForegroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource TeachingTipBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource TeachingTipContentBorderThicknessUntargeted}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="ActionButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+        <Setter Property="CloseButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="Container"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="Transparent">
+                    <Grid MinHeight="{DynamicResource TeachingTipMinHeight}"
+                          MinWidth="{DynamicResource TeachingTipMinWidth}"
+                          MaxHeight="{DynamicResource TeachingTipMaxHeight}"
+                          MaxWidth="{DynamicResource TeachingTipMaxWidth}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}"/>
+                            <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}"/>
+                            <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}"/>
+                            <RowDefinition Height="{StaticResource TeachingTipTailMargin}"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="{StaticResource TeachingTipTailMargin}"/>
+                            <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Name="TailOcclusionGrid"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              MinHeight="{DynamicResource TeachingTipMinHeight}"
+                              MinWidth="{DynamicResource TeachingTipMinWidth}"
+                              MaxHeight="{DynamicResource TeachingTipMaxHeight}"
+                              MaxWidth="{DynamicResource TeachingTipMaxWidth}"
+                              Grid.ColumnSpan="5"
+                              Grid.RowSpan="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}"/>
+                                <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}"/>
+                                <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}"/>
+                                <RowDefinition Height="{StaticResource TeachingTipTailMargin}"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="{StaticResource TeachingTipTailMargin}"/>
+                                <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Name="ContentRootGridBorder"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    FlowDirection="{TemplateBinding FlowDirection}"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="3"
+                                    Grid.RowSpan="3"
+                                    CornerRadius="{TemplateBinding CornerRadius}">
+                                <Grid Name="ContentRootGrid" RowDefinitions="Auto,*,Auto">
+                                    <Border Name="HeroContentBorder"
+                                            Grid.Row="0"
+                                            Child="{TemplateBinding HeroContent}"
+                                            Background="{TemplateBinding Background}"/>
+
+                                    <Grid Name="NonHeroContentRootGrid" Grid.Row="1">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <StackPanel Margin="{StaticResource TeachingTipContentMargin}">
+                                                <Grid ColumnDefinitions="Auto,*">
+                                                    <ContentPresenter Name="IconPresenter"
+                                                                      Grid.Column="0"
+                                                                      Foreground="{TemplateBinding Foreground}"
+                                                                      Margin="{DynamicResource TeachingTipIconPresenterMarginWithoutIcon}"
+                                                                      Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.IconElement}" />
+                                                    <StackPanel Name="TitlesStackPanel" 
+                                                                Grid.Column="1"
+                                                                Margin="{DynamicResource TeachingTipTitleStackPanelMarginWithHeaderCloseButton}">
+                                                        <TextBlock Name="TitleTextBlock" 
+                                                                   Grid.Column="0" 
+                                                                   Text="{TemplateBinding Title}" 
+                                                                   TextWrapping="Wrap"
+                                                                   Foreground="{DynamicResource TeachingTipTitleForegroundBrush}" 
+                                                                   FontFamily="{TemplateBinding FontFamily}"
+                                                                   FontWeight="SemiBold" 
+                                                                   IsVisible="False"/>
+                                                        <TextBlock Name="SubtitleTextBlock"
+                                                                   Grid.Row="1" 
+                                                                   Text="{TemplateBinding Subtitle}"
+                                                                   Foreground="{DynamicResource TeachingTipSubtitleForegroundBrush}" 
+                                                                   FontFamily="{TemplateBinding FontFamily}"
+                                                                   TextWrapping="Wrap" 
+                                                                   IsVisible="False"/>
+                                                    </StackPanel>
+                                                </Grid>
+
+                                                <ContentPresenter Name="MainContentPresenter" 
+                                                                  Grid.Row="1"
+                                                                  Content="{TemplateBinding Content}"
+                                                                  Background="{TemplateBinding Background}" 
+                                                                  Foreground="{TemplateBinding Foreground}"
+                                                                  FontSize="{TemplateBinding FontSize}" 
+                                                                  FontWeight="{TemplateBinding FontWeight}"
+                                                                  FontStyle="{TemplateBinding FontStyle}" 
+                                                                  FontFamily="{TemplateBinding FontFamily}"
+                                                                  FontStretch="{TemplateBinding FontStretch}"
+                                                                  Margin="{DynamicResource TeachingTipMainContentAbsentMargin}"/>
+                                                <Grid Grid.Row="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Button Name="ActionButton"
+                                                            HorizontalAlignment="Stretch"
+                                                            Theme="{TemplateBinding ActionButtonStyle}"
+                                                            Command="{TemplateBinding ActionButtonCommand}"
+                                                            CommandParameter="{TemplateBinding ActionButtonCommandParameter}"
+                                                            IsVisible="False">
+                                                        <ContentPresenter TextWrapping="Wrap" 
+                                                                          Content="{TemplateBinding ActionButtonContent}"/>
+                                                    </Button>
+                                                    <Button Name="CloseButton"
+                                                            HorizontalAlignment="Stretch"
+                                                            Theme="{TemplateBinding CloseButtonStyle}"
+                                                            Command="{TemplateBinding CloseButtonCommand}"
+                                                            CommandParameter="{TemplateBinding CloseButtonCommandParameter}"
+                                                            Grid.Column="1"
+                                                            IsVisible="False">
+                                                        <ContentPresenter TextWrapping="Wrap" 
+                                                                          Content="{TemplateBinding CloseButtonContent}"/>
+                                                    </Button>
+                                                </Grid>
+                                            </StackPanel>
+                                        </ScrollViewer>
+
+                                        <Button Name="AlternateCloseButton" 
+                                                Theme="{StaticResource AlternateCloseButtonStyle}" />
+                                    </Grid>
+                                    
+                                    
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    
+                        <Path Name="TailPolygon"
+                              Fill="{TemplateBinding Background}"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Stroke="{TemplateBinding BorderBrush}"
+                              StrokeThickness="{StaticResource TeachingTipBorderThickness}"/>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:lightDismiss">
+            <Style Selector="^ /template/ Path#TailPolygon">
+                <Setter Property="Fill" Value="{DynamicResource TeachingTipTransientBackground}" />
+            </Style>
+            <Style Selector="^ /template/ Border#ContentRootGrid">
+                <Setter Property="Background" Value="{DynamicResource TeachingTipTransientBackground}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#MainContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource TeachingTipTransientBackground}" />
+            </Style>
+            <Style Selector="^ /template/ Border#HeroContentBorder">
+                <Setter Property="Background" Value="{DynamicResource TeachingTipTransientBackground}" />
+            </Style>
+        </Style>
+
+        <!-- WinUI ButtonStates group -->
+
+        <!--
+        Change from WinUI: Made this the default state
+        
+        <Style Selector="^:noButtons">
+            <Style Selector="^ /template/ Button#CloseButton">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ Button#ActionButton">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+        </Style>-->
+
+        <Style Selector="^:actionButton">
+            <Style Selector="^ /template/ Button#ActionButton">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="Grid.ColumnSpan" Value="2" />
+                <Setter Property="Grid.Column" Value="0" />
+                <Setter Property="Margin" Value="{DynamicResource TeachingTipButtonPanelMargin}" />
+            </Style>
+            <Style Selector="^:closeButton /template/ Button#CloseButton">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:closeButton">
+            <Style Selector="^ /template/ Button#CloseButton">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="Grid.ColumnSpan" Value="2" />
+                <Setter Property="Grid.Column" Value="0" />
+                <Setter Property="Margin" Value="{DynamicResource TeachingTipButtonPanelMargin}" />
+            </Style>
+            <Style Selector="^ /template/ Button#ActionButton">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:closeButton:actionButton">
+            <Style Selector="^ /template/ Button#CloseButton">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="Grid.ColumnSpan" Value="1" />
+                <Setter Property="Grid.Column" Value="1" />
+                <Setter Property="Margin" Value="{DynamicResource TeachingTipRightButtonMargin}" />
+            </Style>
+            <Style Selector="^ /template/ Button#ActionButton">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="Grid.ColumnSpan" Value="1" />
+                <Setter Property="Grid.Column" Value="0" />
+                <Setter Property="Margin" Value="{DynamicResource TeachingTipLeftButtonMargin}" />
+            </Style>
+        </Style>
+
+
+        <!-- WinUI ContentStates group -->
+
+        <Style Selector="^:content /template/ ContentPresenter#MainContentPresenter">
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipMainContentPresentMargin}" />
+        </Style>
+        <!--
+        Change from WinUI: Made this the default state        
+        
+        <Style Selector="^:noContent /template/ ContentPresenter#MainContentPresenter">
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipMainContentAbsentMargin}" />
+        </Style>-->
+
+        <!-- WinUI CloseButtonLocations group -->
+
+        <!--
+        Change from WinUI: Made this the default state
+        
+        <Style Selector="^:headerClose">
+            <Style Selector="^ /template/ StackPanel#TitlesStackPanel">
+                <Setter Property="Margin" Value="{DynamicResource TeachingTipTitleStackPanelMarginWithHeaderCloseButton}" />
+            </Style>
+            <Style Selector="^ /template/ Button#AlternateCloseButton">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>-->
+
+        <Style Selector="^:footerClose">
+            <Style Selector="^ /template/ StackPanel#TitlesStackPanel">
+                <Setter Property="Margin" Value="{DynamicResource TeachingTipTitleStackPanelMarginWithFooterCloseButton}" />
+            </Style>
+            <Style Selector="^ /template/ Button#AlternateCloseButton">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+        </Style>
+
+        <!-- WinUI Icon group -->
+
+        <Style Selector="^:icon /template/ ContentPresenter#IconPresenter">
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipIconPresenterMarginWithIcon}" />
+        </Style>
+
+        <!--
+        Change from WinUI: Made this the default state
+        
+        <Style Selector="^:noIcon /template/ ContentPresenter#IconPresenter">
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipIconPresenterMarginWithoutIcon}" />
+        </Style>-->
+
+
+        <!-- WinUI HeroContentPlacementStates group -->
+
+        <Style Selector="^:heroContentTop /template/ Border#HeroContentBorder">
+            <Setter Property="Grid.Row" Value="0" />
+            <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopCornerRadiusFilterConverter}, FallbackValue=0}" />
+        </Style>
+
+        <Style Selector="^:heroContentBottom /template/ Border#HeroContentBorder">
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomCornerRadiusFilterConverter}, FallbackValue=0}" />
+        </Style>
+
+        <!-- Placement -->
+
+        <Style Selector="^:top /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,0 L10,10 L20,0" />
+            <Setter Property="Grid.Row" Value="4" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginTop}" />
+        </Style>
+
+        <Style Selector="^:bottom /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,10 L10,0 L20,10" />
+            <Setter Property="Grid.Row" Value="0" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginBottom}" />
+        </Style>
+
+        <Style Selector="^:left /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,0 L10,10 L0,20" />
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="4" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginLeft}" />
+        </Style>
+
+        <Style Selector="^:right /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M10,0 L0,10 L10,20" />
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginRight}" />
+        </Style>
+
+        <Style Selector="^:topRight /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,0 L10,10 L20,0" />
+            <Setter Property="Grid.Row" Value="4" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginTop}" />
+        </Style>
+
+        <Style Selector="^:topLeft /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,0 L10,10 L20,0" />
+            <Setter Property="Grid.Row" Value="4" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginTop}" />
+        </Style>
+
+        <Style Selector="^:bottomRight /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,10 L10,0 L20,10" />
+            <Setter Property="Grid.Row" Value="0" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginBottom}" />
+        </Style>
+
+        <Style Selector="^:bottomLeft /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,10 L10,0 L20,10" />
+            <Setter Property="Grid.Row" Value="0" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginBottom}" />
+        </Style>
+
+        <Style Selector="^:leftTop /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,0 L10,10 L0,20" />
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="4" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginLeft}" />
+        </Style>
+
+        <Style Selector="^:leftBottom /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,0 L10,10 L0,20" />
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="4" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginLeft}" />
+        </Style>
+                
+        <Style Selector="^:rightTop /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M10,0 L0,10 L10,20" />
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginRight}" />
+        </Style>
+
+        <Style Selector="^:rightBottom /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M10,0 L0,10 L10,20" />
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginRight}" />
+        </Style>
+
+        <Style Selector="^:center /template/ Path#TailPolygon">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Data" Value="M0,0 L10,10 L20,0" />
+            <Setter Property="Grid.Row" Value="4" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="{DynamicResource TeachingTipTailPolygonMarginTop}" />
+        </Style>
+
+        <!-- Untargeted is default -->
+
+        <!-- TitleBlockStates -->
+
+        <Style Selector="^:showTitle /template/ TextBlock#TitleTextBlock">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <!-- SubTitleBlockStates -->
+
+        <Style Selector="^:showSubtitle /template/ TextBlock#SubtitleTextBlock">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        
+        
+        
+    </ControlTheme>
+    
+</ResourceDictionary>
