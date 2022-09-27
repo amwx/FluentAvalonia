@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="using:Avalonia.Controls.Converters">
+                    xmlns:converters="using:Avalonia.Controls.Converters"
+                    x:CompileBindings="True">
 
 <!--
 Note the following changes from upstream Avalonia:
@@ -11,11 +12,7 @@ Note the following changes from upstream Avalonia:
     - SystemControlBackgroundChromeWhiteBrush -> ColorControlLightSelectorBrush (new resource)
     - SystemControlBackgroundChromeBlackHighBrush -> ColorControlDarkSelectorBrush (new resource)
     - SystemControlForegroundBaseHighBrush -> ColorControlDefaultSelectorBrush (new resource)
- 5. Separated out ColorViewColorModelRadioButtonTheme and converted to a ControlTheme
- 6. Added new ColorViewPaletteListBoxTheme to customize ListBox for the ColorPicker itself
- 7. Added new ColorViewPaletteListBoxItemTheme to customize ListBoxItem containers for the ColorPicker itself
- 8. Added new resources to control tab/content area background and border in the ColorView
-    Used these resources in both ColorView and ColorPicker to change styles
+ 5. ColorViewColorModelRadioButtonTheme and ColorViewTabItemTheme modified to match Fluent v2
 -->
 
   <!-- Shared Resources -->

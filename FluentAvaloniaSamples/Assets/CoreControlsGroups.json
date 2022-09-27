@@ -63,7 +63,7 @@
   },
   {
     "Header": "Miscellaneous Controls",
-    "Description": "Flyout, GridSplitter, ScrollViewer, ScrollBar, ToolTip",
+    "Description": "Flyout, GridSplitter, ScrollViewer, ScrollBar, ToolTip, ColorPicker",
     "IconResourceKey": null,
     "Navigates": true,
     "PageType": "MiscControlsPage"
