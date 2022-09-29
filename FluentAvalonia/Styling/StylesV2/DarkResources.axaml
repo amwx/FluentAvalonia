@@ -1415,8 +1415,8 @@
 
 
     <!-- AVALONIA COLOR PICKER -->
-    <StaticResource x:Key="ColorControlLightSelectorBrush" ResourceKey="TextFillColorPrimaryBrush" />
-    <StaticResource x:Key="ColorControlDarkSelectorBrush" ResourceKey="TextFillColorInverseBrush" />
+    <SolidColorBrush x:Key="ColorControlLightSelectorBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="ColorControlDarkSelectorBrush" Color="#E4000000" />
     <StaticResource x:Key="ColorControlDefaultSelectorBrush" ResourceKey="TextFillColorPrimaryBrush" />
     <SolidColorBrush x:Key="ColorViewContentBackgroundBrush" Color="Transparent" />
     <SolidColorBrush x:Key="ColorViewContentBorderBrush" Color="Transparent" />
