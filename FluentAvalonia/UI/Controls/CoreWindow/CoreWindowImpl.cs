@@ -11,6 +11,9 @@ internal class CoreWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
 {
     public CoreWindowImpl()
     {
+#if NET6_0_OR_GREATER
+        _isWindows11 = OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000);
+#else
         Win32Interop.OSVERSIONINFOEX version = new Win32Interop.OSVERSIONINFOEX
         {
             OSVersionInfoSize = Marshal.SizeOf<Win32Interop.OSVERSIONINFOEX>()
@@ -24,6 +27,7 @@ internal class CoreWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         }
 
         _isWindows11 = version.BuildNumber >= 22000;
+#endif
     }
 
     public event EventHandler WindowOpened;
