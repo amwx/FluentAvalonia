@@ -15,6 +15,9 @@ public static unsafe class Win32Interop
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
 
+    [DllImport("user32.dll", SetLastError = true)]
+    public static unsafe extern bool GetClientRect(nint hwnd, RECT* lpRect);
+
     [DllImport("user32.dll")]
     public static extern bool AdjustWindowRectEx(ref RECT lpRect, uint dwStyle,
                 bool bMenu, uint dwExStyle);
