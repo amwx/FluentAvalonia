@@ -22,8 +22,8 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.4.3</Version>
-        <AssemblyVersion>1.4.3.0</AssemblyVersion>        
+        <Version>1.4.4</Version>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>        
     </PropertyGroup>
 
 
