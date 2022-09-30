@@ -14,52 +14,52 @@ using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls.Primitives;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls
 {
-	public static class WindowImplSolver
-	{
-		public static IWindowImpl GetWindowImpl()
-		{
-			if (Design.IsDesignMode)
-				return PlatformManager.CreateWindow();
+    public static class WindowImplSolver
+    {
+        public static IWindowImpl GetWindowImpl()
+        {
+            bool useCoreWindowImpl = false;
 
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-				return new CoreWindowImpl();
+#if NET6_0_OR_GREATER
+            useCoreWindowImpl = !Design.IsDesignMode && OperatingSystem.IsWindows();
+#else
+            useCoreWindowImpl = !Design.IsDesignMode && RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+#endif
 
-			return PlatformManager.CreateWindow();
-		}
-	}
+            if (useCoreWindowImpl)
+            {
+                return GetCoreWindowImpl();
+            }
 
-	public class CoreWindow : Window, IStyleable, ICoreApplicationView
+            return PlatformManager.CreateWindow();
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static IWindowImpl GetCoreWindowImpl() =>
+            new CoreWindowImpl();
+    }
+
+    public class CoreWindow : Window, IStyleable, ICoreApplicationView
 	{
 		public CoreWindow()
 			:base (WindowImplSolver.GetWindowImpl())
 		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !Design.IsDesignMode)
-			{
-				_titleBar = new CoreApplicationViewTitleBar(this);
-
-				if (PlatformImpl is CoreWindowImpl cwi)
-				{
-					cwi.SetOwner(this);
-                    cwi.WindowOpened += WindowOpened_Windows;
-				}
-
-                // NOTE FOR FUTURE: 
-                // Do NOT enable these properties, doing so causes a clash of logic between here and
-                // the actual window logic within avalonia leading to the window shrinking when restoring
-                // from maximized or minimized state. 
-				//ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
-				//ExtendClientAreaToDecorationsHint = true;
-				PseudoClasses.Add(":windows");
-
-                PlatformImpl.Closed += WindowClosed_Windows;
-			}
-		}
+#if NET6_0_OR_GREATER
+            if (OperatingSystem.IsWindows() && !Design.IsDesignMode)
+#else
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !Design.IsDesignMode)
+#endif
+            {
+                InitializeCoreWindow();
+            }
+        }
 
         Type IStyleable.StyleKey => typeof(Window);
 
@@ -110,6 +110,8 @@ namespace FluentAvalonia.UI.Controls
 
         protected internal bool IsWindows11 { get; internal set; }
 
+        protected internal bool IsWindows { get; private set; }
+
         protected override Size MeasureOverride(Size availableSize)
         {
             var sz = base.MeasureOverride(availableSize);
@@ -118,7 +120,7 @@ namespace FluentAvalonia.UI.Controls
             // we modify the window in WM_NCCALCSIZE so we need to fix that here
             // But the content measures to the normal size - so in constrained environments
             // like the TaskDialog, stuff gets cut off
-            if (!CanResize && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!CanResize && IsWindows)
             {
                 sz = sz.WithWidth(sz.Width + 16)
                     .WithHeight(sz.Height + 8);
@@ -292,7 +294,7 @@ namespace FluentAvalonia.UI.Controls
 
         private void WindowClosed_Windows()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (IsWindows)
             {
                 ApplicationViewTitleBar.Instance.TitleBarPropertyChanged -= OnTitleBarPropertyChanged;
 
@@ -490,6 +492,29 @@ namespace FluentAvalonia.UI.Controls
             SetTitleBarColors();
 
             sender.ForceWin32WindowToTheme(this);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void InitializeCoreWindow()
+        {
+            IsWindows = true;
+            _titleBar = new CoreApplicationViewTitleBar(this);
+
+            if (PlatformImpl is CoreWindowImpl cwi)
+            {
+                cwi.SetOwner(this);
+                cwi.WindowOpened += WindowOpened_Windows;
+            }
+
+            // NOTE FOR FUTURE: 
+            // Do NOT enable these properties, doing so causes a clash of logic between here and
+            // the actual window logic within avalonia leading to the window shrinking when restoring
+            // from maximized or minimized state. 
+            //ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+            //ExtendClientAreaToDecorationsHint = true;
+            PseudoClasses.Add(":windows");
+
+            PlatformImpl.Closed += WindowClosed_Windows;
         }
 
         private SplashScreenContext _splashContext;
