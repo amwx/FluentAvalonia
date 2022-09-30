@@ -11,25 +11,19 @@ namespace FluentAvalonia.UI.Controls
     /// Represents an icon that uses a vector path as its content.
     /// </summary>
     public class PathIcon : IconElement
-    {
-        private Matrix _transform = Matrix.Identity;
-        private Geometry _renderedGeometry;
-
+    {   
         static PathIcon()
         {
             StretchProperty.OverrideDefaultValue<PathIcon>(Stretch.Uniform);
             StretchDirectionProperty.OverrideDefaultValue<PathIcon>(StretchDirection.Both);
             ClipToBoundsProperty.OverrideDefaultValue<PathIcon>(true);
-            
-            AffectsMeasure<Shape>(StretchProperty, StretchDirectionProperty, DataProperty);
-            AffectsRender<Shape>(StretchProperty, DataProperty);
         }
 
         /// <summary>
         /// Defines the <see cref="Data"/> property
         /// </summary>
         public static StyledProperty<Geometry> DataProperty =
-            AvaloniaProperty.Register<PathIcon, Geometry>(nameof(Data));
+            Path.DataProperty.AddOwner<PathIcon>();
 
         /// <summary>
         /// Gets or sets a Geometry that specifies the shape to be drawn. 
@@ -38,7 +32,7 @@ namespace FluentAvalonia.UI.Controls
         public Geometry Data
         {
             get => GetValue(DataProperty);
-			set => SetValue(DataProperty, value);
+            set => SetValue(DataProperty, value);
         }
 
         /// <summary>
@@ -60,8 +54,8 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="StretchDirection"/> property.
         /// </summary>
         public static readonly StyledProperty<StretchDirection> StretchDirectionProperty =
-            Viewbox.StretchDirectionProperty.AddOwner<Avalonia.Controls.PathIcon>();
-        
+            Viewbox.StretchDirectionProperty.AddOwner<PathIcon>();
+
         /// <summary>
         /// Gets or sets a value controlling in what direction contents will be stretched.
         /// </summary>
@@ -70,50 +64,22 @@ namespace FluentAvalonia.UI.Controls
             get => GetValue(StretchDirectionProperty);
             set => SetValue(StretchDirectionProperty, value);
         }
-        
-        /// <summary>
-        /// Gets a value that represents the final rendered <see cref="Geometry"/> of the shape.
-        /// </summary>
-        private Geometry RenderedGeometry
+
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
-            get
+            base.OnPropertyChanged(change);
+
+            if (change.Property == StretchProperty ||
+                change.Property == StretchDirectionProperty ||
+                change.Property == DataProperty)
             {
-                if (_renderedGeometry == null && Data != null)
-                {
-                    if (_transform == Matrix.Identity)
-                    {
-                        _renderedGeometry = Data;
-                    }
-                    else
-                    {
-                        _renderedGeometry = Data.Clone();
-
-                        if (_renderedGeometry.Transform == null ||
-                            _renderedGeometry.Transform.Value == Matrix.Identity)
-                        {
-                            _renderedGeometry.Transform = new MatrixTransform(_transform);
-                        }
-                        else
-                        {
-                            _renderedGeometry.Transform = new MatrixTransform(
-                                _renderedGeometry.Transform.Value * _transform);
-                        }
-                    }
-                }
-
-                return _renderedGeometry;
+                InvalidateMeasure();
             }
         }
 
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            if (Data is null)
-            {
-                return base.MeasureOverride(availableSize);
-            }
-
-            return CalculateSizeAndTransform(availableSize, Data.Bounds, Stretch, StretchDirection).size;
-        }
+        protected override Size MeasureOverride(Size availableSize) =>
+            Data != null ? CalculateSizeAndTransform(availableSize, Data.Bounds, Stretch, StretchDirection).size :
+            base.MeasureOverride(availableSize);
 
         protected override Size ArrangeOverride(Size finalSize)
         {
@@ -124,7 +90,6 @@ namespace FluentAvalonia.UI.Controls
                 if (_transform != transform)
                 {
                     _transform = transform;
-                    _renderedGeometry = null;
                 }
 
                 return finalSize;
@@ -177,15 +142,17 @@ namespace FluentAvalonia.UI.Controls
             {
                 sy = sx;
             }
-            
+
             switch (stretch)
             {
                 case Stretch.Uniform:
                     sx = sy = Math.Min(sx, sy);
                     break;
+
                 case Stretch.UniformToFill:
                     sx = sy = Math.Max(sx, sy);
                     break;
+
                 case Stretch.Fill:
                     if (double.IsInfinity(availableSize.Width))
                     {
@@ -202,7 +169,7 @@ namespace FluentAvalonia.UI.Controls
                     sx = sy = 1;
                     break;
             }
-            
+
             // Apply stretch direction by bounding scales.
             switch (stretchDirection)
             {
@@ -218,9 +185,6 @@ namespace FluentAvalonia.UI.Controls
                         sx = 1.0;
                     if (sy > 1.0)
                         sy = 1.0;
-                    break;
-
-                case StretchDirection.Both:
                     break;
 
                 default:
@@ -248,11 +212,13 @@ namespace FluentAvalonia.UI.Controls
                     {
                         translate = Matrix.CreateTranslation(-(Vector)shapeBounds.Position);
                     }
-                    
+
                     break;
+
                 case Stretch.Fill:
                     translate = Matrix.CreateTranslation(-(Vector)shapeBounds.Position);
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(Stretch), stretch, null);
             }
@@ -264,12 +230,15 @@ namespace FluentAvalonia.UI.Controls
 
         public override void Render(DrawingContext context)
         {
-            var geometry = RenderedGeometry;
+            var geometry = Data;
             if (geometry == null)
                 return;
 
+            using var s = context.PushPreTransform(_transform);
+
             context.DrawGeometry(Foreground, null, geometry);
         }
+
 
         /// <summary>
         /// Quick and dirty check if we have a valid PathGeometry. This probably needs to be
@@ -307,5 +276,7 @@ namespace FluentAvalonia.UI.Controls
                 return false;
             }
         }
+
+        private Matrix _transform = Matrix.Identity;
     }
 }
