@@ -1,15 +1,19 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using FluentAvalonia.Interop;
 using System;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class CoreWindowImpl : Avalonia.Win32.WindowImpl
+internal class CoreWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
 {
     public CoreWindowImpl()
     {
+#if NET6_0_OR_GREATER
+        _isWindows11 = OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000);
+#else
         Win32Interop.OSVERSIONINFOEX version = new Win32Interop.OSVERSIONINFOEX
         {
             OSVersionInfoSize = Marshal.SizeOf<Win32Interop.OSVERSIONINFOEX>()
@@ -23,6 +27,7 @@ internal class CoreWindowImpl : Avalonia.Win32.WindowImpl
         }
 
         _isWindows11 = version.BuildNumber >= 22000;
+#endif
     }
 
     public event EventHandler WindowOpened;
@@ -168,6 +173,24 @@ internal class CoreWindowImpl : Avalonia.Win32.WindowImpl
         }
 
         return base.WndProc(hWnd, msg, wParam, lParam);
+    }
+
+    void IWindowImpl.Resize(Size value, PlatformResizeReason reason)
+    {
+        Resize(value, reason);
+        unsafe
+        {
+            RECT rc;
+            Win32Interop.GetClientRect(Hwnd, &rc);
+
+            if (rc.Width < value.Width || rc.Height < value.Height)
+            {
+                value = new Size(value.Width + 16, value.Height + 8);
+                Win32Interop.SetWindowPos(Hwnd, IntPtr.Zero,
+                    0, 0, (int)value.Width, (int)value.Height,
+                    0x0002 | 0x0004 | 0x0010);
+            }
+        }        
     }
 
     public override void Show(bool activate, bool isDialog)

@@ -9,6 +9,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using System;
 using System.ComponentModel;
+using Avalonia.Platform;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -69,7 +70,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
             window.Deactivated += WindowDeactivated;
         }
 
-        if (_root is TopLevel tl)
+        if (_root is TopLevel tl && tl.PlatformImpl != null)
             tl.PlatformImpl.LostFocus += TopLevelLostPlatformFocus;
 
         _inputManagerSubscription = InputManager?.Process.Subscribe(RawInput);
@@ -102,7 +103,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
             root.Deactivated -= WindowDeactivated;
         }
 
-        if (_root is TopLevel tl)
+        if (_root is TopLevel tl && tl.PlatformImpl != null)
             tl.PlatformImpl.LostFocus -= TopLevelLostPlatformFocus;
 
         _inputManagerSubscription?.Dispose();
