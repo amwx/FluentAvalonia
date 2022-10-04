@@ -27,5 +27,5 @@ public class FAUISettings
     }
 
     private static readonly FAUISettings s_Instance;
-    private bool _areAnimationsEnabled = false;
+    private bool _areAnimationsEnabled = true;
 }

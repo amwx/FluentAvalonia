@@ -11,5 +11,36 @@
         x:Class="FASandbox.MainWindow"
         Title="FASandbox">
 
+    <TabControl>
+        <TabItem Header="Dialog Animation">
+            <Button Content="Show Dialog" Click="ShowDialogClick" />
+        </TabItem>
+        <TabItem Header="Multiple CompositionAnimation">
+            <Panel>
+                <Border Background="DarkSlateBlue"
+                        Name="Border1"
+                        Width="200"
+                        Height="200" />
+
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Top">
+                    <Button Content="Open Animation" Click="OpenAnimRun" />
+                    <Button Content="Close Animation" Click="CloseAnimRun" />
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Top"
+                            HorizontalAlignment="Right">
+                    <Button Content="TeachingTip" 
+                            Click="TeachingTipOpen" 
+                            Name="TTButton"/>
+                    <ui:TeachingTip Title="Test" 
+                                    Name="TeachingTip1"
+                                    Content="Test TeachingTip"
+                                    Target="{Binding #TTButton}"
+                                    PreferredPlacement="Left"/>
+                </StackPanel>
+            </Panel>
+        </TabItem>
+    </TabControl>
     
 </Window>
