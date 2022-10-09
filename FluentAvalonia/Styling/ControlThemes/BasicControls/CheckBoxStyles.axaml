@@ -276,6 +276,6 @@
                 <Setter Property="Opacity" Value="1" />
                 <Setter Property="Glyph" Value="{StaticResource CheckBoxIndeterminateGlyph}" />
             </Style>
-        </Style>       
+        </Style>
     </ControlTheme>
 </ResourceDictionary>

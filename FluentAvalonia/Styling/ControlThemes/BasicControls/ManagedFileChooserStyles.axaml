@@ -136,7 +136,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid ColumnDefinitions="1*,0,4*">
-                    <ListBox x:Name="QuickLinks"
+                    <ListBox x:Name="PART_QuickLinks"
                              Grid.Column="0"
                              Items="{Binding QuickLinks}"
                              SelectedIndex="{Binding QuickLinksSelectedIndex}"
@@ -262,7 +262,7 @@
                                 <GridSplitter Grid.Column="7" />
                                 <TextBlock Grid.Column="8" Text="Size" />
                             </Grid>
-                            <ListBox x:Name="Files"
+                            <ListBox x:Name="PART_Files"
                                      VirtualizationMode="Simple"
                                      Items="{Binding Items}"
                                      Margin="0 5"

@@ -54,11 +54,11 @@
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="SwitchAreaGrid"
-								Grid.RowSpan="3"
-								Grid.ColumnSpan="3"
-								TemplatedControl.IsTemplateFocusTarget="True"
-								Margin="0,5"
-								CornerRadius="{TemplateBinding CornerRadius}"
+                                Grid.RowSpan="3"
+                                Grid.ColumnSpan="3"
+                                TemplatedControl.IsTemplateFocusTarget="True"
+                                Margin="0,5"
+                                CornerRadius="{TemplateBinding CornerRadius}"
                                 Background="{DynamicResource ToggleSwitchContainerBackground}"/>
 
                         <ContentPresenter x:Name="PART_OffContentPresenter"
@@ -109,11 +109,11 @@
                             </Border.Transitions>
                         </Border>
 
-                        <Canvas x:Name="SwitchKnob" Grid.Row="1"
+                        <Canvas x:Name="PART_SwitchKnob" Grid.Row="1"
                                 HorizontalAlignment="Left"
                                 Width="20" Height="20">
 
-                            <Grid x:Name="MovingKnobs"
+                            <Grid x:Name="PART_MovingKnobs"
                                   Width="20" Height="20">
 
                                 <Ellipse x:Name="SwitchKnobOn"

@@ -6,15 +6,15 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Grid.Column="0"
-						Width="12"
-						Height="12"
-						Background="Transparent"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Center">
+                        Width="12"
+                        Height="12"
+                        Background="Transparent"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
                     <ui:SymbolIcon Symbol="ChevronRight"
-								   VerticalAlignment="Center"
-								   HorizontalAlignment="Center"
-								   FontSize="16" />
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontSize="16" />
                 </Border>
             </ControlTemplate>
         </Setter>

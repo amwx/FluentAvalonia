@@ -396,6 +396,6 @@
         </Style>
 
         <!-- WinUI styles not implemented: All InputModeStates  -->
-        
-    </ControlTheme>    
+
+    </ControlTheme>
 </ResourceDictionary>
