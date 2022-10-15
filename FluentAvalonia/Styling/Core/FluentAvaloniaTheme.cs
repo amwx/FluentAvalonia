@@ -12,6 +12,7 @@ using FluentAvalonia.UI.Media;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.Styling;
@@ -101,11 +102,18 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     }
 
     /// <summary>
-    /// Gets or sets a value that determines if Thickness (Margin/Padding) and/or VerticalAlignment
-    /// for some controls should be adjusted when not on Windows where Segoe UI/Segoe UI Variable
-    /// font is unavailable. This value is respected on startup only and defaults to true
+    /// Gets or sets a value that determines if/when style overrides should be used to alleviate issues 
+    /// with text alignment in some controls caused when Segoe UI or Segoe UI Variable font
+    /// families do not exist. The default value is <see cref="TextVerticalAlignmentOverride.EnabledNonWindows"/>
     /// </summary>
-    public bool UseStyleOverridesForNonWindows { get; set; } = true;
+    /// <remarks>
+    /// These overrides apply to controls like RadioButton, CheckBox, ComboBox where the first line of text
+    /// is explicitly aligned with the control. Adding the overrides modify the styles to use VerticalAlignment=Center
+    /// to get a consistent experience, at the (small) expense of breaking Fluent design principles. If your controls
+    /// never use multi-line text, you'll never see the effect of this property.
+    /// </remarks>
+    public TextVerticalAlignmentOverride TextVerticalAlignmentOverrideBehavior { get; set; } =
+        TextVerticalAlignmentOverride.EnabledNonWindows;
 
     public IResourceHost Owner
     {
@@ -303,10 +311,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         // Load the controls
         _styles = (Styles)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/ControlThemes/Controls.axaml"), _baseUri);
 
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && UseStyleOverridesForNonWindows)
-        {
-            AddStyleOverridesForNonWindows();
-        }
+        SetTextAlignmentOverrides();
 
         _hasLoaded = true;
     }
@@ -575,8 +580,14 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         return theme;
     }
 
-    private void AddStyleOverridesForNonWindows()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void SetTextAlignmentOverrides()
     {
+        if (TextVerticalAlignmentOverrideBehavior == TextVerticalAlignmentOverride.Disabled ||
+            (TextVerticalAlignmentOverrideBehavior == TextVerticalAlignmentOverride.EnabledNonWindows && 
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows)))
+            return;
+
         // The following resources are added to remove the larger bottom margin/padding value
         // on some controls added to accomodate Segoe UI - this will allow vertical centering
         // These are added to the internal _themeResources dictionary, so user can still 
