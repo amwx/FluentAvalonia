@@ -1,37 +1,32 @@
-﻿//using System;
-//using System.Globalization;
-//using Avalonia.Media.TextFormatting.Unicode;
-//using Avalonia.Media;
-//using Avalonia.Platform;
-//using Avalonia.Utilities;
+﻿using Avalonia.Media.TextFormatting.Unicode;
+using Avalonia.Platform;
+using Avalonia.Utilities;
+using Avalonia.Media.TextFormatting;
 
-//namespace FluentAvaloniaTests.Helpers
-//{
-//    public class MockTextShaper : ITextShaperImpl
-//    {
-//        public GlyphRun ShapeText(ReadOnlySlice<char> text, Typeface typeface, double fontRenderingEmSize, CultureInfo culture)
-//        {
-//            var glyphTypeface = typeface.GlyphTypeface;
-//            var glyphIndices = new ushort[text.Length];
-//            var glyphCount = 0;
+namespace FluentAvaloniaTests.Helpers;
 
-//            for (var i = 0; i < text.Length;)
-//            {
-//                var index = i;
+public class MockTextShaper : ITextShaperImpl
+{
+    public ShapedBuffer ShapeText(ReadOnlySlice<char> text, TextShaperOptions options)
+    {
+        var typeface = options.Typeface;
+        var fontRenderingEmSize = options.FontRenderingEmSize;
+        var bidiLevel = options.BidiLevel;
 
-//                var codepoint = Codepoint.ReadAt(text, i, out var count);
+        var shapedBuffer = new ShapedBuffer(text, text.Length, typeface, fontRenderingEmSize, bidiLevel);
 
-//                i += count;
+        for (var i = 0; i < shapedBuffer.Length;)
+        {
+            var glyphCluster = i + text.Start;
+            var codepoint = Codepoint.ReadAt(text, i, out var count);
 
-//                var glyph = glyphTypeface.GetGlyph(codepoint);
+            var glyphIndex = typeface.GetGlyph(codepoint);
 
-//                glyphIndices[index] = glyph;
+            shapedBuffer[i] = new GlyphInfo(glyphIndex, glyphCluster, 10);
 
-//                glyphCount++;
-//            }
+            i += count;
+        }
 
-//            return new GlyphRun(glyphTypeface, fontRenderingEmSize,
-//                new ReadOnlySlice<ushort>(glyphIndices.AsMemory(0, glyphCount)), characters: text);
-//        }
-//    }
-//}
+        return shapedBuffer;
+    }
+}
