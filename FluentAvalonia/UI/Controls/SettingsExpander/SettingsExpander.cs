@@ -10,13 +10,12 @@ using Avalonia.Interactivity;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Control used to display or group settings options within an app, like in
+/// the Windows 11 Settings app
+/// </summary>
 public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 {
-    public SettingsExpander()
-    {
-        TemplateSettings = new SettingsExpanderTemplateSettings();
-    }
-
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
@@ -40,7 +39,7 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
             }
 
             // Disable pointerover/pressed styles if we aren't clickable (empty or !IsClickEnabled)
-        ((IPseudoClasses)_expanderToggleButton.Classes).Set(":allowClick", newVal || ItemCount > 0);
+            ((IPseudoClasses)_expanderToggleButton.Classes).Set(":allowClick", newVal || ItemCount > 0);
 
             // When IsClickEnabled == true, we don't allow items but we may want to show an ActionIcon
             // ControlThemes don't let is drill into sub-templates so we have to do this manually here
@@ -62,6 +61,9 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
             throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
     }
 
+    /// <summary>
+    /// Invoked when the SettingsExpander is clicked when IsClickEnabled = true
+    /// </summary>
     protected internal virtual void OnClick()
     {
         var args = new RoutedEventArgs(ClickEvent);

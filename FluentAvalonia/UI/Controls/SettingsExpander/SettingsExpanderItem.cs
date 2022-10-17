@@ -9,6 +9,9 @@ using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// An item displayed within a <see cref="SettingsExpander"/>
+/// </summary>
 public partial class SettingsExpanderItem : ContentControl, ICommandSource
 {
     public SettingsExpanderItem()
@@ -140,6 +143,9 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         PseudoClasses.Set(":pressed", false);
     }
 
+    /// <summary>
+    /// Invoked when the SettingsExpanderItem is clicked when IsClickEnabled = true
+    /// </summary>
     protected virtual void OnClick()
     {
         var args = new RoutedEventArgs(ClickEvent);
