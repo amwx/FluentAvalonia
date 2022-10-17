@@ -259,6 +259,9 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
 
     private void OnAdaptiveWidthValueChanged(object value)
     {
+        if (value == AvaloniaProperty.UnsetValue)
+            return;
+
         _adaptiveWidthTrigger = Unsafe.Unbox<double>(value);
         InvalidateMeasure();
     }

@@ -7,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -37,15 +38,29 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
             {
                 throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
             }
-
-            // Disable pointerover/pressed styles if we aren't clickable (empty or !IsClickEnabled)
-            ((IPseudoClasses)_expanderToggleButton.Classes).Set(":allowClick", newVal || ItemCount > 0);
-
-            // When IsClickEnabled == true, we don't allow items but we may want to show an ActionIcon
-            // ControlThemes don't let is drill into sub-templates so we have to do this manually here
-            // Set a style on the ToggleButton to indicate we want to hide the expand/collapse chevron
+                       
             if (_expanderToggleButton != null)
+            {
+                // Disable pointerover/pressed styles if we aren't clickable (empty or !IsClickEnabled)
+                ((IPseudoClasses)_expanderToggleButton.Classes).Set(":allowClick", newVal || ItemCount > 0);
+
+                // When IsClickEnabled == true, we don't allow items but we may want to show an ActionIcon
+                // ControlThemes don't let is drill into sub-templates so we have to do this manually here
+                // Set a style on the ToggleButton to indicate we want to hide the expand/collapse chevron
                 ((IPseudoClasses)_expanderToggleButton.Classes).Set(":empty", newVal);
+            }                
+        }
+        else if (change.Property == IsExpandedProperty)
+        {
+            // Prevent going to expanded state if we don't have any child items
+            if (ItemCount == 0 && change.GetNewValue<bool>())
+            {
+                // There seems to be an issue here where if we just set IsExpanded = false
+                // the property does get set, but the :expanded pseudoclass is never cleared
+                // from the Expander. So post to dispatcher to let this prop change notification
+                // go through real quick, then change the value to false to get the correct state
+                Dispatcher.UIThread.Post(() => IsExpanded = false, DispatcherPriority.Send);
+            }
         }
     }
 
