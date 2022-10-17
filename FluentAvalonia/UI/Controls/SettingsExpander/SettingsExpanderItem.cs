@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -86,6 +87,28 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         else if (change.Property == DescriptionProperty)
         {
             OnDescriptionChanged(change);
+        }
+        else if (change.Property == CommandProperty)
+        {
+            if (((ILogical)this).IsAttachedToLogicalTree)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<ICommand>();
+                if (oldValue != null)
+                {
+                    oldValue.CanExecuteChanged -= CanExecuteChanged;
+                }
+
+                if (newValue != null)
+                {
+                    newValue.CanExecuteChanged += CanExecuteChanged;
+                }
+            }
+
+            CanExecuteChanged(this, EventArgs.Empty);
+        }
+        else if (change.Property == CommandParameterProperty)
+        {
+            CanExecuteChanged(this, EventArgs.Empty);
         }
     }
 
@@ -248,7 +271,7 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
 
     private void CanExecuteChanged(object sender, EventArgs e)
     {
-        var canExecute = _command == null || _command.CanExecute(CommandProperty);
+        var canExecute = _command == null || _command.CanExecute(CommandParameter);
 
         if (canExecute != _commandCanExecute)
         {

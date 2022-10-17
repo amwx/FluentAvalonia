@@ -171,6 +171,8 @@ public partial class SettingsExpander
         set => SetValue(CommandParameterProperty, value);
     }
 
+    protected override bool IsEnabledCore => base.IsEnabledCore && _commandCanExecute;
+
     /// <summary>
     /// Event raised when the SettingsExpander is clicked and IsClickEnabled = true
     /// </summary>

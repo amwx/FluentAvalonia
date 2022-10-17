@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Generators;
@@ -7,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using Avalonia.Threading;
 
 namespace FluentAvalonia.UI.Controls;
@@ -61,6 +63,28 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
                 // go through real quick, then change the value to false to get the correct state
                 Dispatcher.UIThread.Post(() => IsExpanded = false, DispatcherPriority.Send);
             }
+        }
+        else if (change.Property == CommandProperty)
+        {
+            if (((ILogical)this).IsAttachedToLogicalTree)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<ICommand>();
+                if (oldValue != null)
+                {
+                    oldValue.CanExecuteChanged -= CanExecuteChanged;
+                }
+
+                if (newValue != null)
+                {
+                    newValue.CanExecuteChanged += CanExecuteChanged;
+                }
+            }
+
+            CanExecuteChanged(this, EventArgs.Empty);
+        }
+        else if (change.Property == CommandParameterProperty)
+        {
+            CanExecuteChanged(this, EventArgs.Empty);
         }
     }
 
@@ -125,7 +149,7 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 
     private void CanExecuteChanged(object sender, EventArgs e)
     {
-        var canExecute = _command == null || _command.CanExecute(CommandProperty);
+        var canExecute = _command == null || _command.CanExecute(CommandParameter);
 
         if (canExecute != _commandCanExecute)
         {

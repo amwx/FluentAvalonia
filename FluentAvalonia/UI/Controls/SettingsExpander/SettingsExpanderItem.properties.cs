@@ -159,6 +159,8 @@ public partial class SettingsExpanderItem : ContentControl
         private set => SetValue(TemplateSettingsProperty, value);
     }
 
+    protected override bool IsEnabledCore => base.IsEnabledCore && _commandCanExecute;
+
     /// <summary>
     /// Event raised when the SettingsExpander is clicked and IsClickEnabled = true
     /// </summary>
