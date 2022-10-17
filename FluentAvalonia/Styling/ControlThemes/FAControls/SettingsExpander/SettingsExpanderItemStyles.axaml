@@ -26,6 +26,7 @@
     <Thickness x:Key="SettingsExpanderItemFooterMargin">16 0 0 0</Thickness>
     <x:Double x:Key="SettingsExpanderItemIconSize">24</x:Double>
     <x:Double x:Key="SettingsExpanderItemActionIconSize">18</x:Double>
+    <x:Double x:Key="SettingsExpanderItemAdaptiveWidthTrigger">1000</x:Double>
   
     <ControlTheme x:Key="{x:Type ui:SettingsExpanderItem}" TargetType="ui:SettingsExpanderItem">
         <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackground}" />
@@ -47,7 +48,8 @@
                         </Transitions>
                     </ui:FABorder.Transitions>
                     
-                    <Grid ColumnDefinitions="*,Auto,Auto">
+                    <Grid ColumnDefinitions="*,Auto,Auto"
+                          RowDefinitions="*,Auto">
                         <Viewbox Width="{DynamicResource SettingsExpanderItemIconSize}"
                                  Height="{DynamicResource SettingsExpanderItemIconSize}"
                                  HorizontalAlignment="Left"
@@ -81,7 +83,9 @@
                                           Grid.Column="1"
                                           Name="FooterPresenter"
                                           IsVisible="False"
-                                          Margin="{DynamicResource SettingsExpanderItemFooterMargin}" />
+                                          Margin="{DynamicResource SettingsExpanderItemFooterMargin}"
+                                          Grid.Row="0"
+                                          Grid.ColumnSpan="1" />
 
                         <Viewbox Width="{DynamicResource SettingsExpanderItemActionIconSize}" 
                                  Height="{DynamicResource SettingsExpanderItemActionIconSize}"
@@ -106,6 +110,15 @@
 
         <Style Selector="^:footer /template/ ContentPresenter#FooterPresenter">
             <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:footerBottom /template/ ContentPresenter#FooterPresenter">
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="Grid.ColumnSpan" Value="3" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="42 16 0 0" />
         </Style>
 
         <Style Selector="^:actionIcon /template/ Viewbox#ActionIconHost">

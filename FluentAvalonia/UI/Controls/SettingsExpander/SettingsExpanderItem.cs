@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -19,9 +21,36 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         TemplateSettings = new SettingsExpanderTemplateSettings();
     }
 
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        // To handle cases where SettingsExpander is too small, we want to move the footer
+        // content to the bottom so we can try to display everything nicely
+        if (_hasFooter)
+        {
+            if (_isFooterAtBottom)
+            {
+                if (availableSize.Width > _adaptiveWidthTrigger)
+                {
+                    _isFooterAtBottom = false;
+                    PseudoClasses.Set(":footerBottom", false);
+                }
+            }
+            else if (availableSize.Width < _adaptiveWidthTrigger)
+            {
+                _isFooterAtBottom = true;
+                PseudoClasses.Set(":footerBottom", true);
+            }
+        }
+
+        return base.MeasureOverride(availableSize);
+    }
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+
+        _adaptiveWidthDisposable = this.GetResourceObservable("SettingsExpanderItemAdaptiveWidthTrigger")
+            .Subscribe(OnAdaptiveWidthValueChanged);
 
         // We only want to allow interaction on the SettingsExpanderItem IF we're a child item,
         // because we use this in the header of the expander for the SettingsExpander where the
@@ -74,6 +103,9 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
     protected override void OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromLogicalTree(e);
+
+        _adaptiveWidthDisposable?.Dispose();
+        _adaptiveWidthDisposable = null;
 
         if (_command != null)
             _command.CanExecuteChanged -= CanExecuteChanged;
@@ -200,7 +232,8 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
 
     private void OnFooterChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        PseudoClasses.Set(":footer", args.NewValue != null);
+        _hasFooter = args.NewValue != null;
+        PseudoClasses.Set(":footer", _hasFooter);
     }
 
     private void OnContentChanged(AvaloniaPropertyChangedEventArgs args)
@@ -224,10 +257,20 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         }
     }
 
+    private void OnAdaptiveWidthValueChanged(object value)
+    {
+        _adaptiveWidthTrigger = Unsafe.Unbox<double>(value);
+        InvalidateMeasure();
+    }
+
     void ICommandSource.CanExecuteChanged(object sender, EventArgs e) =>
         CanExecuteChanged(sender, e);
 
     private bool _commandCanExecute = true;
     private bool _allowInteraction;
     private bool _isPressed;
+    private bool _hasFooter;
+    private bool _isFooterAtBottom;
+    private IDisposable _adaptiveWidthDisposable;
+    private double _adaptiveWidthTrigger = 460;
 }
