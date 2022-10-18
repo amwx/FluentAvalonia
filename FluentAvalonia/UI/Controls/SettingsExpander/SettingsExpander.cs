@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -55,7 +56,9 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         else if (change.Property == IsExpandedProperty)
         {
             // Prevent going to expanded state if we don't have any child items
-            if (ItemCount == 0 && change.GetNewValue<bool>())
+            // Use the IsAttachedToVisualTree flag here to prevent overwriting 'true' while control
+            // is Initializing where IsExpanded may be set before Items
+            if (ItemCount == 0 && change.GetNewValue<bool>() && ((IVisual)this).IsAttachedToVisualTree)
             {
                 // There seems to be an issue here where if we just set IsExpanded = false
                 // the property does get set, but the :expanded pseudoclass is never cleared
