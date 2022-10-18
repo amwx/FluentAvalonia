@@ -75,7 +75,7 @@ public partial class SettingsExpander
     /// Defines the <see cref="Click"/> event
     /// </summary>
     public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-        Button.ClickEvent;
+        SettingsExpanderItem.ClickEvent;
 
     /// <summary>
     /// Gets or sets the Header template for the SettingsExpander

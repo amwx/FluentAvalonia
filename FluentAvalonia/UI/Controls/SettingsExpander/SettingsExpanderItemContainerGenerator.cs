@@ -21,9 +21,13 @@ public class SettingsExpanderItemContainerGenerator : ItemContainerGenerator<Set
 
         // If DataTemplate built us a SEI, return that
         if (tItem is SettingsExpanderItem)
+        {
+            tItem.DataContext = item;
             return tItem;
+        }
 
         expItem = new SettingsExpanderItem();
+        expItem.DataContext = item;
         expItem.Content = item;
         expItem.ContentTemplate = ItemTemplate;
 
