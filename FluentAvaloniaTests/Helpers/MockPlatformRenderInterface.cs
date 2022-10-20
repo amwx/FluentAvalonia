@@ -1,148 +1,161 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using Avalonia.Media;
-//using Avalonia;
-//using Avalonia.Platform;
-//using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Avalonia.Media;
+using Avalonia;
+using Avalonia.Platform;
+using Moq;
+using Avalonia.Media.Imaging;
+using Avalonia.Rendering;
 
-//namespace FluentAvaloniaTests.Helpers
-//{
-//    public class MockPlatformRenderInterface : IPlatformRenderInterface
-//    {
-//        public IFormattedTextImpl CreateFormattedText(
-//            string text,
-//            Typeface typeface,
-//            double fontSize,
-//            TextAlignment textAlignment,
-//            TextWrapping wrapping,
-//            Size constraint,
-//            IReadOnlyList<FormattedTextStyleSpan> spans)
-//        {
-//            return Mock.Of<IFormattedTextImpl>();
-//}
+namespace FluentAvaloniaTests.Helpers;
 
-//        public IGeometryImpl CreateEllipseGeometry(Rect rect)
-//        {
-//            return Mock.Of<IGeometryImpl>();
-//}
+public class MockPlatformRenderInterface : IPlatformRenderInterface
+{
+    public IGeometryImpl CreateEllipseGeometry(Rect rect)
+    {
+        return Mock.Of<IGeometryImpl>();
+    }
 
-//        public IGeometryImpl CreateLineGeometry(Point p1, Point p2)
-//        {
-//            return Mock.Of<IGeometryImpl>();
-//}
+    public IGeometryImpl CreateLineGeometry(Point p1, Point p2)
+    {
+        return Mock.Of<IGeometryImpl>();
+    }
 
-//        public IGeometryImpl CreateRectangleGeometry(Rect rect)
-//        {
-//            return Mock.Of<IGeometryImpl>(x => x.Bounds == rect);
-//}
+    public IGeometryImpl CreateRectangleGeometry(Rect rect)
+    {
+        return Mock.Of<IGeometryImpl>(x => x.Bounds == rect);
+    }
 
-//        public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
-//        {
-//            return Mock.Of<IRenderTarget>();
-//        }
+    class MockRenderTarget : IRenderTarget
+    {
+        public void Dispose()
+        {
 
-//        public IRenderTargetBitmapImpl CreateRenderTargetBitmap(PixelSize size, Vector dpi)
-//        {
-//            return Mock.Of<IRenderTargetBitmapImpl>();
-//        }
+        }
 
-//        public IStreamGeometryImpl CreateStreamGeometry()
-//        {
-//            return new MockStreamGeometry();
-//        }
+        public IDrawingContextImpl CreateDrawingContext(IVisualBrushRenderer visualBrushRenderer)
+        {
+            var m = new Mock<IDrawingContextImpl>();
+            m.Setup(c => c.CreateLayer(It.IsAny<Size>()))
+                .Returns(() =>
+                {
+                    var r = new Mock<IDrawingContextLayerImpl>();
+                    r.Setup(r => r.CreateDrawingContext(It.IsAny<IVisualBrushRenderer>()))
+                            .Returns(CreateDrawingContext(null));
+                    return r.Object;
+                }
+                );
+            return m.Object;
 
-//        public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<Geometry> children)
-//        {
-//            return Mock.Of<IGeometryImpl>();
-//        }
+        }
+    }
 
-//        public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, Geometry g1, Geometry g2)
-//        {
-//            return Mock.Of<IGeometryImpl>();
-//        }
+    public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
+    {
+        return new MockRenderTarget();
+    }
 
-//        public IWriteableBitmapImpl CreateWriteableBitmap(
-//            PixelSize size,
-//            Vector dpi,
-//            PixelFormat format,
-//            AlphaFormat alphaFormat)
-//        {
-//            throw new NotImplementedException();
-//}
+    public IRenderTargetBitmapImpl CreateRenderTargetBitmap(PixelSize size, Vector dpi)
+    {
+        return Mock.Of<IRenderTargetBitmapImpl>();
+    }
 
-//        public IBitmapImpl LoadBitmap(Stream stream)
-//        {
-//            return Mock.Of<IBitmapImpl>();
-//        }
+    public IStreamGeometryImpl CreateStreamGeometry()
+    {
+        return new MockStreamGeometry();
+    }
 
-//        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
-//            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-//        {
-//            throw new NotImplementedException();
-//        }
+    public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<Geometry> children)
+    {
+        return Mock.Of<IGeometryImpl>();
+    }
 
-//        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
-//            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-//        {
-//            throw new NotImplementedException();
-//        }
+    public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, Geometry g1, Geometry g2)
+    {
+        return Mock.Of<IGeometryImpl>();
+    }
 
-//        public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
-//        {
-//            throw new NotImplementedException();
-//        }
+    public IWriteableBitmapImpl CreateWriteableBitmap(
+        PixelSize size,
+        Vector dpi,
+        PixelFormat format,
+        AlphaFormat alphaFormat)
+    {
+        throw new NotImplementedException();
+    }
 
-//        public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
-//        {
-//            throw new NotImplementedException();
-//}
+    public IBitmapImpl LoadBitmap(Stream stream)
+    {
+        return Mock.Of<IBitmapImpl>();
+    }
 
-//        public IBitmapImpl LoadBitmap(string fileName)
-//        {
-//            return Mock.Of<IBitmapImpl>();
-//        }
+    public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
+        BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+    {
+        throw new NotImplementedException();
+    }
 
-//        public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-//        {
-//            return Mock.Of<IBitmapImpl>();
-//        }
+    public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
+        BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+    {
+        throw new NotImplementedException();
+    }
 
-//        public IBitmapImpl LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-//        {
-//            return Mock.Of<IBitmapImpl>();
-//        }
+    public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
+    {
+        throw new NotImplementedException();
+    }
 
-//        public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-//        {
-//            return Mock.Of<IBitmapImpl>();
-//        }
+    public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
+    {
+        throw new NotImplementedException();
+    }
 
-//        public IBitmapImpl LoadBitmap(
-//            PixelFormat format,
-//            AlphaFormat alphaFormat,
-//            IntPtr data,
-//            PixelSize size,
-//            Vector dpi,
-//            int stride)
-//        {
-//            throw new NotImplementedException();
-//        }
+    public IBitmapImpl LoadBitmap(string fileName)
+    {
+        return Mock.Of<IBitmapImpl>();
+    }
 
-//        public IGlyphRunImpl CreateGlyphRun(GlyphRun glyphRun)
-//        {
-//            return Mock.Of<IGlyphRunImpl>();
-//        }
+    public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+    {
+        return Mock.Of<IBitmapImpl>();
+    }
 
-//        IGlyphRunImpl IPlatformRenderInterface.CreateGlyphRun(GlyphRun glyphRun, out double width)
-//        {
-//            throw new NotImplementedException();
-//        }
+    public IBitmapImpl LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+    {
+        return Mock.Of<IBitmapImpl>();
+    }
 
-//        public bool SupportsIndividualRoundRects { get; set; }
+    public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+    {
+        return Mock.Of<IBitmapImpl>();
+    }
 
-//        public AlphaFormat DefaultAlphaFormat => AlphaFormat.Premul;
+    public IBitmapImpl LoadBitmap(
+        PixelFormat format,
+        AlphaFormat alphaFormat,
+        IntPtr data,
+        PixelSize size,
+        Vector dpi,
+        int stride)
+    {
+        throw new NotImplementedException();
+    }
 
-//        public PixelFormat DefaultPixelFormat => PixelFormat.Rgba8888;
-//    }
-//}
+    public IGlyphRunImpl CreateGlyphRun(GlyphRun glyphRun)
+    {
+        return Mock.Of<IGlyphRunImpl>();
+    }
+
+    public IGeometryImpl BuildGlyphRunGeometry(GlyphRun glyphRun)
+    {
+        return Mock.Of<IGeometryImpl>();
+    }
+
+    public bool SupportsIndividualRoundRects { get; set; }
+
+    public AlphaFormat DefaultAlphaFormat => AlphaFormat.Premul;
+
+    public PixelFormat DefaultPixelFormat => PixelFormat.Rgba8888;
+}

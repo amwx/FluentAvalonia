@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using FluentAvalonia.UI.Controls;
 using FluentAvaloniaTests.Helpers;
 
-namespace FluentAvaloniaTests.ControlTests
-{    
-    // TODO: Make sure popups work in unit tests before we proceed here
-    public class CommandBarTests
-    {
-    }
+namespace FluentAvaloniaTests.ControlTests;
+
+// TODO: Make sure popups work in unit tests before we proceed here
+public class CommandBarTests
+{
 }
