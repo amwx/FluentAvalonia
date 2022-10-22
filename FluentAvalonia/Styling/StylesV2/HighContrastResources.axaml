@@ -663,23 +663,7 @@
     <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminatePressed" ResourceKey="SystemColorHighlightTextColorBrush" />
     <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminateDisabled" ResourceKey="SystemColorWindowColorBrush" />
 
-    <!-- Legacy brushes -->
-    <!--<SolidColorBrush x:Key="CheckBoxBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-		<SolidColorBrush x:Key="CheckBoxBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxContentDisabledForegroundThemeBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxContentForegroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxDisabledBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-		<SolidColorBrush x:Key="CheckBoxDisabledBorderThemeBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxDisabledForegroundThemeBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxForegroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxPointerOverBackgroundThemeBrush" Color="{DynamicResource SystemColorHighlightColor}" />
-		<SolidColorBrush x:Key="CheckBoxPointerOverBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxPointerOverForegroundThemeBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxPressedBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxPressedBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-		<SolidColorBrush x:Key="CheckBoxPressedForegroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />-->
-
-
+   
 
     <!-- DATE PICKER (resources updated from WinUI #6228) -->
     <StaticResource x:Key="DatePickerSpacerFill" ResourceKey="SystemColorButtonTextColorBrush" />
@@ -936,24 +920,7 @@
     <StaticResource x:Key="ScrollBarTrackStrokeDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
     <StaticResource x:Key="ScrollBarThumbBackground" ResourceKey="SystemControlForegroundChromeDisabledLowBrush" />
     <StaticResource x:Key="ScrollBarPanningThumbBackground" ResourceKey="SystemControlForegroundChromeDisabledLowBrush" />
-    <StaticResource x:Key="ScrollBarPanningThumbBackgroundDisabled" ResourceKey="SystemControlDisabledChromeHighBrush" />
-    <SolidColorBrush x:Key="ScrollBarButtonForegroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarButtonPointerOverBackgroundThemeBrush" Color="{DynamicResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="ScrollBarButtonPointerOverBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarButtonPointerOverForegroundThemeBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarButtonPressedBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarButtonPressedBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarButtonPressedForegroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="ScrollBarPanningBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarPanningBorderThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="ScrollBarThumbBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarThumbBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarThumbPointerOverBackgroundThemeBrush" Color="{DynamicResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="ScrollBarThumbPointerOverBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarThumbPressedBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="ScrollBarThumbPressedBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="ScrollBarTrackBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="ScrollBarTrackBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
+    <StaticResource x:Key="ScrollBarPanningThumbBackgroundDisabled" ResourceKey="SystemControlDisabledChromeHighBrush" />    
     <StaticResource x:Key="ScrollBarThumbBackgroundColor" ResourceKey="SystemColorButtonTextColor" />
     <StaticResource x:Key="ScrollBarPanningThumbBackgroundColor" ResourceKey="SystemColorButtonTextColor" />
 
@@ -997,24 +964,6 @@
 
 
     <!-- TEXTBOX -->
-    <SolidColorBrush x:Key="TextBoxForegroundHeaderThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="TextBoxPlaceholderTextThemeBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
-    <SolidColorBrush x:Key="TextBoxBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="TextBoxBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="TextBoxButtonBackgroundThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="TextBoxButtonBorderThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="TextBoxButtonForegroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="TextBoxButtonPointerOverBackgroundThemeBrush" Color="{DynamicResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="TextBoxButtonPointerOverBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="TextBoxButtonPointerOverForegroundThemeBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
-    <SolidColorBrush x:Key="TextBoxButtonPressedBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="TextBoxButtonPressedBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="TextBoxButtonPressedForegroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="TextBoxDisabledBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="TextBoxDisabledBorderThemeBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
-    <SolidColorBrush x:Key="TextBoxDisabledForegroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="TextBoxForegroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-
     <!-- BUG 31342318: Text color doesn't update if the main color value is the same. To be removed when the bug is fixed. -->
     <Color x:Key="TemporaryTextFillColorDisabled">#5C010101</Color>
 
@@ -1334,20 +1283,7 @@
     <StaticResource x:Key="AppBarToggleButtonOverflowLabelForegroundCheckedPointerOver" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
     <StaticResource x:Key="AppBarToggleButtonOverflowLabelForegroundCheckedPressed" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
     <StaticResource x:Key="AppBarToggleButtonOverflowLabelForegroundCheckedDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
-
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedBackgroundThemeBrush" Color="{DynamicResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBackgroundThemeBrush" Color="{DynamicResource SystemColorGrayTextColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBorderThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush" Color="{DynamicResource SystemColorHighlightTextColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBackgroundThemeBrush" Color="{DynamicResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBackgroundThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBorderThemeBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="AppBarToggleButtonPointerOverBackgroundThemeBrush" Color="{DynamicResource SystemColorHighlightColor}" />
-
+    
     <StaticResource x:Key="AppBarToggleButtonKeyboardAcceleratorTextForeground" ResourceKey="SystemControlForegroundBaseMediumBrush" />
     <StaticResource x:Key="AppBarToggleButtonKeyboardAcceleratorTextForegroundPointerOver" ResourceKey="SystemControlHighlightAltBaseMediumBrush" />
     <StaticResource x:Key="AppBarToggleButtonKeyboardAcceleratorTextForegroundPressed" ResourceKey="SystemControlHighlightAltBaseMediumBrush" />

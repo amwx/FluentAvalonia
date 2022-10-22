@@ -28,7 +28,7 @@
         <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundUnchecked}" />
         <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundUnchecked}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CheckBoxBorderBrushUnchecked}" />
-        <Setter Property="Padding" Value="{StaticResource CheckBoxPadding}" />
+        <Setter Property="Padding" Value="{DynamicResource CheckBoxPadding}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />

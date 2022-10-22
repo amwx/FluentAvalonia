@@ -313,19 +313,7 @@
     <StaticResource x:Key="ButtonBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
     <StaticResource x:Key="ButtonBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
 
-    <!-- Legacy brushes -->
-    <SolidColorBrush x:Key="ButtonBackgroundThemeBrush" Color="#B3B6B6B6" />
-    <SolidColorBrush x:Key="ButtonBorderThemeBrush" Color="#33000000" />
-    <SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="#66CACACA" />
-    <SolidColorBrush x:Key="ButtonDisabledBorderThemeBrush" Color="#1A000000" />
-    <SolidColorBrush x:Key="ButtonDisabledForegroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="ButtonForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ButtonPointerOverBackgroundThemeBrush" Color="#D1CDCDCD" />
-    <SolidColorBrush x:Key="ButtonPointerOverForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ButtonPressedBackgroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ButtonPressedForegroundThemeBrush" Color="#FFFFFFFF" />
-
-
+    
     <!-- REPEAT BUTTON -->
     <Thickness x:Key="RepeatButtonBorderThemeThickness">1</Thickness>
     <StaticResource x:Key="RepeatButtonBackground" ResourceKey="ControlFillColorDefaultBrush" />
@@ -340,16 +328,7 @@
     <StaticResource x:Key="RepeatButtonBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
     <StaticResource x:Key="RepeatButtonBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
     <StaticResource x:Key="RepeatButtonBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-    <!-- Legacy Brushes -->
-    <SolidColorBrush x:Key="RepeatButtonBorderThemeBrush" Color="#33000000" />
-    <SolidColorBrush x:Key="RepeatButtonDisabledBackgroundThemeBrush" Color="#66CACACA" />
-    <SolidColorBrush x:Key="RepeatButtonDisabledBorderThemeBrush" Color="#1A000000" />
-    <SolidColorBrush x:Key="RepeatButtonDisabledForegroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="RepeatButtonForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="RepeatButtonPointerOverBackgroundThemeBrush" Color="#D1CDCDCD" />
-    <SolidColorBrush x:Key="RepeatButtonPointerOverForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="RepeatButtonPressedBackgroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="RepeatButtonPressedForegroundThemeBrush" Color="#FFFFFFFF" />
+   
 
 
     <!-- TOGGLE BUTTON -->
@@ -392,24 +371,7 @@
     <StaticResource x:Key="ToggleButtonBorderBrushIndeterminatePressed" ResourceKey="ControlStrokeColorDefaultBrush" />
     <StaticResource x:Key="ToggleButtonBorderBrushIndeterminateDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
 
-    <SolidColorBrush x:Key="ToggleButtonBackgroundThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="ToggleButtonBorderThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedBackgroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedBorderThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedDisabledBackgroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedDisabledForegroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedForegroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedPointerOverBackgroundThemeBrush" Color="#99000000" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedPointerOverBorderThemeBrush" Color="#99000000" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedPressedBackgroundThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedPressedBorderThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ToggleButtonCheckedPressedForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ToggleButtonDisabledBorderThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="ToggleButtonDisabledForegroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="ToggleButtonForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ToggleButtonPointerOverBackgroundThemeBrush" Color="#21000000" />
-    <SolidColorBrush x:Key="ToggleButtonPressedBackgroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ToggleButtonPressedForegroundThemeBrush" Color="#FFFFFFFF" />
+   
 
 
     <!-- COMBOBOX -->
@@ -476,41 +438,7 @@
     <StaticResource x:Key="ComboBoxDropDownBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
     <StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
     <!--<StaticResource x:Key="ComboBoxLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
-    <SolidColorBrush x:Key="ComboBoxArrowDisabledForegroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="ComboBoxArrowForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxArrowPressedForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxBackgroundThemeBrush" Color="#CCFFFFFF" />
-    <SolidColorBrush x:Key="ComboBoxBorderThemeBrush" Color="#45000000" />
-    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundThemeBrush" Color="#66CACACA" />
-    <SolidColorBrush x:Key="ComboBoxDisabledBorderThemeBrush" Color="#26000000" />
-    <SolidColorBrush x:Key="ComboBoxDisabledForegroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="ComboBoxFocusedBackgroundThemeBrush" Color="White" />
-    <SolidColorBrush x:Key="ComboBoxFocusedBorderThemeBrush" Color="#70000000" />
-    <SolidColorBrush x:Key="ComboBoxFocusedForegroundThemeBrush" Color="White" />
-    <SolidColorBrush x:Key="ComboBoxForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxHeaderForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxItemDisabledForegroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="ComboBoxItemPointerOverBackgroundThemeBrush" Color="#21000000" />
-    <SolidColorBrush x:Key="ComboBoxItemPointerOverForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedBackgroundThemeBrush" Color="#FFD3D3D3" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxItemSelectedBackgroundThemeBrush" Color="#FF4617B4" />
-    <SolidColorBrush x:Key="ComboBoxItemSelectedForegroundThemeBrush" Color="White" />
-    <SolidColorBrush x:Key="ComboBoxItemSelectedDisabledBackgroundThemeBrush" Color="#8C000000" />
-    <SolidColorBrush x:Key="ComboBoxItemSelectedDisabledForegroundThemeBrush" Color="#99FFFFFF" />
-    <SolidColorBrush x:Key="ComboBoxItemSelectedPointerOverBackgroundThemeBrush" Color="#FF5F37BE" />
-    <SolidColorBrush x:Key="ComboBoxPlaceholderTextForegroundThemeBrush" Color="#88000000" />
-    <SolidColorBrush x:Key="ComboBoxPointerOverBackgroundThemeBrush" Color="#DEFFFFFF" />
-    <SolidColorBrush x:Key="ComboBoxPointerOverBorderThemeBrush" Color="#70000000" />
-    <SolidColorBrush x:Key="ComboBoxPopupBackgroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ComboBoxPopupBorderThemeBrush" Color="#FF212121" />
-    <SolidColorBrush x:Key="ComboBoxPopupForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxPressedBackgroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ComboBoxPressedBorderThemeBrush" Color="#A3000000" />
-    <SolidColorBrush x:Key="ComboBoxPressedHighlightThemeBrush" Color="#FFD3D3D3" />
-    <SolidColorBrush x:Key="ComboBoxPressedForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ComboBoxSelectedBackgroundThemeBrush" Color="#FF4617B4" />
-    <SolidColorBrush x:Key="ComboBoxSelectedPointerOverBackgroundThemeBrush" Color="#FF5F37BE" />
+    
     <StaticResource x:Key="ComboBoxDropDownBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
     <StaticResource x:Key="ComboBoxDropDownBackgroundPointerPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
     <StaticResource x:Key="ComboBoxFocusedDropDownBackgroundPointerOver" ResourceKey="ControlFillColorTertiaryBrush" />
@@ -649,22 +577,7 @@
     <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminatePressed" ResourceKey="TextOnAccentFillColorSecondaryBrush" />
     <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminateDisabled" ResourceKey="TextOnAccentFillColorDisabledBrush" />
 
-    <!-- Legacy brushes -->
-    <!--<SolidColorBrush x:Key="CheckBoxBackgroundThemeBrush" Color="#CCFFFFFF" />
-		<SolidColorBrush x:Key="CheckBoxBorderThemeBrush" Color="#45000000" />
-		<SolidColorBrush x:Key="CheckBoxContentDisabledForegroundThemeBrush" Color="#66000000" />
-		<SolidColorBrush x:Key="CheckBoxContentForegroundThemeBrush" Color="#FF000000" />
-		<SolidColorBrush x:Key="CheckBoxDisabledBackgroundThemeBrush" Color="#66CACACA" />
-		<SolidColorBrush x:Key="CheckBoxDisabledBorderThemeBrush" Color="#26000000" />
-		<SolidColorBrush x:Key="CheckBoxDisabledForegroundThemeBrush" Color="#66000000" />
-		<SolidColorBrush x:Key="CheckBoxForegroundThemeBrush" Color="#FF000000" />
-		<SolidColorBrush x:Key="CheckBoxPointerOverBackgroundThemeBrush" Color="#DEFFFFFF" />
-		<SolidColorBrush x:Key="CheckBoxPointerOverForegroundThemeBrush" Color="#FF000000" />
-		<SolidColorBrush x:Key="CheckBoxPointerOverBorderThemeBrush" Color="#70000000" />
-		<SolidColorBrush x:Key="CheckBoxPressedBackgroundThemeBrush" Color="#FF000000" />
-		<SolidColorBrush x:Key="CheckBoxPressedBorderThemeBrush" Color="#FF000000" />
-		<SolidColorBrush x:Key="CheckBoxPressedForegroundThemeBrush" Color="#FFFFFFFF" />-->
-
+  
 
 
     <!-- DATE PICKER -->
@@ -772,9 +685,7 @@
     <StaticResource x:Key="TimePickerFlyoutPresenterHighlightFill" ResourceKey="AccentFillColorDefaultBrush" />
     <StaticResource x:Key="TimePickerFlyoutPresenterHighlightForegroundColor" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
     <!--<StaticResource x:Key="TimePickerLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
-    <SolidColorBrush x:Key="TimePickerForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="TimePickerHeaderForegroundThemeBrush" Color="#FF000000" />
-
+    
 
 
     <!-- MENU -->
@@ -889,61 +800,6 @@
 
 
     <!-- SCROLLBAR -->
-    <!--<Thickness x:Key="ScrollBarPanningBorderThemeThickness">1</Thickness>
-        <StaticResource x:Key="ScrollBarBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarBackgroundPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarForeground" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarBorderBrushPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-        <StaticResource x:Key="ScrollBarButtonBackgroundPressed" ResourceKey="ControlStrongFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarButtonBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarButtonBorderBrushPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarButtonBorderBrushPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarButtonBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarButtonArrowForeground" ResourceKey="ControlStrongFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarButtonArrowForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
-        <StaticResource x:Key="ScrollBarButtonArrowForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-        <StaticResource x:Key="ScrollBarButtonArrowForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
-        <StaticResource x:Key="ScrollBarThumbFill" ResourceKey="ControlStrongFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarThumbFillPointerOver" ResourceKey="ControlStrongFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarThumbFillPressed" ResourceKey="ControlStrongFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarThumbFillDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
-        <StaticResource x:Key="ScrollBarThumbBorderBrush" ResourceKey="ControlFillColorTransparentBrush" />
-        <StaticResource x:Key="ScrollBarTrackFill" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarTrackFillPointerOver" ResourceKey="AcrylicInAppFillColorDefaultBrush"  />
-        <StaticResource x:Key="ScrollBarTrackFillDisabled" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarTrackStroke" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarTrackStrokePointerOver" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarTrackStrokeDisabled" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarThumbBackground" ResourceKey="ControlStrongFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarPanningThumbBackground" ResourceKey="ControlStrongFillColorDefaultBrush" />
-        <StaticResource x:Key="ScrollBarPanningThumbBackgroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
-        <SolidColorBrush x:Key="ScrollBarButtonForegroundThemeBrush" Color="#99000000" />
-        <SolidColorBrush x:Key="ScrollBarButtonPointerOverBackgroundThemeBrush" Color="#FFDADADA" />
-        <SolidColorBrush x:Key="ScrollBarButtonPointerOverBorderThemeBrush" Color="#FFDADADA" />
-        <SolidColorBrush x:Key="ScrollBarButtonPointerOverForegroundThemeBrush" Color="#FF000000" />
-        <SolidColorBrush x:Key="ScrollBarButtonPressedBackgroundThemeBrush" Color="#99000000" />
-        <SolidColorBrush x:Key="ScrollBarButtonPressedBorderThemeBrush" Color="#99000000" />
-        <SolidColorBrush x:Key="ScrollBarButtonPressedForegroundThemeBrush" Color="#FFFFFFFF" />
-        <SolidColorBrush x:Key="ScrollBarPanningBackgroundThemeBrush" Color="#FFCDCDCD" />
-        <SolidColorBrush x:Key="ScrollBarPanningBorderThemeBrush" Color="#7D9A9A9A" />
-        <SolidColorBrush x:Key="ScrollBarThumbBackgroundThemeBrush" Color="#FFCDCDCD" />
-        <SolidColorBrush x:Key="ScrollBarThumbBorderThemeBrush" Color="#3B555555" />
-        <SolidColorBrush x:Key="ScrollBarThumbPointerOverBackgroundThemeBrush" Color="#FFDADADA" />
-        <SolidColorBrush x:Key="ScrollBarThumbPointerOverBorderThemeBrush" Color="#6BB7B7B7" />
-        <SolidColorBrush x:Key="ScrollBarThumbPressedBackgroundThemeBrush" Color="#99000000" />
-        <SolidColorBrush x:Key="ScrollBarThumbPressedBorderThemeBrush" Color="#ED555555" />
-        <SolidColorBrush x:Key="ScrollBarTrackBackgroundThemeBrush" Color="#59D5D5D5" />
-        <SolidColorBrush x:Key="ScrollBarTrackBorderThemeBrush" Color="#59D5D5D5" />
-        <StaticResource x:Key="ScrollBarThumbBackgroundColor" ResourceKey="ControlStrongFillColorDefault" />
-        <StaticResource x:Key="ScrollBarPanningThumbBackgroundColor" ResourceKey="ControlStrongFillColorDefault" />
-        <StaticResource x:Key="ScrollViewerScrollBarsSeparatorBackground" ResourceKey="ControlFillColorTransparentBrush"/>-->
-
     <x:Double x:Key="ScrollBarTrackBorderThemeThickness">0</x:Double>
     <Thickness x:Key="ScrollBarPanningBorderThemeThickness">1</Thickness>
     <StaticResource x:Key="ScrollBarBackground" ResourceKey="SubtleFillColorTransparentBrush" />
@@ -1064,24 +920,6 @@
             <GradientStop Offset="1.0" Color="{DynamicResource ControlStrokeColorDefault}"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
-
-    <SolidColorBrush x:Key="TextBoxForegroundHeaderThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="TextBoxPlaceholderTextThemeBrush" Color="#AB000000" />
-    <SolidColorBrush x:Key="TextBoxBackgroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="TextBoxBorderThemeBrush" Color="#A3000000" />
-    <SolidColorBrush x:Key="TextBoxButtonBackgroundThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="TextBoxButtonBorderThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="TextBoxButtonForegroundThemeBrush" Color="#99000000" />
-    <SolidColorBrush x:Key="TextBoxButtonPointerOverBackgroundThemeBrush" Color="#FFDEDEDE" />
-    <SolidColorBrush x:Key="TextBoxButtonPointerOverBorderThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="TextBoxButtonPointerOverForegroundThemeBrush" Color="Black" />
-    <SolidColorBrush x:Key="TextBoxButtonPressedBackgroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="TextBoxButtonPressedBorderThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="TextBoxButtonPressedForegroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="TextBoxDisabledBackgroundThemeBrush" Color="#66CACACA" />
-    <SolidColorBrush x:Key="TextBoxDisabledBorderThemeBrush" Color="#26000000" />
-    <SolidColorBrush x:Key="TextBoxDisabledForegroundThemeBrush" Color="#FF666666" />
-    <SolidColorBrush x:Key="TextBoxForegroundThemeBrush" Color="#FF000000" />
 
     <!-- BUG 31342318: Text color doesn't update if the main color value is the same. To be removed when the bug is fixed. -->
     <Color x:Key="TemporaryTextFillColorDisabled">#5C010101</Color>
@@ -1405,19 +1243,6 @@
     <StaticResource x:Key="AppBarToggleButtonOverflowLabelForegroundCheckedPressed" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="AppBarToggleButtonOverflowLabelForegroundCheckedDisabled" ResourceKey="TextFillColorDisabledBrush" />
 
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedBackgroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedBorderThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBackgroundThemeBrush" Color="#66000000" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBorderThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBackgroundThemeBrush" Color="#99000000" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBorderThemeBrush" Color="#99000000" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBackgroundThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBorderThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="AppBarToggleButtonPointerOverBackgroundThemeBrush" Color="#3D000000" />
-
     <StaticResource x:Key="AppBarToggleButtonKeyboardAcceleratorTextForeground" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="AppBarToggleButtonKeyboardAcceleratorTextForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
     <StaticResource x:Key="AppBarToggleButtonKeyboardAcceleratorTextForegroundPressed" ResourceKey="TextFillColorTertiaryBrush" />
@@ -1602,21 +1427,7 @@
     <StaticResource x:Key="ListViewItemMultiArrangeOverlayTextBackground" ResourceKey="AccentFillColorDefaultBrush" />
     <x:Boolean x:Key="ListViewItemSelectionCheckMarkVisualEnabled">True</x:Boolean>
     <!--<ListViewItemPresenterCheckMode x:Key="ListViewItemCheckMode">Inline</ListViewItemPresenterCheckMode>-->
-    <SolidColorBrush x:Key="ListViewItemCheckHintThemeBrush" Color="#FF4617B4" />
-    <SolidColorBrush x:Key="ListViewItemCheckSelectingThemeBrush" Color="#FF4617B4" />
-    <SolidColorBrush x:Key="ListViewItemCheckThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ListViewItemDragBackgroundThemeBrush" Color="#994617B4" />
-    <SolidColorBrush x:Key="ListViewItemDragForegroundThemeBrush" Color="White" />
-    <SolidColorBrush x:Key="ListViewItemFocusBorderThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ListViewItemOverlayBackgroundThemeBrush" Color="#A6000000" />
-    <SolidColorBrush x:Key="ListViewItemOverlaySecondaryForegroundThemeBrush" Color="#99FFFFFF" />
-    <SolidColorBrush x:Key="ListViewItemOverlayForegroundThemeBrush" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ListViewItemPlaceholderBackgroundThemeBrush" Color="#FF3D3D3D" />
-    <SolidColorBrush x:Key="ListViewItemPointerOverBackgroundThemeBrush" Color="#4D000000" />
-    <SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="#FF4617B4" />
-    <SolidColorBrush x:Key="ListViewItemSelectedForegroundThemeBrush" Color="#FF000000" />
-    <SolidColorBrush x:Key="ListViewItemSelectedPointerOverBackgroundThemeBrush" Color="#FF5F37BE" />
-    <SolidColorBrush x:Key="ListViewItemSelectedPointerOverBorderThemeBrush" Color="#FF5F37BE" />
+    
 
     <CornerRadius x:Key="ListViewItemCornerRadius">4</CornerRadius>
     <CornerRadius x:Key="ListViewItemCheckBoxCornerRadius">3</CornerRadius>

@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.Logging;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
@@ -100,6 +102,20 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
             }
         }
     }
+
+    /// <summary>
+    /// Gets or sets a value that determines if/when style overrides should be used to alleviate issues
+    /// with text alignment in some controls caused when Segoe UI or Segoe UI Variable font
+    /// families do not exist. The default value is <see cref="TextVerticalAlignmentOverride.EnabledNonWindows"/>
+    /// </summary>
+    /// <remarks>
+    /// These overrides apply to controls like RadioButton, CheckBox, ComboBox where the first line of text
+    /// is explicitly aligned with the control. Adding the overrides modify the styles to use VerticalAlignment=Center
+    /// to get a consistent experience, at the (small) expense of breaking Fluent design principles. If your controls
+    /// never use multi-line text, you'll never see the effect of this property.
+    /// </remarks>
+    public TextVerticalAlignmentOverride TextVerticalAlignmentOverrideBehavior { get; set; } =
+        TextVerticalAlignmentOverride.EnabledNonWindows;
 
     public IResourceHost Owner
     {
@@ -296,6 +312,8 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
 
         // Load the controls
         _styles = (Styles)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/ControlThemes/Controls.axaml"), _baseUri);
+
+        SetTextAlignmentOverrides();
 
         _hasLoaded = true;
     }
@@ -592,6 +610,59 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
 
         return theme;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void SetTextAlignmentOverrides()
+    {
+        if (TextVerticalAlignmentOverrideBehavior == TextVerticalAlignmentOverride.Disabled ||
+            (TextVerticalAlignmentOverrideBehavior == TextVerticalAlignmentOverride.EnabledNonWindows &&
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows)))
+            return;
+
+        // The following resources are added to remove the larger bottom margin/padding value
+        // on some controls added to accomodate Segoe UI - this will allow vertical centering
+        // These are added to the internal _themeResources dictionary, so user can still
+        // override these elsewhere if desired
+
+        _themeResources.Add("CheckBoxPadding", new Thickness(8, 5, 0, 5));
+        _themeResources.Add("ComboBoxPadding", new Thickness(12, 5, 0, 5));
+        _themeResources.Add("ComboBoxItemThemePadding", new Thickness(11, 5, 11, 5));
+        // Note that this is a theme resource, but as of now is the same for all three themes
+        _themeResources.Add("TextControlThemePadding", new Thickness(10, 5, 6, 5));
+
+        // Now we add some style overrides to adjust some properties
+        // Yes, I'm doing this in C# rather than Xaml - I don't want to create a Xaml file
+        // because that will get compiled into AvaloniaXamlResource even if never used or I
+        // could use a normal file and us the AvaloniaXamlLoader but that's still an additional
+        // AvaloniaResource that's not necessary. Plus, not using Xaml is fun =D
+
+        // Set VerticalContentAlignment on CheckBox to center the content
+        var s = new Style(x =>
+        {
+            return x.OfType(typeof(CheckBox));
+        });
+        s.Setters.Add(new Setter(ContentControl.VerticalContentAlignmentProperty, VerticalAlignment.Center));
+        _styles.Add(s);
+
+        // Set Padding & VCA on RadioButton to center the content
+        var s2 = new Style(x =>
+        {
+            return x.OfType(typeof(RadioButton));
+        });
+        s2.Setters.Add(new Setter(ContentControl.VerticalContentAlignmentProperty, VerticalAlignment.Center));
+        s2.Setters.Add(new Setter(Decorator.PaddingProperty, new Thickness(8, 6, 0, 6)));
+        _styles.Add(s2);
+
+        // Center the TextBlock in ComboBox
+        // This is special - we only want to do this if the content is a string - otherwise custom content
+        // may get messed up b/c of the centered alignment
+        var s3 = new Style(x =>
+        {
+            return x.OfType<ComboBox>().Template().OfType<ContentControl>().Child().OfType<TextBlock>();
+        });
+        s3.Setters.Add(new Setter(Layoutable.VerticalAlignmentProperty, VerticalAlignment.Center));
+        _styles.Add(s3);
     }
 
     private void TryLoadHighContrastThemeColors()
