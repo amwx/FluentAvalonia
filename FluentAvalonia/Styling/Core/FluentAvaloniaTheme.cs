@@ -64,8 +64,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// </summary>
     /// <remarks>
     /// This property is respected on Windows, MacOS, and Linux. However, on linux,
-    /// it requires 'gtk-theme' setting to work and the current theme to be appended
-    /// with '-dark'.
+    /// it works differently depending on the user's desktop environment. On KDE,
+    /// Cinnamon, LXDE and LXQt, it requires the user's color scheme name to contain
+    /// "dark". On GNOME or Xfce, it requires 'color-scheme' to be set to either
+    /// 'prefer-light', 'prefer-dark', or 'gtk-theme' to contain 'dark'.
     /// Also note, that high contrast theme will only resolve here on Windows.
     /// </remarks>
     public bool PreferSystemTheme { get; set; } = true;
@@ -74,7 +76,8 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// Gets or sets whether to use the current user's accent color as the resource SystemAccentColor
     /// </summary>
     /// <remarks>
-    /// This property has no effect on Linux
+    /// On Linux, accent color detection is only supported on KDE (from current scheme,
+    /// from wallpaper and custom) and LXQt (from selection color)
     /// </remarks>
     public bool PreferUserAccentColor { get; set; } = true;
 
