@@ -548,18 +548,6 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                         }
                     }
                 }
-                else if (_linuxDesktopEnvironment.Contains("GNOME"))
-                {
-                    var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
-                    if (color != null && color != "default")
-                    {
-                        theme = color == "prefer-light" ? LightModeString : DarkModeString;
-                    }
-                    else
-                    {
-                        themeName = ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme");
-                    }
-                }
                 else if (_linuxDesktopEnvironment.Contains("Cinnamon"))
                 {
                     themeName = ReadGsettingsKey("org.cinnamon.desktop.interface", "gtk-theme");
@@ -587,6 +575,18 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                         {
                             themeName = match.Groups[1].Value;
                         }
+                    }
+                }
+                else // GNOME, XFCE and fallback
+                {
+                    var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
+                    if (color != null && color != "default")
+                    {
+                        theme = color == "prefer-light" ? LightModeString : DarkModeString;
+                    }
+                    else
+                    {
+                        themeName = ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme");
                     }
                 }
             }
