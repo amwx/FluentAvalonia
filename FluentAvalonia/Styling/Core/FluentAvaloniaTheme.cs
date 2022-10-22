@@ -577,7 +577,18 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                         }
                     }
                 }
-
+                else if (_linuxDesktopEnvironment.Contains("LXQt"))
+                {
+                    if (File.Exists(_lxqtConfigFile))
+                    {
+                        var lxqtConfig = File.ReadAllText(_lxqtConfigFile);
+                        var match = new Regex("^theme=(.*)$", RegexOptions.Multiline).Match(lxqtConfig);
+                        if (match.Success)
+                        {
+                            themeName = match.Groups[1].Value;
+                        }
+                    }
+                }
             }
             catch { }
 
@@ -893,6 +904,18 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                     }
                 }
             }
+            else if (_linuxDesktopEnvironment.Contains("LXQt"))
+            {
+                if (File.Exists(_lxqtConfigFile))
+                {
+                    var lxqtConfig = File.ReadAllText(_lxqtConfigFile);
+                    var match = new Regex("^highlight_color=#([\\da-f]{2})([\\da-f]{2})([\\da-f]{2})$", RegexOptions.Multiline).Match(lxqtConfig);
+                    if (match.Success)
+                    {
+                        aColor = Color2.FromRGB(Convert.ToByte(match.Groups[1].Value, 16), Convert.ToByte(match.Groups[2].Value, 16), Convert.ToByte(match.Groups[3].Value, 16));
+                    }
+                }
+            }
         }
         catch (Exception)
         {
@@ -974,6 +997,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
 
     private readonly string _linuxDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
     private readonly string _kdeGlobalsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "kdeglobals");
+    private readonly string _lxqtConfigFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "lxqt/lxqt.conf");
 
     public static readonly string LightModeString = "Light";
     public static readonly string DarkModeString = "Dark";
