@@ -103,8 +103,10 @@ public partial class Frame : ContentControl
     /// <summary>
     /// Causes the Frame to load content represented by the specified Page.
     /// </summary>
-    /// <param name="sourcePageType">he page to navigate to, specified as a type reference to its partial class type.</param>
-    /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; otherwise, true. </returns>
+    /// <param name="sourcePageType">The page (IControl) to navigate to, specified as a type reference to its class type, or 
+    /// if a <see cref="NavigationPageFactory"/> this can be any type (e.g., a ViewModel)</param>
+    /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
+    /// otherwise, <c>true</c>.</returns>
     public bool Navigate(Type sourcePageType) => Navigate(sourcePageType, null, null);
 
 
@@ -112,13 +114,13 @@ public partial class Frame : ContentControl
     /// Causes the Frame to load content represented by the specified Page, also passing a parameter to be 
     /// interpreted by the target of the navigation.
     /// </summary>
-    /// <param name="sourcePageType">The page to navigate to, specified as a type reference to its 
-    /// partial class type.</param>
+    /// <param name="sourcePageType">The page (IControl) to navigate to, specified as a type reference to its class type, or 
+    /// if a <see cref="NavigationPageFactory"/> this can be any type (e.g., a ViewModel)</param>
     /// <param name="parameter">The navigation parameter to pass to the target page; 
     /// must have a basic type (string, char, numeric, or GUID) to support parameter serialization
     /// using GetNavigationState.</param>
-    /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
-    /// otherwise, true.</returns>
+    /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
+    /// otherwise, <c>true</c>.</returns>
     public bool Navigate(Type sourcePageType, object parameter) => Navigate(sourcePageType, parameter, null);
 
     /// <summary>
@@ -126,14 +128,14 @@ public partial class Frame : ContentControl
     /// also passing a parameter to be interpreted by the target of the navigation, and a value 
     /// indicating the animated transition to use.
     /// </summary>
-    /// <param name="sourcePageType">The page to navigate to, specified as a type reference to 
-    /// its partial class type. </param>
+    /// <param name="sourcePageType">The page (IControl) to navigate to, specified as a type reference to its class type, or 
+    /// if a <see cref="NavigationPageFactory"/> this can be any type (e.g., a ViewModel)</param>
     /// <param name="parameter">The navigation parameter to pass to the target page; must have a 
     /// basic type (string, char, numeric, or GUID) to support parameter serialization using 
     /// GetNavigationState.</param>
     /// <param name="infoOverride">Info about the animated transition.</param>
-    /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
-    /// otherwise, true.</returns>
+    /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
+    /// otherwise, <c>true</c>.</returns>
     public bool Navigate(Type sourcePageType, object parameter, NavigationTransitionInfo infoOverride)
     {
         return NavigateCore(new PageStackEntry(sourcePageType, parameter,
@@ -144,15 +146,54 @@ public partial class Frame : ContentControl
     /// Causes the Frame to load content represented by the specified Page, also passing a parameter to be 
     /// interpreted by the target of the navigation.
     /// </summary>
-    /// <param name="sourcePageType">The page to navigate to, specified as a type reference to its partial class type.</param>
+    /// <param name="sourcePageType">The page (IControl) to navigate to, specified as a type reference to its class type, or 
+    /// if a <see cref="NavigationPageFactory"/> this can be any type (e.g., a ViewModel)</param>
     /// <param name="parameter">The navigation parameter to pass to the target page; must have a basic type 
     /// (string, char, numeric, or GUID) to support parameter serialization using GetNavigationState.</param>
     /// <param name="navOptions">Options for the navigation, including whether it is recorded in the navigation stack 
     /// and what transition animation is used.</param>
-    /// <returns>false if a <see cref="NavigationFailed"/> event handler has set Handled to true; otherwise, true.</returns>
+    /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
+    /// otherwise, <c>true</c>.</returns>
     public bool NavigateToType(Type sourcePageType, object parameter, FrameNavigationOptions navOptions) =>
         NavigateCore(new PageStackEntry(sourcePageType, parameter, navOptions?.TransitionInfoOverride),
             NavigationMode.New, navOptions);
+
+    /// <summary>
+    /// Causes the frame to load content represented by the specified target property with the
+    /// specified navigation options
+    /// </summary>
+    /// <remarks>
+    /// You must specify a <see cref="NavigationPageFactory"/> for this method to succeed
+    /// </remarks>
+    /// <param name="target">An existing object for which page creation should be based (e.g., A ViewModel instance)</param>
+    /// <param name="navOptions">Options for the navigation, including whether it is recorded in the navigation stack 
+    /// and what transition animation is used.</param>
+    /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true or
+    /// if <see cref="NavigationPageFactory" /> is not specified; otherwise, <c>true</c>.</returns>
+    public bool NavigateFromObject(object target, FrameNavigationOptions navOptions = null)
+    {
+        // Check the cache first to see if we have an existing page that matches
+        // For this check we check by both type and object reference
+        var existing = CheckCacheAndGetPage(target.GetType(), target);
+
+        if (existing == null)
+        {
+            // If we don't have a previous reference, try to resolve via Factory
+            existing = NavigationPageFactory.GetPageFromObject(target);
+
+            // Unable to locate page, return false
+            if (existing == null)
+                return false;
+        }
+
+        // The page source Type here will be whatever was specified as 'target'
+        var entry = new PageStackEntry(target.GetType(), null, navOptions?.TransitionInfoOverride)
+        {
+            Instance = existing
+        };
+
+        return NavigateCore(entry, NavigationMode.New, navOptions);
+    }
 
     /// <summary>
     /// Serializes the Frame navigation history into a string
@@ -355,12 +396,13 @@ public partial class Frame : ContentControl
                 }
             }
 
-            //Navigate to new page
+            // Navigate to new page
             var prevEntry = CurrentEntry;
+            bool wasPageSet = entry.Instance != null;
 
-            if (mode == NavigationMode.New)
+            if (mode == NavigationMode.New && !wasPageSet)
             {
-                //Check if we already have an instance of the page in the cache
+                // Check if we already have an instance of the page in the cache
                 entry.Instance = CheckCacheAndGetPage(entry.SourcePageType);
             }
 
@@ -373,6 +415,12 @@ public partial class Frame : ContentControl
                 }
 
                 entry.Instance = page;
+            }
+            else if (wasPageSet)
+            {
+                // The page was already create for us when passed in (NavigateFromObject path)
+                // Try adding to the cache now
+                TryAddToCache(entry.SourcePageType, entry.Instance);
             }
 
             var oldEntry = CurrentEntry;
@@ -493,19 +541,22 @@ public partial class Frame : ContentControl
     {
         if (CacheSize == 0)
         {
-            return Activator.CreateInstance(srcPageType) as IControl;
+            return NavigationPageFactory?.GetPage(srcPageType) ??
+                Activator.CreateInstance(srcPageType) as IControl;
         }
 
         for (int i = 0; i < _cache.Count; i++)
         {
-            if (_cache[i].GetType() == srcPageType)
+            if (_cache[i].pageSrcType == srcPageType)
             {
                 throw new Exception($"An object of type {srcPageType} has already been added to the Navigation Stack");
             }
         }
 
-        var newPage = Activator.CreateInstance(srcPageType) as IControl;
-        _cache.Add(newPage);
+        var newPage = NavigationPageFactory?.GetPage(srcPageType) ??
+            Activator.CreateInstance(srcPageType) as IControl;
+
+        _cache.Add((srcPageType, newPage));
         if (_cache.Count > CacheSize)
         {
             _cache.RemoveAt(0);
@@ -514,20 +565,32 @@ public partial class Frame : ContentControl
         return newPage;
     }
 
-    private IControl CheckCacheAndGetPage(Type srcPageType)
+    private IControl CheckCacheAndGetPage(Type srcPageType = null, object target = null)
     {
         if (CacheSize == 0)
             return null;
 
         for (int i = _cache.Count - 1; i >= 0; i--)
         {
-            if (_cache[i].GetType() == srcPageType)
+            if (_cache[i].pageSrcType == srcPageType || _cache[i].page == target)
             {
-                return _cache[i];
+                return _cache[i].page;
             }
         }
 
         return null;
+    }
+
+    private void TryAddToCache(Type srcType, IControl page)
+    {
+        for (int i = _cache.Count - 1; i >= 0; i--)
+        {
+            // Already exists in the cache, exit
+            if (_cache[i].pageSrcType == srcType || page == _cache[i].page)
+                return;
+        }
+
+        _cache.Add((srcType, page));
     }
 
     private void SetContentAndAnimate(PageStackEntry entry)
@@ -554,6 +617,6 @@ public partial class Frame : ContentControl
     }
 
     private ContentPresenter _presenter;
-    private List<IControl> _cache = new List<IControl>(10);
+    private readonly List<(Type pageSrcType, IControl page)> _cache = new List<(Type, IControl)>(10);
     bool _isNavigating = false;
 }
