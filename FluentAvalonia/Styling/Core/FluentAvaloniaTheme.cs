@@ -513,41 +513,68 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     private string ResolveLinuxSystemSettings()
     {
         string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
+        string themeName = null;
         if (PreferSystemTheme)
         {
             try
             {
-                var p = new Process
+                switch (_linuxDesktopEnvironment)
                 {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true,
-                        FileName = "gsettings",
-                        Arguments = "get org.gnome.desktop.interface gtk-theme"
-                    },
-                };
+                    case "KDE":
+                        if (File.Exists(_kdeGlobalsFile))
+                        {
+                            var kdeGlobals = File.ReadAllText(_kdeGlobalsFile);
+                            var match = new Regex("^ColorScheme=(.*)$", RegexOptions.Multiline).Match(kdeGlobals);
+                            if (match.Success)
+                            {
+                                themeName = match.Groups[1].Value;
+                            }
+                        }
 
-                p.Start();
-                var str = p.StandardOutput.ReadToEnd().Trim();
-                p.WaitForExit();
+                        break;
+                    default:
+                        var p = new Process
+                        {
+                            StartInfo = new ProcessStartInfo
+                            {
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                                CreateNoWindow = true,
+                                UseShellExecute = false,
+                                RedirectStandardError = true,
+                                RedirectStandardOutput = true,
+                                FileName = "gsettings",
+                                Arguments = "get org.gnome.desktop.interface gtk-theme"
+                            },
+                        };
 
-                if (p.ExitCode == 0)
-                {
-                    if (str.IndexOf("-dark", StringComparison.OrdinalIgnoreCase) != -1)
-                    {
-                        theme = DarkModeString;
-                    }
-                    else
-                    {
-                        theme = LightModeString;
-                    }
+                        p.Start();
+                        themeName = p.StandardOutput.ReadToEnd().Trim();
+                        p.WaitForExit();
+                        if (p.ExitCode == 0)
+                        {
+                            themeName = null;
+                        }
+
+                        break;
                 }
             }
             catch { }
+
+            if (themeName != null)
+            {
+                if (themeName.IndexOf("dark", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    theme = DarkModeString;
+                }
+                else
+                {
+                    theme = LightModeString;
+                }
+            }
+            else
+            {
+                theme = LightModeString;
+            }
         }
 
         if (CustomAccentColor != null)
@@ -774,25 +801,22 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
 
     private void TryLoadLinuxAccentColor()
     {
-        var desktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
         Color2? aColor = null;
 
         try
         {
-            switch (desktopEnvironment)
+            switch (_linuxDesktopEnvironment)
             {
                 case "KDE":
-                    var kdeGlobalsFile =
-                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "kdeglobals");
-                    if (File.Exists(kdeGlobalsFile))
+                    if (File.Exists(_kdeGlobalsFile))
                     {
-                        var kdeGlobals = File.ReadAllText(kdeGlobalsFile);
+                        var kdeGlobals = File.ReadAllText(_kdeGlobalsFile);
                         var match =
                             new Regex("^AccentColor=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
                         if (!match.Success)
                         {
                             // Accent color is from the current color scheme
-                            match = new Regex("DecorationFocus=(\\d+),(\\d+),(\\d+)").Match(kdeGlobals);
+                            match = new Regex("^DecorationFocus=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
                         }
 
                         if (match.Success)
@@ -860,6 +884,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     private string _requestedTheme = null;
     private Uri _baseUri;
     private Color? _customAccentColor;
+
+    private readonly string _linuxDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
+    private readonly string _kdeGlobalsFile =
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "kdeglobals");
 
     public static readonly string LightModeString = "Light";
     public static readonly string DarkModeString = "Dark";
