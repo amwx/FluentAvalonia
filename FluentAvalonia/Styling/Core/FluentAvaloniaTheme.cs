@@ -788,14 +788,19 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                     {
                         var kdeGlobals = File.ReadAllText(kdeGlobalsFile);
                         var match =
-                            new Regex("^AccentColor=([0-9]+),([0-9]+),([0-9]+)$", RegexOptions.Multiline).Match(kdeGlobals);
+                            new Regex("^AccentColor=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
+                        if (!match.Success)
+                        {
+                            // Accent color is from the current color scheme
+                            match = new Regex("DecorationFocus=(\\d+),(\\d+),(\\d+)").Match(kdeGlobals);
+                        }
+
                         if (match.Success)
                         {
                             aColor = Color2.FromRGB(byte.Parse(match.Groups[1].Value), byte.Parse(match.Groups[2].Value),
                                 byte.Parse(match.Groups[3].Value));
                         }
                     }
-
                     break;
             }
         }
