@@ -532,6 +532,16 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                         }
 
                         break;
+                    case "GNOME":
+                        var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
+                        if (color != null && color != "default")
+                        {
+                            theme = color == "prefer-light" ? LightModeString : DarkModeString;
+                            break;
+                        }
+
+                        themeName = ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme");
+                        break;
                     default:
                         var p = new Process
                         {
@@ -554,7 +564,6 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                         {
                             themeName = null;
                         }
-
                         break;
                 }
             }
@@ -570,10 +579,6 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                 {
                     theme = LightModeString;
                 }
-            }
-            else
-            {
-                theme = LightModeString;
             }
         }
 
@@ -873,6 +878,27 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         {
             _themeResources.Add(key, value);
         }
+    }
+
+    private string ReadGsettingsKey(string schema, string key)
+    {
+        var p = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                FileName = "gsettings",
+                Arguments = $"get {schema} {key}"
+            },
+        };
+        p.Start();
+        p.WaitForExit();
+
+        return p.ExitCode == 0 ? p.StandardOutput.ReadToEnd().Trim() : null;
     }
 
     private bool _hasLoaded;
