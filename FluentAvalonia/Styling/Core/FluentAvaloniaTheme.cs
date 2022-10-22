@@ -11,7 +11,9 @@ using FluentAvalonia.UI.Media;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace FluentAvalonia.Styling;
 
@@ -33,7 +35,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// <remarks>
     /// If <see cref="PreferSystemTheme"/> is set to true, on startup this value will
     /// be overwritten with the system theme unless the attempt to read from the system
-    /// fails, in which case setting this can provide a fallback. 
+    /// fails, in which case setting this can provide a fallback.
     /// </remarks>
     public string RequestedTheme
     {
@@ -51,7 +53,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// Gets or sets whether the system font should be used on Windows. Value only applies at startup
     /// </summary>
     /// <remarks>
-    /// On Windows 10, this is "Segoe UI", and Windows 11, this is "Segoe UI Variable Text". 
+    /// On Windows 10, this is "Segoe UI", and Windows 11, this is "Segoe UI Variable Text".
     /// </remarks>
     public bool UseSystemFontOnWindows { get; set; } = true;
 
@@ -193,8 +195,8 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     }
 
     /// <summary>
-    /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be 
-    /// SystemAccentColor or Light/Dark/HighContrast theme. This method only works for AccentColors if 
+    /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be
+    /// SystemAccentColor or Light/Dark/HighContrast theme. This method only works for AccentColors if
     /// <see cref="UseUserAccentColorOnWindows"/> is true, and for app theme if <see cref="UseSystemThemeOnWindows"/> is true
     /// </summary>
     public void InvalidateThemingFromSystemThemeChanged()
@@ -552,6 +554,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         {
             LoadCustomAccentColor();
         }
+        else if (PreferUserAccentColor)
+        {
+            TryLoadLinuxAccentColor();
+        }
         else
         {
             LoadDefaultAccentColor();
@@ -621,6 +627,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
                     TryLoadMacOSAccentColor();
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    TryLoadLinuxAccentColor();
                 }
                 else
                 {
@@ -759,6 +769,55 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         catch
         {
             LoadDefaultAccentColor();
+        }
+    }
+
+    private void TryLoadLinuxAccentColor()
+    {
+        var desktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
+        Color2? aColor = null;
+
+        try
+        {
+            switch (desktopEnvironment)
+            {
+                case "KDE":
+                    var kdeGlobalsFile =
+                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "kdeglobals");
+                    if (File.Exists(kdeGlobalsFile))
+                    {
+                        var kdeGlobals = File.ReadAllText(kdeGlobalsFile);
+                        var match =
+                            new Regex("^AccentColor=([0-9]+),([0-9]+),([0-9]+)$", RegexOptions.Multiline).Match(kdeGlobals);
+                        if (match.Success)
+                        {
+                            aColor = Color2.FromRGB(byte.Parse(match.Groups[1].Value), byte.Parse(match.Groups[2].Value),
+                                byte.Parse(match.Groups[3].Value));
+                        }
+                    }
+
+                    break;
+            }
+        }
+        catch (Exception)
+        {
+        }
+
+        if (aColor == null)
+        {
+            LoadDefaultAccentColor();
+        }
+        else
+        {
+            AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor);
+
+            AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.Value.LightenPercent(0.15f));
+            AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)aColor.Value.LightenPercent(0.30f));
+            AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)aColor.Value.LightenPercent(0.45f));
+
+            AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)aColor.Value.LightenPercent(-0.15f));
+            AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)aColor.Value.LightenPercent(-0.30f));
+            AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)aColor.Value.LightenPercent(-0.45f));
         }
     }
 
