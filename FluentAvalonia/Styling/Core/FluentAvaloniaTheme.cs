@@ -546,6 +546,19 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                 {
                     themeName = ReadGsettingsKey("org.cinnamon.desktop.interface", "gtk-theme");
                 }
+                else if (_linuxDesktopEnvironment.Contains("LXDE"))
+                {
+                    var lxdeConfigFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "lxsession/LXDE/desktop.conf");
+                    if (File.Exists(lxdeConfigFile))
+                    {
+                        var lxdeConfig = File.ReadAllText(lxdeConfigFile);
+                        var match = new Regex("^sNet\\/ThemeName=(.*)$", RegexOptions.Multiline).Match(lxdeConfig);
+                        if (match.Success)
+                        {
+                            themeName = match.Groups[1].Value;
+                        }
+                    }
+                }
 
             }
             catch { }
@@ -796,8 +809,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                 if (File.Exists(_kdeGlobalsFile))
                 {
                     var kdeGlobals = File.ReadAllText(_kdeGlobalsFile);
-                    var match =
-                        new Regex("^AccentColor=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
+                    var match = new Regex("^AccentColor=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
                     if (!match.Success)
                     {
                         // Accent color is from the current color scheme
@@ -806,8 +818,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
 
                     if (match.Success)
                     {
-                        aColor = Color2.FromRGB(byte.Parse(match.Groups[1].Value), byte.Parse(match.Groups[2].Value),
-                            byte.Parse(match.Groups[3].Value));
+                        aColor = Color2.FromRGB(byte.Parse(match.Groups[1].Value), byte.Parse(match.Groups[2].Value), byte.Parse(match.Groups[3].Value));
                     }
                 }
             }
@@ -891,8 +902,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     private Color? _customAccentColor;
 
     private readonly string _linuxDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
-    private readonly string _kdeGlobalsFile =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "kdeglobals");
+    private readonly string _kdeGlobalsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "kdeglobals");
 
     public static readonly string LightModeString = "Light";
     public static readonly string DarkModeString = "Dark";
