@@ -518,54 +518,35 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         {
             try
             {
-                switch (_linuxDesktopEnvironment)
+                if (_linuxDesktopEnvironment.Contains("KDE"))
                 {
-                    case "KDE":
-                        if (File.Exists(_kdeGlobalsFile))
+                    if (File.Exists(_kdeGlobalsFile))
+                    {
+                        var kdeGlobals = File.ReadAllText(_kdeGlobalsFile);
+                        var match = new Regex("^ColorScheme=(.*)$", RegexOptions.Multiline).Match(kdeGlobals);
+                        if (match.Success)
                         {
-                            var kdeGlobals = File.ReadAllText(_kdeGlobalsFile);
-                            var match = new Regex("^ColorScheme=(.*)$", RegexOptions.Multiline).Match(kdeGlobals);
-                            if (match.Success)
-                            {
-                                themeName = match.Groups[1].Value;
-                            }
+                            themeName = match.Groups[1].Value;
                         }
-
-                        break;
-                    case "GNOME":
-                        var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
-                        if (color != null && color != "default")
-                        {
-                            theme = color == "prefer-light" ? LightModeString : DarkModeString;
-                            break;
-                        }
-
-                        themeName = ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme");
-                        break;
-                    default:
-                        var p = new Process
-                        {
-                            StartInfo = new ProcessStartInfo
-                            {
-                                WindowStyle = ProcessWindowStyle.Hidden,
-                                CreateNoWindow = true,
-                                UseShellExecute = false,
-                                RedirectStandardError = true,
-                                RedirectStandardOutput = true,
-                                FileName = "gsettings",
-                                Arguments = "get org.gnome.desktop.interface gtk-theme"
-                            },
-                        };
-
-                        p.Start();
-                        themeName = p.StandardOutput.ReadToEnd().Trim();
-                        p.WaitForExit();
-                        if (p.ExitCode == 0)
-                        {
-                            themeName = null;
-                        }
-                        break;
+                    }
                 }
+                else if (_linuxDesktopEnvironment.Contains("GNOME"))
+                {
+                    var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
+                    if (color != null && color != "default")
+                    {
+                        theme = color == "prefer-light" ? LightModeString : DarkModeString;
+                    }
+                    else
+                    {
+                        themeName = ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme");
+                    }
+                }
+                else if (_linuxDesktopEnvironment.Contains("Cinnamon"))
+                {
+                    themeName = ReadGsettingsKey("org.cinnamon.desktop.interface", "gtk-theme");
+                }
+
             }
             catch { }
 
@@ -810,27 +791,25 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
 
         try
         {
-            switch (_linuxDesktopEnvironment)
+            if (_linuxDesktopEnvironment.Contains("KDE"))
             {
-                case "KDE":
-                    if (File.Exists(_kdeGlobalsFile))
+                if (File.Exists(_kdeGlobalsFile))
+                {
+                    var kdeGlobals = File.ReadAllText(_kdeGlobalsFile);
+                    var match =
+                        new Regex("^AccentColor=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
+                    if (!match.Success)
                     {
-                        var kdeGlobals = File.ReadAllText(_kdeGlobalsFile);
-                        var match =
-                            new Regex("^AccentColor=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
-                        if (!match.Success)
-                        {
-                            // Accent color is from the current color scheme
-                            match = new Regex("^DecorationFocus=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
-                        }
-
-                        if (match.Success)
-                        {
-                            aColor = Color2.FromRGB(byte.Parse(match.Groups[1].Value), byte.Parse(match.Groups[2].Value),
-                                byte.Parse(match.Groups[3].Value));
-                        }
+                        // Accent color is from the current color scheme
+                        match = new Regex("^DecorationFocus=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline).Match(kdeGlobals);
                     }
-                    break;
+
+                    if (match.Success)
+                    {
+                        aColor = Color2.FromRGB(byte.Parse(match.Groups[1].Value), byte.Parse(match.Groups[2].Value),
+                            byte.Parse(match.Groups[3].Value));
+                    }
+                }
             }
         }
         catch (Exception)
