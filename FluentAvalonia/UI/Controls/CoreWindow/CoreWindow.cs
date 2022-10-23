@@ -198,7 +198,7 @@ public class CoreWindow : Window, IStyleable, ICoreApplicationView
             PseudoClasses.Set(":splashOpen", true);
             var time = DateTime.Now;
 
-            _splashContext.RunJobs();
+            await _splashContext.RunJobs();
 
             var delta = DateTime.Now - time;
             if (delta.TotalMilliseconds < _splashContext.SplashScreen.MinimumShowTime)
@@ -606,7 +606,7 @@ public class CoreWindow : Window, IStyleable, ICoreApplicationView
             }
         }
 
-        public async void RunJobs()
+        public async Task RunJobs()
         {
             _splashCTS = new CancellationTokenSource();
             await Task.Run(() =>
