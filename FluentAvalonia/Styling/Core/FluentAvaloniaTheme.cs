@@ -12,10 +12,8 @@ using FluentAvalonia.UI.Media;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 
 namespace FluentAvalonia.Styling;
 
@@ -236,6 +234,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 TryLoadMacOSAccentColor();
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                TryLoadLinuxAccentColor();
             }
         }
 
@@ -535,78 +537,12 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     private string ResolveLinuxSystemSettings()
     {
         string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
-        string themeName = null;
         if (PreferSystemTheme)
         {
-            if (_linuxDesktopEnvironmentConfig == null)
+            var resolvedTheme = LinuxThemeResolver.TryLoadSystemTheme();
+            if (resolvedTheme != null)
             {
-                TryLoadLinuxDesktopEnvironmentConfig();
-            }
-
-            if (_linuxDesktopEnvironmentConfig != null)
-            {
-                if (_linuxDesktopEnvironment.Contains("KDE"))
-                {
-                    var match = new Regex("^ColorScheme=(.*)$", RegexOptions.Multiline)
-                        .Match(_linuxDesktopEnvironmentConfig);
-                    if (match.Success)
-                    {
-                        themeName = match.Groups[1].Value;
-                    }
-                }
-                else if (_linuxDesktopEnvironment.Contains("LXDE"))
-                {
-                    var match = new Regex("^sNet\\/ThemeName=(.*)$", RegexOptions.Multiline)
-                        .Match(_linuxDesktopEnvironmentConfig);
-                    if (match.Success)
-                    {
-                        themeName = match.Groups[1].Value;
-                    }
-                }
-                else if (_linuxDesktopEnvironment.Contains("LXQt"))
-                {
-                    var match = new Regex("^theme=(.*)$", RegexOptions.Multiline)
-                        .Match(_linuxDesktopEnvironmentConfig);
-                    if (match.Success)
-                    {
-                        themeName = match.Groups[1].Value;
-                    }
-                }
-            }
-            else if (_linuxDesktopEnvironment.Contains("Cinnamon"))
-            {
-                themeName = ReadGsettingsKey("org.cinnamon.desktop.interface", "gtk-theme");
-            }
-            else // GTK (GNOME, Xfce and fallback)
-            {
-                var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
-                if (color != null && color != "default")
-                {
-                    if (color == "prefer-light")
-                    {
-                        theme = LightModeString;
-                    }
-                    else if (color == "prefer-dark")
-                    {
-                        theme = DarkModeString;
-                    }
-                }
-                else
-                {
-                    themeName = ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme");
-                }
-            }
-
-            if (themeName != null)
-            {
-                if (themeName.IndexOf("dark", StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    theme = DarkModeString;
-                }
-                else
-                {
-                    theme = LightModeString;
-                }
+                theme = resolvedTheme;
             }
         }
 
@@ -887,64 +823,8 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
 
     private void TryLoadLinuxAccentColor()
     {
-        Color2? aColor = null;
-
-        if (_linuxDesktopEnvironmentConfig == null)
-        {
-            TryLoadLinuxDesktopEnvironmentConfig();
-        }
-
-        if (_linuxDesktopEnvironmentConfig != null)
-        {
-            try
-            {
-                if (_linuxDesktopEnvironment.Contains("KDE"))
-                {
-                    var match = new Regex("^AccentColor=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline)
-                        .Match(_linuxDesktopEnvironmentConfig);
-                    if (!match.Success)
-                    {
-                        // Accent color is from the current color scheme
-                        match = new Regex("^DecorationFocus=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline)
-                            .Match(_linuxDesktopEnvironmentConfig);
-                    }
-
-                    if (match.Success)
-                    {
-                        aColor = Color2.FromRGB(byte.Parse(match.Groups[1].Value), byte.Parse(match.Groups[2].Value),
-                            byte.Parse(match.Groups[3].Value));
-                    }
-                }
-                else if (_linuxDesktopEnvironment.Contains("LXQt"))
-                {
-                    var match = new Regex("^highlight_color=#([\\da-f]{2})([\\da-f]{2})([\\da-f]{2})$",
-                            RegexOptions.Multiline)
-                        .Match(_linuxDesktopEnvironmentConfig);
-                    if (match.Success)
-                    {
-                        aColor = Color2.FromRGB(Convert.ToByte(match.Groups[1].Value, 16),
-                            Convert.ToByte(match.Groups[2].Value, 16), Convert.ToByte(match.Groups[3].Value, 16));
-                    }
-                }
-                else if (_linuxDesktopEnvironment.Contains("LXDE"))
-                {
-                    var match = new Regex("selected_bg_color:#([\\da-f]{2}).{2}([\\da-f]{2}).{2}([\\da-f]{2}).{2}")
-                        .Match(_linuxDesktopEnvironmentConfig);
-                    if (match.Success)
-                    {
-                        aColor = Color2.FromRGB(Convert.ToByte(match.Groups[1].Value, 16),
-                            Convert.ToByte(match.Groups[2].Value, 16), Convert.ToByte(match.Groups[3].Value, 16));
-                    }
-                }
-            }
-            catch { }
-        }
-
-        if (aColor == null)
-        {
-            LoadDefaultAccentColor();
-        }
-        else
+        var aColor = LinuxThemeResolver.TryLoadAccentColor();
+        if (aColor != null)
         {
             AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor);
 
@@ -983,53 +863,6 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         }
     }
 
-    private string ReadGsettingsKey(string schema, string key)
-    {
-        var p = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                WindowStyle = ProcessWindowStyle.Hidden,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                FileName = "gsettings",
-                Arguments = $"get {schema} {key}"
-            },
-        };
-        p.Start();
-        p.WaitForExit();
-
-        return p.ExitCode == 0 ? p.StandardOutput.ReadToEnd().Trim().Replace("'", string.Empty) : null;
-    }
-
-    private void TryLoadLinuxDesktopEnvironmentConfig()
-    {
-        string file = null;
-        if (_linuxDesktopEnvironment.Contains("KDE"))
-        {
-            file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "kdeglobals");
-        }
-        else if (_linuxDesktopEnvironment.Contains("LXDE"))
-        {
-            file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "lxsession/LXDE/desktop.conf");
-        }
-        else if (_linuxDesktopEnvironment.Contains("LXQt"))
-        {
-            file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "lxqt/lxqt.conf");
-        }
-
-        if (file != null)
-        {
-            try
-            {
-                _linuxDesktopEnvironmentConfig = File.ReadAllText(file);
-            }
-            catch { }
-        }
-    }
-
     private bool _hasLoaded;
     private Styles _styles;
     private readonly StyleCache _styleCache = new StyleCache();
@@ -1039,9 +872,6 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     private string _requestedTheme = null;
     private Uri _baseUri;
     private Color? _customAccentColor;
-
-    private string _linuxDesktopEnvironmentConfig;
-    private readonly string _linuxDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
 
     public static readonly string LightModeString = "Light";
     public static readonly string DarkModeString = "Dark";
