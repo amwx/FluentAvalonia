@@ -54,4 +54,8 @@
         <PackageReference Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.1'" />
 	</ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="FluentAvalonia.UI.Windowing" />
+  </ItemGroup>
 </Project>
