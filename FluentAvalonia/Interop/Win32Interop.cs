@@ -5,9 +5,19 @@ using System.Security;
 
 namespace FluentAvalonia.Interop;
 
-public static unsafe class Win32Interop
+internal static unsafe class Win32Interop
 {
 #pragma warning disable CA1401
+
+    [DllImport(s_dwmapi, SetLastError = true)]
+    public static extern int DwmSetWindowAttribute(nint hWnd, DWMWINDOWATTRIBUTE attr, void* value, int attrSize);
+
+
+
+
+    private const string s_dwmapi = "dwmapi";
+
+
 
     [DllImport("dwmapi.dll", SetLastError = true)]
     public static extern int DwmIsCompositionEnabled(out bool enabled);
@@ -71,7 +81,7 @@ public static unsafe class Win32Interop
     public static extern unsafe int TrackPopupMenu(IntPtr hMenu, uint uFlags,
         int x, int y, int nReserved, IntPtr hWnd, RECT* prcRect);
 
-    public static bool GetSystemTheme(OSVERSIONINFOEX osInfo)
+    internal static bool GetSystemTheme(OSVERSIONINFOEX osInfo)
     {
         if (osInfo.MajorVersion < 10 || osInfo.BuildNumber < 17763) //1809
             return false;
@@ -82,19 +92,19 @@ public static unsafe class Win32Interop
         return fnShouldSystemUseDarkMode();
     }
 
-    public static bool ApplyTheme(IntPtr hwnd, bool useDark, OSVERSIONINFOEX osInfo)
+    public static bool ApplyTheme(IntPtr hwnd, bool useDark)
     {
-        if (osInfo.MajorVersion < 10 || osInfo.BuildNumber < 17763) //1809
+        if (!OSVersionHelper.IsWindowsAtLeast(10, 0, 17763)) // 1809
             return false;
 
-        if (osInfo.BuildNumber < 18362) //1903
+        if (!OSVersionHelper.IsWindowsAtLeast(10, 0, 18362)) //1903
         {
             var res = fnAllowDarkModeForApp(hwnd, useDark);
             if (res == false)
                 return res;
 
             int dark = useDark ? 1 : 0;
-            DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.UseImmersiveDarkMode, ref dark, Marshal.SizeOf<int>());
+            DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref dark, Marshal.SizeOf<int>());
         }
         else
         {
@@ -130,25 +140,9 @@ public static unsafe class Win32Interop
 
     [SecurityCritical]
     [DllImport("ntdll.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
+    internal static unsafe extern int RtlGetVersion(OSVERSIONINFOEX* versionInfo);
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct OSVERSIONINFOEX
-    {
-        // The OSVersionInfoSize field must be set
-        public int OSVersionInfoSize;
-        public int MajorVersion;
-        public int MinorVersion;
-        public int BuildNumber;
-        public int PlatformId;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public string CSDVersion;
-        public ushort ServicePackMajor;
-        public ushort ServicePackMinor;
-        public short SuiteMask;
-        public byte ProductType;
-        public byte Reserved;
-    }
+    
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern unsafe bool AdjustWindowRectExForDpi(
@@ -311,26 +305,6 @@ public struct NCCALCSIZE_PARAMS
     public WINDOWPOS lppos;
 }
 
-public enum DWMWINDOWATTRIBUTE : uint
-{
-    NCRenderingEnabled = 1,
-    NCRenderingPolicy,
-    TransitionsForceDisabled,
-    AllowNCPaint,
-    CaptionButtonBounds,
-    NonClientRtlLayout,
-    ForceIconicRepresentation,
-    Flip3DPolicy,
-    ExtendedFrameBounds,
-    HasIconicBitmap,
-    DisallowPeek,
-    ExcludedFromPeek,
-    Cloak,
-    Cloaked,
-    FreezeRepresentation,
-    UseImmersiveDarkMode = 20
-}
-
 public enum WM : uint
 {
     SIZE = 0x0005,
@@ -384,3 +358,19 @@ public enum MIIM
     TYPE = 0x00000010
 }
 
+[StructLayout(LayoutKind.Sequential)]
+internal unsafe struct OSVERSIONINFOEX
+{
+    // The OSVersionInfoSize field must be set
+    public uint OSVersionInfoSize;
+    public uint MajorVersion;
+    public uint MinorVersion;
+    public uint BuildNumber;
+    public uint PlatformId;
+    public fixed ushort CSDVersion[128];
+    public ushort ServicePackMajor;
+    public ushort ServicePackMinor;
+    public ushort SuiteMask;
+    public byte ProductType;
+    public byte Reserved;
+}
