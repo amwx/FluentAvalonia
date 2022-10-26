@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.0-preview2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview2" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview2" />
+
+    <PackageReference Include="MicroCom.CodeGenerator.MSBuild" Version="0.10.4" />
+    <PackageReference Include="MicroCom.Runtime" Version="0.10.4" />
+    <MicroComIdl Include="$(MSBuildThisFileDirectory)\Win32\Win32Com.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Win32\Win32Com.Generated.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
+  </ItemGroup>
+</Project>
