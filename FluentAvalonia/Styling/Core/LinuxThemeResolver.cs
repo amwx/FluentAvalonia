@@ -26,8 +26,8 @@ internal static class LinuxThemeResolver
                     if (!match.Success)
                     {
                         // Accent color is from the current color scheme
-                        match = new Regex("^\\[Colors:Selection\\].*DecorationFocus=(\\d+),(\\d+),(\\d+)",
-                                RegexOptions.Multiline)
+                        match = new Regex("^\\[Colors:Selection\\].*?BackgroundNormal=(\\d+),(\\d+),(\\d+)",
+                                RegexOptions.Multiline | RegexOptions.Singleline)
                             .Match(_config);
                     }
 
