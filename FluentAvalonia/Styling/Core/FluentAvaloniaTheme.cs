@@ -75,7 +75,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// </summary>
     /// <remarks>
     /// On Linux, accent color detection is only supported on KDE (from current scheme,
-    /// from wallpaper and custom), LXQt (from selection color) and LXDE (from selection
+    /// from wallpaper and custom), LXQt (from selection color) and LXDE (from custom selection
     /// color).
     /// </remarks>
     public bool PreferUserAccentColor { get; set; } = true;
@@ -826,7 +826,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         var aColor = LinuxThemeResolver.TryLoadAccentColor();
         if (aColor != null)
         {
-            AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor);
+            AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor.Value);
 
             AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.Value.LightenPercent(0.15f));
             AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)aColor.Value.LightenPercent(0.30f));
@@ -835,6 +835,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
             AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)aColor.Value.LightenPercent(-0.15f));
             AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)aColor.Value.LightenPercent(-0.30f));
             AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)aColor.Value.LightenPercent(-0.45f));
+        }
+        else
+        {
+            LoadDefaultAccentColor();
         }
     }
 

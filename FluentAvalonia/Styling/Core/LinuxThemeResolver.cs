@@ -26,7 +26,8 @@ internal static class LinuxThemeResolver
                     if (!match.Success)
                     {
                         // Accent color is from the current color scheme
-                        match = new Regex("^DecorationFocus=(\\d+),(\\d+),(\\d+)$", RegexOptions.Multiline)
+                        match = new Regex("^\\[Colors:Selection\\].*DecorationFocus=(\\d+),(\\d+),(\\d+)",
+                                RegexOptions.Multiline)
                             .Match(_config);
                     }
 
@@ -39,7 +40,7 @@ internal static class LinuxThemeResolver
                 case DesktopEnvironment.LXQt:
                     match =
                         new Regex("^highlight_color=#([\\da-f]{2})([\\da-f]{2})([\\da-f]{2})$", RegexOptions.Multiline)
-                        .Match(_config);
+                            .Match(_config);
                     if (match.Success)
                     {
                         aColor = Color2.FromRGB(Convert.ToByte(match.Groups[1].Value, 16),
@@ -54,7 +55,6 @@ internal static class LinuxThemeResolver
                         aColor = Color2.FromRGB(Convert.ToByte(match.Groups[1].Value, 16),
                             Convert.ToByte(match.Groups[2].Value, 16), Convert.ToByte(match.Groups[3].Value, 16));
                     }
-
                     break;
             }
         }
@@ -69,8 +69,6 @@ internal static class LinuxThemeResolver
             TryLoadLinuxDesktopEnvironmentConfig();
         }
 
-        string theme = null;
-        string themeName = null;
         if (_config != null)
         {
             switch (_desktopEnvironment)
@@ -81,7 +79,7 @@ internal static class LinuxThemeResolver
                         .Match(_config);
                     if (match.Success)
                     {
-                        themeName = match.Groups[1].Value;
+                        return GetThemeFromName(match.Groups[1].Value);
                     }
 
                     break;
@@ -91,7 +89,7 @@ internal static class LinuxThemeResolver
                     var match = new Regex("^sNet\\/ThemeName=(.*)$", RegexOptions.Multiline).Match(_config);
                     if (match.Success)
                     {
-                        themeName = match.Groups[1].Value;
+                        return GetThemeFromName(match.Groups[1].Value);
                     }
 
                     break;
@@ -101,7 +99,7 @@ internal static class LinuxThemeResolver
                     var match = new Regex("^theme=(.*)$", RegexOptions.Multiline).Match(_config);
                     if (match.Success)
                     {
-                        themeName = match.Groups[1].Value;
+                        return GetThemeFromName(match.Groups[1].Value);
                     }
 
                     break;
@@ -111,39 +109,18 @@ internal static class LinuxThemeResolver
         else switch (_desktopEnvironment)
         {
             case DesktopEnvironment.Cinnamon:
-                themeName = ReadGsettingsKey("org.cinnamon.desktop.interface", "gtk-theme");
-                break;
+                return GetThemeFromName(ReadGsettingsKey("org.cinnamon.desktop.interface", "gtk-theme"));
             case DesktopEnvironment.Other:
-            {
                 var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
-                if (color != null && color != "default")
+                return color switch
                 {
-                    if (color == "prefer-light")
-                    {
-                        theme = FluentAvaloniaTheme.LightModeString;
-                    }
-                    else if (color == "prefer-dark")
-                    {
-                        theme = FluentAvaloniaTheme.DarkModeString;
-                    }
-                }
-                else
-                {
-                    themeName = ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme");
-                }
-
-                break;
-            }
+                    "prefer-light" => FluentAvaloniaTheme.LightModeString,
+                    "prefer-dark" => FluentAvaloniaTheme.DarkModeString,
+                    _ => GetThemeFromName(ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme"))
+                };
         }
 
-        if (themeName != null)
-        {
-            theme = themeName.IndexOf("dark", StringComparison.OrdinalIgnoreCase) != -1
-                ? FluentAvaloniaTheme.DarkModeString
-                : FluentAvaloniaTheme.LightModeString;
-        }
-
-        return theme;
+        return FluentAvaloniaTheme.LightModeString;
     }
 
     private static void TryLoadLinuxDesktopEnvironmentConfig()
@@ -165,6 +142,13 @@ internal static class LinuxThemeResolver
             }
             catch { }
         }
+    }
+
+    private static string GetThemeFromName(string name)
+    {
+        return name != null && name.IndexOf("dark", StringComparison.OrdinalIgnoreCase) != -1
+            ? FluentAvaloniaTheme.DarkModeString
+            : FluentAvaloniaTheme.LightModeString;
     }
 
     private static string ReadGsettingsKey(string schema, string key)
