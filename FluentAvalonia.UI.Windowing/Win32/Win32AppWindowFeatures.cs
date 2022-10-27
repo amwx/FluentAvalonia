@@ -48,7 +48,9 @@ internal class Win32AppWindowFeatures : IAppWindowPlatformFeatures
         // if called on Win 10
         if (OSVersionHelper.IsWindows11())
         {
-            COLORREF cr = color.ToUint32();
+            // DON'T USE .ToUint32, COLORREF has B & R components switched
+            // and expects alpha to be 0 (it will return hr = Parameter not correct)
+            COLORREF cr = ((uint)0 << 24) | ((uint)color.B << 16) | ((uint)color.G << 8) | (uint)color.R;
             var hr = (HRESULT)DwmSetWindowAttribute(_owner.PlatformImpl.Handle.Handle, DWMWINDOWATTRIBUTE.DWMWA_BORDER_COLOR,
                 &cr, sizeof(COLORREF));
             if (!hr.SUCCEEDED)
