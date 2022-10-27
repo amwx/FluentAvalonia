@@ -40,6 +40,7 @@ public partial class AppWindow : Window, IStyleable
         // like the TaskDialog, stuff gets cut off
         if (IsWindows)
         {
+            // TODO: (TaskDialog)
             if (!CanResize)
             {
                 var wid = (16 * PlatformImpl.RenderScaling);
@@ -55,12 +56,12 @@ public partial class AppWindow : Window, IStyleable
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
-        base.OnApplyTemplate(e);
-
-        _templateRoot = e.NameScope.Find<Border>("RootBorder");
+        base.OnApplyTemplate(e);      
 
         if (IsWindows && !Design.IsDesignMode)
         {
+            _templateRoot = e.NameScope.Find<Border>("RootBorder");
+                        
             _captionButtons = e.NameScope.Find<MinMaxCloseControl>("SystemCaptionButtons");
             _defaultTitleBar = e.NameScope.Find<Panel>("DefaultTitleBar");
 
@@ -85,7 +86,7 @@ public partial class AppWindow : Window, IStyleable
             PseudoClasses.Set(":icon", change.NewValue != null);
         }
     }
-
+    
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
@@ -104,7 +105,9 @@ public partial class AppWindow : Window, IStyleable
         else
         {
             TemplateSettings.IsTitleBarContentVisible = true;
-            TemplateSettings.ContentMargin = new Thickness(0, _titleBar.Height, 0, 0);
+            
+            if (WindowState != WindowState.FullScreen)
+                TemplateSettings.ContentMargin = new Thickness(0, _titleBar.Height, 0, 0);
         }
     }
 
@@ -196,6 +199,35 @@ public partial class AppWindow : Window, IStyleable
             }
 
             return true;
+        }
+    }
+
+    internal void UpdateContentPosition(Thickness t)
+    {        
+        _templateRoot.Margin = t;
+    }
+
+    internal void UpdateFullScreenState(bool isFullScreen)
+    {
+        if (isFullScreen)
+        {
+            TemplateSettings.ContentMargin = new Thickness();
+        }
+        else
+        {
+            OnExtendsContentIntoTitleBarChanged(_titleBar.ExtendsContentIntoTitleBar);
+        }
+    }
+
+    internal void OnWin32WindowStateChanged(WindowState state)
+    {
+        if (state == WindowState.FullScreen)
+        {
+            TemplateSettings.ContentMargin = new Thickness();
+        }
+        else
+        {
+            OnExtendsContentIntoTitleBarChanged(_titleBar.ExtendsContentIntoTitleBar);
         }
     }
 

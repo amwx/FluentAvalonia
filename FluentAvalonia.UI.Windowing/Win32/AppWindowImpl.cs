@@ -20,7 +20,30 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         // AppWindow is forced into DarkMode ...ALWAYS... regardless of the true app theme
         // This matches Win10/11 apps and prevents that dreaded white border from showing
         // around the window; see GH #142
-        Interop.Win32Interop.ApplyTheme(Hwnd, true);
+        Interop.Win32Interop.ApplyTheme(Hwnd, true);        
+    }
+
+    // We do this because we need to get the WindowState value BEFORE base does
+    // because Avalonia handles fullscreen and doesn't notify that outward like
+    // other state values do. 
+    // See HandleWindowStateChanged() for more
+    public new WindowState WindowState
+    {
+        get => base.WindowState;
+        set
+        {
+            if (value == WindowState.FullScreen)
+                HandleWindowStateChanged(true);
+
+            // Show() override for this
+            if (!_isFullScreen || _hasShown)
+                base.WindowState = value;
+
+            _owner?.OnWin32WindowStateChanged(value);
+
+            if (_isFullScreen && value != WindowState.FullScreen)
+                HandleWindowStateChanged(false);
+        }
     }
 
     public event EventHandler WindowOpened;
@@ -45,12 +68,16 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
                 return HandleNCHITTEST(lParam);
 
             case WM_SIZE:
+                base.AppWndProc(hWnd, msg, wParam, lParam);
+
                 if (_fakingMaximizeButton)
                 {
                     _wasFakeMaximizeDown = false;
                     _owner.SystemCaptionControl.ClearMaximizedState();
                 }
-                break;
+                
+                EnsureExtended();
+                return IntPtr.Zero;
 
             case WM_NCLBUTTONDOWN:
                 if (_fakingMaximizeButton)
@@ -93,8 +120,6 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
                     HandleSETTINGCHANGED((WPARAM)wParam, lParam);
                 }
                 break;
-
-                // TODO: System Params changed (Theme, accent, etc.)
         }
 
         return base.WndProc(hWnd, msg, wParam, lParam);
@@ -119,8 +144,17 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
     }
 
     public override void Show(bool activate, bool isDialog)
-    {
+    {        
         base.Show(activate, isDialog);
+
+        // If Window state is set to FullScreen before the window opens, we get a WM_SIZE event that
+        // resets the window state and it launches without the window frame but in "normal" mode
+        // So we defer setting the state to full screen until now so everything works correctly
+        if (!_hasShown && _isFullScreen)
+        {
+            _hasShown = true;
+            WindowState = WindowState.FullScreen;
+        }
 
         WindowOpened?.Invoke(this, EventArgs.Empty);
     }
@@ -133,6 +167,17 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
     private int GetResizeHandleHeight() =>
         GetSystemMetricsForDpi(SM_CXPADDEDBORDER, (uint)(96 * RenderScaling)) +
         GetSystemMetricsForDpi(SM_CYSIZEFRAME, (uint)(96 * RenderScaling));
+
+    private int GetTopBorderHeight()
+    {
+        if (WindowState == WindowState.Maximized || WindowState == WindowState.FullScreen)
+        {
+            return 0;
+        }
+
+        // This is always 1 regardless of DPI
+        return 1;
+    }
 
     private void EnsureExtended()
     {
@@ -166,17 +211,37 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         if (ret != 0)
             return ret;
 
+        UpdateContentPosition();
+
         var newSize = ncParams.rgrc[0];
         newSize.top = originalTop;
+        var windowState = WindowState;
 
-        if (WindowState == WindowState.Maximized)
+        if (windowState == WindowState.Maximized)
         {
             newSize.top += GetResizeHandleHeight();
         }
 
-        newSize.left += 8;
-        newSize.right -= 8;
-        newSize.bottom -= 8;
+        // Fullscreen is handled for us upstream in Win32 WindowImpl - all we need to do here
+        // is remove the normal frame adjustments we do
+        // This will prevent that weird effect some apps have where the top/left is offset when the 
+        // window enters full screen 
+
+        if (windowState != WindowState.FullScreen)
+        {
+            // Use AdjustWindowRectExForDpi here to get the frame adjustments on the remaining sides
+            // Using 8 fails in high DPI scenarios, this tells us the exact difference of the NC frame
+            // and we can get accurate values that work regardless of DPI without "hacking" it
+            var style = (int)GetWindowLongPtr((HWND)Hwnd, -16);
+            var exStyle = (int)GetWindowLongPtr((HWND)Hwnd, -20);
+
+            RECT frame;
+            AdjustWindowRectExForDpi(&frame, style, false, exStyle, (int)(RenderScaling * 96));
+
+            newSize.left -= frame.left; // left frame is negative, subtract to add it back
+            newSize.right -= frame.right; // right frame is positive, subtract to pull it back
+            newSize.bottom -= frame.bottom; // bottom frame is positive, subtract to pull it back
+        }
 
         ncParams.rgrc[0] = newSize;
 
@@ -207,7 +272,7 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         // On the Top border, the resize handle overlaps with the Titlebar area, which matches
         // a typical Win32 window or modern app window
         var resizeBorderHeight = GetResizeHandleHeight();
-        var isOnResizeBorder = point.Y < resizeBorderHeight;
+        var isOnResizeBorder = point.Y < resizeBorderHeight && !_isFullScreen;
 
         // Make sure the caption buttons still get precedence
         // This is where things get tricky too. On Win11, we still want to support the snap
@@ -248,8 +313,8 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
                 }
             }
 
-            // Hit Test titlebar region
-            if (_owner.HitTestTitleBar(point))
+            // Hit Test titlebar region, except in full screen mode
+            if (!_isFullScreen && _owner.HitTestTitleBar(point))
             {
                 return HTCAPTION;
             }
@@ -338,8 +403,59 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         
     }
 
+    private void UpdateContentPosition()
+    {
+        var topHeight = GetTopBorderHeight() / RenderScaling;
+
+        // Why do we do this? We remove the entire top part of the frame between
+        // DwmExtendFrameIntoClientArea and WM_NCCALCSIZE so we need to offset the 
+        // window content by 1px to return the top frame border. Because we're doing
+        // this in the xaml part of the window, we divide by scaling to undo it so we
+        // get correct results - since scaling is automatically done for us
+        // We also need to make the top border 0 when maximized otherwise the top pixel row
+        // won't allow interactions
+        _owner?.UpdateContentPosition(new Thickness(0, (topHeight == 0 && !_isFullScreen) ? (-1 / RenderScaling) : topHeight, 0, 0));
+    }
+
+    private void HandleWindowStateChanged(bool isFullScreen)
+    {
+        // Avalonia's logic doesn't expect our window style to be the way it is, so when the saved window information
+        // they use is restored, it causes the window y-coor to decrease and height to grow so we need to save that
+        // information ourselves to override what they do upstream. It'll cause multiple window moves/sizes but
+        // its better than nothing and properly allows handling full screen
+        if (isFullScreen)
+        {
+            // if isFullScreen is true, this method is called before passing the WindowState upstream to Avalonia
+            // We need to store the window state ourselves to we have the required information to restore it later
+
+            _isFullScreen = true;
+
+            // To make this work we only need to store the WindowRect (including NC frame) and restore it later
+            // it automatically works this way
+            RECT rw;
+            GetWindowRect((HWND)Hwnd, &rw);
+
+            _beforeFullScreenBounds = rw;
+        }
+        else
+        {
+            // If isFullScreen is passed as false, this method is called AFTER the WindowState is handled upstream
+            // We now need to correct the window top and height using our stored information
+
+            SetWindowPos((HWND)Hwnd, HWND.NULL, _beforeFullScreenBounds.left,
+               _beforeFullScreenBounds.top,
+               _beforeFullScreenBounds.Width, _beforeFullScreenBounds.Height,
+               SWP_NOACTIVATE | SWP_NOZORDER | SWP_FRAMECHANGED);
+
+            _isFullScreen = false;
+        }
+    }
+
     private bool _isWindows11;
     private AppWindow _owner;
     private bool _fakingMaximizeButton;
     private bool _wasFakeMaximizeDown;
+    private bool _isFullScreen;
+    private RECT _beforeFullScreenBounds;
+    private bool _hasShown;
 }
