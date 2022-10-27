@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:wnd="using:FluentAvalonia.UI.Windowing" 
+                    xmlns:wnd="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia.UI.Windowing" 
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
     
     <ControlTheme TargetType="Button" x:Key="FA_SystemCaptionButton">
@@ -98,68 +98,100 @@
     </ControlTheme>
 
 
+    <ControlTemplate x:Key="AppWindowOnWindowsTemplate" TargetType="{x:Type wnd:AppWindow}">
+        <VisualLayerManager>
+            <!-- Because we use the System Border, we don't specify anything like that here.-->
+            <Border Background="{TemplateBinding Background}"
+                    Padding="{TemplateBinding Padding}"
+                    Name="RootBorder">
+                <Panel>
+                    <Panel Name="DefaultTitleBar"
+                           Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                           VerticalAlignment="Top">
 
+                        <Image Source="{TemplateBinding Icon}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Width="16" Height="16"
+                               IsVisible="{Binding TemplateSettings.IsTitleBarContentVisible, RelativeSource={RelativeSource TemplatedParent}}"
+                               Margin="8 0 0 0"
+                               Name="Icon"/>
+
+                        <TextBlock Name="TitleText"
+                                   Text="{TemplateBinding Title}"
+                                   Margin="12 0 0 0"
+                                   FontSize="12"
+                                   IsVisible="{Binding TemplateSettings.IsTitleBarContentVisible, RelativeSource={RelativeSource TemplatedParent}}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                    </Panel>
+
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      ClipToBounds="False"
+                                      Margin="{Binding TemplateSettings.ContentMargin, RelativeSource={RelativeSource TemplatedParent}}"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                    <!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
+                    <wnd:MinMaxCloseControl HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Name="SystemCaptionButtons"
+                                            Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                </Panel>
+            </Border>
+        </VisualLayerManager>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="AppWindowDefaultTemplate" TargetType="{x:Type wnd:AppWindow}">
+        <Panel>
+            <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+            <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+            <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+            <VisualLayerManager>
+                <VisualLayerManager.ChromeOverlayLayer>
+                    <TitleBar />
+                </VisualLayerManager.ChromeOverlayLayer>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Content="{TemplateBinding Content}"
+                                  Margin="{TemplateBinding Padding}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </VisualLayerManager>
+        </Panel>
+    </ControlTemplate>
+    
+    
     <ControlTheme TargetType="wnd:AppWindow" x:Key="{x:Type wnd:AppWindow}">
         <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="Background" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <VisualLayerManager>
-                    <!-- Because we use the System Border, we don't specify anything like that here.-->
-                    <Border Background="{TemplateBinding Background}"
-                            Padding="{TemplateBinding Padding}"
-                            Name="RootBorder">
-                        <Panel>
-                            <Panel Name="DefaultTitleBar"
-                                   Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                                   VerticalAlignment="Top">
+        <Setter Property="Template" Value="{StaticResource AppWindowDefaultTemplate}" />
 
-                                <Image Source="{TemplateBinding Icon}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left"
-                                       Width="16" Height="16"
-                                       IsVisible="{Binding TemplateSettings.IsTitleBarContentVisible, RelativeSource={RelativeSource TemplatedParent}}"
-                                       Margin="8 0 0 0"
-                                       Name="Icon"/>
+        <Style Selector="^:windows">
+            <Setter Property="Template" Value="{StaticResource AppWindowOnWindowsTemplate}" />
 
-                                <TextBlock Name="TitleText"
-                                           Text="{TemplateBinding Title}"
-                                           Margin="12 0 0 0"
-                                           FontSize="12"
-                                           IsVisible="{Binding TemplateSettings.IsTitleBarContentVisible, RelativeSource={RelativeSource TemplatedParent}}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Left" />
-                            </Panel>
-
-                            <ContentPresenter Name="PART_ContentPresenter"
-                                              ClipToBounds="False"
-                                              Margin="{Binding TemplateSettings.ContentMargin, RelativeSource={RelativeSource TemplatedParent}}"
-                                              HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch"
-                                              Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
-
-                            <!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
-                            <wnd:MinMaxCloseControl HorizontalAlignment="Right"
-                                                    VerticalAlignment="Top"
-                                                    Name="SystemCaptionButtons"
-                                                    Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"/>
-
-                        </Panel>
-                    </Border>
-                </VisualLayerManager>
-            </ControlTemplate>
-        </Setter>
-
-        <Style Selector="^:icon">
-            <Style Selector="^ /template/ Image#Icon">
-                <Setter Property="IsVisible" Value="True" />
+            <Style Selector="^:icon">
+                <Style Selector="^ /template/ Image#Icon">
+                    <Setter Property="IsVisible" Value="True" />
+                </Style>
+                <Style Selector="^ /template/ TextBlock#TitleText">
+                    <Setter Property="Margin" Value="32 0 0 0" />
+                </Style>
             </Style>
-            <Style Selector="^ /template/ TextBlock#TitleText">
-                <Setter Property="Margin" Value="32 0 0 0" />
+
+            <Style Selector="^[WindowState=FullScreen]">
+                <Style Selector="^ /template/ Panel#DefaultTitleBar">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
+                <Style Selector="^ /template/ wnd|MinMaxCloseControl#SystemCaptionButtons">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
             </Style>
         </Style>
     </ControlTheme>
