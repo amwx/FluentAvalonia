@@ -35,7 +35,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// <remarks>
     /// If <see cref="PreferSystemTheme"/> is set to true, on startup this value will
     /// be overwritten with the system theme unless the attempt to read from the system
-    /// fails, in which case setting this can provide a fallback. 
+    /// fails, in which case setting this can provide a fallback.
     /// </remarks>
     public string RequestedTheme
     {
@@ -53,7 +53,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// Gets or sets whether the system font should be used on Windows. Value only applies at startup
     /// </summary>
     /// <remarks>
-    /// On Windows 10, this is "Segoe UI", and Windows 11, this is "Segoe UI Variable Text". 
+    /// On Windows 10, this is "Segoe UI", and Windows 11, this is "Segoe UI Variable Text".
     /// </remarks>
     public bool UseSystemFontOnWindows { get; set; } = true;
 
@@ -62,8 +62,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// </summary>
     /// <remarks>
     /// This property is respected on Windows, MacOS, and Linux. However, on linux,
-    /// it requires 'gtk-theme' setting to work and the current theme to be appended
-    /// with '-dark'.
+    /// the detection is different depending on the user's desktop environment. On KDE,
+    /// Cinnamon, LXDE and LXQt, it requires the user's theme (color scheme in the
+    /// case of KDE) name to contain "dark". On GNOME or Xfce, it requires 'color-scheme'
+    /// to be set to either 'prefer-light', 'prefer-dark', or 'gtk-theme' to contain 'dark'.
     /// Also note, that high contrast theme will only resolve here on Windows.
     /// </remarks>
     public bool PreferSystemTheme { get; set; } = true;
@@ -72,7 +74,9 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     /// Gets or sets whether to use the current user's accent color as the resource SystemAccentColor
     /// </summary>
     /// <remarks>
-    /// This property has no effect on Linux
+    /// On Linux, accent color detection is only supported on KDE (from current scheme,
+    /// from wallpaper and custom), LXQt (from selection color) and LXDE (from custom selection
+    /// color).
     /// </remarks>
     public bool PreferUserAccentColor { get; set; } = true;
 
@@ -102,7 +106,7 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     }
 
     /// <summary>
-    /// Gets or sets a value that determines if/when style overrides should be used to alleviate issues 
+    /// Gets or sets a value that determines if/when style overrides should be used to alleviate issues
     /// with text alignment in some controls caused when Segoe UI or Segoe UI Variable font
     /// families do not exist. The default value is <see cref="TextVerticalAlignmentOverride.EnabledNonWindows"/>
     /// </summary>
@@ -209,8 +213,8 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     }
 
     /// <summary>
-    /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be 
-    /// SystemAccentColor or Light/Dark/HighContrast theme. This method only works for AccentColors if 
+    /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be
+    /// SystemAccentColor or Light/Dark/HighContrast theme. This method only works for AccentColors if
     /// <see cref="UseUserAccentColorOnWindows"/> is true, and for app theme if <see cref="UseSystemThemeOnWindows"/> is true
     /// </summary>
     public void InvalidateThemingFromSystemThemeChanged()
@@ -230,6 +234,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 TryLoadMacOSAccentColor();
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                TryLoadLinuxAccentColor();
             }
         }
 
@@ -531,44 +539,20 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
         string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
         if (PreferSystemTheme)
         {
-            try
+            var resolvedTheme = LinuxThemeResolver.TryLoadSystemTheme();
+            if (resolvedTheme != null)
             {
-                var p = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true,
-                        FileName = "gsettings",
-                        Arguments = "get org.gnome.desktop.interface gtk-theme"
-                    },
-                };
-
-                p.Start();
-                var str = p.StandardOutput.ReadToEnd().Trim();
-                p.WaitForExit();
-
-                if (p.ExitCode == 0)
-                {
-                    if (str.IndexOf("-dark", StringComparison.OrdinalIgnoreCase) != -1)
-                    {
-                        theme = DarkModeString;
-                    }
-                    else
-                    {
-                        theme = LightModeString;
-                    }
-                }
+                theme = resolvedTheme;
             }
-            catch { }
         }
 
         if (CustomAccentColor != null)
         {
             LoadCustomAccentColor();
+        }
+        else if (PreferUserAccentColor)
+        {
+            TryLoadLinuxAccentColor();
         }
         else
         {
@@ -584,13 +568,13 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
     private void SetTextAlignmentOverrides()
     {
         if (TextVerticalAlignmentOverrideBehavior == TextVerticalAlignmentOverride.Disabled ||
-            (TextVerticalAlignmentOverrideBehavior == TextVerticalAlignmentOverride.EnabledNonWindows && 
+            (TextVerticalAlignmentOverrideBehavior == TextVerticalAlignmentOverride.EnabledNonWindows &&
             RuntimeInformation.IsOSPlatform(OSPlatform.Windows)))
             return;
 
         // The following resources are added to remove the larger bottom margin/padding value
         // on some controls added to accomodate Segoe UI - this will allow vertical centering
-        // These are added to the internal _themeResources dictionary, so user can still 
+        // These are added to the internal _themeResources dictionary, so user can still
         // override these elsewhere if desired
 
         _themeResources.Add("CheckBoxPadding", new Thickness(8, 5, 0, 5));
@@ -692,6 +676,10 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
                     TryLoadMacOSAccentColor();
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    TryLoadLinuxAccentColor();
                 }
                 else
                 {
@@ -828,6 +816,27 @@ public class FluentAvaloniaTheme : IStyle, IResourceProvider
             AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)aColor.LightenPercent(-0.45f));
         }
         catch
+        {
+            LoadDefaultAccentColor();
+        }
+    }
+
+    private void TryLoadLinuxAccentColor()
+    {
+        var aColor = LinuxThemeResolver.TryLoadAccentColor();
+        if (aColor != null)
+        {
+            AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor.Value);
+
+            AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.Value.LightenPercent(0.15f));
+            AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)aColor.Value.LightenPercent(0.30f));
+            AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)aColor.Value.LightenPercent(0.45f));
+
+            AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)aColor.Value.LightenPercent(-0.15f));
+            AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)aColor.Value.LightenPercent(-0.30f));
+            AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)aColor.Value.LightenPercent(-0.45f));
+        }
+        else
         {
             LoadDefaultAccentColor();
         }
