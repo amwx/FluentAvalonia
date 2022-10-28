@@ -8,10 +8,6 @@
              xmlns:aedit="using:AvaloniaEdit">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/AppWindowStyles.axaml" />
-            </ResourceDictionary.MergedDictionaries>
-
             <ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save" />
             <ui:FontIconSource x:Key="FontIcon" Glyph="F" />
             <ui:PathIconSource x:Key="PathIcon" Data="M0,0 L 50,0 L 25,50Z" />
@@ -40,6 +36,7 @@
 
     <Application.Styles>
         <sty:FluentAvaloniaTheme />
+        <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
         <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
         <StyleInclude Source="/Styles/OptionsDisplayItemStyles.axaml" />
         <StyleInclude Source="/Styles/ControlExampleStyles.axaml" />
