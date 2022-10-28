@@ -49,7 +49,8 @@ public partial class AppWindow : Window, IStyleable
                 sz = new Size(sz.Width + wid, sz.Height + hgt);
             }
 
-            _titleBar.SetInset(SystemCaptionControl.DesiredSize.Width, FlowDirection);
+            if (SystemCaptionControl != null)
+                _titleBar.SetInset(SystemCaptionControl.DesiredSize.Width, FlowDirection);
         }        
 
         return sz;
@@ -238,7 +239,8 @@ public partial class AppWindow : Window, IStyleable
 
     internal void UpdateContentPosition(Thickness t)
     {        
-        _templateRoot.Margin = t;
+        if (_templateRoot != null)
+            _templateRoot.Margin = t;
     }
 
     internal void UpdateFullScreenState(bool isFullScreen)

@@ -7,7 +7,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using FluentAvalonia.Core;
-using FluentAvalonia.Core.ApplicationModel;
+//using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Navigation;
 using FluentAvaloniaSamples.Pages;
@@ -181,31 +181,31 @@ public partial class MainView : UserControl
         if (e != null)
             (sender as Window).Opened -= OnParentWindowOpened;
 
-        if (sender is CoreWindow cw)
-        {
-            var titleBar = cw.TitleBar;
-            if (titleBar != null)
-            {
-                titleBar.ExtendViewIntoTitleBar = true;
+        //if (sender is CoreWindow cw)
+        //{
+        //    var titleBar = cw.TitleBar;
+        //    if (titleBar != null)
+        //    {
+        //        titleBar.ExtendViewIntoTitleBar = true;
 
-                titleBar.LayoutMetricsChanged += OnApplicationTitleBarLayoutMetricsChanged;
+        //        titleBar.LayoutMetricsChanged += OnApplicationTitleBarLayoutMetricsChanged;
 
-                if (this.FindControl<Grid>("TitleBarHost") is Grid g)
-                {
-                    cw.SetTitleBar(g);
-                    g.Margin = new Thickness(0, 0, titleBar.SystemOverlayRightInset, 0);
-                }
-            }
-        }
+        //        if (this.FindControl<Grid>("TitleBarHost") is Grid g)
+        //        {
+        //            cw.SetTitleBar(g);
+        //            g.Margin = new Thickness(0, 0, titleBar.SystemOverlayRightInset, 0);
+        //        }
+        //    }
+        //}
     }
 
-    private void OnApplicationTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
-    {
-        if (this.FindControl<Grid>("TitleBarHost") is Grid g)
-        {
-            g.Margin = new Thickness(0, 0, sender.SystemOverlayRightInset, 0);
-        }
-    }
+    //private void OnApplicationTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+    //{
+    //    if (this.FindControl<Grid>("TitleBarHost") is Grid g)
+    //    {
+    //        g.Margin = new Thickness(0, 0, sender.SystemOverlayRightInset, 0);
+    //    }
+    //}
 
     private void OnNavigationViewBackRequested(object sender, NavigationViewBackRequestedEventArgs e)
     {
