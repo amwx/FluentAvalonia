@@ -151,10 +151,10 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         // resets the window state and it launches without the window frame but in "normal" mode
         // So we defer setting the state to full screen until now so everything works correctly
         if (!_hasShown && _isFullScreen)
-        {
-            _hasShown = true;
+        {            
             WindowState = WindowState.FullScreen;
         }
+        _hasShown = true;
 
         WindowOpened?.Invoke(this, EventArgs.Empty);
     }
