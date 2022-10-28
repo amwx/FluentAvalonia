@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -73,7 +74,16 @@ public partial class AppWindow : Window, IStyleable
             faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
 
             SetTitleBarColors();
-        }        
+        }
+
+        if (SplashScreen != null)
+        {
+            var host = e.NameScope.Find<AppSplashScreen>("SplashHost");
+            if (host != null)
+            {
+                _splashContext.Host = host;
+            }
+        }
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -86,13 +96,37 @@ public partial class AppWindow : Window, IStyleable
             PseudoClasses.Set(":icon", change.NewValue != null);
         }
     }
-    
+
+    protected override async void OnOpened(EventArgs e)
+    {
+        if (_splashContext != null && !_splashContext.HasShownSplashScreen && !Design.IsDesignMode)
+        {
+            PseudoClasses.Set(":splashOpen", true);
+            var time = DateTime.Now;
+
+            // n00b async/await mistake - need to await here, thansk to GH taj-ny for finding and fixing this
+            await _splashContext.RunJobs();
+
+            var delta = DateTime.Now - time;
+            if (delta.TotalMilliseconds < _splashContext.SplashScreen.MinimumShowTime)
+            {
+                await Task.Delay(Math.Max(1, _splashContext.SplashScreen.MinimumShowTime - (int)delta.TotalMilliseconds));
+            }
+
+            LoadApp();
+        }
+
+        base.OnOpened(e);
+    }
+
     protected override void OnClosed(EventArgs e)
     {
+        _splashContext?.TryCancel();
+
         base.OnClosed(e);
 
         if (IsWindows && !Design.IsDesignMode)
-            AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedThemeChanged -= OnRequestedThemeChanged;
+            AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedThemeChanged -= OnRequestedThemeChanged;       
     }
 
     internal void OnExtendsContentIntoTitleBarChanged(bool isExtended)
@@ -415,5 +449,68 @@ public partial class AppWindow : Window, IStyleable
         PseudoClasses.Add(":windows");
 
         PlatformFeatures = new Win32AppWindowFeatures(this);
+    }
+
+    private async void LoadApp()
+    {
+        Presenter.IsVisible = true;
+
+        using var disp = Presenter.SetValue(OpacityProperty, 0d, Avalonia.Data.BindingPriority.Animation);
+
+        var aniSplash = new Animation
+        {
+            Duration = TimeSpan.FromMilliseconds(250),
+            Children =
+            {
+                new KeyFrame
+                {
+                    Cue = new Cue(0d),
+                    Setters =
+                    {
+                        new Setter(OpacityProperty, 1d)
+                    }
+                },
+                new KeyFrame
+                {
+                    Cue = new Cue(1d),
+                    Setters =
+                    {
+                        new Setter(OpacityProperty, 0d),
+                    },
+                    KeySpline = new KeySpline(0,0,0,1)
+                }
+            }
+        };
+
+        var aniCP = new Animation
+        {
+            Duration = TimeSpan.FromMilliseconds(167),
+            Children =
+            {
+                new KeyFrame
+                {
+                    Cue = new Cue(0d),
+                    Setters =
+                    {
+                        new Setter(OpacityProperty, 0d)
+                    }
+                },
+                new KeyFrame
+                {
+                    Cue = new Cue(1d),
+                    Setters =
+                    {
+                        new Setter(OpacityProperty, 1d),
+                    },
+                    KeySpline = new KeySpline(0,0,0,1)
+                }
+            }
+        };
+
+        await Task.WhenAll(aniSplash.RunAsync(_splashContext.Host, null),
+            aniCP.RunAsync((Animatable)Presenter, null));
+
+        PseudoClasses.Set(":splashOpen", false);
+        _splashContext.HasShownSplashScreen = true;
     }
 }

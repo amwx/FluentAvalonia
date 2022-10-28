@@ -97,6 +97,32 @@
         </Style>
     </ControlTheme>
 
+    <ControlTheme TargetType="wnd:AppSplashScreen" x:Key="{x:Type wnd:AppSplashScreen}">
+        <Setter Property="Background" Value="{DynamicResource CoreSplashScreenBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource CoreSplashScreenForeground}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel Name="Root"
+                       Background="{TemplateBinding Background}">
+                    <TextBlock Name="AppNameText"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="{DynamicResource SplashScreenTextSize}"
+                               FontWeight="{DynamicResource SplashScreenTextFontWeight}"/>
+                    <Image Name="AppImageHost"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Width="{DynamicResource SplashScreenImageWidth}"
+                           Height="{DynamicResource SplashScreenImageWidth}" />
+                    <ContentPresenter Name="ContentHost"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalContentAlignment="Stretch" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
 
     <ControlTemplate x:Key="AppWindowOnWindowsTemplate" TargetType="{x:Type wnd:AppWindow}">
         <VisualLayerManager>
@@ -133,6 +159,9 @@
                                       VerticalAlignment="Stretch"
                                       Content="{TemplateBinding Content}"
                                       ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    
+                    <wnd:AppSplashScreen Name="SplashHost"
+                                         IsVisible="False"/>
 
                     <!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
                     <wnd:MinMaxCloseControl HorizontalAlignment="Right"
@@ -161,6 +190,8 @@
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </VisualLayerManager>
+            <wnd:AppSplashScreen Name="SplashHost"
+                                 IsVisible="False"/>
         </Panel>
     </ControlTemplate>
     
@@ -192,6 +223,12 @@
                 <Style Selector="^ /template/ wnd|MinMaxCloseControl#SystemCaptionButtons">
                     <Setter Property="IsVisible" Value="False" />
                 </Style>
+            </Style>            
+        </Style>
+
+        <Style Selector="^:splashOpen">
+            <Style Selector="^ /template/ wnd|AppSplashScreen#SplashHost">
+                <Setter Property="IsVisible" Value="True" />
             </Style>
         </Style>
     </ControlTheme>

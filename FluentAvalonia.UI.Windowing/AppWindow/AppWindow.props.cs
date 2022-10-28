@@ -1,17 +1,9 @@
-﻿using System.Runtime.CompilerServices;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Platform;
-using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Styling;
-using Avalonia.VisualTree;
 using FluentAvalonia.Core.ApplicationModel;
-using FluentAvalonia.Interop;
-using FluentAvalonia.Styling;
-using FluentAvalonia.UI.Media;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -88,7 +80,28 @@ public partial class AppWindow : Window, IStyleable
     /// <summary>
     /// Gets or sets the splash screen that should show when the window first loads
     /// </summary>
-    public IApplicationSplashScreen SplashScreen { get; set; }
+    public IApplicationSplashScreen SplashScreen
+    {
+        get => _splashContext?.SplashScreen;
+        set
+        {
+            if (value == null)
+            {
+                if (_splashContext != null)
+                {
+                    _splashContext.Host.SplashScreen = null;
+                }
+
+                _splashContext = null;
+                PseudoClasses.Set(":splashScreen", false);
+            }
+            else
+            {
+                _splashContext = new SplashScreenContext(value);
+                PseudoClasses.Set(":splashScreen", true);
+            }
+        }
+    }
 
     /// <summary>
     /// Gets the Titlebar description information for the AppWindow
@@ -113,8 +126,8 @@ public partial class AppWindow : Window, IStyleable
 
     internal MinMaxCloseControl SystemCaptionControl => _captionButtons;
 
-    
 
+    private SplashScreenContext _splashContext;
     private Border _templateRoot;
     private MinMaxCloseControl _captionButtons;
     private Panel _defaultTitleBar;
