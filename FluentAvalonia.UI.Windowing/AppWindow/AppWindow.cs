@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
@@ -19,18 +20,19 @@ public partial class AppWindow : Window, IStyleable
         : base(AppWindowImplSolver.GetWindowImpl())
     {
         TemplateSettings = new AppWindowTemplateSettings();
+        _titleBar = new AppWindowTitleBar(this);
 
         if (OSVersionHelper.IsWindows() && !Design.IsDesignMode)
         {
             InitializeAppWindow();
-        }        
+        }
     }
 
     static AppWindow()
     {
-        AllowTitleBarHitTestProperty.Changed.AddClassHandler<Control>(OnAllowTitleBarHitTestChanged);
+        AllowInteractionInTitleBarProperty.Changed.AddClassHandler<Control>(OnAllowInteractionInTitleBarChanged);
     }
-    
+
     protected override Size MeasureOverride(Size availableSize)
     {
         var sz = base.MeasureOverride(availableSize);
@@ -185,6 +187,11 @@ public partial class AppWindow : Window, IStyleable
             var hgt = _titleBar.Height * PlatformImpl.RenderScaling;
             if (p.Y < hgt)
             {
+                if (TitleBar.TitleBarHitTestType == TitleBarHitTestType.Complex &&
+                    !ComplexHitTest(p))
+                {
+                    return false;
+                }
                 // Now we know we're in the top part of the window designated as the titlebar
                 // We need to see if we can actually drag
                 // We need to check our exclusion list to see if we we should let the pointer event pass into
@@ -218,7 +225,7 @@ public partial class AppWindow : Window, IStyleable
                         var mat = target.TransformToVisual(this);
                         if (mat.HasValue)
                         {
-                            if (target.Bounds.TransformToAABB(mat.Value).Contains(p))
+                            if (new Rect(target.Bounds.Size).TransformToAABB(mat.Value).Contains(p))
                             {
                                 // We've hit a control that's asked to be in the titlebar but allow interaction
                                 // return false so NCHITTEST returns HTCLIENT
@@ -235,6 +242,24 @@ public partial class AppWindow : Window, IStyleable
 
             return true;
         }
+    }
+
+    internal bool ComplexHitTest(Point p)
+    {
+        var result = this.InputHitTest(p);
+
+        if (result == _defaultTitleBar)
+            return true;
+
+        while (result != null)
+        {
+            if (result.IsHitTestVisible && result.Focusable)
+                return false;
+
+            result = result.VisualParent as IInputElement;
+        }
+
+        return true;
     }
 
     internal void UpdateContentPosition(Thickness t)
@@ -359,10 +384,10 @@ public partial class AppWindow : Window, IStyleable
         }
     }
 
-    private static void OnAllowTitleBarHitTestChanged(Control control, AvaloniaPropertyChangedEventArgs propChangeArgs)
+    private static void OnAllowInteractionInTitleBarChanged(Control control, AvaloniaPropertyChangedEventArgs propChangeArgs)
     {
         if (control is TopLevel tl || control is Popup)
-            throw new InvalidOperationException("AllowTitleBarHitTest cannot be set on TopLevels or Popups");
+            return; //throw new InvalidOperationException("AllowTitleBarHitTest cannot be set on TopLevels or Popups");
 
         
         if (propChangeArgs.GetNewValue<bool>())
@@ -437,8 +462,6 @@ public partial class AppWindow : Window, IStyleable
     {
         IsWindows = true;
         IsWindows11 = OSVersionHelper.IsWindows11();
-
-        _titleBar = new AppWindowTitleBar(this);
 
         (PlatformImpl as AppWindowImpl).SetOwner(this);
 

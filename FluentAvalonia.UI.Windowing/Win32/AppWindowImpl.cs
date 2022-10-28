@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging;
@@ -46,8 +45,6 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         }
     }
 
-    public event EventHandler WindowOpened;
-
     protected override IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
         switch (msg)
@@ -59,7 +56,7 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
             case WM_NCCALCSIZE:
                 if ((WPARAM)wParam != 0)
                 {
-                    return HandleNCCALCSIZE((WPARAM)wParam, (LPARAM)lParam);                    
+                    return HandleNCCALCSIZE((WPARAM)wParam, (LPARAM)lParam);
                 }
 
                 return IntPtr.Zero;
@@ -75,7 +72,7 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
                     _wasFakeMaximizeDown = false;
                     _owner.SystemCaptionControl.ClearMaximizedState();
                 }
-                
+
                 EnsureExtended();
                 return IntPtr.Zero;
 
@@ -151,12 +148,10 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         // resets the window state and it launches without the window frame but in "normal" mode
         // So we defer setting the state to full screen until now so everything works correctly
         if (!_hasShown && _isFullScreen)
-        {            
+        {
             WindowState = WindowState.FullScreen;
         }
         _hasShown = true;
-
-        WindowOpened?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetOwner(AppWindow wnd)
@@ -199,7 +194,7 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         }
 
         SetWindowPos((HWND)Hwnd, HWND.NULL, 0, 0, 0, 0,
-            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOREPOSITION | SWP_NOSIZE | SWP_NOZORDER);
+            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOREPOSITION | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
     }
 
     private LRESULT HandleNCCALCSIZE(WPARAM wParam, LPARAM lParam)
@@ -378,7 +373,6 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         try
         {
             var str = new string((char*)(nint)lParam);
-            Debug.WriteLine($"SETTING {wParam} {str}");
             if (str.Equals("ImmersiveColorSet", StringComparison.OrdinalIgnoreCase))
             {
                 // Theme change was done - this is anything in the Windows Setting area,

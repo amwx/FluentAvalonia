@@ -47,12 +47,7 @@ public class MinMaxCloseControl : TemplatedControl
         // MinMaxCloseControl should only be used in Template of AppWindow - so TemplatedParent
         // here should A) never be null, and B) Always be AppWindow
         _owner = TemplatedParent as AppWindow;
-        _windowStateObservable = new CompositeDisposable(            
-            _owner.GetObservable(Window.WindowStateProperty).Subscribe(OnWindowStateChanged),
-            _owner.GetObservable(WindowBase.IsActiveProperty).Subscribe(OnWindowActiveChanged));
-
-        if (!_owner.IsActive)
-            OnWindowActiveChanged(false);
+        _owner.Opened += OwnerWindowOpened;
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
@@ -61,6 +56,13 @@ public class MinMaxCloseControl : TemplatedControl
 
         _windowStateObservable?.Dispose();
         _windowStateObservable = null;
+    }
+
+    private void OwnerWindowOpened(object sender, EventArgs args)
+    {
+        _windowStateObservable = new CompositeDisposable(
+            _owner.GetObservable(Window.WindowStateProperty).Subscribe(OnWindowStateChanged),
+            _owner.GetObservable(WindowBase.IsActiveProperty).Subscribe(OnWindowActiveChanged));
     }
 
     private void OnButtonClick(object sender, RoutedEventArgs e)

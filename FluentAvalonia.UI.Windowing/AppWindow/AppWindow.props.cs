@@ -21,22 +21,22 @@ public partial class AppWindow : Window, IStyleable
         AvaloniaProperty.Register<AppWindow, IImage>(nameof(Icon));
 
     /// <summary>
-    /// Defines the AllowTitleBarHitTest attached property
+    /// Defines the AllowInteractionInTitleBar attached property
     /// </summary>
-    public static readonly AttachedProperty<bool> AllowTitleBarHitTestProperty =
-        AvaloniaProperty.RegisterAttached<AppWindow, Control, bool>("AllowTitleBarHitTest", inherits: true);
+    public static readonly AttachedProperty<bool> AllowInteractionInTitleBarProperty =
+        AvaloniaProperty.RegisterAttached<AppWindow, Control, bool>("AllowInteractionInTitleBar");
 
     /// <summary>
-    /// Gets the value of the <see cref="AllowTitleBarHitTestProperty"/> attached property for the given control
+    /// Gets the value of the <see cref="AllowInteractionInTitleBarProperty"/> attached property for the given control
     /// </summary>
-    public static bool GetAllowTitleBarHitTest(Control c) => c.GetValue(AllowTitleBarHitTestProperty);
+    public static bool GetAllowInteractionInTitleBar(Control c) => c.GetValue(AllowInteractionInTitleBarProperty);
 
     /// <summary>
-    /// Sets the value of the <see cref="AllowTitleBarHitTestProperty"/> attached property for the given control
+    /// Sets the value of the <see cref="AllowInteractionInTitleBarProperty"/> attached property for the given control
     /// </summary>
     /// <param name="c"></param>
     /// <param name="b"></param>
-    public static void SetAllowTitleBarHitTest(Control c, bool b) => c.SetValue(AllowTitleBarHitTestProperty, b);
+    public static void SetAllowInteractionInTitleBar(Control c, bool b) => c.SetValue(AllowInteractionInTitleBarProperty, b);
 
     /// <summary>
     /// Provides calculated data for items within the Template of AppWindow
