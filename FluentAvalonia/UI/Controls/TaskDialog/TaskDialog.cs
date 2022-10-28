@@ -509,14 +509,15 @@ public partial class TaskDialog : ContentControl
     internal bool _hasDeferralActive = false;
 }
 
-internal class TaskDialogWindowHost : CoreWindow
+// TODO: APPWINDOW
+internal class TaskDialogWindowHost : Window//CoreWindow
 {
     public TaskDialogWindowHost(TaskDialog dialog)
     {
         CanResize = false;
         SizeToContent = SizeToContent.WidthAndHeight;
         WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        ShowAsDialog = true;
+        //ShowAsDialog = true;
 
         Content = dialog;
         MinWidth = 100;

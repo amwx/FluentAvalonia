@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
-using FluentAvalonia.Core.ApplicationModel;
 
 namespace FluentAvalonia.UI.Windowing;
 
