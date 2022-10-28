@@ -43,13 +43,14 @@ public partial class AppWindow : Window, IStyleable
         // like the TaskDialog, stuff gets cut off
         if (IsWindows)
         {
-            // TODO: (TaskDialog)
-            if (!CanResize)
-            {
-                var wid = (16 * PlatformImpl.RenderScaling);
-                var hgt = (8 * PlatformImpl.RenderScaling);
-                sz = new Size(sz.Width + wid, sz.Height + hgt);
-            }
+            // TODO: This doesn't appear necessary for TaskDialog anymore, but just in case, I'll
+            //       keep this here as a reminder
+            //if (!CanResize)
+            //{
+                //var wid = (16 * PlatformImpl.RenderScaling);
+                //var hgt = (8 * PlatformImpl.RenderScaling);
+                //sz = new Size(sz.Width + wid, sz.Height + hgt);
+            //}
 
             if (SystemCaptionControl != null)
                 _titleBar.SetInset(SystemCaptionControl.DesiredSize.Width, FlowDirection);

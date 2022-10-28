@@ -48,6 +48,12 @@ public class MinMaxCloseControl : TemplatedControl
         // here should A) never be null, and B) Always be AppWindow
         _owner = TemplatedParent as AppWindow;
         _owner.Opened += OwnerWindowOpened;
+
+        if (_owner.ShowAsDialog)
+        {
+            _minimizeButton.IsVisible = false;
+            _maximizeButton.IsVisible = false;
+        }
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)

@@ -11,6 +11,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
 using AvButton = Avalonia.Controls.Button;
 
@@ -200,7 +201,13 @@ public partial class TaskDialog : ContentControl
             }
 
             PseudoClasses.Set(":hidden", false);
-            var host = new TaskDialogWindowHost(this);
+
+            var svc = AvaloniaLocator.Current.GetService<IFAWindowProvider>();
+            if (svc == null)
+                throw new InvalidOperationException("No window host available for TaskDialog. Be sure to reference FluentAvalonia.UI.Windowing & " +
+                    "specify .UseFAWindowing in the AppBuilder");
+
+            var host = svc.CreateTaskDialogHost(this);
             host[!Window.TitleProperty] = this[!TitleProperty];
             host.Opened += (s, e) =>
             {

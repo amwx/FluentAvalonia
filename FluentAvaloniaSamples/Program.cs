@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using FluentAvalonia.UI.Windowing;
 
 namespace FluentAvaloniaSamples;
 
@@ -19,5 +20,6 @@ class Program
             {
                 UseWindowsUIComposition = true,
                 CompositionBackdropCornerRadius = 8f
-            });
+            })
+            .UseFAWindowing();
 }
