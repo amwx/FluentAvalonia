@@ -73,6 +73,13 @@ public partial class Frame : ContentControl
             x => x.IsNavigationStackEnabled, (x, v) => x.IsNavigationStackEnabled = v);
 
     /// <summary>
+    /// Defines the <see cref="NavigationPageFactory"/> property
+    /// </summary>
+    public static readonly DirectProperty<Frame, INavigationPageFactory> NavigationPageFactoryProperty =
+        AvaloniaProperty.RegisterDirect<Frame, INavigationPageFactory>(nameof(NavigationPageFactory),
+            x => x.NavigationPageFactory, (x, v) => x.NavigationPageFactory = v);
+
+    /// <summary>
     /// Gets or sets a type reference of the current content, or the content that should be navigated to.
     /// </summary>
     public Type SourcePageType
@@ -166,6 +173,16 @@ public partial class Frame : ContentControl
         }
     }
 
+    /// <summary>
+    /// Gets or sets the user specified factory that should be use for resolving pages
+    /// when types are not controls or from object instances directly
+    /// </summary>
+    public INavigationPageFactory NavigationPageFactory
+    {
+        get => _pageFactory;
+        set => SetAndRaise(NavigationPageFactoryProperty, ref _pageFactory, value);
+    }
+
     internal PageStackEntry CurrentEntry { get; set; }
 
     /// <summary>
@@ -218,4 +235,5 @@ public partial class Frame : ContentControl
     private IList<PageStackEntry> _backStack;
     private IList<PageStackEntry> _forwardStack;
     private bool _isNavigationStackEnabled = true;
+    private INavigationPageFactory _pageFactory;
 }
