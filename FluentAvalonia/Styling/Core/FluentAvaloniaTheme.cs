@@ -477,21 +477,13 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
             {
                 if (OSVersionHelper.IsWindows())
                 {
-                    try
-                    {
-                        var settings = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
-                        TryLoadWindowsAccentColor(settings);
-                    }
-                    catch
-                    {
-                        LoadDefaultAccentColor();
-                    }
+                    TryLoadWindowsAccentColor();
                 }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                else if (OSVersionHelper.IsMacOS())
                 {
                     TryLoadMacOSAccentColor();
                 }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                else if (OSVersionHelper.IsLinux())
                 {
                     TryLoadLinuxAccentColor();
                 }
