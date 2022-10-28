@@ -182,8 +182,11 @@ public partial class FluentAvaloniaTheme
     /// <exception cref="ArgumentNullException">If window is null</exception>
     public void ForceWin32WindowToTheme(Window window, string theme = null)
     {
-        if (window == null || !OSVersionHelper.IsWindows())
+        if (window == null)
             throw new ArgumentNullException(nameof(window));
+
+        if (!OSVersionHelper.IsWindows())
+            return;
 
         try
         {
