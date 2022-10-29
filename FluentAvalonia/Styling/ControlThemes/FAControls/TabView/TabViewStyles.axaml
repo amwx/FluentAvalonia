@@ -47,6 +47,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
         <Setter Property="Width" Value="{DynamicResource TabViewItemAddButtonWidth}"/>
         <Setter Property="Height" Value="{DynamicResource TabViewItemAddButtonHeight}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
                 <ContentPresenter Name="ContentPresenter"
@@ -107,11 +109,10 @@
                                 Grid.Column="2" Grid.ColumnSpan="2"
                                 VerticalAlignment="Bottom"/>
 
-                        <ContentPresenter
-                                Grid.Column="0"
-                                Name="LeftContentPresenter"
-                                Content="{TemplateBinding TabStripHeader}"
-                                ContentTemplate="{TemplateBinding TabStripHeaderTemplate}"/>
+                        <ContentPresenter Grid.Column="0"
+                                          Name="LeftContentPresenter"
+                                          Content="{TemplateBinding TabStripHeader}"
+                                          ContentTemplate="{TemplateBinding TabStripHeaderTemplate}"/>
 
                         <uip:TabViewListView Grid.Column="1"
                                              Name="TabListView"
@@ -123,16 +124,16 @@
                                              DragDrop.AllowDrop="{TemplateBinding AllowDropTabs}" />
 
                         <Border IsVisible="{Binding IsAddTabButtonVisible, RelativeSource={RelativeSource TemplatedParent}}"
-                                 Grid.Column="2"
-                                 Padding="{DynamicResource TabViewItemAddButtonContainerPadding}"
-                                 VerticalAlignment="Bottom">
+                                Grid.Column="2"
+                                Padding="{DynamicResource TabViewItemAddButtonContainerPadding}"
+                                VerticalAlignment="Bottom">
                             <Button Name="AddButton"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Content="&#xE710;"
-                                       Command="{TemplateBinding AddTabButtonCommand}"
-                                       CommandParameter="{TemplateBinding AddTabButtonCommandParameter}"
-                                       Theme="{StaticResource TabViewButtonStyle}" />
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="&#xE710;"
+                                    Command="{TemplateBinding AddTabButtonCommand}"
+                                    CommandParameter="{TemplateBinding AddTabButtonCommandParameter}"
+                                    Theme="{StaticResource TabViewButtonStyle}" />
                         </Border>
 
                         <ContentPresenter Grid.Column="3"
