@@ -51,6 +51,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DatePickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TimePickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TitleBarStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TransitioningContentControlStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridStyles.axaml" />
 
