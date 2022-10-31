@@ -1,0 +1,156 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20" Width="700" Height="250">
+            <ui:SettingsExpander IconSource="Globe" Header="Test Header" IsExpanded="True"
+                                 Description="This is a description for the SettingsExpander"
+                                 ActionIconSource="Save" IsClickEnabled="False">
+                <ui:SettingsExpander.Footer>
+                    <Button Content="FooterButton" />
+                </ui:SettingsExpander.Footer>
+                
+                <ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
+                <ui:SettingsExpanderItem Content="Content Here">
+                    <ui:SettingsExpanderItem.Footer>
+                        <Button Content="FooterButton" />
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>
+            </ui:SettingsExpander>
+        </Border>
+    </Design.PreviewWith>
+
+    <Thickness x:Key="SettingsExpanderItemPadding">16 10</Thickness>
+    <x:Double x:Key="SettingsExpanderItemMinHeight">48</x:Double>
+    <Thickness x:Key="SettingsExpanderItemContentMargin">42 0 0 0</Thickness>
+    <Thickness x:Key="SettingsExpanderItemFooterMargin">16 0 0 0</Thickness>
+    <Thickness x:Key="SettingsExpanderItemBottomFooterMargin">42 16 0 0</Thickness>
+    <x:Double x:Key="SettingsExpanderItemIconSize">24</x:Double>
+    <x:Double x:Key="SettingsExpanderItemActionIconSize">18</x:Double>
+    <x:Double x:Key="SettingsExpanderItemAdaptiveWidthTrigger">460</x:Double>
+  
+    <ControlTheme x:Key="{x:Type ui:SettingsExpanderItem}" TargetType="ui:SettingsExpanderItem">
+        <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackground}" />
+        <Setter Property="Padding" Value="{DynamicResource SettingsExpanderItemPadding}" />
+        <Setter Property="MinHeight" Value="{DynamicResource SettingsExpanderItemMinHeight}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ui:FABorder Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             Padding="{TemplateBinding Padding}"
+                             Name="Root">
+                    <ui:FABorder.Transitions>
+                        <Transitions>
+                            <BrushTransition Duration="00:00:00.083"
+                                             Property="Background" />
+                            <BrushTransition Duration="00:00:00.083"
+                                             Property="BorderBrush" />
+                        </Transitions>
+                    </ui:FABorder.Transitions>
+                    
+                    <Grid ColumnDefinitions="*,Auto,Auto"
+                          RowDefinitions="*,Auto">
+                        <Viewbox Width="{DynamicResource SettingsExpanderItemIconSize}"
+                                 Height="{DynamicResource SettingsExpanderItemIconSize}"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 IsVisible="False"
+                                 Name="IconHost">
+                            <ContentPresenter Name="IconPresenter"
+                                              Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Viewbox>
+
+                        <StackPanel HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Margin="{DynamicResource SettingsExpanderItemContentMargin}">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Name="ContentPresenter"
+                                              IsVisible="False"/>
+
+                            <TextBlock Text="{TemplateBinding Description}"
+                                       TextWrapping="Wrap"
+                                       Theme="{StaticResource CaptionTextBlockStyle}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       Name="DescriptionText"
+                                       IsVisible="False"/>
+                        </StackPanel>
+
+                        <ContentPresenter Content="{TemplateBinding Footer}"
+                                          ContentTemplate="{TemplateBinding FooterTemplate}"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          Grid.Column="1"
+                                          Name="FooterPresenter"
+                                          IsVisible="False"
+                                          Margin="{DynamicResource SettingsExpanderItemFooterMargin}"
+                                          Grid.Row="0"
+                                          Grid.ColumnSpan="1" />
+
+                        <Viewbox Width="{DynamicResource SettingsExpanderItemActionIconSize}" 
+                                 Height="{DynamicResource SettingsExpanderItemActionIconSize}"
+                                 Name="ActionIconHost"
+                                 IsVisible="False"
+                                 Grid.Column="2">
+                            <ContentPresenter Name="ExpandChevronActionIconContainer"
+                                              Content="{Binding TemplateSettings.ActionIcon, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Viewbox>
+                    </Grid>
+                </ui:FABorder>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:empty /template/ ItemsPresenter#ItemsHost">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+
+        <Style Selector="^:nth-last-child(1) /template/ ui|FABorder#Root">
+            <Setter Property="CornerRadius" Value="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
+        </Style>
+
+        <Style Selector="^:footer /template/ ContentPresenter#FooterPresenter">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:footerBottom /template/ ContentPresenter#FooterPresenter">
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="Grid.ColumnSpan" Value="3" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="{DynamicResource SettingsExpanderItemBottomFooterMargin}" />
+        </Style>
+
+        <Style Selector="^:actionIcon /template/ Viewbox#ActionIconHost">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:content /template/ ContentPresenter#ContentPresenter">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:description /template/ TextBlock#DescriptionText">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:icon /template/ Viewbox#IconHost">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:allowClick">
+            <Style Selector="^:pointerover /template/ ui|FABorder#Root">
+                <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+            </Style>
+            <Style Selector="^:pressed /template/ ui|FABorder#Root">
+                <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            </Style>
+            <Style Selector="^:disabled /template/ ui|FABorder#Root">
+                <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            </Style>
+        </Style>        
+    </ControlTheme>    
+</ResourceDictionary>
