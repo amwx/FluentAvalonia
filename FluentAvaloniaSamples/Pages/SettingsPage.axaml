@@ -79,6 +79,18 @@
                 
             </ctrls:OptionsDisplayItem>
 
+            <ctrls:OptionsDisplayItem Header="FlowDirection"
+                                      Icon="AlignRight"
+                                      Description="Change the current App FlowDirection.">
+
+                <ctrls:OptionsDisplayItem.ActionButton>
+                    <ComboBox SelectedItem="{Binding CurrentFlowDirection}"
+                              Items="{Binding AppFlowDirections}"
+                              MinWidth="150"/>
+                </ctrls:OptionsDisplayItem.ActionButton>
+                
+            </ctrls:OptionsDisplayItem>
+
             <ctrls:OptionsDisplayItem Header="AccentColor" 
                                       Icon="ColorLine"
                                       Description="Set a custom accent color for the App"
