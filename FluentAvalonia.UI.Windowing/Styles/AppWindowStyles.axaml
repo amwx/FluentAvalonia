@@ -133,6 +133,8 @@
                 <Panel>
                     <Panel Name="DefaultTitleBar"
                            Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                           Background="{DynamicResource FATitle_TitleBarBackground}"
+                           TextElement.Foreground="{DynamicResource FATitle_TitleBarForeground}"
                            VerticalAlignment="Top">
 
                         <Image Source="{TemplateBinding Icon}"
@@ -223,7 +225,14 @@
                 <Style Selector="^ /template/ wnd|MinMaxCloseControl#SystemCaptionButtons">
                     <Setter Property="IsVisible" Value="False" />
                 </Style>
-            </Style>            
+            </Style>
+
+            <Style Selector="^[IsActive=False]">
+                <Style Selector="^ /template/ Panel#DefaultTitleBar">
+                    <Setter Property="Background" Value="{DynamicResource FATitle_TitleBarBackgroundInactive}" />
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource FATitle_TitleBarForegroundInactive}" />
+                </Style>
+            </Style>
         </Style>
 
         <Style Selector="^:splashOpen">
