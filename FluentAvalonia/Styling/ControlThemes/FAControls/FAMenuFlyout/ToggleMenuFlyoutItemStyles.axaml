@@ -39,6 +39,7 @@
 									   Margin="0 0 16 0"
 									   Name="CheckGlyph"
                                        Opacity="0"
+                                       FlowDirection="LeftToRight"
                                        Foreground="{DynamicResource MenuFlyoutSubItemChevron}"/>
 
                         <Viewbox Name="IconRoot"
