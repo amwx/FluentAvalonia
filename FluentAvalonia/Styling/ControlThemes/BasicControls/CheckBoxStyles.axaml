@@ -66,6 +66,7 @@
                                          FontSize="{StaticResource CheckBoxGlyphSize}"
                                          Foreground="{DynamicResource CheckBoxCheckGlpyhForegroundUnchecked}"
                                          Opacity="0"
+                                         FlowDirection="LeftToRight"
                                          Glyph="{DynamicResource CheckBoxCheckGlyph}" />
 
                         </Grid>
