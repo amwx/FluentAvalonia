@@ -75,7 +75,7 @@ internal readonly struct BOOL : IComparable, IComparable<BOOL>, IEquatable<BOOL>
 
     public static explicit operator nuint(BOOL value) => (nuint)(value.Value);
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is BOOL other)
         {
@@ -87,7 +87,7 @@ internal readonly struct BOOL : IComparable, IComparable<BOOL>, IEquatable<BOOL>
 
     public int CompareTo(BOOL other) => Value.CompareTo(other.Value);
 
-    public override bool Equals(object? obj) => (obj is BOOL other) && Equals(other);
+    public override bool Equals(object obj) => (obj is BOOL other) && Equals(other);
 
     public bool Equals(BOOL other) => Value.Equals(other.Value);
 
@@ -95,5 +95,5 @@ internal readonly struct BOOL : IComparable, IComparable<BOOL>, IEquatable<BOOL>
 
     public override string ToString() => Value.ToString();
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => Value.ToString(format, formatProvider);
+    public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
 }

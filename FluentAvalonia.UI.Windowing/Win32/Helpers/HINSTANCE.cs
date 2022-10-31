@@ -69,7 +69,7 @@ public readonly unsafe struct HINSTANCE : IComparable, IEquatable<HINSTANCE>
 
     public static implicit operator nuint(HINSTANCE value) => (nuint)(value.Value);
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is HINSTANCE other)
         {
@@ -81,7 +81,7 @@ public readonly unsafe struct HINSTANCE : IComparable, IEquatable<HINSTANCE>
 
     //public int CompareTo(HINSTANCE other) => ((nuint)(Value)).CompareTo((nuint)(other.Value));
 
-    public override bool Equals(object? obj) => (obj is HINSTANCE other) && Equals(other);
+    public override bool Equals(object obj) => (obj is HINSTANCE other) && Equals(other);
 
     public bool Equals(HINSTANCE other) => ((nuint)(Value)).Equals((nuint)(other.Value));
 

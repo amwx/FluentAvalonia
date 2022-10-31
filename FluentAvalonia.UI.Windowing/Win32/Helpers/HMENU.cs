@@ -71,7 +71,7 @@ internal readonly unsafe struct HMENU : IComparable, IEquatable<HMENU>
 
     public static implicit operator nuint(HMENU value) => (nuint)(value.Value);
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is HMENU other)
         {
@@ -83,7 +83,7 @@ internal readonly unsafe struct HMENU : IComparable, IEquatable<HMENU>
 
     //public int CompareTo(HMENU other) => ((nuint)(Value)).CompareTo((nuint)(other.Value));
 
-    public override bool Equals(object? obj) => (obj is HMENU other) && Equals(other);
+    public override bool Equals(object obj) => (obj is HMENU other) && Equals(other);
 
     public bool Equals(HMENU other) => ((nuint)(Value)).Equals((nuint)(other.Value));
 

@@ -63,7 +63,7 @@ internal readonly unsafe struct LRESULT : IComparable, IEquatable<LRESULT>
 
     public static explicit operator nuint(LRESULT value) => (nuint)(value.Value);
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is LRESULT other)
         {
@@ -75,7 +75,7 @@ internal readonly unsafe struct LRESULT : IComparable, IEquatable<LRESULT>
 
     //public int CompareTo(LRESULT other) => Value.CompareTo(other.Value);
 
-    public override bool Equals(object? obj) => (obj is LRESULT other) && Equals(other);
+    public override bool Equals(object obj) => (obj is LRESULT other) && Equals(other);
 
     public bool Equals(LRESULT other) => Value.Equals(other.Value);
 

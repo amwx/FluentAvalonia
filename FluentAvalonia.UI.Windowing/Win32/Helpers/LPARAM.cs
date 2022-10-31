@@ -63,7 +63,7 @@ internal readonly unsafe struct LPARAM : IComparable, IEquatable<LPARAM>
 
     public static explicit operator nuint(LPARAM value) => (nuint)(value.Value);
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is LPARAM other)
         {
@@ -75,7 +75,7 @@ internal readonly unsafe struct LPARAM : IComparable, IEquatable<LPARAM>
 
     //public int CompareTo(LPARAM other) => Value.CompareTo(other.Value);
 
-    public override bool Equals(object? obj) => (obj is LPARAM other) && Equals(other);
+    public override bool Equals(object obj) => (obj is LPARAM other) && Equals(other);
 
     public bool Equals(LPARAM other) => Value.Equals(other.Value);
 

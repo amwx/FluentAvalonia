@@ -61,13 +61,13 @@ internal class Win32AppWindowFeatures : IAppWindowPlatformFeatures
         }
     }
 
-    private void CreateTaskBarList()
+    private unsafe void CreateTaskBarList()
     {
         try
         {
-            Guid clsid = Guid.Parse("56FDF344-FD6D-11D0-958A-006097C9A090");
-            Guid iid = Guid.Parse("ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf");
-            _taskBarList = Win32.Win32Interop.CreateInstance<ITaskbarList3>(ref clsid, ref iid);
+            _taskBarList = Win32.Win32Interop.CreateInstance<ITaskbarList3>(
+                Win32.Win32Interop.ITaskBarList3CLSID, 
+                Win32.Win32Interop.ITaskBarList3IID);
         }
         catch (Exception ex)
         {

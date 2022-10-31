@@ -100,18 +100,14 @@ internal static unsafe class Win32Interop
     [DllImport(s_dwmapi, SetLastError = true)]
     public static extern HRESULT DwmExtendFrameIntoClientArea(HWND hWnd, MARGINS* margins);
 
+    [DllImport(s_ole32, ExactSpelling = true)]
+    public static extern HRESULT CoCreateInstance(Guid* rclsid, void* pUnkOuter,
+        int dwClsContext, Guid* riid, void** ppv);
 
-    [DllImport(s_ole32, PreserveSig = true)]
-    internal static extern int CoCreateInstance(ref Guid clsi,
-        IntPtr ignore1, int ignore2, ref Guid iid, [MarshalAs(UnmanagedType.IUnknown), Out] out object pUnkOuter);
-
-    [DllImport(s_ole32, PreserveSig = true)]
-    internal static extern int CoCreateInstance(ref Guid clsid,
-        IntPtr ignore1, int ignore2, ref Guid iid, [Out] out IntPtr pUnkOuter);
-
-    internal unsafe static T CreateInstance<T>(ref Guid clsid, ref Guid iid) where T : IUnknown
+    internal unsafe static T CreateInstance<T>(Guid clsid, Guid iid) where T : IUnknown
     {
-        var hresult = CoCreateInstance(ref clsid, IntPtr.Zero, 1, ref iid, out IntPtr pUnk);
+        void* pUnk;
+        var hresult = CoCreateInstance(&clsid, null, 1, &iid, &pUnk);
         if (hresult != 0)
         {
             throw new COMException("CreateInstance", hresult);
@@ -119,6 +115,8 @@ internal static unsafe class Win32Interop
         using var unk = MicroComRuntime.CreateProxyFor<IUnknown>(pUnk, true);
         return MicroComRuntime.QueryInterface<T>(unk);
     }
+
+    // Only values actually used are included below
 
     // WM
     public const int WM_CREATE = 0x0001;
@@ -139,35 +137,15 @@ internal static unsafe class Win32Interop
 
     //SC
     public const int SC_CLOSE = 0xF060;
-    public const int SC_CONTEXTHELP = 0xF180;
-    public const int SC_DEFAULT = 0xF160;
-    public const int SC_HOTKEY = 0xF150;
-    public const int SC_HSCROLL = 0xF080;
-    public const int SC_ISSECURE = 0x00000001;
     public const int SC_KEYMENU = 0xF100;
     public const int SC_MAXIMIZE = 0xF030;
     public const int SC_MINIMIZE = 0xF020;
-    public const int SC_MONITORPOWER = 0xF170;
-    public const int SC_MOUSEMENU = 0xF090;
     public const int SC_MOVE = 0xF010;
-    public const int SC_NEXTWINDOW = 0xF040;
-    public const int SC_PREVWINDOW = 0xF050;
     public const int SC_RESTORE = 0xF120;
-    public const int SC_SCREENSAVE = 0xF140;
     public const int SC_SIZE = 0xF000;
-    public const int SC_TASKLIST = 0xF130;
-    public const int SC_VSCROLL = 0xF070;
 
     //MIIM
-    public const int MIIM_BITMAP = 0x00000080;
-    public const int MIIM_CHECKMARKS = 0x00000008;
-    public const int MIIM_DATA = 0x00000020;
-    public const int MIIM_FTYPE = 0x00000100;
-    public const int MIIM_ID = 0x00000002;
     public const int MIIM_STATE = 0x00000001;
-    public const int MIIM_STRING = 0x00000040;
-    public const int MIIM_SUBMENU = 0x00000004;
-    public const int MIIM_TYPE = 0x00000010;
 
     // SWP
     public const int SWP_NOSIZE = 0x0001;
@@ -177,47 +155,19 @@ internal static unsafe class Win32Interop
     public const int SWP_NOACTIVATE = 0x0010;
     public const int SWP_FRAMECHANGED = 0x0020;
     public const int SWP_SHOWWINDOW = 0x0040;
-    public const int SWP_HIDEWINDOW = 0x0080;
-    public const int SWP_NOCOPYBITS = 0x0100;
     public const int SWP_NOOWNERZORDER = 0x0200;
-    public const int SWP_NOSENDCHANGING = 0x0400;
     public const int SWP_DRAWFRAME = 0x0020;
     public const int SWP_NOREPOSITION = 0x0200;
-    public const int SWP_DEFERERASE = 0x2000;
-    public const int SWP_ASYNCWINDOWPOS = 0x4000;
 
     // SM
     public const int SM_CXPADDEDBORDER = 92;
     public const int SM_CYSIZEFRAME = 33;
 
     // HT
-    public const int HTNOWHERE = 0;
     public const int HTCLIENT = 1;
     public const int HTCAPTION = 2;
-    public const int HTSYSMENU = 3;
-    public const int HTGROWBOX = 4;
-    public const int HTSIZE = 4;
-    public const int HTMENU = 5;
-    public const int HTHSCROLL = 6;
-    public const int HTVSCROLL = 7;
-    public const int HTMINBUTTON = 8;
     public const int HTMAXBUTTON = 9;
-    public const int HTLEFT = 10;
-    public const int HTRIGHT = 11;
     public const int HTTOP = 12;
-    public const int HTTOPLEFT = 13;
-    public const int HTTOPRIGHT = 14;
-    public const int HTBOTTOM = 15;
-    public const int HTBOTTOMLEFT = 16;
-    public const int HTBOTTOMRIGHT = 17;
-    public const int HTBORDER = 18;
-    public const int HTREDUCE = 8;
-    public const int HTZOOM = 9;
-    public const int HTSIZEFIRST = 10;
-    public const int HTSIZELAST = 17;
-    public const int HTOBJECT = 19;
-    public const int HTCLOSE = 20;
-    public const int HTHELP = 21;
 
 
     // MFS
@@ -227,7 +177,8 @@ internal static unsafe class Win32Interop
     // TPM
     public const int TPM_RETURNCMD = 0x0100;
 
-
+    public static readonly Guid ITaskBarList3CLSID = Guid.Parse("56FDF344-FD6D-11D0-958A-006097C9A090");
+    public static readonly Guid ITaskBarList3IID = Guid.Parse("ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf");
 
     public static PixelPoint PointFromLParam(LPARAM lParam)
     {

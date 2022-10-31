@@ -71,7 +71,7 @@ internal readonly unsafe struct HBITMAP : IComparable, IEquatable<HBITMAP>
 
     public static implicit operator nuint(HBITMAP value) => (nuint)(value.Value);
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is HBITMAP other)
         {
@@ -83,7 +83,7 @@ internal readonly unsafe struct HBITMAP : IComparable, IEquatable<HBITMAP>
 
    // public int CompareTo(HBITMAP other) => ((nuint)(Value)).CompareTo((nuint)(other.Value));
 
-    public override bool Equals(object? obj) => (obj is HBITMAP other) && Equals(other);
+    public override bool Equals(object obj) => (obj is HBITMAP other) && Equals(other);
 
     public bool Equals(HBITMAP other) => ((nuint)(Value)).Equals((nuint)(other.Value));
 

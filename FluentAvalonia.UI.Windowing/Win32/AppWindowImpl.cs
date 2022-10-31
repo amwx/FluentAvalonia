@@ -445,7 +445,7 @@ internal unsafe class AppWindowImpl : Avalonia.Win32.WindowImpl, IWindowImpl
         }
     }
 
-    private bool _isWindows11;
+    private readonly bool _isWindows11;
     private AppWindow _owner;
     private bool _fakingMaximizeButton;
     private bool _wasFakeMaximizeDown;

@@ -83,7 +83,7 @@ internal readonly unsafe struct HWND : IComparable, IEquatable<HWND>
 
     //public int CompareTo(HWND other) => ((nuint)(Value)).CompareTo((nuint)(other.Value));
 
-    public override bool Equals(object? obj) => (obj is HWND other) && Equals(other);
+    public override bool Equals(object obj) => (obj is HWND other) && Equals(other);
 
     public bool Equals(HWND other) => ((nuint)(Value)).Equals((nuint)(other.Value));
 

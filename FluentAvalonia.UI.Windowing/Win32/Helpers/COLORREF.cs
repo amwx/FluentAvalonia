@@ -61,7 +61,7 @@ public readonly unsafe struct COLORREF : IComparable, IComparable<COLORREF>, IEq
 
 	public static implicit operator nuint(COLORREF value) => value.Value;
 
-	public int CompareTo(object? obj)
+	public int CompareTo(object obj)
 	{
 		if (obj is COLORREF other)
 		{
@@ -73,7 +73,7 @@ public readonly unsafe struct COLORREF : IComparable, IComparable<COLORREF>, IEq
 
 	public int CompareTo(COLORREF other) => Value.CompareTo(other.Value);
 
-	public override bool Equals(object? obj) => (obj is COLORREF other) && Equals(other);
+	public override bool Equals(object obj) => (obj is COLORREF other) && Equals(other);
 
 	public bool Equals(COLORREF other) => Value.Equals(other.Value);
 
@@ -81,7 +81,7 @@ public readonly unsafe struct COLORREF : IComparable, IComparable<COLORREF>, IEq
 
 	public override string ToString() => Value.ToString("X8");
 
-	public string ToString(string? format, IFormatProvider? formatProvider) => Value.ToString(format, formatProvider);
+	public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
 }
 
 

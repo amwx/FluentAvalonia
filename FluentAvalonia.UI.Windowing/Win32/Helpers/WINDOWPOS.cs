@@ -1,5 +1,7 @@
 ﻿namespace FluentAvalonia.UI.Windowing.Win32;
 
+#pragma warning disable 0649
+
 internal struct WINDOWPOS
 {
     public HWND hWnd;

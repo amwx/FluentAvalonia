@@ -67,7 +67,7 @@ internal readonly unsafe struct HRESULT : IComparable, IComparable<HRESULT>, IEq
 
     public static explicit operator nuint(HRESULT value) => (nuint)(value.Value);
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is HRESULT other)
         {
@@ -79,7 +79,7 @@ internal readonly unsafe struct HRESULT : IComparable, IComparable<HRESULT>, IEq
 
     public int CompareTo(HRESULT other) => Value.CompareTo(other.Value);
 
-    public override bool Equals(object? obj) => (obj is HRESULT other) && Equals(other);
+    public override bool Equals(object obj) => (obj is HRESULT other) && Equals(other);
 
     public bool Equals(HRESULT other) => Value.Equals(other.Value);
 
@@ -87,7 +87,7 @@ internal readonly unsafe struct HRESULT : IComparable, IComparable<HRESULT>, IEq
 
     public override string ToString() => Value.ToString("X8");
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => Value.ToString(format, formatProvider);
+    public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
 }
 
 

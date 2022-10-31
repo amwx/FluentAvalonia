@@ -63,7 +63,7 @@ internal readonly unsafe struct WPARAM : IComparable, IEquatable<WPARAM>
 
     public static implicit operator nuint(WPARAM value) => value.Value;
 
-    public int CompareTo(object? obj)
+    public int CompareTo(object obj)
     {
         if (obj is WPARAM other)
         {
@@ -75,7 +75,7 @@ internal readonly unsafe struct WPARAM : IComparable, IEquatable<WPARAM>
 
    // public int CompareTo(WPARAM other) => Value.CompareTo(other.Value);
 
-    public override bool Equals(object? obj) => (obj is WPARAM other) && Equals(other);
+    public override bool Equals(object obj) => (obj is WPARAM other) && Equals(other);
 
     public bool Equals(WPARAM other) => Value.Equals(other.Value);
 
