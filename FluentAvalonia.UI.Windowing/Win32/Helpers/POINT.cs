@@ -1,6 +1,6 @@
 ﻿namespace FluentAvalonia.UI.Windowing.Win32;
 
-public struct POINT
+internal struct POINT
 {
     public int x;
     public int y;

@@ -1,6 +1,6 @@
 ﻿namespace FluentAvalonia.UI.Windowing.Win32;
 
-public readonly unsafe struct HINSTANCE : IComparable, IEquatable<HINSTANCE>
+internal readonly unsafe struct HINSTANCE : IComparable, IEquatable<HINSTANCE>
 {
     public readonly void* Value;
 
