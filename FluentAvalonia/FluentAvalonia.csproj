@@ -22,7 +22,7 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>2.0.0-preview2</Version>
+        <Version>2.0.0-preview3</Version>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>        
     </PropertyGroup>
 
@@ -45,7 +45,7 @@
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="11.0.0-preview3" />
 		<PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview3" />
-		<PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview3" />
+		<PackageReference Include="Avalonia.Skia" Version="11.0.0-preview3" />
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview3" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview3" />
 		<PackageReference Include="MicroCom.CodeGenerator.MSBuild" Version="0.10.5" />
@@ -54,4 +54,8 @@
         <PackageReference Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.1'" />
 	</ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="FluentAvalonia.UI.Windowing" />
+  </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:local="using:FluentAvaloniaSamples.Controls"
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+             xmlns:wnd="using:FluentAvalonia.UI.Windowing"
              xmlns:aedit="using:AvaloniaEdit"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluentAvaloniaSamples.Views.MainView">
@@ -138,7 +139,8 @@
                                  Watermark="Search"
                                  Classes="SampleApp"
                                  ValueMemberBinding="{Binding Header}"
-                                 Items="{Binding MainSearchItems}">
+                                 Items="{Binding MainSearchItems}"
+                                 wnd:AppWindow.AllowInteractionInTitleBar="True">
                     <AutoCompleteBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Header}" />

@@ -9,7 +9,7 @@ public partial class CoreWindowPage : FAControlsPageBase
     {
         InitializeComponent();
 
-        TargetType = typeof(CoreWindow);
+        //TargetType = typeof(CoreWindow);
         Description = "A modern UWP window style for Windows system with a graceful fallback on Mac/Linux";
     }
 

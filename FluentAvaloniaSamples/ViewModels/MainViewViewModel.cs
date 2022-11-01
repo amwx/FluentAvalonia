@@ -125,7 +125,7 @@ public class MainViewViewModel : ViewModelBase
     {
         get
         {
-            return typeof(FluentAvalonia.UI.Controls.CoreWindow).Assembly.GetName().Version?.ToString();
+            return typeof(FluentAvalonia.UI.Controls.NavigationView).Assembly.GetName().Version?.ToString();
         }
     }
 

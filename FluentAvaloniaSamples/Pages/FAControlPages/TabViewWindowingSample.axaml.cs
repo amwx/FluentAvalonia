@@ -8,12 +8,12 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Windowing;
 
 namespace FluentAvaloniaSamples.Pages;
 
-public partial class TabViewWindowingSample : CoreWindow
+public partial class TabViewWindowingSample : AppWindow
 {
     public TabViewWindowingSample()
     {
@@ -71,23 +71,23 @@ public partial class TabViewWindowingSample : CoreWindow
 
         if (TitleBar != null)
         {
-            TitleBar.ExtendViewIntoTitleBar = true;
-            TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
+            TitleBar.ExtendsContentIntoTitleBar = true;
+            //TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
 
-            SetTitleBar(this.FindControl<Panel>("CustomDragRegion"));
+            //SetTitleBar(this.FindControl<Panel>("CustomDragRegion"));
         }
     }
 
-    private void TitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, EventArgs args)
-    {
-        // If we had RTL layout, you'd want to set something in the TabStripHeader and adjust
-        // its MinWidth instead - this assures the TabStrip and the caption buttons (on Windows)
-        // never overlap
-        var dragRegion = this.FindControl<Panel>("CustomDragRegion");
-        dragRegion.MinWidth = sender.SystemOverlayRightInset;
+    //private void TitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, EventArgs args)
+    //{
+    //    // If we had RTL layout, you'd want to set something in the TabStripHeader and adjust
+    //    // its MinWidth instead - this assures the TabStrip and the caption buttons (on Windows)
+    //    // never overlap
+    //    var dragRegion = this.FindControl<Panel>("CustomDragRegion");
+    //    dragRegion.MinWidth = sender.SystemOverlayRightInset;
 
-        dragRegion.Height = sender.Height;
-    }
+    //    dragRegion.Height = sender.Height;
+    //}
 
     private void TabView_TabItemsChanged(TabView sender, NotifyCollectionChangedEventArgs args)
     {
@@ -171,7 +171,7 @@ public partial class TabViewWindowingSample : CoreWindow
             // here if we should close the window if TabItems.Count() == 0
             if (srcTabView.TabItems.Count() == 0)
             {
-                var wnd = srcTabView.FindAncestorOfType<CoreWindow>();
+                var wnd = srcTabView.FindAncestorOfType<AppWindow>();
                 wnd.Close();
             }
         }
