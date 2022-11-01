@@ -43,8 +43,8 @@
                 <ControlTemplate>
                     <!-- Elevation Brush effect really doesn't come through with this... -->
                     <Border Margin="-2"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{DynamicResource SliderOuterThumbBackground}"
                             CornerRadius="{DynamicResource SliderThumbCornerRadius}"
                             RenderTransform="scaleY(-1)">
@@ -99,7 +99,7 @@
                                               FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
                                               Foreground="{DynamicResource SliderHeaderForeground}"
                                               Margin="{DynamicResource SliderTopHeaderMargin}"
-											  />-->
+                                              />-->
 
                                 <Grid x:Name="SliderContainer" Grid.Row="1" ClipToBounds="False">
                                     <Grid.Styles>
@@ -131,9 +131,9 @@
                                                  VerticalAlignment="Top" Margin="0,4,0,0" Grid.Row="2" Grid.ColumnSpan="3" />
 
                                         <!-- 
-									Added a 2px Horizontal margin here otherwise the thumb gets clipped
-									Despite EVERY...SINGLE...ITEM having ClipToBounds=False
-									-->
+                                    Added a 2px Horizontal margin here otherwise the thumb gets clipped
+                                    Despite EVERY...SINGLE...ITEM having ClipToBounds=False
+                                    -->
                                         <Track Name="PART_Track" Grid.Row="1" Margin="2 0"
                                                Grid.ColumnSpan="3" Orientation="Horizontal"
                                                Minimum="{TemplateBinding Minimum}"
@@ -235,9 +235,9 @@
                                                  Margin="4,0,0,0" Grid.Column="2" Grid.RowSpan="3" />
 
                                         <!-- 
-									Added a 2px Vertical margin here otherwise the thumb gets clipped
-									Despite EVERY...SINGLE...ITEM having ClipToBounds=False
-									-->
+                                    Added a 2px Vertical margin here otherwise the thumb gets clipped
+                                    Despite EVERY...SINGLE...ITEM having ClipToBounds=False
+                                    -->
                                         <Track Name="PART_Track" Margin="0 2"
                                                Grid.Column="1" Grid.ColumnSpan="1"
                                                Grid.RowSpan="3" Orientation="Vertical"
