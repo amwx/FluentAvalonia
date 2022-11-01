@@ -6,7 +6,7 @@ using FluentAvalonia.Interop;
 
 namespace FluentAvalonia.UI.Windowing;
 
-public static class AppWindowImplSolver
+internal static class AppWindowImplSolver
 {
     public static IWindowImpl GetWindowImpl()
     {
