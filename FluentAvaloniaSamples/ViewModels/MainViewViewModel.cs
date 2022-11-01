@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Avalonia.Media;
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using FluentAvalonia.Styling;
 using System.Text.Json;
 
@@ -31,6 +32,9 @@ public class MainViewViewModel : ViewModelBase
     public string[] AppThemes { get; } =
         new[] { FluentAvaloniaTheme.LightModeString, FluentAvaloniaTheme.DarkModeString, FluentAvaloniaTheme.HighContrastModeString };
 
+    public FlowDirection[] AppFlowDirections { get; } =
+        new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft };
+
     public string CurrentAppTheme
     {
         get => _currentAppTheme;
@@ -40,6 +44,19 @@ public class MainViewViewModel : ViewModelBase
             {
                 var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
                 faTheme.RequestedTheme = value;
+            }
+        }
+    }
+
+    public FlowDirection CurrentFlowDirection
+    {
+        get => _currentFlowDirection;
+        set
+        {
+            if (RaiseAndSetIfChanged(ref _currentFlowDirection, value))
+            {
+                var mainWindow = (App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime).MainWindow;
+                mainWindow.FlowDirection = value;
             }
         }
     }
@@ -234,6 +251,7 @@ public class MainViewViewModel : ViewModelBase
     private bool _useCustomAccentColor;
     private Color _customAccentColor = Colors.SlateBlue;
     private string _currentAppTheme;
+    private FlowDirection _currentFlowDirection;
     private Color _listBoxColor;
     private bool _ignoreSetListBoxColor = false;
 }

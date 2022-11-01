@@ -14,14 +14,13 @@
         </Border>
     </Design.PreviewWith>
 
-    <!-- 
+    <!--
     This file contines some resources used by TimePicker 
     
     Did NOT port the MonochromaticOverlayPresenter, b/c not sure how that
     works and how to implement it outside WinUI comp
     -->
 
-    <Thickness x:Key="DatePickerTopHeaderMargin">0,0,0,4</Thickness>
     <x:Double x:Key="DatePickerFlyoutPresenterHighlightHeight">40</x:Double>
     <x:Double x:Key="DatePickerFlyoutPresenterItemHeight">40</x:Double>
     <x:Double x:Key="DatePickerFlyoutPresenterAcceptDismissHostGridHeight">41</x:Double>
@@ -261,18 +260,8 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
-                    <Grid Name="LayoutRoot" Margin="{TemplateBinding Padding}" RowDefinitions="Auto,*">
-                        <ContentPresenter Name="HeaderContentPresenter" Grid.Row="0"
-                                          Content="{TemplateBinding Header}"
-                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                          Margin="{DynamicResource DatePickerTopHeaderMargin}"
-                                          MaxWidth="{DynamicResource DatePickerThemeMaxWidth}"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Top"
-                                          IsVisible="{Binding $self.Content, Converter={x:Static ObjectConverters.IsNotNull}}"
-                                          Foreground="{DynamicResource DatePickerHeaderForeground}"/>
-
-                        <Button Name="PART_FlyoutButton" Grid.Row="1"
+                    <Grid Name="LayoutRoot" Margin="{TemplateBinding Padding}">
+                        <Button Name="PART_FlyoutButton"
                                 Theme="{StaticResource DatePickerFlyoutButtonStyle}"
                                 Foreground="{TemplateBinding Foreground}"
                                 Background="{TemplateBinding Background}"
@@ -327,9 +316,6 @@
         </Setter>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ContentPresenter#HeaderContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource DatePickerHeaderForegroundDisabled}"/>
-            </Style>
             <Style Selector="^ /template/ Rectangle">
                 <Setter Property="Fill" Value="{DynamicResource DatePickerSpacerFillDisabled}"/>
             </Style>
@@ -477,5 +463,5 @@
             <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>
