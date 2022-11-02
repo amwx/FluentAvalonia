@@ -451,7 +451,7 @@ public class TabViewListView : ListBox
         // to handle this themselves
         if (reorderIndex != -1 && _processReorder)
         {
-            if (Items is IList l)
+            if (Items is IList l && l.Count > 0)
             {
                 var oldItem = l[_dragIndex];
                 l.RemoveAt(_dragIndex);
