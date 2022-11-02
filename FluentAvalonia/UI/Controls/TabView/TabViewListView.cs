@@ -590,7 +590,7 @@ public class TabViewListView : ListBox
         }
     }
 
-    private void OnDragLeave(object sender, RoutedEventArgs e)
+    private void OnDragLeave(object sender, DragEventArgs e)
     {
         // This is a disgusting hack but we need to make sure we reset the insertion point
         // logic if we drag away from this ListView so we don't get left with a gap
