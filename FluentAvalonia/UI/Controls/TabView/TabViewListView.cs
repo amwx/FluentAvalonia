@@ -139,9 +139,9 @@ public class TabViewListView : ListBox
         if (parentTV == null)
             return;
 
-        foreach (var item in e.Containers)
+        for (int i = 0, ct = e.Containers.Count; i < ct; i++)
         {
-            if (item.ContainerControl is TabViewItem tvi)
+            if (e.Containers[i].ContainerControl is TabViewItem tvi)
             {
                 if (tvi.ParentTabView == null)
                 {
