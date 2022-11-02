@@ -255,28 +255,6 @@ public class TabViewListView : ListBox
                         // No DragDrop, we're just reordering this ListView
                         HandleReorder(e.GetPosition(ItemsPanelRoot));
                         break;
-
-                        /* Unmerged change from project 'FluentAvalonia (netstandard2.1)'
-                        Before:
-                                            }
-
-                                            e.Handled = true;
-                        After:
-                                            }
-
-                                            e.Handled = true;
-                        */
-
-                        /* Unmerged change from project 'FluentAvalonia (net6.0)'
-                        Before:
-                                            }
-
-                                            e.Handled = true;
-                        After:
-                                            }
-
-                                            e.Handled = true;
-                        */
                 }
 
                 e.Handled = true;
@@ -515,6 +493,7 @@ public class TabViewListView : ListBox
 
         if (hasReorder)
         {
+            _processReorder = true;
             BeginReorder(args);
         }
         else
@@ -577,40 +556,6 @@ public class TabViewListView : ListBox
 
     private void OnDragOver(object sender, DragEventArgs e)
     {
-
-        /* Unmerged change from project 'FluentAvalonia (netstandard2.1)'
-        Before:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        After:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        */
-
-        /* Unmerged change from project 'FluentAvalonia (net6.0)'
-        Before:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        After:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        */
         DragOver?.Invoke(this, e);
 
         // Related to Hack fix in DragLeave
