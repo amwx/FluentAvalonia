@@ -329,21 +329,7 @@ public class TabViewListView : ListBox
 
     private void UpdateDragInfo()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            _cxDrag = Win32Interop.GetSystemMetrics(68 /*SM_CXDRAG*/);
-            _cyDrag = Win32Interop.GetSystemMetrics(69 /*SM_CYDRAG*/);
-        }
-        else
-        {
-            // Using Windows defaults
-            _cxDrag = 4;
-            _cyDrag = 4;
-        }
-
-        var scaling = VisualRoot.RenderScaling;
-        _cxDrag = _cxDrag * scaling;
-        _cyDrag = _cyDrag * scaling;
+        FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
     }
 
     private void BeginReorder(PointerEventArgs args)
