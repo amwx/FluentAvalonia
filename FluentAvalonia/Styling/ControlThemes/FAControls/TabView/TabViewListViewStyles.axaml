@@ -128,6 +128,9 @@
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type uip:TabViewListView}" TargetType="uip:TabViewListView">
+        <!-- WinUI doesn't set a background here, but this allows us to receive drag events
+             over the TabViewListView and allows the icon to display properly for the drag effects -->
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
@@ -148,6 +151,7 @@
             <ControlTemplate>
                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
+                        Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}">
 
                     <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
