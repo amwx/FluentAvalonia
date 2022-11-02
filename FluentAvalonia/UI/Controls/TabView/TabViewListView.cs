@@ -353,7 +353,6 @@ public class TabViewListView : ListBox
             // Invalid state, but seems to only happen if you use lightning quick reflexes 
             // to drag an item, so no error, but don't do anything
             return;
-
         }
 
         PseudoClasses.Set(":reorder", true);
@@ -491,10 +490,13 @@ public class TabViewListView : ListBox
 
         _isInDrag = true;
 
+        var effects = disArgs.Data.RequestedOperation;
+
         if (hasReorder)
         {
             _processReorder = true;
             BeginReorder(args);
+            effects |= DragDropEffects.Move;
         }
         else
         {
@@ -509,7 +511,7 @@ public class TabViewListView : ListBox
         }
 
         var dropResult =
-            await DragDrop.DoDragDrop(args, disArgs.Data, disArgs.Data.RequestedOperation);
+            await DragDrop.DoDragDrop(args, disArgs.Data, effects);
 
         _isInDrag = false;
         if (hasReorder)
@@ -550,6 +552,7 @@ public class TabViewListView : ListBox
 
         if (_isInReorder)
         {
+            e.DragEffects |= DragDropEffects.Move;
             ItemsPanelRoot.EnterReorder(_dragIndex);
         }
     }
@@ -557,9 +560,6 @@ public class TabViewListView : ListBox
     private void OnDragOver(object sender, DragEventArgs e)
     {
         DragOver?.Invoke(this, e);
-
-        // Related to Hack fix in DragLeave
-        _lastPoint = e.GetPosition(this);
 
         e.Handled = true;
 
@@ -613,22 +613,19 @@ public class TabViewListView : ListBox
             bool isCloseButton = (v as IVisual).FindAncestorOfType<Button>() != null;
             if (isCloseButton)
                 return;
-            if (_lastPoint.HasValue)
+            var pt = e.GetPosition(this);
+            var rect = new Rect(Bounds.Size);
+            rect = rect.Inflate(-2);
+            if (!rect.Contains(pt))
             {
-                var rect = new Rect(Bounds.Size);
-                rect = rect.Inflate(-2);
-                if (!rect.Contains(_lastPoint.Value))
+                if (_isInReorder)
                 {
-                    if (_isInReorder)
-                    {
-                        // Keep reorder active, but return to default state
-                        ItemsPanelRoot.ChangeReorderIndex(_dragIndex);
-                    }
-                    else
-                    {
-                        ItemsPanelRoot.ClearReorder();
-                        _lastPoint = rect.Center;
-                    }
+                    // Keep reorder active, but return to default state
+                    ItemsPanelRoot.ChangeReorderIndex(_dragIndex);
+                }
+                else
+                {
+                    ItemsPanelRoot.ClearReorder();
                 }
             }
         }
@@ -726,7 +723,6 @@ public class TabViewListView : ListBox
         }
     }
 
-    private Point? _lastPoint;
     private TabViewItem _dragItem;
     private int _dragIndex = -1;
     private bool _isInDrag = false;
