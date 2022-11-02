@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
+    <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
+    <PackageId>FluentAvalonia.UI.Windowing</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>2.0.0-preview3</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.0-preview3" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview3" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview3" />
+
+    <PackageReference Include="MicroCom.CodeGenerator.MSBuild" Version="0.10.5" />
+    <PackageReference Include="MicroCom.Runtime" Version="0.10.5" />
+    <MicroComIdl Include="$(MSBuildThisFileDirectory)\Win32\Win32Com.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Win32\Win32Com.Generated.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
+  </ItemGroup>
+</Project>

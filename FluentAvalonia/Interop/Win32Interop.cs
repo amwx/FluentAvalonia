@@ -5,96 +5,57 @@ using System.Security;
 
 namespace FluentAvalonia.Interop;
 
-public static unsafe class Win32Interop
+internal static unsafe class Win32Interop
 {
-#pragma warning disable CA1401
+    [DllImport(s_dwmapi, SetLastError = true)]
+    public static extern int DwmSetWindowAttribute(nint hWnd, DWMWINDOWATTRIBUTE attr, void* value, int attrSize);
 
-    [DllImport("dwmapi.dll", SetLastError = true)]
-    public static extern int DwmIsCompositionEnabled(out bool enabled);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static unsafe extern bool GetClientRect(nint hwnd, RECT* lpRect);
-
-    [DllImport("user32.dll")]
-    public static extern bool AdjustWindowRectEx(ref RECT lpRect, uint dwStyle,
-                bool bMenu, uint dwExStyle);
-
-    [DllImport("user32.dll")]
+    // TODO: TabViewListView
+    [DllImport(s_user32)]
     public static extern int GetSystemMetrics(int smIndex);
-
-    [DllImport("user32.dll")]
+    [DllImport(s_user32)]
     public static extern int GetSystemMetricsForDpi(int nIndex, uint dpi);
 
-    [DllImport("user32.dll", SetLastError = true)]
+
+    [DllImport(s_user32, SetLastError = true)]
     public static unsafe extern int SetWindowCompositionAttribute(IntPtr hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
 
-    [DllImport("uxtheme.dll", EntryPoint = "#104", SetLastError = true)]
+    [DllImport(s_uxtheme, EntryPoint = "#104", SetLastError = true)]
     public static extern void fnRefreshImmersiveColorPolicyState();
 
-    [DllImport("uxtheme.dll", EntryPoint = "#137")]
-    public static extern bool fnIsDarkModeAllowedForWindow(IntPtr hWnd);
-
-    [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true)]
+    [DllImport(s_uxtheme, EntryPoint = "#135", SetLastError = true)]
     public static extern PreferredAppMode fnSetPreferredAppMode(IntPtr hwnd, PreferredAppMode appMode);
 
-    [DllImport("uxtheme.dll", EntryPoint = "#135")]
+    [DllImport(s_uxtheme, EntryPoint = "#135")]
     public static extern bool fnAllowDarkModeForApp(IntPtr hwnd, bool allow);
 
-    [DllImport("uxtheme.dll", EntryPoint = "#132")]
-    public static extern bool fnShouldAppsUseDarkMode(); //1809
 
-    [DllImport("uxtheme.dll", EntryPoint = "#138")]
-    public static extern bool fnShouldSystemUseDarkMode(); //Use on 1903+
 
-    [DllImport("dwmapi.dll", PreserveSig = true, SetLastError = true)]
-    public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE attr, ref int value, int attrSize);
+    [DllImport(s_user32, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 
-    [DllImport("user32.dll")]
-    public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    [SecurityCritical]
+    [DllImport(s_ntdll, SetLastError = true, CharSet = CharSet.Unicode)]
+    internal static unsafe extern int RtlGetVersion(OSVERSIONINFOEX* versionInfo);
 
-    [DllImport("user32.dll")]
-    public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
-
-    [DllImport("user32.dll")]
-    public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
-
-    [DllImport("user32.dll")]
-    public static extern bool SetMenuItemInfo(IntPtr hMenu, uint item, bool fByPosition, ref MENUITEMINFO lpmii);
-
-    [DllImport("user32.dll")]
-    public static extern bool SetMenuDefaultItem(IntPtr hMenu, uint uItem, uint fByPos);
-
-    [DllImport("user32.dll")]
-    public static extern unsafe int TrackPopupMenu(IntPtr hMenu, uint uFlags,
-        int x, int y, int nReserved, IntPtr hWnd, RECT* prcRect);
-
-    public static bool GetSystemTheme(OSVERSIONINFOEX osInfo)
+    public static bool ApplyTheme(IntPtr hwnd, bool useDark)
     {
-        if (osInfo.MajorVersion < 10 || osInfo.BuildNumber < 17763) //1809
+        if (!OSVersionHelper.IsWindowsAtLeast(10, 0, 17763)) // 1809
             return false;
 
-        if (osInfo.BuildNumber < 18362) //1903
-            return fnShouldAppsUseDarkMode();
-
-        return fnShouldSystemUseDarkMode();
-    }
-
-    public static bool ApplyTheme(IntPtr hwnd, bool useDark, OSVERSIONINFOEX osInfo)
-    {
-        if (osInfo.MajorVersion < 10 || osInfo.BuildNumber < 17763) //1809
-            return false;
-
-        if (osInfo.BuildNumber < 18362) //1903
+        if (!OSVersionHelper.IsWindowsAtLeast(10, 0, 18362)) //1903
         {
             var res = fnAllowDarkModeForApp(hwnd, useDark);
             if (res == false)
                 return res;
 
-            int dark = useDark ? 1 : 0;
-            DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.UseImmersiveDarkMode, ref dark, Marshal.SizeOf<int>());
+            unsafe
+            {
+                int dark = useDark ? 1 : 0;
+                DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, &dark, sizeof(int));
+            }
+            
         }
         else
         {
@@ -124,90 +85,10 @@ public static unsafe class Win32Interop
         return true;
     }
 
-    [DllImport("user32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
-
-    [SecurityCritical]
-    [DllImport("ntdll.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct OSVERSIONINFOEX
-    {
-        // The OSVersionInfoSize field must be set
-        public int OSVersionInfoSize;
-        public int MajorVersion;
-        public int MinorVersion;
-        public int BuildNumber;
-        public int PlatformId;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public string CSDVersion;
-        public ushort ServicePackMajor;
-        public ushort ServicePackMinor;
-        public short SuiteMask;
-        public byte ProductType;
-        public byte Reserved;
-    }
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern unsafe bool AdjustWindowRectExForDpi(
-        ref RECT lpRect,
-        int dwStyle,
-        [MarshalAs(UnmanagedType.Bool)] bool bMenu,
-        int dwExStyle,
-        int dpi);
-
-    [DllImport("dwmapi.dll")]
-    public static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
-
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct MARGINS
-    {
-        public int leftWidth;
-        public int rightWidth;
-        public int topHeight;
-        public int bottomHeight;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct MENUITEMINFO
-    {
-        public MENUITEMINFO(MIIM pfMask)
-        {
-            cbSize = Marshal.SizeOf<MENUITEMINFO>();
-            dwTypeData = null;
-            fMask = pfMask;
-
-            fType = default;
-            fState = default;
-            wID = default;
-            hSubMenu = default;
-            hbmpChecked = default;
-            hbmpUnchecked = default;
-            dwItemData = default;
-            dwTypeData = default;
-            cch = default;
-            hbmpItem = default;
-        }
-
-        public int cbSize;
-        public MIIM fMask;
-        public uint fType;
-        public uint fState;
-        public uint wID;
-        public IntPtr hSubMenu;
-        public IntPtr hbmpChecked;
-        public IntPtr hbmpUnchecked;
-        public IntPtr dwItemData;
-        public string dwTypeData;
-        public uint cch; // length of dwTypeData
-        public IntPtr hbmpItem;
-    }
-
-    [DllImport("user32.dll")]
-    public static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    private const string s_dwmapi = "dwmapi";
+    private const string s_user32 = "user32.dll";
+    private const string s_ntdll = "ntdll.dll";
+    private const string s_uxtheme = "uxtheme.dll";
 }
 
 public unsafe struct WINDOWCOMPOSITIONATTRIBDATA
@@ -258,129 +139,19 @@ public enum WINDOWCOMPOSITIONATTRIB
     WCA_LAST = 27
 };
 
-public struct POINT
-{
-    public int X;
-    public int Y;
-}
-
-public struct RECT
-{
-    public int left;
-    public int top;
-    public int right;
-    public int bottom;
-
-    public int Width => right - left;
-    public int Height => bottom - top;
-    public RECT(Rect rect)
-    {
-        left = (int)rect.X;
-        top = (int)rect.Y;
-        right = (int)(rect.X + rect.Width);
-        bottom = (int)(rect.Y + rect.Height);
-    }
-
-    public void Offset(POINT pt)
-    {
-        left += pt.X;
-        right += pt.X;
-        top += pt.Y;
-        bottom += pt.Y;
-    }
-}
-
-
 [StructLayout(LayoutKind.Sequential)]
-public struct WINDOWPOS
+internal unsafe struct OSVERSIONINFOEX
 {
-    public IntPtr hWndInsertAfter;
-    public IntPtr hWnd;
-    public int x;
-    public int y;
-    public int cx;
-    public int cy;
-    public uint flags;
+    // The OSVersionInfoSize field must be set
+    public uint OSVersionInfoSize;
+    public uint MajorVersion;
+    public uint MinorVersion;
+    public uint BuildNumber;
+    public uint PlatformId;
+    public fixed ushort CSDVersion[128];
+    public ushort ServicePackMajor;
+    public ushort ServicePackMinor;
+    public ushort SuiteMask;
+    public byte ProductType;
+    public byte Reserved;
 }
-
-[StructLayout(LayoutKind.Sequential)]
-public struct NCCALCSIZE_PARAMS
-{
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-    public RECT[] rgrc;
-    public WINDOWPOS lppos;
-}
-
-public enum DWMWINDOWATTRIBUTE : uint
-{
-    NCRenderingEnabled = 1,
-    NCRenderingPolicy,
-    TransitionsForceDisabled,
-    AllowNCPaint,
-    CaptionButtonBounds,
-    NonClientRtlLayout,
-    ForceIconicRepresentation,
-    Flip3DPolicy,
-    ExtendedFrameBounds,
-    HasIconicBitmap,
-    DisallowPeek,
-    ExcludedFromPeek,
-    Cloak,
-    Cloaked,
-    FreezeRepresentation,
-    UseImmersiveDarkMode = 20
-}
-
-public enum WM : uint
-{
-    SIZE = 0x0005,
-    NCMOUSEMOVE = 0x00A0,
-    NCLBUTTONDOWN = 0x00A1,
-    NCLBUTTONUP = 0x00A2,
-    NCHITTEST = 0x0084,
-    NCCALCSIZE = 0x0083,
-    ACTIVATE = 0x0006,
-    NCRBUTTONDOWN = 0x00A4,
-    NCRBUTTONDBLCLK = 0x00A6,
-    NCRBUTTONUP = 0x00A5,
-    SYSCOMMAND = 0x0112,
-    RBUTTONUP = 0x0205
-}
-
-public enum SC : uint
-{
-    CLOSE = 0xF060,
-    CONTEXTHELP = 0xF180,
-    DEFAULT = 0xF160,
-    HOTKEY = 0xF150,
-    HSCROLL = 0xF080,
-    ISSECURE = 0x00000001,
-    KEYMENU = 0xF100,
-    MAXIMIZE = 0xF030,
-    MINIMIZE = 0xF020,
-    MONITORPOWER = 0xF170,
-    MOUSEMENU = 0xF090,
-    MOVE = 0xF010,
-    NEXTWINDOW = 0xF040,
-    PREVWINDOW = 0xF050,
-    RESTORE = 0xF120,
-    SCREENSAVE = 0xF140,
-    SIZE = 0xF000,
-    TASKLIST = 0xF130,
-    VSCROLL = 0xF070
-}
-
-[Flags]
-public enum MIIM
-{
-    BITMAP = 0x00000080,
-    CHECKMARKS = 0x00000008,
-    DATA = 0x00000020,
-    FTYPE = 0x00000100,
-    ID = 0x00000002,
-    STATE = 0x00000001,
-    STRING = 0x00000040,
-    SUBMENU = 0x00000004,
-    TYPE = 0x00000010
-}
-

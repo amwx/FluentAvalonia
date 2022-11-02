@@ -1,6 +1,6 @@
 ﻿using Avalonia.Media;
 
-namespace FluentAvalonia.Core.ApplicationModel;
+namespace FluentAvalonia.UI.Windowing;
 
 /// <summary>
 /// Defines a user specified UWP-like SplashScreen for CoreWindow

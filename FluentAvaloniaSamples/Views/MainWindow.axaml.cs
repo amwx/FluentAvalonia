@@ -5,10 +5,10 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
-using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media;
+using FluentAvalonia.UI.Windowing;
 using System;
 using System.Runtime.InteropServices;
 
@@ -37,18 +37,19 @@ public class SampleAppSplashScreen : IApplicationSplashScreen
     }
 }
 
-public class MainWindow : CoreWindow
+public class MainWindow : AppWindow
 {
     public MainWindow()
     {
         InitializeComponent();
-        SplashScreen = new SampleAppSplashScreen();
+        //SplashScreen = new SampleAppSplashScreen();
 #if DEBUG
         this.AttachDevTools();
 #endif
         MinWidth = 450;
         MinHeight = 400;
 
+        TitleBar.ExtendsContentIntoTitleBar = true;
     }
 
     protected override void OnOpened(EventArgs e)
@@ -71,7 +72,7 @@ public class MainWindow : CoreWindow
             }
         }
 
-        thm.ForceWin32WindowToTheme(this);
+       // thm.ForceWin32WindowToTheme(this);
 
         var screen = Screens.ScreenFromVisual(this);
         if (screen != null)
@@ -119,8 +120,10 @@ public class MainWindow : CoreWindow
         }
     }
 
-    private void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
+    protected override void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
     {
+        base.OnRequestedThemeChanged(sender, args);
+        
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             // TODO: add Windows version to CoreWindow
