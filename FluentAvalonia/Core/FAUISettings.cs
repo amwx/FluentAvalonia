@@ -35,8 +35,15 @@ public class FAUISettings
     /// </summary>
     public static void GetSystemDragSize(double scaling, out double cxDrag, out double cyDrag)
     {
-        cxDrag = 4 * scaling;
-        cyDrag = 4 * scaling;
+        if (OSVersionHelper.IsWindows())
+        {
+            GetWin32DragSize(scaling, out cxDrag, out cyDrag);
+        }
+        else
+        {
+            cxDrag = 4 * scaling;
+            cyDrag = 4 * scaling;
+        }        
     }
 
     private static void GetWin32DragSize(double scaling, out double cxDrag, out double cyDrag)
