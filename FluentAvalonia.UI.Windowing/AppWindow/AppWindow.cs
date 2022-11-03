@@ -10,6 +10,7 @@ using Avalonia.Styling;
 using Avalonia.VisualTree;
 using FluentAvalonia.Interop;
 using FluentAvalonia.Styling;
+using FluentAvalonia.UI.Controls.Primitives;
 using FluentAvalonia.UI.Media;
 
 namespace FluentAvalonia.UI.Windowing;
@@ -248,6 +249,11 @@ public partial class AppWindow : Window, IStyleable
     internal bool ComplexHitTest(Point p)
     {
         var result = this.InputHitTest(p);
+
+        // Special case for TabViewListView during drag operations where blank space 
+        // is inserted and causes HitTest to fail (since nothing focusable is there)
+        if (result is Visual v && v.TemplatedParent is TabViewListView)
+            return false;
 
         if (result == _defaultTitleBar)
             return true;

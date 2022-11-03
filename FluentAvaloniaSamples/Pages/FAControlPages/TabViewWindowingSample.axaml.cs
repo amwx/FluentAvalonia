@@ -72,6 +72,7 @@ public partial class TabViewWindowingSample : AppWindow
         if (TitleBar != null)
         {
             TitleBar.ExtendsContentIntoTitleBar = true;
+            TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
             //TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
 
             //SetTitleBar(this.FindControl<Panel>("CustomDragRegion"));
