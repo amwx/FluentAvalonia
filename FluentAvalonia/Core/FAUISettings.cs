@@ -23,6 +23,22 @@ public class FAUISettings
     }
 
     /// <summary>
+    /// Gets whether the TabView should display the preview popup when reordering
+    /// </summary>
+    public static bool UseTabViewDragReorderPreview()
+    {
+        return s_Instance._useTabViewDragReorderPreview;
+    }
+
+    /// <summary>
+    /// Sets whether the TabView should display the preview popup when reordering
+    /// </summary>
+    public static void SetUseTabViewDragReorderPreview(bool use)
+    {
+        s_Instance._useTabViewDragReorderPreview = use;
+    }
+
+    /// <summary>
     /// Enables or disables animations for the current application
     /// </summary>
     public static void SetAnimationsEnabledAtAppLevel(bool isEnabled)
@@ -54,4 +70,5 @@ public class FAUISettings
 
     private static readonly FAUISettings s_Instance;
     private bool _areAnimationsEnabled = false;
+    private bool _useTabViewDragReorderPreview = true;
 }

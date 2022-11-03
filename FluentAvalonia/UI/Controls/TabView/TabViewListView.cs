@@ -378,7 +378,7 @@ public class TabViewListView : ListBox
         // the popup either remains in place or moves to the top of the
         // screen...TODO: File bug report, for now disabling preview popup
         // if dragdrop manages the drag/reorder operation
-        if (!_isInDrag)
+        if (!_isInDrag && FAUISettings.UseTabViewDragReorderPreview())
         {
             _dragReorderPopup.HorizontalOffset = _popupOffset.X;
             _dragReorderPopup.VerticalOffset = _popupOffset.Y;
