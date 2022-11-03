@@ -73,22 +73,12 @@ public partial class TabViewWindowingSample : AppWindow
         {
             TitleBar.ExtendsContentIntoTitleBar = true;
             TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
-            //TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
 
-            //SetTitleBar(this.FindControl<Panel>("CustomDragRegion"));
+            var dragRegion = this.FindControl<Panel>("CustomDragRegion");
+            dragRegion.MinWidth = FlowDirection == Avalonia.Media.FlowDirection.LeftToRight ?
+                TitleBar.RightInset : TitleBar.LeftInset;
         }
     }
-
-    //private void TitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, EventArgs args)
-    //{
-    //    // If we had RTL layout, you'd want to set something in the TabStripHeader and adjust
-    //    // its MinWidth instead - this assures the TabStrip and the caption buttons (on Windows)
-    //    // never overlap
-    //    var dragRegion = this.FindControl<Panel>("CustomDragRegion");
-    //    dragRegion.MinWidth = sender.SystemOverlayRightInset;
-
-    //    dragRegion.Height = sender.Height;
-    //}
 
     private void TabView_TabItemsChanged(TabView sender, NotifyCollectionChangedEventArgs args)
     {
