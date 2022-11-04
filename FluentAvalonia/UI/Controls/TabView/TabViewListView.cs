@@ -139,9 +139,9 @@ public class TabViewListView : ListBox
         if (parentTV == null)
             return;
 
-        foreach (var item in e.Containers)
+        for (int i = 0, ct = e.Containers.Count; i < ct; i++)
         {
-            if (item.ContainerControl is TabViewItem tvi)
+            if (e.Containers[i].ContainerControl is TabViewItem tvi)
             {
                 if (tvi.ParentTabView == null)
                 {
@@ -255,28 +255,6 @@ public class TabViewListView : ListBox
                         // No DragDrop, we're just reordering this ListView
                         HandleReorder(e.GetPosition(ItemsPanelRoot));
                         break;
-
-                        /* Unmerged change from project 'FluentAvalonia (netstandard2.1)'
-                        Before:
-                                            }
-
-                                            e.Handled = true;
-                        After:
-                                            }
-
-                                            e.Handled = true;
-                        */
-
-                        /* Unmerged change from project 'FluentAvalonia (net6.0)'
-                        Before:
-                                            }
-
-                                            e.Handled = true;
-                        After:
-                                            }
-
-                                            e.Handled = true;
-                        */
                 }
 
                 e.Handled = true;
@@ -351,21 +329,7 @@ public class TabViewListView : ListBox
 
     private void UpdateDragInfo()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            _cxDrag = Win32Interop.GetSystemMetrics(68 /*SM_CXDRAG*/);
-            _cyDrag = Win32Interop.GetSystemMetrics(69 /*SM_CYDRAG*/);
-        }
-        else
-        {
-            // Using Windows defaults
-            _cxDrag = 4;
-            _cyDrag = 4;
-        }
-
-        var scaling = VisualRoot.RenderScaling;
-        _cxDrag = _cxDrag * scaling;
-        _cyDrag = _cyDrag * scaling;
+        FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
     }
 
     private void BeginReorder(PointerEventArgs args)
@@ -375,7 +339,6 @@ public class TabViewListView : ListBox
             // Invalid state, but seems to only happen if you use lightning quick reflexes 
             // to drag an item, so no error, but don't do anything
             return;
-
         }
 
         PseudoClasses.Set(":reorder", true);
@@ -415,7 +378,7 @@ public class TabViewListView : ListBox
         // the popup either remains in place or moves to the top of the
         // screen...TODO: File bug report, for now disabling preview popup
         // if dragdrop manages the drag/reorder operation
-        if (!_isInDrag)
+        if (!_isInDrag && FAUISettings.UseTabViewDragReorderPreview())
         {
             _dragReorderPopup.HorizontalOffset = _popupOffset.X;
             _dragReorderPopup.VerticalOffset = _popupOffset.Y;
@@ -473,7 +436,7 @@ public class TabViewListView : ListBox
         // to handle this themselves
         if (reorderIndex != -1 && _processReorder)
         {
-            if (Items is IList l)
+            if (Items is IList l && l.Count > 0)
             {
                 var oldItem = l[_dragIndex];
                 l.RemoveAt(_dragIndex);
@@ -513,9 +476,13 @@ public class TabViewListView : ListBox
 
         _isInDrag = true;
 
+        var effects = disArgs.Data.RequestedOperation;
+
         if (hasReorder)
         {
+            _processReorder = true;
             BeginReorder(args);
+            effects |= DragDropEffects.Move;
         }
         else
         {
@@ -530,7 +497,7 @@ public class TabViewListView : ListBox
         }
 
         var dropResult =
-            await DragDrop.DoDragDrop(args, disArgs.Data, disArgs.Data.RequestedOperation);
+            await DragDrop.DoDragDrop(args, disArgs.Data, effects);
 
         _isInDrag = false;
         if (hasReorder)
@@ -571,50 +538,14 @@ public class TabViewListView : ListBox
 
         if (_isInReorder)
         {
+            e.DragEffects |= DragDropEffects.Move;
             ItemsPanelRoot.EnterReorder(_dragIndex);
         }
     }
 
     private void OnDragOver(object sender, DragEventArgs e)
     {
-
-        /* Unmerged change from project 'FluentAvalonia (netstandard2.1)'
-        Before:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        After:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        */
-
-        /* Unmerged change from project 'FluentAvalonia (net6.0)'
-        Before:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        After:
-                    DragOver?.Invoke(this, e);
-
-                    // Related to Hack fix in DragLeave
-                    _lastPoint = e.GetPosition(this);
-
-                    e.Handled = true;
-        */
         DragOver?.Invoke(this, e);
-
-        // Related to Hack fix in DragLeave
-        _lastPoint = e.GetPosition(this);
 
         e.Handled = true;
 
@@ -645,7 +576,7 @@ public class TabViewListView : ListBox
         }
     }
 
-    private void OnDragLeave(object sender, RoutedEventArgs e)
+    private void OnDragLeave(object sender, DragEventArgs e)
     {
         // This is a disgusting hack but we need to make sure we reset the insertion point
         // logic if we drag away from this ListView so we don't get left with a gap
@@ -668,22 +599,19 @@ public class TabViewListView : ListBox
             bool isCloseButton = (v as IVisual).FindAncestorOfType<Button>() != null;
             if (isCloseButton)
                 return;
-            if (_lastPoint.HasValue)
+            var pt = e.GetPosition(this);
+            var rect = new Rect(Bounds.Size);
+            rect = rect.Inflate(-2);
+            if (!rect.Contains(pt))
             {
-                var rect = new Rect(Bounds.Size);
-                rect = rect.Inflate(-2);
-                if (!rect.Contains(_lastPoint.Value))
+                if (_isInReorder)
                 {
-                    if (_isInReorder)
-                    {
-                        // Keep reorder active, but return to default state
-                        ItemsPanelRoot.ChangeReorderIndex(_dragIndex);
-                    }
-                    else
-                    {
-                        ItemsPanelRoot.ClearReorder();
-                        _lastPoint = rect.Center;
-                    }
+                    // Keep reorder active, but return to default state
+                    ItemsPanelRoot.ChangeReorderIndex(_dragIndex);
+                }
+                else
+                {
+                    ItemsPanelRoot.ClearReorder();
                 }
             }
         }
@@ -781,7 +709,6 @@ public class TabViewListView : ListBox
         }
     }
 
-    private Point? _lastPoint;
     private TabViewItem _dragItem;
     private int _dragIndex = -1;
     private bool _isInDrag = false;

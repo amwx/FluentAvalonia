@@ -26,6 +26,8 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
     {
         TabItems = new AvaloniaList<object>();
 
+        Loaded += OnLoaded;
+
         // Keyboard Accelerators (KeyBindings in Avalonia)
         // Require a Command, so we wire this up *slightly* differently
         // compared to WinUI
@@ -106,8 +108,11 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             // established yet so the Loaded logic will fail. What we'll do instead is listen
             // for the first bounds change of the ListView as at that point all will be 
             // established - we'll then revoke the listener
-            _listViewLoadedRevoker = _listView.GetPropertyChangedObservable(BoundsProperty)
-                .Subscribe(_ => OnListViewLoaded());
+            //_listViewLoadedRevoker = _listView.GetPropertyChangedObservable(BoundsProperty)
+            //    .Subscribe(_ => OnListViewLoaded());
+
+            // v2 - We now have the Loaded event, use it
+            _listView.Loaded += OnListViewLoaded;
         }
 
         _addButton = e.NameScope.Find<Button>("AddButton");
@@ -347,16 +352,13 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
         AddTabButtonClick?.Invoke(this, args);
     }
 
-    private void OnLoaded()
+    private void OnLoaded(object sender, RoutedEventArgs args)
     {
         UpdateTabContent();
     }
 
-    private void OnListViewLoaded()
+    private void OnListViewLoaded(object sender, RoutedEventArgs args)
     {
-        _listViewLoadedRevoker.Dispose();
-        _listViewLoadedRevoker = null;
-
         // WinUI does a bunch of weirdness here to add the items to the ListView
         // Probably because of the TabItems vs TabItemsSource thing
         // We can skip most of that and just assign the items to the ListView
@@ -1072,6 +1074,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
         if (_listView != null)
         {
+            _listView.Loaded -= OnListViewLoaded;
             LogicalChildren.Remove(_listView);
             _listView.SelectionChanged -= OnListViewSelectionChanged;
             _listView.GotFocus -= OnListViewGettingFocus;
@@ -1152,7 +1155,6 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
     // A bunch of event revokers
     private IDisposable _scrollViewerViewChangedRevoker;
     private IDisposable _itemsPresenterSizeChangedRevoker;
-    private IDisposable _listViewLoadedRevoker;
     private IDisposable _listViewCanReorderItemsPropertyChangedRevoker;
     private IDisposable _listViewAllowDropPropertyChangedRevoker;
     private string _tabCloseButtonTooltipText;
