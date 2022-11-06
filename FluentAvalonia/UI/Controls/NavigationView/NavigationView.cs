@@ -3259,7 +3259,7 @@ public partial class NavigationView : HeaderedContentControl
         }
         else
         {
-            _navBarSelectedIndicatorState.AnimateIndicatorAsync(nextIndicator);
+            _navBarSelectedIndicatorState.AnimateIndicatorAsync(nextIndicator as Control);
         }
 
         _activeIndicator = nextIndicator;

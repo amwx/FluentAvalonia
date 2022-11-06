@@ -33,12 +33,11 @@
 
                         <Panel HorizontalAlignment="Left"
                                VerticalAlignment="Center">
-
                             <Border Name="SelectionIndicator"
-									Background="{DynamicResource NavigationViewSelectionIndicatorForeground}"
-									Opacity="0"
+                                    Background="{DynamicResource NavigationViewSelectionIndicatorForeground}"
+                                    Opacity="0"
                                     Margin="0.5,0,0,0" 
-                                    ZIndex="1000000"
+                                    ZIndex="100"
                                     Width="{DynamicResource NavigationViewSelectionIndicatorWidth}"
                                     Height="{DynamicResource NavigationViewSelectionIndicatorHeight}"
                                     CornerRadius="{DynamicResource NavigationViewSelectionIndicatorRadius}" />

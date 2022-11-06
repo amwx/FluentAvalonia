@@ -1,5 +1,7 @@
 using System;
+using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
@@ -7,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace FluentAvalonia.Core;
@@ -18,7 +21,7 @@ internal class NavigationViewItemSelectedIndicatorState : IDisposable
 	private readonly TimeSpan _totalDuration = TimeSpan.FromSeconds(0.4);
 
 	private CancellationTokenSource _currentAnimationCts = new();
-	private IControl? _activeIndicator;
+	private Control? _activeIndicator;
 
 	private bool _isDisposed;
 	private bool _previousAnimationOngoing;
@@ -63,7 +66,7 @@ internal class NavigationViewItemSelectedIndicatorState : IDisposable
 		return identity;
 	}
 
-	public async void AnimateIndicatorAsync(IControl next)
+	public async void AnimateIndicatorAsync(Control next)
 	{
 		if (_isDisposed)
 		{
@@ -144,19 +147,25 @@ internal class NavigationViewItemSelectedIndicatorState : IDisposable
 						{
 							new Setter(ScaleTransform.ScaleYProperty, 1d),
 							new Setter(TranslateTransform.XProperty, targetVector.X),
-							new Setter(TranslateTransform.YProperty, targetVector.Y)
+							new Setter(TranslateTransform.YProperty, targetVector.Y),
 						}
 					}
-				}
-		};
-
-		_previousAnimationOngoing = true;
-		await translationAnimation.RunAsync(prevIndicator as Control ?? throw new InvalidOperationException(), null, _currentAnimationCts.Token);
-		_previousAnimationOngoing = false;
-
-		prevIndicator.Opacity = 0;
-		nextIndicator.Opacity = Equals(_activeIndicator, nextIndicator) ? 1 : 0;
-	}
+				}, 
+            IterationCount = new IterationCount(1)
+        };
+        translationAnimation.PlaybackDirection = PlaybackDirection.Normal;
+        
+        //There seems to be a BUG in the latest version of avalonia, where code executed after we await the animation, is delayed by a couple of milliseconds.
+        //which causes the prevIndicator to reset to its original position, which causes some glitches in the animation.
+        //To get around this, we need to delay the execution of the code after we start the animation, by the duration of the animation.
+        _ = translationAnimation.RunAsync(prevIndicator, null, _currentAnimationCts.Token)
+            .ConfigureAwait(false);
+        
+        await Task.Delay(translationAnimation.Duration);
+        prevIndicator.Opacity = 0;
+        _previousAnimationOngoing = false;
+        nextIndicator.Opacity = Equals(_activeIndicator, nextIndicator) ? 1 : 0;
+    }
 
 	public void SetActive(Control initial)
 	{
