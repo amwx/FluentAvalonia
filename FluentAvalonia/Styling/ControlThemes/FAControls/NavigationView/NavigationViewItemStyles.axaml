@@ -20,6 +20,7 @@
         <Setter Property="BorderThickness" Value="{DynamicResource NavigationViewItemBorderThickness}" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="ClipToBounds" Value="False"/>
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="Margin" Value="{DynamicResource NavigationViewItemMargin}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -27,7 +28,7 @@
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid Name="NVIRootGrid" RowDefinitions="*,Auto">
+                <Grid ClipToBounds="False" Name="NVIRootGrid" RowDefinitions="*,Auto">
                     <Grid.Styles>
                         <Style Selector="FlyoutPresenter">
                             <Setter Property="Theme" Value="{StaticResource NavViewFlyoutStyle}" />
@@ -36,6 +37,7 @@
                     
                     <uip:NavigationViewItemPresenter Name="NVIPresenter"
                                                      Icon="{TemplateBinding Icon}"
+                                                     ClipToBounds="False"
 													 InfoBadge="{TemplateBinding InfoBadge}"
                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
                                                      Padding="{TemplateBinding Padding}"

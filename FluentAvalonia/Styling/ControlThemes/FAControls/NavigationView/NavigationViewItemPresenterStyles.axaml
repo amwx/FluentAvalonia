@@ -37,6 +37,8 @@
                             <Border Name="SelectionIndicator"
 									Background="{DynamicResource NavigationViewSelectionIndicatorForeground}"
 									Opacity="0"
+                                    Margin="0.5,0,0,0" 
+                                    ZIndex="1000000"
                                     Width="{DynamicResource NavigationViewSelectionIndicatorWidth}"
                                     Height="{DynamicResource NavigationViewSelectionIndicatorHeight}"
                                     CornerRadius="{DynamicResource NavigationViewSelectionIndicatorRadius}" />

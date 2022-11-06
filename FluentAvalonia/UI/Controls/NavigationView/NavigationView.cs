@@ -25,8 +25,11 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class NavigationView : HeaderedContentControl
 {
+    private readonly NavigationViewItemSelectedIndicatorState _navBarSelectedIndicatorState;
+
     public NavigationView()
     {
+        _navBarSelectedIndicatorState = new NavigationViewItemSelectedIndicatorState();
         //PseudoClasses.Add(":autosuggestcollapsed");
         //PseudoClasses.Add(":headercollapsed");
         //PseudoClasses.Add(":backbuttoncollapsed");
@@ -3249,10 +3252,15 @@ public partial class NavigationView : HeaderedContentControl
         if (prevIndicator == nextIndicator)
             return;
 
-        if (prevIndicator != null)
-            prevIndicator.Opacity = 0;
-        if (nextIndicator != null)
-            nextIndicator.Opacity = 1;
+        //_navBarSelectedIndicatorState.SetActive(nextIndicator as Control);
+        if (prevIndicator == null)
+        {
+            _navBarSelectedIndicatorState.SetActive(nextIndicator as Control);
+        }
+        else
+        {
+            _navBarSelectedIndicatorState.AnimateIndicatorAsync(nextIndicator);
+        }
 
         _activeIndicator = nextIndicator;
     }
