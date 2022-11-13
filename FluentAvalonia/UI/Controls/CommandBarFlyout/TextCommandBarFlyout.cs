@@ -307,35 +307,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
                 if (args.Handled)
                     break;
-            }
-
-            RawInputModifiers GetRawMods(KeyModifiers km)
-            {
-                RawInputModifiers rm = RawInputModifiers.None;
-
-                if ((km & KeyModifiers.Control) == KeyModifiers.Control)
-                    rm |= RawInputModifiers.Control;
-
-                if ((km & KeyModifiers.Shift) == KeyModifiers.Shift)
-                    rm |= RawInputModifiers.Shift;
-
-                if ((km & KeyModifiers.Meta) == KeyModifiers.Meta)
-                    rm |= RawInputModifiers.Meta;
-
-                if ((km & KeyModifiers.Alt) == KeyModifiers.Alt)
-                    rm |= RawInputModifiers.Alt;
-
-                return rm;
-            }
-
-            //tb.RaiseEvent(new KeyEventArgs
-            //{
-            //    Device = KeyboardDevice.Instance,
-            //    Key = Key.Z,
-            //    KeyModifiers = KeyModifiers.Control,
-            //    RoutedEvent = InputElement.KeyDownEvent,
-            //    Route = Avalonia.Interactivity.RoutingStrategies.Direct,
-            //});
+            }            
         }
 
         if (IsButtonInPrimaryCommands(TextControlButtons.Undo))
@@ -373,42 +345,31 @@ public class TextCommandBarFlyout : CommandBarFlyout
                 if (args.Handled)
                     break;
             }
-
-            RawInputModifiers GetRawMods(KeyModifiers km)
-            {
-                RawInputModifiers rm = RawInputModifiers.None;
-
-                if ((km & KeyModifiers.Control) == KeyModifiers.Control)
-                    rm |= RawInputModifiers.Control;
-
-                if ((km & KeyModifiers.Shift) == KeyModifiers.Shift)
-                    rm |= RawInputModifiers.Shift;
-
-                if ((km & KeyModifiers.Meta) == KeyModifiers.Meta)
-                    rm |= RawInputModifiers.Meta;
-
-                if ((km & KeyModifiers.Alt) == KeyModifiers.Alt)
-                    rm |= RawInputModifiers.Alt;
-
-                return rm;
-            }
-
-            //KeyboardDevice.Instance.ProcessRawEvent(new RawKeyEventArgs())
-
-            //tb.RaiseEvent(new KeyEventArgs
-            //{
-            //    Device = KeyboardDevice.Instance,
-            //    Key = Key.Y,
-            //    KeyModifiers = KeyModifiers.Control,
-            //    RoutedEvent = InputElement.KeyDownEvent,
-            //    Route = Avalonia.Interactivity.RoutingStrategies.Direct,
-            //});
         }
 
         if (IsButtonInPrimaryCommands(TextControlButtons.Redo))
         {
             UpdateButtons();
         }
+    }
+
+    private static RawInputModifiers GetRawMods(KeyModifiers km)
+    {
+        RawInputModifiers rm = RawInputModifiers.None;
+
+        if ((km & KeyModifiers.Control) == KeyModifiers.Control)
+            rm |= RawInputModifiers.Control;
+
+        if ((km & KeyModifiers.Shift) == KeyModifiers.Shift)
+            rm |= RawInputModifiers.Shift;
+
+        if ((km & KeyModifiers.Meta) == KeyModifiers.Meta)
+            rm |= RawInputModifiers.Meta;
+
+        if ((km & KeyModifiers.Alt) == KeyModifiers.Alt)
+            rm |= RawInputModifiers.Alt;
+
+        return rm;
     }
 
     private void ExecuteSelectAllCommand()
