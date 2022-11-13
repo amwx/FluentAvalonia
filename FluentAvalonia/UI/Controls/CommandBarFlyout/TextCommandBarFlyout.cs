@@ -2,6 +2,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
+using Avalonia.Input.Raw;
+using Avalonia.VisualTree;
 using FluentAvalonia.UI.Input;
 using System;
 using System.Collections.Generic;
@@ -139,6 +141,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
             // We don't have CanUndo or CanRedo
             // In next verion of Avalonia, we'll get TextBox.IsUndoEnabled, but it's not the same
             // For now, we'll default to adding these, and probably just send the Undo/Redo keys
+
             toAdd |= TextControlButtons.Undo;
             toAdd |= TextControlButtons.Redo;
         }
@@ -285,14 +288,54 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
         if (Target is TextBox tb)
         {
-            tb.RaiseEvent(new KeyEventArgs
+            // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
+            //      this is drop down to the low-level event and make the input manager process it 
+            //      Also now pulling the keys from the PlatformHotkeyConfiguration
+
+            var keymap = AvaloniaLocator.Current.GetRequiredService<PlatformHotkeyConfiguration>();
+
+            // Iterate backwards as this will take user specified key shortcuts first over the ones specified in the 
+            // original platform initialization
+            ulong ts = (ulong)DateTime.Now.Ticks;
+            for (int i = keymap.Undo.Count - 1; i >= 0; i--)
             {
-                Device = KeyboardDevice.Instance,
-                Key = Key.Z,
-                KeyModifiers = KeyModifiers.Control,
-                RoutedEvent = InputElement.KeyDownEvent,
-                Route = Avalonia.Interactivity.RoutingStrategies.Direct,
-            });
+                var gesture = keymap.Undo[i];
+                var args = new RawKeyEventArgs(KeyboardDevice.Instance, ts, (IInputRoot)tb.GetVisualRoot(),
+                    RawKeyEventType.KeyDown, gesture.Key, GetRawMods(gesture.KeyModifiers));
+
+                InputManager.Instance.ProcessInput(args);
+
+                if (args.Handled)
+                    break;
+            }
+
+            RawInputModifiers GetRawMods(KeyModifiers km)
+            {
+                RawInputModifiers rm = RawInputModifiers.None;
+
+                if ((km & KeyModifiers.Control) == KeyModifiers.Control)
+                    rm |= RawInputModifiers.Control;
+
+                if ((km & KeyModifiers.Shift) == KeyModifiers.Shift)
+                    rm |= RawInputModifiers.Shift;
+
+                if ((km & KeyModifiers.Meta) == KeyModifiers.Meta)
+                    rm |= RawInputModifiers.Meta;
+
+                if ((km & KeyModifiers.Alt) == KeyModifiers.Alt)
+                    rm |= RawInputModifiers.Alt;
+
+                return rm;
+            }
+
+            //tb.RaiseEvent(new KeyEventArgs
+            //{
+            //    Device = KeyboardDevice.Instance,
+            //    Key = Key.Z,
+            //    KeyModifiers = KeyModifiers.Control,
+            //    RoutedEvent = InputElement.KeyDownEvent,
+            //    Route = Avalonia.Interactivity.RoutingStrategies.Direct,
+            //});
         }
 
         if (IsButtonInPrimaryCommands(TextControlButtons.Undo))
@@ -310,14 +353,56 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
         if (Target is TextBox tb)
         {
-            tb.RaiseEvent(new KeyEventArgs
+            // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
+            //      this is drop down to the low-level event and make the input manager process it 
+            //      Also now pulling the keys from the PlatformHotkeyConfiguration
+
+            var keymap = AvaloniaLocator.Current.GetRequiredService<PlatformHotkeyConfiguration>();
+
+            // Iterate backwards as this will take user specified key shortcuts first over the ones specified in the 
+            // original platform initialization
+            ulong ts = (ulong)DateTime.Now.Ticks;
+            for (int i = keymap.Redo.Count - 1; i >= 0; i--)
             {
-                Device = KeyboardDevice.Instance,
-                Key = Key.Y,
-                KeyModifiers = KeyModifiers.Control,
-                RoutedEvent = InputElement.KeyDownEvent,
-                Route = Avalonia.Interactivity.RoutingStrategies.Direct,
-            });
+                var gesture = keymap.Redo[i];
+                var args = new RawKeyEventArgs(KeyboardDevice.Instance, ts, (IInputRoot)tb.GetVisualRoot(), 
+                    RawKeyEventType.KeyDown, gesture.Key, GetRawMods(gesture.KeyModifiers));
+
+                InputManager.Instance.ProcessInput(args);
+
+                if (args.Handled)
+                    break;
+            }
+
+            RawInputModifiers GetRawMods(KeyModifiers km)
+            {
+                RawInputModifiers rm = RawInputModifiers.None;
+
+                if ((km & KeyModifiers.Control) == KeyModifiers.Control)
+                    rm |= RawInputModifiers.Control;
+
+                if ((km & KeyModifiers.Shift) == KeyModifiers.Shift)
+                    rm |= RawInputModifiers.Shift;
+
+                if ((km & KeyModifiers.Meta) == KeyModifiers.Meta)
+                    rm |= RawInputModifiers.Meta;
+
+                if ((km & KeyModifiers.Alt) == KeyModifiers.Alt)
+                    rm |= RawInputModifiers.Alt;
+
+                return rm;
+            }
+
+            //KeyboardDevice.Instance.ProcessRawEvent(new RawKeyEventArgs())
+
+            //tb.RaiseEvent(new KeyEventArgs
+            //{
+            //    Device = KeyboardDevice.Instance,
+            //    Key = Key.Y,
+            //    KeyModifiers = KeyModifiers.Control,
+            //    RoutedEvent = InputElement.KeyDownEvent,
+            //    Route = Avalonia.Interactivity.RoutingStrategies.Direct,
+            //});
         }
 
         if (IsButtonInPrimaryCommands(TextControlButtons.Redo))

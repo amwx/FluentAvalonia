@@ -15,17 +15,23 @@ public class MenuFlyoutItemBase : TemplatedControl
     protected override void OnPointerEntered(PointerEventArgs e)
     {
         base.OnPointerEntered(e);
-        var point = e.GetCurrentPoint(null);
-        RaiseEvent(new PointerEventArgs(MenuItem.PointerEnteredItemEvent, this, e.Pointer, VisualRoot, point.Position,
-            e.Timestamp, point.Properties, e.KeyModifiers));
+
+        // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
+        //      this is to just change the event name and source and re-raise it. This isn't ideal
+        e.RoutedEvent = MenuItem.PointerEnteredItemEvent;
+        e.Source = this;
+        RaiseEvent(e);
     }
 
     protected override void OnPointerExited(PointerEventArgs e)
     {
         base.OnPointerExited(e);
-        var point = e.GetCurrentPoint(null);
-        RaiseEvent(new PointerEventArgs(MenuItem.PointerExitedItemEvent, this, e.Pointer, VisualRoot, point.Position,
-            e.Timestamp, point.Properties, e.KeyModifiers));
+
+        // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
+        //      this is to just change the event name and source and re-raise it. This isn't ideal
+        e.RoutedEvent = MenuItem.PointerExitedItemEvent;
+        e.Source = this;
+        RaiseEvent(e);
     }
 
     protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
