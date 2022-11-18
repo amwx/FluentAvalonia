@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -9,6 +8,8 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Logging;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
@@ -162,6 +163,7 @@ public partial class TaskDialog : ContentControl
         }
 
         object result = null;
+        _previousFocus = FocusManager.Instance?.Current;
 
         if (showHosted || !(owner is WindowBase))
         {
@@ -186,7 +188,14 @@ public partial class TaskDialog : ContentControl
             PseudoClasses.Set(":hosted", true);
             IsVisible = true;
 
+            // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
+            //      items in the OverlayLayer materialize at the absolute last moment making init
+            //      a very difficult task to do
+            (overlayLayer.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
+
             OnOpened();
+
+            TrySetInitialFocus();
 
             PseudoClasses.Set(":open", true);
             PseudoClasses.Set(":hidden", false);
@@ -208,12 +217,27 @@ public partial class TaskDialog : ContentControl
                     "specify .UseFAWindowing in the AppBuilder");
 
             var host = svc.CreateTaskDialogHost(this);
-            host[!Window.TitleProperty] = this[!TitleProperty];
-            host.Opened += (s, e) =>
+            if (_host == null)
             {
-                OnOpened();
-            };
+                host[!Window.TitleProperty] = this[!TitleProperty];
+                host.Opened += (s, e) =>
+                {
+                    OnOpened();
 
+                    TrySetInitialFocus();
+                };
+                host.Closing += (s, e) =>
+                {
+                    if (_ignoreWindowClosingEvent)
+                        return;
+
+                    // Cancel the window event now, and we'll use our normal closing logic to determine
+                    // if we should actually cancel
+                    e.Cancel = true;
+                    CloseCore(TaskDialogStandardResult.None);
+                };
+            }            
+            
             _host = host;
             IsVisible = true;
 
@@ -222,6 +246,9 @@ public partial class TaskDialog : ContentControl
 
         OnClosed();
         _host = null;
+
+        FocusManager.Instance?.Focus(_previousFocus);
+
         return result ?? TaskDialogStandardResult.None;
     }
 
@@ -256,8 +283,6 @@ public partial class TaskDialog : ContentControl
     protected virtual void OnOpened()
     {
         Opened?.Invoke(this, EventArgs.Empty);
-
-        _defaultButton?.Focus();
     }
 
     protected virtual void OnClosing(TaskDialogClosingEventArgs args)
@@ -272,22 +297,27 @@ public partial class TaskDialog : ContentControl
 
     private void CloseCore(object result)
     {
-        var ea = new TaskDialogClosingEventArgs(this, result);
-        OnClosing(ea);
-
-        if (ea.Cancel)
+        if (_hasDeferralActive)
             return;
 
-        if (!ea.IsDeferred)
+        var args = new TaskDialogClosingEventArgs(result);
+
+        var deferral = new Deferral(() =>
         {
+            Dispatcher.UIThread.VerifyAccess();
+            _hasDeferralActive = false;
+            if (args.Cancel)
+                return;
+
             FinalCloseDialog(result);
-        }
-        else
-        {
-            // Diable interaction with the dialog while the deferral is active
-            IsEnabled = false;
-            _hasDeferralActive = true;
-        }
+        });
+
+        args.SetDeferral(deferral);
+
+        _hasDeferralActive = true;
+        args.IncrementDeferralCount();
+        OnClosing(args);
+        args.DecrementDeferralCount();
     }
 
     private async void FinalCloseDialog(object result)
@@ -331,7 +361,9 @@ public partial class TaskDialog : ContentControl
             PseudoClasses.Set(":hidden", true);
 
             // Fully close the dialog sending the result back
+            _ignoreWindowClosingEvent = true;
             w.Close(result);
+            _ignoreWindowClosingEvent = false;
         }
         else if (_host is DialogHost dh)
         {
@@ -366,6 +398,9 @@ public partial class TaskDialog : ContentControl
 
     private void OnButtonClick(object sender, RoutedEventArgs e)
     {
+        if (_hasDeferralActive)
+            return;
+
         // TaskDialogCommandHost is a TaskDialogButtonHost, this captures everything
         if (e.Source is IVisual v && v.FindAncestorOfType<TaskDialogButtonHost>(true) is TaskDialogButtonHost b)
         {
@@ -412,17 +447,18 @@ public partial class TaskDialog : ContentControl
         bool foundDefault = false;
         for (int i = 0; i < _buttons.Count; i++)
         {
+            var button = _buttons[i];
             var b = new TaskDialogButtonHost
             {
                 [!ContentProperty] = _buttons[i][!TaskDialogControl.TextProperty],
-                [!TaskDialogButtonHost.IconSourceProperty] = _buttons[i][!TaskDialogButton.IconSourceProperty],
-                DataContext = _buttons[i],
-                [!IsEnabledProperty] = _buttons[i][!TaskDialogControl.IsEnabledProperty],
-                [!AvButton.CommandParameterProperty] = _buttons[i][!TaskDialogButton.CommandParameterProperty],
-                [!AvButton.CommandProperty] = _buttons[i][!TaskDialogButton.CommandProperty]
+                [!TaskDialogButtonHost.IconSourceProperty] = button[!TaskDialogButton.IconSourceProperty],
+                DataContext = button,
+                [!IsEnabledProperty] = button[!TaskDialogControl.IsEnabledProperty],
+                [!AvButton.CommandParameterProperty] = button[!TaskDialogButton.CommandParameterProperty],
+                [!AvButton.CommandProperty] = button[!TaskDialogButton.CommandProperty]
             };
 
-            if (_buttons[i].IsDefault)
+            if (button.IsDefault)
             {
                 if (foundDefault)
                     throw new InvalidOperationException("Cannot set 'IsDefault' property on more than one item in a TaskDialog");
@@ -500,6 +536,45 @@ public partial class TaskDialog : ContentControl
         _commandsHost.Items = commands;
     }
 
+    private void TrySetInitialFocus()
+    {
+        var curFocus = FocusManager.Instance?.Current;
+        bool setFocus = false;
+        if (curFocus?.FindAncestorOfType<TaskDialog>() == null)
+        {
+            setFocus = true;
+        }
+
+        // User requested something to be focused, don't override their choice
+        if (!setFocus)
+            return;
+
+        // Default button gets priority focus
+        if (_defaultButton != null)
+        {
+            _defaultButton.Focus();
+#if DEBUG
+            Logger.TryGet(LogEventLevel.Debug, "TaskDialog")?.Log("TrySetInitialFocus", "Set initial focus to requested DefaultButton");
+#endif
+        }
+        else
+        {
+            var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next);
+            if (next != null)
+            {
+                FocusManager.Instance.Focus(next);
+            }
+            else
+            {
+                FocusManager.Instance.Focus(this);
+            }
+
+#if DEBUG
+            Logger.TryGet(LogEventLevel.Debug, "TaskDialog")?.Log("TrySetInitialFocus", "Set initial focus to {next}", next);
+#endif
+        }
+    }
+
     private ItemsPresenter _buttonsHost;
     private ItemsPresenter _commandsHost;
     private ProgressBar _progressBar;
@@ -514,4 +589,7 @@ public partial class TaskDialog : ContentControl
     private IControl _host;
     private TaskCompletionSource<object> _tcs;
     internal bool _hasDeferralActive = false;
+
+    private IInputElement _previousFocus;
+    private bool _ignoreWindowClosingEvent;
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using Avalonia.Threading;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -7,10 +9,9 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public class TaskDialogClosingEventArgs : EventArgs
 {
-    internal TaskDialogClosingEventArgs(TaskDialog owner, object res)
+    internal TaskDialogClosingEventArgs(object res)
     {
         Result = res;
-        _owner = owner;
     }
 
     /// <summary>
@@ -24,43 +25,41 @@ public class TaskDialogClosingEventArgs : EventArgs
     /// </summary>
     public object Result { get; }
 
-    internal bool IsDeferred => _deferral != null;
-
     /// <summary>
-    /// Gets a <see cref="TaskDialogClosingDeferral"/> that the app can use to 
+    /// Gets a <see cref="Deferral"/> that the app can use to 
     /// respond asynchronously to the closing event.
     /// </summary>
     /// <returns></returns>
-    public TaskDialogClosingDeferral GetDeferral()
+    public Deferral GetDeferral()
     {
-        _deferral = new TaskDialogClosingDeferral(_owner, Result);
-        return _deferral;
+        _deferralCount++;
+
+        return new Deferral(() =>
+        {
+            Dispatcher.UIThread.VerifyAccess();
+            DecrementDeferralCount();
+        });
     }
 
-    private TaskDialog _owner;
-    private TaskDialogClosingDeferral _deferral;
-}
-
-/// <summary>
-/// Represents a deferral that can be used by an app to respond asyncronously to
-/// a <see cref="TaskDialog"/> closing
-/// </summary>
-public class TaskDialogClosingDeferral
-{
-    internal TaskDialogClosingDeferral(TaskDialog owner, object result)
+    internal void SetDeferral(Deferral deferral)
     {
-        _owner = owner;
-        _result = result;
+        _deferral = deferral;
     }
 
-    /// <summary>
-    /// Notifies the system that the app has finished processing the closing event.
-    /// </summary>
-    public void Complete()
+    internal void IncrementDeferralCount()
     {
-        _owner.CompleteClosingDeferral(_result);
+        _deferralCount++;
     }
 
-    private TaskDialog _owner;
-    private object _result;
+    internal void DecrementDeferralCount()
+    {
+        _deferralCount--;
+        if (_deferralCount == 0)
+        {
+            _deferral.Complete();
+        }
+    }
+
+    private Deferral _deferral;
+    private int _deferralCount;
 }
