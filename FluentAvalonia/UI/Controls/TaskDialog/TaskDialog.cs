@@ -515,34 +515,3 @@ public partial class TaskDialog : ContentControl
     private TaskCompletionSource<object> _tcs;
     internal bool _hasDeferralActive = false;
 }
-
-// TODO: APPWINDOW
-internal class TaskDialogWindowHost : Window//CoreWindow
-{
-    public TaskDialogWindowHost(TaskDialog dialog)
-    {
-        CanResize = false;
-        SizeToContent = SizeToContent.WidthAndHeight;
-        WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        //ShowAsDialog = true;
-
-        Content = dialog;
-        MinWidth = 100;
-        MinHeight = 100;
-
-#if DEBUG
-        this.AttachDevTools();
-#endif
-    }
-
-    protected override void OnClosing(CancelEventArgs e)
-    {
-        base.OnClosing(e);
-
-        // Don't allow closing the window when a Deferral is active
-        // Otherwise the deferral task will continue to run, but the 
-        // window will be dismissed
-        if (Content is TaskDialog td && td._hasDeferralActive)
-            e.Cancel = true;
-    }
-}

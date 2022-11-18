@@ -9,7 +9,9 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Logging;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -290,20 +292,26 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
     private void HideCore()
     {
-        var ea = new ContentDialogClosingEventArgs(this, _result);
-        OnClosing(ea);
+        // v2- Changed to match logic in TeachingTip for deferral, fixing #239 where cancel
+        //     was being handled before the deferral.
+        var args = new ContentDialogClosingEventArgs(_result);
 
-        if (ea.Cancel)
-            return;
+        var deferral = new Deferral(() =>
+        {
+            Dispatcher.UIThread.VerifyAccess();
+            IsEnabled = true;
+            if (!args.Cancel)
+            {                
+                FinalCloseDialog();
+            }
+        });
 
-        if (!ea.IsDeferred)
-        {
-            FinalCloseDialog();
-        }
-        else
-        {
-            IsEnabled = false;
-        }
+        args.SetDeferral(deferral);
+        IsEnabled = false;
+
+        args.IncrementDeferralCount();
+        OnClosing(args);
+        args.DecrementDeferralCount();
     }
 
     // Internal only for UnitTests

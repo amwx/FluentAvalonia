@@ -8,7 +8,7 @@ public delegate void DeferralCompletedHandler();
 /// Stores a <see cref="DeferralCompletedHandler"/> to be invoked upon completion of the 
 /// deferral and manipulates the state of the deferral.
 /// </summary>
-public sealed class Deferral
+public class Deferral
 {
     /// <summary>
     /// Initializes a new Deferral object and specifies a <see cref="DeferralCompletedHandler"/> to be called 
