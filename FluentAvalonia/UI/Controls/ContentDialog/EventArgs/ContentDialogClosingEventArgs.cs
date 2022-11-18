@@ -26,7 +26,7 @@ public class ContentDialogClosingEventArgs : EventArgs
     public ContentDialogResult Result { get; }
 
     /// <summary>
-    /// Gets a <see cref="ContentDialogClosingDeferral"/> that the app can use to 
+    /// Gets a <see cref="Deferral"/> that the app can use to 
     /// respond asynchronously to the closing event.
     /// </summary>
     public Deferral GetDeferral()
