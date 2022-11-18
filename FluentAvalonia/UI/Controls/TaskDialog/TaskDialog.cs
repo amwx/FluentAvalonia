@@ -14,13 +14,16 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
-using AvButton = Avalonia.Controls.Button;
 
 namespace FluentAvalonia.UI.Controls;
 
 [PseudoClasses(":hosted", ":hidden", ":open")]
 [PseudoClasses(":header", ":subheader", ":icon", ":footer", ":footerAuto", ":expanded")]
 [PseudoClasses(":progress", ":progressError", ":progressSuspend")]
+[TemplatePart(s_tpButtonsHost, typeof(ItemsPresenter))]
+[TemplatePart(s_tpCommandsHost, typeof(ItemsPresenter))]
+[TemplatePart(s_tpMoreDetailsButton, typeof(Button))]
+[TemplatePart(s_tpProgressBar, typeof(ProgressBar))]
 /// <summary>
 /// Represents and enhanced dialog with enhanced button, command, and progress support
 /// </summary>
@@ -32,20 +35,25 @@ public partial class TaskDialog : ContentControl
         _buttons = new List<TaskDialogButton>();
         _commands = new List<TaskDialogCommand>();
 
-        AddHandler(AvButton.ClickEvent, OnButtonClick, RoutingStrategies.Bubble, true);
+        AddHandler(Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble, true);
         AddHandler(KeyDownEvent, OnKeyDownPreview, RoutingStrategies.Tunnel, true);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
+        if (_moreDetailsButton != null)
+        {
+            _moreDetailsButton.Click -= MoreDetailsButtonClick;
+        }
+
         base.OnApplyTemplate(e);
 
-        _buttonsHost = e.NameScope.Get<ItemsPresenter>("ButtonsHost");
-        _commandsHost = e.NameScope.Get<ItemsPresenter>("CommandsHost");
+        _buttonsHost = e.NameScope.Get<ItemsPresenter>(s_tpButtonsHost);
+        _commandsHost = e.NameScope.Get<ItemsPresenter>(s_tpCommandsHost);
 
-        _moreDetailsButton = e.NameScope.Find<AvButton>("MoreDetailsButton");
+        _moreDetailsButton = e.NameScope.Find<Button>(s_tpMoreDetailsButton);
 
-        _progressBar = e.NameScope.Find<ProgressBar>("ProgressBar");
+        _progressBar = e.NameScope.Find<ProgressBar>(s_tpProgressBar);
 
         if (_moreDetailsButton != null)
         {
@@ -454,8 +462,8 @@ public partial class TaskDialog : ContentControl
                 [!TaskDialogButtonHost.IconSourceProperty] = button[!TaskDialogButton.IconSourceProperty],
                 DataContext = button,
                 [!IsEnabledProperty] = button[!TaskDialogControl.IsEnabledProperty],
-                [!AvButton.CommandParameterProperty] = button[!TaskDialogButton.CommandParameterProperty],
-                [!AvButton.CommandProperty] = button[!TaskDialogButton.CommandProperty]
+                [!Button.CommandParameterProperty] = button[!TaskDialogButton.CommandParameterProperty],
+                [!Button.CommandProperty] = button[!TaskDialogButton.CommandProperty]
             };
 
             if (button.IsDefault)
@@ -486,7 +494,7 @@ public partial class TaskDialog : ContentControl
                     [!ContentProperty] = tdcb[!TaskDialogControl.TextProperty],
                     DataContext = tdcb,
                     [!IsEnabledProperty] = tdcb[!TaskDialogControl.IsEnabledProperty],
-                    [!CheckBox.IsCheckedProperty] = tdcb[!TaskDialogRadioButton.IsCheckedProperty]
+                    [!ToggleButton.IsCheckedProperty] = tdcb[!TaskDialogRadioButton.IsCheckedProperty]
                 };
 
                 com.Classes.Add("FA_TaskDialogCommand");
@@ -500,7 +508,7 @@ public partial class TaskDialog : ContentControl
                     [!ContentProperty] = tdrb[!TaskDialogControl.TextProperty],
                     DataContext = tdrb,
                     [!IsEnabledProperty] = tdrb[!TaskDialogControl.IsEnabledProperty],
-                    [!RadioButton.IsCheckedProperty] = tdrb[!TaskDialogRadioButton.IsCheckedProperty]
+                    [!ToggleButton.IsCheckedProperty] = tdrb[!TaskDialogRadioButton.IsCheckedProperty]
                 };
 
                 com.Classes.Add("FA_TaskDialogCommand");
@@ -514,8 +522,8 @@ public partial class TaskDialog : ContentControl
                     [!ContentProperty] = tdc[!TaskDialogControl.TextProperty],
                     DataContext = tdc,
                     [!IsEnabledProperty] = tdc[!TaskDialogControl.IsEnabledProperty],
-                    [!AvButton.CommandParameterProperty] = tdc[!TaskDialogButton.CommandParameterProperty],
-                    [!AvButton.CommandProperty] = tdc[!TaskDialogButton.CommandProperty],
+                    [!Button.CommandParameterProperty] = tdc[!TaskDialogButton.CommandParameterProperty],
+                    [!Button.CommandProperty] = tdc[!TaskDialogButton.CommandProperty],
                     [!TaskDialogButtonHost.IconSourceProperty] = tdc[!TaskDialogButton.IconSourceProperty]
                 };
 
@@ -578,11 +586,11 @@ public partial class TaskDialog : ContentControl
     private ItemsPresenter _buttonsHost;
     private ItemsPresenter _commandsHost;
     private ProgressBar _progressBar;
-    private AvButton _moreDetailsButton;
+    private Button _moreDetailsButton;
 
     private TaskDialogProgressState _currentProgressState = TaskDialogProgressState.Normal;
 
-    private AvButton _defaultButton;
+    private Button _defaultButton;
 
     public IControl _xamlOwner;
     private int _xamlOwnerChildIndex;
@@ -592,4 +600,9 @@ public partial class TaskDialog : ContentControl
 
     private IInputElement _previousFocus;
     private bool _ignoreWindowClosingEvent;
+
+    private const string s_tpButtonsHost = "ButtonsHost";
+    private const string s_tpCommandsHost = "CommandsHost";
+    private const string s_tpProgressBar = "ProgressBar";
+    private const string s_tpMoreDetailsButton = "MoreDetailsButton";
 }
