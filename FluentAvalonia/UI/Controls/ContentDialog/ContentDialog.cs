@@ -210,20 +210,6 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         HideCore();
     }
 
-    internal void CompleteButtonClickDeferral()
-    {
-        IsEnabled = true;
-        HideCore();
-    }
-
-    internal void CompleteClosingDeferral()
-    {
-        //Don't call HideCore() here, that could send us on an infinite loop
-        //and will send out multiple Closing Events, re-enable & final close
-        IsEnabled = true;
-        FinalCloseDialog();
-    }
-
     /// <summary>
     /// Called when the primary button is invoked
     /// </summary>
