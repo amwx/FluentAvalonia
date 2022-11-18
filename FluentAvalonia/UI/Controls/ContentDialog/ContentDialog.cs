@@ -292,6 +292,11 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
     private void HideCore()
     {
+        // v2 - No longer disabling the dialog during a deferral so we need to make sure that if
+        //      multiple requests to close come in, we don't handle them
+        if (_hasDeferralActive)
+            return;
+
         // v2- Changed to match logic in TeachingTip for deferral, fixing #239 where cancel
         //     was being handled before the deferral.
         var args = new ContentDialogClosingEventArgs(_result);
@@ -299,7 +304,8 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         var deferral = new Deferral(() =>
         {
             Dispatcher.UIThread.VerifyAccess();
-            IsEnabled = true;
+            _hasDeferralActive = false;
+
             if (!args.Cancel)
             {                
                 FinalCloseDialog();
@@ -307,7 +313,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         });
 
         args.SetDeferral(deferral);
-        IsEnabled = false;
+        _hasDeferralActive = true;
 
         args.IncrementDeferralCount();
         OnClosing(args);
@@ -434,13 +440,10 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         PseudoClasses.Set(":hidden", true);
         PseudoClasses.Set(":open", false);
-
+        
         // Let the close animation finish (now 0.167s in new WinUI update...)
         // We'll wait just a touch longer to be sure
         await Task.Delay(200);
-
-        // Re-enable interaction in case we reuse the dialog
-        IsHitTestVisible = true;
 
         OnClosed(new ContentDialogClosedEventArgs(_result));
 
@@ -485,12 +488,17 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
     private void OnButtonClick(object sender, RoutedEventArgs e)
     {
+        // v2 - No longer disabling the dialog during a deferral so we need to make sure that if
+        //      multiple requests to close come in, we don't handle them
+        if (_hasDeferralActive)
+            return;
+
         var args = new ContentDialogButtonClickEventArgs();
 
         var deferral = new Deferral(() =>
         {
             Dispatcher.UIThread.VerifyAccess();
-            IsEnabled = true;
+            _hasDeferralActive = false;
 
             if (args.Cancel)
                 return;
@@ -524,7 +532,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         });
 
         args.SetDeferral(deferral);
-        IsEnabled = false;
+        _hasDeferralActive = true;
 
         args.IncrementDeferralCount();
         if (sender == _primaryButton)
@@ -611,6 +619,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private Button _primaryButton;
     private Button _secondaryButton;
     private Button _closeButton;
+    private bool _hasDeferralActive;
 
     private const string s_tpPrimaryButton = "PrimaryButton";
     private const string s_tpSecondaryButton = "SecondaryButton";
