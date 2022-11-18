@@ -485,87 +485,61 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
     private void OnButtonClick(object sender, RoutedEventArgs e)
     {
+        var args = new ContentDialogButtonClickEventArgs();
+
+        var deferral = new Deferral(() =>
+        {
+            Dispatcher.UIThread.VerifyAccess();
+            IsEnabled = true;
+
+            if (args.Cancel)
+                return;
+
+            if (sender == _primaryButton)
+            {
+                if (PrimaryButtonCommand != null && PrimaryButtonCommand.CanExecute(PrimaryButtonCommandParameter))
+                {
+                    PrimaryButtonCommand.Execute(PrimaryButtonCommandParameter);
+                }
+                _result = ContentDialogResult.Primary;
+            }
+            else if (sender == _secondaryButton)
+            {
+                if (SecondaryButtonCommand != null && SecondaryButtonCommand.CanExecute(SecondaryButtonCommandParameter))
+                {
+                    SecondaryButtonCommand.Execute(SecondaryButtonCommandParameter);
+                }
+                _result = ContentDialogResult.Secondary;
+            }
+            else if (sender == _closeButton)
+            {
+                if (CloseButtonCommand != null && CloseButtonCommand.CanExecute(CloseButtonCommandParameter))
+                {
+                    CloseButtonCommand.Execute(CloseButtonCommandParameter);
+                }
+                _result = ContentDialogResult.None;
+            }
+
+            HideCore();
+        });
+
+        args.SetDeferral(deferral);
+        IsEnabled = false;
+
+        args.IncrementDeferralCount();
         if (sender == _primaryButton)
         {
-            HandlePrimaryClick();
+            OnPrimaryButtonClick(args);
         }
         else if (sender == _secondaryButton)
         {
-            HandleSecondaryClick();
+            OnSecondaryButtonClick(args);
         }
         else if (sender == _closeButton)
         {
-            HandleCloseClick();
+            OnCloseButtonClick(args);
         }
-    }
-
-    private void HandlePrimaryClick()
-    {
-        var ea = new ContentDialogButtonClickEventArgs(this);
-        OnPrimaryButtonClick(ea);
-
-        if (ea.Cancel)
-            return;
-
-        _result = ContentDialogResult.Primary;
-        if (!ea.IsDeferred)
-        {
-            if (PrimaryButtonCommand != null && PrimaryButtonCommand.CanExecute(PrimaryButtonCommandParameter))
-            {
-                PrimaryButtonCommand.Execute(PrimaryButtonCommandParameter);
-            }
-            HideCore();
-        }
-        else
-        {
-            IsEnabled = false;
-        }
-    }
-
-    private void HandleSecondaryClick()
-    {
-        var ea = new ContentDialogButtonClickEventArgs(this);
-        OnSecondaryButtonClick(ea);
-
-        if (ea.Cancel)
-            return;
-
-        _result = ContentDialogResult.Secondary;
-        if (!ea.IsDeferred)
-        {
-            if (SecondaryButtonCommand != null && SecondaryButtonCommand.CanExecute(SecondaryButtonCommandParameter))
-            {
-                SecondaryButtonCommand.Execute(SecondaryButtonCommandParameter);
-            }
-            HideCore();
-        }
-        else
-        {
-            IsEnabled = false;
-        }
-    }
-
-    private void HandleCloseClick()
-    {
-        var ea = new ContentDialogButtonClickEventArgs(this);
-        OnCloseButtonClick(ea);
-
-        if (ea.Cancel)
-            return;
-
-        _result = ContentDialogResult.None;
-        if (!ea.IsDeferred)
-        {
-            if (CloseButtonCommand != null && CloseButtonCommand.CanExecute(CloseButtonCommandParameter))
-            {
-                CloseButtonCommand.Execute(CloseButtonCommandParameter);
-            }
-            HideCore();
-        }
-        else
-        {
-            IsEnabled = false;
-        }
+        args.DecrementDeferralCount();
     }
 
     private void OnFullSizedDesiredChanged(AvaloniaPropertyChangedEventArgs e)

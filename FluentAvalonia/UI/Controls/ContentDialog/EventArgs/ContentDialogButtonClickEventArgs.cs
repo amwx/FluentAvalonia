@@ -1,4 +1,6 @@
 ﻿using System;
+using Avalonia.Threading;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -7,9 +9,9 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public class ContentDialogButtonClickEventArgs : EventArgs
 {
-    internal ContentDialogButtonClickEventArgs(ContentDialog owner)
+    internal ContentDialogButtonClickEventArgs()
     {
-        _owner = owner;
+
     }
 
     /// <summary>
@@ -18,18 +20,40 @@ public class ContentDialogButtonClickEventArgs : EventArgs
     /// </summary>
     public bool Cancel { get; set; }
 
-    internal bool IsDeferred => _deferral != null;
-
     /// <summary>
-    /// Gets a <see cref="ContentDialogButtonClickDeferral"/> the app can use to respond
-    /// asyncronously to a button click event
+    /// Gets a <see cref="Deferral"/> that the app can use to 
+    /// respond asynchronously to the closing event.
     /// </summary>
-    public ContentDialogButtonClickDeferral GetDeferral()
+    public Deferral GetDeferral()
     {
-        _deferral = new ContentDialogButtonClickDeferral(_owner);
-        return _deferral;
+        _deferralCount++;
+
+        return new Deferral(() =>
+        {
+            Dispatcher.UIThread.VerifyAccess();
+            DecrementDeferralCount();
+        });
     }
 
-    private ContentDialog _owner;
-    private ContentDialogButtonClickDeferral _deferral;
+    internal void SetDeferral(Deferral deferral)
+    {
+        _deferral = deferral;
+    }
+
+    internal void IncrementDeferralCount()
+    {
+        _deferralCount++;
+    }
+
+    internal void DecrementDeferralCount()
+    {
+        _deferralCount--;
+        if (_deferralCount == 0)
+        {
+            _deferral.Complete();
+        }
+    }
+
+    private Deferral _deferral;
+    private int _deferralCount;
 }
