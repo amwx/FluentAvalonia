@@ -11,6 +11,8 @@
         </Border>
     </Design.PreviewWith>
 
+    <x:Double x:Key="TaskDialogCommandMinHeight">48</x:Double>
+
     <ControlTheme x:Key="{x:Type uip:TaskDialogCommandHost}" TargetType="uip:TaskDialogCommandHost"
                   x:DataType="ui:TaskDialogCommand">
         <Setter Property="Background" Value="{DynamicResource TaskDialogCommandBackground}" />
@@ -19,6 +21,7 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+        <Setter Property="MinHeight" Value="{DynamicResource TaskDialogCommandMinHeight}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"
@@ -37,7 +40,7 @@
                                  IsVisible="False">
                             <ui:IconSourceElement IconSource="{Binding IconSource}" />
                         </Viewbox>
-                        <StackPanel Spacing="2" Grid.Column="1">
+                        <StackPanel Spacing="2" Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock Text="{Binding Text}"
                                        FontWeight="SemiBold"
                                        Name="Text"
@@ -46,7 +49,8 @@
                                        FontSize="12"
                                        TextWrapping="Wrap"
                                        Name="Description"
-                                       Foreground="{DynamicResource TaskDialogCommandDescriptionForeground}"/>
+                                       Foreground="{DynamicResource TaskDialogCommandDescriptionForeground}"
+                                       IsVisible="{Binding Description, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                         </StackPanel>
                     </Grid>
                 </Border>
