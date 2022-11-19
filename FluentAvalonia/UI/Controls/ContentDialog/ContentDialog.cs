@@ -18,9 +18,9 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(":hidden", ":open")]
-[PseudoClasses(":primary", ":secondary", ":close")]
-[PseudoClasses(":fullsize", "nosmokelayer")]
+[PseudoClasses(s_pcHidden, s_pcOpen)]
+[PseudoClasses(s_pcPrimary, s_pcSecondary, s_pcClose)]
+[PseudoClasses(s_pcFullSize)]
 [TemplatePart(s_tpPrimaryButton, typeof(Button))]
 [TemplatePart(s_tpSecondaryButton, typeof(Button))]
 [TemplatePart(s_tpCloseButton, typeof(Button))]
@@ -31,7 +31,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 {
     public ContentDialog()
     {
-        PseudoClasses.Add(":hidden");
+        PseudoClasses.Add(s_pcHidden);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -45,11 +45,11 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         base.OnApplyTemplate(e);
 
-        _primaryButton = e.NameScope.Get<Button>("PrimaryButton");
+        _primaryButton = e.NameScope.Get<Button>(s_tpPrimaryButton);
         _primaryButton.Click += OnButtonClick;
-        _secondaryButton = e.NameScope.Get<Button>("SecondaryButton");
+        _secondaryButton = e.NameScope.Get<Button>(s_tpSecondaryButton);
         _secondaryButton.Click += OnButtonClick;
-        _closeButton = e.NameScope.Get<Button>("CloseButton");
+        _closeButton = e.NameScope.Get<Button>(s_tpCloseButton);
         _closeButton.Click += OnButtonClick;
 
         // v2- Removed this as I don't think its necessary anymore (called from ShowAsync)
@@ -270,8 +270,8 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private void ShowCore()
     {
         IsVisible = true;
-        PseudoClasses.Set(":hidden", false);
-        PseudoClasses.Set(":open", true);
+        PseudoClasses.Set(s_pcHidden, false);
+        PseudoClasses.Set(s_pcOpen, true);
 
         OnOpened();
     }
@@ -312,9 +312,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         if (_primaryButton == null)
             ApplyTemplate();
 
-        PseudoClasses.Set(":primary", !string.IsNullOrEmpty(PrimaryButtonText));
-        PseudoClasses.Set(":secondary", !string.IsNullOrEmpty(SecondaryButtonText));
-        PseudoClasses.Set(":close", !string.IsNullOrEmpty(CloseButtonText));
+        PseudoClasses.Set(s_pcPrimary, !string.IsNullOrEmpty(PrimaryButtonText));
+        PseudoClasses.Set(s_pcSecondary, !string.IsNullOrEmpty(SecondaryButtonText));
+        PseudoClasses.Set(s_pcClose, !string.IsNullOrEmpty(CloseButtonText));
 
         var curFocus = FocusManager.Instance.Current;
         bool setFocus = false;
@@ -332,9 +332,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 if (!_primaryButton.IsVisible)
                     break;
 
-                _primaryButton.Classes.Add("accent");
-                _secondaryButton.Classes.Remove("accent");
-                _closeButton.Classes.Remove("accent");
+                _primaryButton.Classes.Add(s_cAccent);
+                _secondaryButton.Classes.Remove(s_cAccent);
+                _closeButton.Classes.Remove(s_cAccent);
                 
                 if (setFocus)
                 {
@@ -350,9 +350,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 if (!_secondaryButton.IsVisible)
                     break;
 
-                _secondaryButton.Classes.Add("accent");
-                _primaryButton.Classes.Remove("accent");
-                _closeButton.Classes.Remove("accent");
+                _secondaryButton.Classes.Add(s_cAccent);
+                _primaryButton.Classes.Remove(s_cAccent);
+                _closeButton.Classes.Remove(s_cAccent);
 
                 if (setFocus)
                 {
@@ -368,9 +368,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 if (!_closeButton.IsVisible)
                     break;
 
-                _closeButton.Classes.Add("accent");
-                _primaryButton.Classes.Remove("accent");
-                _secondaryButton.Classes.Remove("accent");
+                _closeButton.Classes.Add(s_cAccent);
+                _primaryButton.Classes.Remove(s_cAccent);
+                _secondaryButton.Classes.Remove(s_cAccent);
 
                 if (setFocus)
                 {
@@ -383,9 +383,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 break;
 
             default:
-                _closeButton.Classes.Remove("accent");
-                _primaryButton.Classes.Remove("accent");
-                _secondaryButton.Classes.Remove("accent");
+                _closeButton.Classes.Remove(s_cAccent);
+                _primaryButton.Classes.Remove(s_cAccent);
+                _secondaryButton.Classes.Remove(s_cAccent);
 
                 if (setFocus)
                 {
@@ -424,8 +424,8 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         // adorner to hide, then continue forward.
         Focus();
 
-        PseudoClasses.Set(":hidden", true);
-        PseudoClasses.Set(":open", false);
+        PseudoClasses.Set(s_pcHidden, true);
+        PseudoClasses.Set(s_pcOpen, false);
         
         // Let the close animation finish (now 0.167s in new WinUI update...)
         // We'll wait just a touch longer to be sure
@@ -539,7 +539,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private void OnFullSizedDesiredChanged(AvaloniaPropertyChangedEventArgs e)
     {
         bool newVal = (bool)e.NewValue;
-        PseudoClasses.Set(":fullsize", newVal);
+        PseudoClasses.Set(s_pcFullSize, newVal);
     }
 
     public (bool handled, IInputElement next) GetNext(IInputElement element, NavigationDirection direction)
@@ -610,4 +610,13 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private const string s_tpPrimaryButton = "PrimaryButton";
     private const string s_tpSecondaryButton = "SecondaryButton";
     private const string s_tpCloseButton = "CloseButton";
+
+    internal const string s_cAccent = "accent"; // Internal for TaskDialog
+    private const string s_pcOpen = ":open";
+    private const string s_pcHidden = ":hidden";
+
+    private const string s_pcPrimary = ":primary";
+    private const string s_pcSecondary = ":secondary";
+    private const string s_pcClose = ":close";
+    private const string s_pcFullSize = ":fullsize";
 }

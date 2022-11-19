@@ -17,9 +17,9 @@ using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(":hosted", ":hidden", ":open")]
-[PseudoClasses(":header", ":subheader", ":icon", ":footer", ":footerAuto", ":expanded")]
-[PseudoClasses(":progress", ":progressError", ":progressSuspend")]
+[PseudoClasses(s_pcHosted, s_pcHidden, s_pcOpen)]
+[PseudoClasses(s_pcHeader, s_pcSubheader, s_pcIcon, s_pcFooter, s_pcFooterAuto, s_pcExpanded)]
+[PseudoClasses(s_pcProgress, s_pcProgressError, s_pcProgressSuspend)]
 [TemplatePart(s_tpButtonsHost, typeof(ItemsPresenter))]
 [TemplatePart(s_tpCommandsHost, typeof(ItemsPresenter))]
 [TemplatePart(s_tpMoreDetailsButton, typeof(Button))]
@@ -31,7 +31,7 @@ public partial class TaskDialog : ContentControl
 {
     public TaskDialog()
     {
-        PseudoClasses.Add(":hidden");
+        PseudoClasses.Add(s_pcHidden);
         _buttons = new List<TaskDialogButton>();
         _commands = new List<TaskDialogCommand>();
 
@@ -72,30 +72,30 @@ public partial class TaskDialog : ContentControl
         {
             var val = change.GetNewValue<TaskDialogFooterVisibility>();
 
-            PseudoClasses.Set(":footerAuto", val == TaskDialogFooterVisibility.Auto);
-            PseudoClasses.Set(":footer", val != TaskDialogFooterVisibility.Never);
-            PseudoClasses.Set(":expanded", val == TaskDialogFooterVisibility.Always);
+            PseudoClasses.Set(s_pcFooterAuto, val == TaskDialogFooterVisibility.Auto);
+            PseudoClasses.Set(s_pcFooter, val != TaskDialogFooterVisibility.Never);
+            PseudoClasses.Set(s_pcExpanded, val == TaskDialogFooterVisibility.Always);
         }
         else if (change.Property == IsFooterExpandedProperty)
         {
             if (FooterVisibility != TaskDialogFooterVisibility.Always)
-                PseudoClasses.Set(":expanded", change.GetNewValue<bool>());
+                PseudoClasses.Set(s_pcExpanded, change.GetNewValue<bool>());
         }
         else if (change.Property == ShowProgressBarProperty)
         {
-            PseudoClasses.Set(":progress", change.GetNewValue<bool>());
+            PseudoClasses.Set(s_pcProgress, change.GetNewValue<bool>());
         }
         else if (change.Property == IconSourceProperty)
         {
-            PseudoClasses.Set(":icon", change.NewValue != null);
+            PseudoClasses.Set(s_pcIcon, change.NewValue != null);
         }
         else if (change.Property == HeaderProperty)
         {
-            PseudoClasses.Set(":header", change.NewValue != null);
+            PseudoClasses.Set(s_pcHeader, change.NewValue != null);
         }
         else if (change.Property == SubHeaderProperty)
         {
-            PseudoClasses.Set(":subheader", change.NewValue != null);
+            PseudoClasses.Set(s_pcSubheader, change.NewValue != null);
         }
     }
 
@@ -193,7 +193,7 @@ public partial class TaskDialog : ContentControl
                 throw new InvalidOperationException("Unable to find OverlayLayer for hosting the TaskDialog");
 
             overlayLayer.Children.Add(host);
-            PseudoClasses.Set(":hosted", true);
+            PseudoClasses.Set(s_pcHosted, true);
             IsVisible = true;
 
             // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
@@ -205,8 +205,8 @@ public partial class TaskDialog : ContentControl
 
             TrySetInitialFocus();
 
-            PseudoClasses.Set(":open", true);
-            PseudoClasses.Set(":hidden", false);
+            PseudoClasses.Set(s_pcOpen, true);
+            PseudoClasses.Set(s_pcHidden, false);
 
             result = await _tcs.Task;
         }
@@ -217,7 +217,8 @@ public partial class TaskDialog : ContentControl
                 UnparentDialog();
             }
 
-            PseudoClasses.Set(":hidden", false);
+            PseudoClasses.Set(s_pcHidden, false);
+            PseudoClasses.Set(s_pcHosted, false);
 
             var svc = AvaloniaLocator.Current.GetService<IFAWindowProvider>();
             if (svc == null)
@@ -274,13 +275,6 @@ public partial class TaskDialog : ContentControl
     public void Hide(object result)
     {
         CloseCore(result);
-    }
-
-    internal void CompleteClosingDeferral(object result)
-    {
-        IsEnabled = true;
-        _hasDeferralActive = false;
-        FinalCloseDialog(result);
     }
 
     protected virtual void OnOpening()
@@ -365,8 +359,8 @@ public partial class TaskDialog : ContentControl
             w.Content = null;
             ReturnDialogToParent();
 
-            PseudoClasses.Set(":hosted", false);
-            PseudoClasses.Set(":hidden", true);
+            PseudoClasses.Set(s_pcOpen, false);
+            PseudoClasses.Set(s_pcHidden, true);
 
             // Fully close the dialog sending the result back
             _ignoreWindowClosingEvent = true;
@@ -379,8 +373,8 @@ public partial class TaskDialog : ContentControl
 
             Focus();
 
-            PseudoClasses.Set(":open", false);
-            PseudoClasses.Set(":hidden", true);
+            PseudoClasses.Set(s_pcOpen, false);
+            PseudoClasses.Set(s_pcHidden, true);
 
             // Let the close animation finish (now 0.167s in new WinUI update...)
             // We'll wait just a touch longer to be sure
@@ -437,8 +431,8 @@ public partial class TaskDialog : ContentControl
                 {
                     _currentProgressState = state;
 
-                    PseudoClasses.Set(":progressError", (state & TaskDialogProgressState.Error) == TaskDialogProgressState.Error);
-                    PseudoClasses.Set(":progressSuspend", (state & TaskDialogProgressState.Suspended) == TaskDialogProgressState.Suspended);
+                    PseudoClasses.Set(s_pcProgressError, (state & TaskDialogProgressState.Error) == TaskDialogProgressState.Error);
+                    PseudoClasses.Set(s_pcProgressSuspend, (state & TaskDialogProgressState.Suspended) == TaskDialogProgressState.Suspended);
                 }
             }
         });
@@ -472,7 +466,7 @@ public partial class TaskDialog : ContentControl
                     throw new InvalidOperationException("Cannot set 'IsDefault' property on more than one item in a TaskDialog");
 
                 foundDefault = true;
-                b.Classes.Add("accent");
+                b.Classes.Add(ContentDialog.s_cAccent);
                 _defaultButton = b;
             }
             buttons.Add(b);
@@ -497,7 +491,7 @@ public partial class TaskDialog : ContentControl
                     [!ToggleButton.IsCheckedProperty] = tdcb[!TaskDialogRadioButton.IsCheckedProperty]
                 };
 
-                com.Classes.Add("FA_TaskDialogCommand");
+                com.Classes.Add(s_cFATDCom);
 
                 commands.Add(com);
             }
@@ -511,7 +505,7 @@ public partial class TaskDialog : ContentControl
                     [!ToggleButton.IsCheckedProperty] = tdrb[!TaskDialogRadioButton.IsCheckedProperty]
                 };
 
-                com.Classes.Add("FA_TaskDialogCommand");
+                com.Classes.Add(s_cFATDCom);
 
                 commands.Add(com);
             }
@@ -533,7 +527,7 @@ public partial class TaskDialog : ContentControl
                         throw new InvalidOperationException("Cannot set 'IsDefault' property on more than one item in a TaskDialog");
 
                     foundDefault = true;
-                    com.Classes.Add("accent");
+                    com.Classes.Add(ContentDialog.s_cAccent);
                     _defaultButton = com;
                 }
 
@@ -605,4 +599,19 @@ public partial class TaskDialog : ContentControl
     private const string s_tpCommandsHost = "CommandsHost";
     private const string s_tpProgressBar = "ProgressBar";
     private const string s_tpMoreDetailsButton = "MoreDetailsButton";
+
+    private const string s_pcHidden = ":hidden";
+    private const string s_pcOpen = ":open";
+    private const string s_pcHosted = ":hosted";
+    private const string s_pcHeader = ":header";
+    private const string s_pcSubheader = ":subheader";
+    private const string s_pcIcon = ":icon";
+    private const string s_pcFooter = ":footer";
+    private const string s_pcFooterAuto = ":footerAuto";
+    private const string s_pcExpanded = ":expanded";
+    private const string s_pcProgress = ":progress";
+    private const string s_pcProgressError = ":progressError";
+    private const string s_pcProgressSuspend = ":progressSuspend";
+
+    private const string s_cFATDCom = "FA_TaskDialogCommand";
 }
