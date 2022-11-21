@@ -157,7 +157,8 @@
                                         <Button Classes="TaskDialog_MoreDetails"
                                                 Theme="{StaticResource TaskDialogMoreDetailsButton}"
                                                 Content="{StaticResource TaskDialogFooterButtonNormalText}"
-                                                IsVisible="False"/>
+                                                IsVisible="False"
+                                                Name="MoreDetailsButton"/>
                                         <ContentPresenter Name="FooterHost"
                                                           VerticalContentAlignment="Top"
                                                           HorizontalContentAlignment="Stretch"

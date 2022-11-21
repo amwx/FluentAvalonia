@@ -19,8 +19,8 @@ public class TaskDialogButton : TaskDialogControl
     public TaskDialogButton(string text, object result)
         : base(text, result) { }
 
-    private TaskDialogButton(string text, object result, bool isStandard)
-        : this(text, result)
+    private TaskDialogButton(TaskDialogStandardResult result)
+        : this(result.ToString(), result)
     {
         _isStandard = true;
     }
@@ -115,35 +115,35 @@ public class TaskDialogButton : TaskDialogControl
     /// Predefined button for 'OK'. Note that predefined buttons cannot have command, icons,
     /// or click handlers attached - they are meant for simple purposes
     /// </summary>
-    public static readonly TaskDialogButton OKButton = new TaskDialogButton("OK", TaskDialogStandardResult.OK);
+    public static readonly TaskDialogButton OKButton = new TaskDialogButton(TaskDialogStandardResult.OK);
 
     /// <summary>
     /// Predefined button for 'Cancel'. Note that predefined buttons cannot have command, icons,
     /// or click handlers attached - they are meant for simple purposes
     /// </summary>
-    public static readonly TaskDialogButton CancelButton = new TaskDialogButton("Cancel", TaskDialogStandardResult.Cancel);
+    public static readonly TaskDialogButton CancelButton = new TaskDialogButton(TaskDialogStandardResult.Cancel);
 
     /// <summary>
     /// Predefined button for 'Yes'. Note that predefined buttons cannot have command, icons,
     /// or click handlers attached - they are meant for simple purposes
     /// </summary>
-    public static readonly TaskDialogButton YesButton = new TaskDialogButton("Yes", TaskDialogStandardResult.Yes);
+    public static readonly TaskDialogButton YesButton = new TaskDialogButton(TaskDialogStandardResult.Yes);
 
     /// <summary>
     /// Predefined button for 'No'. Note that predefined buttons cannot have command, icons,
     /// or click handlers attached - they are meant for simple purposes
     /// </summary>
-    public static readonly TaskDialogButton NoButton = new TaskDialogButton("No", TaskDialogStandardResult.No);
+    public static readonly TaskDialogButton NoButton = new TaskDialogButton(TaskDialogStandardResult.No);
 
     /// <summary>
     /// Predefined button for 'Retry'. Note that predefined buttons cannot have command, icons,
     /// or click handlers attached - they are meant for simple purposes
     /// </summary>
-    public static readonly TaskDialogButton RetryButton = new TaskDialogButton("Retry", TaskDialogStandardResult.Retry);
+    public static readonly TaskDialogButton RetryButton = new TaskDialogButton(TaskDialogStandardResult.Retry);
 
     /// <summary>
     /// Predefined button for 'Close'. Note that predefined buttons cannot have command, icons,
     /// or click handlers attached - they are meant for simple purposes
     /// </summary>
-    public static readonly TaskDialogButton CloseButton = new TaskDialogButton("Close", TaskDialogStandardResult.Close);
+    public static readonly TaskDialogButton CloseButton = new TaskDialogButton(TaskDialogStandardResult.Close);
 }
