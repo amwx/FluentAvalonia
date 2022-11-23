@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using FluentAvalonia.Core;
+using Avalonia.Controls.Metadata;
 
 namespace FluentAvalonia.UI.Controls;
 
+[TemplatePart(s_tpShowFlyoutButton, typeof(Button))]
 public partial class ColorPickerButton
 {
     /// <summary>
@@ -244,4 +246,5 @@ public partial class ColorPickerButton
     private bool _isCompact = true;
     private bool _isAlphaEnabled = true;
     private IEnumerable<Color> _customPaletteColors;
+    private const string s_tpShowFlyoutButton = "ShowFlyoutButton";
 }
