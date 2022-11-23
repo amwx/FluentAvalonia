@@ -1,9 +1,14 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Styling;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(SharedPseudoclasses.s_pcIcon, SharedPseudoclasses.s_pcLabel, SharedPseudoclasses.s_pcCompact)]
+[PseudoClasses(SharedPseudoclasses.s_pcFlyout, s_pcSubmenuOpen, SharedPseudoclasses.s_pcOverflow)]
+[PseudoClasses(SharedPseudoclasses.s_pcHotkey)]
 public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
 {
     /// <summary>
@@ -51,7 +56,7 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
         {
             if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
             {
-                PseudoClasses.Set(":overflow", value);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcOverflow, value);
             }
         }
     }
@@ -82,4 +87,6 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
 
     private bool _isInOverflow;
     private int _dynamicOverflowOrder;
+
+    private const string s_pcSubmenuOpen = ":submenuopen";
 }

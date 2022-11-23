@@ -5,6 +5,7 @@ using System;
 using Avalonia.Styling;
 using Avalonia.LogicalTree;
 using FluentAvalonia.UI.Input;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -20,19 +21,19 @@ public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, 
         base.OnPropertyChanged(change);
         if (change.Property == IconProperty)
         {
-            PseudoClasses.Set(":icon", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
         }
         else if (change.Property == LabelProperty)
         {
-            PseudoClasses.Set(":label", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcLabel, change.NewValue != null);
         }
         else if (change.Property == HotKeyProperty)
         {
-            PseudoClasses.Set(":hotkey", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcHotkey, change.NewValue != null);
         }
         else if (change.Property == IsCompactProperty)
         {
-            PseudoClasses.Set(":compact", change.GetNewValue<bool>());
+            PseudoClasses.Set(SharedPseudoclasses.s_pcCompact, change.GetNewValue<bool>());
         }
         else if (change.Property == CommandProperty)
         {

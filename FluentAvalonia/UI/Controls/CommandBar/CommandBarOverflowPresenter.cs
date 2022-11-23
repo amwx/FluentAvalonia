@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Styling;
 using System;
 using System.Collections;
@@ -14,6 +15,7 @@ namespace FluentAvalonia.UI.Controls;
 /// This class generally should not be used on your own and is meant for
 /// the template of a <see cref="CommandBar"/>
 /// </remarks>
+[PseudoClasses(s_pcIcons, s_pcToggle)]
 public class CommandBarOverflowPresenter : ItemsControl, IStyleable
 {
     Type IStyleable.StyleKey => typeof(CommandBarOverflowPresenter);
@@ -110,8 +112,8 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
                     _hasIcons--;
 
                 cbb.IsInOverflow = false;
-                ((IPseudoClasses)cbb.Classes).Set(s_iconClass, false);
-                ((IPseudoClasses)cbb.Classes).Set(s_toggleClass, false);
+                ((IPseudoClasses)cbb.Classes).Set(s_pcIcons, false);
+                ((IPseudoClasses)cbb.Classes).Set(s_pcToggle, false);
             }
             else if (l[i] is CommandBarToggleButton cbtb)
             {
@@ -121,14 +123,14 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
                     _hasIcons--;
 
                 cbtb.IsInOverflow = false;
-                ((IPseudoClasses)cbtb.Classes).Set(s_iconClass, false);
-                ((IPseudoClasses)cbtb.Classes).Set(s_toggleClass, false);
+                ((IPseudoClasses)cbtb.Classes).Set(s_pcIcons, false);
+                ((IPseudoClasses)cbtb.Classes).Set(s_pcToggle, false);
             }
             else if (l[i] is CommandBarElementContainer cont)
             {
                 cont.IsInOverflow = false;
-                ((IPseudoClasses)cont.Classes).Set(s_iconClass, false);
-                ((IPseudoClasses)cont.Classes).Set(s_toggleClass, false);
+                ((IPseudoClasses)cont.Classes).Set(s_pcIcons, false);
+                ((IPseudoClasses)cont.Classes).Set(s_pcToggle, false);
             }
             else if (l[i] is CommandBarSeparator sep)
             {
@@ -147,14 +149,14 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
         {
             if (items[i] is Control c && c.Classes is IPseudoClasses pc)
             {
-                pc.Set(s_iconClass, icon);
-                pc.Set(s_toggleClass, toggle);
+                pc.Set(s_pcIcons, icon);
+                pc.Set(s_pcToggle, toggle);
             }
         }
     }
 
     private int _hasIcons;
     private int _hasToggle;
-    private readonly string s_iconClass = ":icons";
-    private readonly string s_toggleClass = ":toggle";
+    private const string s_pcIcons = ":icons";
+    private const string s_pcToggle = ":toggle";
 }
