@@ -105,14 +105,14 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                     }
                     e.Handled = true;
                 }
-                               
+
                 break;
         }
         base.OnKeyUp(e);
     }
 
     /// <summary>
-    /// Shows the content dialog asynchronously. 
+    /// Shows the content dialog asynchronously.
     /// </summary>
     /// <remarks>
     /// Note that the placement parameter is not implemented and only accepts <see cref="ContentDialogPlacement.Popup"/>
@@ -177,7 +177,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
             //      items in the OverlayLayer materialize at the absolute last moment making init
             //      a very difficult task to do
-            (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();      
+            (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
         }
         else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
         {
@@ -186,8 +186,66 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 throw new InvalidOperationException();
 
             ol.Children.Add(_host);
-            (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();            
+            (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
         }
+
+        IsVisible = true;
+        ShowCore();
+        SetupDialog();
+        return await _tcs.Task;
+    }
+
+    /// <summary>
+    /// Shows the content dialog on the specified window asynchronously.
+    /// </summary>
+    /// <remarks>
+    /// Note that the placement parameter is not implemented and only accepts <see cref="ContentDialogPlacement.Popup"/>
+    /// </remarks>
+    public async Task<ContentDialogResult> ShowAsync(Window window, ContentDialogPlacement placement = ContentDialogPlacement.Popup)
+    {
+        if (placement == ContentDialogPlacement.InPlace)
+            throw new NotImplementedException("InPlace not implemented yet");
+        _tcs = new TaskCompletionSource<ContentDialogResult>();
+
+        OnOpening();
+
+        if (Parent != null)
+        {
+            _originalHost = Parent;
+            switch (_originalHost)
+            {
+                case Panel p:
+                    _originalHostIndex = p.Children.IndexOf(this);
+                    p.Children.Remove(this);
+                    break;
+                case Decorator d:
+                    d.Child = null;
+                    break;
+                case IContentControl cc:
+                    cc.Content = null;
+                    break;
+                case IContentPresenter cp:
+                    cp.Content = null;
+                    break;
+            }
+        }
+
+        _host ??= new DialogHost();
+
+        _host.Content = this;
+
+        _lastFocus = FocusManager.Instance.Current;
+
+        var ol = OverlayLayer.GetOverlayLayer(window);
+        if (ol == null)
+            throw new InvalidOperationException();
+
+        ol.Children.Add(_host);
+
+        // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
+        //      items in the OverlayLayer materialize at the absolute last moment making init
+        //      a very difficult task to do
+        (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
 
         IsVisible = true;
         ShowCore();
@@ -293,7 +351,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             _hasDeferralActive = false;
 
             if (!args.Cancel)
-            {                
+            {
                 FinalCloseDialog();
             }
         });
@@ -320,7 +378,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         bool setFocus = false;
         if (curFocus.FindAncestorOfType<ContentDialog>() == null)
         {
-            // Only set the focus if user didn't handle doing that in Opened handler, 
+            // Only set the focus if user didn't handle doing that in Opened handler,
             // since this is called after
             setFocus = true;
         }
@@ -335,7 +393,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 _primaryButton.Classes.Add(s_cAccent);
                 _secondaryButton.Classes.Remove(s_cAccent);
                 _closeButton.Classes.Remove(s_cAccent);
-                
+
                 if (setFocus)
                 {
                     FocusManager.Instance.Focus(_primaryButton);
@@ -426,7 +484,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         PseudoClasses.Set(s_pcHidden, true);
         PseudoClasses.Set(s_pcOpen, false);
-        
+
         // Let the close animation finish (now 0.167s in new WinUI update...)
         // We'll wait just a touch longer to be sure
         await Task.Delay(200);
@@ -592,7 +650,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         return (false, null);
     }
-    
+
 
     // Store the last element focused before showing the dialog, so we can
     // restore it when it closes
