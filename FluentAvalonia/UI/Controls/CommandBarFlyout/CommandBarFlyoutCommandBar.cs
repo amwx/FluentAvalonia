@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Styling;
@@ -15,6 +16,7 @@ namespace FluentAvalonia.UI.Controls;
 /// This class should be treated as internal to FluentAvalonia and not used outside of 
 /// the CommandBarFlyout implementations.
 /// </remarks>
+[TemplatePart(s_tpMoreButton, typeof(Button))]
 public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
 {
     Type IStyleable.StyleKey => typeof(CommandBarFlyoutCommandBar);
@@ -110,7 +112,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
     {
         base.OnApplyTemplate(e);
 
-        _moreButton = e.NameScope.Find<Button>("MoreButton");
+        _moreButton = e.NameScope.Find<Button>(s_tpMoreButton);
 
         PopulateAccessibleControls();
     }
@@ -340,4 +342,6 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
 
     private Button _moreButton;
     private CommandBarFlyout _owningFlyout;
+
+    private const string s_tpMoreButton = "MoreButton";
 }
