@@ -330,6 +330,11 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
         {
             theme = ResolveMacOSSystemSettings();
         }
+        else
+        {
+            // Needed for mobile/unhandled platforms
+            AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
+        }
 
         // Load the SymbolThemeFontFamily
         AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
