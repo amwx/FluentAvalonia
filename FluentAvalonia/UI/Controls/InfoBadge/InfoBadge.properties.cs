@@ -1,5 +1,7 @@
 ﻿using Avalonia;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -7,6 +9,7 @@ namespace FluentAvalonia.UI.Controls;
 /// Represents a control for indicating notifications, alerts, new content, 
 /// or to attract focus to an area within an app.
 /// </summary>
+[PseudoClasses(s_pcValue, s_pcFontIcon, SharedPseudoclasses.s_pcIcon, s_pcDot)]
 public partial class InfoBadge : TemplatedControl
 {
     /// <summary>
@@ -54,4 +57,8 @@ public partial class InfoBadge : TemplatedControl
         get => GetValue(TemplateSettingsProperty);
         internal set => SetValue(TemplateSettingsProperty, value);
     }
+
+    private const string s_pcValue = ":value";
+    private const string s_pcFontIcon = ":fonticon";
+    private const string s_pcDot = ":dot";
 }

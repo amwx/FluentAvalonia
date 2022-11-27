@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Logging;
@@ -19,6 +20,7 @@ namespace FluentAvalonia.UI.Controls;
 /// Displays <see cref="UserControl"/> instances (Pages in WinUI), supports navigation to new pages, 
 /// and maintains a navigation history to support forward and backward navigation.
 /// </summary>
+[TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
 public partial class Frame : ContentControl
 {
     public Frame()
@@ -58,7 +60,7 @@ public partial class Frame : ContentControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        _presenter = e.NameScope.Find<ContentPresenter>("ContentPresenter");
+        _presenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
     }
 
     /// <summary>
@@ -618,5 +620,7 @@ public partial class Frame : ContentControl
 
     private ContentPresenter _presenter;
     private readonly List<(Type pageSrcType, IControl page)> _cache = new List<(Type, IControl)>(10);
-    bool _isNavigating = false;
+    private bool _isNavigating = false;
+
+    private const string s_tpContentPresenter = "ContentPresenter";
 }

@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using FluentAvalonia.Core;
 using System.Windows.Input;
 
@@ -11,6 +12,11 @@ namespace FluentAvalonia.UI.Controls;
 /// or float on top of it. It supports rich content (including titles, messages, icons, and buttons) 
 /// and can be configured to be user-dismissable or persistent.
 /// </summary>
+[PseudoClasses(SharedPseudoclasses.s_pcHidden, s_pcCloseHidden)]
+[PseudoClasses(s_pcSuccess, s_pcWarning, s_pcError, s_pcInformational)]
+[PseudoClasses(SharedPseudoclasses.s_pcIcon, s_pcStandardIcon)]
+[PseudoClasses(s_pcForegroundSet)]
+[TemplatePart(s_tpCloseButton, typeof(Button))]
 public partial class InfoBar : ContentControl
 {
     /// <summary>
@@ -182,4 +188,16 @@ public partial class InfoBar : ContentControl
 
 
     private bool _isOpen;
+
+    private const string SR_InfoBarCloseButtonTooltip = "InfoBarCloseButtonTooltip";
+
+    private const string s_tpCloseButton = "CloseButton";
+
+    private const string s_pcSuccess = ":success";
+    private const string s_pcWarning = ":warning";
+    private const string s_pcError = ":error";
+    private const string s_pcInformational = ":informational";
+    private const string s_pcStandardIcon = ":standardIcon";
+    private const string s_pcCloseHidden = ":closehidden";
+    private const string s_pcForegroundSet = ":foregroundset";
 }

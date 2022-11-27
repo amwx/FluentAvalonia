@@ -3,14 +3,13 @@ using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using FluentAvalonia.Core;
 using System;
 
 namespace FluentAvalonia.UI.Controls;
 
 public partial class InfoBar : ContentControl
-{
-    private const string SR_InfoBarCloseButtonTooltip = "InfoBarCloseButtonTooltip";
-
+{    
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _appliedTemplate = false;
@@ -21,7 +20,7 @@ public partial class InfoBar : ContentControl
 
         base.OnApplyTemplate(e);
 
-        _closeButton = e.NameScope.Find<Button>("CloseButton");
+        _closeButton = e.NameScope.Find<Button>(s_tpCloseButton);
         if (_closeButton != null)
         {
             _closeButton.Click += OnCloseButtonClick;
@@ -124,12 +123,12 @@ public partial class InfoBar : ContentControl
                 if (IsOpen)
                 {
                     _isVisible = true;
-                    PseudoClasses.Set(":hidden", false);
+                    PseudoClasses.Set(SharedPseudoclasses.s_pcHidden, false);
                 }
                 else
                 {
                     _isVisible = false;
-                    PseudoClasses.Set(":hidden", true);
+                    PseudoClasses.Set(SharedPseudoclasses.s_pcHidden, true);
                 }
             }
         }
@@ -143,31 +142,31 @@ public partial class InfoBar : ContentControl
         switch (Severity)
         {
             case InfoBarSeverity.Success:
-                PseudoClasses.Set(":success", true);
-                PseudoClasses.Set(":warning", false);
-                PseudoClasses.Set(":error", false);
-                PseudoClasses.Set(":informational", false);
+                PseudoClasses.Set(s_pcSuccess, true);
+                PseudoClasses.Set(s_pcWarning, false);
+                PseudoClasses.Set(s_pcError, false);
+                PseudoClasses.Set(s_pcInformational, false);
                 break;
 
             case InfoBarSeverity.Warning:
-                PseudoClasses.Set(":success", false);
-                PseudoClasses.Set(":warning", true);
-                PseudoClasses.Set(":error", false);
-                PseudoClasses.Set(":informational", false);
+                PseudoClasses.Set(s_pcSuccess, false);
+                PseudoClasses.Set(s_pcWarning, true);
+                PseudoClasses.Set(s_pcError, false);
+                PseudoClasses.Set(s_pcInformational, false);
                 break;
 
             case InfoBarSeverity.Error:
-                PseudoClasses.Set(":success", false);
-                PseudoClasses.Set(":warning", false);
-                PseudoClasses.Set(":error", true);
-                PseudoClasses.Set(":informational", false);
+                PseudoClasses.Set(s_pcSuccess, false);
+                PseudoClasses.Set(s_pcWarning, false);
+                PseudoClasses.Set(s_pcError, true);
+                PseudoClasses.Set(s_pcInformational, false);
                 break;
 
             default: // default to informational
-                PseudoClasses.Set(":success", false);
-                PseudoClasses.Set(":warning", false);
-                PseudoClasses.Set(":error", false);
-                PseudoClasses.Set(":informational", true);
+                PseudoClasses.Set(s_pcSuccess, false);
+                PseudoClasses.Set(s_pcWarning, false);
+                PseudoClasses.Set(s_pcError, false);
+                PseudoClasses.Set(s_pcInformational, true);
                 break;
         }
     }
@@ -182,25 +181,25 @@ public partial class InfoBar : ContentControl
     {
         if (!IsIconVisible)
         {
-            PseudoClasses.Set(":icon", false);
-            PseudoClasses.Set(":standardIcon", false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, false);
+            PseudoClasses.Set(s_pcStandardIcon, false);
         }
         else
         {
             bool hasUserIcon = IconSource != null;
-            PseudoClasses.Set(":icon", hasUserIcon);
-            PseudoClasses.Set(":standardIcon", !hasUserIcon);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, hasUserIcon);
+            PseudoClasses.Set(s_pcStandardIcon, !hasUserIcon);
         }
     }
 
     private void UpdateCloseButton()
     {
-        PseudoClasses.Set(":closehidden", !IsClosable);
+        PseudoClasses.Set(s_pcCloseHidden, !IsClosable);
     }
 
     private void UpdateForeground()
     {
-        PseudoClasses.Set(":foregroundset", this.GetValue(TextElement.ForegroundProperty) != AvaloniaProperty.UnsetValue);
+        PseudoClasses.Set(s_pcForegroundSet, this.GetValue(TextElement.ForegroundProperty) != AvaloniaProperty.UnsetValue);
     }
 
     private Button _closeButton;
