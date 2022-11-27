@@ -11,6 +11,7 @@ using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -24,7 +25,7 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
     {
         base.OnApplyTemplate(e);
 
-        _expander = e.NameScope.Get<Expander>("Expander");
+        _expander = e.NameScope.Get<Expander>(s_tpExpander);
         // The Expander's template hasn't been loaded yet, so defer until later when it has
         // so we can load the ToggleButton within the template
         _expander.Loaded += ExpanderLoaded;
@@ -45,12 +46,12 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
             if (_expanderToggleButton != null)
             {
                 // Disable pointerover/pressed styles if we aren't clickable (empty or !IsClickEnabled)
-                ((IPseudoClasses)_expanderToggleButton.Classes).Set(":allowClick", newVal || ItemCount > 0);
+                ((IPseudoClasses)_expanderToggleButton.Classes).Set(SharedPseudoclasses.s_pcAllowClick, newVal || ItemCount > 0);
 
                 // When IsClickEnabled == true, we don't allow items but we may want to show an ActionIcon
                 // ControlThemes don't let is drill into sub-templates so we have to do this manually here
                 // Set a style on the ToggleButton to indicate we want to hide the expand/collapse chevron
-                ((IPseudoClasses)_expanderToggleButton.Classes).Set(":empty", newVal);
+                ((IPseudoClasses)_expanderToggleButton.Classes).Set(s_pcEmpty, newVal);
             }                
         }
         else if (change.Property == IsExpandedProperty)
@@ -136,12 +137,12 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         bool allowClick = IsClickEnabled;
 
         // Disable pointerover/pressed styles if we aren't clickable (empty or !IsClickEnabled)
-        ((IPseudoClasses)_expanderToggleButton.Classes).Set(":allowClick", IsClickEnabled || ItemCount > 0);
+        ((IPseudoClasses)_expanderToggleButton.Classes).Set(SharedPseudoclasses.s_pcAllowClick, IsClickEnabled || ItemCount > 0);
 
         // When IsClickEnabled == true, we don't allow items but we may want to show an ActionIcon
         // ControlThemes don't let is drill into sub-templates so we have to do this manually here
         // Set a style on the ToggleButton to indicate we want to hide the expand/collapse chevron
-        ((IPseudoClasses)_expanderToggleButton.Classes).Set(":empty", IsClickEnabled || ItemCount == 0);
+        ((IPseudoClasses)_expanderToggleButton.Classes).Set(s_pcEmpty, IsClickEnabled || ItemCount == 0);
     }
 
     private void ExpanderToggleButtonClick(object sender, RoutedEventArgs e)

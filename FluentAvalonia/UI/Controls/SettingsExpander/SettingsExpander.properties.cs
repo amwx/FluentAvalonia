@@ -2,11 +2,15 @@
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(SharedPseudoclasses.s_pcAllowClick, s_pcEmpty)]
+[TemplatePart(s_tpExpander, typeof(Expander))]
 public partial class SettingsExpander
 {
     /// <summary>
@@ -184,4 +188,8 @@ public partial class SettingsExpander
 
     private ICommand _command;
     private bool _isExpanded;
+
+    private const string s_tpExpander = "Expander";
+
+    private const string s_pcEmpty = ":empty";
 }

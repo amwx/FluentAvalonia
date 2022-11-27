@@ -17,8 +17,12 @@ internal class SharedPseudoclasses
     public const string s_pcOverflow = ":overflow";
     public const string s_pcHidden = ":hidden";
     public const string s_pcHeader = ":header";
+    public const string s_pcFooter = ":footer";
     public const string s_pcPressed = ":pressed";
     public const string s_pcChecked = ":checked";
+
+    // SettingsExpander specific
+    public const string s_pcAllowClick = ":allowClick";
 
     public const string s_cAccent = "accent";
 }
