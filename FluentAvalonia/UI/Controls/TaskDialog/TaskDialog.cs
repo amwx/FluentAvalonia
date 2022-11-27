@@ -84,7 +84,7 @@ public partial class TaskDialog : ContentControl
         }
         else if (change.Property == HeaderProperty)
         {
-            PseudoClasses.Set(s_pcHeader, change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcHeader, change.NewValue != null);
         }
         else if (change.Property == SubHeaderProperty)
         {
@@ -586,23 +586,5 @@ public partial class TaskDialog : ContentControl
     internal bool _hasDeferralActive = false;
 
     private IInputElement _previousFocus;
-    private bool _ignoreWindowClosingEvent;
-
-    private const string s_tpButtonsHost = "ButtonsHost";
-    private const string s_tpCommandsHost = "CommandsHost";
-    private const string s_tpProgressBar = "ProgressBar";
-    private const string s_tpMoreDetailsButton = "MoreDetailsButton";
-
-    private const string s_pcHidden = ":hidden";
-    private const string s_pcHosted = ":hosted";
-    private const string s_pcHeader = ":header";
-    private const string s_pcSubheader = ":subheader";
-    private const string s_pcFooter = ":footer";
-    private const string s_pcFooterAuto = ":footerAuto";
-    private const string s_pcExpanded = ":expanded";
-    private const string s_pcProgress = ":progress";
-    private const string s_pcProgressError = ":progressError";
-    private const string s_pcProgressSuspend = ":progressSuspend";
-
-    private const string s_cFATDCom = "FA_TaskDialogCommand";
+    private bool _ignoreWindowClosingEvent;    
 }

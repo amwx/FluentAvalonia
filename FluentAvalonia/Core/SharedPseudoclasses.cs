@@ -16,6 +16,7 @@ internal class SharedPseudoclasses
     public const string s_pcHotkey = ":hotkey";
     public const string s_pcOverflow = ":overflow";
     public const string s_pcHidden = ":hidden";
+    public const string s_pcHeader = ":header";
 
     public const string s_cAccent = "accent";
 }

@@ -11,7 +11,7 @@ using FluentAvalonia.Core;
 namespace FluentAvalonia.UI.Controls;
 
 [PseudoClasses(s_pcHosted, s_pcHidden, SharedPseudoclasses.s_pcOpen)]
-[PseudoClasses(s_pcHeader, s_pcSubheader, SharedPseudoclasses.s_pcIcon, s_pcFooter, s_pcFooterAuto, s_pcExpanded)]
+[PseudoClasses(SharedPseudoclasses.s_pcHeader, s_pcSubheader, SharedPseudoclasses.s_pcIcon, s_pcFooter, s_pcFooterAuto, s_pcExpanded)]
 [PseudoClasses(s_pcProgress, s_pcProgressError, s_pcProgressSuspend)]
 [TemplatePart(s_tpButtonsHost, typeof(ItemsPresenter))]
 [TemplatePart(s_tpCommandsHost, typeof(ItemsPresenter))]
@@ -221,4 +221,21 @@ public partial class TaskDialog
 
     private IList<TaskDialogButton> _buttons;
     private IList<TaskDialogCommand> _commands;
+
+    private const string s_tpButtonsHost = "ButtonsHost";
+    private const string s_tpCommandsHost = "CommandsHost";
+    private const string s_tpProgressBar = "ProgressBar";
+    private const string s_tpMoreDetailsButton = "MoreDetailsButton";
+
+    private const string s_pcHidden = ":hidden";
+    private const string s_pcHosted = ":hosted";
+    private const string s_pcSubheader = ":subheader";
+    private const string s_pcFooter = ":footer";
+    private const string s_pcFooterAuto = ":footerAuto";
+    private const string s_pcExpanded = ":expanded";
+    private const string s_pcProgress = ":progress";
+    private const string s_pcProgressError = ":progressError";
+    private const string s_pcProgressSuspend = ":progressSuspend";
+
+    private const string s_cFATDCom = "FA_TaskDialogCommand";
 }
