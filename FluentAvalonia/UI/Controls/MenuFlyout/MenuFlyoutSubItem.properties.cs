@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using System.Collections;
@@ -8,6 +9,7 @@ using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(s_pcSubmenuOpen)]
 public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 {
     /// <summary>
@@ -120,4 +122,6 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     bool IMenuItem.StaysOpenOnClick { get => false; set { } }
 
     private IEnumerable _items;
+
+    private const string s_pcSubmenuOpen = ":submenuopen";
 }

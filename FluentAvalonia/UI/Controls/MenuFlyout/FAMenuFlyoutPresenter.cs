@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Generators;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Platform;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -13,6 +14,7 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Displays the content of a <see cref="FAMenuFlyout"/> control.
 /// </summary>
+[PseudoClasses(s_pcIcons, s_pcToggle)]
 public class FAMenuFlyoutPresenter : MenuBase, IStyleable
 {
     public FAMenuFlyoutPresenter()
@@ -24,7 +26,7 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
     public FAMenuFlyoutPresenter(IMenuInteractionHandler handler)
         : base(handler) { }
 
-    Type IStyleable.StyleKey => typeof(Avalonia.Controls.MenuFlyoutPresenter);
+    Type IStyleable.StyleKey => typeof(MenuFlyoutPresenter);
 
     /// <summary>
     /// Closes the MenuFlyout.
@@ -194,17 +196,18 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         // v2 Change: ControlThemes means we can't use styling on the MFP to apply the 
         // Icon/Toggle adjustments and we have to put them directly on the items
 
-        const string iconClass = ":icons";
-        const string toggleClass = ":toggle";
         bool icon = _iconCount > 0;
         bool toggle = _toggleCount > 0;
         foreach (var item in ItemContainerGenerator.Containers)
         {
-            ((IPseudoClasses)item.ContainerControl.Classes).Set(iconClass, icon);
-            ((IPseudoClasses)item.ContainerControl.Classes).Set(toggleClass, toggle);
+            ((IPseudoClasses)item.ContainerControl.Classes).Set(s_pcIcons, icon);
+            ((IPseudoClasses)item.ContainerControl.Classes).Set(s_pcToggle, toggle);
         }
     }
 
     private int _iconCount = 0;
     private int _toggleCount = 0;
+
+    private const string s_pcIcons = ":icons";
+    private const string s_pcToggle = ":toggle";
 }

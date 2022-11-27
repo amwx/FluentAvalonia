@@ -93,12 +93,12 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 
     private void OnPopupOpen(object sender, EventArgs e)
     {
-        PseudoClasses.Set(":submenuopen", true);
+        PseudoClasses.Set(s_pcSubmenuOpen, true);
     }
 
     private void OnPopupClose(object sender, EventArgs e)
     {
-        PseudoClasses.Set(":submenuopen", false);
+        PseudoClasses.Set(s_pcSubmenuOpen, false);
     }
 
     bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;

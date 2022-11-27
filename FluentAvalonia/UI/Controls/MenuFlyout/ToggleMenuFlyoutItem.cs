@@ -3,6 +3,8 @@ using Avalonia.Data;
 using Avalonia.Styling;
 using Avalonia;
 using System;
+using Avalonia.Controls.Metadata;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -10,6 +12,7 @@ namespace FluentAvalonia.UI.Controls;
 /// Represents an item in a <see cref="FAMenuFlyout"/> that a user can change 
 /// between two states, checked or unchecked.
 /// </summary>
+[PseudoClasses(SharedPseudoclasses.s_pcChecked)]
 public class ToggleMenuFlyoutItem : MenuFlyoutItem, IStyleable
 {
     /// <summary>
@@ -35,7 +38,7 @@ public class ToggleMenuFlyoutItem : MenuFlyoutItem, IStyleable
         base.OnPropertyChanged(change);
         if (change.Property == IsCheckedProperty)
         {
-            PseudoClasses.Set(":checked", change.GetNewValue<bool>());
+            PseudoClasses.Set(SharedPseudoclasses.s_pcChecked, change.GetNewValue<bool>());
         }
     }
 
