@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(s_pcHidden, s_pcOpen)]
+[PseudoClasses(s_pcHidden, SharedPseudoclasses.s_pcOpen)]
 [PseudoClasses(s_pcPrimary, s_pcSecondary, s_pcClose)]
 [PseudoClasses(s_pcFullSize)]
 [TemplatePart(s_tpPrimaryButton, typeof(Button))]
@@ -271,7 +271,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     {
         IsVisible = true;
         PseudoClasses.Set(s_pcHidden, false);
-        PseudoClasses.Set(s_pcOpen, true);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, true);
 
         OnOpened();
     }
@@ -332,9 +332,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 if (!_primaryButton.IsVisible)
                     break;
 
-                _primaryButton.Classes.Add(s_cAccent);
-                _secondaryButton.Classes.Remove(s_cAccent);
-                _closeButton.Classes.Remove(s_cAccent);
+                _primaryButton.Classes.Add(SharedPseudoclasses.s_cAccent);
+                _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
+                _closeButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 
                 if (setFocus)
                 {
@@ -350,9 +350,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 if (!_secondaryButton.IsVisible)
                     break;
 
-                _secondaryButton.Classes.Add(s_cAccent);
-                _primaryButton.Classes.Remove(s_cAccent);
-                _closeButton.Classes.Remove(s_cAccent);
+                _secondaryButton.Classes.Add(SharedPseudoclasses.s_cAccent);
+                _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
+                _closeButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
                 if (setFocus)
                 {
@@ -368,9 +368,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 if (!_closeButton.IsVisible)
                     break;
 
-                _closeButton.Classes.Add(s_cAccent);
-                _primaryButton.Classes.Remove(s_cAccent);
-                _secondaryButton.Classes.Remove(s_cAccent);
+                _closeButton.Classes.Add(SharedPseudoclasses.s_cAccent);
+                _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
+                _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
                 if (setFocus)
                 {
@@ -383,9 +383,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 break;
 
             default:
-                _closeButton.Classes.Remove(s_cAccent);
-                _primaryButton.Classes.Remove(s_cAccent);
-                _secondaryButton.Classes.Remove(s_cAccent);
+                _closeButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
+                _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
+                _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
                 if (setFocus)
                 {
@@ -425,7 +425,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         Focus();
 
         PseudoClasses.Set(s_pcHidden, true);
-        PseudoClasses.Set(s_pcOpen, false);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, false);
         
         // Let the close animation finish (now 0.167s in new WinUI update...)
         // We'll wait just a touch longer to be sure
@@ -611,10 +611,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private const string s_tpSecondaryButton = "SecondaryButton";
     private const string s_tpCloseButton = "CloseButton";
 
-    internal const string s_cAccent = "accent"; // Internal for TaskDialog
-    private const string s_pcOpen = ":open";
     private const string s_pcHidden = ":hidden";
-
     private const string s_pcPrimary = ":primary";
     private const string s_pcSecondary = ":secondary";
     private const string s_pcClose = ":close";

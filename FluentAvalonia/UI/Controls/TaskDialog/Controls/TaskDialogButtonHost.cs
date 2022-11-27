@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls.Primitives;
 
@@ -37,7 +38,7 @@ public class TaskDialogButtonHost : Avalonia.Controls.Button
 
         if (change.Property == IconSourceProperty)
         {
-            PseudoClasses.Set(":icon", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
         }
     }
 }
