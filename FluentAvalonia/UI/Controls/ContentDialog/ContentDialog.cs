@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -18,12 +17,6 @@ using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(s_pcHidden, SharedPseudoclasses.s_pcOpen)]
-[PseudoClasses(s_pcPrimary, s_pcSecondary, s_pcClose)]
-[PseudoClasses(s_pcFullSize)]
-[TemplatePart(s_tpPrimaryButton, typeof(Button))]
-[TemplatePart(s_tpSecondaryButton, typeof(Button))]
-[TemplatePart(s_tpCloseButton, typeof(Button))]
 /// <summary>
 /// Presents a asyncronous dialog to the user.
 /// </summary>
@@ -31,7 +24,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 {
     public ContentDialog()
     {
-        PseudoClasses.Add(s_pcHidden);
+        PseudoClasses.Add(SharedPseudoclasses.s_pcHidden);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -270,7 +263,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private void ShowCore()
     {
         IsVisible = true;
-        PseudoClasses.Set(s_pcHidden, false);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcHidden, false);
         PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, true);
 
         OnOpened();
@@ -606,14 +599,4 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private Button _secondaryButton;
     private Button _closeButton;
     private bool _hasDeferralActive;
-
-    private const string s_tpPrimaryButton = "PrimaryButton";
-    private const string s_tpSecondaryButton = "SecondaryButton";
-    private const string s_tpCloseButton = "CloseButton";
-
-    private const string s_pcHidden = ":hidden";
-    private const string s_pcPrimary = ":primary";
-    private const string s_pcSecondary = ":secondary";
-    private const string s_pcClose = ":close";
-    private const string s_pcFullSize = ":fullsize";
 }

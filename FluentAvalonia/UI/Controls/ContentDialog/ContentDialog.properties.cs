@@ -3,9 +3,17 @@ using Avalonia;
 using FluentAvalonia.Core;
 using System;
 using System.Windows.Input;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(SharedPseudoclasses.s_pcHidden, SharedPseudoclasses.s_pcOpen)]
+[PseudoClasses(s_pcPrimary, s_pcSecondary, s_pcClose)]
+[PseudoClasses(s_pcFullSize)]
+[TemplatePart(s_tpPrimaryButton, typeof(Button))]
+[TemplatePart(s_tpSecondaryButton, typeof(Button))]
+[TemplatePart(s_tpCloseButton, typeof(Button))]
 public partial class ContentDialog
 {
     /// <summary>
@@ -353,4 +361,14 @@ public partial class ContentDialog
     /// Occurs after the close button has been tapped.
     /// </summary>
     public event TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs> CloseButtonClick;
+
+
+    private const string s_tpPrimaryButton = "PrimaryButton";
+    private const string s_tpSecondaryButton = "SecondaryButton";
+    private const string s_tpCloseButton = "CloseButton";
+
+    private const string s_pcPrimary = ":primary";
+    private const string s_pcSecondary = ":secondary";
+    private const string s_pcClose = ":close";
+    private const string s_pcFullSize = ":fullsize";
 }
