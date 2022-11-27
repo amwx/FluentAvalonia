@@ -8,7 +8,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Logging;
-using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
@@ -111,89 +110,8 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         base.OnKeyUp(e);
     }
 
-    /// <summary>
-    /// Shows the content dialog asynchronously.
-    /// </summary>
-    /// <remarks>
-    /// Note that the placement parameter is not implemented and only accepts <see cref="ContentDialogPlacement.Popup"/>
-    /// </remarks>
-    public async Task<ContentDialogResult> ShowAsync(ContentDialogPlacement placement = ContentDialogPlacement.Popup)
-    {
-        if (placement == ContentDialogPlacement.InPlace)
-            throw new NotImplementedException("InPlace not implemented yet");
-        _tcs = new TaskCompletionSource<ContentDialogResult>();
-
-        OnOpening();
-
-        if (Parent != null)
-        {
-            _originalHost = Parent;
-            if (_originalHost is Panel p)
-            {
-                _originalHostIndex = p.Children.IndexOf(this);
-                p.Children.Remove(this);
-            }
-            else if (_originalHost is Decorator d)
-            {
-                d.Child = null;
-            }
-            else if (_originalHost is IContentControl cc)
-            {
-                cc.Content = null;
-            }
-            else if (_originalHost is IContentPresenter cp)
-            {
-                cp.Content = null;
-            }
-        }
-
-        _host ??= new DialogHost();
-
-        _host.Content = this;
-
-        _lastFocus = FocusManager.Instance.Current;
-
-        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime al)
-        {
-            Window activeWindow = null;
-            foreach (var item in al.Windows)
-            {
-                if (item.IsActive)
-                {
-                    activeWindow = item;
-                    break;
-                }
-            }
-
-            //Fallback, just in case
-            activeWindow ??= al.MainWindow;
-
-            var ol = OverlayLayer.GetOverlayLayer(activeWindow);
-            if (ol == null)
-                throw new InvalidOperationException();
-
-            ol.Children.Add(_host);
-
-            // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
-            //      items in the OverlayLayer materialize at the absolute last moment making init
-            //      a very difficult task to do
-            (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
-        }
-        else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
-        {
-            var ol = OverlayLayer.GetOverlayLayer(sl.MainView);
-            if (ol == null)
-                throw new InvalidOperationException();
-
-            ol.Children.Add(_host);
-            (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
-        }
-
-        IsVisible = true;
-        ShowCore();
-        SetupDialog();
-        return await _tcs.Task;
-    }
+    public async Task<ContentDialogResult> ShowAsync() => await ShowAsyncCore(null);
+    public async Task<ContentDialogResult> ShowAsync(Window w) => await ShowAsyncCore(w);
 
     /// <summary>
     /// Shows the content dialog on the specified window asynchronously.
@@ -201,7 +119,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     /// <remarks>
     /// Note that the placement parameter is not implemented and only accepts <see cref="ContentDialogPlacement.Popup"/>
     /// </remarks>
-    public async Task<ContentDialogResult> ShowAsync(Window window, ContentDialogPlacement placement = ContentDialogPlacement.Popup)
+    private async Task<ContentDialogResult> ShowAsyncCore(Window window, ContentDialogPlacement placement = ContentDialogPlacement.Popup)
     {
         if (placement == ContentDialogPlacement.InPlace)
             throw new NotImplementedException("InPlace not implemented yet");
@@ -236,7 +154,36 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         _lastFocus = FocusManager.Instance.Current;
 
-        var ol = OverlayLayer.GetOverlayLayer(window);
+        OverlayLayer ol = null;
+
+        if (window != null)
+        {
+            ol = OverlayLayer.GetOverlayLayer(window);
+        }
+        else
+        {
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime al)
+            {
+                foreach (var item in al.Windows)
+                {
+                    if (item.IsActive)
+                    {
+                        window = item;
+                        break;
+                    }
+                }
+
+                //Fallback, just in case
+                window ??= al.MainWindow;
+
+                ol = OverlayLayer.GetOverlayLayer(window);
+            }
+            else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
+            {
+                ol = OverlayLayer.GetOverlayLayer(sl.MainView);
+            }
+        }
+
         if (ol == null)
             throw new InvalidOperationException();
 
