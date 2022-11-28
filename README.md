@@ -7,7 +7,7 @@ Bringing more of Fluent design and WinUI controls into Avalonia.
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/amwx/FluentAvalonia?color=%23483D8B)
 
 NOTE: Master branch is now focused on v2, which is Avalonia 11.0-preview Compatible.
-The current stable version is 1.4.4 (see accompanying stable branch for package)
+The current stable version is 1.4.5 (see accompanying stable branch for package)
 Stable package currently targets: Avalonia 0.10.18 & multitargets netstandard2.0;netstandard2.1;net6.0
 
 Be aware, there may be bugs/issues with the Sample App during the preview phases of v2/11.0
