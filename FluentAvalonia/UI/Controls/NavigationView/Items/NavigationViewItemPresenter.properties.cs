@@ -1,9 +1,17 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls.Primitives;
 
+[PseudoClasses(s_pcExpanded)]
+[PseudoClasses(s_pcClosedCompactTop, s_pcNotClosedCompactTop)]
+[PseudoClasses(SharedPseudoclasses.s_pcLeftNav, SharedPseudoclasses.s_pcTopNav, SharedPseudoclasses.s_pcTopOverflow)]
+[PseudoClasses(SharedPseudoclasses.s_pcChevronOpen, SharedPseudoclasses.s_pcChevronClosed, SharedPseudoclasses.s_pcChevronHidden)]
+[PseudoClasses(SharedPseudoclasses.s_pcIconLeft, SharedPseudoclasses.s_pcIconOnly, SharedPseudoclasses.s_pcContentOnly)]
+[PseudoClasses(SharedPseudoclasses.s_pcPressed)]
 public partial class NavigationViewItemPresenter
 {
     /// <summary>
@@ -60,4 +68,13 @@ public partial class NavigationViewItemPresenter
     }
 
     internal IControl SelectionIndicator => _selectionIndicator;
+
+    private const string s_tpSelectionIndicator = "SelectionIndicator";
+    private const string s_tpPresenterContentRootGrid = "PresenterContentRootGrid";
+    private const string s_tpInfoBadgePresenter = "InfoBadgePresenter";
+    private const string s_tpExpandCollapseChevron = "ExpandCollapseChevron";
+
+    private const string s_pcClosedCompactTop = ":closedcompacttop";
+    private const string s_pcNotClosedCompactTop = ":notclosedcompacttop";
+    private const string s_pcExpanded = ":expanded";
 }

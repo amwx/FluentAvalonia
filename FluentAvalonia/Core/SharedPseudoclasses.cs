@@ -28,6 +28,17 @@ internal class SharedPseudoclasses
     public const string s_pcNoBorder = ":noborder";
     public const string s_pcBorderLeft = ":borderLeft";
     public const string s_pcBorderRight = ":borderRight";
-    
+
+    // NavigationViewItem / NavigationViewItemPresenter
+    public const string s_pcIconLeft = ":iconleft";
+    public const string s_pcIconOnly = ":icononly";
+    public const string s_pcContentOnly = ":contentonly";
+    public const string s_pcLeftNav = ":leftnav";
+    public const string s_pcTopNav = ":topnav";
+    public const string s_pcTopOverflow = ":topoverflow";
+    public const string s_pcChevronOpen = ":chevronopen";
+    public const string s_pcChevronClosed = ":chevronclosed";
+    public const string s_pcChevronHidden = ":chevronhidden";
+
     public const string s_cAccent = "accent";
 }

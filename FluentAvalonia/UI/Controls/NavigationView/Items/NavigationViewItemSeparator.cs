@@ -10,7 +10,8 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a line that separates menu items in a NavigationView.
 /// </summary>
-[PseudoClasses(":horizontal", ":horizontalcompact", ":vertical")]
+[PseudoClasses(s_pcHorizontal, s_pcHorizontalCompact, s_pcVertical)]
+[TemplatePart(s_tpRootGrid, typeof(Panel))]
 public class NavigationViewItemSeparator : NavigationViewItemBase
 {
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -21,7 +22,7 @@ public class NavigationViewItemSeparator : NavigationViewItemBase
 
         base.OnApplyTemplate(e);
 
-        _rootGrid = e.NameScope.Find<Panel>("RootGrid");
+        _rootGrid = e.NameScope.Find<Panel>(s_tpRootGrid);
 
         var splitView = GetSplitView;
         if (splitView != null)
@@ -61,9 +62,9 @@ public class NavigationViewItemSeparator : NavigationViewItemBase
         //States: :horizontalcompact, :horizontal, :vertical
         bool isTop = Position == NavigationViewRepeaterPosition.TopFooter || Position == NavigationViewRepeaterPosition.TopPrimary;
 
-        PseudoClasses.Set(":horizontal", !isTop && !_isClosedCompact);
-        PseudoClasses.Set(":horizontalcompact", !isTop && _isClosedCompact);
-        PseudoClasses.Set(":vertical", isTop);
+        PseudoClasses.Set(s_pcHorizontal, !isTop && !_isClosedCompact);
+        PseudoClasses.Set(s_pcHorizontalCompact, !isTop && _isClosedCompact);
+        PseudoClasses.Set(s_pcVertical, isTop);
     }
 
     private void UpdateItemIndentation()
@@ -93,4 +94,10 @@ public class NavigationViewItemSeparator : NavigationViewItemBase
     private bool _appliedTemplate;
     private bool _isClosedCompact;
     private Panel _rootGrid;
+
+    private const string s_tpRootGrid = "RootGrid";
+
+    private const string s_pcHorizontal = ":horizontal";
+    private const string s_pcHorizontalCompact = ":horizontalcompact";
+    private const string s_pcVertical = ":vertical";
 }
