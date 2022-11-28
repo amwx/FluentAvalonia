@@ -417,7 +417,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         // adorner to hide, then continue forward.
         Focus();
 
-        PseudoClasses.Set(s_pcHidden, true);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcHidden, true);
         PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, false);
         
         // Let the close animation finish (now 0.167s in new WinUI update...)

@@ -278,9 +278,9 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
             if (ContainerFromIndex(i) is TabViewItem tvi)
             {
-                ((IPseudoClasses)tvi.Classes).Set(s_pcNoBorder, state == 0);
-                ((IPseudoClasses)tvi.Classes).Set(s_pcBorderLeft, state == 1);
-                ((IPseudoClasses)tvi.Classes).Set(s_pcBorderRight, state == 2);
+                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcNoBorder, state == 0);
+                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderLeft, state == 1);
+                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderRight, state == 2);
             }
         }
     }
@@ -295,13 +295,13 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
         // Update border lines in the inner TabViewListView
         if (_listView != null)
         {
-            (_listView.Classes as IPseudoClasses).Set(s_pcNoBorder, _isDragging);
+            (_listView.Classes as IPseudoClasses).Set(SharedPseudoclasses.s_pcNoBorder, _isDragging);
         }
 
         // Update border lines in the ScrollViewer
         if (_scrollViewer != null)
         {
-            (_scrollViewer.Classes as IPseudoClasses).Set(s_pcNoBorder, _isDragging);
+            (_scrollViewer.Classes as IPseudoClasses).Set(SharedPseudoclasses.s_pcNoBorder, _isDragging);
         }
     }
 
