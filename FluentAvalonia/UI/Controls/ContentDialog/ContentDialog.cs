@@ -109,7 +109,13 @@ namespace FluentAvalonia.UI.Controls
 			SetupDialog();
 		}
 
-		public async Task<ContentDialogResult> ShowAsync(ContentDialogPlacement placement = ContentDialogPlacement.Popup)
+        public Task<ContentDialogResult> ShowAsync(ContentDialogPlacement placement = ContentDialogPlacement.Popup) =>
+            ShowAsyncCore(null, placement);
+
+        public Task<ContentDialogResult> ShowAsync(Window window, ContentDialogPlacement placement = ContentDialogPlacement.Popup) =>
+            ShowAsyncCore(window, placement);
+
+		private async Task<ContentDialogResult> ShowAsyncCore(Window window, ContentDialogPlacement placement)
 		{
 			if (placement == ContentDialogPlacement.InPlace)
 				throw new NotImplementedException("InPlace not implemented yet");
@@ -148,38 +154,44 @@ namespace FluentAvalonia.UI.Controls
 
 			_lastFocus = FocusManager.Instance.Current;
 
-			if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime al)
-			{
-				Window activeWindow = null;
-				foreach (var item in al.Windows)
-				{
-					if (item.IsActive)
-					{
-						activeWindow = item;
-						break;
-					}
-				}
+            OverlayLayer ol = null;
 
-				//Fallback, just in case
-				if (activeWindow == null)
-					activeWindow = al.MainWindow;
+            if (window != null)
+            {
+                ol = OverlayLayer.GetOverlayLayer(window);
+            }
+            else
+            {
+                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime al)
+                {
+                    Window activeWindow = null;
+                    foreach (var item in al.Windows)
+                    {
+                        if (item.IsActive)
+                        {
+                            activeWindow = item;
+                            break;
+                        }
+                    }
 
-				var ol = OverlayLayer.GetOverlayLayer(activeWindow);
-				if (ol == null)
-					throw new InvalidOperationException();
-				
-				ol.Children.Add(_host);
-			}
-			else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
-			{
-				var ol = OverlayLayer.GetOverlayLayer(sl.MainView);
-				if (ol == null)
-					throw new InvalidOperationException();
+                    //Fallback, just in case
+                    if (activeWindow == null)
+                        activeWindow = al.MainWindow;
 
-				ol.Children.Add(_host);
-			}
+                    ol = OverlayLayer.GetOverlayLayer(activeWindow);
+                }
+                else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
+                {
+                    ol = OverlayLayer.GetOverlayLayer(sl.MainView);                    
+                }
+            }
 
-			IsVisible = true;
+            if (ol == null)
+                throw new InvalidOperationException();
+
+            ol.Children.Add(_host);
+
+            IsVisible = true;
 			ShowCore();
 			SetupDialog();
 			return await tcs.Task;
