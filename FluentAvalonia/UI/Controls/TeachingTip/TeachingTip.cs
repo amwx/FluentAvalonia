@@ -6,7 +6,6 @@ using Avalonia.Animation.Easings;
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
@@ -21,15 +20,6 @@ using FluentAvalonia.UI.Controls.Internal;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(":lightDismiss")]
-[PseudoClasses(":actionButton", ":closeButton")]
-[PseudoClasses(":content", ":icon")]
-[PseudoClasses(":footerClose")]
-[PseudoClasses(":heroContentTop", ":heroContentBottom")]
-[PseudoClasses(s_pcTop, s_pcBottom, s_pcLeft, s_pcRight, s_pcCenter)]
-[PseudoClasses(s_pcTopRight, s_pcTopLeft, s_pcBottomLeft, s_pcBottomRight)]
-[PseudoClasses(s_pcLeftTop, s_pcLeftBottom, s_pcRightTop, s_pcRightBottom)]
-[PseudoClasses(":showTitle", ":showSubTitle")]
 public partial class TeachingTip : ContentControl
 {
     public TeachingTip()
@@ -68,20 +58,20 @@ public partial class TeachingTip : ContentControl
 
         // All of these components are required, so we use Get instead of Find to throw
         // if not found and avoid null checks below
-        _container = e.NameScope.Get<Border>("Container");
+        _container = e.NameScope.Get<Border>(s_tpContainer);
         _rootElement = (Control)_container.Child;
-        _tailOcclusionGrid = e.NameScope.Get<Grid>("TailOcclusionGrid");
-        _contentRootGrid = e.NameScope.Get<Grid>("ContentRootGrid");
-        _nonHeroContentRootGrid = e.NameScope.Get<Grid>("NonHeroContentRootGrid");
-        _heroContentBorder = e.NameScope.Get<Border>("HeroContentBorder");
-        _actionButton = e.NameScope.Get<Button>("ActionButton");
-        _alternateCloseButton = e.NameScope.Get<Button>("AlternateCloseButton");
-        _closeButton = e.NameScope.Get<Button>("CloseButton");
+        _tailOcclusionGrid = e.NameScope.Get<Grid>(s_tpTailOcclusionGrid);
+        _contentRootGrid = e.NameScope.Get<Grid>(s_tpContentRootGrid);
+        _nonHeroContentRootGrid = e.NameScope.Get<Grid>(s_tpNonHeroContentRootGrid);
+        _heroContentBorder = e.NameScope.Get<Border>(s_tpHeroContentBorder);
+        _actionButton = e.NameScope.Get<Button>(s_tpActionButton);
+        _alternateCloseButton = e.NameScope.Get<Button>(s_tpAlternateCloseButton);
+        _closeButton = e.NameScope.Get<Button>(s_tpCloseButton);
         // This isn't used in Fluentv2
         // _tailEdgeBorder = e.NameScope.Get<Grid>("TailEdgeBorder");
-        _tailPolygon = e.NameScope.Get<Path>("TailPolygon");
-        ToggleVisibilityForEmptyContent(s_TitleTextVisibleStateName, Title);
-        ToggleVisibilityForEmptyContent(s_SubTitleTextVisibleStateName, Subtitle);
+        _tailPolygon = e.NameScope.Get<Path>(s_tpTailPolygon);
+        ToggleVisibilityForEmptyContent(s_pcShowTitle, Title);
+        ToggleVisibilityForEmptyContent(s_pcShowSubTitle, Subtitle);
 
         // We rip out the bulk of the template content and reparent it into a Popup. This allows declaring
         // the TeachingTip in Xaml without worrying about its parent and making sure it returns back in the
@@ -172,11 +162,11 @@ public partial class TeachingTip : ContentControl
         else if (change.Property == TitleProperty)
         {
             SetPopupAutomationProperties();
-            ToggleVisibilityForEmptyContent(s_TitleTextVisibleStateName, change.GetNewValue<string>());
+            ToggleVisibilityForEmptyContent(s_pcShowTitle, change.GetNewValue<string>());
         }
         else if (change.Property == SubtitleProperty)
         {
-            ToggleVisibilityForEmptyContent(s_TitleTextVisibleStateName, change.GetNewValue<string>());
+            ToggleVisibilityForEmptyContent(s_pcShowSubTitle, change.GetNewValue<string>());
         }
         else if (change.Property == ActionButtonContentProperty)
         {
@@ -190,7 +180,7 @@ public partial class TeachingTip : ContentControl
         }
         else if (change.Property == ContentProperty)
         {
-            PseudoClasses.Set(":content", change.NewValue != null);
+            PseudoClasses.Set(s_pcContent, change.NewValue != null);
         }
     }
 
@@ -962,11 +952,11 @@ public partial class TeachingTip : ContentControl
         var closeContent = CloseButtonContent;
         var isLightDismiss = IsLightDismissEnabled;
 
-        PseudoClasses.Set(":actionButton", actionContent != null);
-        PseudoClasses.Set(":closeButton", closeContent != null);
+        PseudoClasses.Set(s_pcActionButton, actionContent != null);
+        PseudoClasses.Set(s_pcCloseButton, closeContent != null);
 
         // HeaderCloseButton is the default state
-        PseudoClasses.Set(":footerClose", isLightDismiss || closeContent != null);
+        PseudoClasses.Set(s_pcFooterClose, isLightDismiss || closeContent != null);
     }
 
     private void UpdateDynamicHeroContentPlacementToTop()
@@ -979,8 +969,8 @@ public partial class TeachingTip : ContentControl
 
     private void UpdateDynamicHeroContentPlacementToTopImpl()
     {
-        PseudoClasses.Set(":heroContentTop", true);
-        PseudoClasses.Set(":heroContentBottom", false);
+        PseudoClasses.Set(s_pcHeroContentTop, true);
+        PseudoClasses.Set(s_pcHeroContentBottom, false);
 
         if (_currentHeroContentEffectivePlacementMode != TeachingTipHeroContentPlacementMode.Top)
         {
@@ -998,8 +988,8 @@ public partial class TeachingTip : ContentControl
 
     private void UpdateDynamicHeroContentPlacementToBottomImpl()
     {
-        PseudoClasses.Set(":heroContentTop", false);
-        PseudoClasses.Set(":heroContentBottom", true);
+        PseudoClasses.Set(s_pcHeroContentTop, false);
+        PseudoClasses.Set(s_pcHeroContentBottom, true);
 
         if (_currentHeroContentEffectivePlacementMode != TeachingTipHeroContentPlacementMode.Bottom)
         {
@@ -1204,7 +1194,7 @@ public partial class TeachingTip : ContentControl
             ts.IconElement = null;
         }
 
-        PseudoClasses.Set(":icon", ico != null);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, ico != null);
     }
 
     private void OnPlacementMarginChanged()
@@ -1218,7 +1208,7 @@ public partial class TeachingTip : ContentControl
     private void OnIsLightDismissEnabledChanged()
     {
         bool ld = IsLightDismissEnabled;
-        PseudoClasses.Set(":lightDismiss", ld);
+        PseudoClasses.Set(s_pcLightDismiss, ld);
 
         if (ld)
         {
@@ -2480,25 +2470,14 @@ public partial class TeachingTip : ContentControl
     //Ideally this would be computed from layout but it is difficult to do.
     private static readonly float s_tailOcclusionAmount = 2;
 
-    private static readonly string s_TitleTextVisibleStateName = ":showTitle";
-    private static readonly string s_SubTitleTextVisibleStateName = ":showSubtitle";
+    // These will just use the s_pc[] naming, but preserve these for reference from upstream
+    // private static readonly string s_TitleTextVisibleStateName = ":showTitle";
+    // private static readonly string s_SubTitleTextVisibleStateName = ":showSubtitle";
 
     private static readonly string SR_TeachingTipAlternateCloseButtonName = "TeachingTipAlternateCloseButtonName";
     private static readonly string SR_TeachingTipAlternateCloseButtonTooltip = "TeachingTipAlternateCloseButtonTooltip";
 
-    private const string s_pcTop = ":top";
-    private const string s_pcLeft = ":left";
-    private const string s_pcRight = ":right";
-    private const string s_pcBottom = ":bottom";
-    private const string s_pcTopLeft = ":topLeft";
-    private const string s_pcTopRight = ":topRight";
-    private const string s_pcBottomLeft = ":bottomLeft";
-    private const string s_pcBottomRight = ":bottomRight";
-    private const string s_pcLeftTop = ":leftTop";
-    private const string s_pcRightTop = ":rightTop";
-    private const string s_pcLeftBottom = ":leftBottom";
-    private const string s_pcRightBottom = ":rightBottom";
-    private const string s_pcCenter = ":center";
+    
 
     private class ScopedBatchHelper
     {

@@ -5,6 +5,8 @@ using Avalonia.Controls;
 using FluentAvalonia.Core;
 using Avalonia.Styling;
 using FluentAvalonia.Core.Attributes;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Shapes;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -13,6 +15,24 @@ namespace FluentAvalonia.UI.Controls;
 /// It supports rich content (including titles, subtitles, icons, images, and text) and can be 
 /// configured for either explicit or light-dismiss.
 /// </summary>
+[PseudoClasses(s_pcLightDismiss)]
+[PseudoClasses(s_pcActionButton, s_pcCloseButton)]
+[PseudoClasses(s_pcContent, SharedPseudoclasses.s_pcIcon)]
+[PseudoClasses(s_pcFooterClose)]
+[PseudoClasses(s_pcHeroContentTop, s_pcHeroContentBottom)]
+[PseudoClasses(s_pcTop, s_pcBottom, s_pcLeft, s_pcRight, s_pcCenter)]
+[PseudoClasses(s_pcTopRight, s_pcTopLeft, s_pcBottomLeft, s_pcBottomRight)]
+[PseudoClasses(s_pcLeftTop, s_pcLeftBottom, s_pcRightTop, s_pcRightBottom)]
+[PseudoClasses(s_pcShowTitle, s_pcShowSubTitle)]
+[TemplatePart(s_tpContainer, typeof(Border))]
+[TemplatePart(s_tpTailOcclusionGrid, typeof(Grid))]
+[TemplatePart(s_tpContentRootGrid, typeof(Grid))]
+[TemplatePart(s_tpNonHeroContentRootGrid, typeof(Grid))]
+[TemplatePart(s_tpHeroContentBorder, typeof(Border))]
+[TemplatePart(s_tpActionButton, typeof(Button))]
+[TemplatePart(s_tpAlternateCloseButton, typeof(Button))]
+[TemplatePart(s_tpCloseButton, typeof(Button))]
+[TemplatePart(s_tpTailPolygon, typeof(Path))]
 public partial class TeachingTip : ContentControl
 {
     /// <summary>
@@ -361,4 +381,38 @@ public partial class TeachingTip : ContentControl
     public event TypedEventHandler<TeachingTip, TeachingTipClosedEventArgs> Closed;
 
     private bool _isOpen;
+
+    private const string s_tpContainer = "Container";
+    private const string s_tpTailOcclusionGrid = "TailOcclusionGrid";
+    private const string s_tpContentRootGrid = "ContentRootGrid";
+    private const string s_tpNonHeroContentRootGrid = "NonHeroContentRootGrid";
+    private const string s_tpHeroContentBorder = "HeroContentBorder";
+    private const string s_tpActionButton = "ActionButton";
+    private const string s_tpAlternateCloseButton = "AlternateCloseButton";
+    private const string s_tpCloseButton = "CloseButton";
+    private const string s_tpTailPolygon = "TailPolygon";
+
+    private const string s_pcContent = ":content";
+    private const string s_pcLightDismiss = ":lightDismiss";
+    private const string s_pcActionButton = ":actionButton";
+    private const string s_pcCloseButton = ":closeButton";
+    private const string s_pcFooterClose = ":footerClose";
+    private const string s_pcHeroContentTop = ":heroContentTop";
+    private const string s_pcHeroContentBottom = ":heroContentBottom";
+    private const string s_pcShowTitle = ":showTitle";
+    private const string s_pcShowSubTitle = ":showSubTitle";
+
+    private const string s_pcTop = ":top";
+    private const string s_pcLeft = ":left";
+    private const string s_pcRight = ":right";
+    private const string s_pcBottom = ":bottom";
+    private const string s_pcTopLeft = ":topLeft";
+    private const string s_pcTopRight = ":topRight";
+    private const string s_pcBottomLeft = ":bottomLeft";
+    private const string s_pcBottomRight = ":bottomRight";
+    private const string s_pcLeftTop = ":leftTop";
+    private const string s_pcRightTop = ":rightTop";
+    private const string s_pcLeftBottom = ":leftBottom";
+    private const string s_pcRightBottom = ":rightBottom";
+    private const string s_pcCenter = ":center";
 }
