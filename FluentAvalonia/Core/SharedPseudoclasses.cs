@@ -24,5 +24,10 @@ internal class SharedPseudoclasses
     // SettingsExpander specific
     public const string s_pcAllowClick = ":allowClick";
 
+    // TabViewSpecific
+    public const string s_pcNoBorder = ":noborder";
+    public const string s_pcBorderLeft = ":borderLeft";
+    public const string s_pcBorderRight = ":borderRight";
+    
     public const string s_cAccent = "accent";
 }

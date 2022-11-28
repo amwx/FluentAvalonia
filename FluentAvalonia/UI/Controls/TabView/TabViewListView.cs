@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Generators;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
@@ -14,10 +14,17 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using FluentAvalonia.Interop;
 
 namespace FluentAvalonia.UI.Controls.Primitives;
 
+/// <summary>
+/// Represents the ListView used in the TabStrip of a <see cref="TabView"/>
+/// </summary>
+/// <remarks>
+/// This control should not be used outside of a TabView
+/// </remarks>
+[PseudoClasses(s_pcReorder)]
+[TemplatePart(s_tpScrollViewer, typeof(ScrollViewer))]
 public class TabViewListView : ListBox
 {
     public TabViewListView()
@@ -90,7 +97,7 @@ public class TabViewListView : ListBox
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        Scroller = e.NameScope.Find<ScrollViewer>("ScrollViewer");
+        Scroller = e.NameScope.Find<ScrollViewer>(s_tpScrollViewer);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -341,7 +348,7 @@ public class TabViewListView : ListBox
             return;
         }
 
-        PseudoClasses.Set(":reorder", true);
+        PseudoClasses.Set(s_pcReorder, true);
         // This triggers the ItemsPanel to enter reorder state which will insert a blank space
         // where the current item in measured
         ItemsPanelRoot.EnterReorder(_dragIndex);
@@ -424,7 +431,7 @@ public class TabViewListView : ListBox
 
     private void EndReorder()
     {
-        PseudoClasses.Set(":reorder", false);
+        PseudoClasses.Set(s_pcReorder, false);
         if (_dragReorderPopup != null && _dragReorderPopup.IsOpen)
         {
             _dragReorderPopup.IsOpen = false;
@@ -725,6 +732,10 @@ public class TabViewListView : ListBox
     private DispatcherTimer _scrollTimer;
     private int _scrollDirection;
     private Rect _noAutoScrollRect;
+
+    private const string s_tpScrollViewer = "ScrollViewer";
+
+    private const string s_pcReorder = ":reorder";
 
     private enum AutoScrollAction
     {

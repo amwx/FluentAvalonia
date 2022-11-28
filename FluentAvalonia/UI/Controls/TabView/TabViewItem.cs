@@ -6,7 +6,6 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
-using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Diagnostics;
@@ -15,10 +14,10 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(":icon", ":compact", ":closecollapsed", ":borderleft", ":borderright", ":noborder", ":foreground")]
 public partial class TabViewItem : ListBoxItem
 {
     public TabViewItem()
@@ -41,7 +40,7 @@ public partial class TabViewItem : ListBoxItem
 
             if (hasButton)
             {
-                PseudoClasses.Set(":pressed", false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
             }
         }, RoutingStrategies.Tunnel);
     }
@@ -104,13 +103,13 @@ public partial class TabViewItem : ListBoxItem
     {
         base.OnApplyTemplate(e);
 
-        TabSeparator = e.NameScope.Find<IVisual>("TabSeparator");
+        TabSeparator = e.NameScope.Find<IVisual>(s_tpTabSeparator);
 
-        _headerContentPresenter = e.NameScope.Find<ContentPresenter>("ContentPresenter");
+        _headerContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
 
         var tabView = this.FindAncestorOfType<TabView>();
 
-        _closeButton = e.NameScope.Find<Button>("CloseButton");
+        _closeButton = e.NameScope.Find<Button>(s_tpCloseButton);
         if (_closeButton != null)
         {
             // Skip Automation
@@ -308,7 +307,7 @@ public partial class TabViewItem : ListBoxItem
         bool isForegroundSet = this.GetDiagnostic(ForegroundProperty).Priority != Avalonia.Data.BindingPriority.Unset;
         bool set = isForegroundSet && !IsSelected && !_isPointerOver;
 
-        PseudoClasses.Set(":foreground", set);
+        PseudoClasses.Set(s_pcForeground, set);
 
         // We only need to set the foreground state when the TabViewItem is in rest state and not selected.
         // if (!IsSelected && !_isPointerOver)
@@ -383,7 +382,7 @@ public partial class TabViewItem : ListBoxItem
             }
         }
 
-        PseudoClasses.Set(":closecollapsed", isCollapsed);
+        PseudoClasses.Set(s_pcCloseCollapsed, isCollapsed);
     }
 
     private void UpdateWidthModeVisualState()
@@ -394,7 +393,7 @@ public partial class TabViewItem : ListBoxItem
         // => :compact
 
         // Handling compact/non compact width mode
-        PseudoClasses.Set(":compact", !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
     }
 
     private void RequestClose()
@@ -489,12 +488,12 @@ public partial class TabViewItem : ListBoxItem
         if (IconSource != null)
         {
             TabViewTemplateSettings.IconElement = IconHelpers.CreateFromUnknown(IconSource);
-            PseudoClasses.Set(":icon", true);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, true);
         }
         else
         {
             TabViewTemplateSettings.IconElement = null;
-            PseudoClasses.Set(":icon", false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, false);
         }
     }
 
@@ -530,6 +529,6 @@ public partial class TabViewItem : ListBoxItem
 
     private WeakReference<TabView> _parentTabView;
 
-    const string c_overlayCornerRadiusKey = "OverlayCornerRadius";
-    const int c_targetRectWidthIncrement = 2;
+    private const string c_overlayCornerRadiusKey = "OverlayCornerRadius";
+    private const int c_targetRectWidthIncrement = 2;
 }

@@ -4,6 +4,12 @@ using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Special panel for a <see cref="TabViewListView"/> that supports reorder/drag visual feedback
+/// </summary>
+/// <remarks>
+/// This panel should not be used outside of the TabViewListView
+/// </remarks>
 public class TabViewStackPanel : Panel
 {
     protected override Size MeasureOverride(Size availableSize)
