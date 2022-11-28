@@ -75,7 +75,7 @@ public partial class NavigationView : HeaderedContentControl
 
             base.OnApplyTemplate(e);
 
-            _paneToggleButton = e.NameScope.Get<Button>("TogglePaneButton");
+            _paneToggleButton = e.NameScope.Get<Button>(s_tpTogglePaneButton);
             if (_paneToggleButton != null)
             {
                 _paneToggleButton.Click += OnPaneToggleButtonClick;
@@ -85,15 +85,15 @@ public partial class NavigationView : HeaderedContentControl
                 //KeyboardAccelerator Win+Back
             }
 
-            _leftNavPaneHeaderContentBorder = e.NameScope.Get<ContentControl>("PaneHeaderContentBorder");
-            _leftNavPaneCustomContentBorder = e.NameScope.Get<ContentControl>("PaneCustomContentBorder");
-            _leftNavFooterContentBorder = e.NameScope.Get<ContentControl>("FooterContentBorder");
-            _paneHeaderOnTopPane = e.NameScope.Get<ContentControl>("PaneHeaderOnTopPane");
-            _paneTitleOnTopPane = e.NameScope.Get<ContentControl>("PaneTitleOnTopPane");
-            _paneCustomContentOnTopPane = e.NameScope.Get<ContentControl>("PaneCustomContentOnTopPane");
-            _paneFooterOnTopPane = e.NameScope.Get<ContentControl>("PaneFooterOnTopPane");
+            _leftNavPaneHeaderContentBorder = e.NameScope.Get<ContentControl>(s_tpPaneHeaderContentBorder);
+            _leftNavPaneCustomContentBorder = e.NameScope.Get<ContentControl>(s_tpPaneCustomContentBorder);
+            _leftNavFooterContentBorder = e.NameScope.Get<ContentControl>(s_tpFooterContentBorder);
+            _paneHeaderOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneHeaderOnTopPane);
+            _paneTitleOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneTitleOnTopPane);
+            _paneCustomContentOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneCustomContentOnTopPane);
+            _paneFooterOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneFooterOnTopPane);
 
-            _splitView = e.NameScope.Get<SplitView>("RootSplitView");
+            _splitView = e.NameScope.Get<SplitView>(s_tpRootSplitView);
             if (_splitView != null)
             {
                 _splitViewRevokers = new CompositeDisposable(
@@ -108,10 +108,10 @@ public partial class NavigationView : HeaderedContentControl
                 UpdateIsClosedCompact();
             }
 
-            _topNavGrid = e.NameScope.Get<Grid>("TopNavGrid");
+            _topNavGrid = e.NameScope.Get<Grid>(s_tpTopNavGrid);
 
             // (WinUI) Change code to NOT do this if we're in top nav mode, to prevent it from being realized:
-            _leftNavRepeater = e.NameScope.Get<ItemsRepeater>("MenuItemsHost");
+            _leftNavRepeater = e.NameScope.Get<ItemsRepeater>(s_tpMenuItemsHost);
             if (_leftNavRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -127,7 +127,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             // (WinUI) Change code to NOT do this if we're in left nav mode, to prevent it from being realized:
-            _topNavRepeater = e.NameScope.Get<ItemsRepeater>("TopNavMenuItemsHost");
+            _topNavRepeater = e.NameScope.Get<ItemsRepeater>(s_tpTopNavMenuItemsHost);
             if (_topNavRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -143,7 +143,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             //TODO: This may not be found b/c its in the button flyout
-            _topNavRepeaterOverflowView = e.NameScope.Get<ItemsRepeater>("TopNavMenuItemsOverflowHost");
+            _topNavRepeaterOverflowView = e.NameScope.Get<ItemsRepeater>(s_tpTopNavMenuItemsOverflowHost);
             if (_topNavRepeaterOverflowView != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -155,7 +155,7 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavRepeater.ItemTemplate = _itemsFactory;
             }
 
-            _topNavOverflowButton = e.NameScope.Get<Button>("TopNavOverflowButton");
+            _topNavOverflowButton = e.NameScope.Get<Button>(s_tpTopNavOverflowButton);
             if (_topNavOverflowButton != null)
             {
                 // Newest style doesn't have content, only an icon, so we'll skip setting that here like WinUI
@@ -174,7 +174,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             // Change code to NOT do this if we're in top nav mode, to prevent it from being realized:
-            _leftNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>("FooterMenuItemsHost");
+            _leftNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>(s_tpFooterMenuItemsHost);
             if (_leftNavFooterMenuRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -190,7 +190,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             // Change code to NOT do this if we're in left nav mode, to prevent it from being realized:
-            _topNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>("TopFooterMenuItemsHost");
+            _topNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>(s_tpTopFooterMenuItemsHost);
             if (_topNavFooterMenuRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -205,15 +205,15 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavFooterMenuRepeater.ItemTemplate = _itemsFactory;
             }
 
-            _topNavContentOverlayAreaGrid = e.NameScope.Get<Border>("TopNavContentOverlayAreaGrid");
-            _leftNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>("PaneAutoSuggestBoxPresenter");
-            _topNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>("TopPaneAutoSuggestBoxPresenter");
+            _topNavContentOverlayAreaGrid = e.NameScope.Get<Border>(s_tpTopNavContentOverlayAreaGrid);
+            _leftNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>(s_tpPaneAutoSuggestBoxPresenter);
+            _topNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>(s_tpTopPaneAutoSuggestBoxPresenter);
 
-            _paneContentGrid = e.NameScope.Get<Grid>("PaneContentGrid");
+            _paneContentGrid = e.NameScope.Get<Grid>(s_tpPaneContentGrid);
 
-            _contentLeftPadding = e.NameScope.Get<Rectangle>("ContentLeftPadding");
+            _contentLeftPadding = e.NameScope.Get<Rectangle>(s_tpContentLeftPadding);
 
-            var placeholderGrid = e.NameScope.Get<Grid>("PlaceholderGrid");
+            var placeholderGrid = e.NameScope.Get<Grid>(s_tpPlaceholderGrid);
             if (placeholderGrid != null)
             {
                 _paneHeaderCloseButtonColumn = placeholderGrid.ColumnDefinitions[0];
@@ -221,16 +221,16 @@ public partial class NavigationView : HeaderedContentControl
                 _paneHeaderContentBorderRow = placeholderGrid.RowDefinitions[0];
             }
 
-            _paneTitleFrameworkElement = e.NameScope.Get<IControl>("PaneTitleTextBlock");
-            _paneTitlePresenter = e.NameScope.Get<ContentControl>("PaneTitlePresenter");
+            _paneTitleFrameworkElement = e.NameScope.Get<IControl>(s_tpPaneTitleTextBlock);
+            _paneTitlePresenter = e.NameScope.Get<ContentControl>(s_tpPaneTitlePresenter);
 
-            _paneTitleHolderFrameworkElement = e.NameScope.Get<Control>("PaneTitleHolder");
+            _paneTitleHolderFrameworkElement = e.NameScope.Get<Control>(s_tpPaneTitleHolder);
             if (_paneTitleHolderFrameworkElement != null)
             {
                 _paneTitleHolderRevoker = _paneTitleHolderFrameworkElement.GetObservable(BoundsProperty).Subscribe(OnPaneTitleHolderSizeChanged);
             }
 
-            _paneSearchButton = e.NameScope.Get<Button>("PaneAutoSuggestButton");
+            _paneSearchButton = e.NameScope.Get<Button>(s_tpPaneAutoSuggestButton);
             if (_paneSearchButton != null)
             {
                 _paneSearchButton.Click += OnPaneSearchButtonClick;
@@ -240,7 +240,7 @@ public partial class NavigationView : HeaderedContentControl
                 ToolTip.SetTip(_paneSearchButton, searchButtonName);
             }
 
-            _backButton = e.NameScope.Get<Button>("NavigationViewBackButton");
+            _backButton = e.NameScope.Get<Button>(s_tpNavigationViewBackButton);
             if (_backButton != null)
             {
                 _backButton.Click += OnBackButtonClicked;
@@ -252,7 +252,7 @@ public partial class NavigationView : HeaderedContentControl
 
             //titlebar
 
-            _closeButton = e.NameScope.Get<Button>("NavigationViewCloseButton");
+            _closeButton = e.NameScope.Get<Button>(s_tpNavigationViewCloseButton);
             if (_closeButton != null)
             {
                 _closeButton.Click += OnPaneToggleButtonClick;
@@ -265,10 +265,10 @@ public partial class NavigationView : HeaderedContentControl
                 _itemsContainerRow = _paneContentGrid.RowDefinitions[_paneContentGrid.RowDefinitions.Count - 1];
             }
 
-            _menuItemsScrollViewer = e.NameScope.Get<ScrollViewer>("MenuItemsScrollViewer");
-            _footerItemsScrollViewer = e.NameScope.Get<ScrollViewer>("FooterItemsScrollViewer");
+            _menuItemsScrollViewer = e.NameScope.Get<ScrollViewer>(s_tpMenuItemsScrollViewer);
+            _footerItemsScrollViewer = e.NameScope.Get<ScrollViewer>(s_tpFooterItemsScrollViewer);
 
-            _itemsContainer = e.NameScope.Find<IControl>("ItemsContainerGrid");
+            _itemsContainer = e.NameScope.Find<IControl>(s_tpItemsContainerGrid);
             if (_itemsContainerRow != null)
             {
                 _itemsContainerSizeRevoker = _itemsContainer.GetObservable(BoundsProperty).Subscribe(OnItemsContainerSizeChanged);
