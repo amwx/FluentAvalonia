@@ -1,9 +1,15 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Represents a separator in between items in a <see cref="CommandBar"/>
+/// </summary>
+[PseudoClasses(SharedPseudoclasses.s_pcOverflow)]
 public class CommandBarSeparator : TemplatedControl, ICommandBarElement
 {
     /// <summary>
@@ -39,7 +45,7 @@ public class CommandBarSeparator : TemplatedControl, ICommandBarElement
         {
             if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
             {
-                PseudoClasses.Set(":overflow", value);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcOverflow, value);
             }
         }
     }

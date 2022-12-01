@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
 using FluentAvalonia.Core;
 using System;
@@ -10,6 +12,42 @@ using System.Reactive.Disposables;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(s_pcSeparator)]
+[PseudoClasses(s_pcListSizeCompact, s_pcClosedCompact)]
+[PseudoClasses(s_pcBackButtonCollapsed, s_pcPaneCollapsed, s_pcHeaderCollapsed)]
+[PseudoClasses(s_pcMinimalWithBack, s_pcMinimal, s_pcTopNavMinimal, s_pcCompact, s_pcExpanded)]
+[PseudoClasses(s_pcAutoSuggestCollapsed, s_pcSettingsCollapsed, s_pcPaneToggleCollapsed, s_pcPaneNotOverlaying)]
+[TemplatePart(s_tpTogglePaneButton, typeof(Button))]
+[TemplatePart(s_tpPaneHeaderContentBorder, typeof(ContentControl))]
+[TemplatePart(s_tpPaneCustomContentBorder, typeof(ContentControl))]
+[TemplatePart(s_tpFooterContentBorder, typeof(ContentControl))]
+[TemplatePart(s_tpPaneHeaderOnTopPane, typeof(ContentControl))]
+[TemplatePart(s_tpPaneTitleOnTopPane, typeof(ContentControl))]
+[TemplatePart(s_tpPaneCustomContentOnTopPane, typeof(ContentControl))]
+[TemplatePart(s_tpPaneFooterOnTopPane, typeof(ContentControl))]
+[TemplatePart(s_tpRootSplitView, typeof(SplitView))]
+[TemplatePart(s_tpTopNavGrid, typeof(Grid))]
+[TemplatePart(s_tpMenuItemsHost, typeof(ItemsRepeater))]
+[TemplatePart(s_tpTopNavMenuItemsHost, typeof(ItemsRepeater))]
+[TemplatePart(s_tpTopNavMenuItemsOverflowHost, typeof(ItemsRepeater))]
+[TemplatePart(s_tpTopNavOverflowButton, typeof(Button))]
+[TemplatePart(s_tpFooterMenuItemsHost, typeof(ItemsRepeater))]
+[TemplatePart(s_tpTopFooterMenuItemsHost, typeof(ItemsRepeater))]
+[TemplatePart(s_tpTopNavContentOverlayAreaGrid, typeof(Border))]
+[TemplatePart(s_tpPaneAutoSuggestBoxPresenter, typeof(ContentControl))]
+[TemplatePart(s_tpTopPaneAutoSuggestBoxPresenter, typeof(ContentControl))]
+[TemplatePart(s_tpPaneContentGrid, typeof(Grid))]
+[TemplatePart(s_tpContentLeftPadding, typeof(Rectangle))]
+[TemplatePart(s_tpPlaceholderGrid, typeof(Grid))]
+[TemplatePart(s_tpPaneTitleTextBlock, typeof(Control))]
+[TemplatePart(s_tpPaneTitlePresenter, typeof(ContentControl))]
+[TemplatePart(s_tpPaneTitleHolder, typeof(Control))]
+[TemplatePart(s_tpPaneAutoSuggestButton, typeof(Button))]
+[TemplatePart(s_tpNavigationViewBackButton, typeof(Button))]
+[TemplatePart(s_tpNavigationViewCloseButton, typeof(Button))]
+[TemplatePart(s_tpMenuItemsScrollViewer, typeof(ScrollViewer))]
+[TemplatePart(s_tpFooterItemsScrollViewer, typeof(ScrollViewer))]
+[TemplatePart(s_tpItemsContainerGrid, typeof(Control))]
 public partial class NavigationView : HeaderedContentControl
 {
     /// <summary>
@@ -594,4 +632,55 @@ public partial class NavigationView : HeaderedContentControl
     private IEnumerable _footerMenuItems;
     private NavigationViewDisplayMode _displayMode = NavigationViewDisplayMode.Minimal;
     private NavigationViewItem _settingsItem;
+
+    private const string s_tpTogglePaneButton = "TogglePaneButton";
+    private const string s_tpPaneHeaderContentBorder = "PaneHeaderContentBorder";
+    private const string s_tpPaneCustomContentBorder = "PaneCustomContentBorder";
+    private const string s_tpFooterContentBorder = "FooterContentBorder";
+    private const string s_tpPaneHeaderOnTopPane = "PaneHeaderOnTopPane";
+    private const string s_tpPaneTitleOnTopPane = "PaneTitleOnTopPane";
+    private const string s_tpPaneCustomContentOnTopPane = "PaneCustomContentOnTopPane";
+    private const string s_tpPaneFooterOnTopPane = "PaneFooterOnTopPane";
+    private const string s_tpRootSplitView = "RootSplitView";
+    private const string s_tpTopNavGrid = "TopNavGrid";
+    private const string s_tpMenuItemsHost = "MenuItemsHost";
+    private const string s_tpTopNavMenuItemsHost = "TopNavMenuItemsHost";
+    private const string s_tpTopNavMenuItemsOverflowHost = "TopNavMenuItemsOverflowHost";
+    private const string s_tpTopNavOverflowButton = "TopNavOverflowButton";
+    private const string s_tpFooterMenuItemsHost = "FooterMenuItemsHost";
+    private const string s_tpTopFooterMenuItemsHost = "TopFooterMenuItemsHost";
+    private const string s_tpTopNavContentOverlayAreaGrid = "TopNavContentOverlayAreaGrid";
+    private const string s_tpPaneAutoSuggestBoxPresenter = "PaneAutoSuggestBoxPresenter";
+    private const string s_tpTopPaneAutoSuggestBoxPresenter = "TopPaneAutoSuggestBoxPresenter";
+    private const string s_tpPaneContentGrid = "PaneContentGrid";
+    private const string s_tpContentLeftPadding = "ContentLeftPadding";
+    private const string s_tpPlaceholderGrid = "PlaceholderGrid";
+    private const string s_tpPaneTitleTextBlock = "PaneTitleTextBlock";
+    private const string s_tpPaneTitlePresenter = "PaneTitlePresenter";
+    private const string s_tpPaneTitleHolder = "PaneTitleHolder";
+    private const string s_tpPaneAutoSuggestButton = "PaneAutoSuggestButton";
+    private const string s_tpNavigationViewBackButton = "NavigationViewBackButton";
+    private const string s_tpNavigationViewCloseButton = "NavigationViewCloseButton";
+    private const string s_tpMenuItemsScrollViewer = "MenuItemsScrollViewer";
+    private const string s_tpFooterItemsScrollViewer = "FooterItemsScrollViewer";
+    private const string s_tpItemsContainerGrid = "ItemsContainerGrid";
+
+    private const string s_pcSeparator = ":separator";
+    private const string s_pcListSizeCompact = ":listsizecompact";
+    private const string s_pcBackButtonCollapsed = ":backbuttoncollapsed";
+    private const string s_pcMinimalWithBack = ":minimalwithback";
+    private const string s_pcMinimal = ":minimal";
+    private const string s_pcTopNavMinimal = ":topnavminimal";
+    private const string s_pcCompact = ":compact";
+    private const string s_pcExpanded = ":expanded";
+    private const string s_pcAutoSuggestCollapsed = ":autosuggestcollapsed";
+    private const string s_pcSettingsCollapsed = ":settingscollapsed";
+    private const string s_pcPaneToggleCollapsed = ":panetogglecollapsed";
+    private const string s_pcPaneNotOverlaying = ":panenotoverlaying";
+    private const string s_pcClosedCompact = ":closedcompact";
+    private const string s_pcPaneCollapsed = ":panecollapsed";
+    private const string s_pcHeaderCollapsed = ":headercollapsed";
+
+    private const string s_resPaneToggleButtonWidth = "PaneToggleButtonWidth";
+    private const string s_resPaneToggleButtonHeight = "PaneToggleButtonHeight";
 }

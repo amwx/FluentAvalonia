@@ -33,7 +33,7 @@ public partial class ColorPickerButton : TemplatedControl, IStyleable
 
         base.OnApplyTemplate(e);
 
-        _button = e.NameScope.Find<Button>("MainButton");
+        _button = e.NameScope.Find<Button>(s_tpShowFlyoutButton);
         if (_button != null)
         {
             _button.Click += OnButtonClick;

@@ -2,9 +2,17 @@
 using Avalonia.Controls.Templates;
 using Avalonia;
 using FluentAvalonia.Core;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(SharedPseudoclasses.s_pcIcon, SharedPseudoclasses.s_pcCompact, s_pcCloseCollapsed, s_pcForeground)]
+[PseudoClasses(SharedPseudoclasses.s_pcBorderRight, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcNoBorder)]
+[TemplatePart(s_tpTabSeparator, typeof(Visual))]
+[TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
+[TemplatePart(s_tpCloseButton, typeof(Button))]
 public partial class TabViewItem
 {
     /// <summary>
@@ -88,4 +96,11 @@ public partial class TabViewItem
     /// button
     /// </summary>
     public event TypedEventHandler<TabViewItem, TabViewTabCloseRequestedEventArgs> CloseRequested;
+
+    private const string s_pcForeground = ":foreground";
+    private const string s_pcCloseCollapsed = ":closecollapsed";
+
+    private const string s_tpTabSeparator = "TabSeparator";
+    private const string s_tpContentPresenter = "ContentPresenter";
+    private const string s_tpCloseButton = "CloseButton";
 }

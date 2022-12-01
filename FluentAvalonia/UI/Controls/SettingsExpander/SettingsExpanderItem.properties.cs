@@ -4,9 +4,15 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using System;
+using Avalonia.Controls.Metadata;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(s_pcFooterBottom, SharedPseudoclasses.s_pcFooter, s_pcContent, s_pcDescription)]
+[PseudoClasses(SharedPseudoclasses.s_pcAllowClick)]
+[PseudoClasses(SharedPseudoclasses.s_pcPressed)]
+[PseudoClasses(SharedPseudoclasses.s_pcIcon, s_pcActionIcon)]
 public partial class SettingsExpanderItem : ContentControl
 {
     /// <summary>
@@ -171,4 +177,11 @@ public partial class SettingsExpanderItem : ContentControl
     }
 
     private ICommand _command;
+
+    private const string s_pcDescription = ":description";
+    private const string s_pcContent = ":content";
+    private const string s_pcActionIcon = ":actionIcon";
+    private const string s_pcFooterBottom = ":footerBottom";
+
+    private const string s_resAdaptiveWidthTrigger = "SettingsExpanderItemAdaptiveWidthTrigger";
 }

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.Styling;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Input;
 using System;
 
@@ -17,11 +18,11 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
         base.OnPropertyChanged(change);
         if (change.Property == IconProperty)
         {
-            PseudoClasses.Set(":icon", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
         }
         else if (change.Property == LabelProperty)
         {
-            PseudoClasses.Set(":label", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcLabel, change.NewValue != null);
         }
         else if (change.Property == FlyoutProperty)
         {
@@ -36,22 +37,22 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
                 newFB.Closed += OnFlyoutClosed;
                 newFB.Opened += OnFlyoutOpened;
 
-                PseudoClasses.Set(":flyout", true);
-                PseudoClasses.Set(":submenuopen", newFB.IsOpen);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcFlyout, true);
+                PseudoClasses.Set(s_pcSubmenuOpen, newFB.IsOpen);
             }
             else
             {
-                PseudoClasses.Set(":flyout", false);
-                PseudoClasses.Set(":submenuopen", false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcFlyout, false);
+                PseudoClasses.Set(s_pcSubmenuOpen, false);
             }
         }
         else if (change.Property == HotKeyProperty)
         {
-            PseudoClasses.Set(":hotkey", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcHotkey, change.NewValue != null);
         }
         else if (change.Property == IsCompactProperty)
         {
-            PseudoClasses.Set(":compact", change.GetNewValue<bool>());
+            PseudoClasses.Set(SharedPseudoclasses.s_pcCompact, change.GetNewValue<bool>());
         }
         else if (change.Property == CommandProperty)
         {
@@ -117,11 +118,11 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
 
     private void OnFlyoutOpened(object sender, EventArgs e)
     {
-        PseudoClasses.Set(":submenuopen", true);
+        PseudoClasses.Set(s_pcSubmenuOpen, true);
     }
 
     private void OnFlyoutClosed(object sender, EventArgs e)
     {
-        PseudoClasses.Set(":submenuopen", false);
+        PseudoClasses.Set(s_pcSubmenuOpen, false);
     }
 }

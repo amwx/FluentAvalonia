@@ -1,12 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
 using System;
 using System.Collections.Specialized;
@@ -18,7 +18,6 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents the container for an item in a NavigationView control.
 /// </summary>
-[PseudoClasses(":leftnav", ":topnav", ":topoverflow")]
 public partial class NavigationViewItem : NavigationViewItemBase
 {
     public NavigationViewItem()
@@ -64,10 +63,10 @@ public partial class NavigationViewItem : NavigationViewItemBase
         UnhookEventsAndClearFields();
 
         base.OnApplyTemplate(e);
-        var x = this.Content;
-        _presenter = e.NameScope.Find<NavigationViewItemPresenter>("NVIPresenter");
 
-        _rootGrid = e.NameScope.Find<Grid>("NVIRootGrid");
+        _presenter = e.NameScope.Find<NavigationViewItemPresenter>(s_tpNVIPresenter);
+
+        _rootGrid = e.NameScope.Find<Grid>(s_tpNVIRootGrid);
         if (_rootGrid != null)
         {
             var flyout = FlyoutBase.GetAttachedFlyout(_rootGrid);
@@ -105,7 +104,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
         //var navView = GetNavigationView;
         if (navView != null)
         {
-            _repeater = e.NameScope.Find<ItemsRepeater>("NVIMenuItemsHost");
+            _repeater = e.NameScope.Find<ItemsRepeater>(s_tpNVIMenuItemsHost);
             if (_repeater != null)
             {
                 (_repeater.Layout as StackLayout).DisableVirtualization = true;
@@ -119,7 +118,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
             UpdateRepeaterItemsSource();
         }
 
-        _flyoutContentGrid = e.NameScope.Find<Panel>("FlyoutContentGrid");
+        _flyoutContentGrid = e.NameScope.Find<Panel>(s_tpFlyoutContentGrid);
 
         _appliedTemplate = true;
 
@@ -309,9 +308,9 @@ public partial class NavigationViewItem : NavigationViewItemBase
         if (_presenter != null)
         {
             //Possible states :iconleft, :icononly, :contentonly
-            ((IPseudoClasses)_presenter.Classes).Set(":iconleft", showIcon && showContent);
-            ((IPseudoClasses)_presenter.Classes).Set(":icononly", showIcon && !showContent);
-            ((IPseudoClasses)_presenter.Classes).Set(":contentonly", !showIcon);
+            ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcIconLeft, showIcon && showContent);
+            ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcIconOnly, showIcon && !showContent);
+            ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcContentOnly, !showIcon);
         }
     }
 
@@ -323,43 +322,43 @@ public partial class NavigationViewItem : NavigationViewItemBase
         {
             case NavigationViewRepeaterPosition.LeftNav:
             case NavigationViewRepeaterPosition.LeftFooter:
-                PseudoClasses.Set(":leftnav", true);
-                PseudoClasses.Set(":topnav", false);
-                PseudoClasses.Set(":topoverflow", false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcLeftNav, true);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcTopNav, false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcTopOverflow, false);
 
                 if (_presenter != null)
                 {
-                    ((IPseudoClasses)_presenter.Classes).Set(":leftnav", true);
-                    ((IPseudoClasses)_presenter.Classes).Set(":topnav", false);
-                    ((IPseudoClasses)_presenter.Classes).Set(":topoverflow", false);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcLeftNav, true);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcTopNav, false);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcTopOverflow, false);
                 }
 
                 break;
 
             case NavigationViewRepeaterPosition.TopPrimary:
             case NavigationViewRepeaterPosition.TopFooter:
-                PseudoClasses.Set(":leftnav", false);
-                PseudoClasses.Set(":topnav", true);
-                PseudoClasses.Set(":topoverflow", false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcLeftNav, false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcTopNav, true);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcTopOverflow, false);
 
                 if (_presenter != null)
                 {
-                    ((IPseudoClasses)_presenter.Classes).Set(":leftnav", false);
-                    ((IPseudoClasses)_presenter.Classes).Set(":topnav", true);
-                    ((IPseudoClasses)_presenter.Classes).Set(":topoverflow", false);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcLeftNav, false);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcTopNav, true);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcTopOverflow, false);
                 }
                 break;
 
             case NavigationViewRepeaterPosition.TopOverflow:
-                PseudoClasses.Set(":leftnav", false);
-                PseudoClasses.Set(":topnav", false);
-                PseudoClasses.Set(":topoverflow", true);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcLeftNav, false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcTopNav, false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcTopOverflow, true);
 
                 if (_presenter != null)
                 {
-                    ((IPseudoClasses)_presenter.Classes).Set(":leftnav", false);
-                    ((IPseudoClasses)_presenter.Classes).Set(":topnav", false);
-                    ((IPseudoClasses)_presenter.Classes).Set(":topoverflow", true);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcLeftNav, false);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcTopNav, false);
+                    ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcTopOverflow, true);
                 }
                 break;
         }
@@ -379,7 +378,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
 
         if (_presenter != null)
         {
-            ((IPseudoClasses)_presenter.Classes).Set(":selected", IsSelected);
+            ((IPseudoClasses)_presenter.Classes).Set(s_pcSelected, IsSelected);
         }
 
         UpdateVisualStateForNavigationViewPositionChange();
@@ -393,7 +392,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
             {
                 //This is supposed to be for backwards compatibility with RS4-, but
                 //is apparently still used in the NVIPresenterWhenOnLeftPane style
-                ((IPseudoClasses)_presenter.Classes).Set(":iconcollapsed", !showIcon);
+                ((IPseudoClasses)_presenter.Classes).Set(s_pcIconCollapsed, !showIcon);
                 //Only using IconCollapsed, IconVisible is default
             }
         }
@@ -401,7 +400,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
         {
             if (_presenter != null)
             {
-                ((IPseudoClasses)_presenter.Classes).Set(":iconcollapsed", false);
+                ((IPseudoClasses)_presenter.Classes).Set(s_pcIconCollapsed, false);
             }
         }
 
@@ -429,9 +428,9 @@ public partial class NavigationViewItem : NavigationViewItemBase
 
             if (_presenter != null)
             {
-                ((IPseudoClasses)_presenter.Classes).Set(":chevronopen", show && expand);
-                ((IPseudoClasses)_presenter.Classes).Set(":chevronclosed", show & !expand);
-                ((IPseudoClasses)_presenter.Classes).Set(":chevronhidden", !show);
+                ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcChevronOpen, show && expand);
+                ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcChevronClosed, show & !expand);
+                ((IPseudoClasses)_presenter.Classes).Set(SharedPseudoclasses.s_pcChevronHidden, !show);
             }
         }
     }
@@ -565,7 +564,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
     private void UpdateVisualStateForInfoBadge()
     {
         if (_presenter != null)
-            ((IPseudoClasses)_presenter.Classes).Set(":infobadge", InfoBadge != null);
+            ((IPseudoClasses)_presenter.Classes).Set(s_pcInfoBadge, InfoBadge != null);
     }
 
     public override string ToString()

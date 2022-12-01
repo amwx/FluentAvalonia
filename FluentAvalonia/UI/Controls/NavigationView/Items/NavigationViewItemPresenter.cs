@@ -1,20 +1,16 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls.Primitives;
 
 /// <summary>
 /// Represents the visual elements of a NavigationViewItem.
 /// </summary>
-[PseudoClasses(":expanded")]
-[PseudoClasses(":closedcompacttop", ":notclosedcompacttop")]
-[PseudoClasses(":leftnav", ":topnav", ":topoverflow")]
-[PseudoClasses(":chevronopen", ":chevronclosed", ":chevronhidden")]
-[PseudoClasses(":iconleft", ":icononly", ":contentonly")]
+
 public partial class NavigationViewItemPresenter : ContentControl
 {
     public NavigationViewItemPresenter()
@@ -26,17 +22,17 @@ public partial class NavigationViewItemPresenter : ContentControl
     {
         base.OnApplyTemplate(e);
 
-        _selectionIndicator = e.NameScope.Find<Border>("SelectionIndicator");
+        _selectionIndicator = e.NameScope.Find<Border>(s_tpSelectionIndicator);
 
         //This doesn't exist in the TopPane template, so use Find and allow it to be null
-        _contentGrid = e.NameScope.Find<Panel>("PresenterContentRootGrid");
+        _contentGrid = e.NameScope.Find<Panel>(s_tpPresenterContentRootGrid);
 
-        _infoBadgePresenter = e.NameScope.Find<ContentPresenter>("InfoBadgePresenter");
+        _infoBadgePresenter = e.NameScope.Find<ContentPresenter>(s_tpInfoBadgePresenter);
 
         var nvi = GetNVI;
         if (nvi != null)
         {
-            _expandCollapseChevron = e.NameScope.Find<Panel>("ExpandCollapseChevron");
+            _expandCollapseChevron = e.NameScope.Find<Panel>(s_tpExpandCollapseChevron);
 
             if (_expandCollapseChevron != null)
             {
@@ -63,7 +59,7 @@ public partial class NavigationViewItemPresenter : ContentControl
         base.OnPointerPressed(e);
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            PseudoClasses.Set(":pressed", true);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, true);
         }
     }
 
@@ -73,19 +69,19 @@ public partial class NavigationViewItemPresenter : ContentControl
         if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased
             && e.InitialPressMouseButton == MouseButton.Left)
         {
-            PseudoClasses.Set(":pressed", false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
         }
     }
 
     protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
     {
         base.OnPointerCaptureLost(e);
-        PseudoClasses.Set(":pressed", false);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
     }
 
     internal void RotateExpandCollapseChevron(bool isExpanded)
     {
-        PseudoClasses.Set(":expanded", isExpanded);
+        PseudoClasses.Set(s_pcExpanded, isExpanded);
     }
 
     internal void UpdateContentLeftIndentation(double leftIndent)
@@ -124,8 +120,8 @@ public partial class NavigationViewItemPresenter : ContentControl
 
         //states :closedcompacttop, :notclosedcompacttop
 
-        PseudoClasses.Set(":closedcompacttop", isClosedCompact && topLevel);
-        PseudoClasses.Set(":notclosedcompacttop", !isClosedCompact && topLevel);
+        PseudoClasses.Set(s_pcClosedCompactTop, isClosedCompact && topLevel);
+        PseudoClasses.Set(s_pcNotClosedCompactTop, !isClosedCompact && topLevel);
     }
 
     private Panel _contentGrid;

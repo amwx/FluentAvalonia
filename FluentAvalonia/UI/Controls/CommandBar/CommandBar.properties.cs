@@ -4,9 +4,19 @@ using Avalonia.Layout;
 using Avalonia;
 using FluentAvalonia.Core;
 using System;
+using Avalonia.Controls.Metadata;
 
 namespace FluentAvalonia.UI.Controls;
 
+[TemplatePart(s_tpPrimaryItemsControl, typeof(ItemsControl))]
+[TemplatePart(s_tpContentControl, typeof(ContentControl))]
+[TemplatePart(s_tpSecondaryItemsControl, typeof(CommandBarOverflowPresenter))]
+[TemplatePart(s_tpMoreButton, typeof(Button))]
+[PseudoClasses(s_pcDynamicOverflow)]
+[PseudoClasses(SharedPseudoclasses.s_pcCompact, s_pcMinimal, s_pcHidden)]
+[PseudoClasses(s_pcLabelBottom, s_pcLabelRight, s_pcLabelCollapsed)]
+[PseudoClasses(s_pcPrimaryOnly, s_pcSecondaryOnly)]
+[PseudoClasses(SharedPseudoclasses.s_pcOpen)]
 public partial class CommandBar
 {
     /// <summary>
@@ -209,4 +219,18 @@ public partial class CommandBar
     private IAvaloniaList<ICommandBarElement> _primaryCommands;
     private IAvaloniaList<ICommandBarElement> _secondaryCommands;
     private bool _isDynamicOverflowEnabled = true;
+
+    private const string s_tpPrimaryItemsControl = "PrimaryItemsControl";
+    private const string s_tpContentControl = "ContentControl";
+    private const string s_tpSecondaryItemsControl = "SecondaryItemsControl";
+    private const string s_tpMoreButton = "MoreButton";
+
+    private const string s_pcDynamicOverflow = ":dynamicoverflow";
+    private const string s_pcLabelBottom = ":labelbottom";
+    private const string s_pcLabelRight = ":labelright";
+    private const string s_pcLabelCollapsed = ":labelcollapsed";
+    private const string s_pcMinimal = ":minimal";
+    private const string s_pcHidden = ":hidden";
+    private const string s_pcPrimaryOnly = ":primaryOnly";
+    private const string s_pcSecondaryOnly = ":secondaryOnly";
 }

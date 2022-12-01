@@ -4,6 +4,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using FluentAvalonia.Core;
 using System;
 using System.Globalization;
 
@@ -23,8 +24,8 @@ public partial class NumberBox : TemplatedControl
     {
         base.OnApplyTemplate(e);
 
-        _spinDown = e.NameScope.Find<RepeatButton>("DownSpinButton");
-        _popupDownButton = e.NameScope.Find<RepeatButton>("PopupDownSpinButton");
+        _spinDown = e.NameScope.Find<RepeatButton>(s_tpDownSpinButton);
+        _popupDownButton = e.NameScope.Find<RepeatButton>(s_tpPopupDownSpinButton);
         if (_spinDown != null)
         {
             _spinDown.Click += OnSpinDownClick;
@@ -34,8 +35,8 @@ public partial class NumberBox : TemplatedControl
             _popupDownButton.Click += OnSpinDownClick;
         }
 
-        _spinUp = e.NameScope.Find<RepeatButton>("UpSpinButton");
-        _popupUpButton = e.NameScope.Find<RepeatButton>("PopupUpSpinButton");
+        _spinUp = e.NameScope.Find<RepeatButton>(s_tpUpSpinButton);
+        _popupUpButton = e.NameScope.Find<RepeatButton>(s_tpPopupUpSpinButton);
         if (_spinUp != null)
         {
             _spinUp.Click += OnSpinUpClick;
@@ -45,7 +46,7 @@ public partial class NumberBox : TemplatedControl
             _popupUpButton.Click += OnSpinUpClick;
         }
 
-        _textBox = e.NameScope.Find<TextBox>("InputBox");
+        _textBox = e.NameScope.Find<TextBox>(s_tpInputBox);
         if (_textBox != null)
         {
             _textBox.AddHandler(KeyDownEvent, OnNumberBoxKeyDown, RoutingStrategies.Tunnel);
@@ -53,7 +54,7 @@ public partial class NumberBox : TemplatedControl
             _textBox.KeyUp += OnNumberBoxKeyUp;
         }
 
-        _popup = e.NameScope.Find<Popup>("UpDownPopup");
+        _popup = e.NameScope.Find<Popup>(s_tpUpDownPopup);
         if (_popup != null)
         {
             _popup.OverlayInputPassThroughElement = this;
@@ -388,38 +389,38 @@ public partial class NumberBox : TemplatedControl
 
         if (sbm == NumberBoxSpinButtonPlacementMode.Inline)
         {
-            PseudoClasses.Set(":spinvisible", true);
-            PseudoClasses.Set(":spinpopup", false);
-            PseudoClasses.Set(":spincollapsed", false);
+            PseudoClasses.Set(s_pcSpinVisible, true);
+            PseudoClasses.Set(s_pcSpinPopup, false);
+            PseudoClasses.Set(s_pcSpinCollapsed, false);
 
             if (_textBox != null)
             {
-                ((IPseudoClasses)_textBox.Classes).Set(":spinvisible", true);
-                ((IPseudoClasses)_textBox.Classes).Set(":spinpopup", false);
+                ((IPseudoClasses)_textBox.Classes).Set(s_pcSpinVisible, true);
+                ((IPseudoClasses)_textBox.Classes).Set(s_pcSpinPopup, false);
             }
         }
         else if (sbm == NumberBoxSpinButtonPlacementMode.Compact)
         {
-            PseudoClasses.Set(":spinvisible", false);
-            PseudoClasses.Set(":spinpopup", true);
-            PseudoClasses.Set(":spincollapsed", false);
+            PseudoClasses.Set(s_pcSpinVisible, false);
+            PseudoClasses.Set(s_pcSpinPopup, true);
+            PseudoClasses.Set(s_pcSpinCollapsed, false);
 
             if (_textBox != null)
             {
-                ((IPseudoClasses)_textBox.Classes).Set(":spinvisible", false);
-                ((IPseudoClasses)_textBox.Classes).Set(":spinpopup", true);
+                ((IPseudoClasses)_textBox.Classes).Set(s_pcSpinVisible, false);
+                ((IPseudoClasses)_textBox.Classes).Set(s_pcSpinPopup, true);
             }
         }
         else
         {
-            PseudoClasses.Set(":spinvisible", false);
-            PseudoClasses.Set(":spinpopup", false);
-            PseudoClasses.Set(":spincollapsed", true);
+            PseudoClasses.Set(s_pcSpinVisible, false);
+            PseudoClasses.Set(s_pcSpinPopup, false);
+            PseudoClasses.Set(s_pcSpinCollapsed, true);
 
             if (_textBox != null)
             {
-                ((IPseudoClasses)_textBox.Classes).Set(":spinvisible", false);
-                ((IPseudoClasses)_textBox.Classes).Set(":spinpopup", false);
+                ((IPseudoClasses)_textBox.Classes).Set(s_pcSpinVisible, false);
+                ((IPseudoClasses)_textBox.Classes).Set(s_pcSpinPopup, false);
             }
         }
     }
@@ -447,8 +448,8 @@ public partial class NumberBox : TemplatedControl
             }
         }
 
-        PseudoClasses.Set(":updisabled", !isUpEnabled);
-        PseudoClasses.Set(":downdisabled", !isDownEnabled);
+        PseudoClasses.Set(s_pcUpDisabled, !isUpEnabled);
+        PseudoClasses.Set(s_pcDownDisabled, !isDownEnabled);
     }
 
     private void UpdateHeaderPresenterState()
@@ -476,7 +477,7 @@ public partial class NumberBox : TemplatedControl
         }
 
         //Changed to Pseudoclass rather than keeping a ref to the ContentPresenter
-        PseudoClasses.Set(":header", showHeader);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcHeader, showHeader);
     }
 
     private void MoveCaretToTextEnd()

@@ -3,6 +3,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using FluentAvalonia.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -25,24 +26,33 @@ public partial class CommandBar : ContentControl
 
         // Don't initialize the actual item lists here, we'll do that as needed
 
-        PseudoClasses.Add(":dynamicoverflow");
-        PseudoClasses.Add(":compact");
-        PseudoClasses.Add(":labelbottom");
+        PseudoClasses.Add(s_pcDynamicOverflow);
+        PseudoClasses.Add(SharedPseudoclasses.s_pcCompact);
+        PseudoClasses.Add(s_pcLabelBottom);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _appliedTemplate = false;
 
+        if (_moreButton != null)
+        {
+            _moreButton.Click -= OnMoreButtonClick;
+        }
+
         base.OnApplyTemplate(e);
 
-        _primaryItemsHost = e.NameScope.Find<ItemsControl>("PrimaryItemsControl");
-        _contentHost = e.NameScope.Find<ContentControl>("ContentControl");
+        _primaryItemsHost = e.NameScope.Find<ItemsControl>(s_tpPrimaryItemsControl);
+        _contentHost = e.NameScope.Find<ContentControl>(s_tpContentControl);
 
-        _overflowItemsHost = e.NameScope.Find<CommandBarOverflowPresenter>("SecondaryItemsControl");
+        _overflowItemsHost = e.NameScope.Find<CommandBarOverflowPresenter>(s_tpSecondaryItemsControl);
 
-        _moreButton = e.NameScope.Find<Button>("MoreButton");
-        _moreButton.Click += OnMoreButtonClick;
+        _moreButton = e.NameScope.Find<Button>(s_tpMoreButton);
+        if (_moreButton != null)
+        {
+            _moreButton.Click += OnMoreButtonClick;
+        }
+        
         _appliedTemplate = true;
 
         AttachItems();
@@ -54,16 +64,16 @@ public partial class CommandBar : ContentControl
         if (change.Property == DefaultLabelPositionProperty)
         {
             var newVal = change.GetNewValue<CommandBarDefaultLabelPosition>();
-            PseudoClasses.Set(":labelright", newVal == CommandBarDefaultLabelPosition.Right);
-            PseudoClasses.Set(":labelbottom", newVal == CommandBarDefaultLabelPosition.Bottom);
-            PseudoClasses.Set(":labelcollapsed", newVal == CommandBarDefaultLabelPosition.Collapsed);
+            PseudoClasses.Set(s_pcLabelRight, newVal == CommandBarDefaultLabelPosition.Right);
+            PseudoClasses.Set(s_pcLabelBottom, newVal == CommandBarDefaultLabelPosition.Bottom);
+            PseudoClasses.Set(s_pcLabelCollapsed, newVal == CommandBarDefaultLabelPosition.Collapsed);
         }
         else if (change.Property == ClosedDisplayModeProperty)
         {
             var newVal = change.GetNewValue<CommandBarClosedDisplayMode>();
-            PseudoClasses.Set(":compact", newVal == CommandBarClosedDisplayMode.Compact);
-            PseudoClasses.Set(":minimal", newVal == CommandBarClosedDisplayMode.Minimal);
-            PseudoClasses.Set(":hidden", newVal == CommandBarClosedDisplayMode.Hidden);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcCompact, newVal == CommandBarClosedDisplayMode.Compact);
+            PseudoClasses.Set(s_pcMinimal, newVal == CommandBarClosedDisplayMode.Minimal);
+            PseudoClasses.Set(s_pcHidden, newVal == CommandBarClosedDisplayMode.Hidden);
         }
     }
 
@@ -272,8 +282,8 @@ public partial class CommandBar : ContentControl
                 break;
         }
 
-        PseudoClasses.Set(":primaryonly", _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
-        PseudoClasses.Set(":secondaryonly", _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
+        PseudoClasses.Set(s_pcPrimaryOnly, _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
+        PseudoClasses.Set(s_pcSecondaryOnly, _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
         InvalidateMeasure();
     }
 
@@ -317,8 +327,8 @@ public partial class CommandBar : ContentControl
                 break;
         }
 
-        PseudoClasses.Set(":primaryonly", _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
-        PseudoClasses.Set(":secondaryonly", _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
+        PseudoClasses.Set(s_pcPrimaryOnly, _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
+        PseudoClasses.Set(s_pcSecondaryOnly, _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
     }
 
     private void AttachItems()
@@ -355,8 +365,8 @@ public partial class CommandBar : ContentControl
             _overflowItemsHost.Items = _overflowItems;
         }
 
-        PseudoClasses.Set(":primaryonly", _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
-        PseudoClasses.Set(":secondaryonly", _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
+        PseudoClasses.Set(s_pcPrimaryOnly, _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
+        PseudoClasses.Set(s_pcSecondaryOnly, _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
     }
 
     private void PrimaryItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -373,9 +383,9 @@ public partial class CommandBar : ContentControl
                     {
                         if (items[i] is Control c && c.Classes is IPseudoClasses pc)
                         {
-                            pc.Set(s_collapsedClass, pos == CommandBarDefaultLabelPosition.Collapsed);
-                            pc.Set(s_labelRightClass, pos == CommandBarDefaultLabelPosition.Right);
-                            pc.Set(s_labelBottomClass, pos == CommandBarDefaultLabelPosition.Bottom);
+                            pc.Set(s_pcLabelCollapsed, pos == CommandBarDefaultLabelPosition.Collapsed);
+                            pc.Set(s_pcLabelRight, pos == CommandBarDefaultLabelPosition.Right);
+                            pc.Set(s_pcLabelBottom, pos == CommandBarDefaultLabelPosition.Bottom);
                         }
                     }
                 }
@@ -391,9 +401,9 @@ public partial class CommandBar : ContentControl
                         {
                             if (items[i] is Control c && c.Classes is IPseudoClasses pc)
                             {
-                                pc.Set(s_collapsedClass, false);
-                                pc.Set(s_labelRightClass, false);
-                                pc.Set(s_labelBottomClass, false);
+                                pc.Set(s_pcLabelCollapsed, false);
+                                pc.Set(s_pcLabelRight, false);
+                                pc.Set(s_pcLabelBottom, false);
                             }
                         }
                     }
@@ -505,7 +515,7 @@ public partial class CommandBar : ContentControl
         {
             if (_primaryItems[i] is Control c && c.Classes is IPseudoClasses pc)
             {
-                pc.Set(":open", open);
+                pc.Set(SharedPseudoclasses.s_pcOpen, open);
             }
         }
     }
@@ -529,8 +539,4 @@ public partial class CommandBar : ContentControl
     private Dictionary<ICommandBarElement, double> _widthCache;
     private int _numInOverflow = 0;
     private double _minRecoverWidth;
-
-    private readonly string s_collapsedClass = ":labelCollapsed";
-    private readonly string s_labelBottomClass = ":labelBottom";
-    private readonly string s_labelRightClass = ":labelRight";
 }

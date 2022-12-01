@@ -1,8 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Input;
 using System;
 using System.Windows.Input;
@@ -116,7 +118,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
         }
         else if (change.Property == InputGestureProperty)
         {
-            PseudoClasses.Set(":hotkey", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcHotkey, change.NewValue != null);
         }
         else if (change.Property == HotKeyProperty)
         {
@@ -130,7 +132,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
         base.OnPointerPressed(e);
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            PseudoClasses.Set(":pressed", true);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, true);
         }
     }
 
@@ -139,7 +141,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
         base.OnPointerReleased(e);
         if (e.InitialPressMouseButton == MouseButton.Left)
         {
-            PseudoClasses.Set(":pressed", false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
         }
     }
 

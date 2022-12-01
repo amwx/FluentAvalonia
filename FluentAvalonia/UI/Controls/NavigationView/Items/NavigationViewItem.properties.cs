@@ -3,9 +3,20 @@ using Avalonia;
 using FluentAvalonia.UI.Controls.Primitives;
 using System.Collections;
 using FluentAvalonia.Core;
+using Avalonia.Controls.Metadata;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(SharedPseudoclasses.s_pcLeftNav, SharedPseudoclasses.s_pcTopNav, SharedPseudoclasses.s_pcTopOverflow)]
+[PseudoClasses(SharedPseudoclasses.s_pcIconLeft, SharedPseudoclasses.s_pcIconOnly, SharedPseudoclasses.s_pcContentOnly)]
+[PseudoClasses(s_pcSelected)]
+[PseudoClasses(s_pcIconCollapsed)]
+[PseudoClasses(SharedPseudoclasses.s_pcChevronClosed, SharedPseudoclasses.s_pcChevronOpen, SharedPseudoclasses.s_pcChevronHidden)]
+[PseudoClasses(s_pcInfoBadge)]
+[TemplatePart(s_tpFlyoutContentGrid, typeof(Panel))]
+[TemplatePart(s_tpNVIPresenter, typeof(NavigationViewItemPresenter))]
+[TemplatePart(s_tpNVIRootGrid, typeof(Grid))]
+[TemplatePart(s_tpNVIMenuItemsHost, typeof(ItemsRepeater))]
 public partial class NavigationViewItem
 {
     /// <summary>
@@ -181,4 +192,13 @@ public partial class NavigationViewItem
     private bool _isExpanded;
     private IEnumerable _menuItems;
     private bool _selectsOnInvoked = true;
+
+    private const string s_tpNVIPresenter = "NVIPresenter";
+    private const string s_tpNVIRootGrid = "NVIRootGrid";
+    private const string s_tpNVIMenuItemsHost = "NVIMenuItemsHost";
+    private const string s_tpFlyoutContentGrid = "FlyoutContentGrid";
+        
+    private const string s_pcSelected = ":selected";
+    private const string s_pcIconCollapsed = ":iconcollapsed";
+    private const string s_pcInfoBadge = ":infobadge";
 }

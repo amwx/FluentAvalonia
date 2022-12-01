@@ -20,6 +20,9 @@ using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// A control used to display a set of tabs and their respective content
+/// </summary>
 public partial class TabView : TemplatedControl, IContentPresenterHost
 {
     public TabView()
@@ -63,10 +66,10 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
         base.OnApplyTemplate(e);
 
-        _tabContentPresenter = e.NameScope.Find<ContentPresenter>("TabContentPresenter");
-        _rightContentPresenter = e.NameScope.Find<ContentPresenter>("RightContentPresenter");
+        _tabContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpTabContentPresenter);
+        _rightContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpRightContentPresenter);
 
-        _tabContainerGrid = e.NameScope.Find<Grid>("TabContainerGrid");
+        _tabContainerGrid = e.NameScope.Find<Grid>(s_tpTabContainerGrid);
         if (_tabContainerGrid != null)
         {
             _leftContentColumn = _tabContainerGrid.ColumnDefinitions[0];
@@ -81,7 +84,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             _tabContainerGrid.KeyDown += OnTabContainerGridKeyDown;
         }
 
-        _listView = e.NameScope.Find<TabViewListView>("TabListView");
+        _listView = e.NameScope.Find<TabViewListView>(s_tpTabListView);
 
         if (_listView != null)
         {
@@ -115,7 +118,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             _listView.Loaded += OnListViewLoaded;
         }
 
-        _addButton = e.NameScope.Find<Button>("AddButton");
+        _addButton = e.NameScope.Find<Button>(s_tpAddButton);
         if (_addButton != null)
         {
             // TODO: Automation
@@ -275,9 +278,9 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
             if (ContainerFromIndex(i) is TabViewItem tvi)
             {
-                ((IPseudoClasses)tvi.Classes).Set(":noborder", state == 0);
-                ((IPseudoClasses)tvi.Classes).Set(":borderleft", state == 1);
-                ((IPseudoClasses)tvi.Classes).Set(":borderright", state == 2);
+                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcNoBorder, state == 0);
+                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderLeft, state == 1);
+                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderRight, state == 2);
             }
         }
     }
@@ -287,18 +290,18 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
         // Update border line on all tabs
         UpdateTabBottomBorderLineVisualStates();
 
-        PseudoClasses.Set(":singleborder", _isDragging);
+        PseudoClasses.Set(s_pcSingleBorder, _isDragging);
 
         // Update border lines in the inner TabViewListView
         if (_listView != null)
         {
-            (_listView.Classes as IPseudoClasses).Set(":noborder", _isDragging);
+            (_listView.Classes as IPseudoClasses).Set(SharedPseudoclasses.s_pcNoBorder, _isDragging);
         }
 
         // Update border lines in the ScrollViewer
         if (_scrollViewer != null)
         {
-            (_scrollViewer.Classes as IPseudoClasses).Set(":noborder", _isDragging);
+            (_scrollViewer.Classes as IPseudoClasses).Set(SharedPseudoclasses.s_pcNoBorder, _isDragging);
         }
     }
 
@@ -421,14 +424,14 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
         foreach (RepeatButton button in buttons)
         {
-            if (button.Name == "ScrollDecreaseButton")
+            if (button.Name == s_tpScrollDecreaseButton)
             {
                 _scrollDecreaseButton = button;
                 ToolTip.SetTip(_scrollDecreaseButton, 
                     FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewScrollDecreaseButtonTooltip));
                 _scrollDecreaseButton.Click += OnScrollDecreaseClick;
             }
-            else if (button.Name == "ScrollIncreaseButton")
+            else if (button.Name == s_tpScrollIncreaseButton)
             {
                 _scrollIncreaseButton = button;
                 ToolTip.SetTip(_scrollIncreaseButton, 
@@ -1121,7 +1124,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
     bool IContentPresenterHost.RegisterContentPresenter(IContentPresenter presenter)
     {
-        if (presenter.Name == "TabContentPresenter")
+        if (presenter.Name == s_tpTabContentPresenter)
             return true;
 
         return false;
@@ -1164,20 +1167,12 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
     private Size _lastItemsPresenterSize;
 
-
     private static double c_tabMinimumWidth = 48d;
     private static double c_tabMaximumWidth = 200d;
-
-    private static string c_tabViewItemMinWidthName = "TabViewItemMinWidth";
-    private static string c_tabViewItemMaxWidthName = "TabViewItemMaxWidth";
 
     // (WinUI) TODO: what is the right number and should this be customizable?
     private static double c_scrollAmount = 50d;
 
-    private static readonly string SR_TabViewCloseButtonTooltipWithKA = "TabViewCloseButtonTooltipWithKA";
-    private static readonly string SR_TabViewAddButtonTooltip = "TabViewAddButtonTooltip";
-    private static readonly string SR_TabViewScrollDecreaseButtonTooltip = "TabViewScrollDecreaseButtonTooltip";
-    private static readonly string SR_TabViewScrollIncreaseButtonTooltip = "TabViewScrollIncreaseButtonTooltip";
 
     class TabViewCommand : ICommand
     {

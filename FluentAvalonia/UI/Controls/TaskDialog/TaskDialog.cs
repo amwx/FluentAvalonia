@@ -17,13 +17,6 @@ using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(s_pcHosted, s_pcHidden, s_pcOpen)]
-[PseudoClasses(s_pcHeader, s_pcSubheader, s_pcIcon, s_pcFooter, s_pcFooterAuto, s_pcExpanded)]
-[PseudoClasses(s_pcProgress, s_pcProgressError, s_pcProgressSuspend)]
-[TemplatePart(s_tpButtonsHost, typeof(ItemsPresenter))]
-[TemplatePart(s_tpCommandsHost, typeof(ItemsPresenter))]
-[TemplatePart(s_tpMoreDetailsButton, typeof(Button))]
-[TemplatePart(s_tpProgressBar, typeof(ProgressBar))]
 /// <summary>
 /// Represents and enhanced dialog with enhanced button, command, and progress support
 /// </summary>
@@ -87,11 +80,11 @@ public partial class TaskDialog : ContentControl
         }
         else if (change.Property == IconSourceProperty)
         {
-            PseudoClasses.Set(s_pcIcon, change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
         }
         else if (change.Property == HeaderProperty)
         {
-            PseudoClasses.Set(s_pcHeader, change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcHeader, change.NewValue != null);
         }
         else if (change.Property == SubHeaderProperty)
         {
@@ -205,7 +198,7 @@ public partial class TaskDialog : ContentControl
 
             TrySetInitialFocus();
 
-            PseudoClasses.Set(s_pcOpen, true);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, true);
             PseudoClasses.Set(s_pcHidden, false);
 
             result = await _tcs.Task;
@@ -359,7 +352,7 @@ public partial class TaskDialog : ContentControl
             w.Content = null;
             ReturnDialogToParent();
 
-            PseudoClasses.Set(s_pcOpen, false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, false);
             PseudoClasses.Set(s_pcHidden, true);
 
             // Fully close the dialog sending the result back
@@ -373,7 +366,7 @@ public partial class TaskDialog : ContentControl
 
             Focus();
 
-            PseudoClasses.Set(s_pcOpen, false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, false);
             PseudoClasses.Set(s_pcHidden, true);
 
             // Let the close animation finish (now 0.167s in new WinUI update...)
@@ -466,7 +459,7 @@ public partial class TaskDialog : ContentControl
                     throw new InvalidOperationException("Cannot set 'IsDefault' property on more than one item in a TaskDialog");
 
                 foundDefault = true;
-                b.Classes.Add(ContentDialog.s_cAccent);
+                b.Classes.Add(SharedPseudoclasses.s_cAccent);
                 _defaultButton = b;
             }
             buttons.Add(b);
@@ -527,7 +520,7 @@ public partial class TaskDialog : ContentControl
                         throw new InvalidOperationException("Cannot set 'IsDefault' property on more than one item in a TaskDialog");
 
                     foundDefault = true;
-                    com.Classes.Add(ContentDialog.s_cAccent);
+                    com.Classes.Add(SharedPseudoclasses.s_cAccent);
                     _defaultButton = com;
                 }
 
@@ -593,25 +586,5 @@ public partial class TaskDialog : ContentControl
     internal bool _hasDeferralActive = false;
 
     private IInputElement _previousFocus;
-    private bool _ignoreWindowClosingEvent;
-
-    private const string s_tpButtonsHost = "ButtonsHost";
-    private const string s_tpCommandsHost = "CommandsHost";
-    private const string s_tpProgressBar = "ProgressBar";
-    private const string s_tpMoreDetailsButton = "MoreDetailsButton";
-
-    private const string s_pcHidden = ":hidden";
-    private const string s_pcOpen = ":open";
-    private const string s_pcHosted = ":hosted";
-    private const string s_pcHeader = ":header";
-    private const string s_pcSubheader = ":subheader";
-    private const string s_pcIcon = ":icon";
-    private const string s_pcFooter = ":footer";
-    private const string s_pcFooterAuto = ":footerAuto";
-    private const string s_pcExpanded = ":expanded";
-    private const string s_pcProgress = ":progress";
-    private const string s_pcProgressError = ":progressError";
-    private const string s_pcProgressSuspend = ":progressSuspend";
-
-    private const string s_cFATDCom = "FA_TaskDialogCommand";
+    private bool _ignoreWindowClosingEvent;    
 }

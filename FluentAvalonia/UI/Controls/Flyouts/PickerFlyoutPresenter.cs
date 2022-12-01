@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
@@ -10,11 +11,14 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// The FlyoutPresenter that is used within a <see cref="PickerFlyoutBase"/>
 /// </summary>
+[PseudoClasses(s_pcAcceptDismiss)]
+[TemplatePart(s_tpAcceptButton, typeof(Button))]
+[TemplatePart(s_tpDismissButton, typeof(Button))]
 public class PickerFlyoutPresenter : ContentControl
 {
     public PickerFlyoutPresenter()
     {
-        PseudoClasses.Add(":acceptdismiss");
+        PseudoClasses.Add(s_pcAcceptDismiss);
     }
 
     /// <summary>
@@ -40,12 +44,12 @@ public class PickerFlyoutPresenter : ContentControl
 
         base.OnApplyTemplate(e);
 
-        _acceptButton = e.NameScope.Find<Button>("AcceptButton");
+        _acceptButton = e.NameScope.Find<Button>(s_tpAcceptButton);
         if (_acceptButton != null)
         {
             _acceptButton.Click += OnAcceptClick;
         }
-        _dismissButton = e.NameScope.Find<Button>("DismissButton");
+        _dismissButton = e.NameScope.Find<Button>(s_tpDismissButton);
         if (_dismissButton != null)
         {
             _dismissButton.Click += OnDismissClick;
@@ -64,9 +68,13 @@ public class PickerFlyoutPresenter : ContentControl
 
     internal void ShowHideButtons(bool show)
     {
-        PseudoClasses.Set(":acceptdismiss", show);
+        PseudoClasses.Set(s_pcAcceptDismiss, show);
     }
 
     private Button _acceptButton;
     private Button _dismissButton;
+
+    private const string s_pcAcceptDismiss = ":acceptdismiss";
+    private const string s_tpAcceptButton = "AcceptButton";
+    private const string s_tpDismissButton = "DismissButton";
 }

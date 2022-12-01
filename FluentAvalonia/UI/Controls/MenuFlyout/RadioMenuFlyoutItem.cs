@@ -4,12 +4,15 @@ using Avalonia;
 using System;
 using System.Collections.Generic;
 using Avalonia.Data;
+using Avalonia.Controls.Metadata;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
 /// Represents a menu item that is mutually exclusive with other radio menu items in its group.
 /// </summary>
+[PseudoClasses(SharedPseudoclasses.s_pcChecked)]
 public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
 {
     static RadioMenuFlyoutItem()
@@ -64,7 +67,7 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
         if (change.Property == IsCheckedProperty)
         {
             var newValue = change.GetNewValue<bool>();
-            PseudoClasses.Set(":checked", newValue);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcChecked, newValue);
 
             if (_isSafeUncheck) // Unchecked via another item in the group
                 return;

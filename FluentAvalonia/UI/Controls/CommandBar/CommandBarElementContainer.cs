@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Styling;
+using FluentAvalonia.Core;
 using System;
 
 namespace FluentAvalonia.UI.Controls;
@@ -9,6 +11,7 @@ namespace FluentAvalonia.UI.Controls;
 /// Represents a container that allows an element that doesn't implement ICommandBarElement 
 /// to be displayed in a command bar.
 /// </summary>
+[PseudoClasses(SharedPseudoclasses.s_pcOverflow)]
 public class CommandBarElementContainer : ContentControl, ICommandBarElement, IStyleable
 {
     Type IStyleable.StyleKey => typeof(CommandBarElementContainer);
@@ -46,7 +49,7 @@ public class CommandBarElementContainer : ContentControl, ICommandBarElement, IS
         {
             if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
             {
-                PseudoClasses.Set(":overflow", value);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcOverflow, value);
             }
         }
     }

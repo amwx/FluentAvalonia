@@ -8,9 +8,19 @@ using FluentAvalonia.Core;
 using System.Collections.Specialized;
 using Avalonia.Input;
 using Avalonia.Metadata;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls;
+using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(SharedPseudoclasses.s_pcNoBorder, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcBorderRight, s_pcSingleBorder)]
+[TemplatePart(s_tpTabContentPresenter, typeof(ContentPresenter))]
+[TemplatePart(s_tpRightContentPresenter, typeof(ContentPresenter))]
+[TemplatePart(s_tpTabContainerGrid, typeof(Grid))]
+[TemplatePart(s_tpTabListView, typeof(TabViewListView))]
+[TemplatePart(s_tpAddButton, typeof(Button))]
 public partial class TabView
 {
     /// <summary>
@@ -313,4 +323,25 @@ public partial class TabView
     private IEnumerable _tabItems;
     private int _selectedIndex = 0;
     private object _selectedItem;
+
+    private const string s_tpTabContentPresenter = "TabContentPresenter";
+    private const string s_tpRightContentPresenter = "RightContentPresenter";
+    private const string s_tpTabContainerGrid = "TabContainerGrid";
+    private const string s_tpTabListView = "TabListView";
+    private const string s_tpAddButton = "AddButton";
+
+    // Technically these are template parts on the ScrollViewer, but we ref them here
+    private const string s_tpScrollDecreaseButton = "ScrollDecreaseButton";
+    private const string s_tpScrollIncreaseButton = "ScrollIncreaseButton";
+    
+    // These two come from the WinUI port, so they don't follow the normal naming convention for parity upstream
+    private static string c_tabViewItemMinWidthName = "TabViewItemMinWidth";
+    private static string c_tabViewItemMaxWidthName = "TabViewItemMaxWidth";
+
+    private const string s_pcSingleBorder = ":singleBorder";
+
+    private static readonly string SR_TabViewCloseButtonTooltipWithKA = "TabViewCloseButtonTooltipWithKA";
+    private static readonly string SR_TabViewAddButtonTooltip = "TabViewAddButtonTooltip";
+    private static readonly string SR_TabViewScrollDecreaseButtonTooltip = "TabViewScrollDecreaseButtonTooltip";
+    private static readonly string SR_TabViewScrollIncreaseButtonTooltip = "TabViewScrollIncreaseButtonTooltip";
 }

@@ -7,9 +7,19 @@ using Avalonia;
 using FluentAvalonia.Core.Attributes;
 using FluentAvalonia.Core;
 using System;
+using Avalonia.Controls.Metadata;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(s_pcSpinVisible, s_pcSpinPopup, s_pcSpinCollapsed)]
+[PseudoClasses(s_pcUpDisabled, s_pcDownDisabled)]
+[PseudoClasses(SharedPseudoclasses.s_pcHeader)]
+[TemplatePart(s_tpDownSpinButton, typeof(RepeatButton))]
+[TemplatePart(s_tpPopupDownSpinButton, typeof(RepeatButton))]
+[TemplatePart(s_tpUpSpinButton, typeof(RepeatButton))]
+[TemplatePart(s_tpPopupUpSpinButton, typeof(RepeatButton))]
+[TemplatePart(s_tpInputBox, typeof(TextBox))]
+[TemplatePart(s_tpUpDownPopup, typeof(Popup))]
 public partial class NumberBox
 {
     /// <summary>
@@ -403,4 +413,17 @@ public partial class NumberBox
     private NumberBoxValidationMode _validationMode;
     private double _value = double.NaN;
     private string _simpleFormat;
+
+    private const string s_tpDownSpinButton = "DownSpinButton";
+    private const string s_tpPopupDownSpinButton = "PopupDownSpinButton";
+    private const string s_tpUpSpinButton = "UpSpinButton";
+    private const string s_tpPopupUpSpinButton = "PopupUpSpinButton";
+    private const string s_tpInputBox = "InputBox";
+    private const string s_tpUpDownPopup = "UpDownPopup";
+
+    private const string s_pcSpinVisible = ":spinvisible";
+    private const string s_pcSpinPopup = ":spinpopup";
+    private const string s_pcSpinCollapsed = ":spincollapsed";
+    private const string s_pcUpDisabled = ":updisabled";
+    private const string s_pcDownDisabled = ":downdisabled";
 }

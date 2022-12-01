@@ -22,7 +22,7 @@
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Name="MainButton"
+                <Button Name="ShowFlyoutButton"
                            CornerRadius="{TemplateBinding CornerRadius}"
                            HorizontalContentAlignment="Stretch"
                            Padding="0">

@@ -6,9 +6,13 @@ using Avalonia;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Avalonia.Controls.Metadata;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+[PseudoClasses(SharedPseudoclasses.s_pcHotkey)]
+[PseudoClasses(SharedPseudoclasses.s_pcPressed)]
 public partial class MenuFlyoutItem
 {
     /// <summary>

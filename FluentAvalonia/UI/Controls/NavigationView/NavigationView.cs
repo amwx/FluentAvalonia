@@ -75,7 +75,7 @@ public partial class NavigationView : HeaderedContentControl
 
             base.OnApplyTemplate(e);
 
-            _paneToggleButton = e.NameScope.Get<Button>("TogglePaneButton");
+            _paneToggleButton = e.NameScope.Get<Button>(s_tpTogglePaneButton);
             if (_paneToggleButton != null)
             {
                 _paneToggleButton.Click += OnPaneToggleButtonClick;
@@ -85,15 +85,15 @@ public partial class NavigationView : HeaderedContentControl
                 //KeyboardAccelerator Win+Back
             }
 
-            _leftNavPaneHeaderContentBorder = e.NameScope.Get<ContentControl>("PaneHeaderContentBorder");
-            _leftNavPaneCustomContentBorder = e.NameScope.Get<ContentControl>("PaneCustomContentBorder");
-            _leftNavFooterContentBorder = e.NameScope.Get<ContentControl>("FooterContentBorder");
-            _paneHeaderOnTopPane = e.NameScope.Get<ContentControl>("PaneHeaderOnTopPane");
-            _paneTitleOnTopPane = e.NameScope.Get<ContentControl>("PaneTitleOnTopPane");
-            _paneCustomContentOnTopPane = e.NameScope.Get<ContentControl>("PaneCustomContentOnTopPane");
-            _paneFooterOnTopPane = e.NameScope.Get<ContentControl>("PaneFooterOnTopPane");
+            _leftNavPaneHeaderContentBorder = e.NameScope.Get<ContentControl>(s_tpPaneHeaderContentBorder);
+            _leftNavPaneCustomContentBorder = e.NameScope.Get<ContentControl>(s_tpPaneCustomContentBorder);
+            _leftNavFooterContentBorder = e.NameScope.Get<ContentControl>(s_tpFooterContentBorder);
+            _paneHeaderOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneHeaderOnTopPane);
+            _paneTitleOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneTitleOnTopPane);
+            _paneCustomContentOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneCustomContentOnTopPane);
+            _paneFooterOnTopPane = e.NameScope.Get<ContentControl>(s_tpPaneFooterOnTopPane);
 
-            _splitView = e.NameScope.Get<SplitView>("RootSplitView");
+            _splitView = e.NameScope.Get<SplitView>(s_tpRootSplitView);
             if (_splitView != null)
             {
                 _splitViewRevokers = new CompositeDisposable(
@@ -108,10 +108,10 @@ public partial class NavigationView : HeaderedContentControl
                 UpdateIsClosedCompact();
             }
 
-            _topNavGrid = e.NameScope.Get<Grid>("TopNavGrid");
+            _topNavGrid = e.NameScope.Get<Grid>(s_tpTopNavGrid);
 
             // (WinUI) Change code to NOT do this if we're in top nav mode, to prevent it from being realized:
-            _leftNavRepeater = e.NameScope.Get<ItemsRepeater>("MenuItemsHost");
+            _leftNavRepeater = e.NameScope.Get<ItemsRepeater>(s_tpMenuItemsHost);
             if (_leftNavRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -127,7 +127,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             // (WinUI) Change code to NOT do this if we're in left nav mode, to prevent it from being realized:
-            _topNavRepeater = e.NameScope.Get<ItemsRepeater>("TopNavMenuItemsHost");
+            _topNavRepeater = e.NameScope.Get<ItemsRepeater>(s_tpTopNavMenuItemsHost);
             if (_topNavRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -143,7 +143,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             //TODO: This may not be found b/c its in the button flyout
-            _topNavRepeaterOverflowView = e.NameScope.Get<ItemsRepeater>("TopNavMenuItemsOverflowHost");
+            _topNavRepeaterOverflowView = e.NameScope.Get<ItemsRepeater>(s_tpTopNavMenuItemsOverflowHost);
             if (_topNavRepeaterOverflowView != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -155,7 +155,7 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavRepeater.ItemTemplate = _itemsFactory;
             }
 
-            _topNavOverflowButton = e.NameScope.Get<Button>("TopNavOverflowButton");
+            _topNavOverflowButton = e.NameScope.Get<Button>(s_tpTopNavOverflowButton);
             if (_topNavOverflowButton != null)
             {
                 // Newest style doesn't have content, only an icon, so we'll skip setting that here like WinUI
@@ -174,7 +174,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             // Change code to NOT do this if we're in top nav mode, to prevent it from being realized:
-            _leftNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>("FooterMenuItemsHost");
+            _leftNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>(s_tpFooterMenuItemsHost);
             if (_leftNavFooterMenuRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -190,7 +190,7 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             // Change code to NOT do this if we're in left nav mode, to prevent it from being realized:
-            _topNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>("TopFooterMenuItemsHost");
+            _topNavFooterMenuRepeater = e.NameScope.Get<ItemsRepeater>(s_tpTopFooterMenuItemsHost);
             if (_topNavFooterMenuRepeater != null)
             {
                 // Disabling virtualization for now because of https://github.com/microsoft/microsoft-ui-xaml/issues/2095
@@ -205,15 +205,15 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavFooterMenuRepeater.ItemTemplate = _itemsFactory;
             }
 
-            _topNavContentOverlayAreaGrid = e.NameScope.Get<Border>("TopNavContentOverlayAreaGrid");
-            _leftNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>("PaneAutoSuggestBoxPresenter");
-            _topNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>("TopPaneAutoSuggestBoxPresenter");
+            _topNavContentOverlayAreaGrid = e.NameScope.Get<Border>(s_tpTopNavContentOverlayAreaGrid);
+            _leftNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>(s_tpPaneAutoSuggestBoxPresenter);
+            _topNavAutoSuggestBoxPresenter = e.NameScope.Get<ContentControl>(s_tpTopPaneAutoSuggestBoxPresenter);
 
-            _paneContentGrid = e.NameScope.Get<Grid>("PaneContentGrid");
+            _paneContentGrid = e.NameScope.Get<Grid>(s_tpPaneContentGrid);
 
-            _contentLeftPadding = e.NameScope.Get<Rectangle>("ContentLeftPadding");
+            _contentLeftPadding = e.NameScope.Get<Rectangle>(s_tpContentLeftPadding);
 
-            var placeholderGrid = e.NameScope.Get<Grid>("PlaceholderGrid");
+            var placeholderGrid = e.NameScope.Get<Grid>(s_tpPlaceholderGrid);
             if (placeholderGrid != null)
             {
                 _paneHeaderCloseButtonColumn = placeholderGrid.ColumnDefinitions[0];
@@ -221,16 +221,16 @@ public partial class NavigationView : HeaderedContentControl
                 _paneHeaderContentBorderRow = placeholderGrid.RowDefinitions[0];
             }
 
-            _paneTitleFrameworkElement = e.NameScope.Get<IControl>("PaneTitleTextBlock");
-            _paneTitlePresenter = e.NameScope.Get<ContentControl>("PaneTitlePresenter");
+            _paneTitleFrameworkElement = e.NameScope.Get<IControl>(s_tpPaneTitleTextBlock);
+            _paneTitlePresenter = e.NameScope.Get<ContentControl>(s_tpPaneTitlePresenter);
 
-            _paneTitleHolderFrameworkElement = e.NameScope.Get<Control>("PaneTitleHolder");
+            _paneTitleHolderFrameworkElement = e.NameScope.Get<Control>(s_tpPaneTitleHolder);
             if (_paneTitleHolderFrameworkElement != null)
             {
                 _paneTitleHolderRevoker = _paneTitleHolderFrameworkElement.GetObservable(BoundsProperty).Subscribe(OnPaneTitleHolderSizeChanged);
             }
 
-            _paneSearchButton = e.NameScope.Get<Button>("PaneAutoSuggestButton");
+            _paneSearchButton = e.NameScope.Get<Button>(s_tpPaneAutoSuggestButton);
             if (_paneSearchButton != null)
             {
                 _paneSearchButton.Click += OnPaneSearchButtonClick;
@@ -240,7 +240,7 @@ public partial class NavigationView : HeaderedContentControl
                 ToolTip.SetTip(_paneSearchButton, searchButtonName);
             }
 
-            _backButton = e.NameScope.Get<Button>("NavigationViewBackButton");
+            _backButton = e.NameScope.Get<Button>(s_tpNavigationViewBackButton);
             if (_backButton != null)
             {
                 _backButton.Click += OnBackButtonClicked;
@@ -252,7 +252,7 @@ public partial class NavigationView : HeaderedContentControl
 
             //titlebar
 
-            _closeButton = e.NameScope.Get<Button>("NavigationViewCloseButton");
+            _closeButton = e.NameScope.Get<Button>(s_tpNavigationViewCloseButton);
             if (_closeButton != null)
             {
                 _closeButton.Click += OnPaneToggleButtonClick;
@@ -265,10 +265,10 @@ public partial class NavigationView : HeaderedContentControl
                 _itemsContainerRow = _paneContentGrid.RowDefinitions[_paneContentGrid.RowDefinitions.Count - 1];
             }
 
-            _menuItemsScrollViewer = e.NameScope.Get<ScrollViewer>("MenuItemsScrollViewer");
-            _footerItemsScrollViewer = e.NameScope.Get<ScrollViewer>("FooterItemsScrollViewer");
+            _menuItemsScrollViewer = e.NameScope.Get<ScrollViewer>(s_tpMenuItemsScrollViewer);
+            _footerItemsScrollViewer = e.NameScope.Get<ScrollViewer>(s_tpFooterItemsScrollViewer);
 
-            _itemsContainer = e.NameScope.Find<IControl>("ItemsContainerGrid");
+            _itemsContainer = e.NameScope.Find<IControl>(s_tpItemsContainerGrid);
             if (_itemsContainerRow != null)
             {
                 _itemsContainerSizeRevoker = _itemsContainer.GetObservable(BoundsProperty).Subscribe(OnItemsContainerSizeChanged);
@@ -2344,41 +2344,41 @@ public partial class NavigationView : HeaderedContentControl
 
                             if ((_footerMenuItems != null && _footerMenuItems.Count() == 0) && !IsSettingsVisible)
                             {
-                                PseudoClasses.Set(":separator", false);
+                                PseudoClasses.Set(s_pcSeparator, false);
                                 return totalHeight;
                             }
                             else if (_menuItems != null && _menuItems.Count() == 0)
                             {
                                 _footerItemsScrollViewer.MaxHeight = totalHeight;
-                                PseudoClasses.Set(":separator", false);
+                                PseudoClasses.Set(s_pcSeparator, false);
                                 return 0d;
                             }
                             else if (totalHeight >= menuItemsDesiredHeight + footerGroupActualHeight)
                             {
                                 // We have enough space for two so let everyone get as much as they need
                                 _footerItemsScrollViewer.MaxHeight = footerActualHeight;
-                                PseudoClasses.Set(":separator", false);
+                                PseudoClasses.Set(s_pcSeparator, false);
                                 return totalHeight - footerGroupActualHeight;
                             }
                             else if (menuItemsDesiredHeight < totalHeightHalf)
                             {
                                 // Footer items exceed over the half, so let's limit them.
                                 _footerItemsScrollViewer.MaxHeight = (totalHeight - menuItemsActualHeight);
-                                PseudoClasses.Set(":separator", true);
+                                PseudoClasses.Set(s_pcSeparator, true);
                                 return menuItemsActualHeight;
                             }
                             else if (footerGroupActualHeight <= totalHeightHalf)
                             {
                                 // Menu items exceed over the half, so let's limit them.
                                 _footerItemsScrollViewer.MaxHeight = footerActualHeight;
-                                PseudoClasses.Set(":separator", true);
+                                PseudoClasses.Set(s_pcSeparator, true);
                                 return totalHeight - footerGroupActualHeight;
                             }
                             else
                             {
                                 // Both are more than half the height, so split evenly.
                                 _footerItemsScrollViewer.MaxHeight = (totalHeightHalf);
-                                PseudoClasses.Set(":separator", true);
+                                PseudoClasses.Set(s_pcSeparator, true);
                                 return totalHeightHalf;
                             }
                         }
@@ -2824,13 +2824,13 @@ public partial class NavigationView : HeaderedContentControl
                 if (_splitView.DisplayMode == SplitViewDisplayMode.CompactInline ||
                     _splitView.DisplayMode == SplitViewDisplayMode.CompactOverlay)
                 {
-                    PseudoClasses.Set(":listsizecompact", true);
+                    PseudoClasses.Set(s_pcListSizeCompact, true);
                     //PseudoClasses.Set(":listsizefull", false);
                     UpdatePaneToggleSize();
                 }
                 else
                 {
-                    PseudoClasses.Set(":listsizecompact", false);
+                    PseudoClasses.Set(s_pcListSizeCompact, false);
                     //PseudoClasses.Set(":listsizefull", true);
                 }
             }
@@ -2846,7 +2846,7 @@ public partial class NavigationView : HeaderedContentControl
     {
         if (_leftNavRepeater != null)
         {
-            PseudoClasses.Set(":listsizecompact", false);
+            PseudoClasses.Set(s_pcListSizeCompact, false);
             //PseudoClasses.Set(":listsizefull", true);
         }
 
@@ -3030,7 +3030,7 @@ public partial class NavigationView : HeaderedContentControl
             }
         }
 
-        PseudoClasses.Set(":backbuttoncollapsed", !showBack);
+        PseudoClasses.Set(s_pcBackButtonCollapsed, !showBack);
         UpdateTitleBarPadding();
     }
 
@@ -3113,38 +3113,38 @@ public partial class NavigationView : HeaderedContentControl
         switch (vsdm)
         {
             case NavigationViewVisualStateDisplayMode.MinimalWithBackButton:
-                PseudoClasses.Set(":minimalwithback", true);
-                PseudoClasses.Set(":minimal", false);
-                PseudoClasses.Set(":topnavminimal", false);
-                PseudoClasses.Set(":compact", false);
-                PseudoClasses.Set(":expanded", false);
+                PseudoClasses.Set(s_pcMinimalWithBack, true);
+                PseudoClasses.Set(s_pcMinimal, false);
+                PseudoClasses.Set(s_pcTopNavMinimal, false);
+                PseudoClasses.Set(s_pcCompact, false);
+                PseudoClasses.Set(s_pcExpanded, false);
                 svdm = SplitViewDisplayMode.Overlay;
                 break;
 
             case NavigationViewVisualStateDisplayMode.Minimal:
-                PseudoClasses.Set(":minimalwithback", false);
-                PseudoClasses.Set(":minimal", true);
-                PseudoClasses.Set(":topnavminimal", false);
-                PseudoClasses.Set(":compact", false);
-                PseudoClasses.Set(":expanded", false);
+                PseudoClasses.Set(s_pcMinimalWithBack, false);
+                PseudoClasses.Set(s_pcMinimal, true);
+                PseudoClasses.Set(s_pcTopNavMinimal, false);
+                PseudoClasses.Set(s_pcCompact, false);
+                PseudoClasses.Set(s_pcExpanded, false);
                 svdm = SplitViewDisplayMode.Overlay;
                 break;
 
             case NavigationViewVisualStateDisplayMode.Compact:
-                PseudoClasses.Set(":minimalwithback", false);
-                PseudoClasses.Set(":minimal", false);
-                PseudoClasses.Set(":topnavminimal", false);
-                PseudoClasses.Set(":compact", true);
-                PseudoClasses.Set(":expanded", false);
+                PseudoClasses.Set(s_pcMinimalWithBack, false);
+                PseudoClasses.Set(s_pcMinimal, false);
+                PseudoClasses.Set(s_pcTopNavMinimal, false);
+                PseudoClasses.Set(s_pcCompact, true);
+                PseudoClasses.Set(s_pcExpanded, false);
                 svdm = SplitViewDisplayMode.CompactOverlay;
                 break;
 
             case NavigationViewVisualStateDisplayMode.Expanded:
-                PseudoClasses.Set(":minimalwithback", false);
-                PseudoClasses.Set(":minimal", false);
-                PseudoClasses.Set(":topnavminimal", false);
-                PseudoClasses.Set(":compact", false);
-                PseudoClasses.Set(":expanded", true);
+                PseudoClasses.Set(s_pcMinimalWithBack, false);
+                PseudoClasses.Set(s_pcMinimal, false);
+                PseudoClasses.Set(s_pcTopNavMinimal, false);
+                PseudoClasses.Set(s_pcCompact, false);
+                PseudoClasses.Set(s_pcExpanded, true);
                 svdm = SplitViewDisplayMode.CompactInline;
                 break;
         }
@@ -3157,11 +3157,11 @@ public partial class NavigationView : HeaderedContentControl
 
         if (IsTopNavigationView)
         {
-            PseudoClasses.Set(":minimalwithback", false);
-            PseudoClasses.Set(":minimal", false);
-            PseudoClasses.Set(":topnavminimal", true);
-            PseudoClasses.Set(":compact", false);
-            PseudoClasses.Set(":expanded", false);
+            PseudoClasses.Set(s_pcMinimalWithBack, false);
+            PseudoClasses.Set(s_pcMinimal, false);
+            PseudoClasses.Set(s_pcTopNavMinimal, true);
+            PseudoClasses.Set(s_pcCompact, false);
+            PseudoClasses.Set(s_pcExpanded, false);
         }
 
         // Updating the splitview 'DisplayMode' property in some diplaymodes causes children to be added to the popup root.
@@ -3182,8 +3182,8 @@ public partial class NavigationView : HeaderedContentControl
         if (!_appliedTemplate)
             return;
 
-        PseudoClasses.Set(":autosuggestcollapsed", AutoCompleteBox == null);
-        PseudoClasses.Set(":settingscollapsed", IsSettingsVisible);
+        PseudoClasses.Set(s_pcAutoSuggestCollapsed, AutoCompleteBox == null);
+        PseudoClasses.Set(s_pcSettingsCollapsed, IsSettingsVisible);
 
         if (IsTopNavigationView)
         {
@@ -3192,7 +3192,7 @@ public partial class NavigationView : HeaderedContentControl
         else
         {
             //UpdateLeftNavigationOnlyVisualState(); [Zero point in having a dedicated method for this]
-            PseudoClasses.Set(":panetogglecollapsed", !IsPaneToggleButtonVisible || _isLeftPaneTitleEmpty);
+            PseudoClasses.Set(s_pcPaneToggleCollapsed, !IsPaneToggleButtonVisible || _isLeftPaneTitleEmpty);
         }
     }
 
@@ -3210,12 +3210,12 @@ public partial class NavigationView : HeaderedContentControl
             if (IsPaneOpen && (_splitView.DisplayMode == SplitViewDisplayMode.CompactOverlay ||
                 _splitView.DisplayMode == SplitViewDisplayMode.Overlay))
             {
-                PseudoClasses.Set(":panenotoverlaying", false);
+                PseudoClasses.Set(s_pcPaneNotOverlaying, false);
             }
             else
             {
                 //PaneNotOverlaying VisualState
-                PseudoClasses.Set(":panenotoverlaying", true);
+                PseudoClasses.Set(s_pcPaneNotOverlaying, true);
             }
         }
     }
@@ -3354,13 +3354,13 @@ public partial class NavigationView : HeaderedContentControl
         _isClosedCompact = !_splitView.IsPaneOpen && (svdm == SplitViewDisplayMode.CompactInline ||
             svdm == SplitViewDisplayMode.CompactOverlay);
 
-        PseudoClasses.Set(":closedcompact", _isClosedCompact);
+        PseudoClasses.Set(s_pcClosedCompact, _isClosedCompact);
         //PseudoClasses.Set(":notclosedcompact", !_isClosedCompact); (default)
 
 
         //_initialListSizeStateSet = true;
 
-        PseudoClasses.Set(":listsizecompact", _isClosedCompact);
+        PseudoClasses.Set(s_pcListSizeCompact, _isClosedCompact);
         //PseudoClasses.Set(":listsizefull", !_isClosedCompact); (default)
 
 
@@ -3576,14 +3576,14 @@ public partial class NavigationView : HeaderedContentControl
                 TemplateSettings.TopPaneVisibility = false;
             }
 
-            PseudoClasses.Set(":panecollapsed", false);
+            PseudoClasses.Set(s_pcPaneCollapsed, false);
         }
         else
         {
             TemplateSettings.LeftPaneVisibility = false;
             TemplateSettings.TopPaneVisibility = false;
 
-            PseudoClasses.Set(":panecollapsed", true);
+            PseudoClasses.Set(s_pcPaneCollapsed, true);
         }
     }
 
@@ -3646,7 +3646,7 @@ public partial class NavigationView : HeaderedContentControl
         // If theme resource is RS5 or later, we will not show header if header is null.
         showHeader = Header != null && showHeader;
 
-        PseudoClasses.Set(":headercollapsed", !showHeader);
+        PseudoClasses.Set(s_pcHeaderCollapsed, !showHeader);
     }
 
     private void UpdatePaneTitleMargins() { } //SKIP RS4-

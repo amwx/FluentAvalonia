@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -33,13 +34,13 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
                 if (availableSize.Width > _adaptiveWidthTrigger)
                 {
                     _isFooterAtBottom = false;
-                    PseudoClasses.Set(":footerBottom", false);
+                    PseudoClasses.Set(s_pcFooterBottom, false);
                 }
             }
             else if (availableSize.Width < _adaptiveWidthTrigger)
             {
                 _isFooterAtBottom = true;
-                PseudoClasses.Set(":footerBottom", true);
+                PseudoClasses.Set(s_pcFooterBottom, true);
             }
         }
 
@@ -50,14 +51,14 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
     {
         base.OnApplyTemplate(e);
 
-        _adaptiveWidthDisposable = this.GetResourceObservable("SettingsExpanderItemAdaptiveWidthTrigger")
+        _adaptiveWidthDisposable = this.GetResourceObservable(s_resAdaptiveWidthTrigger)
             .Subscribe(OnAdaptiveWidthValueChanged);
 
         // We only want to allow interaction on the SettingsExpanderItem IF we're a child item,
         // because we use this in the header of the expander for the SettingsExpander where the
         // ToggleButton does the heavy lifting for us
         _allowInteraction = IsClickEnabled && this.FindAncestorOfType<ToggleButton>() == null;
-        PseudoClasses.Set(":allowClick", _allowInteraction);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcAllowClick, _allowInteraction);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -164,12 +165,12 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
             if (new Rect(Bounds.Size).Contains(pt.Position))
             {
                 _isPressed = true;
-                PseudoClasses.Set(":pressed", true);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, true);
             }
             else
             {
                 _isPressed = false;
-                PseudoClasses.Set(":pressed", false);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
             }
         }
     }
@@ -180,7 +181,7 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         if (_isPressed && _allowInteraction)
         {
             _isPressed = false;
-            PseudoClasses.Set(":pressed", false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
 
             if (!e.Handled)
             {
@@ -195,7 +196,7 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
     {
         base.OnPointerCaptureLost(e);
         _isPressed = false;
-        PseudoClasses.Set(":pressed", false);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
     }
 
     /// <summary>
@@ -216,7 +217,7 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
     private void OnIconSourceChanged(AvaloniaPropertyChangedEventArgs args)
     {
         var newIcon = args.GetNewValue<IconSource>();
-        PseudoClasses.Set(":icon", newIcon != null);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, newIcon != null);
 
         TemplateSettings.Icon = IconHelpers.CreateFromUnknown(newIcon);
     }
@@ -227,7 +228,7 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         {
             // Only set the icon if IsClickEnabled
             var newIcon = args.GetNewValue<IconSource>();
-            PseudoClasses.Set(":actionIcon", newIcon != null);
+            PseudoClasses.Set(s_pcActionIcon, newIcon != null);
 
             TemplateSettings.ActionIcon = IconHelpers.CreateFromUnknown(newIcon);
         }
@@ -237,36 +238,36 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
     {
         bool enabled = args.GetNewValue<bool>();
         _allowInteraction = enabled && this.FindAncestorOfType<ToggleButton>() == null;
-        PseudoClasses.Set(":allowClick", _allowInteraction);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcAllowClick, _allowInteraction);
 
         var actionIcon = ActionIconSource;
         if (!enabled && actionIcon != null)
         {
             // If not enabled, clear the ActionIcon in template settings
             TemplateSettings.ActionIcon = null;
-            PseudoClasses.Set(":actionIcon", false);
+            PseudoClasses.Set(s_pcActionIcon, false);
         }
         else if (actionIcon != null)
         {
             TemplateSettings.ActionIcon = IconHelpers.CreateFromUnknown(actionIcon);
-            PseudoClasses.Set(":actionIcon", true);
+            PseudoClasses.Set(s_pcActionIcon, true);
         }
     }
 
     private void OnFooterChanged(AvaloniaPropertyChangedEventArgs args)
     {
         _hasFooter = args.NewValue != null;
-        PseudoClasses.Set(":footer", _hasFooter);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcFooter, _hasFooter);
     }
 
     private void OnContentChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        PseudoClasses.Set(":content", args.NewValue != null);
+        PseudoClasses.Set(s_pcContent, args.NewValue != null);
     }
 
     private void OnDescriptionChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        PseudoClasses.Set(":description", args.NewValue != null);
+        PseudoClasses.Set(s_pcDescription, args.NewValue != null);
     }
 
     private void CanExecuteChanged(object sender, EventArgs e)

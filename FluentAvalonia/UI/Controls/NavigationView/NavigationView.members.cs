@@ -67,10 +67,10 @@ public partial class NavigationView : HeaderedContentControl
     private bool IsTopPrimaryListVisible => _topNavRepeater != null && TemplateSettings.TopPaneVisibility;
 
     private double GetPaneToggleButtonWidth() =>
-        this.TryFindResource("PaneToggleButtonWidth", out object value) ? (double)value : 40;
+        this.TryFindResource(s_resPaneToggleButtonWidth, out object value) ? (double)value : 40;
 
     private double GetPaneToggleButtonHeight() =>
-        this.TryFindResource("PaneToggleButtonHeight", out object value) ? (double)value : 40;
+        this.TryFindResource(s_resPaneToggleButtonHeight, out object value) ? (double)value : 40;
 
     internal bool IsOverlay => _splitView != null && _splitView.DisplayMode == SplitViewDisplayMode.Overlay;
 

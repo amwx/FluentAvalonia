@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using FluentAvalonia.Core;
 using System;
 
 namespace FluentAvalonia.UI.Controls;
@@ -59,29 +60,29 @@ public partial class InfoBadge : TemplatedControl
         var icoSource = IconSource;
         if (Value >= 0)
         {
-            PseudoClasses.Set(":value", true);
+            PseudoClasses.Set(s_pcValue, true);
 
-            PseudoClasses.Set(":fonticon", false);
-            PseudoClasses.Set(":icon", false);
-            PseudoClasses.Set(":dot", false);
+            PseudoClasses.Set(s_pcFontIcon, false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, false);
+            PseudoClasses.Set(s_pcDot, false);
         }
         else if (icoSource != null)
         {
             TemplateSettings.IconElement = IconHelpers.CreateFromUnknown(icoSource);
 
-            PseudoClasses.Set(":fonticon", icoSource is FontIconSource);
-            PseudoClasses.Set(":icon", icoSource is not FontIconSource);
+            PseudoClasses.Set(s_pcFontIcon, icoSource is FontIconSource);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, icoSource is not FontIconSource);
 
-            PseudoClasses.Set(":value", false);
-            PseudoClasses.Set(":dot", false);
+            PseudoClasses.Set(s_pcValue, false);
+            PseudoClasses.Set(s_pcDot, false);
         }
         else
         {
-            PseudoClasses.Set(":dot", true);
+            PseudoClasses.Set(s_pcDot, true);
 
-            PseudoClasses.Set(":value", false);
-            PseudoClasses.Set(":fonticon", false);
-            PseudoClasses.Set(":icon", false);
+            PseudoClasses.Set(s_pcValue, false);
+            PseudoClasses.Set(s_pcFontIcon, false);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, false);
         }
     }
 

@@ -10,7 +10,9 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a header for a group of menu items in a NavigationMenu.
 /// </summary>
-[PseudoClasses(":headertextcollapsed", ":headertextvisible")]
+[PseudoClasses(s_pcHeaderTextCollapsed, s_pcHeaderTextVisible)]
+[PseudoClasses(s_pcTopMode)]
+[TemplatePart(s_tpRootGrid, typeof(Grid))]
 public class NavigationViewItemHeader : NavigationViewItemBase
 {
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -29,7 +31,7 @@ public class NavigationViewItemHeader : NavigationViewItemBase
             UpdateIsClosedCompact();
         }
 
-        _rootGrid = e.NameScope.Find<Grid>("RootGrid");
+        _rootGrid = e.NameScope.Find<Grid>(s_tpRootGrid);
 
         UpdateVisualState();
         UpdateItemIndentation();
@@ -65,13 +67,13 @@ public class NavigationViewItemHeader : NavigationViewItemBase
     {
         //states :headertextcollapsed, :headertextvisible
         bool collapsed = _isClosedCompact && IsTopLevelItem;
-        PseudoClasses.Set(":headertextcollapsed", collapsed);
-        PseudoClasses.Set(":headertextvisible", !collapsed);
+        PseudoClasses.Set(s_pcHeaderTextCollapsed, collapsed);
+        PseudoClasses.Set(s_pcHeaderTextVisible, !collapsed);
 
         var navView = GetNavigationView;
         if (navView != null)
         {
-            PseudoClasses.Set(":topmode", navView.PaneDisplayMode == NavigationViewPaneDisplayMode.Top);
+            PseudoClasses.Set(s_pcTopMode, navView.PaneDisplayMode == NavigationViewPaneDisplayMode.Top);
         }
     }
 
@@ -88,4 +90,10 @@ public class NavigationViewItemHeader : NavigationViewItemBase
     private IDisposable _splitViewRevokers;
     private Grid _rootGrid;
     private bool _isClosedCompact;
+
+    private const string s_tpRootGrid = "RootGrid";
+
+    private const string s_pcTopMode = ":topmode";
+    private const string s_pcHeaderTextVisible = ":headertextvisible";
+    private const string s_pcHeaderTextCollapsed = ":headertextcollapsed";
 }
