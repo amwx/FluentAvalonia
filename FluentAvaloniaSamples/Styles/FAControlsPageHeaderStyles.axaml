@@ -174,7 +174,6 @@
         <Setter Property="Opacity" Value="1" />
         <Setter Property="Grid.Column" Value="1" />
         <Setter Property="Width" Value="125" />
-        <Setter Property="Height" Value="125" />
         <Setter Property="Transitions">
             <Transitions>
                 <DoubleTransition Property="Height" Duration="00:00:00.25"

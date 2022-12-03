@@ -347,7 +347,6 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Width" Value="20" />
                 <Setter Property="Height" Value="20" />
-                <Setter Property="Margin" Value="12 0" />
                 <Setter Property="Margin" Value="38 0 12 0" />
             </Style>
             <Style Selector="^ /template/ TextBlock#OverflowTextLabel">
@@ -681,7 +680,6 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Width" Value="20" />
                 <Setter Property="Height" Value="20" />
-                <Setter Property="Margin" Value="12 0" />
                 <Setter Property="Margin" Value="38 0 12 0" />
             </Style>
             <Style Selector="^ /template/ TextBlock#OverflowTextLabelF">
