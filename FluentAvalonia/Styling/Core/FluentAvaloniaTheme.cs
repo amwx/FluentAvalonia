@@ -8,23 +8,28 @@ using FluentAvalonia.Core;
 using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Media;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.Styling;
 
-public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
+/// <summary>
+/// Theme manager for FluentAvalonia, managing various components of the Fluentv2 theme
+/// like AccentColor, styles, and platform settings
+/// </summary>
+public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 {
     public FluentAvaloniaTheme(Uri baseUri)
     {
         _baseUri = baseUri;
+        Init();
     }
 
     public FluentAvaloniaTheme(IServiceProvider serviceProvider)
     {
         _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
+        Init();
     }
 
     /// <summary>
@@ -117,37 +122,29 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
     public TextVerticalAlignmentOverride TextVerticalAlignmentOverrideBehavior { get; set; } =
         TextVerticalAlignmentOverride.EnabledNonWindows;
 
-    public IResourceHost Owner
-    {
-        get => _owner;
-        set
-        {
-            if (_owner != value)
-            {
-                _owner = value;
-                OwnerChanged?.Invoke(this, EventArgs.Empty);
+    //public IResourceHost Owner
+    //{
+    //    get => _owner;
+    //    set
+    //    {
+    //        if (_owner != value)
+    //        {
+    //            _owner = value;
+    //            OwnerChanged?.Invoke(this, EventArgs.Empty);
 
-                if (!_hasLoaded)
-                {
-                    Init();
-                }
-            }
-        }
-    }
+    //            if (!_hasLoaded)
+    //            {
+    //                Init();
+    //            }
+    //        }
+    //    }
+    //}
 
     bool IResourceNode.HasResources => true;
 
-    public IReadOnlyList<IStyle> Children => _styles;
-
-    public event EventHandler OwnerChanged;
     public event TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
 
-    public SelectorMatchResult TryAttach(IStyleable target, object host)
-    {
-        return _styleCache.TryAttach(_styles, target, host);
-    }
-
-    public bool TryGetResource(object key, out object value)
+    public new bool TryGetResource(object key, out object value)
     {
         // Github build failing with this not being set, even tho it passes locally
         value = null;
@@ -158,57 +155,14 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
         if (Application.Current?.Resources.TryGetResource(key, out value) == true)
             return true;
 
-        // This checks the actual ResourceDictionary where the SystemResources are stored
-        // and checks the merged dictionaries where base resources and theme resources are
-        if (_themeResources.TryGetResource(key, out value))
-            return true;
-
-        if (_styles.TryGetResource(key, out value))
+        if (base.TryGetResource(key, out value) == true)
             return true;
 
         value = null;
         return false;
     }
 
-    void IResourceProvider.AddOwner(IResourceHost owner)
-    {
-        owner = owner ?? throw new ArgumentNullException(nameof(owner));
-
-        if (Owner != null)
-            throw new InvalidOperationException("An owner already exists");
-
-        Owner = owner;
-
-        (_themeResources as IResourceProvider).AddOwner(owner);
-
-        for (int i = 0; i < Children.Count; i++)
-        {
-            if (Children[i] is IResourceProvider rp)
-            {
-                rp.AddOwner(owner);
-            }
-        }
-    }
-
-    void IResourceProvider.RemoveOwner(IResourceHost owner)
-    {
-        owner = owner ?? throw new ArgumentNullException(nameof(owner));
-
-        if (Owner == owner)
-        {
-            Owner = null;
-
-            (_themeResources as IResourceProvider).RemoveOwner(owner);
-
-            for (int i = 0; i < Children.Count; i++)
-            {
-                if (Children[i] is IResourceProvider rp)
-                {
-                    rp.RemoveOwner(owner);
-                }
-            }
-        }
-    }
+    bool IResourceNode.TryGetResource(object key, out object value) => this.TryGetResource(key, out value);
 
     /// <summary>
     /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be
@@ -262,11 +216,11 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
         _requestedTheme = ResolveThemeAndInitializeSystemResources();
 
         // Base resources
-        _themeResources.MergedDictionaries.Add(
+        Resources.MergedDictionaries.Add(
             (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/StylesV2/BaseResources.axaml"), _baseUri));
 
         // Theme resource colors/brushes
-        _themeResources.MergedDictionaries.Add(
+        Resources.MergedDictionaries.Add(
             (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
@@ -275,7 +229,7 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
         }
 
         // Load the controls
-        _styles = (Styles)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/ControlThemes/Controls.axaml"), _baseUri);
+        Add((Styles)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/ControlThemes/Controls.axaml"), _baseUri));
 
         SetTextAlignmentOverrides();
 
@@ -292,12 +246,12 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
             _requestedTheme = newTheme;
 
             // Remove the old theme of any resources
-            if (_themeResources.Count > 0)
+            if (Resources.Count > 0)
             {
-                _themeResources.MergedDictionaries.RemoveAt(1);
+                Resources.MergedDictionaries.RemoveAt(1);
             }
 
-            _themeResources.MergedDictionaries.Add(
+            Resources.MergedDictionaries.Add(
                 (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
 
             if (string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
@@ -434,11 +388,11 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
         // These are added to the internal _themeResources dictionary, so user can still
         // override these elsewhere if desired
 
-        _themeResources.Add("CheckBoxPadding", new Thickness(8, 5, 0, 5));
-        _themeResources.Add("ComboBoxPadding", new Thickness(12, 5, 0, 5));
-        _themeResources.Add("ComboBoxItemThemePadding", new Thickness(11, 5, 11, 5));
+        Resources.Add("CheckBoxPadding", new Thickness(8, 5, 0, 5));
+        Resources.Add("ComboBoxPadding", new Thickness(12, 5, 0, 5));
+        Resources.Add("ComboBoxItemThemePadding", new Thickness(11, 5, 11, 5));
         // Note that this is a theme resource, but as of now is the same for all three themes
-        _themeResources.Add("TextControlThemePadding", new Thickness(10, 5, 6, 5));
+        Resources.Add("TextControlThemePadding", new Thickness(10, 5, 6, 5));
 
         // Now we add some style overrides to adjust some properties
         // Yes, I'm doing this in C# rather than Xaml - I don't want to create a Xaml file
@@ -452,7 +406,7 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
             return x.OfType(typeof(CheckBox));
         });
         s.Setters.Add(new Setter(ContentControl.VerticalContentAlignmentProperty, VerticalAlignment.Center));
-        _styles.Add(s);
+        Add(s);
 
         // Set Padding & VCA on RadioButton to center the content
         var s2 = new Style(x =>
@@ -461,7 +415,7 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
         });
         s2.Setters.Add(new Setter(ContentControl.VerticalContentAlignmentProperty, VerticalAlignment.Center));
         s2.Setters.Add(new Setter(Decorator.PaddingProperty, new Thickness(8, 6, 0, 6)));
-        _styles.Add(s2);
+        Add(s2);
 
         // Center the TextBlock in ComboBox
         // This is special - we only want to do this if the content is a string - otherwise custom content
@@ -471,7 +425,7 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
             return x.OfType<ComboBox>().Template().OfType<ContentControl>().Child().OfType<TextBlock>();
         });
         s3.Setters.Add(new Setter(Layoutable.VerticalAlignmentProperty, VerticalAlignment.Center));
-        _styles.Add(s3);
+        Add(s3);
     }
        
     private void LoadCustomAccentColor()
@@ -633,22 +587,17 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
 
     private void AddOrUpdateSystemResource(object key, object value)
     {
-        if (_themeResources.ContainsKey(key))
+        if (Resources.ContainsKey(key))
         {
-            _themeResources[key] = value;
+            Resources[key] = value;
         }
         else
         {
-            _themeResources.Add(key, value);
+            Resources.Add(key, value);
         }
     }
 
     private bool _hasLoaded;
-    private Styles _styles;
-    private readonly StyleCache _styleCache = new StyleCache();
-    private readonly ResourceDictionary _themeResources = new ResourceDictionary();
-    //private ResourceDictionary _controlThemes;
-    private IResourceHost _owner;
     private string _requestedTheme = null;
     private Uri _baseUri;
     private Color? _customAccentColor;
@@ -656,51 +605,4 @@ public partial class FluentAvaloniaTheme : IStyle, IResourceProvider
     public static readonly string LightModeString = "Light";
     public static readonly string DarkModeString = "Dark";
     public static readonly string HighContrastModeString = "HighContrast";
-
-    private class StyleCache : Dictionary<Type, List<IStyle>>
-    {
-        public SelectorMatchResult TryAttach(IList<IStyle> styles, IStyleable target, object host)
-        {
-            if (TryGetValue(target.StyleKey, out var cached))
-            {
-                if (cached is object)
-                {
-                    var result = SelectorMatchResult.NeverThisType;
-
-                    foreach (var style in cached)
-                    {
-                        var childResult = style.TryAttach(target, host);
-                        if (childResult > result)
-                            result = childResult;
-                    }
-
-                    return result;
-                }
-                else
-                {
-                    return SelectorMatchResult.NeverThisType;
-                }
-            }
-            else
-            {
-                List<IStyle> matches = null;
-
-                var key = target.StyleKey;
-                foreach (var child in styles)
-                {
-                    if (child.TryAttach(target, host) != SelectorMatchResult.NeverThisType)
-                    {
-                        matches ??= new List<IStyle>();
-                        matches.Add(child);
-                    }
-                }
-
-                Add(target.StyleKey, matches);
-
-                return matches is null ?
-                    SelectorMatchResult.NeverThisType :
-                    SelectorMatchResult.AlwaysThisType;
-            }
-        }
-    }
 }
