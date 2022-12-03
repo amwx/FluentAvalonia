@@ -23,8 +23,8 @@ public class OptionsDisplayItem : TemplatedControl
     public static readonly StyledProperty<bool> NavigatesProperty =
         AvaloniaProperty.Register<OptionsDisplayItem, bool>(nameof(Navigates));
 
-    public static readonly StyledProperty<IControl> ActionButtonProperty =
-        AvaloniaProperty.Register<OptionsDisplayItem, IControl>(nameof(ActionButton));
+    public static readonly StyledProperty<Control> ActionButtonProperty =
+        AvaloniaProperty.Register<OptionsDisplayItem, Control>(nameof(ActionButton));
 
     public static readonly StyledProperty<bool> ExpandsProperty =
         AvaloniaProperty.Register<OptionsDisplayItem, bool>(nameof(Expands));
@@ -63,7 +63,7 @@ public class OptionsDisplayItem : TemplatedControl
         set => SetValue(NavigatesProperty, value);
     }
 
-    public IControl ActionButton
+    public Control ActionButton
     {
         get => GetValue(ActionButtonProperty);
         set => SetValue(ActionButtonProperty, value);

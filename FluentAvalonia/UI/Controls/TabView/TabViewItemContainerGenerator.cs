@@ -8,12 +8,12 @@ namespace FluentAvalonia.UI.Controls;
 
 internal class TabViewItemContainerGenerator : ItemContainerGenerator<TabViewItem>
 {
-    public TabViewItemContainerGenerator(IControl owner, AvaloniaProperty contentProperty, AvaloniaProperty contentTemplateProperty)
+    public TabViewItemContainerGenerator(Control owner, AvaloniaProperty contentProperty, AvaloniaProperty contentTemplateProperty)
         : base(owner, contentProperty, contentTemplateProperty)
     {
     }
 
-    protected override IControl CreateContainer(object item)
+    protected override Control CreateContainer(object item)
     {
         if (item is TabViewItem tvi)
             return tvi;

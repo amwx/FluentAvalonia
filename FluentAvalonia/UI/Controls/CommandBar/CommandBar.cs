@@ -144,7 +144,7 @@ public partial class CommandBar : ContentControl
                     {
                         for (int i = 0; i < items.Count; i++)
                         {
-                            var itemAsIControl = items[i] as IControl;
+                            var itemAsIControl = items[i] as Control;
                             UpdateWidthCacheForItem(items[i], itemAsIControl.DesiredSize.Width);
 
                             trackWid += itemAsIControl.DesiredSize.Width;
@@ -197,7 +197,7 @@ public partial class CommandBar : ContentControl
             // TODO: Focus via keyboard
             if (_overflowItems.Count > 0)
             {
-                (_overflowItems[0] as IControl).Focus();
+                (_overflowItems[0] as Control).Focus();
             }
         }
 

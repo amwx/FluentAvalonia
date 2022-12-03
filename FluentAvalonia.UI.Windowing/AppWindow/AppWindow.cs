@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -220,7 +221,7 @@ public partial class AppWindow : Window, IStyleable
                     if (_excludeHitTestList[i].TryGetTarget(out var target))
                     {
                         // Skip invisible or disconnected controls
-                        if (!target.IsVisible || !((IVisual)target).IsAttachedToVisualTree)
+                        if (!target.IsVisible || !target.IsAttachedToVisualTree())
                             continue;
 
                         // If control was reparented into new window, matrix may be null, catch that case
@@ -248,7 +249,7 @@ public partial class AppWindow : Window, IStyleable
 
     internal bool ComplexHitTest(Point p)
     {
-        var result = this.InputHitTest(p);
+        var result = this.InputHitTest(p) as InputElement;
 
         // Special case for TabViewListView during drag operations where blank space 
         // is inserted and causes HitTest to fail (since nothing focusable is there)
@@ -263,7 +264,7 @@ public partial class AppWindow : Window, IStyleable
             if (result.IsHitTestVisible && result.Focusable)
                 return false;
 
-            result = result.VisualParent as IInputElement;
+            result = result.GetVisualParent() as InputElement;
         }
 
         return true;
@@ -485,9 +486,12 @@ public partial class AppWindow : Window, IStyleable
 
     private async void LoadApp()
     {
-        Presenter.IsVisible = true;
+        if (Presenter is not ContentPresenter cp)
+            return;
 
-        using var disp = Presenter.SetValue(OpacityProperty, 0d, Avalonia.Data.BindingPriority.Animation);
+        cp.IsVisible = true;
+
+        using var disp = cp.SetValue(OpacityProperty, 0d, Avalonia.Data.BindingPriority.Animation);
 
         var aniSplash = new Animation
         {

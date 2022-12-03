@@ -35,7 +35,7 @@ public partial class TabViewItem : ListBoxItem
         // This is the easy solution, since the other involves not deriving from ListBoxItem
         AddHandler(PointerPressedEvent, (s, e) =>
         {
-            var hasButton = (e.Source as IVisual).GetVisualAncestors()
+            var hasButton = (e.Source as Visual).GetVisualAncestors()
                 .Where(x => x == _closeButton).Any();
 
             if (hasButton)
@@ -67,7 +67,7 @@ public partial class TabViewItem : ListBoxItem
         set => _parentTabView = new WeakReference<TabView>(value);
     }
 
-    public IVisual TabSeparator { get; private set; }
+    public Visual TabSeparator { get; private set; }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -103,7 +103,7 @@ public partial class TabViewItem : ListBoxItem
     {
         base.OnApplyTemplate(e);
 
-        TabSeparator = e.NameScope.Find<IVisual>(s_tpTabSeparator);
+        TabSeparator = e.NameScope.Find<Visual>(s_tpTabSeparator);
 
         _headerContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
 

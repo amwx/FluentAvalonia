@@ -7,12 +7,12 @@ namespace FluentAvalonia.UI.Controls;
 
 public class SettingsExpanderItemContainerGenerator : ItemContainerGenerator<SettingsExpanderItem>
 {
-    public SettingsExpanderItemContainerGenerator(IControl owner, AvaloniaProperty contentProperty, AvaloniaProperty contentTemplateProperty) 
+    public SettingsExpanderItemContainerGenerator(Control owner, AvaloniaProperty contentProperty, AvaloniaProperty contentTemplateProperty) 
         : base(owner, contentProperty, contentTemplateProperty)
     {
     }
 
-    protected override IControl CreateContainer(object item)
+    protected override Control CreateContainer(object item)
     {
         if (item is SettingsExpanderItem expItem)
             return expItem;

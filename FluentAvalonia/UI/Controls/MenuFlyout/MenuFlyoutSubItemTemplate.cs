@@ -39,7 +39,7 @@ public class MenuFlyoutSubItemTemplate : ITreeDataTemplate
 
     // This template doesn't actually build anything, it just gives the MenuFlyoutItemContainerGenerator
     // what it needs to assemble a MenuFlyoutSubItem
-    public IControl Build(object param) => null;
+    public Control Build(object param) => null;
 
     public InstancedBinding ItemsSelector(object item)
     {

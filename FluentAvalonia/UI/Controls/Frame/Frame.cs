@@ -29,7 +29,7 @@ public partial class Frame : ContentControl
         var forw = new AvaloniaList<PageStackEntry>();
 
         back.CollectionChanged += OnBackStackChanged;
-        forw.CollectionChanged += OnFowardwardStackChanged;
+        forw.CollectionChanged += OnForwardStackChanged;
 
         BackStack = back;
         ForwardStack = forw;
@@ -517,34 +517,31 @@ public partial class Frame : ContentControl
             mode, entry.NavigationTransitionInfo, entry.Parameter, entry.SourcePageType));
     }
 
-    private void OnFowardwardStackChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void OnForwardStackChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        int oldCount = (_forwardStack.Count - (e.NewItems?.Count ?? 0) + (e.OldItems?.Count ?? 0));
-
-        bool oldForward = oldCount > 0;
-        bool newForward = _forwardStack.Count > 0;
-        RaisePropertyChanged(new AvaloniaPropertyChangedEventArgs<bool>(this,
-            CanGoForwardProperty, oldForward, newForward, Avalonia.Data.BindingPriority.LocalValue));
+        // 11.0 changed the API surface an outside implementations can no longer call RaisePropertyChanged and will need to 
+        // "Set" the property to do so. CanGoBack and CanGoForward derive their value by checking the list counts and don't
+        // use a backing boolean field so prior to 11.0 I just used RaisePropertyChanged. Now, I've made the CLR properties
+        // private set, and we use SetAndRaise but just throw away the ref param
+        CanGoForward = _forwardStack.Count > 0;
     }
 
     private void OnBackStackChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        int oldCount = (_backStack.Count - (e.NewItems?.Count ?? 0) + (e.OldItems?.Count ?? 0));
-
-        bool oldBack = oldCount > 0;
-        bool newBack = _backStack.Count > 0;
-        RaisePropertyChanged(new AvaloniaPropertyChangedEventArgs<bool>(this,
-            CanGoBackProperty, oldBack, newBack, Avalonia.Data.BindingPriority.LocalValue));
-        RaisePropertyChanged(new AvaloniaPropertyChangedEventArgs<int>(this,
-            BackStackDepthProperty, oldCount, _backStack.Count, Avalonia.Data.BindingPriority.LocalValue));
+        // 11.0 changed the API surface an outside implementations can no longer call RaisePropertyChanged and will need to 
+        // "Set" the property to do so. CanGoBack and CanGoForward derive their value by checking the list counts and don't
+        // use a backing boolean field so prior to 11.0 I just used RaisePropertyChanged. Now, I've made the CLR properties
+        // private set, and we use SetAndRaise but just throw away the ref param
+        CanGoForward = _forwardStack.Count > 0;
+        CanGoBack = _backStack.Count > 0;
     }
 
-    private IControl CreatePageAndCacheIfNecessary(Type srcPageType)
+    private Control CreatePageAndCacheIfNecessary(Type srcPageType)
     {
         if (CacheSize == 0)
         {
             return NavigationPageFactory?.GetPage(srcPageType) ??
-                Activator.CreateInstance(srcPageType) as IControl;
+                Activator.CreateInstance(srcPageType) as Control;
         }
 
         for (int i = 0; i < _cache.Count; i++)
@@ -556,7 +553,7 @@ public partial class Frame : ContentControl
         }
 
         var newPage = NavigationPageFactory?.GetPage(srcPageType) ??
-            Activator.CreateInstance(srcPageType) as IControl;
+            Activator.CreateInstance(srcPageType) as Control;
 
         _cache.Add((srcPageType, newPage));
         if (_cache.Count > CacheSize)
@@ -567,7 +564,7 @@ public partial class Frame : ContentControl
         return newPage;
     }
 
-    private IControl CheckCacheAndGetPage(Type srcPageType = null, object target = null)
+    private Control CheckCacheAndGetPage(Type srcPageType = null, object target = null)
     {
         if (CacheSize == 0)
             return null;
@@ -583,7 +580,7 @@ public partial class Frame : ContentControl
         return null;
     }
 
-    private void TryAddToCache(Type srcType, IControl page)
+    private void TryAddToCache(Type srcType, Control page)
     {
         for (int i = _cache.Count - 1; i >= 0; i--)
         {
@@ -619,7 +616,7 @@ public partial class Frame : ContentControl
     }
 
     private ContentPresenter _presenter;
-    private readonly List<(Type pageSrcType, IControl page)> _cache = new List<(Type, IControl)>(10);
+    private readonly List<(Type pageSrcType, Control page)> _cache = new List<(Type, Control)>(10);
     private bool _isNavigating = false;
 
     private const string s_tpContentPresenter = "ContentPresenter";

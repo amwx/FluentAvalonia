@@ -117,6 +117,12 @@ public partial class Frame : ContentControl
     public bool CanGoBack
     {
         get => _backStack.Count > 0;
+        private set
+        {
+            // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
+            bool throwAway = _backStack.Count > 0;
+            SetAndRaise(CanGoBackProperty, ref throwAway, value);
+        }
     }
 
     /// <summary>
@@ -125,6 +131,12 @@ public partial class Frame : ContentControl
     public bool CanGoForward
     {
         get => _forwardStack.Count > 0;
+        private set
+        {
+            // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
+            bool throwAway = _forwardStack.Count > 0;
+            SetAndRaise(CanGoForwardProperty, ref throwAway, value);
+        }
     }
 
     /// <summary>

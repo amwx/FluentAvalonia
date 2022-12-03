@@ -59,7 +59,7 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
             // Prevent going to expanded state if we don't have any child items
             // Use the IsAttachedToVisualTree flag here to prevent overwriting 'true' while control
             // is Initializing where IsExpanded may be set before Items
-            if (ItemCount == 0 && change.GetNewValue<bool>() && ((IVisual)this).IsAttachedToVisualTree)
+            if (ItemCount == 0 && change.GetNewValue<bool>() && this.IsAttachedToVisualTree())
             {
                 // There seems to be an issue here where if we just set IsExpanded = false
                 // the property does get set, but the :expanded pseudoclass is never cleared

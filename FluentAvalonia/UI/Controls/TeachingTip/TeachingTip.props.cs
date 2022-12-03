@@ -148,8 +148,8 @@ public partial class TeachingTip : ContentControl
     /// <summary>
     /// Defines the <see cref="HeroContent"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> HeroContentProperty =
-        AvaloniaProperty.Register<TeachingTip, IControl>(nameof(HeroContent));
+    public static readonly StyledProperty<Control> HeroContentProperty =
+        AvaloniaProperty.Register<TeachingTip, Control>(nameof(HeroContent));
 
     /// <summary>
     /// Defines the <see cref="IconSource"/> property
@@ -335,7 +335,7 @@ public partial class TeachingTip : ContentControl
     /// Border-to-border graphic content displayed in the header or footer
     /// of the teaching tip. Will appear opposite of the tail in targeted teaching tips unless otherwise set.
     /// </summary>
-    public IControl HeroContent
+    public Control HeroContent
     {
         get => GetValue(HeroContentProperty);
         set => SetValue(HeroContentProperty, value);

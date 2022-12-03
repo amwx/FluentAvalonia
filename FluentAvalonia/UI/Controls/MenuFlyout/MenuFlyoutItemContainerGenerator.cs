@@ -9,10 +9,10 @@ namespace FluentAvalonia.UI.Controls;
 [EditorBrowsable(EditorBrowsableState.Never)]
 internal class MenuFlyoutPresenterItemContainerGenerator : ItemContainerGenerator
 {
-    public MenuFlyoutPresenterItemContainerGenerator(IControl owner)
+    public MenuFlyoutPresenterItemContainerGenerator(Control owner)
         : base(owner) { }
 
-    protected override IControl CreateContainer(object item)
+    protected override Control CreateContainer(object item)
     {
         if (item == null)
             return null;

@@ -174,7 +174,7 @@ public class TabViewListView : ListBox
             if (currentPoint.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
             {
                 _initialPoint = args.GetPosition(this);
-                _dragItem = (args.Source as IVisual).FindAncestorOfType<TabViewItem>(true);
+                _dragItem = (args.Source as Visual).FindAncestorOfType<TabViewItem>(true);
                 _dragIndex = IndexFromContainer(_dragItem);
 
                 if (double.IsNaN(_cxDrag))
@@ -300,12 +300,12 @@ public class TabViewListView : ListBox
         }
     }
 
-    protected internal int IndexFromContainer(IControl container)
+    protected internal int IndexFromContainer(Control container)
     {
         return ItemContainerGenerator.IndexFromContainer(container);
     }
 
-    protected internal object ItemFromContainer(IControl container)
+    protected internal object ItemFromContainer(Control container)
     {
         foreach (var item in ItemContainerGenerator.Containers)
         {
@@ -318,10 +318,10 @@ public class TabViewListView : ListBox
         return null;
     }
 
-    protected internal IControl ContainerFromIndex(int index) =>
+    protected internal Control ContainerFromIndex(int index) =>
         ItemContainerGenerator.ContainerFromIndex(index);
 
-    protected internal IControl ContainerFromItem(object item)
+    protected internal Control ContainerFromItem(object item)
     {
         foreach (var c in ItemContainerGenerator.Containers)
         {
@@ -603,7 +603,7 @@ public class TabViewListView : ListBox
         // at this point I'm done dealing with this issue...it works good enough
         if (e.Source is StyledElement v)
         {
-            bool isCloseButton = (v as IVisual).FindAncestorOfType<Button>() != null;
+            bool isCloseButton = (v as Visual).FindAncestorOfType<Button>() != null;
             if (isCloseButton)
                 return;
             var pt = e.GetPosition(this);

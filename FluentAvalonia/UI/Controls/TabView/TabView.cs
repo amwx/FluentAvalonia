@@ -940,16 +940,16 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
         }
     }
 
-    public IControl ContainerFromItem(object item) =>
+    public Control ContainerFromItem(object item) =>
         _listView?.ContainerFromItem(item);
 
-    public IControl ContainerFromIndex(int index) =>
+    public Control ContainerFromIndex(int index) =>
         _listView?.ContainerFromIndex(index);
 
-    public int IndexFromContainer(IControl container) =>
+    public int IndexFromContainer(Control container) =>
         _listView?.IndexFromContainer(container) ?? -1;
 
-    public object ItemFromContainer(IControl container) =>
+    public object ItemFromContainer(Control container) =>
         _listView?.ItemFromContainer(container);
 
     private int GetItemCount() => TabItems.Count();

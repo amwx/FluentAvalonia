@@ -100,7 +100,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         {
             if (_presenter != null)
             {
-                _presenter.SelectedIndex = _presenter.ItemContainerGenerator.IndexFromContainer(value);
+                _presenter.SelectedIndex = _presenter.ItemContainerGenerator.IndexFromContainer(value as Control);
             }
         }
     }

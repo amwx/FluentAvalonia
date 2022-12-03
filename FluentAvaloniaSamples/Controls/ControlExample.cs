@@ -107,8 +107,8 @@ public class ControlExample : HeaderedContentControl
     public static readonly StyledProperty<string> UsageNotesProperty =
         AvaloniaProperty.Register<ControlExample, string>(nameof(UsageNotes));
 
-    public static readonly StyledProperty<IControl> OptionsProperty =
-        AvaloniaProperty.Register<ControlExample, IControl>(nameof(Options));
+    public static readonly StyledProperty<Control> OptionsProperty =
+        AvaloniaProperty.Register<ControlExample, Control>(nameof(Options));
 
     public static readonly DirectProperty<ControlExample, IList<ControlExampleSubstitution>> SubstitutionsProperty =
         AvaloniaProperty.RegisterDirect<ControlExample, IList<ControlExampleSubstitution>>(nameof(Substitutions),
@@ -135,7 +135,7 @@ public class ControlExample : HeaderedContentControl
         set => SetValue(CSharpSourceProperty, value);
     }
 
-    public IControl Options
+    public Control Options
     {
         get => GetValue(OptionsProperty);
         set => SetValue(OptionsProperty, value);

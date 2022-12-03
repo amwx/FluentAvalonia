@@ -197,7 +197,7 @@ public partial class TaskDialog
     /// and error. For desktop platforms, set it to the Window that should own the dialog.
     /// For others, set it to the root TopLevel.
     /// </remarks>
-    public IVisual XamlRoot { get; set; }
+    public Visual XamlRoot { get; set; }
 
     /// <summary>
     /// Raised when the TaskDialog is beginning to open, but is not yet visible

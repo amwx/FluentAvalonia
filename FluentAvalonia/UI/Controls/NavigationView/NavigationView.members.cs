@@ -15,7 +15,7 @@ namespace FluentAvalonia.UI.Controls;
 public partial class NavigationView : HeaderedContentControl
 {
     //Con't logic for pane arrow key navigation
-    private bool VerifyInPane(IVisual focus, IVisual parent)
+    private bool VerifyInPane(Visual focus, Visual parent)
     {
         if (parent == null)
             return false;
@@ -36,12 +36,12 @@ public partial class NavigationView : HeaderedContentControl
             if (focus == parent)
                 return true;
 
-            focus = focus.VisualParent;
+            focus = focus.GetVisualParent();
         }
         return false;
     }
 
-    private IControl SearchTreeForLowestFocusItem(NavigationViewItem start)
+    private Control SearchTreeForLowestFocusItem(NavigationViewItem start)
     {
         if (DoesNavigationViewItemHaveChildren(start) && start.IsExpanded)
         {
@@ -205,7 +205,7 @@ public partial class NavigationView : HeaderedContentControl
         var path = new List<int>(4);
         bool isInFooterMenu = false;
 
-        IControl child = nvib;
+        Control child = nvib;
         var parent = nvib.GetVisualParent();
         if (parent == null)
         {
@@ -219,7 +219,7 @@ public partial class NavigationView : HeaderedContentControl
             {
                 path.Insert(0, ir.GetElementIndex(child));
             }
-            child = (IControl)parent;
+            child = (Control)parent;
             parent = parent.GetVisualParent();
         }
 
@@ -286,7 +286,7 @@ public partial class NavigationView : HeaderedContentControl
         return null;
     }
 
-    private IControl ContainerFromMenuItem(object item)
+    private Control ContainerFromMenuItem(object item)
     {
         return NavigationViewItemBaseOrSettingsContentFromData(item);
     }
@@ -456,7 +456,7 @@ public partial class NavigationView : HeaderedContentControl
         return null;
     }
 
-    private NavigationRecommendedTransitionDirection GetRecommendedTransitionDirection(IControl prev, IControl next)
+    private NavigationRecommendedTransitionDirection GetRecommendedTransitionDirection(Control prev, Control next)
     {
         var recTransDir = NavigationRecommendedTransitionDirection.Default;
         var ir = _topNavRepeater;
@@ -623,7 +623,7 @@ public partial class NavigationView : HeaderedContentControl
     private Grid _paneContentGrid;
     //private ColumnDefinition _paneToggleButtonIconGridColumn;
     private Control _paneTitleHolderFrameworkElement;
-    private IControl _paneTitleFrameworkElement;
+    private Control _paneTitleFrameworkElement;
     //private IControl _visualItemsSeparator;
     private Button _paneSearchButton;
     private Button _backButton;
@@ -636,12 +636,12 @@ public partial class NavigationView : HeaderedContentControl
     private ItemsRepeater _topNavRepeaterOverflowView;
     private Grid _topNavGrid;
     private Border _topNavContentOverlayAreaGrid;
-    private IControl _itemsContainer;
+    private Control _itemsContainer;
 
     //Indicator animations
-    //private IControl _prevIndicator;
-    //private IControl _nextIndicator;
-    private IControl _activeIndicator;
+    //private Control _prevIndicator;
+    //private Control _nextIndicator;
+    private Control _activeIndicator;
     private object _lastSelectedItemPendingAnimationInTopNav;
 
     //private IControl _togglePaneTopPadding;

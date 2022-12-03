@@ -38,5 +38,5 @@ public class PageStackEntry
     public object Parameter { get; set; }
 
 
-    internal IControl Instance { get; set; }
+    internal Control Instance { get; set; }
 }

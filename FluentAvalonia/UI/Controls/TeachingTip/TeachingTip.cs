@@ -1033,12 +1033,13 @@ public partial class TeachingTip : ContentControl
         //Reset the close reason to the default value of programmatic.
         _lastCloseReason = TeachingTipCloseReason.Programmatic;
 
-        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot) ?? Matrix.Identity);
+        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual) ?? Matrix.Identity);
 
         if (_target != null)
         {
             SetViewportChangedEvent(_target);
-            _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(_target.GetVisualRoot()) ?? Matrix.Identity);
+            _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
+                .TransformToAABB(_target.TransformToVisual(_target.GetVisualRoot() as Visual) ?? Matrix.Identity);
         }
         else
         {
@@ -1308,14 +1309,14 @@ public partial class TeachingTip : ContentControl
         {
             if (_rootElement != null)
             {
-                IVisual current = FocusManager.Instance.Current;
+                Visual current = FocusManager.Instance.Current as Visual;
 
                 while (current != null)
                 {
                     if (current == _rootElement)
                         return true;
 
-                    current = current.VisualParent;
+                    current = current.GetVisualParent();
                 }
             }
 
@@ -1581,7 +1582,7 @@ public partial class TeachingTip : ContentControl
             if (_target != null)
             {
                 _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
-                    .TransformToAABB(_target.TransformToVisual(VisualRoot).Value);
+                    .TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value);
 
                 SetViewportChangedEvent(_target);
             }
@@ -1625,9 +1626,9 @@ public partial class TeachingTip : ContentControl
         if (IsOpen)
         {
             var newTargetBounds = _target != null ?
-                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot).Value) : Rect.Empty;
+                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value) : Rect.Empty;
 
-            var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot).Value);
+            var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual).Value);
 
             if (newTargetBounds != _currentTargetBoundsInCoreWindowSpace ||
                 newCurrentBounds != _currentBoundsInCoreWindowSpace)
@@ -2170,7 +2171,7 @@ public partial class TeachingTip : ContentControl
 
     private Rect GetWindowBounds()
     {
-        return new Rect(VisualRoot?.Bounds.Size ?? Size.Empty);
+        return new Rect((VisualRoot as Visual)?.Bounds.Size ?? Size.Empty);
     }
 
     private void GetPlacementFallbackOrder(TeachingTipPlacementMode preferredPlacement,

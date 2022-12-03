@@ -314,7 +314,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         PseudoClasses.Set(s_pcSecondary, !string.IsNullOrEmpty(SecondaryButtonText));
         PseudoClasses.Set(s_pcClose, !string.IsNullOrEmpty(CloseButtonText));
 
-        var curFocus = FocusManager.Instance.Current;
+        var curFocus = FocusManager.Instance.Current as InputElement;
         bool setFocus = false;
         if (curFocus.FindAncestorOfType<ContentDialog>() == null)
         {
@@ -595,7 +595,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     // Store the last element focused before showing the dialog, so we can
     // restore it when it closes
     private IInputElement _lastFocus;
-    private IControl _originalHost;
+    private Control _originalHost;
     private int _originalHostIndex;
     private DialogHost _host;
     private ContentDialogResult _result;

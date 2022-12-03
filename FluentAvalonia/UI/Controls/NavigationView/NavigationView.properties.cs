@@ -79,8 +79,8 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="ContentOverlay"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> ContentOverlayProperty =
-        AvaloniaProperty.Register<NavigationView, IControl>(nameof(ContentOverlay));
+    public static readonly StyledProperty<Control> ContentOverlayProperty =
+        AvaloniaProperty.Register<NavigationView, Control>(nameof(ContentOverlay));
 
     /// <summary>
     /// Defines the <see cref="DisplayMode"/> property
@@ -179,8 +179,8 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="PaneCustomContent"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> PaneCustomContentProperty =
-        AvaloniaProperty.Register<NavigationView, IControl>(nameof(PaneCustomContent));
+    public static readonly StyledProperty<Control> PaneCustomContentProperty =
+        AvaloniaProperty.Register<NavigationView, Control>(nameof(PaneCustomContent));
 
     /// <summary>
     /// Defines the <see cref="PaneDisplayMode"/> property
@@ -192,14 +192,14 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="PaneFooter"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> PaneFooterProperty =
-        AvaloniaProperty.Register<NavigationView, IControl>(nameof(PaneFooter));
+    public static readonly StyledProperty<Control> PaneFooterProperty =
+        AvaloniaProperty.Register<NavigationView, Control>(nameof(PaneFooter));
 
     /// <summary>
     /// Defines the <see cref="PaneHeader"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> PaneHeaderProperty =
-        AvaloniaProperty.Register<NavigationView, IControl>(nameof(PaneHeader));
+    public static readonly StyledProperty<Control> PaneHeaderProperty =
+        AvaloniaProperty.Register<NavigationView, Control>(nameof(PaneHeader));
 
     /// <summary>
     /// Defines the <see cref="PaneTitle"/> property
@@ -277,7 +277,7 @@ public partial class NavigationView : HeaderedContentControl
     /// Gets or sets a UI element that is shown at the top of the control, below the pane 
     /// if PaneDisplayMode is Top.
     /// </summary>
-    public IControl ContentOverlay
+    public Control ContentOverlay
     {
         get => GetValue(ContentOverlayProperty);
         set => SetValue(ContentOverlayProperty, value);
@@ -467,7 +467,7 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Gets or sets a UI element that is shown in the NavigationView pane.
     /// </summary>
-    public IControl PaneCustomContent
+    public Control PaneCustomContent
     {
         get => GetValue(PaneCustomContentProperty);
         set => SetValue(PaneCustomContentProperty, value);
@@ -485,7 +485,7 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Gets or sets the content for the pane footer.
     /// </summary>
-    public IControl PaneFooter
+    public Control PaneFooter
     {
         get => GetValue(PaneFooterProperty);
         set => SetValue(PaneFooterProperty, value);
@@ -494,7 +494,7 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Gets or sets the content for the pane header.
     /// </summary>
-    public IControl PaneHeader
+    public Control PaneHeader
     {
         get => GetValue(PaneHeaderProperty);
         set => SetValue(PaneHeaderProperty, value);
@@ -560,7 +560,7 @@ public partial class NavigationView : HeaderedContentControl
     /// ExpandedModeThresholdWidthProperty, and OpenPaneLengthProperty
     /// </summary>
     /// <returns></returns>
-    private static double CoercePropertyValueToGreaterThanZero(IAvaloniaObject arg1, double arg2)
+    private static double CoercePropertyValueToGreaterThanZero(AvaloniaObject arg1, double arg2)
     {
         if (double.IsNaN(arg2) || double.IsInfinity(arg2))
             return 0;

@@ -77,8 +77,8 @@ public partial class InfoBar : ContentControl
     /// <summary>
     /// Defines the <see cref="ActionButton"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> ActionButtonProperty =
-        AvaloniaProperty.Register<InfoBar, IControl>(nameof(ActionButton));
+    public static readonly StyledProperty<Control> ActionButtonProperty =
+        AvaloniaProperty.Register<InfoBar, Control>(nameof(ActionButton));
 
     /// <summary>
     /// Gets or sets a value that indicates whether the InfoBar is open.
@@ -165,7 +165,7 @@ public partial class InfoBar : ContentControl
     /// <summary>
     /// Gets or sets the action button of the InfoBar.
     /// </summary>
-    public IControl ActionButton
+    public Control ActionButton
     {
         get => GetValue(ActionButtonProperty);
         set => SetValue(ActionButtonProperty, value);

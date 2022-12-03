@@ -131,7 +131,7 @@ public partial class TaskDialog : ContentControl
     /// </remarks>
     public async Task<object> ShowAsync(bool showHosted = false)
     {
-        bool declaredInXaml = ((IVisual)this).IsAttachedToVisualTree;
+        bool declaredInXaml = this.IsAttachedToVisualTree();
         if (!declaredInXaml && XamlRoot == null)
         {
             throw new InvalidOperationException("XamlRoot not set on TaskDialog. This should be set to the TopLevel that should own or host the dialog.");
@@ -139,7 +139,7 @@ public partial class TaskDialog : ContentControl
 
         OnOpening();
 
-        var owner = XamlRoot ?? VisualRoot;
+        var owner = XamlRoot ?? VisualRoot as Visual;
 
         void UnparentDialog()
         {
@@ -397,7 +397,7 @@ public partial class TaskDialog : ContentControl
             return;
 
         // TaskDialogCommandHost is a TaskDialogButtonHost, this captures everything
-        if (e.Source is IVisual v && v.FindAncestorOfType<TaskDialogButtonHost>(true) is TaskDialogButtonHost b)
+        if (e.Source is Visual v && v.FindAncestorOfType<TaskDialogButtonHost>(true) is TaskDialogButtonHost b)
         {
             // DataContext for the hosts are the user defined buttons/commands, get the dialog from that
             if (b.DataContext is TaskDialogControl tdb)
@@ -533,7 +533,7 @@ public partial class TaskDialog : ContentControl
 
     private void TrySetInitialFocus()
     {
-        var curFocus = FocusManager.Instance?.Current;
+        var curFocus = FocusManager.Instance?.Current as InputElement;
         bool setFocus = false;
         if (curFocus?.FindAncestorOfType<TaskDialog>() == null)
         {
@@ -579,9 +579,9 @@ public partial class TaskDialog : ContentControl
 
     private Button _defaultButton;
 
-    public IControl _xamlOwner;
+    public Control _xamlOwner;
     private int _xamlOwnerChildIndex;
-    private IControl _host;
+    private Control _host;
     private TaskCompletionSource<object> _tcs;
     internal bool _hasDeferralActive = false;
 

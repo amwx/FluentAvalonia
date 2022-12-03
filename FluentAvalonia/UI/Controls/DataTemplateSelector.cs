@@ -21,7 +21,7 @@ public class DataTemplateSelector
     /// <summary>
     /// Returns a specific DataTemplate for a given item and container.
     /// </summary>
-    public IDataTemplate SelectTemplate(object item, IControl container) => SelectTemplateCore(item, container);
+    public IDataTemplate SelectTemplate(object item, Control container) => SelectTemplateCore(item, container);
 
     /// <summary>
     /// When implemented by a derived class, returns a specific DataTemplate for a given item or container.
@@ -31,5 +31,5 @@ public class DataTemplateSelector
     /// <summary>
     /// When implemented by a derived class, returns a specific DataTemplate for a given item or container.
     /// </summary>
-    protected virtual IDataTemplate SelectTemplateCore(object item, IControl container) => null;
+    protected virtual IDataTemplate SelectTemplateCore(object item, Control container) => null;
 }

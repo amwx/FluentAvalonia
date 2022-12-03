@@ -58,7 +58,7 @@ public class EntranceNavigationTransitionInfo : NavigationTransitionInfo
 
         await animation.RunAsync(ctrl, null);
 
-        (ctrl as IVisual).Opacity = 1;
+        (ctrl as Visual).Opacity = 1;
     }
 }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -54,7 +55,7 @@ public partial class TaskDialogPage : FAControlsPageBase
             td.Buttons.Add(_apiInActionTD.Buttons[i]);
         }
 
-        td.XamlRoot = VisualRoot;
+        td.XamlRoot = VisualRoot as Visual;
         var result = await td.ShowAsync(this.FindControl<CheckBox>("ShowWindowedCheck").IsChecked == false);
 
         this.FindControl<TextBlock>("LastResultText").Text = $"Last Dialog Result: {result}";
@@ -228,7 +229,7 @@ public partial class TaskDialogPage : FAControlsPageBase
         };
 
         // Don't forget to set the XamlRoot!!
-        td.XamlRoot = VisualRoot;
+        td.XamlRoot = VisualRoot as Visual;
         var result = await td.ShowAsync();
 
         this.FindControl<TextBlock>("ProgressTaskResultText").Text = $"File Download Status: {result}";
@@ -279,7 +280,7 @@ public partial class TaskDialogPage : FAControlsPageBase
         };
 
         // Don't forget to set the XamlRoot!!
-        td.XamlRoot = VisualRoot;
+        td.XamlRoot = VisualRoot as Visual;
         _ = await td.ShowAsync();
     }
 
