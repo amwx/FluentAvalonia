@@ -339,3 +339,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/FluentAvalonia.UI.Windowing/Win32/Win32Com.Generated.cs
