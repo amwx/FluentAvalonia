@@ -125,7 +125,7 @@ public partial class FluentAvaloniaTheme
             try
             {
                 var color = (Color)settings.UIElementColor(element);
-                (_themeResources.MergedDictionaries[1] as ResourceDictionary)[resKey] = color;
+                (Resources.MergedDictionaries[1] as ResourceDictionary)[resKey] = color;
             }
             catch
             {
@@ -170,9 +170,6 @@ public partial class FluentAvaloniaTheme
             LoadDefaultAccentColor();
         }
     }
-
-
-
 
     /// <summary>
     /// On Windows, forces a specific <see cref="Window"/> to the current theme
