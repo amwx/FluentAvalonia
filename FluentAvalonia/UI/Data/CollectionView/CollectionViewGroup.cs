@@ -92,7 +92,10 @@ internal class CollectionWrapper : IAvaloniaList<object>, IList // IList for INC
     }
 
     public event NotifyCollectionChangedEventHandler CollectionChanged;
+#pragma warning disable CS0067
+    // TODO: When I finally get around to actually supporting this, actually implement this
     public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067
 
     private void OnBackingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {

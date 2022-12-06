@@ -41,7 +41,7 @@ public partial class TeachingTip : ContentControl
 
         _acceleratorKeyActivatedRevoker?.Dispose();
         //m_previewKeyDownForF6Revoker
-        _effectiveViewportChangedRevoker?.Revoke();
+        //_effectiveViewportChangedRevoker?.Revoke();
         _contentSizeChangedRevoker?.Dispose();
         if (_closeButton != null)
             _closeButton.Click -= OnCloseButtonClicked;
@@ -1609,7 +1609,7 @@ public partial class TeachingTip : ContentControl
         if (_target != null)
             _target.EffectiveViewportChanged -= OnTargetLayoutUpdated;
 
-        _effectiveViewportChangedRevoker?.Revoke();
+        //_effectiveViewportChangedRevoker?.Revoke();
     }
 
     private void XamlRootChanged(Rect rc)
@@ -2158,7 +2158,7 @@ public partial class TeachingTip : ContentControl
             if (VisualRoot is Window w)
             {
                 var displayInfo = w.Screens.ScreenFromWindow(w.PlatformImpl);
-                var scaleFactor = displayInfo.PixelDensity;
+                var scaleFactor = displayInfo.Scaling;
 
                 return new Rect(-w.Position.X, -w.Position.Y,
                     displayInfo.Bounds.Height / scaleFactor,
@@ -2311,7 +2311,8 @@ public partial class TeachingTip : ContentControl
 
     private IDisposable _contentSizeChangedRevoker;
     private IDisposable _acceleratorKeyActivatedRevoker;
-    private EffectiveViewportRevoker _effectiveViewportChangedRevoker;
+    // This doesn't appear to be needed anymore?
+    //private EffectiveViewportRevoker _effectiveViewportChangedRevoker;
     private IDisposable _xamlRootChangedRevoker;
 
     private Border _container;

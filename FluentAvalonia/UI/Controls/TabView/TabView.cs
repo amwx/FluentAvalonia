@@ -1181,7 +1181,11 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             ExecuteHandler = execute;
         }
 
-        public event EventHandler CanExecuteChanged;
+        event EventHandler ICommand.CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public Action<object> ExecuteHandler { get; }
         public bool CanExecute(object parameter) => true;

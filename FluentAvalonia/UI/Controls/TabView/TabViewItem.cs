@@ -322,13 +322,13 @@ public partial class TabViewItem : ListBoxItem
 
     private void OnTabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
     {
-        _isDragging = true;
+        //_isDragging = true;
         //UpdateShadow();
     }
 
     private void OnTabDragCompleted(TabView sender, TabViewTabDragCompletedEventArgs args)
     {
-        _isDragging = false;
+        //_isDragging = false;
         //UpdateShadow();
         UpdateForeground();
     }
@@ -524,7 +524,7 @@ public partial class TabViewItem : ListBoxItem
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;
-    private bool _isDragging = false;
+    //private bool _isDragging = false;
     private bool _isPointerOver = false;
 
     private WeakReference<TabView> _parentTabView;
