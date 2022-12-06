@@ -120,7 +120,7 @@ public partial class Frame : ContentControl
         private set
         {
             // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
-            bool throwAway = _backStack.Count > 0;
+            bool throwAway = (_backStack.Count - 1) > 0;
             SetAndRaise(CanGoBackProperty, ref throwAway, value);
         }
     }
@@ -134,7 +134,7 @@ public partial class Frame : ContentControl
         private set
         {
             // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
-            bool throwAway = _forwardStack.Count > 0;
+            bool throwAway = (_forwardStack.Count - 1) > 0;
             SetAndRaise(CanGoForwardProperty, ref throwAway, value);
         }
     }
