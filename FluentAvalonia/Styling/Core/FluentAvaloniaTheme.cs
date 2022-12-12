@@ -245,14 +245,15 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         {
             _requestedTheme = newTheme;
 
-            // Remove the old theme of any resources
-            if (Resources.Count > 0)
-            {
-                Resources.MergedDictionaries.RemoveAt(1);
-            }
-
-            Resources.MergedDictionaries.Add(
-                (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
+            // Bug in preview5: removing and adding a RD causes issues for some reason,
+            // but just swapping them doesn't. 
+            // MergedDictionaries should always have 2 RDs in it
+            //   -> BaseResources.axaml
+            //   -> Current theme (Light/Dark/HighContrast)
+            // I can't remember why we had a check for that before, but AFAIK, we should
+            // always have two. Also think the check was wrong anyway.
+            Resources.MergedDictionaries[1] = (ResourceDictionary)AvaloniaXamlLoader.Load(
+                new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri);
 
             if (string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
             {
@@ -261,7 +262,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
                     TryLoadHighContrastThemeColors();
                 }
             }
-
+            
             Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
 
             RequestedThemeChanged?.Invoke(this, new RequestedThemeChangedEventArgs(_requestedTheme));
