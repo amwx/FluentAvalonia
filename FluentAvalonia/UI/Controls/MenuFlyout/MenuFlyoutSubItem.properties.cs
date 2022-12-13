@@ -21,8 +21,8 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// <summary>
     /// Defines the <see cref="Icon"/> property
     /// </summary>
-    public static readonly StyledProperty<FAIconElement> IconProperty =
-        AvaloniaProperty.Register<MenuFlyoutItem, FAIconElement>(nameof(Icon));
+    public static readonly StyledProperty<IconSource> IconProperty =
+        MenuFlyoutItem.IconProperty.AddOwner<MenuFlyoutSubItem>();
 
     /// <summary>
     /// Defines the <see cref="Items"/> property
@@ -38,6 +38,12 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         ItemsControl.ItemTemplateProperty.AddOwner<MenuFlyoutSubItem>();
 
     /// <summary>
+    /// Defines the <see cref="TemplateSettings"/> property
+    /// </summary>
+    public static readonly StyledProperty<MenuFlyoutItemTemplateSettings> TemplateSettingsProperty =
+        MenuFlyoutItem.TemplateSettingsProperty.AddOwner<MenuFlyoutSubItem>();
+
+    /// <summary>
     /// Gets or sets the text content of a MenuFlyoutSubItem.
     /// </summary>
     public string Text
@@ -49,7 +55,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// <summary>
     /// Gets or sets the graphic content of the menu flyout subitem.
     /// </summary>
-    public FAIconElement Icon
+    public IconSource Icon
     {
         get => GetValue(IconProperty);
         set => SetValue(IconProperty, value);
@@ -63,6 +69,15 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     {
         get => _items;
         set => SetAndRaise(ItemsProperty, ref _items, value);
+    }
+
+    /// <summary>
+    /// Gets the template settings for this MenuFlyoutItem
+    /// </summary>
+    public MenuFlyoutItemTemplateSettings TemplateSettings
+    {
+        get => GetValue(TemplateSettingsProperty);
+        private set => SetValue(TemplateSettingsProperty, value);
     }
 
     public bool HasSubMenu => true;

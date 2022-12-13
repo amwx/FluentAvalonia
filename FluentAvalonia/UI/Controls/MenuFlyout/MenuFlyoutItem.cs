@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
@@ -16,6 +15,11 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSource
 {
+    public MenuFlyoutItem()
+    {
+        TemplateSettings = new MenuFlyoutItemTemplateSettings();
+    }
+
     protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
     {
         if (_hotkey != null)
@@ -68,11 +72,6 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
                     Text = null;
                 }
 
-                if (Icon is IconSourceElement ele && ele.IconSource == oldXaml.IconSource)
-                {
-                    Icon = null;
-                }
-
                 if (InputGesture == oldXaml.HotKey)
                 {
                     HotKey = null;
@@ -88,7 +87,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
 
                 if (Icon == null)
                 {
-                    Icon = new IconSourceElement { IconSource = newXaml.IconSource };
+                    Icon = newXaml.IconSource;
                 }
 
                 if (InputGesture == null)
@@ -124,6 +123,10 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
         {
             var kg = change.GetNewValue<KeyGesture>();
             InputGesture = kg;
+        }
+        else if (change.Property == IconProperty)
+        {
+            TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
         }
     }
 

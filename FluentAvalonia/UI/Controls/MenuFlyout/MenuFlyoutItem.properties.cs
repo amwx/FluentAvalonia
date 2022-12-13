@@ -24,8 +24,8 @@ public partial class MenuFlyoutItem
     /// <summary>
     /// Defines the <see cref="Icon"/> property
     /// </summary>
-    public static readonly StyledProperty<FAIconElement> IconProperty =
-        AvaloniaProperty.Register<MenuFlyoutItem, FAIconElement>(nameof(Icon));
+    public static readonly StyledProperty<IconSource> IconProperty =
+        AvaloniaProperty.Register<MenuFlyoutItem, IconSource>(nameof(Icon));
 
     /// <summary>
     /// Defines the <see cref="Command"/> property
@@ -53,6 +53,12 @@ public partial class MenuFlyoutItem
         AvaloniaProperty.Register<MenuFlyoutItem, KeyGesture>(nameof(InputGesture));
 
     /// <summary>
+    /// Defines the <see cref="TemplateSettings"/> property
+    /// </summary>
+    public static readonly StyledProperty<MenuFlyoutItemTemplateSettings> TemplateSettingsProperty =
+        AvaloniaProperty.Register<MenuFlyoutItem, MenuFlyoutItemTemplateSettings>(nameof(TemplateSettings));
+
+    /// <summary>
     /// Gets or sets the text content of a MenuFlyoutItem.
     /// </summary>
     public string Text
@@ -64,7 +70,7 @@ public partial class MenuFlyoutItem
     /// <summary>
     /// Gets or sets the graphic content of the menu flyout item.
     /// </summary>
-    public FAIconElement Icon
+    public IconSource Icon
     {
         get => GetValue(IconProperty);
         set => SetValue(IconProperty, value);
@@ -109,6 +115,15 @@ public partial class MenuFlyoutItem
     {
         get => GetValue(CommandParameterProperty);
         set => SetValue(CommandParameterProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the template settings for this MenuFlyoutItem
+    /// </summary>
+    public MenuFlyoutItemTemplateSettings TemplateSettings
+    {
+        get => GetValue(TemplateSettingsProperty);
+        private set => SetValue(TemplateSettingsProperty, value);
     }
 
     protected override bool IsEnabledCore => base.IsEnabledCore && _canExecute;

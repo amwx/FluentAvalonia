@@ -206,7 +206,7 @@ public class ControlExample : HeaderedContentControl
                         var docsItem = new MenuFlyoutItem
                         {
                             Text = DocsLinkHeader,
-                            Icon = new SymbolIcon { Symbol = Symbol.Link }
+                            Icon = new SymbolIconSource { Symbol = Symbol.Link }
                         };
 
                         docsItem.Click += LaunchAvaloniaDocs;
@@ -220,7 +220,7 @@ public class ControlExample : HeaderedContentControl
                     var defItem = new MenuFlyoutItem
                     {
                         Text = "Show Definition",
-                        Icon = new SymbolIcon { Symbol = Symbol.CodeFilled }
+                        Icon = new SymbolIconSource { Symbol = Symbol.CodeFilled }
                     };
 
                     defItem.Click += ShowControlDefintion;

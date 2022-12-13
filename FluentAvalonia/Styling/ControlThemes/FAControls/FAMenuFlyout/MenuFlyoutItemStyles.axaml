@@ -40,7 +40,7 @@
 								 Width="16" Height="16"
                                  IsVisible="False">
                             <ContentPresenter Name="IconContent"
-											  Content="{TemplateBinding Icon}"/>
+											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Viewbox>
                         <TextBlock Name="TextBlock"
 								   Text="{TemplateBinding Text}"

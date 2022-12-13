@@ -11,6 +11,8 @@
         </Border>
     </Design.PreviewWith>
 
+    <ui:SymbolIconSource x:Key="ToggleMenuFlyoutCheckmarkIcon" Symbol="Checkmark" />
+    
     <!-- All resources are in BaseResources.axaml -->
 
     <ControlTheme x:Key="{x:Type ui:ToggleMenuFlyoutItem}" TargetType="ui:ToggleMenuFlyoutItem">
@@ -35,13 +37,13 @@
 						  Name="LayoutRootGrid"
                           Margin="{DynamicResource MenuFlyoutItemThemePaddingNarrow}">
 
-                        <ui:SymbolIcon Symbol="Checkmark"
-									   Margin="0 0 16 0"
-									   Name="CheckGlyph"
-                                       Opacity="0"
-                                       FlowDirection="LeftToRight"
-                                       Foreground="{DynamicResource MenuFlyoutSubItemChevron}"/>
-
+                        <ui:IconSourceElement IconSource="{StaticResource ToggleMenuFlyoutCheckmarkIcon}"
+                                              Margin="0 0 16 0"
+                                              Name="CheckGlyph"
+                                              Opacity="0"
+                                              FlowDirection="LeftToRight"
+                                              Foreground="{DynamicResource MenuFlyoutSubItemChevron}" />
+                        
                         <Viewbox Name="IconRoot"
 								 Grid.Column="1"
 								 HorizontalAlignment="Left"
@@ -49,7 +51,7 @@
 								 Width="16" Height="16"
                                  IsVisible="False">
                             <ContentPresenter Name="IconContent"
-											  Content="{TemplateBinding Icon}"/>
+											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Viewbox>
                         <TextBlock Name="TextBlock"
 								   Grid.Column="1"
@@ -90,7 +92,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
             </Style>
         </Style>
@@ -108,7 +110,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPressed}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
             </Style>
         </Style>
@@ -126,12 +128,12 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
             </Style>
         </Style>
 
-        <Style Selector="^:checked /template/ ui|SymbolIcon#CheckGlyph">
+        <Style Selector="^:checked /template/ ui|IconSourceElement#CheckGlyph">
             <Setter Property="Opacity" Value="1" />
         </Style>
 
