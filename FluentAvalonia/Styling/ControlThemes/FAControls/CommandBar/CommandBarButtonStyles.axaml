@@ -6,7 +6,7 @@
         <Border Width="400" Padding="50" Height="400">
             <StackPanel Spacing="5">
                 <Border Background="SteelBlue">
-                    <ui:CommandBarButton Label="Button1" Icon="Save" HotKey="Ctrl+S" IsCompact="True">
+                    <ui:CommandBarButton Label="Button1" IconSource="Save" HotKey="Ctrl+S" IsCompact="True">
                         <ui:CommandBarButton.Flyout>
                             <Flyout />
                         </ui:CommandBarButton.Flyout>
@@ -14,18 +14,18 @@
                 </Border>
 
                 <ui:CommandBarOverflowPresenter>
-                    <ui:CommandBarButton Label="Button1" Icon="Save">
+                    <ui:CommandBarButton Label="Button1" IconSource="Save">
                         <ui:CommandBarButton.Flyout>
                             <Flyout />
                         </ui:CommandBarButton.Flyout>
                     </ui:CommandBarButton>
-                    <ui:CommandBarButton Label="Button1" Icon="Save" />
+                    <ui:CommandBarButton Label="Button1" IconSource="Save" />
                 </ui:CommandBarOverflowPresenter>
 
                 <ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False"
 							   DefaultLabelPosition="Right">
                     <ui:CommandBar.PrimaryCommands>
-                        <ui:CommandBarButton Label="Test" Icon="Save" IsCompact="False" />
+                        <ui:CommandBarButton Label="Test" IconSource="Save" IsCompact="False" />
                     </ui:CommandBar.PrimaryCommands>
                 </ui:CommandBar>
             </StackPanel>
@@ -91,7 +91,7 @@
                                  Margin="{DynamicResource AppBarButtonContentViewboxCollapsedMargin}"
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
-											  Content="{TemplateBinding Icon}"
+											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
 											  Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 
