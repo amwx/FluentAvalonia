@@ -135,7 +135,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property == IconProperty)
+        if (change.Property == IconSourceProperty)
         {
             OnIconPropertyChanged(change);
         }

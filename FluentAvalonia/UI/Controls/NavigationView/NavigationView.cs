@@ -3325,7 +3325,8 @@ public partial class NavigationView : HeaderedContentControl
         if (_settingsItem == null)
             return;
 
-        _settingsItem.Icon = new SymbolIcon { Symbol = Symbol.Settings };
+        // TODO: Cache this
+        _settingsItem.IconSource = new SymbolIconSource { Symbol = Symbol.Settings };
 
         var localizedSettingsName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_SettingsButtonName);
 
