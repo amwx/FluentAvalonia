@@ -21,8 +21,8 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// <summary>
     /// Defines the <see cref="Icon"/> property
     /// </summary>
-    public static readonly StyledProperty<IconSource> IconProperty =
-        MenuFlyoutItem.IconProperty.AddOwner<MenuFlyoutSubItem>();
+    public static readonly StyledProperty<IconSource> IconSourceProperty =
+        MenuFlyoutItem.IconSourceProperty.AddOwner<MenuFlyoutSubItem>();
 
     /// <summary>
     /// Defines the <see cref="Items"/> property
@@ -55,10 +55,10 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// <summary>
     /// Gets or sets the graphic content of the menu flyout subitem.
     /// </summary>
-    public IconSource Icon
+    public IconSource IconSource
     {
-        get => GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
+        get => GetValue(IconSourceProperty);
+        set => SetValue(IconSourceProperty, value);
     }
 
     /// <summary>

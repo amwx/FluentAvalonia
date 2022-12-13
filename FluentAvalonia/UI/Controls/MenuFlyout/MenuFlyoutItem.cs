@@ -85,9 +85,9 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
                     Text = newXaml.Label;
                 }
 
-                if (Icon == null)
+                if (IconSource == null)
                 {
-                    Icon = newXaml.IconSource;
+                    IconSource = newXaml.IconSource;
                 }
 
                 if (InputGesture == null)
@@ -124,7 +124,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
             var kg = change.GetNewValue<KeyGesture>();
             InputGesture = kg;
         }
-        else if (change.Property == IconProperty)
+        else if (change.Property == IconSourceProperty)
         {
             TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
         }

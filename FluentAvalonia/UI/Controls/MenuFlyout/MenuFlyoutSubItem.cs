@@ -21,7 +21,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == IconProperty)
+        if (change.Property == IconSourceProperty)
         {
             TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
         }
