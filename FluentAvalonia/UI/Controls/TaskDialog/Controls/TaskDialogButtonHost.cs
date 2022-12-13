@@ -14,7 +14,7 @@ namespace FluentAvalonia.UI.Controls.Primitives;
 public class TaskDialogButtonHost : Button
 {
     public static readonly StyledProperty<IconSource> IconSourceProperty =
-        SettingsExpander.IconSourceProperty.AddOwner<MenuFlyoutItem>();
+        SettingsExpander.IconSourceProperty.AddOwner<TaskDialogButtonHost>();
 
     public IconSource IconSource
     {
