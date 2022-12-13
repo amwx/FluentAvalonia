@@ -11,7 +11,7 @@
 <!-- Define the DataTemplates for the items -->
 <UserControl.DataTemplates>
     <DataTemplate DataType="{x:Type vm:TempMenuItem}">
-        <ui:MenuFlyoutItem Text="{Binding Text}" Icon="{Binding Icon}" />
+        <ui:MenuFlyoutItem Text="{Binding Text}" IconSource="{Binding Icon}" />
     </DataTemplate>
     <DataTemplate DataType="{x:Type vm:TempMenuSeparator}">
         <ui:MenuFlyoutSeparator />

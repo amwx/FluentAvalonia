@@ -8,7 +8,7 @@
 	If you only need NavigationViewItems, you can just set the ItemTemplate:
 	<ui:NavigationView.MenuItemTemplate>
         <DataTemplate DataType="{x:Type vm:Category}">
-            <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+            <ui:NavigationViewItem Content="{Binding Name}" IconSource="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
         </DataTemplate>
     </ui:NavigationView.MenuItemTemplate>
     -->
@@ -27,7 +27,7 @@
 			MenuItemTemplateSelector
 			-->
             <DataTemplate DataType="{x:Type vm:Category}">
-                <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+                <ui:NavigationViewItem Content="{Binding Name}" IconSource="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
             </DataTemplate>
 
             <vm:MenuItemTemplateSelector.SeparatorTemplate>
