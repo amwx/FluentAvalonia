@@ -62,7 +62,7 @@
 										 HorizontalAlignment="Center"
                                          Margin="{DynamicResource NavigationViewItemOnLeftIconBoxMargin}">
                                     <ContentPresenter Name="Icon"
-                                                      Content="{TemplateBinding Icon}"
+                                                      Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
                                                       Foreground="{DynamicResource NavigationViewItemForeground}"/>
                                 </Viewbox>
                             </Border>
@@ -247,7 +247,7 @@
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center">
                                 <ContentPresenter Name="Icon"
-                                                  Content="{TemplateBinding Icon}"
+                                                  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
                                                   Foreground="{DynamicResource TopNavigationViewItemForeground}"/>
                             </Viewbox>
 
@@ -467,7 +467,7 @@
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center">
                                 <ContentPresenter Name="Icon"
-                                                  Content="{TemplateBinding Icon}"
+                                                  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
                                                   Foreground="{DynamicResource TopNavigationViewItemForeground}" />
                             </Viewbox>
 

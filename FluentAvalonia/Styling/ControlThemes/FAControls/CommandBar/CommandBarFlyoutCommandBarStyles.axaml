@@ -6,13 +6,13 @@
         <Border Padding="20" Background="#E0E0E0">
             <ui:CommandBarFlyoutCommandBar IsOpen="True" Margin="30">
                 <ui:CommandBarFlyoutCommandBar.PrimaryCommands>
-                    <ui:CommandBarButton Icon="Save" />
-                    <ui:CommandBarToggleButton Icon="Globe" />
+                    <ui:CommandBarButton IconSource="Save" />
+                    <ui:CommandBarToggleButton IconSource="Globe" />
                 </ui:CommandBarFlyoutCommandBar.PrimaryCommands>
 
                 <ui:CommandBarFlyoutCommandBar.SecondaryCommands>
-                    <ui:CommandBarButton Icon="Save" Label="Save" HotKey="Ctrl+S" />
-                    <ui:CommandBarToggleButton Icon="ChevronUp" Label="Move Up" IsChecked="True" HotKey="Ctrl+F1" />
+                    <ui:CommandBarButton IconSource="Save" Label="Save" HotKey="Ctrl+S" />
+                    <ui:CommandBarToggleButton IconSource="ChevronUp" Label="Move Up" IsChecked="True" HotKey="Ctrl+F1" />
                 </ui:CommandBarFlyoutCommandBar.SecondaryCommands>
             </ui:CommandBarFlyoutCommandBar>
         </Border>
@@ -152,7 +152,7 @@
                                  Height="20"
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
-											  Content="{TemplateBinding Icon}"
+											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
 											  Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 
@@ -407,7 +407,7 @@
                                  Height="20"
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
-											  Content="{TemplateBinding Icon}"
+											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
 											  Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 

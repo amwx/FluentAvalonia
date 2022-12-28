@@ -10,6 +10,8 @@
             </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
+    
+    <ui:PathIconSource x:Key="RadioMenuFlyoutItemCheckedIcon" Data="M0,2a2,2 0 1,0 4,0a2,2 0 1,0 -4,0" />
 
     <!-- All resources are in BaseResources.axaml -->
 
@@ -40,13 +42,13 @@
 						Also FluentIcons doesn't have a comparable icon to the WinUI one from Segoe MDL2 Assets
 						so we just use a path icon that draws a small circle and it basically looks the same
 						-->
-                        <ui:FAPathIcon Data="M0,2a2,2 0 1,0 4,0a2,2 0 1,0 -4,0"
-                                     Margin="6 0 16 0"
-                                     Name="CheckGlyph" 
-                                     UseLayoutRounding="False"
-									 VerticalAlignment="Center"
-                                     Opacity="0"
-                                     Foreground="{DynamicResource MenuFlyoutSubItemChevron}"/>
+                        <ui:IconSourceElement IconSource="{StaticResource RadioMenuFlyoutItemCheckedIcon}"
+                                              Margin="6 0 16 0"
+                                              Name="CheckGlyph"
+                                              UseLayoutRounding="False"
+                                              VerticalAlignment="Center"
+                                              Opacity="0"
+                                              Foreground="{DynamicResource MenuFlyoutSubItemChevron}" />
 
                         <Viewbox Name="IconRoot"
 								 Grid.Column="1"
@@ -55,7 +57,7 @@
 								 Width="16" Height="16"
                                  IsVisible="False">
                             <ContentPresenter Name="IconContent"
-											  Content="{TemplateBinding Icon}"/>
+											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Viewbox>
                         <TextBlock Name="TextBlock"
 								   Grid.Column="1"
@@ -96,7 +98,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAPathIcon#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
             </Style>
         </Style>
@@ -114,7 +116,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPressed}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAPathIcon#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
             </Style>
         </Style>
@@ -132,12 +134,12 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAPathIcon#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
             </Style>
         </Style>
 
-        <Style Selector="^:checked /template/ ui|FAPathIcon#CheckGlyph">
+        <Style Selector="^:checked /template/ ui|IconSourceElement#CheckGlyph">
             <Setter Property="Opacity" Value="1" />
         </Style>
 

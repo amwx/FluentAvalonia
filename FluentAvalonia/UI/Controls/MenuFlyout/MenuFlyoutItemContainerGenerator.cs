@@ -43,7 +43,7 @@ internal class MenuFlyoutPresenterItemContainerGenerator : ItemContainerGenerato
                 var iconSelector = mfsit.IconSelector(item);
                 if (iconSelector != null)
                 {
-                    BindingOperations.Apply(mfsi, MenuFlyoutSubItem.IconProperty, iconSelector, null);
+                    BindingOperations.Apply(mfsi, MenuFlyoutSubItem.IconSourceProperty, iconSelector, null);
                 }
 
                 return mfsi;

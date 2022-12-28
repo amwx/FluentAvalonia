@@ -96,7 +96,7 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         {
             if (e.Containers[i].ContainerControl is ToggleMenuFlyoutItem tmfi)
             {
-                if (tmfi.Icon != null)
+                if (tmfi.IconSource != null)
                 {
                     iconCount++;
                 }
@@ -105,7 +105,7 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
             }
             else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
             {
-                if (rmfi.Icon != null)
+                if (rmfi.IconSource != null)
                 {
                     iconCount++;
                 }
@@ -114,14 +114,14 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
             }
             else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
             {
-                if (mfi.Icon != null)
+                if (mfi.IconSource != null)
                 {
                     iconCount++;
                 }
             }
             else if (e.Containers[i].ContainerControl is MenuFlyoutSubItem mfsi)
             {
-                if (mfsi.Icon != null)
+                if (mfsi.IconSource != null)
                 {
                     iconCount++;
                 }
@@ -151,7 +151,7 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         {
             if (e.Containers[i].ContainerControl is ToggleMenuFlyoutItem tmfi)
             {
-                if (tmfi.Icon != null)
+                if (tmfi.IconSource != null)
                 {
                     iconCount--;
                 }
@@ -160,7 +160,7 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
             }
             else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
             {
-                if (rmfi.Icon != null)
+                if (rmfi.IconSource != null)
                 {
                     iconCount--;
                 }
@@ -169,14 +169,14 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
             }
             else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
             {
-                if (mfi.Icon != null)
+                if (mfi.IconSource != null)
                 {
                     iconCount--;
                 }
             }
             else if (e.Containers[i].ContainerControl is MenuFlyoutSubItem mfsi)
             {
-                if (mfsi.Icon != null)
+                if (mfsi.IconSource != null)
                 {
                     iconCount--;
                 }

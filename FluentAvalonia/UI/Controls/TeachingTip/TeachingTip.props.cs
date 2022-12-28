@@ -155,7 +155,7 @@ public partial class TeachingTip : ContentControl
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
-        AvaloniaProperty.Register<TeachingTip, IconSource>(nameof(IconSource));
+        SettingsExpander.IconSourceProperty.AddOwner<TeachingTip>();
 
     /// <summary>
     /// Defines the <see cref="TemplateSettings"/> property

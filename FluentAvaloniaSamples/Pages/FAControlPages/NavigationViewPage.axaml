@@ -32,10 +32,10 @@ Known issues:
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView1.xaml.txt">
             <ui:NavigationView x:Name="nvSample1" Height="460" PaneDisplayMode="Left">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play"/>
-                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" Icon="Save" />
-                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" Icon="Refresh" />
-                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" Icon="Download" />
+                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play"/>
+                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" IconSource="Save" />
+                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
+                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" IconSource="Download" />
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
         </ctrls:ControlExample>
@@ -44,10 +44,10 @@ Known issues:
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView2.xaml.txt">
             <ui:NavigationView x:Name="nvSample2" Height="460" PaneDisplayMode="Auto">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" />
-                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" />
-                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" />
-                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" />
+                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play"/>
+                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" IconSource="Save" />
+                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
+                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" IconSource="Download" />
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
         </ctrls:ControlExample>
@@ -81,7 +81,7 @@ Known issues:
 						MenuItemTemplateSelector
 						-->
                         <DataTemplate DataType="{x:Type vm:Category}">
-                            <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+                            <ui:NavigationViewItem Content="{Binding Name}" IconSource="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
                         </DataTemplate>
 
                         <vm:MenuItemTemplateSelector.SeparatorTemplate>
@@ -99,17 +99,17 @@ Known issues:
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView4.xaml.txt">
             <ui:NavigationView x:Name="nvSample4" PaneDisplayMode="Left" Height="460">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Home" Tag="SamplePage1" Icon="Home" />
-                    <ui:NavigationViewItem Content="Account" Tag="SamplePage2" Icon="Home">
+                    <ui:NavigationViewItem Content="Home" Tag="SamplePage1" IconSource="Home" />
+                    <ui:NavigationViewItem Content="Account" Tag="SamplePage2" IconSource="Home">
                         <ui:NavigationViewItem.MenuItems>
-                            <ui:NavigationViewItem Content="Mail" Icon="Mail" Tag="SamplePage3" />
-                            <ui:NavigationViewItem Content="Calendar" Icon="Calendar" Tag="SamplePage4" />
+                            <ui:NavigationViewItem Content="Mail" IconSource="Mail" Tag="SamplePage3" />
+                            <ui:NavigationViewItem Content="Calendar" IconSource="Calendar" Tag="SamplePage4" />
                         </ui:NavigationViewItem.MenuItems>
                     </ui:NavigationViewItem>
-                    <ui:NavigationViewItem Content="Document options" Tag="SamplePage3" Icon="Document" SelectsOnInvoked="False">
+                    <ui:NavigationViewItem Content="Document options" Tag="SamplePage3" IconSource="Document" SelectsOnInvoked="False">
                         <ui:NavigationViewItem.MenuItems>
-                            <ui:NavigationViewItem Content="Create new" Icon="New" Tag="SamplePage5" />
-                            <ui:NavigationViewItem Content="Upload file" Icon="Upload" Tag="SamplePage6" />
+                            <ui:NavigationViewItem Content="Create new" IconSource="New" Tag="SamplePage5" />
+                            <ui:NavigationViewItem Content="Upload file" IconSource="Upload" Tag="SamplePage6" />
                         </ui:NavigationViewItem.MenuItems>
                     </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
@@ -125,14 +125,14 @@ Known issues:
                                IsTabStop="False"
                                IsSettingsVisible="False">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Browse" Tag="SamplePage1" Icon="Library" />
-                    <ui:NavigationViewItem Content="Track an Order" Tag="SamplePage2" Icon="Map" />
-                    <ui:NavigationViewItem Content="Order History" Tag="SamplePage3" Icon="Tag" />
+                    <ui:NavigationViewItem Content="Browse" Tag="SamplePage1" IconSource="Library" />
+                    <ui:NavigationViewItem Content="Track an Order" Tag="SamplePage2" IconSource="Map" />
+                    <ui:NavigationViewItem Content="Order History" Tag="SamplePage3" IconSource="Tag" />
                 </ui:NavigationView.MenuItems>
                 <ui:NavigationView.FooterMenuItems>
-                    <ui:NavigationViewItem Content="Account" Tag="SamplePage4" Icon="Contact" />
-                    <ui:NavigationViewItem Content="Your Cart" Tag="SamplePage5" Icon="Shop" />
-                    <ui:NavigationViewItem Content="Help" Tag="SamplePage6" Icon="Help" />
+                    <ui:NavigationViewItem Content="Account" Tag="SamplePage4" IconSource="Contact" />
+                    <ui:NavigationViewItem Content="Your Cart" Tag="SamplePage5" IconSource="Shop" />
+                    <ui:NavigationViewItem Content="Help" Tag="SamplePage6" IconSource="Help" />
                 </ui:NavigationView.FooterMenuItems>
             </ui:NavigationView>
 
@@ -157,10 +157,10 @@ Known issues:
             <ui:NavigationView x:Name="nvSample6" Height="460"
                                PaneDisplayMode="{Binding #DispModeAPIBox.SelectedItem.Content}">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" Icon="Play" />
+                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play" />
                     <ui:NavigationViewItemHeader Content="Actions" />
-                    <ui:NavigationViewItem Name="MenuItem2" Content="Menu Item2" Tag="SamplePage2" Icon="Download" />
-                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" Icon="Refresh" />
+                    <ui:NavigationViewItem Name="MenuItem2" Content="Menu Item2" Tag="SamplePage2" IconSource="Download" />
+                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.AutoCompleteBox>
@@ -173,8 +173,8 @@ Known issues:
 
                 <ui:NavigationView.PaneFooter>
                     <StackPanel Name="FooterStackPanel" Orientation="Vertical" IsVisible="False">
-                        <ui:NavigationViewItem Icon="Download" />
-                        <ui:NavigationViewItem Icon="Alert" />
+                        <ui:NavigationViewItem IconSource="Download" />
+                        <ui:NavigationViewItem IconSource="Alert" />
                     </StackPanel>
                 </ui:NavigationView.PaneFooter>
 

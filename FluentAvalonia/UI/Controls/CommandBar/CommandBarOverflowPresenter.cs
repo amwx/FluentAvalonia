@@ -77,7 +77,7 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
         {
             if (l[i] is CommandBarButton cbb)
             {
-                if (cbb.Icon != null)
+                if (cbb.IconSource != null)
                     _hasIcons++;
 
                 cbb.IsInOverflow = true;
@@ -86,7 +86,7 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
             {
                 _hasToggle++;
 
-                if (cbtb.Icon != null)
+                if (cbtb.IconSource != null)
                     _hasIcons++;
 
                 cbtb.IsInOverflow = true;
@@ -108,7 +108,7 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
         {
             if (l[i] is CommandBarButton cbb)
             {
-                if (cbb.Icon != null)
+                if (cbb.IconSource != null)
                     _hasIcons--;
 
                 cbb.IsInOverflow = false;
@@ -119,7 +119,7 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
             {
                 _hasToggle--;
 
-                if (cbtb.Icon != null)
+                if (cbtb.IconSource != null)
                     _hasIcons--;
 
                 cbtb.IsInOverflow = false;

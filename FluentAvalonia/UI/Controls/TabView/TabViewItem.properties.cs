@@ -31,7 +31,7 @@ public partial class TabViewItem
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
-        AvaloniaProperty.Register<TabViewItem, IconSource>(nameof(IconSource));
+        SettingsExpander.IconSourceProperty.AddOwner<TabViewItem>();
 
     /// <summary>
     /// Defines the <see cref="IsClosable"/> property

@@ -10,9 +10,9 @@
 
     <UserControl.Resources>
         <ui:CommandBarFlyout Placement="Right" x:Key="CommandBarFlyout1">
-            <ui:CommandBarButton Label="Share" Icon="Share" ToolTip.Tip="Share" Command="{Binding FlyoutCommands}" CommandParameter="Share" />
-            <ui:CommandBarButton Label="Save" Icon="Save" ToolTip.Tip="Save" Command="{Binding FlyoutCommands}" CommandParameter="Save" />
-            <ui:CommandBarButton Label="Delete" Icon="Delete" ToolTip.Tip="Delete" Command="{Binding FlyoutCommands}" CommandParameter="Delete" />
+            <ui:CommandBarButton Label="Share" IconSource="Share" ToolTip.Tip="Share" Command="{Binding FlyoutCommands}" CommandParameter="Share" />
+            <ui:CommandBarButton Label="Save" IconSource="Save" ToolTip.Tip="Save" Command="{Binding FlyoutCommands}" CommandParameter="Save" />
+            <ui:CommandBarButton Label="Delete" IconSource="Delete" ToolTip.Tip="Delete" Command="{Binding FlyoutCommands}" CommandParameter="Delete" />
             <ui:CommandBarFlyout.SecondaryCommands>
                 <ui:CommandBarButton Label="Resize" Command="{Binding FlyoutCommands}" CommandParameter="Resize" />
                 <ui:CommandBarButton Label="Move" Command="{Binding FlyoutCommands}" CommandParameter="Move" />
