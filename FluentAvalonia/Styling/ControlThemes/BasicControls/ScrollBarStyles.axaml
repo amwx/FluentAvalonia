@@ -6,7 +6,7 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <Panel Width="125" Height="170">
-                <ScrollBar Orientation="Vertical" HorizontalAlignment="Right" AllowAutoHide="True" Margin="0 0 0 20" />
+                <ScrollBar Orientation="Vertical" HorizontalAlignment="Right" AllowAutoHide="False" Margin="0 0 0 20" />
 
                 <ScrollBar IsEnabled="True" Orientation="Horizontal" VerticalAlignment="Bottom" AllowAutoHide="False" />
             </Panel>
@@ -26,7 +26,7 @@
     -->
     <x:Double x:Key="ScrollBarThumbStrokeThickness">1</x:Double>
     <!-- Upped this from 8-12, Fluent icons are smaller than MDL2 -->
-    <x:Double x:Key="ScrollBarButtonArrowIconFontSize">12</x:Double>
+    <x:Double x:Key="ScrollBarButtonArrowIconFontSize">16</x:Double>
 
     <CornerRadius x:Key="ScrollBarCornerRadius">3</CornerRadius>
     <!-- WinUI uses a converter that multiplies 'ScrollBarCornerRadius' by 2, but this is easier-->
@@ -103,7 +103,8 @@
                 <Border x:Name="Root"
                         Background="{DynamicResource ScrollBarButtonBackground}"
                         BorderBrush="{DynamicResource ScrollBarButtonBorderBrush}"
-                        CornerRadius="{DynamicResource ScrollBarCornerRadius}">
+                        CornerRadius="{DynamicResource ScrollBarCornerRadius}"
+                        Padding="-1">
                     <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                  Name="ArrowGlyph"
                                  FontSize="{DynamicResource ScrollBarButtonArrowIconFontSize}"
