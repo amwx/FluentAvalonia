@@ -8,7 +8,7 @@
         <Border Padding="50">
             <StackPanel Spacing="20">
                 <TimePicker />
-                <TimePicker Header="Header" />
+                <TimePicker />
                 <TimePickerPresenter />
             </StackPanel>
         </Border>
