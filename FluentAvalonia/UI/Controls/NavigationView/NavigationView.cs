@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
@@ -626,6 +627,14 @@ public partial class NavigationView : HeaderedContentControl
         }
 
         base.OnKeyDown(e);
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 
     private void OnLayoutUpdated(object sender, EventArgs e)

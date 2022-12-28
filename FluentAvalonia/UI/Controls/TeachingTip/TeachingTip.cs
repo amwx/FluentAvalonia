@@ -6,6 +6,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
@@ -182,6 +183,14 @@ public partial class TeachingTip : ContentControl
         {
             PseudoClasses.Set(s_pcContent, change.NewValue != null);
         }
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "MainContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 
     private void UpdateButtonAutomationProperties(Button button, object obj)

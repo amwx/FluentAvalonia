@@ -58,6 +58,14 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         }
     }
 
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "Content")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
+    }
+
     protected override void OnKeyUp(KeyEventArgs e)
     {
         if (e.Handled)

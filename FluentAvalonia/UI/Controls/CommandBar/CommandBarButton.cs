@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.Styling;
@@ -114,6 +115,14 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
                 cb.IsOpen = false;
             }
         }
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 
     private void OnFlyoutOpened(object sender, EventArgs e)

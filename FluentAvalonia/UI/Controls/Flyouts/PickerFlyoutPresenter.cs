@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
@@ -54,6 +55,14 @@ public class PickerFlyoutPresenter : ContentControl
         {
             _dismissButton.Click += OnDismissClick;
         }
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 
     private void OnDismissClick(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Presenters;
 using Avalonia.Styling;
 using FluentAvalonia.Core;
 using System;
@@ -58,6 +59,14 @@ public class CommandBarElementContainer : ContentControl, ICommandBarElement, IS
     {
         get => _dynamicOverflowOrder;
         set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 
     private bool _isInOverflow;

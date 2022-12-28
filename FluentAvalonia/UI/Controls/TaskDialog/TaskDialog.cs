@@ -91,6 +91,14 @@ public partial class TaskDialog : ContentControl
             PseudoClasses.Set(s_pcSubheader, change.NewValue != null);
         }
     }
+    
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
+    }
 
     private void OnKeyDownPreview(object sender, KeyEventArgs e)
     {

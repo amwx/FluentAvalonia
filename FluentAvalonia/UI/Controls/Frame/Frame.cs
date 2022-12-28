@@ -63,6 +63,14 @@ public partial class Frame : ContentControl
         _presenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
     }
 
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
+    }
+
     /// <summary>
     /// Navigates to the most recent item in back navigation history, if a Frame manages its own navigation history.
     /// </summary>
