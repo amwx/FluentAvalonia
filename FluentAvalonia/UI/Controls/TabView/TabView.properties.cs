@@ -12,6 +12,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls;
 using FluentAvalonia.UI.Controls.Primitives;
+using Avalonia.Utilities;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -344,4 +345,24 @@ public partial class TabView
     private static readonly string SR_TabViewAddButtonTooltip = "TabViewAddButtonTooltip";
     private static readonly string SR_TabViewScrollDecreaseButtonTooltip = "TabViewScrollDecreaseButtonTooltip";
     private static readonly string SR_TabViewScrollIncreaseButtonTooltip = "TabViewScrollIncreaseButtonTooltip";
+
+    // TabViewItem subs to these in OnApplyTemplate, but we need to make sure the strong ref to TabView isn't
+    // held if the TabViewItem is removed
+    internal static readonly WeakEvent<TabView, TabViewTabDragStartingEventArgs> TabDragStartingWeakEvent = 
+        WeakEvent.Register<TabView, TabViewTabDragStartingEventArgs>(
+                (c, s) =>
+                {
+                    TypedEventHandler<TabView, TabViewTabDragStartingEventArgs> handler = (_, e) => s(c, e);
+                    c.TabDragStarting += handler;
+                    return () => c.TabDragStarting -= handler;
+                });
+
+    internal static readonly WeakEvent<TabView, TabViewTabDragCompletedEventArgs> TabDragCompletedWeakEvent =
+        WeakEvent.Register<TabView, TabViewTabDragCompletedEventArgs>(
+        (c, s) =>
+        {
+            TypedEventHandler<TabView, TabViewTabDragCompletedEventArgs> handler = (_, e) => s(c, e);
+            c.TabDragCompleted += handler;
+            return () => c.TabDragCompleted -= handler;
+        });
 }
