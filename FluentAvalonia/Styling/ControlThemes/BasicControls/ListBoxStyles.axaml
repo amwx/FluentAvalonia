@@ -146,8 +146,8 @@
                 <Style Selector="^ /template/ ContentPresenter">
                     <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPointerOver}" />
                 </Style>
-                <Style Selector="^ /template/ Border#SelectionIndicator">
-                    <Setter Property="Background" Value="{DynamicResource ListViewItemSelectionIndicatorPointerOverBrush}" />
+                <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                    <Setter Property="Fill" Value="{DynamicResource ListViewItemSelectionIndicatorPointerOverBrush}" />
                 </Style>
             </Style>
 
@@ -158,8 +158,10 @@
                 <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                     <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPressed}" />
                 </Style>
-                <Style Selector="^ /template/ Border#SelectionIndicator">
-                    <Setter Property="Background" Value="{DynamicResource ListViewItemSelectionIndicatorPressedBrush}" />
+                <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                    <Setter Property="Fill" Value="{DynamicResource ListViewItemSelectionIndicatorPressedBrush}" />
+                    <!-- TODO: Uncomment when Avalonia fixes selection to work on pointer up -->
+                    <!--<Setter Property="RenderTransform" Value="scaleY(0.5)" />-->
                 </Style>
             </Style>
 
