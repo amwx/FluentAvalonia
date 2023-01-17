@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 
-public interface ISelectedItemInfo
+internal interface ISelectedItemInfo
 {
     public IndexPath Path { get; }
 }

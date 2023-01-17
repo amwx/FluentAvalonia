@@ -7,7 +7,7 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Holds the selected items for a control.
 /// </summary>
-public interface ISelectionModel : INotifyPropertyChanged
+internal interface ISelectionModel : INotifyPropertyChanged
 {
     /// <summary>
     /// Gets or sets the anchor index.
