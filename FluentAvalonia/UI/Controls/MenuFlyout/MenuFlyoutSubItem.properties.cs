@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
+using Avalonia.Styling;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// Defines the <see cref="Text"/> property
     /// </summary>
     public static readonly StyledProperty<string> TextProperty =
-        AvaloniaProperty.Register<MenuFlyoutItem, string>(nameof(Text));
+        MenuFlyoutItem.TextProperty.AddOwner<MenuFlyoutSubItem>();
 
     /// <summary>
     /// Defines the <see cref="Icon"/> property
@@ -36,6 +37,12 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// </summary>
     public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
         ItemsControl.ItemTemplateProperty.AddOwner<MenuFlyoutSubItem>();
+
+    /// <summary>
+    /// Defines the <see cref="ItemContainerTheme"/> property
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme> ItemContainerThemeProperty =
+        ItemsControl.ItemContainerThemeProperty.AddOwner<ControlTheme>();
 
     /// <summary>
     /// Defines the <see cref="TemplateSettings"/> property
@@ -69,6 +76,21 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     {
         get => _items;
         set => SetAndRaise(ItemsProperty, ref _items, value);
+    }
+
+    public IDataTemplate ItemTemplate
+    {
+        get => GetValue(ItemTemplateProperty);
+        set => SetValue(ItemTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the <see cref="ControlTheme"/> to apply for the items
+    /// </summary>
+    public ControlTheme ItemContainerTheme
+    {
+        get => GetValue(ItemContainerThemeProperty);
+        set => SetValue(ItemContainerThemeProperty, value);
     }
 
     /// <summary>

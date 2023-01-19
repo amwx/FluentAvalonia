@@ -5,10 +5,10 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Metadata;
+using Avalonia.Styling;
 using FluentAvalonia.Core;
 using System.Collections;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
@@ -22,6 +22,7 @@ public class FAMenuFlyout : FlyoutBase
     {
         var al = new AvaloniaList<object>();
         al.CollectionChanged += ItemsCollectionChanged;
+        Items = al;
     }
 
     /// <summary>
@@ -36,6 +37,12 @@ public class FAMenuFlyout : FlyoutBase
     /// </summary>
     public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
         ItemsControl.ItemTemplateProperty.AddOwner<FAMenuFlyout>();
+
+    /// <summary>
+    /// Defines the <see cref="ItemContainerTheme"/> property
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme> ItemContainerThemeProperty =
+        ItemsControl.ItemContainerThemeProperty.AddOwner<ControlTheme>();
 
     /// <summary>
     /// Gets or sets the items of the MenuFlyout
@@ -56,6 +63,15 @@ public class FAMenuFlyout : FlyoutBase
         set => SetValue(ItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the <see cref="ControlTheme"/> to apply for the items
+    /// </summary>
+    public ControlTheme ItemContainerTheme
+    {
+        get => GetValue(ItemContainerThemeProperty);
+        set => SetValue(ItemContainerThemeProperty, value);
+    }
+
     internal AvaloniaList<MenuFlyoutItemBase> ItemsInternal => _itemsInternal;
 
     /// <summary>
@@ -68,8 +84,8 @@ public class FAMenuFlyout : FlyoutBase
     {
         return new FAMenuFlyoutPresenter
         {
-            [!ItemsControl.ItemsProperty] = this[!ItemsProperty],
-            [!ItemsControl.ItemTemplateProperty] = this[!ItemTemplateProperty]
+            Items = _itemsInternal,
+            [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty]
         };
     }
 
@@ -209,6 +225,8 @@ public class FAMenuFlyout : FlyoutBase
         if (_items == null)
             return;
 
+        _itemsInternal.Clear();
+
         var first = _items.ElementAt(0);
         // If the first item is a MenuFlyoutItemBase, assume all are (added via xaml or code)
         if (first is MenuFlyoutItemBase)
@@ -225,20 +243,34 @@ public class FAMenuFlyout : FlyoutBase
         }
     }
 
-    private MenuFlyoutItemBase CreateContainer(object item, IDataTemplate template)
+    internal static MenuFlyoutItemBase CreateContainer(object item, IDataTemplate template)
     {
         if (item == null)
             return null;
 
         if (template is MenuFlyoutSubItemTemplate mfsit)
         {
-            return new MenuFlyoutSubItem
+            var mfsi = new MenuFlyoutSubItem
             {
-                DataContext = item,
-                [!MenuFlyoutSubItem.ItemsProperty] = mfsit.SubItems,
-                [!MenuFlyoutItem.TextProperty] = mfsit.HeaderText,
-                [!MenuFlyoutItem.IconProperty] = mfsit.Icon
+                DataContext = item
             };
+
+            if (mfsit.SubItems != null)
+            {
+                mfsi.Bind(MenuFlyoutSubItem.ItemsProperty, mfsit.SubItems);
+            }
+
+            if (mfsit.HeaderText != null)
+            {
+                mfsi.Bind(MenuFlyoutItem.TextProperty, mfsit.HeaderText);
+            }
+
+            if (mfsit.Icon != null)
+            {
+                mfsi[!MenuFlyoutItem.IconSourceProperty] = mfsit.Icon; 
+            }
+
+            return mfsi;
         }
         else
         {
@@ -263,5 +295,5 @@ public class FAMenuFlyout : FlyoutBase
 
     private Classes _classes;
     private IEnumerable _items;
-    private AvaloniaList<MenuFlyoutItemBase> _itemsInternal;
+    private readonly AvaloniaList<MenuFlyoutItemBase> _itemsInternal = new AvaloniaList<MenuFlyoutItemBase>();
 }
