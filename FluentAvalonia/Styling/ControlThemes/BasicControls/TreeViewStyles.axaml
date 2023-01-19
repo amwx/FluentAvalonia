@@ -44,7 +44,6 @@
                                   HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                                   VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
                         <ItemsPresenter Name="PART_ItemsPresenter"
-                                        Items="{TemplateBinding Items}"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                         Margin="{TemplateBinding Padding}" />
                     </ScrollViewer>
@@ -126,6 +125,7 @@
                                                   Grid.Column="1"
                                                   Focusable="False"
                                                   Content="{TemplateBinding Header}"
+                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                                   Margin="{TemplateBinding Padding}" />
@@ -134,7 +134,6 @@
                     </Border>
                     <ItemsPresenter Name="PART_ItemsPresenter"
                                     IsVisible="{TemplateBinding IsExpanded}"
-                                    Items="{TemplateBinding Items}"
                                     ItemsPanel="{TemplateBinding ItemsPanel}"
                                     Margin="2"/>
                 </StackPanel>

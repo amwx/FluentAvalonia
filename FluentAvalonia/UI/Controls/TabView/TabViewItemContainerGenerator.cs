@@ -6,30 +6,30 @@ using Avalonia.Controls.Templates;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class TabViewItemContainerGenerator : ItemContainerGenerator<TabViewItem>
-{
-    public TabViewItemContainerGenerator(Control owner, AvaloniaProperty contentProperty, AvaloniaProperty contentTemplateProperty)
-        : base(owner, contentProperty, contentTemplateProperty)
-    {
-    }
+//internal class TabViewItemContainerGenerator : ItemContainerGenerator<TabViewItem>
+//{
+//    public TabViewItemContainerGenerator(Control owner, AvaloniaProperty contentProperty, AvaloniaProperty contentTemplateProperty)
+//        : base(owner, contentProperty, contentTemplateProperty)
+//    {
+//    }
 
-    protected override Control CreateContainer(object item)
-    {
-        if (item is TabViewItem tvi)
-            return tvi;
+//    protected override Control CreateContainer(object item)
+//    {
+//        if (item is TabViewItem tvi)
+//            return tvi;
 
-        var template = Owner.FindDataTemplate(item, ItemTemplate);
-        if (template != null)
-        {
-            var built = template.Build(item);
+//        var template = Owner.FindDataTemplate(item, ItemTemplate);
+//        if (template != null)
+//        {
+//            var built = template.Build(item);
 
-            if (built is TabViewItem builtTVI)
-            {
-                builtTVI.DataContext = item;
-                return builtTVI;
-            }
-        }
+//            if (built is TabViewItem builtTVI)
+//            {
+//                builtTVI.DataContext = item;
+//                return builtTVI;
+//            }
+//        }
 
-        throw new NotSupportedException("Unable to build TabViewItem with given template. Ensure DataTemplate builds a TabViewItem.");
-    }
-}
+//        throw new NotSupportedException("Unable to build TabViewItem with given template. Ensure DataTemplate builds a TabViewItem.");
+//    }
+//}

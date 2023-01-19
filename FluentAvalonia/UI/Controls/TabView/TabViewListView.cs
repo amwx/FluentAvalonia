@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Generators;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
@@ -109,16 +108,13 @@ public class TabViewListView : ListBox
             _noAutoScrollRect = new Rect(viewportWidth * 0.1, 0,
                 viewportWidth - (viewportWidth * 0.1), Scroller.Viewport.Height);
         }
-    }
-
-    protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
-    {
-        base.ItemsChanged(e);
-
-        var tv = this.FindAncestorOfType<TabView>();
-        if (tv != null)
+        else if (change.Property == ItemsProperty)
         {
-            tv.OnItemsChanged(null);
+            var tv = this.FindAncestorOfType<TabView>();
+            if (tv != null)
+            {
+                tv.OnItemsChanged(null);
+            }
         }
     }
 
@@ -132,33 +128,35 @@ public class TabViewListView : ListBox
         }
     }
 
-    protected override IItemContainerGenerator CreateItemContainerGenerator()
+    protected override bool IsItemItsOwnContainerOverride(Control item) =>
+        item is TabViewItem;
+
+    protected override Control CreateContainerForItemOverride() =>
+        new TabViewItem();
+
+    protected override void PrepareContainerForItemOverride(Control element, object item, int index)
     {
-        return new TabViewItemContainerGenerator(this, TabViewItem.HeaderProperty,
-            TabViewItem.HeaderTemplateProperty);
-    }
+        var tvi = element as TabViewItem;
 
-    protected override void OnContainersMaterialized(ItemContainerEventArgs e)
-    {
-        base.OnContainersMaterialized(e);
-
-        var parentTV = this.FindAncestorOfType<TabView>();
-        if (parentTV == null)
-            return;
-
-        for (int i = 0, ct = e.Containers.Count; i < ct; i++)
+        // WinUI: Due to virtualization, a TabViewItem might be recycled to display a different tab data item.
+        //        In that case, there is no need to set the TabWidthMode of the TabViewItem or its parent TabView
+        //        as they are already set correctly here.
+        //
+        //        We know we are currently looking at a TabViewItem being recycled if its parent TabView has
+        //        already been set.
+        if (tvi.ParentTabView == null)
         {
-            if (e.Containers[i].ContainerControl is TabViewItem tvi)
+            var parentTV = element.FindAncestorOfType<TabView>();
+            if (parentTV != null)
             {
-                if (tvi.ParentTabView == null)
-                {
-                    tvi.OnTabViewWidthModeChanged(parentTV.TabWidthMode);
-                    tvi.ParentTabView = parentTV;
-                }
+                tvi.OnTabViewWidthModeChanged(parentTV.TabWidthMode);
+                tvi.ParentTabView = parentTV;
             }
         }
-    }
 
+        base.PrepareContainerForItemOverride(element, item, index);
+    }
+       
     private void OnPointerPressedPreview(object sender, PointerPressedEventArgs args)
     {
         if (CanDragItems || CanReorderItems)
@@ -298,40 +296,6 @@ public class TabViewListView : ListBox
             _dragItem = null;
             _dragIndex = -1;
         }
-    }
-
-    protected internal int IndexFromContainer(Control container)
-    {
-        return ItemContainerGenerator.IndexFromContainer(container);
-    }
-
-    protected internal object ItemFromContainer(Control container)
-    {
-        foreach (var item in ItemContainerGenerator.Containers)
-        {
-            if (item.ContainerControl == container)
-            {
-                return item.Item;
-            }
-        }
-
-        return null;
-    }
-
-    protected internal Control ContainerFromIndex(int index) =>
-        ItemContainerGenerator.ContainerFromIndex(index);
-
-    protected internal Control ContainerFromItem(object item)
-    {
-        foreach (var c in ItemContainerGenerator.Containers)
-        {
-            if (c.Item == item)
-            {
-                return c.ContainerControl;
-            }
-        }
-
-        return null;
     }
 
     private void UpdateDragInfo()

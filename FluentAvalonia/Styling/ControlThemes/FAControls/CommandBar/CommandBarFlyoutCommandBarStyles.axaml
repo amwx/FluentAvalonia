@@ -103,8 +103,7 @@
 									  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
 									  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                             <ItemsPresenter Name="ItemsPresenter"
-											Margin="3"
-											Items="{TemplateBinding Items}"/>
+											Margin="3" />
                         </ScrollViewer>
                     </Panel>
                 </Border>

@@ -135,7 +135,6 @@
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-        <Setter Property="VirtualizationMode" Value="None" />
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
                 <!-- 
@@ -163,8 +162,6 @@
                         -->
                         <ItemsPresenter Name="TabItemsPresenter"
                                         Margin="{TemplateBinding Padding}"
-                                        Items="{TemplateBinding Items}"
-                                        ItemTemplate="{TemplateBinding ItemTemplate}"
                                         ItemsPanel="{TemplateBinding ItemsPanel}" />
                     </ScrollViewer>
 

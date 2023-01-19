@@ -41,8 +41,8 @@ public partial class TaskDialog : ContentControl
 
         base.OnApplyTemplate(e);
 
-        _buttonsHost = e.NameScope.Get<ItemsPresenter>(s_tpButtonsHost);
-        _commandsHost = e.NameScope.Get<ItemsPresenter>(s_tpCommandsHost);
+        _buttonsHost = e.NameScope.Get<ItemsControl>(s_tpButtonsHost);
+        _commandsHost = e.NameScope.Get<ItemsControl>(s_tpCommandsHost);
 
         _moreDetailsButton = e.NameScope.Find<Button>(s_tpMoreDetailsButton);
 
@@ -472,6 +472,7 @@ public partial class TaskDialog : ContentControl
             }
             buttons.Add(b);
         }
+
         _buttonsHost.Items = buttons;
     }
 
@@ -578,8 +579,8 @@ public partial class TaskDialog : ContentControl
         }
     }
 
-    private ItemsPresenter _buttonsHost;
-    private ItemsPresenter _commandsHost;
+    private ItemsControl _buttonsHost;
+    private ItemsControl _commandsHost;
     private ProgressBar _progressBar;
     private Button _moreDetailsButton;
 

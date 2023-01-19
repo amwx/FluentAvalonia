@@ -167,9 +167,7 @@
                                                  Background="Transparent"/>
                     </Expander.Header>
                     
-                    <ItemsPresenter Items="{TemplateBinding Items}"
-                                    ItemsPanel="{TemplateBinding ItemsPanel}"
-                                    ItemTemplate="{TemplateBinding ItemTemplate}" />
+                    <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />
                 </Expander>                
             </ControlTemplate>
         </Setter>

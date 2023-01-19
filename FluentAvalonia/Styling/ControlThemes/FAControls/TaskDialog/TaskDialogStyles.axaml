@@ -142,14 +142,14 @@
                                                  Grid.Row="3"
                                                  IsVisible="False"/>
 
-                                    <ItemsPresenter Name="CommandsHost"
-                                                    Grid.Row="4">
-                                        <ItemsPresenter.ItemsPanel>
+                                    <ItemsControl Name="CommandsHost"
+                                                  Grid.Row="4">
+                                        <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Spacing="2" />
                                             </ItemsPanelTemplate>
-                                        </ItemsPresenter.ItemsPanel>
-                                    </ItemsPresenter>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
 
                                     <StackPanel Name="MoreDetailsPanel"
                                                 Grid.Row="5"
@@ -175,14 +175,14 @@
                                     Grid.Row="3"
                                     Background="{DynamicResource TaskDialogButtonAreaBackground}"
                                     Name="ButtonBorder">
-                                <ItemsPresenter Name="ButtonsHost"
+                                <ItemsControl Name="ButtonsHost"
                                                 KeyboardNavigation.TabNavigation="Continue">
-                                    <ItemsPresenter.ItemsPanel>
+                                    <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <uip:TaskDialogButtonsPanel Spacing="8"  />
                                         </ItemsPanelTemplate>
-                                    </ItemsPresenter.ItemsPanel>
-                                </ItemsPresenter>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
                             </Border>
                         </Grid>
                     </Border>

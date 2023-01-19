@@ -91,7 +91,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         {
             if (_presenter != null && _presenter.SelectedIndex != -1)
             {
-                return _presenter.ItemContainerGenerator.ContainerFromIndex(_presenter.SelectedIndex) as IMenuItem;
+                return _presenter.ContainerFromIndex(_presenter.SelectedIndex) as IMenuItem;
             }
 
             return null;
@@ -100,7 +100,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         {
             if (_presenter != null)
             {
-                _presenter.SelectedIndex = _presenter.ItemContainerGenerator.IndexFromContainer(value as Control);
+                _presenter.SelectedIndex = _presenter.IndexFromContainer(value as Control);
             }
         }
     }
@@ -109,9 +109,10 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     {
         get
         {
-            return _presenter?.ItemContainerGenerator.Containers
-                .Select(x => x.ContainerControl)
-                .OfType<IMenuItem>();
+            return _presenter.GetRealizedContainers().Cast<IMenuItem>();
+            //_presenter?.ItemContainerGenerator.Containers
+            //    .Select(x => x.ContainerControl)
+            //    .OfType<IMenuItem>();
         }
     }
 
