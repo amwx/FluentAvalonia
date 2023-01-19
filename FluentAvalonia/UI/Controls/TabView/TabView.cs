@@ -135,7 +135,6 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
         UpdateListViewItemContainerTransitions();
 
-        // Again, no Loaded event, so just call Loaded here
         OnLoaded();
     }
 
