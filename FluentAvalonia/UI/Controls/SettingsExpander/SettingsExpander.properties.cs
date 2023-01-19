@@ -14,12 +14,6 @@ namespace FluentAvalonia.UI.Controls;
 public partial class SettingsExpander
 {
     /// <summary>
-    /// Defines the <see cref="HeaderTemplateProperty"/>
-    /// </summary>
-    public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
-        AvaloniaProperty.Register<SettingsExpander, IDataTemplate>(nameof(HeaderTemplate));
-
-    /// <summary>
     /// Defines the <see cref="Description"/> property
     /// </summary>
     public static readonly StyledProperty<string> DescriptionProperty = 
@@ -81,14 +75,6 @@ public partial class SettingsExpander
     public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
         SettingsExpanderItem.ClickEvent;
 
-    /// <summary>
-    /// Gets or sets the Header template for the SettingsExpander
-    /// </summary>
-    public IDataTemplate HeaderTemplate
-    {
-        get => GetValue(HeaderTemplateProperty);
-        set => SetValue(HeaderTemplateProperty, value);
-    }
 
     /// <summary>
     /// Gets or sets the description text
