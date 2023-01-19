@@ -20,6 +20,16 @@ public partial class NavigationViewItemPresenter : ContentControl
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
+        // HACK: Bug in Viewbox doesn't disconnect its child when its removed from the tree
+        //       causing a crash when switching pane mode. Force disconnect the icon and 
+        //       reapply it after applying the template.
+        var ts = TemplateSettings;
+        var icoSrc = IconSource;
+        if (icoSrc != null)
+        {
+            ts.Icon = null;
+        }
+
         base.OnApplyTemplate(e);
 
         _selectionIndicator = e.NameScope.Find<Border>(s_tpSelectionIndicator);
@@ -52,6 +62,22 @@ public partial class NavigationViewItemPresenter : ContentControl
         }
 
         UpdateMargin();
+
+        // HACK
+        if (icoSrc != null)
+        {
+            ts.Icon = IconHelpers.CreateFromUnknown(icoSrc);
+        }
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IconSourceProperty)
+        {
+            TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
+        }
     }
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)

@@ -15,14 +15,21 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, IStyleable
 {
+    public CommandBarToggleButton()
+    {
+        TemplateSettings = new CommandBarButtonTemplateSettings();
+    }
+
     Type IStyleable.StyleKey => typeof(CommandBarToggleButton);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property == IconProperty)
+
+        if (change.Property == IconSourceProperty)
         {
             PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
+            TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
         }
         else if (change.Property == LabelProperty)
         {
@@ -44,10 +51,6 @@ public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, 
                 {
                     Label = null;
                 }
-                if (Icon is IconSourceElement ise && ise.IconSource == xamlComOld.IconSource)
-                {
-                    Icon = null;
-                }
 
                 if (HotKey == xamlComOld.HotKey)
                 {
@@ -67,10 +70,7 @@ public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, 
                     Label = xamlCom.Label;
                 }
 
-                if (Icon == null)
-                {
-                    Icon = new IconSourceElement { IconSource = xamlCom.IconSource };
-                }
+                IconSource = xamlCom.IconSource;
 
                 if (HotKey == null)
                 {

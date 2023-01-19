@@ -12,9 +12,9 @@
             <ui:NavigationView x:Name="nvSample1" Height="300" 
 								   PaneDisplayMode="{Binding #DisplayModeBox.SelectedItem.Content}">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Home" Icon="Home"/>
-                    <ui:NavigationViewItem Content="Account" Icon="Contact"/>
-                    <ui:NavigationViewItem x:Name="InboxPage" Content="Inbox" Icon="Mail">
+                    <ui:NavigationViewItem Content="Home" IconSource="Home"/>
+                    <ui:NavigationViewItem Content="Account" IconSource="Contact"/>
+                    <ui:NavigationViewItem x:Name="InboxPage" Content="Inbox" IconSource="Mail">
                         <ui:NavigationViewItem.InfoBadge>
                             <ui:InfoBadge x:Name="infoBadge1" Value="5"
                                           Opacity="{Binding InfoBadgeOpacity, Mode=OneWay}" />

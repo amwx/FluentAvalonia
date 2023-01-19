@@ -11,10 +11,10 @@ namespace FluentAvalonia.UI.Controls.Primitives;
 /// This type should not be used directly and is generated automatically
 /// by a TaskDialog
 /// </remarks>
-public class TaskDialogButtonHost : Avalonia.Controls.Button
+public class TaskDialogButtonHost : Button
 {
     public static readonly StyledProperty<IconSource> IconSourceProperty =
-        AvaloniaProperty.Register<TaskDialogButtonHost, IconSource>(nameof(IconSource));
+        SettingsExpander.IconSourceProperty.AddOwner<TaskDialogButtonHost>();
 
     public IconSource IconSource
     {

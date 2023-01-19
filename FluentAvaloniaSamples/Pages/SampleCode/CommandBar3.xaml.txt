@@ -1,15 +1,15 @@
 ﻿<ui:CommandBar DefaultLabelPosition="Right">
     <ui:CommandBar.PrimaryCommands>
-        <ui:CommandBarButton Icon="Save" Label="Save" />
-        <ui:CommandBarButton Icon="Undo" Label="Undo" />
+        <ui:CommandBarButton IconSource="Save" Label="Save" />
+        <ui:CommandBarButton IconSource="Undo" Label="Undo" />
     </ui:CommandBar.PrimaryCommands>
     <ui:CommandBar.SecondaryCommands>
-        <ui:CommandBarButton Icon="Cut" Label="Cut" />
-        <ui:CommandBarButton Icon="Copy" Label="Copy" />
-        <ui:CommandBarButton Icon="Paste" Label="Paste" />
+        <ui:CommandBarButton IconSource="Cut" Label="Cut" />
+        <ui:CommandBarButton IconSource="Copy" Label="Copy" />
+        <ui:CommandBarButton IconSource="Paste" Label="Paste" />
         <ui:CommandBarSeparator />
-        <ui:CommandBarToggleButton Icon="Bold" Label="Bold" />
-        <ui:CommandBarToggleButton Icon="Italic" Label="Italic" />
-        <ui:CommandBarToggleButton Icon="Underline" Label="Underline" />
+        <ui:CommandBarToggleButton IconSource="Bold" Label="Bold" />
+        <ui:CommandBarToggleButton IconSource="Italic" Label="Italic" />
+        <ui:CommandBarToggleButton IconSource="Underline" Label="Underline" />
     </ui:CommandBar.SecondaryCommands>
 </ui:CommandBar>

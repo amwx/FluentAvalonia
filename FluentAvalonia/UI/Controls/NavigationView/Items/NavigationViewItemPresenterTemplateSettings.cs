@@ -22,6 +22,12 @@ public class NavigationViewItemPresenterTemplateSettings : AvaloniaObject
         AvaloniaProperty.Register<NavigationViewItemPresenterTemplateSettings, double>(nameof(SmallerIconWidth));
 
     /// <summary>
+    /// Defines the <see cref="Icon"/> property
+    /// </summary>
+    public static readonly StyledProperty<FAIconElement> IconProperty =
+        MenuFlyoutItemTemplateSettings.IconProperty.AddOwner<NavigationViewItemPresenterTemplateSettings>();
+
+    /// <summary>
     /// TODO: Get docs from MS - relatively new setting
     /// </summary>
     public double IconWidth
@@ -37,5 +43,14 @@ public class NavigationViewItemPresenterTemplateSettings : AvaloniaObject
     {
         get => GetValue(SmallerIconWidthProperty);
         internal set => SetValue(SmallerIconWidthProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the <see cref="FAIconElement"/> used in the NavigationViewItem
+    /// </summary>
+    public FAIconElement Icon
+    {
+        get => GetValue(IconProperty);
+        internal set => SetValue(IconProperty, value);
     }
 }

@@ -120,7 +120,7 @@ public partial class MainView : UserControl
             {
                 Content = "Home",
                 Tag = typeof(HomePage),
-                Icon = new IconSourceElement { IconSource = (IconSource)this.FindResource("HomeIcon") },
+                IconSource = (IconSource)this.FindResource("HomeIcon"),
                 Classes =
                 {
                     "SampleAppNav"
@@ -130,7 +130,7 @@ public partial class MainView : UserControl
             {
                 Content = "Core Controls",
                 Tag = typeof(CoreControlsPage),
-                Icon = new IconSourceElement { IconSource = (IconSource)this.FindResource("CoreCtrlsIcon") },
+                IconSource = (IconSource)this.FindResource("CoreCtrlsIcon"),
                 Classes =
                 {
                     "SampleAppNav"
@@ -140,7 +140,7 @@ public partial class MainView : UserControl
             {
                 Content = "New Controls",
                 Tag = typeof(NewControlsPage),
-                Icon = new IconSourceElement { IconSource = (IconSource)this.FindResource("CtrlsIcon") },
+                IconSource = (IconSource)this.FindResource("CtrlsIcon"),
                 Classes =
                 {
                     "SampleAppNav"
@@ -150,7 +150,7 @@ public partial class MainView : UserControl
             {
                 Content = "Resources",
                 Tag = typeof(ResourcesPage),
-                Icon = new IconSourceElement { IconSource = (IconSource)this.FindResource("ResourcesIcon") },
+                IconSource = (IconSource)this.FindResource("ResourcesIcon"),
                 Classes =
                 {
                     "SampleAppNav"
@@ -167,7 +167,7 @@ public partial class MainView : UserControl
             {
                 Content = "Settings",
                 Tag = typeof(SettingsPage),
-                Icon = new IconSourceElement { IconSource = (IconSource)this.FindResource("SettingsIcon") },
+                IconSource = (IconSource)this.FindResource("SettingsIcon"),
                 Classes =
                 {
                     "SampleAppNav"
@@ -235,23 +235,23 @@ public partial class MainView : UserControl
 
         if (t == typeof(HomePage))
         {
-            (item.Icon as IconSourceElement).IconSource = this.TryFindResource(selected ? "HomeIconFilled" : "HomeIcon", out var value) ?
+            item.IconSource = this.TryFindResource(selected ? "HomeIconFilled" : "HomeIcon", out var value) ?
                 (IconSource)value : null;
         }
         else if (t == typeof(CoreControlsPage))
         {
-            (item.Icon as IconSourceElement).IconSource = this.TryFindResource(selected ? "CoreCtrlsIconFilled" : "CoreCtrlsIcon", out var value) ?
+            item.IconSource = this.TryFindResource(selected ? "CoreCtrlsIconFilled" : "CoreCtrlsIcon", out var value) ?
                 (IconSource)value : null;
         }
         // Skip NewControlsPage as its icon is the same for both
         else if (t == typeof(ResourcesPage))
         {
-            (item.Icon as IconSourceElement).IconSource = this.TryFindResource(selected ? "ResourcesIconFilled" : "ResourcesIcon", out var value) ?
+            item.IconSource = this.TryFindResource(selected ? "ResourcesIconFilled" : "ResourcesIcon", out var value) ?
                 (IconSource)value : null;
         }
         else if (t == typeof(SettingsPage))
         {
-            (item.Icon as IconSourceElement).IconSource = this.TryFindResource(selected ? "SettingsIconFilled" : "SettingsIcon", out var value) ?
+            item.IconSource = this.TryFindResource(selected ? "SettingsIconFilled" : "SettingsIcon", out var value) ?
                (IconSource)value : null;
         }
     }

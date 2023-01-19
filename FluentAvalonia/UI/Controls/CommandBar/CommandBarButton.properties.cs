@@ -21,8 +21,8 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
     /// <summary>
     /// Defines the <see cref="Icon"/> property
     /// </summary>
-    public static readonly StyledProperty<FAIconElement> IconProperty =
-        AvaloniaProperty.Register<CommandBarButton, FAIconElement>(nameof(Icon));
+    public static readonly StyledProperty<IconSource> IconSourceProperty =
+        SettingsExpander.IconSourceProperty.AddOwner<CommandBarButton>();
 
     /// <summary>
     /// Defines the <see cref="Label"/> property
@@ -42,6 +42,12 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
     /// </summary>
     public static readonly StyledProperty<bool> IsCompactProperty =
         AvaloniaProperty.Register<CommandBarButton, bool>(nameof(IsCompact));
+
+    /// <summary>
+    /// Defines the <see cref="TemplateSettings"/> property
+    /// </summary>
+    public static readonly StyledProperty<CommandBarButtonTemplateSettings> TemplateSettingsProperty =
+        AvaloniaProperty.Register<CommandBarButton, CommandBarButtonTemplateSettings>(nameof(TemplateSettings));
 
     public bool IsCompact
     {
@@ -64,10 +70,10 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
     /// <summary>
     /// Gets or sets the graphic content of the app bar toggle button.
     /// </summary>
-    public FAIconElement Icon
+    public IconSource IconSource
     {
-        get => GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
+        get => GetValue(IconSourceProperty);
+        set => SetValue(IconSourceProperty, value);
     }
 
     /// <summary>
@@ -83,6 +89,15 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
     {
         get => _dynamicOverflowOrder;
         set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
+    }
+
+    /// <summary>
+    /// Gets the template settings for this CommandBarButton
+    /// </summary>
+    public CommandBarButtonTemplateSettings TemplateSettings
+    {
+        get => GetValue(TemplateSettingsProperty);
+        private set => SetValue(TemplateSettingsProperty, value);
     }
 
     private bool _isInOverflow;

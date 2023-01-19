@@ -67,7 +67,7 @@
 										 HorizontalAlignment="Center"
                                          VerticalAlignment="Center">
                                     <ContentPresenter Name="Icon" 
-                                                      Content="{TemplateBinding Icon}" />
+                                                      Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Viewbox>
                                                                
                             </DockPanel>

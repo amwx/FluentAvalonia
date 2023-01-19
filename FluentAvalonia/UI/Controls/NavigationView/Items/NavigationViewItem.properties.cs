@@ -35,8 +35,8 @@ public partial class NavigationViewItem
     /// <summary>
     /// Defines the <see cref="Icon"/> property
     /// </summary>
-    public static readonly StyledProperty<FAIconElement> IconProperty =
-        AvaloniaProperty.Register<NavigationViewItem, FAIconElement>(nameof(Icon));
+    public static readonly StyledProperty<IconSource> IconSourceProperty =
+        SettingsExpander.IconSourceProperty.AddOwner<NavigationViewItem>();
 
     /// <summary>
     /// Defines the <see cref="IsChildSelected"/> property
@@ -99,10 +99,10 @@ public partial class NavigationViewItem
     /// <summary>
     /// Gets or sets the icon to show next to the menu item text.
     /// </summary>
-    public FAIconElement Icon
+    public IconSource IconSource
     {
-        get => GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
+        get => GetValue(IconSourceProperty);
+        set => SetValue(IconSourceProperty, value);
     }
 
     /// <summary>
@@ -170,7 +170,7 @@ public partial class NavigationViewItem
 
     private bool HasChildren => (MenuItems != null && MenuItems.Count() > 0) || HasUnrealizedChildren;
 
-    private bool ShouldShowIcon => Icon != null;
+    private bool ShouldShowIcon => IconSource != null;
 
     private bool ShouldEnableToolTip => IsOnLeftNav && _isClosedCompact;
 

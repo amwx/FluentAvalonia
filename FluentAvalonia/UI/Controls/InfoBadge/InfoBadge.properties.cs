@@ -22,7 +22,7 @@ public partial class InfoBadge : TemplatedControl
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
-        AvaloniaProperty.Register<InfoBadge, IconSource>(nameof(IconSource));
+        SettingsExpander.IconSourceProperty.AddOwner<InfoBadge>();
 
     /// <summary>
     /// Defines the <see cref="TemplateSettings"/> property

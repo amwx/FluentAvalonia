@@ -12,14 +12,21 @@ namespace FluentAvalonia.UI.Controls;
 
 public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
 {
+    public CommandBarButton()
+    {
+        TemplateSettings = new CommandBarButtonTemplateSettings();
+    }
+
     Type IStyleable.StyleKey => typeof(CommandBarButton);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property == IconProperty)
+
+        if (change.Property == IconSourceProperty)
         {
             PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
+            TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
         }
         else if (change.Property == LabelProperty)
         {
@@ -63,10 +70,6 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
                 {
                     Label = null;
                 }
-                if (Icon is IconSourceElement ise && ise.IconSource == xamlComOld.IconSource)
-                {
-                    Icon = null;
-                }
 
                 if (HotKey == xamlComOld.HotKey)
                 {
@@ -86,10 +89,7 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
                     Label = xamlCom.Label;
                 }
 
-                if (Icon == null)
-                {
-                    Icon = new IconSourceElement { IconSource = xamlCom.IconSource };
-                }
+                IconSource = xamlCom.IconSource;
 
                 if (HotKey == null)
                 {

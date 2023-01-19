@@ -10,7 +10,7 @@
              PreviewImage="/Assets/PageIcons/MenuFlyout.jpg">
     <UserControl.DataTemplates> 
         <DataTemplate DataType="{x:Type vm:TempMenuItem}">
-            <ui:MenuFlyoutItem Text="{Binding Text}" Icon="{Binding Icon}" />
+            <ui:MenuFlyoutItem Text="{Binding Text}" IconSource="{Binding Icon}" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:TempMenuSeparator}">
             <ui:MenuFlyoutSeparator />
@@ -57,8 +57,8 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
             <Button Content="Click me for flyout!">
                 <Button.Flyout>
                     <ui:FAMenuFlyout Placement="Bottom">
-                        <ui:MenuFlyoutItem Text="Item 1" Icon="Copy" />
-                        <ui:MenuFlyoutItem Text="Item 2" Icon="Paste" />
+                        <ui:MenuFlyoutItem Text="Item 1" IconSource="Copy" />
+                        <ui:MenuFlyoutItem Text="Item 2" IconSource="Paste" />
                         <ui:MenuFlyoutSeparator />
                         <ui:MenuFlyoutSubItem Text="SubMenu">
                             <ui:MenuFlyoutItem Text="Subitem 1" />
@@ -66,13 +66,13 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
                             <ui:MenuFlyoutItem Text="Subitem 3" />
                         </ui:MenuFlyoutSubItem>
                         <ui:MenuFlyoutSeparator />
-                        <ui:ToggleMenuFlyoutItem Text="Toggle Item" Icon="Bold" />
+                        <ui:ToggleMenuFlyoutItem Text="Toggle Item" IconSource="Bold" />
                         <ui:MenuFlyoutSeparator />
                         <ui:RadioMenuFlyoutItem Text="Radio Menu Item" IsChecked="True"
                                                 GroupName="Test Group"
-                                                Icon="Games"/>
+                                                IconSource="Games"/>
                         <ui:RadioMenuFlyoutItem Text="Radio Menu Item 2"
-                                                Icon="Icons"
+                                                IconSource="Icons"
                                                 GroupName="Test Group" />
                     </ui:FAMenuFlyout>
                 </Button.Flyout>

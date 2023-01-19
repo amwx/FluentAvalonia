@@ -1,4 +1,5 @@
-﻿using Avalonia.Collections;
+﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -14,6 +15,16 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     public MenuFlyoutSubItem()
     {
         _items = new AvaloniaList<object>();
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IconSourceProperty)
+        {
+            TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
+        }
     }
 
     protected override void OnPointerEntered(PointerEventArgs e)

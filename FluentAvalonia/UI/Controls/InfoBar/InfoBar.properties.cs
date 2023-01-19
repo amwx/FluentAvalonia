@@ -48,7 +48,7 @@ public partial class InfoBar : ContentControl
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
-        AvaloniaProperty.Register<InfoBar, IconSource>(nameof(IconSource));
+        SettingsExpander.IconSourceProperty.AddOwner<IconSource>();
 
     /// <summary>
     /// Defines the <see cref="IsIconVisible"/> property

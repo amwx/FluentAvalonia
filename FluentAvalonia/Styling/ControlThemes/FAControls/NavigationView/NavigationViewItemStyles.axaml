@@ -35,7 +35,7 @@
                     </Grid.Styles>
                     
                     <uip:NavigationViewItemPresenter Name="NVIPresenter"
-                                                     Icon="{TemplateBinding Icon}"
+                                                     IconSource="{TemplateBinding IconSource}"
 													 InfoBadge="{TemplateBinding InfoBadge}"
                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
                                                      Padding="{TemplateBinding Padding}"

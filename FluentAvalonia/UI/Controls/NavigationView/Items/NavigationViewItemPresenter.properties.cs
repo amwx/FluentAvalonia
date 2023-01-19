@@ -17,8 +17,8 @@ public partial class NavigationViewItemPresenter
     /// <summary>
     /// Defines the <see cref="Icon"/> property
     /// </summary>
-    public static readonly StyledProperty<FAIconElement> IconProperty =
-        AvaloniaProperty.Register<NavigationViewItemPresenter, FAIconElement>(nameof(Icon));
+    public static readonly StyledProperty<IconSource> IconSourceProperty =
+        SettingsExpander.IconSourceProperty.AddOwner<NavigationViewItemPresenter>();
 
     /// <summary>
     /// Defines the <see cref="TemplateSettings"/> property
@@ -35,10 +35,10 @@ public partial class NavigationViewItemPresenter
     /// <summary>
     /// Gets or sets the icon in a NavigationView item.
     /// </summary>
-    public FAIconElement Icon
+    public IconSource IconSource
     {
-        get => GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
+        get => GetValue(IconSourceProperty);
+        set => SetValue(IconSourceProperty, value);
     }
 
     /// <summary>

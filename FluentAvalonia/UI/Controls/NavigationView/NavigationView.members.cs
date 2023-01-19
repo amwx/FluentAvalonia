@@ -730,6 +730,8 @@ public partial class NavigationView : HeaderedContentControl
 
     private bool _initialNonForcedModeUpdate = true;
 
+    private static readonly SymbolIconSource _settingsIconSource = new SymbolIconSource { Symbol = Symbol.Settings };
+
 
     private const int _backButtonHeight = 40;
     private const int _backButtonWidth = 40;
