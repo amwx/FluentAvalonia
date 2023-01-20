@@ -392,7 +392,7 @@
                                     <ContentPresenter Name="Text"
                                                       Foreground="{TemplateBinding Foreground}"
                                                       Background="{TemplateBinding Background}"
-                                                      BorderBrush="{DynamicResource }"
+                                                      BorderBrush="{DynamicResource CalendarViewBorderBrush}"
                                                       BorderThickness="{TemplateBinding BorderThickness}"
                                                       Content="{TemplateBinding Content}"
                                                       Padding="{TemplateBinding Padding}"
