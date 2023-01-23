@@ -126,7 +126,7 @@ public partial class BitmapIcon : FAIconElement
     {
         _bitmap?.Dispose();
         _bitmap = null;
-        _originalSize = Size.Empty;
+        _originalSize = default;
     }
 
     internal void LinkToBitmapIconSource(BitmapIconSource bis)

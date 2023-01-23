@@ -696,7 +696,7 @@ public class TabViewListView : ListBox
     private double _cxDrag = double.NaN;
     private double _cyDrag = double.NaN;
 
-    private object _currentItem;
+    //private object _currentItem;
 
     private static Popup _dragReorderPopup;
     private Point _popupOffset;

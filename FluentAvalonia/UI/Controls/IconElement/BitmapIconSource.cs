@@ -67,7 +67,7 @@ public class BitmapIconSource : IconSource, IDisposable
     {
         _bitmap?.Dispose();
         _bitmap = null;
-        _originalSize = Size.Empty;
+        _originalSize = default;
     }
 
     private void CreateBitmap(Uri src)

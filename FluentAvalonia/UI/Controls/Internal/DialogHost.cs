@@ -39,7 +39,7 @@ public class DialogHost : ContentControl, IStyleable
             return c.Bounds.Size;
         }
 
-        return Size.Empty;
+        return default;
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)

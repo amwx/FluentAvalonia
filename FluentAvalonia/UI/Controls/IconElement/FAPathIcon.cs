@@ -47,7 +47,7 @@ public partial class FAPathIcon : FAIconElement
             return finalSize;
         }
 
-        return Size.Empty;
+        return default;
     }
 
     private static (Size size, Matrix transform) CalculateSizeAndTransform(Size availableSize, Rect shapeBounds,

@@ -243,7 +243,7 @@ public partial class ColorSpectrum : ColorPickerComponent
         // Triangle sizes the bitmap to the control at all times so we have to make sure we skip this
         // if the control has no size
         // Spectrum & wheel can proceed as normal since they use a fixed bitmap...
-        if (Shape == ColorSpectrumShape.Triangle && _lastWheelRect == Rect.Empty)
+        if (Shape == ColorSpectrumShape.Triangle && _lastWheelRect == default)
             return;
 
         if (Shape == ColorSpectrumShape.Spectrum)

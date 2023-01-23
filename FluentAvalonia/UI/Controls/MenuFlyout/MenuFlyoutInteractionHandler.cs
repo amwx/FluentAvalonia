@@ -158,7 +158,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                     var current = FocusManager.Instance.Current;
                     if (current is MenuFlyoutItemBase mfib && mfib.Parent == Menu)
                     {
-                        var index = Menu.ItemContainerGenerator.IndexFromContainer(mfib);
+                        var index = Menu.IndexFromContainer(mfib);
 
                         if (index == -1) // something's wrong
                             return;
@@ -169,7 +169,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                             if (index >= Menu.ItemCount)
                                 index = 0;
 
-                            var cont = Menu.ItemContainerGenerator.ContainerFromIndex(index);
+                            var cont = Menu.ContainerFromIndex(index);
 
                             if (cont != null && cont.Focusable && cont.IsEffectivelyEnabled)
                             {
@@ -194,7 +194,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                     var current = FocusManager.Instance.Current;
                     if (current is MenuFlyoutItemBase mfib && mfib.Parent == Menu)
                     {
-                        var index = Menu.ItemContainerGenerator.IndexFromContainer(mfib);
+                        var index = Menu.IndexFromContainer(mfib);
 
                         if (index == -1) // something's wrong
                             return;
@@ -205,7 +205,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                             if (index < 0)
                                 index = Menu.ItemCount - 1;
 
-                            var cont = Menu.ItemContainerGenerator.ContainerFromIndex(index);
+                            var cont = Menu.ContainerFromIndex(index);
 
                             if (cont != null && cont.Focusable && cont.IsEffectivelyEnabled)
                             {

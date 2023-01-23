@@ -78,7 +78,7 @@ public class SymbolIcon : FAIconElement
         if (_textLayout == null)
             GenerateText();
 
-        return _textLayout?.Bounds.Size ?? Size.Empty;
+        return _textLayout?.Bounds.Size ?? default;
     }
 
     public override void Render(DrawingContext context)

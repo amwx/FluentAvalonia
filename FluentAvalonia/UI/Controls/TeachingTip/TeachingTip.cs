@@ -1052,7 +1052,7 @@ public partial class TeachingTip : ContentControl
         }
         else
         {
-            _currentTargetBoundsInCoreWindowSpace = Rect.Empty;
+            _currentTargetBoundsInCoreWindowSpace = default;
         }
 
         if (_lightDismissIndicatorPopup == null)
@@ -1635,7 +1635,7 @@ public partial class TeachingTip : ContentControl
         if (IsOpen)
         {
             var newTargetBounds = _target != null ?
-                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value) : Rect.Empty;
+                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value) : default;
 
             var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual).Value);
 
@@ -2180,7 +2180,7 @@ public partial class TeachingTip : ContentControl
 
     private Rect GetWindowBounds()
     {
-        return new Rect((VisualRoot as Visual)?.Bounds.Size ?? Size.Empty);
+        return new Rect((VisualRoot as Visual)?.Bounds.Size ?? default);
     }
 
     private void GetPlacementFallbackOrder(TeachingTipPlacementMode preferredPlacement,
