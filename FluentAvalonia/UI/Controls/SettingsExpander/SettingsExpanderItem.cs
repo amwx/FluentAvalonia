@@ -201,7 +201,7 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
 
     protected override bool RegisterContentPresenter(IContentPresenter presenter)
     {
-        if (presenter.Name == "ContentPresenter")
+        if (presenter.Name == "ContentPresenter" || presenter.Name == "FooterPresenter")
             return true;
 
         return base.RegisterContentPresenter(presenter);

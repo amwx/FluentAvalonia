@@ -58,7 +58,8 @@
                                        Foreground="{DynamicResource ExpanderChevronForeground}"
                                        RenderTransform="none"
                                        Margin="{DynamicResource SettingsExpanderExpandCollapseChevronMargin}"
-                                       Grid.Column="1" />
+                                       Grid.Column="1"
+                                       IsVisible="False"/>
                     </Grid>
                 </ui:FABorder>
             </ControlTemplate>
@@ -91,8 +92,8 @@
             </Style>
         </Style>
 
-        <Style Selector="^:empty /template/ ui|SymbolIcon#ExpandCollapseChevron">
-            <Setter Property="IsVisible" Value="False" />
+        <Style Selector="^:not(:empty) /template/ ui|SymbolIcon#ExpandCollapseChevron">
+            <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>
 

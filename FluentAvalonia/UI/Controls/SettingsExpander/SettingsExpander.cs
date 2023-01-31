@@ -146,6 +146,9 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 
     private void ExpanderToggleButtonClick(object sender, RoutedEventArgs e)
     {
+        if (!(e.Source == _expanderToggleButton))
+            return;
+
         e.Handled = true;
         OnClick();
     }
