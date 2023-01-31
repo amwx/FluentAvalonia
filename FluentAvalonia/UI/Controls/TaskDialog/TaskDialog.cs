@@ -51,10 +51,7 @@ public partial class TaskDialog : ContentControl
         if (_moreDetailsButton != null)
         {
             _moreDetailsButton.Click += MoreDetailsButtonClick;
-        }
-
-        SetButtons();
-        SetCommands();
+        }        
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -98,6 +95,14 @@ public partial class TaskDialog : ContentControl
             return true;
 
         return base.RegisterContentPresenter(presenter);
+    }
+
+    protected override void OnLoaded()
+    {
+        base.OnLoaded();
+
+        SetButtons();
+        SetCommands();
     }
 
     private void OnKeyDownPreview(object sender, KeyEventArgs e)
@@ -146,7 +151,7 @@ public partial class TaskDialog : ContentControl
         }
 
         OnOpening();
-
+        
         var owner = XamlRoot ?? VisualRoot as Visual;
 
         void UnparentDialog()
@@ -446,6 +451,9 @@ public partial class TaskDialog : ContentControl
 
     private void SetButtons()
     {
+        if (_buttons == null)
+            return;
+
         List<TaskDialogButtonHost> buttons = new List<TaskDialogButtonHost>();
         bool foundDefault = false;
         for (int i = 0; i < _buttons.Count; i++)
@@ -478,6 +486,9 @@ public partial class TaskDialog : ContentControl
 
     private void SetCommands()
     {
+        if (_commands == null)
+            return;
+
         List<Control> commands = new List<Control>();
 
         bool foundDefault = _defaultButton != null;
