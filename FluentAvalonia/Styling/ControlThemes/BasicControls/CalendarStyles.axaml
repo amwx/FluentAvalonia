@@ -383,6 +383,7 @@
                             <Setter Property="FontWeight" Value="{DynamicResource CalendarViewHeaderNavigationFontWeight}" />
                             <Setter Property="Foreground" Value="{DynamicResource CalendarViewHeaderNavigationButtonForeground}" />
                             <Setter Property="Background" Value="{DynamicResource CalendarViewNavigationButtonBackground}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource CalendarViewNavigationButtonBorderBrush}" />
                             <Setter Property="Margin" Value="{DynamicResource CalendarViewHeaderNavigationButtonMargin}" />
                             <Setter Property="Padding" Value="{DynamicResource CalendarViewHeaderNavigationButtonPadding}" />
                             <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
@@ -392,7 +393,7 @@
                                     <ContentPresenter Name="Text"
                                                       Foreground="{TemplateBinding Foreground}"
                                                       Background="{TemplateBinding Background}"
-                                                      BorderBrush="{DynamicResource }"
+                                                      BorderBrush="{TemplateBinding BorderBrush}"
                                                       BorderThickness="{TemplateBinding BorderThickness}"
                                                       Content="{TemplateBinding Content}"
                                                       Padding="{TemplateBinding Padding}"
