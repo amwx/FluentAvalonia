@@ -6,8 +6,8 @@
         <Border Padding="20" Background="#E0E0E0">
             <ui:CommandBarFlyoutCommandBar IsOpen="True" Margin="30">
                 <ui:CommandBarFlyoutCommandBar.PrimaryCommands>
-                    <ui:CommandBarButton IconSource="Save" />
-                    <ui:CommandBarToggleButton IconSource="Globe" />
+                    <!--<ui:CommandBarButton IconSource="Save" />
+                    <ui:CommandBarToggleButton IconSource="Globe" />-->
                 </ui:CommandBarFlyoutCommandBar.PrimaryCommands>
 
                 <ui:CommandBarFlyoutCommandBar.SecondaryCommands>
@@ -783,7 +783,7 @@
             </Style>
         </Style>
 
-        <Style Selector="^:secondaryonly /template/ Grid#ContentRoot">
+        <Style Selector="^:secondaryOnly /template/ Grid#ContentRoot">
             <Setter Property="IsVisible" Value="False" />
         </Style>        
     </ControlTheme>    
