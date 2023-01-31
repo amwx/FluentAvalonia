@@ -8,6 +8,12 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public class PathIconSource : IconSource
 {
+    static PathIconSource()
+    {
+        StretchProperty.OverrideDefaultValue<PathIconSource>(Stretch.Uniform);
+        StretchDirectionProperty.OverrideDefaultValue<PathIconSource>(StretchDirection.Both);
+    }
+
     /// <summary>
     /// Defines the <see cref="Data"/> property
     /// </summary>
