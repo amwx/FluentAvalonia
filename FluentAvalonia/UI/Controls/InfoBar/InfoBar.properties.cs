@@ -22,9 +22,8 @@ public partial class InfoBar : ContentControl
     /// <summary>
     /// Defines the <see cref="IsOpen"/> property
     /// </summary>
-    public static readonly DirectProperty<InfoBar, bool> IsOpenProperty =
-        AvaloniaProperty.RegisterDirect<InfoBar, bool>(nameof(IsOpen),
-            x => x.IsOpen, (x, v) => x.IsOpen = v);
+    public static readonly StyledProperty<bool> IsOpenProperty =
+        AvaloniaProperty.Register<InfoBar, bool>(nameof(IsOpen));
 
     /// <summary>
     /// Defines the <see cref="Title"/> property
@@ -85,8 +84,8 @@ public partial class InfoBar : ContentControl
     /// </summary>
     public bool IsOpen
     {
-        get => _isOpen;
-        set => SetAndRaise(IsOpenProperty, ref _isOpen, value);
+        get => GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
     }
 
     /// <summary>
@@ -186,8 +185,6 @@ public partial class InfoBar : ContentControl
     /// </summary>
     public event TypedEventHandler<InfoBar, InfoBarClosedEventArgs> Closed;
 
-
-    private bool _isOpen;
 
     private const string SR_InfoBarCloseButtonTooltip = "InfoBarCloseButtonTooltip";
 

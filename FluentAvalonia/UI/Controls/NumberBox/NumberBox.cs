@@ -106,6 +106,18 @@ public partial class NumberBox : TemplatedControl
         {
             UpdateSpinButtonEnabled();
         }
+        else if (change.Property == ValidationModeProperty)
+        {
+            ValidateInput();
+            UpdateSpinButtonEnabled();
+        }
+        else if (change.Property == SimpleNumberFormatProperty)
+        {
+            if (NumberFormatter != null)
+                throw new InvalidOperationException("NumberFormatter must be null");
+
+            UpdateTextToValue();
+        }
     }
 
     protected override void OnGotFocus(GotFocusEventArgs e)
@@ -351,7 +363,7 @@ public partial class NumberBox : TemplatedControl
             var newValue = Math.Round(_value, 12);
             if (SimpleNumberFormat != null)
             {
-                newText = newValue.ToString(_simpleFormat);
+                newText = newValue.ToString(SimpleNumberFormat);
             }
             else if (NumberFormatter != null)
             {

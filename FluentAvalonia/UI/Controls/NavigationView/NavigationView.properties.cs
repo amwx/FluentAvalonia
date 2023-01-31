@@ -111,9 +111,8 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="IsBackButtonVisible"/> property
     /// </summary>
-    public static readonly DirectProperty<NavigationView, bool> IsBackButtonVisibleProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, bool>(nameof(IsBackButtonVisible),
-            x => x.IsBackButtonVisible, (x, v) => x.IsBackButtonVisible = v);
+    public static readonly StyledProperty<bool> IsBackButtonVisibleProperty =
+        AvaloniaProperty.Register<NavigationView, bool>(nameof(IsBackButtonVisible));
 
     /// <summary>
     /// Defines the <see cref="IsBackEnabled"/> property
@@ -124,9 +123,9 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="IsPaneOpen"/> property
     /// </summary>
-    public static readonly DirectProperty<NavigationView, bool> IsPaneOpenProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, bool>(nameof(IsPaneOpen),
-            x => x.IsPaneOpen, (x, v) => x.IsPaneOpen = v);
+    public static readonly StyledProperty<bool> IsPaneOpenProperty =
+        AvaloniaProperty.Register<NavigationView, bool>(nameof(IsPaneOpen),
+            defaultValue: true);
 
     /// <summary>
     /// Defines the <see cref="IsPaneToggleButtonVisible"/> property
@@ -211,23 +210,23 @@ public partial class NavigationView : HeaderedContentControl
     /// Defines the <see cref="SelectedItem"/> property
     /// </summary>
     public static readonly DirectProperty<NavigationView, object> SelectedItemProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, object>(nameof(SelectedItem),
-            x => x.SelectedItem, (x, v) => x.SelectedItem = v, defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
+        SelectingItemsControl.SelectedItemProperty.AddOwner<NavigationView>(x => x.SelectedItem, 
+            (x, v) => x.SelectedItem = v, 
+            defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
 
     //WinUI uses an enum here, but only has Disabled/Enabled, so just use bool
     /// <summary>
     /// Defines the <see cref="SelectionFollowsFocus"/> property
     /// </summary>
-    public static readonly DirectProperty<NavigationView, bool> SelectionFollowsFocusProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, bool>(nameof(SelectionFollowsFocus),
-            x => x.SelectionFollowsFocus, (x, v) => x.SelectionFollowsFocus = v);
+    public static readonly StyledProperty<bool> SelectionFollowsFocusProperty =
+        AvaloniaProperty.Register<NavigationView, bool>(nameof(SelectionFollowsFocus));
 
     /// <summary>
     /// Defines the <see cref="SettingsItem"/> property
     /// </summary>
     public static readonly DirectProperty<NavigationView, NavigationViewItem> SettingsItemProperty =
         AvaloniaProperty.RegisterDirect<NavigationView, NavigationViewItem>(nameof(SettingsItem),
-            x => x.SettingsItem, (x, v) => x.SettingsItem = v);
+            x => x.SettingsItem);
 
     //Ignore Shoulder Navigation (xbox)
 
@@ -331,27 +330,8 @@ public partial class NavigationView : HeaderedContentControl
     /// </summary>
     public bool IsBackButtonVisible
     {
-        get => _isBackVisible;
-        set
-        {
-            if (SetAndRaise(IsBackButtonVisibleProperty, ref _isBackVisible, value))
-            {
-                UpdateBackAndCloseButtonsVisibility();
-                UpdateAdaptiveLayout(Bounds.Width);
-                if (IsTopNavigationView)
-                {
-                    InvalidateTopNavPrimaryLayout();
-                }
-
-                // Enabling back button shifts grid instead of resizing, so let's update the layout.
-                if (_backButton != null)
-                {
-                    //Don't have update layout, so
-                    _backButton.InvalidateMeasure();
-                }
-                UpdatePaneLayout();
-            }
-        }
+        get => GetValue(IsBackButtonVisibleProperty);
+        set => SetValue(IsBackButtonVisibleProperty, value);
     }
 
     /// <summary>
@@ -368,15 +348,8 @@ public partial class NavigationView : HeaderedContentControl
     /// </summary>
     public bool IsPaneOpen
     {
-        get => _isPaneOpen;
-        set
-        {
-            if (SetAndRaise(IsPaneOpenProperty, ref _isPaneOpen, value))
-            {
-                OnIsPaneOpenChanged();
-                UpdateVisualStateForDisplayModeGroup(_displayMode);
-            }
-        }
+        get => GetValue(IsPaneOpenProperty);
+        set => SetValue(IsPaneOpenProperty, value);
     }
 
     /// <summary>
@@ -531,8 +504,8 @@ public partial class NavigationView : HeaderedContentControl
     /// </remarks>
     public bool SelectionFollowsFocus
     {
-        get => _selectionFollowsFocus;
-        set => SetAndRaise(SelectionFollowsFocusProperty, ref _selectionFollowsFocus, value);
+        get => GetValue(SelectionFollowsFocusProperty);
+        set => SetValue(SelectionFollowsFocusProperty, value);
     }
 
     /// <summary>
@@ -624,10 +597,7 @@ public partial class NavigationView : HeaderedContentControl
     internal static readonly AttachedProperty<CompositeDisposable> NavigationViewItemRevokersProperty =
         AvaloniaProperty.RegisterAttached<NavigationView, NavigationViewItem, CompositeDisposable>("NavigationViewItemRevokers");
 
-    private bool _isPaneOpen = true;
     private object _selectedItem;
-    private bool _isBackVisible;
-    private bool _selectionFollowsFocus;
     private IEnumerable _menuItems;
     private IEnumerable _footerMenuItems;
     private NavigationViewDisplayMode _displayMode = NavigationViewDisplayMode.Minimal;

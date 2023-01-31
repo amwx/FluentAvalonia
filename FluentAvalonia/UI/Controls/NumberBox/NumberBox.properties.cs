@@ -85,9 +85,8 @@ public partial class NumberBox
     /// <summary>
     /// Defines the <see cref="SelectionFlyout"/> property
     /// </summary>
-    public static readonly DirectProperty<NumberBox, FlyoutBase> SelectionFlyoutProperty =
-        AvaloniaProperty.RegisterDirect<NumberBox, FlyoutBase>(nameof(SelectionFlyout),
-            x => x.SelectionFlyout, (x, v) => x.SelectionFlyout = v);
+    public static readonly StyledProperty<FlyoutBase> SelectionFlyoutProperty =
+        AvaloniaProperty.Register<NumberBox, FlyoutBase>(nameof(SelectionFlyout));
 
     /// <summary>
     /// Defines the <see cref="SelectionHighlightColor"/> property
@@ -105,7 +104,8 @@ public partial class NumberBox
     /// Defines the <see cref="SpinButtonPlacementMode"/> property
     /// </summary>
     public static readonly StyledProperty<NumberBoxSpinButtonPlacementMode> SpinButtonPlacementModeProperty =
-        AvaloniaProperty.Register<NumberBox, NumberBoxSpinButtonPlacementMode>(nameof(SpinButtonPlacementMode), NumberBoxSpinButtonPlacementMode.Hidden);
+        AvaloniaProperty.Register<NumberBox, NumberBoxSpinButtonPlacementMode>(nameof(SpinButtonPlacementMode), 
+            NumberBoxSpinButtonPlacementMode.Hidden);
 
     /// <summary>
     /// Defines the <see cref="Text"/> property
@@ -117,16 +117,14 @@ public partial class NumberBox
     /// <summary>
     /// Defines the <see cref="TextReadingOrder"/> property
     /// </summary>
-    public static readonly DirectProperty<NumberBox, TextReadingOrder> TextReadingOrderProperty =
-        AvaloniaProperty.RegisterDirect<NumberBox, TextReadingOrder>(nameof(TextReadingOrder),
-            x => x.TextReadingOrder, (x, v) => x.TextReadingOrder = v);
+    public static readonly StyledProperty<TextReadingOrder> TextReadingOrderProperty =
+        AvaloniaProperty.Register<NumberBox, TextReadingOrder>(nameof(TextReadingOrder));
 
     /// <summary>
     /// Defines the <see cref="NumberBoxValidationMode"/> property
     /// </summary>
-    public static readonly DirectProperty<NumberBox, NumberBoxValidationMode> ValidationModeProperty =
-       AvaloniaProperty.RegisterDirect<NumberBox, NumberBoxValidationMode>(nameof(ValidationMode),
-           x => x.ValidationMode, (x, v) => x.ValidationMode = v);
+    public static readonly StyledProperty<NumberBoxValidationMode> ValidationModeProperty =
+       AvaloniaProperty.Register<NumberBox, NumberBoxValidationMode>(nameof(ValidationMode));
 
     /// <summary>
     /// Defines the <see cref="Value"/> property
@@ -146,9 +144,8 @@ public partial class NumberBox
     /// <summary>
     /// Defines the <see cref="SimpleNumberFormat"/> property
     /// </summary>
-    public static readonly DirectProperty<NumberBox, string> SimpleNumberFormatProperty =
-        AvaloniaProperty.RegisterDirect<NumberBox, string>(nameof(SimpleNumberFormat),
-            x => x.SimpleNumberFormat, (x, v) => x.SimpleNumberFormat = v);
+    public static readonly StyledProperty<string> SimpleNumberFormatProperty =
+        AvaloniaProperty.Register<NumberBox, string>(nameof(SimpleNumberFormat));
 
     /// <summary>
     /// Toggles whether the control will accept and evaluate a basic formulaic expression entered as input.
@@ -261,17 +258,8 @@ public partial class NumberBox
     /// </remarks>
     public string SimpleNumberFormat
     {
-        get => _simpleFormat;
-        set
-        {
-            if (NumberFormatter != null)
-                throw new InvalidOperationException("NumberFormatter must be null");
-
-            if (SetAndRaise(SimpleNumberFormatProperty, ref _simpleFormat, value))
-            {
-                UpdateTextToValue();
-            }
-        }
+        get => GetValue(SimpleNumberFormatProperty);
+        set => SetValue(SimpleNumberFormatProperty, value);
     }
 
     /// <summary>
@@ -291,8 +279,8 @@ public partial class NumberBox
     [NotImplemented]
     public FlyoutBase SelectionFlyout
     {
-        get => _selectionFlyout;
-        set => SetAndRaise(SelectionFlyoutProperty, ref _selectionFlyout, value);
+        get => GetValue(SelectionFlyoutProperty);
+        set => SetValue(SelectionFlyoutProperty, value);
     }
 
     /// <summary>
@@ -346,11 +334,8 @@ public partial class NumberBox
     [NotImplemented]
     public TextReadingOrder TextReadingOrder
     {
-        get => _textReadingOrder;
-        set
-        {
-            SetAndRaise(TextReadingOrderProperty, ref _textReadingOrder, value);
-        }
+        get => GetValue(TextReadingOrderProperty);
+        set => SetValue(TextReadingOrderProperty, value);
     }
 
     /// <summary>
@@ -358,15 +343,8 @@ public partial class NumberBox
     /// </summary>
     public NumberBoxValidationMode ValidationMode
     {
-        get => _validationMode;
-        set
-        {
-            if (SetAndRaise(ValidationModeProperty, ref _validationMode, value))
-            {
-                ValidateInput();
-                UpdateSpinButtonEnabled();
-            }
-        }
+        get => GetValue(ValidationModeProperty);
+        set => SetValue(ValidationModeProperty, value);
     }
 
     /// <summary>
@@ -407,12 +385,8 @@ public partial class NumberBox
 
     private double _minimum = double.MinValue;
     private double _maxmimum = double.MaxValue;
-    private FlyoutBase _selectionFlyout;
     public string _text = null;
-    private TextReadingOrder _textReadingOrder;
-    private NumberBoxValidationMode _validationMode;
     private double _value = double.NaN;
-    private string _simpleFormat;
 
     private const string s_tpDownSpinButton = "DownSpinButton";
     private const string s_tpPopupDownSpinButton = "PopupDownSpinButton";

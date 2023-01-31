@@ -221,6 +221,24 @@ public partial class FAColorPicker : TemplatedControl
                 UpdateColorAndControls(change.GetNewValue<Color2>(), ColorUpdateReason.Programmatic);
             }
         }
+        else if (change.Property == ColorTextTypeProperty)
+        {
+            SetHexBoxHeader();
+            UpdateHexBox(Color);
+        }
+        else if (change.Property == ComponentProperty)
+        {
+            UpdatePickerComponents();
+        }
+        else if (change.Property == IsCompactProperty)
+        {
+            PseudoClasses.Set(":compact", change.GetNewValue<bool>());
+            SetAsCompactMode();
+        }
+        else if (change.Property == IsAlphaEnabledProperty)
+        {
+            PseudoClasses.Set(":alpha", change.GetNewValue<bool>());
+        }
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -318,7 +336,7 @@ public partial class FAColorPicker : TemplatedControl
         {
             _ignoreRadioChange = true;
 
-            switch (_component)
+            switch (Component)
             {
                 case ColorSpectrumComponents.SaturationValue:
                     _spectrum.Component = ColorComponent.Hue;
@@ -597,7 +615,7 @@ public partial class FAColorPicker : TemplatedControl
         if (_hexBox == null)
             return;
 
-        switch (_textType)
+        switch (ColorTextType)
         {
             case ColorTextType.Hex:
                 _hexBox.Text = col.ToHexString(false);
@@ -623,7 +641,7 @@ public partial class FAColorPicker : TemplatedControl
         if (ramp && _alphaRamp != null)
             _alphaRamp.Color = col;
 
-        if (spectrumRamp && _isCompact && _opacityComponentSlider != null)
+        if (spectrumRamp && IsCompact && _opacityComponentSlider != null)
             _opacityComponentSlider.Color = col;
     }
 
@@ -765,7 +783,7 @@ public partial class FAColorPicker : TemplatedControl
         if (!_templateApplied || _rootGrid == null || _textEntryTabHost == null || _textEntryArea == null)
             return;
 
-        if (_isCompact)
+        if (IsCompact)
         {
             _rootGrid.Children.Remove(_textEntryArea);
             _textEntryTabHost.Children.Add(_textEntryArea);

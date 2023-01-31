@@ -164,7 +164,8 @@ public partial class CommandBar : ContentControl
                 _minRecoverWidth = _primaryItemsHost.DesiredSize.Width;// + trackWid;
             }
 
-            _overflowSeparator.IsVisible = _numInOverflow > 0 && SecondaryCommands.Count > 0;
+            if (_overflowSeparator != null)
+                _overflowSeparator.IsVisible = _numInOverflow > 0 && SecondaryCommands.Count > 0;
         }
 
         var overflowVis = OverflowButtonVisibility;

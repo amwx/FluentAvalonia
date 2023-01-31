@@ -50,9 +50,8 @@ public partial class TeachingTip : ContentControl
     /// <summary>
     /// Defines the <see cref="IsOpen"/> property
     /// </summary>
-    public static readonly DirectProperty<TeachingTip, bool> IsOpenProperty =
-        AvaloniaProperty.RegisterDirect<TeachingTip, bool>(nameof(IsOpen),
-            x => x.IsOpen, (x, v) => x.IsOpen = v);
+    public static readonly StyledProperty<bool> IsOpenProperty =
+        InfoBar.IsOpenProperty.AddOwner<TeachingTip>();
 
     /// <summary>
     /// Defines the <see cref="Target"/> property
@@ -186,8 +185,8 @@ public partial class TeachingTip : ContentControl
     /// </summary>
     public bool IsOpen
     {
-        get => _isOpen;
-        set => SetAndRaise(IsOpenProperty, ref _isOpen, value);
+        get => GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
     }
 
     /// <summary>
@@ -380,7 +379,6 @@ public partial class TeachingTip : ContentControl
     /// </summary>
     public event TypedEventHandler<TeachingTip, TeachingTipClosedEventArgs> Closed;
 
-    private bool _isOpen;
 
     private const string s_tpContainer = "Container";
     private const string s_tpTailOcclusionGrid = "TailOcclusionGrid";

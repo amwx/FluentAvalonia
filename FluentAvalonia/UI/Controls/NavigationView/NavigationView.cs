@@ -434,6 +434,28 @@ public partial class NavigationView : HeaderedContentControl
         {
             OnSelectedItemPropertyChanged(change.OldValue, change.NewValue);
         }
+        else if (change.Property == IsBackButtonVisibleProperty)
+        {
+            UpdateBackAndCloseButtonsVisibility();
+            UpdateAdaptiveLayout(Bounds.Width);
+            if (IsTopNavigationView)
+            {
+                InvalidateTopNavPrimaryLayout();
+            }
+
+            // Enabling back button shifts grid instead of resizing, so let's update the layout.
+            if (_backButton != null)
+            {
+                //Don't have update layout, so
+                _backButton.InvalidateMeasure();
+            }
+            UpdatePaneLayout();
+        }
+        else if (change.Property == IsPaneOpenProperty)
+        {
+            OnIsPaneOpenChanged();
+            UpdateVisualStateForDisplayModeGroup(_displayMode);
+        }
     }
 
     //WinUI also uses PreviewKeyDown to reset m_TabKeyPrecedesFocusChange

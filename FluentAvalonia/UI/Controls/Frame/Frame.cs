@@ -55,6 +55,15 @@ public partial class Frame : ContentControl
                 Navigate(change.GetNewValue<Type>());
             }
         }
+        else if (change.Property == IsNavigationStackEnabledProperty)
+        {
+            if (!change.GetNewValue<bool>())
+            {
+                _backStack.Clear();
+                _forwardStack.Clear();
+                _cache.Clear();
+            }
+        }
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
