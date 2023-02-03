@@ -2,6 +2,7 @@
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -19,7 +20,8 @@ public partial class FontIcon : FAIconElement
             change.Property == TextElement.FontStyleProperty ||
             change.Property == GlyphProperty)
         {
-            GenerateText();
+            _textLayout = null;
+            InvalidateMeasure();
         }
 
         base.OnPropertyChanged(change);
@@ -27,9 +29,8 @@ public partial class FontIcon : FAIconElement
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        if (_suspendCreate || _textLayout == null)
+        if (_textLayout == null)
         {
-            _suspendCreate = false;
             GenerateText();
         }
 
@@ -52,15 +53,9 @@ public partial class FontIcon : FAIconElement
 
     private void GenerateText()
     {
-        if (_suspendCreate)
-            return;
-
         _textLayout = new TextLayout(Glyph, new Typeface(FontFamily, FontStyle, FontWeight),
            FontSize, Foreground, TextAlignment.Left);
-
-        InvalidateVisual();
     }
 
     private TextLayout _textLayout;
-    bool _suspendCreate = true;
 }
