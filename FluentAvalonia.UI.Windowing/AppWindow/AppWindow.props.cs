@@ -131,7 +131,6 @@ public partial class AppWindow : Window, IStyleable
     private MinMaxCloseControl _captionButtons;
     private Panel _defaultTitleBar;
     private AppWindowTitleBar _titleBar;
-    private string _currentAppTheme;
     private List<WeakReference<Control>> _excludeHitTestList;
     private bool _hideSizeButtons;
 

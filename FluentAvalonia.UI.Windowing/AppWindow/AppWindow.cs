@@ -10,7 +10,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using FluentAvalonia.Interop;
-using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls.Primitives;
 using FluentAvalonia.UI.Media;
 
@@ -75,10 +74,6 @@ public partial class AppWindow : Window, IStyleable
             // This will set all our TemplateSettings properties
             OnTitleBarHeightChanged(_titleBar.Height);
 
-            var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-            _currentAppTheme = faTheme.RequestedTheme;
-            faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
-
             SetTitleBarColors();
         }
 
@@ -129,10 +124,7 @@ public partial class AppWindow : Window, IStyleable
     {
         _splashContext?.TryCancel();
 
-        base.OnClosed(e);
-
-        if (IsWindows && !Design.IsDesignMode)
-            AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedThemeChanged -= OnRequestedThemeChanged;       
+        base.OnClosed(e);     
     }
 
     internal void OnExtendsContentIntoTitleBarChanged(bool isExtended)
@@ -300,15 +292,6 @@ public partial class AppWindow : Window, IStyleable
         }
     }
 
-    protected virtual void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
-    {
-        if (IsWindows)
-        {
-            _currentAppTheme = args.NewTheme;
-            SetTitleBarColors();
-        }
-    }
-
     private void SetTitleBarColors()
     {
         if (_templateRoot == null)
@@ -317,7 +300,7 @@ public partial class AppWindow : Window, IStyleable
         bool foundAccent = _templateRoot.TryFindResource(s_SystemAccentColor, out var sysColor);
         Color? accentVariant = null;
 
-        if (_currentAppTheme == FluentAvaloniaTheme.LightModeString)
+        if (ActualThemeVariant == ThemeVariant.Light)
         {
             if (_templateRoot.TryFindResource(s_SystemAccentColorDark1, out var v))
             {
@@ -339,7 +322,7 @@ public partial class AppWindow : Window, IStyleable
         }
         else
         {
-            if (_currentAppTheme == FluentAvaloniaTheme.DarkModeString)
+            if (ActualThemeVariant == ThemeVariant.Dark)
             {
                 textColor = Colors.White;
             }
