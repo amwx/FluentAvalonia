@@ -32,9 +32,8 @@ public class OptionsDisplayItem : TemplatedControl
     public static readonly StyledProperty<object> ContentProperty =
         ContentControl.ContentProperty.AddOwner<OptionsDisplayItem>();
 
-    public static readonly DirectProperty<OptionsDisplayItem, bool> IsExpandedProperty =
-        Expander.IsExpandedProperty.AddOwner<OptionsDisplayItem>(x => x.IsExpanded,
-            (x, v) => x.IsExpanded = v);
+    public static readonly StyledProperty<bool> IsExpandedProperty =
+        Expander.IsExpandedProperty.AddOwner<OptionsDisplayItem>();
 
     public static readonly StyledProperty<ICommand> NavigationCommandProperty =
         AvaloniaProperty.Register<OptionsDisplayItem, ICommand>(nameof(NavigationCommand));
@@ -83,8 +82,8 @@ public class OptionsDisplayItem : TemplatedControl
 
     public bool IsExpanded
     {
-        get => _isExpanded;
-        set => SetAndRaise(IsExpandedProperty, ref _isExpanded, value);
+        get => GetValue(IsExpandedProperty);
+        set => SetValue(IsExpandedProperty, value);
     }
 
     public ICommand NavigationCommand

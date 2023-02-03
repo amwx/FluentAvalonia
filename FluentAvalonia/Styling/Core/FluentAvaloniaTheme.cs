@@ -144,7 +144,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
     public event TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
 
-    public new bool TryGetResource(object key, out object value)
+    public new bool TryGetResource(object key, ThemeVariant theme, out object value)
     {
         // Github build failing with this not being set, even tho it passes locally
         value = null;
@@ -152,17 +152,18 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         // We also search the app level resources so resources can be overridden.
         // Do not search App level styles though as we'll have to iterate over them
         // to skip the FluentAvaloniaTheme instance or we'll stack overflow
-        if (Application.Current?.Resources.TryGetResource(key, out value) == true)
+        if (Application.Current?.Resources.TryGetResource(key, theme, out value) == true)
             return true;
 
-        if (base.TryGetResource(key, out value) == true)
+        if (base.TryGetResource(key, theme, out value) == true)
             return true;
 
         value = null;
         return false;
     }
 
-    bool IResourceNode.TryGetResource(object key, out object value) => this.TryGetResource(key, out value);
+    bool IResourceNode.TryGetResource(object key, ThemeVariant theme, out object value) =>
+        this.TryGetResource(key, theme, out value);
 
     /// <summary>
     /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be

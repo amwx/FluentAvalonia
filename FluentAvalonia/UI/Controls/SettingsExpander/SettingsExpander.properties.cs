@@ -40,9 +40,8 @@ public partial class SettingsExpander
     /// <summary>
     /// Defines the <see cref="IsExpanded"/> property
     /// </summary>
-    public static readonly DirectProperty<SettingsExpander, bool> IsExpandedProperty =
-        Expander.IsExpandedProperty.AddOwner<SettingsExpander>(x => x.IsExpanded,
-            (x, v) => x.IsExpanded = v);
+    public static readonly StyledProperty<bool> IsExpandedProperty =
+        Expander.IsExpandedProperty.AddOwner<SettingsExpander>();
 
     /// <summary>
     /// Defines the <see cref="ActionIconSource"/> property
@@ -117,8 +116,8 @@ public partial class SettingsExpander
     /// </summary>
     public bool IsExpanded
     {
-        get => _isExpanded;
-        set => SetAndRaise(IsExpandedProperty, ref _isExpanded, value);
+        get => GetValue(IsExpandedProperty);
+        set => SetValue(IsExpandedProperty, value);
     }
 
     /// <summary>
@@ -173,7 +172,6 @@ public partial class SettingsExpander
     }
 
     private ICommand _command;
-    private bool _isExpanded;
 
     private const string s_tpExpander = "Expander";
 

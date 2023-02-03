@@ -17,7 +17,7 @@ public class MainViewViewModel : ViewModelBase
 
         _currentAppTheme = faTheme.RequestedTheme;
 
-        if (faTheme.TryGetResource("SystemAccentColor", out var value))
+        if (faTheme.TryGetResource("SystemAccentColor", null, out var value))
         {
             _customAccentColor = (Color)value;
             _listBoxColor = _customAccentColor;
@@ -71,7 +71,7 @@ public class MainViewViewModel : ViewModelBase
                 if (value)
                 {
                     var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                    if (faTheme.TryGetResource("SystemAccentColor", out var curColor))
+                    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
                     {
                         _customAccentColor = (Color)curColor;
                         _listBoxColor = _customAccentColor;

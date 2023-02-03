@@ -43,55 +43,9 @@ public class MenuFlyoutSubItemTemplate : ITreeDataTemplate
 
     public InstancedBinding ItemsSelector(object item)
     {
-        if (SubItems != null)
-        {
-            var obs = SubItems switch
-            {
-                Binding reflection => ExpressionObserverBuilder.Build(item, reflection.Path),
-                CompiledBindingExtension compiled => new ExpressionObserver(item, compiled.Path.BuildExpression(false)),
-                _ => throw new InvalidOperationException("Only Binding and CompiledBinding is supported!")
-            };
-
-            return InstancedBinding.OneWay(obs, BindingPriority.Style);
-        }
-
         return null;
     }
-
-    public InstancedBinding TextSelector(object item)
-    {
-        if (HeaderText != null)
-        {
-            var obs = HeaderText switch
-            {
-                Binding reflection => ExpressionObserverBuilder.Build(item, reflection.Path),
-                CompiledBindingExtension compiled => new ExpressionObserver(item, compiled.Path.BuildExpression(false)),
-                _ => throw new InvalidOperationException("Only Binding and CompiledBinding is supported!")
-            };
-
-            return InstancedBinding.OneWay(obs, BindingPriority.Style);
-        }
-
-        return null;
-    }
-
-    public InstancedBinding IconSelector(object item)
-    {
-        if (Icon != null)
-        {
-            var obs = Icon switch
-            {
-                Binding reflection => ExpressionObserverBuilder.Build(item, reflection.Path),
-                CompiledBindingExtension compiled => new ExpressionObserver(item, compiled.Path.BuildExpression(false)),
-                _ => throw new InvalidOperationException("Only Binding and CompiledBinding is supported!")
-            };
-
-            return InstancedBinding.OneWay(obs, BindingPriority.Style);
-        }
-
-        return null;
-    }
-
+       
     public bool Match(object data)
     {
         return DataType?.IsInstanceOfType(data) ?? true;
