@@ -21,7 +21,8 @@
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme x:Key="ButtonSpinnerButton" BasedOn="{StaticResource TransparentRepeatButton}"
+    <ControlTheme x:Key="ButtonSpinnerButton" 
+                  BasedOn="{StaticResource TransparentRepeatButton}"
                   TargetType="RepeatButton">
         <Setter Property="MinWidth" Value="32" />
         <Setter Property="Padding" Value="0" />
@@ -81,7 +82,7 @@
                                               Foreground="{TemplateBinding Foreground}"
                                               VerticalContentAlignment="Center"
                                               FontSize="18"
-                                              Margin="4"
+                                              Margin="0 4 4 4"
                                               Content="&#xE70D;"/>
                             </StackPanel>
                         </Grid>

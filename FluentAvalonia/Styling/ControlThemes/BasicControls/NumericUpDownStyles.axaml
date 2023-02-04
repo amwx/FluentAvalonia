@@ -1,27 +1,165 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="using:FluentAvalonia.Converters"
                     x:CompileBindings="True">
 
+    <conv:NUDSpinLocationConverter x:Key="NUDSpinLocationConverter" />
+    
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel Spacing="20">
-                <NumericUpDown Minimum="0"
-                               Maximum="10"
+                <NumericUpDown Minimum="0" Value="28393255555555"
+                               Maximum="1454350" ShowButtonSpinner="True"
                                Increment="0.5"
-                               Width="150"
+                               Width="150" 
                                Watermark="Enter text" />
-                <NumericUpDown Minimum="0"
+                <NumericUpDown Minimum="0" Value="28393255555555"
                                Maximum="10"
                                Increment="0.5"
                                Width="150"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
                                ButtonSpinnerLocation="Left"
                                Watermark="Enter text" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-    
+
+    <ControlTheme x:Key="NumericUpDownSpinnerTheme" TargetType="ButtonSpinner">
+        <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
+        <Setter Property="Padding" Value="10, 0" />
+        <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThickness}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="MinHeight" Value="{DynamicResource TextControlThemeMinHeight}" />
+        <Setter Property="MinWidth" Value="{DynamicResource TextControlThemeMinWidth}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DataValidationErrors>
+                    <Grid>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Grid.Column="1"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Padding="{TemplateBinding Padding}" />
+
+                        <StackPanel Name="PART_SpinnerPanel"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal"
+                                    IsVisible="{TemplateBinding ShowButtonSpinner}"
+                                    Grid.Column="0"
+                                    Background="Transparent">
+                            <RepeatButton Name="PART_IncreaseButton"
+                                          Theme="{StaticResource ButtonSpinnerButton}"
+                                          VerticalContentAlignment="Center"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          FontSize="18"
+                                          Margin="4"
+                                          Content="&#xE70E;"/>
+
+                            <RepeatButton Name="PART_DecreaseButton"
+                                          Theme="{StaticResource ButtonSpinnerButton}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          VerticalContentAlignment="Center"
+                                          FontSize="18"
+                                          Margin="0 4 4 4"
+                                          Content="&#xE70D;"/>
+                        </StackPanel>
+                    </Grid>
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:right /template/ StackPanel#PART_SpinnerPanel">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style Selector="^:error">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="NumericUpDownTextBoxTheme"
+                  TargetType="TextBox"
+                  BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DataValidationErrors>
+                    <Panel>
+                        <Border Name="PART_BorderElement"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MinHeight="{TemplateBinding MinHeight}">
+                        </Border>
+
+                        <Border Margin="{TemplateBinding BorderThickness}">
+                            <Grid ColumnDefinitions="Auto,*,Auto" >
+                                <DockPanel x:Name="PART_InnerDockPanel"
+                                           Grid.Column="1"
+                                           Grid.ColumnSpan="1"
+                                           Cursor="IBeam"
+                                           Margin="{TemplateBinding Padding}">
+                                    <TextBlock Name="PART_FloatingWatermark"
+                                               Foreground="{DynamicResource SystemAccentColor}"
+                                               FontSize="{TemplateBinding FontSize}"
+                                               IsVisible="False"
+                                               Text="{TemplateBinding Watermark}"
+                                               DockPanel.Dock="Top" />
+                                    <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                                  VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                                                  IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+                                                  AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                                        <Panel>
+                                            <TextBlock Name="PART_Watermark"
+                                                       Foreground="{DynamicResource TextControlPlaceholderForeground}"
+                                                       Text="{TemplateBinding Watermark}"
+                                                       TextAlignment="{TemplateBinding TextAlignment}"
+                                                       TextWrapping="{TemplateBinding TextWrapping}"
+                                                       IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                            <TextPresenter Name="PART_TextPresenter"
+                                                          Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                          CaretIndex="{TemplateBinding CaretIndex}"
+                                                          SelectionStart="{TemplateBinding SelectionStart}"
+                                                          SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                          TextAlignment="{TemplateBinding TextAlignment}"
+                                                          TextWrapping="{TemplateBinding TextWrapping}"
+                                                          LineHeight="{TemplateBinding LineHeight}"
+                                                          PasswordChar="{TemplateBinding PasswordChar}"
+                                                          RevealPassword="{TemplateBinding RevealPassword}"
+                                                          SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                          SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                          CaretBrush="{TemplateBinding CaretBrush}"
+                                                          HorizontalAlignment="Left"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </Panel>
+                                    </ScrollViewer>
+                                </DockPanel>                                
+                            </Grid>
+                        </Border>
+                    </Panel>
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^ /template/ ScrollViewer">
+            <Setter Property="Padding" Value="68 0 0 0" />
+        </Style>
+        <Style Selector="^.spinRight /template/ ScrollViewer">
+            <Setter Property="Padding" Value="0 0 68 0" />
+        </Style>
+        <Style Selector="^.noSpin /template/ ScrollViewer">
+            <Setter Property="Padding" Value="0 0 0 0" />
+        </Style>
+    </ControlTheme>
+
     <ControlTheme x:Key="{x:Type NumericUpDown}" TargetType="NumericUpDown">
         <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
         <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
@@ -35,10 +173,6 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <ButtonSpinner Name="PART_Spinner"
-                               Background="{TemplateBinding Background}"
-                               BorderThickness="{TemplateBinding BorderThickness}"
-                               BorderBrush="{TemplateBinding BorderBrush}"
-                               CornerRadius="{TemplateBinding CornerRadius}"
                                Padding="0"
                                MinWidth="0"
                                HorizontalContentAlignment="Stretch"
@@ -46,11 +180,12 @@
                                AllowSpin="{TemplateBinding AllowSpin}"
                                ShowButtonSpinner="{TemplateBinding ShowButtonSpinner}"
                                DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}"
-                               ButtonSpinnerLocation="{TemplateBinding ButtonSpinnerLocation}">
+                               ButtonSpinnerLocation="{TemplateBinding ButtonSpinnerLocation}"
+                               Theme="{StaticResource NumericUpDownSpinnerTheme}">
                     <TextBox Name="PART_TextBox"
-                             Background="Transparent"
-                             BorderBrush="Transparent"
-                             Margin="-1"
+                             Background="{TemplateBinding Background}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
                              Padding="{TemplateBinding Padding}"
                              MinWidth="0"
                              Foreground="{TemplateBinding Foreground}"
@@ -61,9 +196,12 @@
                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                              Text="{TemplateBinding Text}"
                              AcceptsReturn="False"
-                             TextWrapping="NoWrap" />
+                             TextWrapping="NoWrap"
+                             Theme="{StaticResource NumericUpDownTextBoxTheme}"
+                             Classes.spinRight="{TemplateBinding ButtonSpinnerLocation, Converter={StaticResource NUDSpinLocationConverter}}"
+                             Classes.noSpin="{Binding !$parent[NumericUpDown].ShowButtonSpinner}" />
                 </ButtonSpinner>
-            </ControlTemplate>
+            </ControlTemplate>            
         </Setter>
     </ControlTheme>
     
