@@ -56,10 +56,6 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
                 HighContrastModeString => HighContrastTheme,
                 _ => ThemeVariant.Default
             };
-            //if (_hasLoaded)
-            //    Refresh(value);
-            //else
-            //    _requestedTheme = value;
         }
     }
 
@@ -228,39 +224,6 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         SetTextAlignmentOverrides();
 
         _hasLoaded = true;
-    }
-
-    private void Refresh(string newTheme)
-    {
-        //newTheme ??= ResolveThemeAndInitializeSystemResources();
-
-        //var old = _requestedTheme;
-        //if (!string.Equals(newTheme, old, StringComparison.OrdinalIgnoreCase))
-        //{
-        //    _requestedTheme = newTheme;
-
-        //    // Bug in preview5: removing and adding a RD causes issues for some reason,
-        //    // but just swapping them doesn't. 
-        //    // MergedDictionaries should always have 2 RDs in it
-        //    //   -> BaseResources.axaml
-        //    //   -> Current theme (Light/Dark/HighContrast)
-        //    // I can't remember why we had a check for that before, but AFAIK, we should
-        //    // always have two. Also think the check was wrong anyway.
-        //    Resources.MergedDictionaries[1] = (ResourceDictionary)AvaloniaXamlLoader.Load(
-        //        new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri);
-
-        //    if (string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        //        {
-        //            TryLoadHighContrastThemeColors();
-        //        }
-        //    }
-            
-        //    Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
-
-        //    RequestedThemeChanged?.Invoke(this, new RequestedThemeChangedEventArgs(_requestedTheme));
-        //}
     }
 
     private void ResolveThemeAndInitializeSystemResources()
