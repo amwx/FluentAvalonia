@@ -38,7 +38,7 @@ public class ImageIcon : FAIconElement
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        return Source?.Size ?? Size.Empty;
+        return Source?.Size ?? default;
     }
 
     public override void Render(DrawingContext context)

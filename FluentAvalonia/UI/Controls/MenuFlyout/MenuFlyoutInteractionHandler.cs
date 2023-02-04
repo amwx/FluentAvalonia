@@ -10,6 +10,7 @@ using Avalonia.VisualTree;
 using System;
 using System.ComponentModel;
 using Avalonia.Platform;
+using Avalonia;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -142,7 +143,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
     protected internal virtual void KeyDown(object sender, KeyEventArgs e)
     {
-        KeyDown(GetMenuItem(e.Source as IControl), e);
+        KeyDown(GetMenuItem(e.Source as Control), e);
     }
 
     protected internal virtual void KeyDown(IMenuItem item, KeyEventArgs e)
@@ -157,7 +158,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                     var current = FocusManager.Instance.Current;
                     if (current is MenuFlyoutItemBase mfib && mfib.Parent == Menu)
                     {
-                        var index = Menu.ItemContainerGenerator.IndexFromContainer(mfib);
+                        var index = Menu.IndexFromContainer(mfib);
 
                         if (index == -1) // something's wrong
                             return;
@@ -168,7 +169,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                             if (index >= Menu.ItemCount)
                                 index = 0;
 
-                            var cont = Menu.ItemContainerGenerator.ContainerFromIndex(index);
+                            var cont = Menu.ContainerFromIndex(index);
 
                             if (cont != null && cont.Focusable && cont.IsEffectivelyEnabled)
                             {
@@ -193,7 +194,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                     var current = FocusManager.Instance.Current;
                     if (current is MenuFlyoutItemBase mfib && mfib.Parent == Menu)
                     {
-                        var index = Menu.ItemContainerGenerator.IndexFromContainer(mfib);
+                        var index = Menu.IndexFromContainer(mfib);
 
                         if (index == -1) // something's wrong
                             return;
@@ -204,7 +205,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                             if (index < 0)
                                 index = Menu.ItemCount - 1;
 
-                            var cont = Menu.ItemContainerGenerator.ContainerFromIndex(index);
+                            var cont = Menu.ContainerFromIndex(index);
 
                             if (cont != null && cont.Focusable && cont.IsEffectivelyEnabled)
                             {
@@ -278,7 +279,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
     protected internal virtual void AccessKeyPressed(object sender, RoutedEventArgs e)
     {
-        var item = GetMenuItem(e.Source as IControl);
+        var item = GetMenuItem(e.Source as Control);
 
         if (item == null)
         {
@@ -299,7 +300,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
     protected internal virtual void PointerEnter(object sender, PointerEventArgs e)
     {
-        var item = GetMenuItem(e.Source as IControl);
+        var item = GetMenuItem(e.Source as Control);
 
         if (item?.Parent == null)
         {
@@ -326,7 +327,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
     protected internal virtual void PointerLeave(object sender, PointerEventArgs e)
     {
-        var item = GetMenuItem(e.Source as IControl);
+        var item = GetMenuItem(e.Source as Control);
 
         if (item?.Parent == null)
         {
@@ -354,8 +355,8 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
     protected internal virtual void PointerPressed(object sender, PointerPressedEventArgs e)
     {
-        var item = GetMenuItem(e.Source as IControl);
-        var visual = (IVisual)sender;
+        var item = GetMenuItem(e.Source as Control);
+        var visual = (Visual)sender;
 
         if (e.GetCurrentPoint(visual).Properties.IsLeftButtonPressed && item?.HasSubMenu == true)
         {
@@ -382,7 +383,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
     protected internal virtual void PointerReleased(object sender, PointerReleasedEventArgs e)
     {
-        var item = GetMenuItem(e.Source as IControl);
+        var item = GetMenuItem(e.Source as Control);
 
         if (e.InitialPressMouseButton == MouseButton.Left && item?.HasSubMenu == false)
         {
@@ -512,7 +513,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
         }
     }
 
-    protected static IMenuItem GetMenuItem(IControl item)
+    protected static IMenuItem GetMenuItem(Control item)
     {
         while (true)
         {

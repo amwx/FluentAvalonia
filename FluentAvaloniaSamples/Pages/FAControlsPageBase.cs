@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -142,22 +143,6 @@ namespace FluentAvaloniaSamples.Pages
             }
         }
 
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnAttachedToVisualTree(e); 
-            if (_pageTheme != null)
-            {
-                var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                if (thm.RequestedTheme == _pageTheme)
-                {
-                    SetThemeOnExamples(_pageTheme == FluentAvaloniaTheme.LightModeString);
-                    Resources.MergedDictionaries.Clear();
-                    Background = Brushes.Transparent;
-                    _pageTheme = null;
-                }
-            }
-        }
-
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
@@ -172,65 +157,10 @@ namespace FluentAvaloniaSamples.Pages
 
         internal void TogglePageTheme()
         {
-            var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-
-            if (_pageTheme == null)
-            {
-                if (thm.RequestedTheme == FluentAvaloniaTheme.LightModeString)
-                {
-                    _pageTheme = FluentAvaloniaTheme.DarkModeString;
-                }
-                else if (thm.RequestedTheme == FluentAvaloniaTheme.DarkModeString)
-                {
-                    _pageTheme = FluentAvaloniaTheme.LightModeString;
-                }
-
-                // Will still be null if using HighContrast theme
-                if (_pageTheme != null)
-                {
-                    Resources.MergedDictionaries.Add(
-                        (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_pageTheme}Resources.axaml"))
-                    );
-                    SetThemeOnExamples(_pageTheme == FluentAvaloniaTheme.LightModeString);
-                    // To ensure all still looks ok (primarily because of the transparency effects on the window),
-                    // if we toggle the theme here, the page background needs to go opaque so all controls look
-                    // ok, since many of the control colors are semi-transparent.
-                    if (this.TryFindResource("ApplicationPageBackgroundThemeBrush", out var value))
-                    {
-                        if (value is ISolidColorBrush s)
-                        {
-                            Background = s;
-                        }
-                    }
-                }
-            }
-            else if (_pageTheme == FluentAvaloniaTheme.LightModeString)
-            {
-                // If _pageTheme was set to light, it means app is in dark mode, just remove the resources here
-                _pageTheme = null;
-                Resources.MergedDictionaries.Clear();
-                Background = Brushes.Transparent;
-                SetThemeOnExamples(false);
-            }
-            else if (_pageTheme == FluentAvaloniaTheme.DarkModeString)
-            {
-                // If _pageTheme was set to dark, it means app in in light mode, just remove the resource here
-                _pageTheme = null;
-                Resources.MergedDictionaries.Clear();
-                Background = Brushes.Transparent;
-                SetThemeOnExamples(true);
-            }            
-        }
-
-        private void SetThemeOnExamples(bool isLightMode)
-        {
-            // While the control examples themselves will inherit the resource changes,
-            // the text editors for code samples won't since we're not changing the theme
-            // at the app level. So notify them they should switch modes
             foreach (var item in this.GetVisualDescendants().OfType<ControlExample>())
             {
-                item.SetExampleTheme(isLightMode);
-            }
+                item.SetExampleTheme();
+            }                   
         }
 
         private void UpdateState(bool animate)
@@ -323,7 +253,6 @@ namespace FluentAvaloniaSamples.Pages
         }
 
 
-        private string _pageTheme = null;
         private StackPanel _contentRoot;
         private Grid _rootGrid;
         private FAControlsPageHeader _headerElement;

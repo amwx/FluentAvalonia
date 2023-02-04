@@ -375,6 +375,7 @@
                                         <ContentPresenter Grid.Row="2"
 														  Grid.ColumnSpan="2"
 														  Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                                          ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
 														  Margin="{DynamicResource NavigationViewContentPresenterMargin}"
 														  Name="ContentPresenter" />
 

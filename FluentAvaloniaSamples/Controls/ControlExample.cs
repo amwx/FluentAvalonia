@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
@@ -107,8 +108,8 @@ public class ControlExample : HeaderedContentControl
     public static readonly StyledProperty<string> UsageNotesProperty =
         AvaloniaProperty.Register<ControlExample, string>(nameof(UsageNotes));
 
-    public static readonly StyledProperty<IControl> OptionsProperty =
-        AvaloniaProperty.Register<ControlExample, IControl>(nameof(Options));
+    public static readonly StyledProperty<Control> OptionsProperty =
+        AvaloniaProperty.Register<ControlExample, Control>(nameof(Options));
 
     public static readonly DirectProperty<ControlExample, IList<ControlExampleSubstitution>> SubstitutionsProperty =
         AvaloniaProperty.RegisterDirect<ControlExample, IList<ControlExampleSubstitution>>(nameof(Substitutions),
@@ -135,7 +136,7 @@ public class ControlExample : HeaderedContentControl
         set => SetValue(CSharpSourceProperty, value);
     }
 
-    public IControl Options
+    public Control Options
     {
         get => GetValue(OptionsProperty);
         set => SetValue(OptionsProperty, value);
@@ -178,6 +179,8 @@ public class ControlExample : HeaderedContentControl
             _expandOptionsButton.Click -= OnExpandOptionsClick;
 
         base.OnApplyTemplate(e);
+
+        _exampleThemeScopeProvider = e.NameScope.Find<ThemeVariantScope>("ThemeScopeProvider");
 
         _expandOptionsButton = e.NameScope.Find<Button>("ShowHideOptionsButton");
         _expandOptionsButton.Click += OnExpandOptionsClick;
@@ -242,8 +245,8 @@ public class ControlExample : HeaderedContentControl
         _copyCSharpButton = e.NameScope.Find<Button>("CopyCSharpButton");
         _copyCSharpButton.Click += OnCopyCSharpClick;
 
-        _xamlTextEditor = e.NameScope.Find<TextEditor>("XamlTextEditor");
-        _cSharpTextEditor = e.NameScope.Find<TextEditor>("CSharpTextEditor");
+        //_xamlTextEditor = e.NameScope.Find<TextEditor>("XamlTextEditor");
+        //_cSharpTextEditor = e.NameScope.Find<TextEditor>("CSharpTextEditor");
 
         _usageNotesTextBlock = e.NameScope.Find<TextBlock>("UsageNotesTextBlock");
 
@@ -251,25 +254,25 @@ public class ControlExample : HeaderedContentControl
 
         bool isLightMode = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == FluentAvaloniaTheme.LightModeString;
 
-        _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
-        _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
+        //_xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
+        //_cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
 
-        //_xamlTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
-        // _cSharpTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
+        ////_xamlTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
+        //// _cSharpTextEditor.TextArea.SelectionBrush = Brushes.Transparent;
 
-        _xamlTextEditor.Text = XamlSource;
-        _cSharpTextEditor.Text = CSharpSource;
+        //_xamlTextEditor.Text = XamlSource;
+        //_cSharpTextEditor.Text = CSharpSource;
 
-        _cSharpTextEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy(_cSharpTextEditor.Options);
-        _cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
+        //_cSharpTextEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy(_cSharpTextEditor.Options);
+        //_cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
 
-        // HACK: Links apparently can't be turned off (if you see this and know how, pls open a PR and fix this =D), so force links
-        //       to be the same color as attributes
-        _cSharpTextEditor.Options.EnableHyperlinks = false;
-        _xamlTextEditor.Options.EnableHyperlinks = false;
+        //// HACK: Links apparently can't be turned off (if you see this and know how, pls open a PR and fix this =D), so force links
+        ////       to be the same color as attributes
+        //_cSharpTextEditor.Options.EnableHyperlinks = false;
+        //_xamlTextEditor.Options.EnableHyperlinks = false;
 
-        //_xamlTextEditor.TextArea.TextView.LinkTextForegroundBrush = new ImmutableSolidColorBrush(Color.FromRgb(255, 160, 122));
-        //_xamlTextEditor.TextArea.TextView.LinkTextUnderline = false;
+        ////_xamlTextEditor.TextArea.TextView.LinkTextForegroundBrush = new ImmutableSolidColorBrush(Color.FromRgb(255, 160, 122));
+        ////_xamlTextEditor.TextArea.TextView.LinkTextUnderline = false;
 
         if (Substitutions.Count > 0 && !_hasRegisteredSubstitutions)
         {
@@ -333,32 +336,47 @@ public class ControlExample : HeaderedContentControl
 
     private void OnResourcesChanged(object sender, ResourcesChangedEventArgs e)
     {
-        if (_cSharpTextEditor != null)
-        {
-            bool isLightMode = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == FluentAvaloniaTheme.LightModeString;
+        //if (_cSharpTextEditor != null)
+        //{
+        //    bool isLightMode = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == FluentAvaloniaTheme.LightModeString;
 
-            _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
-            _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
-        }
+        //    _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
+        //    _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
+        //}
     }
 
-    public void SetExampleTheme(bool isLightMode)
+    public void SetExampleTheme()
     {
-        if (_cSharpTextEditor != null)
-        {
-            _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
-            _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
+        var theme = _exampleThemeScopeProvider.ActualThemeVariant;
 
-            if (this.TryFindResource("TextControlSelectionHighlightColor", out var value))
-            {
-                if (value is ISolidColorBrush sb)
-                {
-                    var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                    //_xamlTextEditor.TextArea.SelectionBrush = b;
-                    //_cSharpTextEditor.TextArea.SelectionBrush = b;
-                }
-            }
+        if (theme == ThemeVariant.Light)
+        {
+            _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Dark;
+            // Hack force resource invalidation as that doesn't seem to want to happen
+            // the first time toggle theme is set
+            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
         }
+        else
+        {
+            _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Light;
+            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
+        }
+
+        //if (_cSharpTextEditor != null)
+        //{
+        //    _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
+        //    _cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;
+
+        //    if (this.TryFindResource("TextControlSelectionHighlightColor", out var value))
+        //    {
+        //        if (value is ISolidColorBrush sb)
+        //        {
+        //            var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
+        //            //_xamlTextEditor.TextArea.SelectionBrush = b;
+        //            //_cSharpTextEditor.TextArea.SelectionBrush = b;
+        //        }
+        //    }
+        //}
     }
 
     private void OnSubstitutionValueChanged(ControlExampleSubstitution sender, object args)
@@ -402,19 +420,19 @@ public class ControlExample : HeaderedContentControl
             });
         }
 
-        if (isCSharpSample && _cSharpTextEditor != null)
-        {
-            TrimAndSubstitute();
+        //if (isCSharpSample && _cSharpTextEditor != null)
+        //{
+        //    TrimAndSubstitute();
 
-            _cSharpTextEditor.Text = sampleString;
-            _cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
-        }
-        else if (_xamlTextEditor != null)
-        {
-            TrimAndSubstitute();
+        //    _cSharpTextEditor.Text = sampleString;
+        //    _cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
+        //}
+        //else if (_xamlTextEditor != null)
+        //{
+        //    TrimAndSubstitute();
 
-            _xamlTextEditor.Text = sampleString;
-        }
+        //    _xamlTextEditor.Text = sampleString;
+        //}
     }
 
     public void LaunchAvaloniaDocs(object sender, RoutedEventArgs e)
@@ -436,49 +454,49 @@ public class ControlExample : HeaderedContentControl
 
     private async void OnCopyCSharpClick(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            if (_cSharpTextEditor.SelectionLength > 0)
-            {
-                // Copy the selected text
-                _cSharpTextEditor.Copy();
-            }
-            else
-            {
-                // Copy everything
-                await Application.Current.Clipboard.SetTextAsync(_cSharpTextEditor.Text);
-            }
+        //try
+        //{
+        //    if (_cSharpTextEditor.SelectionLength > 0)
+        //    {
+        //        // Copy the selected text
+        //        _cSharpTextEditor.Copy();
+        //    }
+        //    else
+        //    {
+        //        // Copy everything
+        //        await Application.Current.Clipboard.SetTextAsync(_cSharpTextEditor.Text);
+        //    }
 
 
-            ShowCopiedFlyout(sender as Button);
-        }
-        catch
-        {
-            ShowCopiedFlyout(sender as Button, "Failed to copy code", true);
-        }
+        //    ShowCopiedFlyout(sender as Button);
+        //}
+        //catch
+        //{
+        //    ShowCopiedFlyout(sender as Button, "Failed to copy code", true);
+        //}
     }
 
     private async void OnCopyXamlClick(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            if (_xamlTextEditor.SelectionLength > 0)
-            {
-                // Copy the selected text
-                _xamlTextEditor.Copy();
-            }
-            else
-            {
-                // Copy everything
-                await Application.Current.Clipboard.SetTextAsync(_xamlTextEditor.Text);
-            }
+        //try
+        //{
+        //    if (_xamlTextEditor.SelectionLength > 0)
+        //    {
+        //        // Copy the selected text
+        //        _xamlTextEditor.Copy();
+        //    }
+        //    else
+        //    {
+        //        // Copy everything
+        //        await Application.Current.Clipboard.SetTextAsync(_xamlTextEditor.Text);
+        //    }
 
-            ShowCopiedFlyout(sender as Button);
-        }
-        catch
-        {
-            ShowCopiedFlyout(sender as Button, "Failed to copy code", true);
-        }
+        //    ShowCopiedFlyout(sender as Button);
+        //}
+        //catch
+        //{
+        //    ShowCopiedFlyout(sender as Button, "Failed to copy code", true);
+        //}
     }
 
     private void ShowCopiedFlyout(Button host, string message = "Copied!", bool fail = false)
@@ -592,10 +610,11 @@ public class ControlExample : HeaderedContentControl
     private Button _copyCSharpButton;
     private Border _previewAreaHost;
     private Button _expandOptionsButton;
+    private ThemeVariantScope _exampleThemeScopeProvider;
 
     private Button _optionsMenuButton;
-    private TextEditor _xamlTextEditor;
-    private TextEditor _cSharpTextEditor;
+    //private TextEditor _xamlTextEditor;
+    //private TextEditor _cSharpTextEditor;
     private TextBlock _usageNotesTextBlock;
 
     private IList<ControlExampleSubstitution> _substitutions;

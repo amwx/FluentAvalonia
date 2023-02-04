@@ -3,13 +3,16 @@
                     xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                     x:CompileBindings="True">
     <Design.PreviewWith>
-        <Border Padding="50" Width="250">
+        <Border Padding="50" Width="400">
             <StackPanel>
-                <ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False"
+                <ui:CommandBar ClosedDisplayMode="Compact"
 							   DefaultLabelPosition="Right">
                     <ui:CommandBar.PrimaryCommands>
                         <ui:CommandBarButton Label="Test" Icon="Save" IsCompact="False"  />
                     </ui:CommandBar.PrimaryCommands>
+                    <ui:CommandBar.SecondaryCommands>
+                        <ui:CommandBarButton Label="Test" Icon="Save" IsCompact="False"  />
+                    </ui:CommandBar.SecondaryCommands>
                 </ui:CommandBar>
             </StackPanel>
         </Border>
@@ -138,6 +141,7 @@
                                     Grid.Column="1"
                                     Theme="{StaticResource CBEllipsisButton}"
                                     Padding="{DynamicResource CommandBarMoreButtonMargin}"
+                                    MinHeight="{StaticResource AppBarThemeCompactHeight}"
                                     VerticalAlignment="Top">
                                 <ui:SymbolIcon Symbol="MoreHorizontal"
 											   FontSize="24"

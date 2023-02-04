@@ -6,8 +6,8 @@
         <Border Padding="20" Background="#E0E0E0">
             <ui:CommandBarFlyoutCommandBar IsOpen="True" Margin="30">
                 <ui:CommandBarFlyoutCommandBar.PrimaryCommands>
-                    <ui:CommandBarButton IconSource="Save" />
-                    <ui:CommandBarToggleButton IconSource="Globe" />
+                    <!--<ui:CommandBarButton IconSource="Save" />
+                    <ui:CommandBarToggleButton IconSource="Globe" />-->
                 </ui:CommandBarFlyoutCommandBar.PrimaryCommands>
 
                 <ui:CommandBarFlyoutCommandBar.SecondaryCommands>
@@ -103,8 +103,7 @@
 									  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
 									  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                             <ItemsPresenter Name="ItemsPresenter"
-											Margin="3"
-											Items="{TemplateBinding Items}"/>
+											Margin="3" />
                         </ScrollViewer>
                     </Panel>
                 </Border>
@@ -347,7 +346,6 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Width" Value="20" />
                 <Setter Property="Height" Value="20" />
-                <Setter Property="Margin" Value="12 0" />
                 <Setter Property="Margin" Value="38 0 12 0" />
             </Style>
             <Style Selector="^ /template/ TextBlock#OverflowTextLabel">
@@ -681,7 +679,6 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Width" Value="20" />
                 <Setter Property="Height" Value="20" />
-                <Setter Property="Margin" Value="12 0" />
                 <Setter Property="Margin" Value="38 0 12 0" />
             </Style>
             <Style Selector="^ /template/ TextBlock#OverflowTextLabelF">
@@ -786,7 +783,7 @@
             </Style>
         </Style>
 
-        <Style Selector="^:secondaryonly /template/ Grid#ContentRoot">
+        <Style Selector="^:secondaryOnly /template/ Grid#ContentRoot">
             <Setter Property="IsVisible" Value="False" />
         </Style>        
     </ControlTheme>    

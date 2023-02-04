@@ -37,7 +37,7 @@
     <Application.Styles>
         <sty:FluentAvaloniaTheme />
         <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
-        <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+        <!--<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />-->
         <StyleInclude Source="/Styles/OptionsDisplayItemStyles.axaml" />
         <StyleInclude Source="/Styles/ControlExampleStyles.axaml" />
         <StyleInclude Source="/Styles/FAControlsPageBaseStyles.axaml" />

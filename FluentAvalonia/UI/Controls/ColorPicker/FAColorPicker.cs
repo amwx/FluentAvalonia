@@ -62,37 +62,37 @@ public partial class FAColorPicker : TemplatedControl
         _hueButton = e.NameScope.Find<RadioButton>("HueRadio");
         if (_hueButton != null)
         {
-            _hueButton.Checked += OnComponentRBChecked;
+            _hueButton.IsCheckedChanged += OnComponentRBChecked;
         }
 
         _satButton = e.NameScope.Find<RadioButton>("SatRadio");
         if (_satButton != null)
         {
-            _satButton.Checked += OnComponentRBChecked;
+            _satButton.IsCheckedChanged += OnComponentRBChecked;
         }
 
         _valButton = e.NameScope.Find<RadioButton>("ValRadio");
         if (_valButton != null)
         {
-            _valButton.Checked += OnComponentRBChecked;
+            _valButton.IsCheckedChanged += OnComponentRBChecked;
         }
 
         _redButton = e.NameScope.Find<RadioButton>("RedRadio");
         if (_redButton != null)
         {
-            _redButton.Checked += OnComponentRBChecked;
+            _redButton.IsCheckedChanged += OnComponentRBChecked;
         }
 
         _greenButton = e.NameScope.Find<RadioButton>("GreenRadio");
         if (_greenButton != null)
         {
-            _greenButton.Checked += OnComponentRBChecked;
+            _greenButton.IsCheckedChanged += OnComponentRBChecked;
         }
 
         _blueButton = e.NameScope.Find<RadioButton>("BlueRadio");
         if (_blueButton != null)
         {
-            _blueButton.Checked += OnComponentRBChecked;
+            _blueButton.IsCheckedChanged += OnComponentRBChecked;
         }
 
         _hueBox = e.NameScope.Find<NumberBox>("HueBox");
@@ -187,12 +187,12 @@ public partial class FAColorPicker : TemplatedControl
         _rgbButton = e.NameScope.Find<ToggleButton>("RGBButton");
         if (_rgbButton != null)
         {
-            _rgbButton.Checked += OnColorTypeRBChecked;
+            _rgbButton.IsCheckedChanged += OnColorTypeRBChecked;
         }
         _hsvButton = e.NameScope.Find<ToggleButton>("HSVButton");
         if (_hsvButton != null)
         {
-            _hsvButton.Checked += OnColorTypeRBChecked;
+            _hsvButton.IsCheckedChanged += OnColorTypeRBChecked;
         }
 
         PseudoClasses.Set(":alpha", IsAlphaEnabled);
@@ -220,6 +220,24 @@ public partial class FAColorPicker : TemplatedControl
             {
                 UpdateColorAndControls(change.GetNewValue<Color2>(), ColorUpdateReason.Programmatic);
             }
+        }
+        else if (change.Property == ColorTextTypeProperty)
+        {
+            SetHexBoxHeader();
+            UpdateHexBox(Color);
+        }
+        else if (change.Property == ComponentProperty)
+        {
+            UpdatePickerComponents();
+        }
+        else if (change.Property == IsCompactProperty)
+        {
+            PseudoClasses.Set(":compact", change.GetNewValue<bool>());
+            SetAsCompactMode();
+        }
+        else if (change.Property == IsAlphaEnabledProperty)
+        {
+            PseudoClasses.Set(":alpha", change.GetNewValue<bool>());
         }
     }
 
@@ -318,7 +336,7 @@ public partial class FAColorPicker : TemplatedControl
         {
             _ignoreRadioChange = true;
 
-            switch (_component)
+            switch (Component)
             {
                 case ColorSpectrumComponents.SaturationValue:
                     _spectrum.Component = ColorComponent.Hue;
@@ -597,7 +615,7 @@ public partial class FAColorPicker : TemplatedControl
         if (_hexBox == null)
             return;
 
-        switch (_textType)
+        switch (ColorTextType)
         {
             case ColorTextType.Hex:
                 _hexBox.Text = col.ToHexString(false);
@@ -623,7 +641,7 @@ public partial class FAColorPicker : TemplatedControl
         if (ramp && _alphaRamp != null)
             _alphaRamp.Color = col;
 
-        if (spectrumRamp && _isCompact && _opacityComponentSlider != null)
+        if (spectrumRamp && IsCompact && _opacityComponentSlider != null)
             _opacityComponentSlider.Color = col;
     }
 
@@ -702,7 +720,7 @@ public partial class FAColorPicker : TemplatedControl
 
     private void OnComponentRBChecked(object sender, RoutedEventArgs e)
     {
-        if (!_templateApplied || _ignoreRadioChange)
+        if (!_templateApplied || _ignoreRadioChange || (sender as RadioButton).IsChecked != true)
             return;
 
         if (sender == _hueButton)
@@ -765,7 +783,7 @@ public partial class FAColorPicker : TemplatedControl
         if (!_templateApplied || _rootGrid == null || _textEntryTabHost == null || _textEntryArea == null)
             return;
 
-        if (_isCompact)
+        if (IsCompact)
         {
             _rootGrid.Children.Remove(_textEntryArea);
             _textEntryTabHost.Children.Add(_textEntryArea);
@@ -815,6 +833,9 @@ public partial class FAColorPicker : TemplatedControl
 
     private void OnColorTypeRBChecked(object sender, RoutedEventArgs e)
     {
+        if (((ToggleButton)sender).IsChecked != true)
+            return;
+
         if (sender == _rgbButton)
         {
             PseudoClasses.Set(":rgb", true);
@@ -893,22 +914,22 @@ public partial class FAColorPicker : TemplatedControl
             _opacityComponentSlider.ColorChanged -= OnSpectrumAlphaChanged;
 
         if (_hueButton != null)
-            _hueButton.Checked -= OnComponentRBChecked;
+            _hueButton.IsCheckedChanged -= OnComponentRBChecked;
 
         if (_satButton != null)
-            _satButton.Checked -= OnComponentRBChecked;
+            _satButton.IsCheckedChanged -= OnComponentRBChecked;
 
         if (_valButton != null)
-            _valButton.Checked -= OnComponentRBChecked;
+            _valButton.IsCheckedChanged -= OnComponentRBChecked;
 
         if (_redButton != null)
-            _redButton.Checked -= OnComponentRBChecked;
+            _redButton.IsCheckedChanged -= OnComponentRBChecked;
 
         if (_greenButton != null)
-            _greenButton.Checked -= OnComponentRBChecked;
+            _greenButton.IsCheckedChanged -= OnComponentRBChecked;
 
         if (_blueButton != null)
-            _blueButton.Checked -= OnComponentRBChecked;
+            _blueButton.IsCheckedChanged -= OnComponentRBChecked;
 
         if (_hueBox != null)
             _hueBox.ValueChanged -= OnComponentBoxValueChanged;
@@ -956,10 +977,10 @@ public partial class FAColorPicker : TemplatedControl
             _hexBox.KeyDown += OnHexBoxKeyDown;
 
         if (_rgbButton != null)
-            _rgbButton.Checked -= OnColorTypeRBChecked;
+            _rgbButton.IsCheckedChanged -= OnColorTypeRBChecked;
 
         if (_hsvButton != null)
-            _hsvButton.Checked -= OnColorTypeRBChecked;
+            _hsvButton.IsCheckedChanged -= OnColorTypeRBChecked;
     }
 
 

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -17,6 +13,7 @@ public class SymbolIcon : FAIconElement
     static SymbolIcon()
     {
         FontSizeProperty.OverrideDefaultValue<SymbolIcon>(18d);
+        _symbolFontFamily = new FontFamily("avares://FluentAvalonia/Fonts#Symbols");
     }
 
     /// <summary>
@@ -32,7 +29,7 @@ public class SymbolIcon : FAIconElement
         TextElement.FontSizeProperty.AddOwner<SymbolIcon>();
 
     /// <summary>
-    /// Gets or sets the <see cref="FluentAvalonia.UI.Controls.Symbol"/> this icon displays
+    /// Gets or sets the <see cref="Controls.Symbol"/> this icon displays
     /// </summary>
     public Symbol Symbol
     {
@@ -55,12 +52,13 @@ public class SymbolIcon : FAIconElement
         if (change.Property == TextElement.FontSizeProperty ||
             change.Property == SymbolProperty)
         {
-            GenerateText();
+            _textLayout = null;
             InvalidateMeasure();
         }
         else if (change.Property == TextElement.ForegroundProperty)
         {
-            GenerateText();            
+            _textLayout = null;  
+            // FAIconElement calls InvalidateVisual
         }
     }
 
@@ -78,7 +76,7 @@ public class SymbolIcon : FAIconElement
         if (_textLayout == null)
             GenerateText();
 
-        return _textLayout?.Bounds.Size ?? Size.Empty;
+        return _textLayout?.Bounds.Size ?? default;
     }
 
     public override void Render(DrawingContext context)
@@ -100,9 +98,10 @@ public class SymbolIcon : FAIconElement
         var glyph = char.ConvertFromUtf32((int)Symbol).ToString();
 
         _textLayout = new TextLayout(glyph,
-            new Typeface(new FontFamily("avares://FluentAvalonia/Fonts#Symbols")),
+            new Typeface(_symbolFontFamily),
            FontSize, Foreground, TextAlignment.Left);
     }
 
     private TextLayout _textLayout;
+    private static FontFamily _symbolFontFamily;
 }

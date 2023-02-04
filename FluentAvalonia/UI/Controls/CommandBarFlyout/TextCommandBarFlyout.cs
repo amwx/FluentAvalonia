@@ -1,9 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Input.Platform;
-using Avalonia.Input.Raw;
-using Avalonia.VisualTree;
 using FluentAvalonia.UI.Input;
 using System;
 using System.Collections.Generic;
@@ -39,7 +36,6 @@ public class TextCommandBarFlyout : CommandBarFlyout
             }
         };
     }
-
 
     private void InitializeButtonWithUICommand(Button b,
         XamlUICommand command, Action executeFunc)
@@ -81,11 +77,11 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
         // We don't have FlyoutBase.InputDevicePrefersPrimaryCommands
         // So we'll always load Cut/Copy/Paste into Secondary
-
+        // TODO_v2: We can implement InputDevicePrefersPrimaryCommands - pretty much that's touch
         addButtonToCommandsIfPresent(TextControlButtons.Cut, SecondaryCommands);
         addButtonToCommandsIfPresent(TextControlButtons.Copy, SecondaryCommands);
         addButtonToCommandsIfPresent(TextControlButtons.Paste, SecondaryCommands);
-
+        
         //TODO: the bool arg
         //addRichEditButtonToCommandsIfPresent(TextControlButtons.Bold, PrimaryCommands, false);
         //addRichEditButtonToCommandsIfPresent(TextControlButtons.Italic, PrimaryCommands, false);
@@ -110,10 +106,12 @@ public class TextCommandBarFlyout : CommandBarFlyout
             {
                 toAdd = GetPasswordBoxButtonsToAdd(tbTarget);
             }
-
-            toAdd = GetTextBoxButtonsToAdd(tbTarget);
+            else
+            {
+                toAdd = GetTextBoxButtonsToAdd(tbTarget);
+            }
         }
-        else if (target is TextBlock txtTarget)
+        else if (target is TextBlock txtTarget) // This also handles SelectableTextBlock
         {
             toAdd = GetTextBlockButtonsToAdd(txtTarget);
         }
@@ -142,8 +140,15 @@ public class TextCommandBarFlyout : CommandBarFlyout
             // In next verion of Avalonia, we'll get TextBox.IsUndoEnabled, but it's not the same
             // For now, we'll default to adding these, and probably just send the Undo/Redo keys
 
-            toAdd |= TextControlButtons.Undo;
-            toAdd |= TextControlButtons.Redo;
+            if (textBox.CanUndo)
+            {
+                toAdd |= TextControlButtons.Undo;
+            }
+
+            if (textBox.CanRedo)
+            {
+                toAdd |= TextControlButtons.Undo;
+            }
         }
 
         if (selLength > 0)
@@ -164,7 +169,15 @@ public class TextCommandBarFlyout : CommandBarFlyout
         // TextBlocks aren't as robust as WinUI, but we should still be able 
         // to make Copy work. SelectAll won't though
 
-        return TextControlButtons.Copy;
+        var buttonsToAdd = TextControlButtons.Copy;
+
+        if (tb is SelectableTextBlock stb)
+        {
+            if (!string.IsNullOrEmpty(stb.Text) && stb.Text.Length > 0)
+                buttonsToAdd |= TextControlButtons.SelectAll;
+        }
+        
+        return buttonsToAdd;
     }
 
     //private TextControlButtons GetRichEditBoxButtonsToAdd() { }
@@ -281,33 +294,9 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
     private void ExecuteUndoCommand()
     {
-        // TextBox has no public way of calling Undo/Redo, so we'll just send the keys to it
-        // TBH I have no idea if this will work. I can test on Windows and linux, but I'll 
-        // never own a mac, but hopefully the key system is smart enough to work out what
-        // Ctrl+z is cross platform that this will work.
-
         if (Target is TextBox tb)
         {
-            // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
-            //      this is drop down to the low-level event and make the input manager process it 
-            //      Also now pulling the keys from the PlatformHotkeyConfiguration
-
-            var keymap = AvaloniaLocator.Current.GetRequiredService<PlatformHotkeyConfiguration>();
-
-            // Iterate backwards as this will take user specified key shortcuts first over the ones specified in the 
-            // original platform initialization
-            ulong ts = (ulong)DateTime.Now.Ticks;
-            for (int i = keymap.Undo.Count - 1; i >= 0; i--)
-            {
-                var gesture = keymap.Undo[i];
-                var args = new RawKeyEventArgs(KeyboardDevice.Instance, ts, (IInputRoot)tb.GetVisualRoot(),
-                    RawKeyEventType.KeyDown, gesture.Key, GetRawMods(gesture.KeyModifiers));
-
-                InputManager.Instance.ProcessInput(args);
-
-                if (args.Handled)
-                    break;
-            }            
+            tb.Undo();
         }
 
         if (IsButtonInPrimaryCommands(TextControlButtons.Undo))
@@ -318,33 +307,9 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
     private void ExecuteRedoCommand()
     {
-        // TextBox has no public way of calling Undo/Redo, so we'll just send the keys to it
-        // TBH I have no idea if this will work. I can test on Windows and linux, but I'll 
-        // never own a mac, but hopefully the key system is smart enough to work out what
-        // Ctrl+z is cross platform that this will work.
-
         if (Target is TextBox tb)
         {
-            // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
-            //      this is drop down to the low-level event and make the input manager process it 
-            //      Also now pulling the keys from the PlatformHotkeyConfiguration
-
-            var keymap = AvaloniaLocator.Current.GetRequiredService<PlatformHotkeyConfiguration>();
-
-            // Iterate backwards as this will take user specified key shortcuts first over the ones specified in the 
-            // original platform initialization
-            ulong ts = (ulong)DateTime.Now.Ticks;
-            for (int i = keymap.Redo.Count - 1; i >= 0; i--)
-            {
-                var gesture = keymap.Redo[i];
-                var args = new RawKeyEventArgs(KeyboardDevice.Instance, ts, (IInputRoot)tb.GetVisualRoot(), 
-                    RawKeyEventType.KeyDown, gesture.Key, GetRawMods(gesture.KeyModifiers));
-
-                InputManager.Instance.ProcessInput(args);
-
-                if (args.Handled)
-                    break;
-            }
+            tb.Redo();
         }
 
         if (IsButtonInPrimaryCommands(TextControlButtons.Redo))
@@ -353,30 +318,17 @@ public class TextCommandBarFlyout : CommandBarFlyout
         }
     }
 
-    private static RawInputModifiers GetRawMods(KeyModifiers km)
-    {
-        RawInputModifiers rm = RawInputModifiers.None;
-
-        if ((km & KeyModifiers.Control) == KeyModifiers.Control)
-            rm |= RawInputModifiers.Control;
-
-        if ((km & KeyModifiers.Shift) == KeyModifiers.Shift)
-            rm |= RawInputModifiers.Shift;
-
-        if ((km & KeyModifiers.Meta) == KeyModifiers.Meta)
-            rm |= RawInputModifiers.Meta;
-
-        if ((km & KeyModifiers.Alt) == KeyModifiers.Alt)
-            rm |= RawInputModifiers.Alt;
-
-        return rm;
-    }
-
     private void ExecuteSelectAllCommand()
     {
-        if (Target is TextBox tb)
+        var target = Target;
+
+        if (target is TextBox tb)
         {
             tb.SelectAll();
+        }
+        else if (target is SelectableTextBlock stb)
+        {
+            stb.SelectAll();
         }
 
         if (IsButtonInPrimaryCommands(TextControlButtons.SelectAll))

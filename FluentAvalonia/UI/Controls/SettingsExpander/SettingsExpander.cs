@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Generators;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
@@ -59,7 +59,7 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
             // Prevent going to expanded state if we don't have any child items
             // Use the IsAttachedToVisualTree flag here to prevent overwriting 'true' while control
             // is Initializing where IsExpanded may be set before Items
-            if (ItemCount == 0 && change.GetNewValue<bool>() && ((IVisual)this).IsAttachedToVisualTree)
+            if (ItemCount == 0 && change.GetNewValue<bool>() && this.IsAttachedToVisualTree())
             {
                 // There seems to be an issue here where if we just set IsExpanded = false
                 // the property does get set, but the :expanded pseudoclass is never cleared
@@ -90,19 +90,18 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         {
             CanExecuteChanged(this, EventArgs.Empty);
         }
+        else if (change.Property == ItemsProperty)
+        {
+            if (IsClickEnabled && change.GetNewValue<IEnumerable>() != null)
+                throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
+        }
     }
 
-    protected override IItemContainerGenerator CreateItemContainerGenerator() =>
-        new SettingsExpanderItemContainerGenerator(this, ContentControl.ContentProperty,
-            ContentControl.ContentTemplateProperty);
+    protected override bool IsItemItsOwnContainerOverride(Control item) =>
+        item is SettingsExpanderItem;
 
-    protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
-    {
-        base.ItemsChanged(e);
-
-        if (IsClickEnabled && e.NewValue != null)
-            throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
-    }
+    protected override Control CreateContainerForItemOverride() =>
+        new SettingsExpanderItem();
 
     /// <summary>
     /// Invoked when the SettingsExpander is clicked when IsClickEnabled = true
@@ -147,6 +146,9 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 
     private void ExpanderToggleButtonClick(object sender, RoutedEventArgs e)
     {
+        if (!(e.Source == _expanderToggleButton))
+            return;
+
         e.Handled = true;
         OnClick();
     }

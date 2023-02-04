@@ -22,9 +22,8 @@ public partial class InfoBar : ContentControl
     /// <summary>
     /// Defines the <see cref="IsOpen"/> property
     /// </summary>
-    public static readonly DirectProperty<InfoBar, bool> IsOpenProperty =
-        AvaloniaProperty.RegisterDirect<InfoBar, bool>(nameof(IsOpen),
-            x => x.IsOpen, (x, v) => x.IsOpen = v);
+    public static readonly StyledProperty<bool> IsOpenProperty =
+        AvaloniaProperty.Register<InfoBar, bool>(nameof(IsOpen));
 
     /// <summary>
     /// Defines the <see cref="Title"/> property
@@ -77,16 +76,16 @@ public partial class InfoBar : ContentControl
     /// <summary>
     /// Defines the <see cref="ActionButton"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> ActionButtonProperty =
-        AvaloniaProperty.Register<InfoBar, IControl>(nameof(ActionButton));
+    public static readonly StyledProperty<Control> ActionButtonProperty =
+        AvaloniaProperty.Register<InfoBar, Control>(nameof(ActionButton));
 
     /// <summary>
     /// Gets or sets a value that indicates whether the InfoBar is open.
     /// </summary>
     public bool IsOpen
     {
-        get => _isOpen;
-        set => SetAndRaise(IsOpenProperty, ref _isOpen, value);
+        get => GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
     }
 
     /// <summary>
@@ -165,7 +164,7 @@ public partial class InfoBar : ContentControl
     /// <summary>
     /// Gets or sets the action button of the InfoBar.
     /// </summary>
-    public IControl ActionButton
+    public Control ActionButton
     {
         get => GetValue(ActionButtonProperty);
         set => SetValue(ActionButtonProperty, value);
@@ -186,8 +185,6 @@ public partial class InfoBar : ContentControl
     /// </summary>
     public event TypedEventHandler<InfoBar, InfoBarClosedEventArgs> Closed;
 
-
-    private bool _isOpen;
 
     private const string SR_InfoBarCloseButtonTooltip = "InfoBarCloseButtonTooltip";
 

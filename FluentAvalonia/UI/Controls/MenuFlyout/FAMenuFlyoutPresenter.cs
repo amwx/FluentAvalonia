@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.Generators;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Platform;
 using Avalonia.Controls.Primitives;
@@ -65,9 +64,106 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         throw new NotSupportedException("Use MenuFlyout.ShowAt(Control) instead");
     }
 
-    protected override IItemContainerGenerator CreateItemContainerGenerator()
+    protected override bool IsItemItsOwnContainerOverride(Control item) => true;
+
+    protected override Control CreateContainerForItemOverride() =>
+        new MenuFlyoutItem();
+
+    protected override void PrepareContainerForItemOverride(Control element, object item, int index)
     {
-        return new MenuFlyoutPresenterItemContainerGenerator(this);
+        base.PrepareContainerForItemOverride(element, item, index);
+
+        var iconCount = _iconCount;
+        var toggleCount = _toggleCount;
+        if (element is ToggleMenuFlyoutItem tmfi)
+        {
+            if (tmfi.IconSource != null)
+            {
+                iconCount++;
+            }
+
+            toggleCount++;
+        }
+        else if (element is RadioMenuFlyoutItem rmfi)
+        {
+            if (rmfi.IconSource != null)
+            {
+                iconCount++;
+            }
+
+            toggleCount++;
+        }
+        else if (element is MenuFlyoutItem mfi)
+        {
+            if (mfi.IconSource != null)
+            {
+                iconCount++;
+            }
+        }
+        else if (element is MenuFlyoutSubItem mfsi)
+        {
+            if (mfsi.IconSource != null)
+            {
+                iconCount++;
+            }
+        }
+
+        if (iconCount != _iconCount || _toggleCount != toggleCount)
+        {
+            _iconCount = iconCount;
+            _toggleCount = toggleCount;
+            UpdateVisualState();
+            // This container isn't realized yet, so we need to apply the classes here
+            ((IPseudoClasses)element.Classes).Set(s_pcIcons, iconCount != 0);
+            ((IPseudoClasses)element.Classes).Set(s_pcToggle, toggleCount != 0);
+        }
+    }
+
+    protected override void ClearContainerForItemOverride(Control element)
+    {
+        base.ClearContainerForItemOverride(element);
+        var iconCount = _iconCount;
+        var toggleCount = _toggleCount;
+
+        if (element is ToggleMenuFlyoutItem tmfi)
+        {
+            if (tmfi.IconSource != null)
+            {
+                iconCount--;
+            }
+
+            toggleCount--;
+        }
+        else if (element is RadioMenuFlyoutItem rmfi)
+        {
+            if (rmfi.IconSource != null)
+            {
+                iconCount--;
+            }
+
+            toggleCount--;
+        }
+        else if (element is MenuFlyoutItem mfi)
+        {
+            if (mfi.IconSource != null)
+            {
+                iconCount--;
+            }
+        }
+        else if (element is MenuFlyoutSubItem mfsi)
+        {
+            if (mfsi.IconSource != null)
+            {
+                iconCount--;
+            }
+        }
+
+        if (iconCount != _iconCount || _toggleCount != toggleCount)
+        {
+            _iconCount = iconCount;
+            _toggleCount = toggleCount;
+            UpdateVisualState();
+        }
     }
 
     internal void RaiseMenuOpened()
@@ -82,115 +178,7 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
 
     internal bool InternalMoveSelection(NavigationDirection dir, bool wrap) =>
         MoveSelection(dir, wrap);
-
-    protected override void OnContainersMaterialized(ItemContainerEventArgs e)
-    {
-        base.OnContainersMaterialized(e);
-
-        // v2 Change: ControlThemes means we can't use styling on the MFP to apply the 
-        // Icon/Toggle adjustments and we have to put them directly on the items
-
-        int iconCount = _iconCount;
-        int toggleCount = _toggleCount;
-        for (int i = 0; i < e.Containers.Count; i++)
-        {
-            if (e.Containers[i].ContainerControl is ToggleMenuFlyoutItem tmfi)
-            {
-                if (tmfi.IconSource != null)
-                {
-                    iconCount++;
-                }
-
-                toggleCount++;
-            }
-            else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
-            {
-                if (rmfi.IconSource != null)
-                {
-                    iconCount++;
-                }
-
-                toggleCount++;
-            }
-            else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
-            {
-                if (mfi.IconSource != null)
-                {
-                    iconCount++;
-                }
-            }
-            else if (e.Containers[i].ContainerControl is MenuFlyoutSubItem mfsi)
-            {
-                if (mfsi.IconSource != null)
-                {
-                    iconCount++;
-                }
-            }
-        }
-
-        // Only run the update IF something has changed
-        if (_iconCount != iconCount || _toggleCount != toggleCount)
-        {
-            _toggleCount = toggleCount;
-            _iconCount = iconCount;
-
-            UpdateVisualState();
-        }
-    }
-
-    protected override void OnContainersDematerialized(ItemContainerEventArgs e)
-    {
-        base.OnContainersDematerialized(e);
-
-        // v2 Change: ControlThemes means we can't use styling on the MFP to apply the 
-        // Icon/Toggle adjustments and we have to put them directly on the items
-
-        int iconCount = _iconCount;
-        int toggleCount = _toggleCount;
-        for (int i = 0; i < e.Containers.Count; i++)
-        {
-            if (e.Containers[i].ContainerControl is ToggleMenuFlyoutItem tmfi)
-            {
-                if (tmfi.IconSource != null)
-                {
-                    iconCount--;
-                }
-
-                toggleCount--;
-            }
-            else if (e.Containers[i].ContainerControl is RadioMenuFlyoutItem rmfi)
-            {
-                if (rmfi.IconSource != null)
-                {
-                    iconCount--;
-                }
-
-                toggleCount--;
-            }
-            else if (e.Containers[i].ContainerControl is MenuFlyoutItem mfi)
-            {
-                if (mfi.IconSource != null)
-                {
-                    iconCount--;
-                }
-            }
-            else if (e.Containers[i].ContainerControl is MenuFlyoutSubItem mfsi)
-            {
-                if (mfsi.IconSource != null)
-                {
-                    iconCount--;
-                }
-            }
-        }
-
-        if (_toggleCount != toggleCount || _iconCount != iconCount)
-        {
-            _iconCount = iconCount;
-            _toggleCount = toggleCount;
-            UpdateVisualState();
-        }
-    }
-
+        
     private void UpdateVisualState()
     {
         // v2 Change: ControlThemes means we can't use styling on the MFP to apply the 
@@ -198,10 +186,10 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
 
         bool icon = _iconCount > 0;
         bool toggle = _toggleCount > 0;
-        foreach (var item in ItemContainerGenerator.Containers)
+        foreach (var item in GetRealizedContainers())
         {
-            ((IPseudoClasses)item.ContainerControl.Classes).Set(s_pcIcons, icon);
-            ((IPseudoClasses)item.ContainerControl.Classes).Set(s_pcToggle, toggle);
+            ((IPseudoClasses)item.Classes).Set(s_pcIcons, icon);
+            ((IPseudoClasses)item.Classes).Set(s_pcToggle, toggle);
         }
     }
 

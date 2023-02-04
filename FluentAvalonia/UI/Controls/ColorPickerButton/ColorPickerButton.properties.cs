@@ -29,16 +29,14 @@ public partial class ColorPickerButton
     /// <summary>
     /// Defines the <see cref="IsCompact"/> property
     /// </summary>
-    public static readonly DirectProperty<ColorPickerButton, bool> IsCompactProperty =
-        FAColorPicker.IsCompactProperty.AddOwner<ColorPickerButton>(x => x.IsCompact,
-            (x, v) => x.IsCompact = v);
+    public static readonly StyledProperty<bool> IsCompactProperty =
+        FAColorPicker.IsCompactProperty.AddOwner<ColorPickerButton>();
 
     /// <summary>
     /// Defines the <see cref="IsAlphaEnabled"/> property
     /// </summary>
-    public static readonly DirectProperty<ColorPickerButton, bool> IsAlphaEnabledProperty =
-        FAColorPicker.IsCompactProperty.AddOwner<ColorPickerButton>(
-            x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
+    public static readonly StyledProperty<bool> IsAlphaEnabledProperty =
+        FAColorPicker.IsAlphaEnabledProperty.AddOwner<ColorPickerButton>();
 
     /// <summary>
     /// Defines the <see cref="UseSpectrum"/> property
@@ -114,14 +112,8 @@ public partial class ColorPickerButton
     /// </summary>
     public bool IsCompact
     {
-        get => _isCompact;
-        set
-        {
-            if (SetAndRaise(IsCompactProperty, ref _isCompact, value))
-            {
-                PseudoClasses.Set(":compact", value);
-            }
-        }
+        get => GetValue(IsCompactProperty);
+        set => SetValue(IsCompactProperty, value);
     }
 
     /// <summary>
@@ -129,14 +121,8 @@ public partial class ColorPickerButton
     /// </summary>
     public bool IsAlphaEnabled
     {
-        get => _isAlphaEnabled;
-        set
-        {
-            if (SetAndRaise(IsAlphaEnabledProperty, ref _isAlphaEnabled, value))
-            {
-                PseudoClasses.Set(":alpha", value);
-            }
-        }
+        get => GetValue(IsAlphaEnabledProperty);
+        set => SetValue(IsAlphaEnabledProperty, value);
     }
 
     /// <summary>
@@ -243,8 +229,6 @@ public partial class ColorPickerButton
     /// </summary>
     public event TypedEventHandler<ColorPickerButton, ColorButtonColorChangedEventArgs> ColorChanged;
 
-    private bool _isCompact = true;
-    private bool _isAlphaEnabled = true;
     private IEnumerable<Color> _customPaletteColors;
     private const string s_tpShowFlyoutButton = "ShowFlyoutButton";
 }

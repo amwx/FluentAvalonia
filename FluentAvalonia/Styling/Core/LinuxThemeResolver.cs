@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using Avalonia.Styling;
 using FluentAvalonia.UI.Media;
 
 namespace FluentAvalonia.Styling;
@@ -62,7 +63,7 @@ internal static class LinuxThemeResolver
         return aColor;
     }
 
-    public static string TryLoadSystemTheme()
+    public static ThemeVariant TryLoadSystemTheme()
     {
         if (_config == null)
         {
@@ -114,13 +115,13 @@ internal static class LinuxThemeResolver
                 var color = ReadGsettingsKey("org.gnome.desktop.interface", "color-scheme");
                 return color switch
                 {
-                    "prefer-light" => FluentAvaloniaTheme.LightModeString,
-                    "prefer-dark" => FluentAvaloniaTheme.DarkModeString,
+                    "prefer-light" => ThemeVariant.Light,
+                    "prefer-dark" => ThemeVariant.Dark,
                     _ => GetThemeFromName(ReadGsettingsKey("org.gnome.desktop.interface", "gtk-theme"))
                 };
         }
 
-        return FluentAvaloniaTheme.LightModeString;
+        return ThemeVariant.Light;
     }
 
     private static void TryLoadLinuxDesktopEnvironmentConfig()
@@ -144,11 +145,11 @@ internal static class LinuxThemeResolver
         }
     }
 
-    private static string GetThemeFromName(string name)
+    private static ThemeVariant GetThemeFromName(string name)
     {
         return name != null && name.IndexOf("dark", StringComparison.OrdinalIgnoreCase) != -1
-            ? FluentAvaloniaTheme.DarkModeString
-            : FluentAvaloniaTheme.LightModeString;
+            ? ThemeVariant.Dark
+            : ThemeVariant.Light;
     }
 
     private static string ReadGsettingsKey(string schema, string key)

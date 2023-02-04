@@ -6,6 +6,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
@@ -41,7 +42,7 @@ public partial class TeachingTip : ContentControl
 
         _acceleratorKeyActivatedRevoker?.Dispose();
         //m_previewKeyDownForF6Revoker
-        _effectiveViewportChangedRevoker?.Revoke();
+        //_effectiveViewportChangedRevoker?.Revoke();
         _contentSizeChangedRevoker?.Dispose();
         if (_closeButton != null)
             _closeButton.Click -= OnCloseButtonClicked;
@@ -182,6 +183,14 @@ public partial class TeachingTip : ContentControl
         {
             PseudoClasses.Set(s_pcContent, change.NewValue != null);
         }
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "MainContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 
     private void UpdateButtonAutomationProperties(Button button, object obj)
@@ -1033,16 +1042,17 @@ public partial class TeachingTip : ContentControl
         //Reset the close reason to the default value of programmatic.
         _lastCloseReason = TeachingTipCloseReason.Programmatic;
 
-        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot) ?? Matrix.Identity);
+        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual) ?? Matrix.Identity);
 
         if (_target != null)
         {
             SetViewportChangedEvent(_target);
-            _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(_target.GetVisualRoot()) ?? Matrix.Identity);
+            _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
+                .TransformToAABB(_target.TransformToVisual(_target.GetVisualRoot() as Visual) ?? Matrix.Identity);
         }
         else
         {
-            _currentTargetBoundsInCoreWindowSpace = Rect.Empty;
+            _currentTargetBoundsInCoreWindowSpace = default;
         }
 
         if (_lightDismissIndicatorPopup == null)
@@ -1308,14 +1318,14 @@ public partial class TeachingTip : ContentControl
         {
             if (_rootElement != null)
             {
-                IVisual current = FocusManager.Instance.Current;
+                Visual current = FocusManager.Instance.Current as Visual;
 
                 while (current != null)
                 {
                     if (current == _rootElement)
                         return true;
 
-                    current = current.VisualParent;
+                    current = current.GetVisualParent();
                 }
             }
 
@@ -1581,7 +1591,7 @@ public partial class TeachingTip : ContentControl
             if (_target != null)
             {
                 _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
-                    .TransformToAABB(_target.TransformToVisual(VisualRoot).Value);
+                    .TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value);
 
                 SetViewportChangedEvent(_target);
             }
@@ -1608,7 +1618,7 @@ public partial class TeachingTip : ContentControl
         if (_target != null)
             _target.EffectiveViewportChanged -= OnTargetLayoutUpdated;
 
-        _effectiveViewportChangedRevoker?.Revoke();
+        //_effectiveViewportChangedRevoker?.Revoke();
     }
 
     private void XamlRootChanged(Rect rc)
@@ -1625,9 +1635,9 @@ public partial class TeachingTip : ContentControl
         if (IsOpen)
         {
             var newTargetBounds = _target != null ?
-                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot).Value) : Rect.Empty;
+                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value) : default;
 
-            var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot).Value);
+            var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual).Value);
 
             if (newTargetBounds != _currentTargetBoundsInCoreWindowSpace ||
                 newCurrentBounds != _currentBoundsInCoreWindowSpace)
@@ -2157,7 +2167,7 @@ public partial class TeachingTip : ContentControl
             if (VisualRoot is Window w)
             {
                 var displayInfo = w.Screens.ScreenFromWindow(w.PlatformImpl);
-                var scaleFactor = displayInfo.PixelDensity;
+                var scaleFactor = displayInfo.Scaling;
 
                 return new Rect(-w.Position.X, -w.Position.Y,
                     displayInfo.Bounds.Height / scaleFactor,
@@ -2170,7 +2180,7 @@ public partial class TeachingTip : ContentControl
 
     private Rect GetWindowBounds()
     {
-        return new Rect(VisualRoot?.Bounds.Size ?? Size.Empty);
+        return new Rect((VisualRoot as Visual)?.Bounds.Size ?? default);
     }
 
     private void GetPlacementFallbackOrder(TeachingTipPlacementMode preferredPlacement,
@@ -2310,7 +2320,8 @@ public partial class TeachingTip : ContentControl
 
     private IDisposable _contentSizeChangedRevoker;
     private IDisposable _acceleratorKeyActivatedRevoker;
-    private EffectiveViewportRevoker _effectiveViewportChangedRevoker;
+    // This doesn't appear to be needed anymore?
+    //private EffectiveViewportRevoker _effectiveViewportChangedRevoker;
     private IDisposable _xamlRootChangedRevoker;
 
     private Border _container;

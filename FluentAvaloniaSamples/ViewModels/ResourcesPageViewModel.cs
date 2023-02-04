@@ -101,30 +101,30 @@ public class ResourcesPageViewModel : ViewModelBase
 
         return await Task.Run(() =>
         {
-            var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-            var themeResourcesDictionary =
-                thm.GetType().GetField("_themeResources", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .GetValue(thm) as ResourceDictionary;
+            //var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+            //var themeResourcesDictionary =
+            //    thm.GetType().GetField("_themeResources", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            //    .GetValue(thm) as ResourceDictionary;
 
             var l = new List<ResourceItemBase>();
 
-            // Retreive the hidden System resources from the main resource dictionary
-            foreach (var kvp in themeResourcesDictionary)
-            {
-                AddResource(l, kvp);
-            }
+            //// Retreive the hidden System resources from the main resource dictionary
+            //foreach (var kvp in themeResourcesDictionary)
+            //{
+            //    AddResource(l, kvp);
+            //}
 
-            // Now retreive the base resources in the first merged dictionary
-            foreach (var kvp in (themeResourcesDictionary.MergedDictionaries[0] as ResourceDictionary))
-            {
-                AddResource(l, kvp);
-            }
+            //// Now retreive the base resources in the first merged dictionary
+            //foreach (var kvp in (themeResourcesDictionary.MergedDictionaries[0] as ResourceDictionary))
+            //{
+            //    AddResource(l, kvp);
+            //}
 
-            // And finally retreive the theme resources in the second merged dictionary
-            foreach (var kvp in (themeResourcesDictionary.MergedDictionaries[1] as ResourceDictionary))
-            {
-                AddResource(l, kvp);
-            }
+            //// And finally retreive the theme resources in the second merged dictionary
+            //foreach (var kvp in (themeResourcesDictionary.MergedDictionaries[1] as ResourceDictionary))
+            //{
+            //    AddResource(l, kvp);
+            //}
 
             return l;
         });

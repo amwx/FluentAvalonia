@@ -14,12 +14,6 @@ namespace FluentAvalonia.UI.Controls;
 public partial class SettingsExpander
 {
     /// <summary>
-    /// Defines the <see cref="HeaderTemplateProperty"/>
-    /// </summary>
-    public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
-        AvaloniaProperty.Register<SettingsExpander, IDataTemplate>(nameof(HeaderTemplate));
-
-    /// <summary>
     /// Defines the <see cref="Description"/> property
     /// </summary>
     public static readonly StyledProperty<string> DescriptionProperty = 
@@ -46,9 +40,8 @@ public partial class SettingsExpander
     /// <summary>
     /// Defines the <see cref="IsExpanded"/> property
     /// </summary>
-    public static readonly DirectProperty<SettingsExpander, bool> IsExpandedProperty =
-        Expander.IsExpandedProperty.AddOwner<SettingsExpander>(x => x.IsExpanded,
-            (x, v) => x.IsExpanded = v);
+    public static readonly StyledProperty<bool> IsExpandedProperty =
+        Expander.IsExpandedProperty.AddOwner<SettingsExpander>();
 
     /// <summary>
     /// Defines the <see cref="ActionIconSource"/> property
@@ -81,14 +74,6 @@ public partial class SettingsExpander
     public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
         SettingsExpanderItem.ClickEvent;
 
-    /// <summary>
-    /// Gets or sets the Header template for the SettingsExpander
-    /// </summary>
-    public IDataTemplate HeaderTemplate
-    {
-        get => GetValue(HeaderTemplateProperty);
-        set => SetValue(HeaderTemplateProperty, value);
-    }
 
     /// <summary>
     /// Gets or sets the description text
@@ -131,8 +116,8 @@ public partial class SettingsExpander
     /// </summary>
     public bool IsExpanded
     {
-        get => _isExpanded;
-        set => SetAndRaise(IsExpandedProperty, ref _isExpanded, value);
+        get => GetValue(IsExpandedProperty);
+        set => SetValue(IsExpandedProperty, value);
     }
 
     /// <summary>
@@ -187,7 +172,6 @@ public partial class SettingsExpander
     }
 
     private ICommand _command;
-    private bool _isExpanded;
 
     private const string s_tpExpander = "Expander";
 

@@ -22,9 +22,9 @@ public partial class CommandBar
     /// <summary>
     /// Defines the <see cref="IsSticky"/> property
     /// </summary>
-    public static readonly DirectProperty<CommandBar, bool> IsStickyProperty =
-        AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(IsSticky),
-            x => x.IsSticky, (x, v) => x.IsSticky = v);
+    public static readonly StyledProperty<bool> IsStickyProperty =
+        AvaloniaProperty.Register<CommandBar, bool>(nameof(IsSticky),
+            defaultValue: true);
 
     /// <summary>
     /// Define the <see cref="IsOpen"/> property
@@ -62,9 +62,8 @@ public partial class CommandBar
     /// <summary>
     /// Defines the <see cref="IsDynamicOverflowEnabled"/>
     /// </summary>
-    public static readonly DirectProperty<CommandBar, bool> IsDynamicOverflowEnabledProperty =
-        AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(SecondaryCommands),
-            x => x.IsDynamicOverflowEnabled, (x, v) => x.IsDynamicOverflowEnabled = v);
+    public static readonly StyledProperty<bool> IsDynamicOverflowEnabledProperty =
+        AvaloniaProperty.Register<CommandBar, bool>(nameof(SecondaryCommands));
 
     /// <summary>
     /// Defines the <see cref="ItemsAlignment"/> property
@@ -83,8 +82,8 @@ public partial class CommandBar
     /// </summary>
     public bool IsSticky
     {
-        get => _isSticky;
-        set => SetAndRaise(IsStickyProperty, ref _isSticky, value);
+        get => GetValue(IsStickyProperty);
+        set => SetValue(IsStickyProperty, value);
     }
 
     /// <summary>
@@ -164,8 +163,8 @@ public partial class CommandBar
     /// </summary>
     public bool IsDynamicOverflowEnabled
     {
-        get => _isDynamicOverflowEnabled;
-        set => SetAndRaise(IsDynamicOverflowEnabledProperty, ref _isDynamicOverflowEnabled, value);
+        get => GetValue(IsDynamicOverflowEnabledProperty);
+        set => SetValue(IsDynamicOverflowEnabledProperty, value);
     }
 
     /// <summary>
@@ -214,7 +213,6 @@ public partial class CommandBar
     // TODO:
     //public event TypedEventHandler<CommandBar, DynamicOverflowItemsChangingEventArgs> DynamicOverflowItemsChanging;
 
-    private bool _isSticky = true;
     private bool _isOpen;
     private IAvaloniaList<ICommandBarElement> _primaryCommands;
     private IAvaloniaList<ICommandBarElement> _secondaryCommands;

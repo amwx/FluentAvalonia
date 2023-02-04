@@ -1,10 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
+using Avalonia.Styling;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media;
@@ -50,29 +52,45 @@ public class MainWindow : AppWindow
         MinHeight = 400;
 
         TitleBar.ExtendsContentIntoTitleBar = true;
+
+        Application.Current.ActualThemeVariantChanged += ApplicationActualThemeVariantChanged;
+    }
+
+    private void ApplicationActualThemeVariantChanged(object sender, EventArgs e)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            // TODO: add Windows version to CoreWindow
+            if (IsWindows11 && ActualThemeVariant != FluentAvaloniaTheme.HighContrastTheme)
+            {
+                TryEnableMicaEffect();
+            }
+            else if (ActualThemeVariant != FluentAvaloniaTheme.HighContrastTheme)
+            {
+                // Clear the local value here, and let the normal styles take over for HighContrast theme
+                SetValue(BackgroundProperty, AvaloniaProperty.UnsetValue);
+            }
+        }
     }
 
     protected override void OnOpened(EventArgs e)
     {
         base.OnOpened(e);
 
-        var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-        thm.RequestedThemeChanged += OnRequestedThemeChanged;
+        var thm = ActualThemeVariant;
 
         // Enable Mica on Windows 11
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             // TODO: add Windows version to CoreWindow
-            if (IsWindows11 && thm.RequestedTheme != FluentAvaloniaTheme.HighContrastModeString)
+            if (IsWindows11 && thm != FluentAvaloniaTheme.HighContrastTheme)
             {
                 TransparencyBackgroundFallback = Brushes.Transparent;
                 TransparencyLevelHint = WindowTransparencyLevel.Mica;
 
-                TryEnableMicaEffect(thm);
+                TryEnableMicaEffect();
             }
         }
-
-       // thm.ForceWin32WindowToTheme(this);
 
         var screen = Screens.ScreenFromVisual(this);
         if (screen != null)
@@ -120,28 +138,8 @@ public class MainWindow : AppWindow
         }
     }
 
-    protected override void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
+    private void TryEnableMicaEffect()
     {
-        base.OnRequestedThemeChanged(sender, args);
-        
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            // TODO: add Windows version to CoreWindow
-            if (IsWindows11 && args.NewTheme != FluentAvaloniaTheme.HighContrastModeString)
-            {
-                TryEnableMicaEffect(sender);
-            }
-            else if (args.NewTheme == FluentAvaloniaTheme.HighContrastModeString)
-            {
-                // Clear the local value here, and let the normal styles take over for HighContrast theme
-                SetValue(BackgroundProperty, AvaloniaProperty.UnsetValue);
-            }
-        }
-    }
-
-    private void TryEnableMicaEffect(FluentAvaloniaTheme thm)
-    {
-
         // The background colors for the Mica brush are still based around SolidBackgroundFillColorBase resource
         // BUT since we can't control the actual Mica brush color, we have to use the window background to create
         // the same effect. However, we can't use SolidBackgroundFillColorBase directly since its opaque, and if
@@ -149,18 +147,20 @@ public class MainWindow : AppWindow
         // apply the opacity until we get the roughly the correct color
         // NOTE that the effect still doesn't look right, but it suffices. Ideally we need access to the Mica
         // CompositionBrush to properly change the color but I don't know if we can do that or not
-        if (thm.RequestedTheme == FluentAvaloniaTheme.DarkModeString)
+        if (ActualThemeVariant == ThemeVariant.Dark)
         {
-            var color = this.TryFindResource("SolidBackgroundFillColorBase", out var value) ? (Color2)(Color)value : new Color2(32, 32, 32);
+            var color = this.TryFindResource("SolidBackgroundFillColorBase",
+                ThemeVariant.Dark, out var value) ? (Color2)(Color)value : new Color2(32, 32, 32);
 
             color = color.LightenPercent(-0.8f);
 
             Background = new ImmutableSolidColorBrush(color, 0.78);
         }
-        else if (thm.RequestedTheme == FluentAvaloniaTheme.LightModeString)
+        else if (ActualThemeVariant == ThemeVariant.Light)
         {
             // Similar effect here
-            var color = this.TryFindResource("SolidBackgroundFillColorBase", out var value) ? (Color2)(Color)value : new Color2(243, 243, 243);
+            var color = this.TryFindResource("SolidBackgroundFillColorBase",
+                ThemeVariant.Light, out var value) ? (Color2)(Color)value : new Color2(243, 243, 243);
 
             color = color.LightenPercent(0.5f);
 

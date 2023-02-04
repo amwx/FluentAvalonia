@@ -13,6 +13,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.Utilities;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 
@@ -35,7 +36,7 @@ public partial class TabViewItem : ListBoxItem
         // This is the easy solution, since the other involves not deriving from ListBoxItem
         AddHandler(PointerPressedEvent, (s, e) =>
         {
-            var hasButton = (e.Source as IVisual).GetVisualAncestors()
+            var hasButton = (e.Source as Visual).GetVisualAncestors()
                 .Where(x => x == _closeButton).Any();
 
             if (hasButton)
@@ -67,7 +68,7 @@ public partial class TabViewItem : ListBoxItem
         set => _parentTabView = new WeakReference<TabView>(value);
     }
 
-    public IVisual TabSeparator { get; private set; }
+    public Visual TabSeparator { get; private set; }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -101,9 +102,11 @@ public partial class TabViewItem : ListBoxItem
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
+        _tabDragRevoker?.Dispose();
+
         base.OnApplyTemplate(e);
 
-        TabSeparator = e.NameScope.Find<IVisual>(s_tpTabSeparator);
+        TabSeparator = e.NameScope.Find<Visual>(s_tpTabSeparator);
 
         _headerContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
 
@@ -129,12 +132,30 @@ public partial class TabViewItem : ListBoxItem
         {
             // ignore shadow
 
-            _tabDragRevoker = new CompositeDisposable(
-                Disposable.Create(() => tabView.TabDragStarting -= OnTabDragStarting),
-                Disposable.Create(() => tabView.TabDragCompleted -= OnTabDragCompleted));
+            // GH #260 - Using strong events here leaves a ref to this TVI from the TabView if its removed
+            //           leading to a memory leak - so we need to use WeakEvents here to stop that
+            //           Not 100% sure this is done correctly (there's no docs for this as I think this is
+            //           meant to be an Avalonia internal specific thing), but at least according to VS's memory
+            //           snapshot, no TVIs remained after removing & forcing a GC.Collect()
+            _startingDragSub = new TargetWeakEventSubscriber<TabView, TabViewTabDragStartingEventArgs>(
+                tabView, static (target, _, _, e) =>
+                {
+                    e.Tab?.OnTabDragStarting(target, e);
+                });
 
-            tabView.TabDragStarting += OnTabDragStarting;
-            tabView.TabDragCompleted += OnTabDragCompleted;
+            TabView.TabDragStartingWeakEvent.Subscribe(tabView, _startingDragSub);
+
+            _completedDragSub = new TargetWeakEventSubscriber<TabView, TabViewTabDragCompletedEventArgs>(
+                tabView, static (target, _, _, e) =>
+                {
+                    e.Tab?.OnTabDragCompleted(target, e);
+                });
+
+            TabView.TabDragCompletedWeakEvent.Subscribe(tabView, _completedDragSub);
+
+            _tabDragRevoker = new CompositeDisposable(
+                Disposable.Create(() => TabView.TabDragStartingWeakEvent.Unsubscribe(tabView, _startingDragSub)),
+                Disposable.Create(() => TabView.TabDragCompletedWeakEvent.Unsubscribe(tabView, _completedDragSub)));
         }
 
         // Add this to fix a bug that's clearly in WinUI, adding a new TabViewItem doesn't check
@@ -322,13 +343,13 @@ public partial class TabViewItem : ListBoxItem
 
     private void OnTabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
     {
-        _isDragging = true;
+        //_isDragging = true;
         //UpdateShadow();
     }
 
     private void OnTabDragCompleted(TabView sender, TabViewTabDragCompletedEventArgs args)
     {
-        _isDragging = false;
+        //_isDragging = false;
         //UpdateShadow();
         UpdateForeground();
     }
@@ -524,11 +545,14 @@ public partial class TabViewItem : ListBoxItem
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;
-    private bool _isDragging = false;
+    //private bool _isDragging = false;
     private bool _isPointerOver = false;
 
     private WeakReference<TabView> _parentTabView;
 
     private const string c_overlayCornerRadiusKey = "OverlayCornerRadius";
     private const int c_targetRectWidthIncrement = 2;
+
+    private TargetWeakEventSubscriber<TabView, TabViewTabDragStartingEventArgs> _startingDragSub;
+    private TargetWeakEventSubscriber<TabView, TabViewTabDragCompletedEventArgs> _completedDragSub;
 }

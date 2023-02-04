@@ -67,7 +67,7 @@ public partial class NavigationViewItemPresenter
         }
     }
 
-    internal IControl SelectionIndicator => _selectionIndicator;
+    internal Control SelectionIndicator => _selectionIndicator;
 
     private const string s_tpSelectionIndicator = "SelectionIndicator";
     private const string s_tpPresenterContentRootGrid = "PresenterContentRootGrid";

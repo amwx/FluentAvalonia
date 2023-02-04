@@ -70,55 +70,59 @@
                         </DockPanel>
                     </Border>
 
-                    <Border Name="ControlPreviewAreaHost"
-                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                            BorderThickness="1 0 1 1"
-                            Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
-                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
-                            <ContentPresenter Name="ExamplePresenter"
-                                              Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Margin="12 12 0 12"/>
-                            
-                            <Border Name="OptionsHost"
-                                    IsVisible="{Binding Options, Converter={x:Static ObjectConverters.IsNotNull}}"
-                                    Margin="12"
-                                    Padding="8"
-                                    CornerRadius="{DynamicResource OverlayCornerRadius}">
-                                <StackPanel>
-                                    <DockPanel LastChildFill="False">
-                                        <TextBlock Text="Options"
-                                                   DockPanel.Dock="Left"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Center"
-                                                   FontWeight="SemiBold"
-                                                   Margin="0 3" />
+                    <ThemeVariantScope Name="ThemeScopeProvider">
+                        <Border Name="ControlPreviewAreaHost"
+                                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1 0 1 1"
+                                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                                TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
+                                <ContentPresenter Name="ExamplePresenter"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="12 12 0 12"/>
 
-                                        <Button Name="ShowHideOptionsButton"
-                                                   Classes="AppBarButton"
-                                                   DockPanel.Dock="Right"
-                                                   Margin="6 0 0 0">
-                                            <ui:SymbolIcon Name="OptionsChevron" />
-                                        </Button>
-                                    </DockPanel>
-                                    <ContentPresenter Name="OptionPresenter"
-                                                      Content="{TemplateBinding Options}"
-                                                      HorizontalContentAlignment="Stretch"
-                                                      VerticalContentAlignment="Stretch"
-                                                      IsVisible="{TemplateBinding IsOptionsExpanded}"/>
-                                </StackPanel>
+                                <Border Name="OptionsHost"
+                                        IsVisible="{Binding Options, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                        Margin="12"
+                                        Padding="8"
+                                        CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                    <StackPanel>
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="Options"
+                                                       DockPanel.Dock="Left"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="SemiBold"
+                                                       Margin="0 3" />
 
-
-                            </Border>
-
+                                            <Button Name="ShowHideOptionsButton"
+                                                       Classes="AppBarButton"
+                                                       DockPanel.Dock="Right"
+                                                       Margin="6 0 0 0">
+                                                <ui:SymbolIcon Name="OptionsChevron" />
+                                            </Button>
+                                        </DockPanel>
+                                        <ContentPresenter Name="OptionPresenter"
+                                                          Content="{TemplateBinding Options}"
+                                                          HorizontalContentAlignment="Stretch"
+                                                          VerticalContentAlignment="Stretch"
+                                                          IsVisible="{TemplateBinding IsOptionsExpanded}"/>
+                                    </StackPanel>
 
 
-                        </Grid>
-                    </Border>
+                                </Border>
+
+
+
+                            </Grid>
+                        </Border>
+                    </ThemeVariantScope>
+
 
 
 
@@ -139,9 +143,9 @@
                                         <ui:SymbolIcon Symbol="Copy" FontSize="18" />
                                     </Button>
 
-                                    <aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
+                                    <!--<aedit:TextEditor Name="XamlTextEditor" IsReadOnly="True"
                                                       Margin="8 32 8 8"
-                                                      MinHeight="50"/>
+                                                      MinHeight="50"/>-->
                                 </DockPanel>
                             </Expander>
                             <Expander Header="C# Sample Code"
@@ -153,9 +157,9 @@
                                                VerticalAlignment="Top">
                                         <ui:SymbolIcon Symbol="Copy" FontSize="18" />
                                     </Button>
-                                    <aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
+                                    <!--<aedit:TextEditor Name="CSharpTextEditor" IsReadOnly="True"
                                                       Grid.Row="1" Margin="8 32 8 8"
-                                                      MinHeight="50" />
+                                                      MinHeight="50" />-->
                                 </DockPanel>
                             </Expander>
                             <Expander Header="Additional Notes"

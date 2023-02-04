@@ -27,16 +27,15 @@ public partial class FAColorPicker
     /// <summary>
     /// Defines the <see cref="ColorTextType"/> property
     /// </summary>
-    public static readonly DirectProperty<FAColorPicker, ColorTextType> ColorTextTypeProperty =
-        AvaloniaProperty.RegisterDirect<FAColorPicker, ColorTextType>(nameof(ColorTextType),
-            x => x.ColorTextType, (x, v) => x.ColorTextType = v);
+    public static readonly StyledProperty<ColorTextType> ColorTextTypeProperty =
+        AvaloniaProperty.Register<FAColorPicker, ColorTextType>(nameof(ColorTextType));
 
     /// <summary>
     /// Defines the <see cref="Component"/> property
     /// </summary>
-    public static readonly DirectProperty<FAColorPicker, ColorSpectrumComponents> ComponentProperty =
-        AvaloniaProperty.RegisterDirect<FAColorPicker, ColorSpectrumComponents>(nameof(Component),
-            x => x.Component, (x, v) => x.Component = v);
+    public static readonly StyledProperty<ColorSpectrumComponents> ComponentProperty =
+        AvaloniaProperty.Register<FAColorPicker, ColorSpectrumComponents>(nameof(Component),
+            defaultValue: ColorSpectrumComponents.SaturationValue);
 
     /// <summary>
     /// Defines the <see cref="IsMoreButtonVisible"/> property
@@ -47,22 +46,22 @@ public partial class FAColorPicker
     /// <summary>
     /// Defines the <see cref="IsCompact"/> property
     /// </summary>
-    public static readonly DirectProperty<FAColorPicker, bool> IsCompactProperty =
-        AvaloniaProperty.RegisterDirect<FAColorPicker, bool>(nameof(IsCompact),
-            x => x.IsCompact, (x, v) => x.IsCompact = v);
+    public static readonly StyledProperty<bool> IsCompactProperty =
+        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(IsCompact));
 
     /// <summary>
     /// Defines the <see cref="IsAlphaEnabled"/> property
     /// </summary>
-    public static readonly DirectProperty<FAColorPicker, bool> IsAlphaEnabledProperty =
-        AvaloniaProperty.RegisterDirect<FAColorPicker, bool>(nameof(IsAlphaEnabled),
-            x => x.IsAlphaEnabled, (x, v) => x.IsAlphaEnabled = v);
+    public static readonly StyledProperty<bool> IsAlphaEnabledProperty =
+        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(IsAlphaEnabled),
+            defaultValue: true);
 
     /// <summary>
     /// Defines the <see cref="UseSpectrum"/> property
     /// </summary>
     public static readonly StyledProperty<bool> UseSpectrumProperty =
-        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseSpectrum), defaultValue: true);
+        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseSpectrum), 
+            defaultValue: true);
 
     /// <summary>
     /// Defines the <see cref="UseColorWheel"/> property
@@ -93,7 +92,8 @@ public partial class FAColorPicker
     /// Defines the <see cref="PaletteColumnCount"/> property
     /// </summary>
     public static readonly StyledProperty<int> PaletteColumnCountProperty =
-        AvaloniaProperty.Register<FAColorPicker, int>(nameof(PaletteColumnCount), defaultValue: 10);
+        AvaloniaProperty.Register<FAColorPicker, int>(nameof(PaletteColumnCount), 
+            defaultValue: 10);
 
     /// <summary>
     /// Gets or sets the color used as the previous color
@@ -122,15 +122,8 @@ public partial class FAColorPicker
     /// </remarks>
     public ColorTextType ColorTextType
     {
-        get => _textType;
-        set
-        {
-            if (SetAndRaise(ColorTextTypeProperty, ref _textType, value))
-            {
-                SetHexBoxHeader();
-                UpdateHexBox(Color);
-            }
-        }
+        get => GetValue(ColorTextTypeProperty);
+        set => SetValue(ColorTextTypeProperty, value);
     }
 
     /// <summary>
@@ -138,14 +131,8 @@ public partial class FAColorPicker
     /// </summary>
     public ColorSpectrumComponents Component
     {
-        get => _component;
-        set
-        {
-            if (SetAndRaise(ComponentProperty, ref _component, value))
-            {
-                UpdatePickerComponents();
-            }
-        }
+        get => GetValue(ComponentProperty);
+        set => SetValue(ComponentProperty, value);
     }
 
     /// <summary>
@@ -162,15 +149,8 @@ public partial class FAColorPicker
     /// </summary>
     public bool IsCompact
     {
-        get => _isCompact;
-        set
-        {
-            if (SetAndRaise(IsCompactProperty, ref _isCompact, value))
-            {
-                PseudoClasses.Set(":compact", value);
-                SetAsCompactMode();
-            }
-        }
+        get => GetValue(IsCompactProperty);
+        set => SetValue(IsCompactProperty, value);
     }
 
     /// <summary>
@@ -178,14 +158,8 @@ public partial class FAColorPicker
     /// </summary>
     public bool IsAlphaEnabled
     {
-        get => _isAlphaEnabled;
-        set
-        {
-            if (SetAndRaise(IsAlphaEnabledProperty, ref _isAlphaEnabled, value))
-            {
-                PseudoClasses.Set(":alpha", value);
-            }
-        }
+        get => GetValue(IsAlphaEnabledProperty); 
+        set => SetValue(IsAlphaEnabledProperty, value);
     }
 
     /// <summary>
@@ -248,9 +222,5 @@ public partial class FAColorPicker
     public event TypedEventHandler<FAColorPicker, ColorChangedEventArgs> ColorChanged;
 
 
-    private ColorTextType _textType;
-    private ColorSpectrumComponents _component = ColorSpectrumComponents.SaturationValue;
-    private bool _isCompact = false;
-    private bool _isAlphaEnabled = true;
     private IEnumerable<Color> _customPaletteColors;
 }

@@ -136,9 +136,7 @@
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Auto">
                                 <ItemsPresenter Name="PART_ItemsPresenter"
-                                                Items="{TemplateBinding Items}"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                ItemTemplate="{TemplateBinding ItemTemplate}"
                                                 Margin="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                                 Grid.IsSharedSizeScope="True" />
                             </ScrollViewer>

@@ -55,7 +55,7 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <!-- Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
-        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
+        <!--<Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />-->
         <Setter Property="Margin" Value="{DynamicResource MenuBarItemMargin}" />
         <Setter Property="Padding" Value="{DynamicResource MenuBarItemButtonPadding}" />
         <Setter Property="Template">
@@ -92,9 +92,7 @@
                                     CornerRadius="{DynamicResource OverlayCornerRadius}">
                                 <ScrollViewer>
                                     <ItemsPresenter Name="PART_ItemsPresenter"
-                                                    Items="{TemplateBinding Items}"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
                                                     Margin="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                                     Grid.IsSharedSizeScope="True" />
                                 </ScrollViewer>
@@ -145,9 +143,7 @@
                         HorizontalAlignment="Stretch"
                         Padding="{TemplateBinding Padding}">
                     <ItemsPresenter Name="PART_ItemsPresenter"
-                                    Items="{TemplateBinding Items}"
                                     ItemsPanel="{TemplateBinding ItemsPanel}"
-                                    ItemTemplate="{TemplateBinding ItemTemplate}"
                                     VerticalAlignment="Stretch"
                                     KeyboardNavigation.TabNavigation="Continue" />
                 </Border>

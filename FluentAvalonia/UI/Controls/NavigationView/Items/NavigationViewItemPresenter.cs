@@ -152,7 +152,7 @@ public partial class NavigationViewItemPresenter : ContentControl
 
     private Panel _contentGrid;
     private Panel _expandCollapseChevron;
-    private IControl _selectionIndicator;
+    private Control _selectionIndicator;
     private ContentPresenter _infoBadgePresenter;
     private double _compactPaneLengthValue = 40;
     private double _leftIndentation;

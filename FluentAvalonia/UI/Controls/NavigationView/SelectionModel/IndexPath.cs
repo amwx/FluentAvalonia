@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
-public struct IndexPath : IComparable<IndexPath>, IEquatable<IndexPath>
+internal struct IndexPath : IComparable<IndexPath>, IEquatable<IndexPath>
 {
     public static readonly IndexPath Unselected = default;
 

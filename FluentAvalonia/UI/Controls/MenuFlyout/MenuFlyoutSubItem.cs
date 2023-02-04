@@ -2,8 +2,13 @@
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
+using FluentAvalonia.Core;
 using System;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -14,7 +19,9 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
 {
     public MenuFlyoutSubItem()
     {
-        _items = new AvaloniaList<object>();
+        var al = new AvaloniaList<object>();
+        al.CollectionChanged += ItemsCollectionChanged;
+        Items = al;
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -24,6 +31,26 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         if (change.Property == IconSourceProperty)
         {
             TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
+        }
+        else if (change.Property == ItemsProperty)
+        {
+            var (oldV, newV) = change.GetOldAndNewValue<IEnumerable>();
+            if (oldV is INotifyCollectionChanged oldINCC)
+            {
+                oldINCC.CollectionChanged -= ItemsCollectionChanged;
+            }
+
+            _generatedItems.Clear();
+
+            if (newV is INotifyCollectionChanged newINCC)
+            {
+                newINCC.CollectionChanged += ItemsCollectionChanged;
+            }
+
+            if ((_subMenu != null && _subMenu.IsOpen) && newV != null)
+            {
+                GenerateItems();
+            }
         }
     }
 
@@ -55,6 +82,11 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     public void Open()
     {
         InitPopup();
+        if (_generatedItems.Count == 0)
+        {
+            GenerateItems();
+        }
+
         _subMenu.IsOpen = true;
         _presenter.RaiseMenuOpened();
     }
@@ -80,8 +112,8 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         {
             _presenter = new FAMenuFlyoutPresenter()
             {
-                [!ItemsControl.ItemsProperty] = this[!ItemsProperty],
-                [!ItemsControl.ItemTemplateProperty] = this[!ItemTemplateProperty]
+                Items = _generatedItems,
+                [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty]
             };
 
             _subMenu = new Popup
@@ -112,8 +144,42 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         PseudoClasses.Set(s_pcSubmenuOpen, false);
     }
 
+    private void GenerateItems()
+    {
+        if (_items == null)
+            return;
+
+        _generatedItems.Clear();
+
+        var first = _items.ElementAt(0);
+        // If the first item is a MenuFlyoutItemBase, assume all are (added via xaml or code)
+        if (first is MenuFlyoutItemBase)
+        {
+            _generatedItems.AddRange(_items.Cast<MenuFlyoutItemBase>());
+            return;
+        }
+
+        var itemTemplate = ItemTemplate;
+        foreach (var item in _items)
+        {
+            var template = _presenter.FindDataTemplate(item, itemTemplate);
+            _generatedItems.Add(FAMenuFlyout.CreateContainer(item, template));
+        }
+    }
+
+    private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        _generatedItems.Clear();
+
+        if (_subMenu != null && _subMenu.IsOpen)
+        {
+            GenerateItems();
+        }    
+    }
+
     bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;
 
     private Popup _subMenu;
     private FAMenuFlyoutPresenter _presenter;
+    private readonly AvaloniaList<MenuFlyoutItemBase> _generatedItems = new AvaloniaList<MenuFlyoutItemBase>();
 }

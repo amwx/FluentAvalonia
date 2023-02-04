@@ -51,7 +51,7 @@ internal class TopNavigationViewDataProvider : SplitDataSourceBase<object, Navig
             if (rawData != null)
             {
                 //Avalonia ItemsSourceView only accepts IEnumerable types
-                dataSource = new ItemsSourceView(rawData as IEnumerable);
+                dataSource = ItemsSourceView.GetOrCreate(rawData);
             }
             ChangeDataSource(dataSource);
             _rawDataSource = rawData;

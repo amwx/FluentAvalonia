@@ -20,20 +20,18 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
 {
     Type IStyleable.StyleKey => typeof(CommandBarOverflowPresenter);
 
-    protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        base.ItemsChanged(e);
+        base.OnPropertyChanged(change);
 
-        _hasIcons = 0;
-        _hasToggle = 0;
-
-        if (e.NewValue is IList l)
+        if (change.Property == ItemsProperty)
         {
-            RegisterItems(l);
+            ItemsChanged(change);
         }
-
-        UpdateVisualState();
     }
+
+    protected override bool IsItemItsOwnContainerOverride(Control item) =>
+        item is ICommandBarElement;
 
     protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
@@ -66,6 +64,19 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
                 UnregisterItems(e.OldItems);
                 RegisterItems(e.NewItems);
                 break;
+        }
+
+        UpdateVisualState();
+    }
+
+    private void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        _hasIcons = 0;
+        _hasToggle = 0;
+
+        if (e.NewValue is IList l)
+        {
+            RegisterItems(l);
         }
 
         UpdateVisualState();

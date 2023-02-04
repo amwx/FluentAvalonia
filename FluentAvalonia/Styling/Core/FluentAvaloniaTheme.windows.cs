@@ -3,69 +3,20 @@ using Avalonia.Logging;
 using FluentAvalonia.Interop;
 using System;
 using FluentAvalonia.Interop.WinRT;
-using FluentAvalonia.UI.Media;
 using Avalonia.Media;
+using Avalonia.Platform;
+using Avalonia.Styling;
 
 namespace FluentAvalonia.Styling;
 
 public partial class FluentAvaloniaTheme
 {
-    private string ResolveWindowsSystemSettings()
+    private ThemeVariant ResolveWindowsSystemSettings(IPlatformSettings platformSettings)
     {
-        string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
-        
-        IAccessibilitySettings accessibility = null;
-        bool isSystemInHighContrast = false;
-        try
-        {
-            accessibility = WinRTInterop.CreateInstance<IAccessibilitySettings>("Windows.UI.ViewManagement.AccessibilitySettings");
-
-            isSystemInHighContrast = accessibility.HighContrast == 1;
-        }
-        catch
-        {
-            Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
-                    .Log("FluentAvaloniaTheme", "Unable to create instance of ComObject IAccessibilitySettings");
-        }
-
-        IUISettings3 uiSettings3 = null;
-        try
-        {
-            uiSettings3 = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
-        }
-        catch
-        {
-            Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
-                    .Log("FluentAvaloniaTheme", "Unable to create instance of ComObject IUISettings");
-        }
-
+        ThemeVariant theme = null;
         if (PreferSystemTheme)
         {
-            if (!isSystemInHighContrast)
-            {
-                try
-                {
-                    var background = (Color2)uiSettings3.GetColorValue(UIColorType.Background);
-                    var foreground = (Color2)uiSettings3.GetColorValue(UIColorType.Foreground);
-
-                    // There doesn't seem to be a solid way to detect system theme here, so we check if the background
-                    // color is darker than the foreground for lightmode
-                    bool isDarkMode = background.Lightness < foreground.Lightness;
-
-                    theme = isDarkMode ? DarkModeString : LightModeString;
-                }
-                catch
-                {
-                    Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
-                        .Log("FluentAvaloniaTheme", "Detecting system theme failed, defaulting to Light mode");
-
-                    theme = RequestedTheme ?? LightModeString;
-                }
-            }
-            else
-            {
-                theme = HighContrastModeString;
-            }
+            theme = GetThemeFromIPlatformSettings(platformSettings);
         }
 
         if (CustomAccentColor != null)
@@ -74,7 +25,16 @@ public partial class FluentAvaloniaTheme
         }
         else if (PreferUserAccentColor)
         {
-            TryLoadWindowsAccentColor(uiSettings3);
+            try
+            {
+                TryLoadWindowsAccentColor();
+            }
+            catch
+            {
+                Logger.TryGet(LogEventLevel.Information, "FluentAvaloniaTheme")?
+                        .Log("FluentAvaloniaTheme", "Unable to create instance of ComObject IUISettings");
+                LoadDefaultAccentColor();
+            }            
         }
         else
         {
@@ -108,7 +68,7 @@ public partial class FluentAvaloniaTheme
 
     private void TryLoadHighContrastThemeColors()
     {
-        IUISettings settings = null;
+        IUISettings settings;
         try
         {
             settings = WinRTInterop.CreateInstance<IUISettings>("Windows.UI.ViewManagement.UISettings");
@@ -125,7 +85,8 @@ public partial class FluentAvaloniaTheme
             try
             {
                 var color = (Color)settings.UIElementColor(element);
-                (Resources.MergedDictionaries[1] as ResourceDictionary)[resKey] = color;
+                var res = Resources.MergedDictionaries[1] as ResourceDictionary;
+                (res.ThemeDictionaries[HighContrastTheme] as ResourceDictionary)[resKey] = color;
             }
             catch
             {
@@ -144,11 +105,11 @@ public partial class FluentAvaloniaTheme
         TryAddResource("SystemColorHotlightColor", UIElementType.Hotlight);
     }
 
-    private void TryLoadWindowsAccentColor(IUISettings3 settings3 = null)
+    private void TryLoadWindowsAccentColor()
     {
         try
         {
-            settings3 ??= WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
+            var settings3 = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
 
             // TODO
             AddOrUpdateSystemResource("SystemAccentColor", (Color)settings3.GetColorValue(UIColorType.Accent));
@@ -177,7 +138,7 @@ public partial class FluentAvaloniaTheme
     /// <param name="window">The window to force</param>
     /// <param name="theme">The theme to use, or null to use the current RequestedTheme</param>
     /// <exception cref="ArgumentNullException">If window is null</exception>
-    public void ForceWin32WindowToTheme(Window window, string theme = null)
+    public void ForceWin32WindowToTheme(Window window, ThemeVariant theme = null)
     {
         if (window == null)
             throw new ArgumentNullException(nameof(window));
@@ -187,16 +148,7 @@ public partial class FluentAvaloniaTheme
 
         try
         {
-            if (string.IsNullOrEmpty(theme))
-            {
-                theme = IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : LightModeString;
-            }
-            else
-            {
-                theme = IsValidRequestedTheme(theme) ? theme : IsValidRequestedTheme(RequestedTheme) ? RequestedTheme : LightModeString;
-            }
-
-            Win32Interop.ApplyTheme(window.PlatformImpl.Handle.Handle, theme.Equals(DarkModeString, StringComparison.OrdinalIgnoreCase));
+            Win32Interop.ApplyTheme(window.PlatformImpl.Handle.Handle, theme == ThemeVariant.Dark);
         }
         catch
         {

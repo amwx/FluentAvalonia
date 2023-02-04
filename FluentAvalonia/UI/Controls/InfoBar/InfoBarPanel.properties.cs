@@ -47,20 +47,20 @@ public partial class InfoBarPanel : Panel
     /// Defines the HorizontalOrientationMargin attached property
     /// </summary>
     public static readonly AttachedProperty<Thickness> HorizontalOrientationMarginProperty =
-        AvaloniaProperty.RegisterAttached<InfoBarPanel, IControl, Thickness>("HorizontalOrientationMargin");
+        AvaloniaProperty.RegisterAttached<InfoBarPanel, Control, Thickness>("HorizontalOrientationMargin");
 
     /// <summary>
     /// Defines the VerticalOrientationMargin attached property
     /// </summary>
     public static readonly AttachedProperty<Thickness> VerticalOrientationMarginProperty =
-        AvaloniaProperty.RegisterAttached<InfoBarPanel, IControl, Thickness>("VerticalOrientationMargin");
+        AvaloniaProperty.RegisterAttached<InfoBarPanel, Control, Thickness>("VerticalOrientationMargin");
 
     /// <summary>
     /// Sets the HorizontalOrientationMargin to an object.
     /// </summary>
     /// <param name="c">The IControl to set the property on</param>
     /// <param name="t">The desired Thickness</param>
-    public static void SetHorizontalOrientationMargin(IControl c, Thickness t)
+    public static void SetHorizontalOrientationMargin(Control c, Thickness t)
     {
         c.SetValue(HorizontalOrientationMarginProperty, t);
     }
@@ -70,7 +70,7 @@ public partial class InfoBarPanel : Panel
     /// </summary>
     /// <param name="c">The IControl to retreive the value from</param>
     /// <returns>The HorizontalOrientationMargin thickness</returns>
-    public static Thickness GetHorizontalOrientationMargin(IControl c)
+    public static Thickness GetHorizontalOrientationMargin(Control c)
     {
         return c.GetValue<Thickness>(HorizontalOrientationMarginProperty);
     }
@@ -80,7 +80,7 @@ public partial class InfoBarPanel : Panel
     /// </summary>
     /// <param name="c">The IControl to set the property on</param>
     /// <param name="t">The desired Thickness</param>
-    public static void SetVerticalOrientationMargin(IControl c, Thickness t)
+    public static void SetVerticalOrientationMargin(Control c, Thickness t)
     {
         c.SetValue(VerticalOrientationMarginProperty, t);
     }
@@ -90,7 +90,7 @@ public partial class InfoBarPanel : Panel
     /// </summary>
     /// <param name="c">The IControl to retreive the value from</param>
     /// <returns>The VerticalOrientationMargin thickness</returns>
-    public static Thickness GetVerticalOrientationMargin(IControl c)
+    public static Thickness GetVerticalOrientationMargin(Control c)
     {
         return c.GetValue<Thickness>(VerticalOrientationMarginProperty);
     }

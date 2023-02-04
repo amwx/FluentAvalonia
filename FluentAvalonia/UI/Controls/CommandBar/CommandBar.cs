@@ -144,7 +144,7 @@ public partial class CommandBar : ContentControl
                     {
                         for (int i = 0; i < items.Count; i++)
                         {
-                            var itemAsIControl = items[i] as IControl;
+                            var itemAsIControl = items[i] as Control;
                             UpdateWidthCacheForItem(items[i], itemAsIControl.DesiredSize.Width);
 
                             trackWid += itemAsIControl.DesiredSize.Width;
@@ -164,7 +164,8 @@ public partial class CommandBar : ContentControl
                 _minRecoverWidth = _primaryItemsHost.DesiredSize.Width;// + trackWid;
             }
 
-            _overflowSeparator.IsVisible = _numInOverflow > 0 && SecondaryCommands.Count > 0;
+            if (_overflowSeparator != null)
+                _overflowSeparator.IsVisible = _numInOverflow > 0 && SecondaryCommands.Count > 0;
         }
 
         var overflowVis = OverflowButtonVisibility;
@@ -197,7 +198,7 @@ public partial class CommandBar : ContentControl
             // TODO: Focus via keyboard
             if (_overflowItems.Count > 0)
             {
-                (_overflowItems[0] as IControl).Focus();
+                (_overflowItems[0] as Control).Focus();
             }
         }
 

@@ -14,12 +14,12 @@ public interface INavigationPageFactory
     /// </summary>
     /// <param name="srcType">The type of object used for creating the page</param>
     /// <returns>An IControl for the new page or <c>null</c> to use the default behavior</returns>
-    IControl GetPage(Type srcType);
+    Control GetPage(Type srcType);
 
     /// <summary>
     /// Returns a user specified page based on an instance of an existing object
     /// </summary>
     /// <param name="target">The target object that should be used to create the page</param>
     /// <returns>An IControl for the new page. Returning null will cancel the navigation operation</returns>
-    IControl GetPageFromObject(object target);
+    Control GetPageFromObject(object target);
 }

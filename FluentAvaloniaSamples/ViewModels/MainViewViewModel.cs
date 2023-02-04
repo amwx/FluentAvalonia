@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using FluentAvalonia.Styling;
 using System.Text.Json;
+using Avalonia.Styling;
 
 namespace FluentAvaloniaSamples.ViewModels;
 
@@ -13,11 +14,11 @@ public class MainViewViewModel : ViewModelBase
     public MainViewViewModel()
     {
         var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-        faTheme.RequestedThemeChanged += OnAppThemeChanged;
+        
+        // TODO in SampleApp refresh: Make sure we keep this up to date with ActualThemeVariant
+        CurrentAppTheme = Application.Current.ActualThemeVariant;
 
-        _currentAppTheme = faTheme.RequestedTheme;
-
-        if (faTheme.TryGetResource("SystemAccentColor", out var value))
+        if (faTheme.TryGetResource("SystemAccentColor", null, out var value))
         {
             _customAccentColor = (Color)value;
             _listBoxColor = _customAccentColor;
@@ -26,24 +27,25 @@ public class MainViewViewModel : ViewModelBase
         GetPredefColors();
 
         GetSearchTerms();
+
     }
 
 
-    public string[] AppThemes { get; } =
-        new[] { FluentAvaloniaTheme.LightModeString, FluentAvaloniaTheme.DarkModeString, FluentAvaloniaTheme.HighContrastModeString };
+    public ThemeVariant[] AppThemes { get; } =
+        new[] { ThemeVariant.Light, ThemeVariant.Dark/*, FluentAvaloniaTheme.HighContrastTheme*/ };
 
     public FlowDirection[] AppFlowDirections { get; } =
         new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft };
 
-    public string CurrentAppTheme
+    public ThemeVariant CurrentAppTheme
     {
         get => _currentAppTheme;
         set
         {
-            if (RaiseAndSetIfChanged(ref _currentAppTheme, value))
+            if (RaiseAndSetIfChanged(ref _currentAppTheme, value) &&
+                Application.Current.ActualThemeVariant != value)
             {
-                var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                faTheme.RequestedTheme = value;
+                Application.Current.RequestedThemeVariant = value;
             }
         }
     }
@@ -71,7 +73,7 @@ public class MainViewViewModel : ViewModelBase
                 if (value)
                 {
                     var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                    if (faTheme.TryGetResource("SystemAccentColor", out var curColor))
+                    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
                     {
                         _customAccentColor = (Color)curColor;
                         _listBoxColor = _customAccentColor;
@@ -138,15 +140,6 @@ public class MainViewViewModel : ViewModelBase
     }
 
     public List<MainAppSearchItem> MainSearchItems { get; private set; }
-
-    private void OnAppThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
-    {
-        if (_currentAppTheme != args.NewTheme)
-        {
-            _currentAppTheme = args.NewTheme;
-            RaisePropertyChanged(nameof(CurrentAppTheme));
-        }
-    }
 
     private void GetPredefColors()
     {
@@ -250,7 +243,7 @@ public class MainViewViewModel : ViewModelBase
 
     private bool _useCustomAccentColor;
     private Color _customAccentColor = Colors.SlateBlue;
-    private string _currentAppTheme;
+    private ThemeVariant _currentAppTheme;
     private FlowDirection _currentFlowDirection;
     private Color _listBoxColor;
     private bool _ignoreSetListBoxColor = false;

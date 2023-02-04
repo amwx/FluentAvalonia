@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -9,7 +10,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using FluentAvalonia.Interop;
-using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls.Primitives;
 using FluentAvalonia.UI.Media;
 
@@ -74,10 +74,6 @@ public partial class AppWindow : Window, IStyleable
             // This will set all our TemplateSettings properties
             OnTitleBarHeightChanged(_titleBar.Height);
 
-            var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-            _currentAppTheme = faTheme.RequestedTheme;
-            faTheme.RequestedThemeChanged += OnRequestedThemeChanged;
-
             SetTitleBarColors();
         }
 
@@ -99,6 +95,10 @@ public partial class AppWindow : Window, IStyleable
         {
             base.Icon = new WindowIcon(change.NewValue as IBitmap);
             PseudoClasses.Set(":icon", change.NewValue != null);
+        }
+        else if (change.Property == ActualThemeVariantProperty)
+        {
+            SetTitleBarColors();
         }
     }
 
@@ -128,10 +128,7 @@ public partial class AppWindow : Window, IStyleable
     {
         _splashContext?.TryCancel();
 
-        base.OnClosed(e);
-
-        if (IsWindows && !Design.IsDesignMode)
-            AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedThemeChanged -= OnRequestedThemeChanged;       
+        base.OnClosed(e);     
     }
 
     internal void OnExtendsContentIntoTitleBarChanged(bool isExtended)
@@ -220,7 +217,7 @@ public partial class AppWindow : Window, IStyleable
                     if (_excludeHitTestList[i].TryGetTarget(out var target))
                     {
                         // Skip invisible or disconnected controls
-                        if (!target.IsVisible || !((IVisual)target).IsAttachedToVisualTree)
+                        if (!target.IsVisible || !target.IsAttachedToVisualTree())
                             continue;
 
                         // If control was reparented into new window, matrix may be null, catch that case
@@ -248,7 +245,7 @@ public partial class AppWindow : Window, IStyleable
 
     internal bool ComplexHitTest(Point p)
     {
-        var result = this.InputHitTest(p);
+        var result = this.InputHitTest(p) as InputElement;
 
         // Special case for TabViewListView during drag operations where blank space 
         // is inserted and causes HitTest to fail (since nothing focusable is there)
@@ -263,7 +260,7 @@ public partial class AppWindow : Window, IStyleable
             if (result.IsHitTestVisible && result.Focusable)
                 return false;
 
-            result = result.VisualParent as IInputElement;
+            result = result.GetVisualParent() as InputElement;
         }
 
         return true;
@@ -299,15 +296,6 @@ public partial class AppWindow : Window, IStyleable
         }
     }
 
-    protected virtual void OnRequestedThemeChanged(FluentAvaloniaTheme sender, RequestedThemeChangedEventArgs args)
-    {
-        if (IsWindows)
-        {
-            _currentAppTheme = args.NewTheme;
-            SetTitleBarColors();
-        }
-    }
-
     private void SetTitleBarColors()
     {
         if (_templateRoot == null)
@@ -315,8 +303,9 @@ public partial class AppWindow : Window, IStyleable
 
         bool foundAccent = _templateRoot.TryFindResource(s_SystemAccentColor, out var sysColor);
         Color? accentVariant = null;
+        var themeVar = ActualThemeVariant;
 
-        if (_currentAppTheme == FluentAvaloniaTheme.LightModeString)
+        if (themeVar == ThemeVariant.Light)
         {
             if (_templateRoot.TryFindResource(s_SystemAccentColorDark1, out var v))
             {
@@ -332,13 +321,13 @@ public partial class AppWindow : Window, IStyleable
         }
 
         Color textColor;
-        if (_templateRoot.TryFindResource(s_TextFillColorPrimary, out var value))
+        if (_templateRoot.TryFindResource(s_TextFillColorPrimary, themeVar, out var value))
         {
             textColor = Unsafe.Unbox<Color>(value);
         }
         else
         {
-            if (_currentAppTheme == FluentAvaloniaTheme.DarkModeString)
+            if (ActualThemeVariant == ThemeVariant.Dark)
             {
                 textColor = Colors.White;
             }
@@ -485,9 +474,12 @@ public partial class AppWindow : Window, IStyleable
 
     private async void LoadApp()
     {
-        Presenter.IsVisible = true;
+        if (Presenter is not ContentPresenter cp)
+            return;
 
-        using var disp = Presenter.SetValue(OpacityProperty, 0d, Avalonia.Data.BindingPriority.Animation);
+        cp.IsVisible = true;
+
+        using var disp = cp.SetValue(OpacityProperty, 0d, Avalonia.Data.BindingPriority.Animation);
 
         var aniSplash = new Animation
         {

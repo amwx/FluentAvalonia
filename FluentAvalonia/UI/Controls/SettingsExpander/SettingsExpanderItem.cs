@@ -199,6 +199,14 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
     }
 
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter" || presenter.Name == "FooterPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
+    }
+
     /// <summary>
     /// Invoked when the SettingsExpanderItem is clicked when IsClickEnabled = true
     /// </summary>

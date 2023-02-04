@@ -4,10 +4,10 @@ using System.Collections.Specialized;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Generators;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -78,8 +78,6 @@ public class TabViewListView : ListBox
 
     internal ScrollViewer Scroller { get; private set; }
 
-    protected TabViewStackPanel ItemsPanelRoot { get; private set; }
-
     // See constructor for why we have these events
     public event EventHandler<DragEventArgs> DragOver;
     public event EventHandler<DragEventArgs> Drop;
@@ -109,16 +107,13 @@ public class TabViewListView : ListBox
             _noAutoScrollRect = new Rect(viewportWidth * 0.1, 0,
                 viewportWidth - (viewportWidth * 0.1), Scroller.Viewport.Height);
         }
-    }
-
-    protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
-    {
-        base.ItemsChanged(e);
-
-        var tv = this.FindAncestorOfType<TabView>();
-        if (tv != null)
+        else if (change.Property == ItemsProperty)
         {
-            tv.OnItemsChanged(null);
+            var tv = this.FindAncestorOfType<TabView>();
+            if (tv != null)
+            {
+                tv.OnItemsChanged(null);
+            }
         }
     }
 
@@ -132,49 +127,58 @@ public class TabViewListView : ListBox
         }
     }
 
-    protected override IItemContainerGenerator CreateItemContainerGenerator()
+    protected override bool IsItemItsOwnContainerOverride(Control item) =>
+        item is TabViewItem;
+
+    protected override Control CreateContainerForItemOverride() => new TabViewItem();
+        
+    protected override void PrepareContainerForItemOverride(Control element, object item, int index)
     {
-        return new TabViewItemContainerGenerator(this, TabViewItem.HeaderProperty,
-            TabViewItem.HeaderTemplateProperty);
-    }
+        var tvi = element as TabViewItem;
 
-    protected override void OnContainersMaterialized(ItemContainerEventArgs e)
-    {
-        base.OnContainersMaterialized(e);
-
-        var parentTV = this.FindAncestorOfType<TabView>();
-        if (parentTV == null)
-            return;
-
-        for (int i = 0, ct = e.Containers.Count; i < ct; i++)
+        // WinUI: Due to virtualization, a TabViewItem might be recycled to display a different tab data item.
+        //        In that case, there is no need to set the TabWidthMode of the TabViewItem or its parent TabView
+        //        as they are already set correctly here.
+        //
+        //        We know we are currently looking at a TabViewItem being recycled if its parent TabView has
+        //        already been set.
+        if (tvi.ParentTabView == null)
         {
-            if (e.Containers[i].ContainerControl is TabViewItem tvi)
+            var parentTV = element.FindAncestorOfType<TabView>();
+            if (parentTV != null)
             {
-                if (tvi.ParentTabView == null)
-                {
-                    tvi.OnTabViewWidthModeChanged(parentTV.TabWidthMode);
-                    tvi.ParentTabView = parentTV;
-                }
+                tvi.OnTabViewWidthModeChanged(parentTV.TabWidthMode);
+                tvi.ParentTabView = parentTV;
             }
         }
-    }
 
+        // Special b/c we use the header and not Content. Somehow this *just works* in
+        // WinUI b/c they don't have to do this.
+        if (element == item)
+            return;
+
+        tvi.Header = item;
+
+        var itemTemplate = this.FindDataTemplate(item, ItemTemplate);
+
+        if (itemTemplate != null)
+            tvi.HeaderTemplate = itemTemplate;
+
+        // Don't call base here, we've done everything we need
+    }
+       
     private void OnPointerPressedPreview(object sender, PointerPressedEventArgs args)
     {
         if (CanDragItems || CanReorderItems)
         {
-
             if (Presenter.Panel is not TabViewStackPanel)
                 return;
-
-            if (ItemsPanelRoot == null)
-                ItemsPanelRoot = (TabViewStackPanel)Presenter.Panel;
 
             var currentPoint = args.GetCurrentPoint(this);
             if (currentPoint.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
             {
                 _initialPoint = args.GetPosition(this);
-                _dragItem = (args.Source as IVisual).FindAncestorOfType<TabViewItem>(true);
+                _dragItem = (args.Source as Visual).FindAncestorOfType<TabViewItem>(true);
                 _dragIndex = IndexFromContainer(_dragItem);
 
                 if (double.IsNaN(_cxDrag))
@@ -251,11 +255,11 @@ public class TabViewListView : ListBox
                     case AutoScrollAction.ScrollStarted:
                         // All reorder logic is disabled when auto scrolling, so reset the panel
                         // to draw normally
-                        ItemsPanelRoot.ClearReorder();
+                        (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
                         break;
 
                     case AutoScrollAction.ScrollEnded:
-                        ItemsPanelRoot.EnterReorder(_dragIndex);
+                        (ItemsPanelRoot as TabViewStackPanel).EnterReorder(_dragIndex);
                         break;
 
                     default:
@@ -300,40 +304,6 @@ public class TabViewListView : ListBox
         }
     }
 
-    protected internal int IndexFromContainer(IControl container)
-    {
-        return ItemContainerGenerator.IndexFromContainer(container);
-    }
-
-    protected internal object ItemFromContainer(IControl container)
-    {
-        foreach (var item in ItemContainerGenerator.Containers)
-        {
-            if (item.ContainerControl == container)
-            {
-                return item.Item;
-            }
-        }
-
-        return null;
-    }
-
-    protected internal IControl ContainerFromIndex(int index) =>
-        ItemContainerGenerator.ContainerFromIndex(index);
-
-    protected internal IControl ContainerFromItem(object item)
-    {
-        foreach (var c in ItemContainerGenerator.Containers)
-        {
-            if (c.Item == item)
-            {
-                return c.ContainerControl;
-            }
-        }
-
-        return null;
-    }
-
     private void UpdateDragInfo()
     {
         FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
@@ -351,7 +321,7 @@ public class TabViewListView : ListBox
         PseudoClasses.Set(s_pcReorder, true);
         // This triggers the ItemsPanel to enter reorder state which will insert a blank space
         // where the current item in measured
-        ItemsPanelRoot.EnterReorder(_dragIndex);
+        (ItemsPanelRoot as TabViewStackPanel).EnterReorder(_dragIndex);
         _isInReorder = true;
 
         if (_dragReorderPopup == null)
@@ -418,10 +388,11 @@ public class TabViewListView : ListBox
 
         if (ItemsPanelRoot.Bounds.Contains(panelPoint))
         {
-            currentDragIndex = ItemsPanelRoot.GetInsertionIndexFromPoint(panelPoint, _dragIndex);
+            currentDragIndex = (ItemsPanelRoot as TabViewStackPanel)
+                .GetInsertionIndexFromPoint(panelPoint, _dragIndex);
         }
 
-        ItemsPanelRoot.ChangeReorderIndex(currentDragIndex);
+        (ItemsPanelRoot as TabViewStackPanel).ChangeReorderIndex(currentDragIndex);
 
         if (!_isInDrag && _initialPoint.HasValue)
         {
@@ -437,7 +408,7 @@ public class TabViewListView : ListBox
             _dragReorderPopup.IsOpen = false;
         }
         _isInReorder = false;
-        var reorderIndex = ItemsPanelRoot.ClearReorder();
+        var reorderIndex = (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
 
         // if we're reordering this listview, we do that automatically - no need for the user
         // to handle this themselves
@@ -513,7 +484,7 @@ public class TabViewListView : ListBox
         }
         else
         {
-            ItemsPanelRoot.ClearReorder();
+            (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
 
             if (ToolTip.GetIsOpen(_dragItem))
             {
@@ -533,8 +504,8 @@ public class TabViewListView : ListBox
     {
         // If dragging over a TabView strip that didn't initialize the DragDrop, and hasn't
         // receieved any drag interaction, this will still be null - initialize now
-        if (ItemsPanelRoot == null)
-            ItemsPanelRoot = (TabViewStackPanel)Presenter.Panel;
+        //if (ItemsPanelRoot == null)
+        //    ItemsPanelRoot = (TabViewStackPanel)Presenter.Panel;
 
         // If this is the TabViewListView spawning the DragDrop, so long as we can do drag drop,
         // enable it on this ListView when move over it
@@ -546,7 +517,7 @@ public class TabViewListView : ListBox
         if (_isInReorder)
         {
             e.DragEffects |= DragDropEffects.Move;
-            ItemsPanelRoot.EnterReorder(_dragIndex);
+            (ItemsPanelRoot as TabViewStackPanel).EnterReorder(_dragIndex);
         }
     }
 
@@ -569,11 +540,11 @@ public class TabViewListView : ListBox
             case AutoScrollAction.ScrollStarted:
                 // All reorder logic is disabled when auto scrolling, so reset the panel
                 // to draw normally
-                ItemsPanelRoot.ClearReorder();
+                (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
                 break;
 
             case AutoScrollAction.ScrollEnded:
-                ItemsPanelRoot.EnterReorder(_dragIndex);
+                (ItemsPanelRoot as TabViewStackPanel).EnterReorder(_dragIndex);
                 break;
 
             default:
@@ -603,7 +574,7 @@ public class TabViewListView : ListBox
         // at this point I'm done dealing with this issue...it works good enough
         if (e.Source is StyledElement v)
         {
-            bool isCloseButton = (v as IVisual).FindAncestorOfType<Button>() != null;
+            bool isCloseButton = (v as Visual).FindAncestorOfType<Button>() != null;
             if (isCloseButton)
                 return;
             var pt = e.GetPosition(this);
@@ -614,11 +585,11 @@ public class TabViewListView : ListBox
                 if (_isInReorder)
                 {
                     // Keep reorder active, but return to default state
-                    ItemsPanelRoot.ChangeReorderIndex(_dragIndex);
+                    (ItemsPanelRoot as TabViewStackPanel).ChangeReorderIndex(_dragIndex);
                 }
                 else
                 {
-                    ItemsPanelRoot.ClearReorder();
+                    (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
                 }
             }
         }
@@ -634,7 +605,7 @@ public class TabViewListView : ListBox
 
         if (!_isInDrag)
         {
-            ItemsPanelRoot.ClearReorder();
+            (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
         }
 
         _processReorder = true;
@@ -724,6 +695,8 @@ public class TabViewListView : ListBox
     private Point? _initialPoint;
     private double _cxDrag = double.NaN;
     private double _cyDrag = double.NaN;
+
+    //private object _currentItem;
 
     private static Popup _dragReorderPopup;
     private Point _popupOffset;

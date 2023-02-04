@@ -11,5 +11,21 @@
         x:Class="FASandbox.MainWindow"
         Title="FASandbox">
 
+    <StackPanel Spacing="50">
+        <ui:SettingsExpander IconSource="Globe" Header="Test Header" IsExpanded="True"
+                                 Description="This is a description for the SettingsExpander"
+                                 ActionIconSource="Save" IsClickEnabled="False">
+            <ui:SettingsExpander.Footer>
+                <Button Content="FooterButton" />
+            </ui:SettingsExpander.Footer>
+
+            <ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
+            <ui:SettingsExpanderItem Content="Content Here">
+                <ui:SettingsExpanderItem.Footer>
+                    <Button Content="FooterButton" />
+                </ui:SettingsExpanderItem.Footer>
+            </ui:SettingsExpanderItem>
+        </ui:SettingsExpander>
+    </StackPanel>
     
 </Window>

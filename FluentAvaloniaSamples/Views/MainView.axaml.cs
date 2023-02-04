@@ -73,7 +73,7 @@ public partial class MainView : UserControl
                 OnParentWindowOpened(b, null);
         }
 
-        _windowIconControl = this.FindControl<IControl>("WindowIcon");
+        _windowIconControl = this.FindControl<Control>("WindowIcon");
         _frameView = this.FindControl<Frame>("FrameView");
         _navView = this.FindControl<NavigationView>("NavView");
         _navView.MenuItems = GetNavigationViewItems();
@@ -369,7 +369,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private IControl _windowIconControl;
+    private Control _windowIconControl;
     private Frame _frameView;
     private NavigationView _navView;
 }

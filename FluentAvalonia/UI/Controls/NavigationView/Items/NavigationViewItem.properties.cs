@@ -164,7 +164,7 @@ public partial class NavigationViewItem
 
     //HELPER PROPERTIES
 
-    internal IControl SelectionIndicator => _presenter?.SelectionIndicator;
+    internal Control SelectionIndicator => _presenter?.SelectionIndicator;
 
     internal NavigationViewItemPresenter NVIPresenter => _presenter;
 

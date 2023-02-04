@@ -34,7 +34,7 @@ public class NavViewPageViewModel : ViewModelBase
             SetCurrentPage();
         }
     }
-    public IControl CurrentPage
+    public Control CurrentPage
     {
         get => _currentPage;
         set => RaiseAndSetIfChanged(ref _currentPage, value);
@@ -47,18 +47,18 @@ public class NavViewPageViewModel : ViewModelBase
             var index = Categories.IndexOf(cat) + 1;
             var smpPage = $"FluentAvaloniaSamples.Pages.NVSamplePages.NVSamplePage{index}";
             var pg = Activator.CreateInstance(Type.GetType(smpPage));
-            CurrentPage = (IControl)pg;
+            CurrentPage = (Control)pg;
         }
         else if (SelectedCategory is NavigationViewItem nvi)
         {
             var smpPage = $"FluentAvaloniaSamples.Pages.NVSamplePages.NVSamplePageSettings";
             var pg = Activator.CreateInstance(Type.GetType(smpPage));
-            CurrentPage = (IControl)pg;
+            CurrentPage = (Control)pg;
         }
     }
 
     private object _selectedCategory;
-    private IControl _currentPage = new NVSamplePage1();
+    private Control _currentPage = new NVSamplePage1();
 }
 
 public abstract class CategoryBase { }

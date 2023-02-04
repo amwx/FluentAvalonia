@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace FluentAvalonia.UI.Controls;
 
-public class SelectionModel : ISelectionModel, IDisposable
+internal class SelectionModel : ISelectionModel, IDisposable
 {
     private readonly SelectionNode _rootNode;
     private bool _singleSelect;

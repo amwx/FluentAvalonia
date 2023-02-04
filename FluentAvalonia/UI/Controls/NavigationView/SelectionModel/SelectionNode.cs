@@ -89,7 +89,7 @@ internal class SelectionNode : IDisposable
 
                 if (value != null && newDataSource == null)
                 {
-                    newDataSource = new ItemsSourceView((IEnumerable)value);
+                    newDataSource = ItemsSourceView.GetOrCreate((IEnumerable)value);
                 }
 
                 ItemsSourceView = newDataSource;
@@ -368,7 +368,6 @@ internal class SelectionNode : IDisposable
     {
         UnhookCollectionChangedHandler();
         _childrenSubscription?.Dispose();
-        ItemsSourceView?.Dispose();
         ClearChildNodes();
     }
 

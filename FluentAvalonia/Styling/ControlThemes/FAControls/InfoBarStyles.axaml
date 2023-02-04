@@ -177,7 +177,8 @@
                                               Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               HorizontalContentAlignment="Stretch"
-                                              VerticalContentAlignment="Stretch" />
+                                              VerticalContentAlignment="Stretch"
+                                              Name="ContentPresenter"/>
 
                             <Button Name="CloseButton"
                                        VerticalAlignment="Center"

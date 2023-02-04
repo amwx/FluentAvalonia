@@ -12,16 +12,16 @@ public partial class Frame : ContentControl
     /// <summary>
     /// Defines the <see cref="SourcePageType"/> property
     /// </summary>
-    public static readonly DirectProperty<Frame, Type> SourcePageTypeProperty =
-        AvaloniaProperty.RegisterDirect<Frame, Type>(nameof(SourcePageType),
-            x => x.SourcePageType, (x, v) => x.SourcePageType = v);
+    public static readonly StyledProperty<Type> SourcePageTypeProperty =
+        AvaloniaProperty.Register<Frame, Type>(nameof(SourcePageType));
 
     /// <summary>
     /// Defines the <see cref="CacheSize"/> property
     /// </summary>
-    public static readonly DirectProperty<Frame, int> CacheSizeProperty =
-        AvaloniaProperty.RegisterDirect<Frame, int>(nameof(CacheSize),
-            x => x.CacheSize, (x, v) => x.CacheSize = v);
+    public static readonly StyledProperty<int> CacheSizeProperty =
+        AvaloniaProperty.Register<Frame, int>(nameof(CacheSize),
+            defaultValue: 10, 
+            coerce: (x, v) => v >= 0 ? v : 0);
 
     /// <summary>
     /// Defines the <see cref="BackStackDepth"/> property
@@ -68,9 +68,9 @@ public partial class Frame : ContentControl
     /// <summary>
     /// Defines the <see cref="IsNavigationStackEnabled"/> property
     /// </summary>
-    public static readonly DirectProperty<Frame, bool> IsNavigationStackEnabledProperty =
-        AvaloniaProperty.RegisterDirect<Frame, bool>(nameof(IsNavigationStackEnabled),
-            x => x.IsNavigationStackEnabled, (x, v) => x.IsNavigationStackEnabled = v);
+    public static readonly StyledProperty<bool> IsNavigationStackEnabledProperty =
+        AvaloniaProperty.Register<Frame, bool>(nameof(IsNavigationStackEnabled),
+            defaultValue: true);
 
     /// <summary>
     /// Defines the <see cref="NavigationPageFactory"/> property
@@ -84,8 +84,8 @@ public partial class Frame : ContentControl
     /// </summary>
     public Type SourcePageType
     {
-        get => _sourcePageType;
-        set => SetAndRaise(SourcePageTypeProperty, ref _sourcePageType, value);
+        get => GetValue(SourcePageTypeProperty);
+        set => SetValue(SourcePageTypeProperty, value);
     }
 
     /// <summary>
@@ -93,14 +93,8 @@ public partial class Frame : ContentControl
     /// </summary>
     public int CacheSize
     {
-        get => _cacheSize;
-        set
-        {
-            if (value < 0)
-                value = 0;//Ensure we never get a negative cachesize
-
-            SetAndRaise(CacheSizeProperty, ref _cacheSize, value);
-        }
+        get => GetValue(CacheSizeProperty);
+        set => SetValue(CacheSizeProperty, value);
     }
 
     /// <summary>
@@ -117,6 +111,12 @@ public partial class Frame : ContentControl
     public bool CanGoBack
     {
         get => _backStack.Count > 0;
+        private set
+        {
+            // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
+            bool throwAway = (_backStack.Count - 1) > 0;
+            SetAndRaise(CanGoBackProperty, ref throwAway, value);
+        }
     }
 
     /// <summary>
@@ -125,6 +125,12 @@ public partial class Frame : ContentControl
     public bool CanGoForward
     {
         get => _forwardStack.Count > 0;
+        private set
+        {
+            // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
+            bool throwAway = (_forwardStack.Count - 1) > 0;
+            SetAndRaise(CanGoForwardProperty, ref throwAway, value);
+        }
     }
 
     /// <summary>
@@ -158,19 +164,8 @@ public partial class Frame : ContentControl
     /// </summary>
     public bool IsNavigationStackEnabled
     {
-        get => _isNavigationStackEnabled;
-        set
-        {
-            if (SetAndRaise(IsNavigationStackEnabledProperty, ref _isNavigationStackEnabled, value))
-            {
-                if (!value)
-                {
-                    _backStack.Clear();
-                    _forwardStack.Clear();
-                    _cache.Clear();
-                }
-            }
-        }
+        get => GetValue(IsNavigationStackEnabledProperty); 
+        set => SetValue(IsNavigationStackEnabledProperty, value);
     }
 
     /// <summary>
@@ -230,10 +225,7 @@ public partial class Frame : ContentControl
         RoutedEvent.Register<Control, NavigationEventArgs>("NavigatedTo",
             RoutingStrategies.Direct);
 
-    private Type _sourcePageType;
-    private int _cacheSize = 10;
     private IList<PageStackEntry> _backStack;
     private IList<PageStackEntry> _forwardStack;
-    private bool _isNavigationStackEnabled = true;
     private INavigationPageFactory _pageFactory;
 }

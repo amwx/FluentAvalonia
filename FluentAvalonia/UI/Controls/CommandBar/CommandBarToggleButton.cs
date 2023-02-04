@@ -6,6 +6,7 @@ using Avalonia.Styling;
 using Avalonia.LogicalTree;
 using FluentAvalonia.UI.Input;
 using FluentAvalonia.Core;
+using Avalonia.Controls.Presenters;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -95,5 +96,13 @@ public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, 
                 cb.IsOpen = false;
             }
         }
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 }

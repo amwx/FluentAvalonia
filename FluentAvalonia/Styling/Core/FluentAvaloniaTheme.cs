@@ -3,12 +3,12 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using FluentAvalonia.Core;
 using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Media;
 using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -32,6 +32,9 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         Init();
     }
 
+    public static readonly ThemeVariant HighContrastTheme = new ThemeVariant(HighContrastModeString,
+        ThemeVariant.Light);
+
     /// <summary>
     /// Gets or sets the desired theme mode (Light, Dark, or HighContrast) for the app
     /// </summary>
@@ -40,15 +43,19 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// be overwritten with the system theme unless the attempt to read from the system
     /// fails, in which case setting this can provide a fallback.
     /// </remarks>
+    [Obsolete]
     public string RequestedTheme
     {
-        get => _requestedTheme;
+        get => Application.Current.ActualThemeVariant.ToString();
         set
         {
-            if (_hasLoaded)
-                Refresh(value);
-            else
-                _requestedTheme = value;
+            Application.Current.RequestedThemeVariant = value switch
+            {
+                LightModeString => ThemeVariant.Light,
+                DarkModeString => ThemeVariant.Dark,
+                HighContrastModeString => HighContrastTheme,
+                _ => ThemeVariant.Default
+            };
         }
     }
 
@@ -121,30 +128,13 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// </remarks>
     public TextVerticalAlignmentOverride TextVerticalAlignmentOverrideBehavior { get; set; } =
         TextVerticalAlignmentOverride.EnabledNonWindows;
-
-    //public IResourceHost Owner
-    //{
-    //    get => _owner;
-    //    set
-    //    {
-    //        if (_owner != value)
-    //        {
-    //            _owner = value;
-    //            OwnerChanged?.Invoke(this, EventArgs.Empty);
-
-    //            if (!_hasLoaded)
-    //            {
-    //                Init();
-    //            }
-    //        }
-    //    }
-    //}
-
+      
     bool IResourceNode.HasResources => true;
 
+    [Obsolete]
     public event TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
 
-    public new bool TryGetResource(object key, out object value)
+    public new bool TryGetResource(object key, ThemeVariant theme, out object value)
     {
         // Github build failing with this not being set, even tho it passes locally
         value = null;
@@ -152,23 +142,25 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         // We also search the app level resources so resources can be overridden.
         // Do not search App level styles though as we'll have to iterate over them
         // to skip the FluentAvaloniaTheme instance or we'll stack overflow
-        if (Application.Current?.Resources.TryGetResource(key, out value) == true)
+        if (Application.Current?.Resources.TryGetResource(key, theme, out value) == true)
             return true;
 
-        if (base.TryGetResource(key, out value) == true)
+        if (base.TryGetResource(key, theme, out value) == true)
             return true;
 
         value = null;
         return false;
     }
 
-    bool IResourceNode.TryGetResource(object key, out object value) => this.TryGetResource(key, out value);
+    bool IResourceNode.TryGetResource(object key, ThemeVariant theme, out object value) =>
+        this.TryGetResource(key, theme, out value);
 
     /// <summary>
     /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be
     /// SystemAccentColor or Light/Dark/HighContrast theme. This method only works for AccentColors if
     /// <see cref="UseUserAccentColorOnWindows"/> is true, and for app theme if <see cref="UseSystemThemeOnWindows"/> is true
     /// </summary>
+    [Obsolete]
     public void InvalidateThemingFromSystemThemeChanged()
     {
         if (PreferUserAccentColor)
@@ -176,20 +168,21 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
             if (OSVersionHelper.IsWindows())
             {
                 TryLoadWindowsAccentColor();
-            }
-            else if (OSVersionHelper.IsMacOS())
-            {
-                TryLoadMacOSAccentColor();
-            }
+            }           
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 TryLoadLinuxAccentColor();
+            }
+            else
+            {
+                // This is used for Mac & WASM/Mobile
+                TryLoadMacOSAccentColor(AvaloniaLocator.Current.GetService<IPlatformSettings>());
             }
         }
 
         if (PreferSystemTheme)
         {
-            Refresh(null);
+           // Refresh(null);
         }
     }
 
@@ -213,18 +206,15 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
         // When initializing, UseSystemTheme overrides any setting of RequestedTheme, this must be
         // explicitly disabled to enable setting the theme manually
-        _requestedTheme = ResolveThemeAndInitializeSystemResources();
+        ResolveThemeAndInitializeSystemResources();
 
-        // Base resources
         Resources.MergedDictionaries.Add(
-            (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/StylesV2/BaseResources.axaml"), _baseUri));
+            (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/StylesV2/Fluentv2.axaml"), _baseUri));
 
-        // Theme resource colors/brushes
-        Resources.MergedDictionaries.Add(
-            (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
+        if (OSVersionHelper.IsWindows())
         {
+            // Load this in all cases since with ThemeDictionaries, we always have a ref to the 
+            // HighContrast dictionary
             TryLoadHighContrastThemeColors();
         }
 
@@ -236,95 +226,94 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         _hasLoaded = true;
     }
 
-    private void Refresh(string newTheme)
+    private void ResolveThemeAndInitializeSystemResources()
     {
-        newTheme ??= ResolveThemeAndInitializeSystemResources();
+        ThemeVariant theme = null;
 
-        var old = _requestedTheme;
-        if (!string.Equals(newTheme, old, StringComparison.OrdinalIgnoreCase))
-        {
-            _requestedTheme = newTheme;
+        var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
 
-            // Remove the old theme of any resources
-            if (Resources.Count > 0)
-            {
-                Resources.MergedDictionaries.RemoveAt(1);
-            }
-
-            Resources.MergedDictionaries.Add(
-                (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/StylesV2/{_requestedTheme}Resources.axaml"), _baseUri));
-
-            if (string.Equals(_requestedTheme, HighContrastModeString, StringComparison.OrdinalIgnoreCase))
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    TryLoadHighContrastThemeColors();
-                }
-            }
-
-            Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
-
-            RequestedThemeChanged?.Invoke(this, new RequestedThemeChangedEventArgs(_requestedTheme));
-        }
-    }
-
-    private string ResolveThemeAndInitializeSystemResources()
-    {
-        string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
-
+        ps.ColorValuesChanged += OnPlatformColorValuesChanged;
+                
         if (OSVersionHelper.IsWindows())
         {
-            theme = ResolveWindowsSystemSettings();
+            theme = ResolveWindowsSystemSettings(ps);
         }
         else if (OSVersionHelper.IsLinux())
         {
-            theme = ResolveLinuxSystemSettings();
+            theme = ResolveLinuxSystemSettings(ps);
         }
         else if (OSVersionHelper.IsMacOS())
         {
-            theme = ResolveMacOSSystemSettings();
+            theme = ResolveMacOSSystemSettings(ps);
         }
         else
         {
-            // Needed for mobile/unhandled platforms
+            // WASM & Mobile
+
+            theme = GetThemeFromIPlatformSettings(ps);
+            // MacOS logic is also used for WASM/Mobile since it just pulls from 
+            // IPlatformSettings Color Values
+            TryLoadMacOSAccentColor(ps);
+
             AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
         }
 
-        // Load the SymbolThemeFontFamily
-        AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));
+        // The Resolve...Settings will return null if PreferSystemTheme is false
+        if (theme != null)
+        {
+            Application.Current.RequestedThemeVariant = theme;
+        }
 
-        return theme;
+        // Load the SymbolThemeFontFamily
+        AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));        
     }
 
-    private string ResolveMacOSSystemSettings()
+    private void OnPlatformColorValuesChanged(object sender, PlatformColorValues e)
     {
-        string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
+        if (OSVersionHelper.IsWindows())
+        {
+            TryLoadHighContrastThemeColors();
+        }
+
         if (PreferSystemTheme)
         {
-            try
+            ThemeVariant theme;
+            if (e.ContrastPreference == ColorContrastPreference.High)
             {
-                // https://stackoverflow.com/questions/25207077/how-to-detect-if-os-x-is-in-dark-mode
-                var p = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true,
-                        FileName = "defaults",
-                        Arguments = "read -g AppleInterfaceStyle"
-                    },
-                };
-
-                p.Start();
-                var str = p.StandardOutput.ReadToEnd().Trim();
-                p.WaitForExit();
-
-                theme = str.Equals("Dark", StringComparison.OrdinalIgnoreCase) ? DarkModeString : LightModeString;
+                theme = HighContrastTheme;
             }
-            catch { }
+            else
+            {
+                theme = e.ThemeVariant == PlatformThemeVariant.Light ?
+                    ThemeVariant.Light : ThemeVariant.Dark;
+            }
+
+            Application.Current.RequestedThemeVariant = theme;
+        }
+
+        if (!CustomAccentColor.HasValue && PreferUserAccentColor)
+        {
+            if (OSVersionHelper.IsWindows())
+            {
+                TryLoadWindowsAccentColor();
+            }
+            else if (OSVersionHelper.IsMacOS())
+            {
+                TryLoadMacOSAccentColor(AvaloniaLocator.Current.GetService<IPlatformSettings>());
+            }
+            else if (OSVersionHelper.IsLinux())
+            {
+                TryLoadLinuxAccentColor();
+            }
+        }
+    }
+
+    private ThemeVariant ResolveMacOSSystemSettings(IPlatformSettings platformSettings)
+    {
+        ThemeVariant theme = null;
+        if (PreferSystemTheme)
+        {
+            theme = GetThemeFromIPlatformSettings(platformSettings);
         }
 
         if (CustomAccentColor != null)
@@ -333,7 +322,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         }
         else if (PreferUserAccentColor)
         {
-            TryLoadMacOSAccentColor();
+            TryLoadMacOSAccentColor(platformSettings);
         }
         else
         {
@@ -345,15 +334,21 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         return theme;
     }
 
-    private string ResolveLinuxSystemSettings()
+    private ThemeVariant ResolveLinuxSystemSettings(IPlatformSettings platformSettings)
     {
-        string theme = IsValidRequestedTheme(_requestedTheme) ? _requestedTheme : LightModeString;
+        ThemeVariant theme = null;
         if (PreferSystemTheme)
         {
+            // See TryLoadLinuxAccentColor() for note on what Avalonia IPlatformSettings supports
+            // on Linux. We'll try the existing logic first before attempting IPlatformSettings
             var resolvedTheme = LinuxThemeResolver.TryLoadSystemTheme();
             if (resolvedTheme != null)
             {
                 theme = resolvedTheme;
+            }
+            else
+            {
+                theme = GetThemeFromIPlatformSettings(platformSettings);
             }
         }
 
@@ -373,6 +368,21 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
 
         return theme;
+    }
+
+    private ThemeVariant GetThemeFromIPlatformSettings(IPlatformSettings platformSettings)
+    {
+        var platformColors = platformSettings.GetColorValues();
+        bool isSystemInHighContrast = platformColors.ContrastPreference == ColorContrastPreference.High;
+        if (!isSystemInHighContrast)
+        {
+           return platformColors.ThemeVariant == PlatformThemeVariant.Light ?
+                ThemeVariant.Light : ThemeVariant.Dark;
+        }
+        else
+        {
+            return HighContrastTheme;
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -437,18 +447,14 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
                 if (OSVersionHelper.IsWindows())
                 {
                     TryLoadWindowsAccentColor();
-                }
-                else if (OSVersionHelper.IsMacOS())
-                {
-                    TryLoadMacOSAccentColor();
-                }
+                }                
                 else if (OSVersionHelper.IsLinux())
                 {
                     TryLoadLinuxAccentColor();
                 }
-                else
+                else // Mac & WASM/Mobile
                 {
-                    LoadDefaultAccentColor();
+                    TryLoadMacOSAccentColor(AvaloniaLocator.Current.GetService<IPlatformSettings>());
                 }
             }
             else
@@ -471,70 +477,13 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)col.LightenPercent(-0.45f));
     }
         
-    private void TryLoadMacOSAccentColor()
+    private void TryLoadMacOSAccentColor(IPlatformSettings platformSettings)
     {
         try
         {
-            // https://stackoverflow.com/questions/51695755/how-can-i-determine-the-macos-10-14-accent-color/51695756#51695756
-            // The following assumes MacOS 11 (Big Sur) for color matching
-            var p = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    FileName = "defaults",
-                    Arguments = "read -g AppleAccentColor"
-                },
-            };
-
-            p.Start();
-            var str = p.StandardOutput.ReadToEnd().Trim();
-            p.WaitForExit();
-
-            if (str.StartsWith("\'"))
-            {
-                str = str.Substring(1, str.Length - 2);
-            }
-
-            int accentColor = int.MinValue;
-            int.TryParse(str, out accentColor);
-
-            Color2 aColor;
-            switch (accentColor)
-            {
-                case 0: // red
-                    aColor = Color2.FromRGB(255, 82, 89);
-                    break;
-
-                case 1: // orange
-                    aColor = Color2.FromRGB(248, 131, 28);
-                    break;
-
-                case 2: // yellow
-                    aColor = Color2.FromRGB(253, 186, 45);
-                    break;
-
-                case 3: // green
-                    aColor = Color2.FromRGB(99, 186, 71);
-                    break;
-
-                case 5: //purple
-                    aColor = Color2.FromRGB(164, 82, 167);
-                    break;
-
-                case 6: // pink
-                    aColor = Color2.FromRGB(248, 80, 158);
-                    break;
-
-                default: // blue, multicolor (maps to blue), graphite (maps to blue)
-                    aColor = Color2.FromRGB(16, 125, 254);
-                    break;
-            }
-
+            // Replaced old logic with PlatformSettings from Avalonia
+            Color2 aColor = platformSettings.GetColorValues().AccentColor1;
+            
             AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor);
 
             AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.LightenPercent(0.15f));
@@ -553,6 +502,12 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
     private void TryLoadLinuxAccentColor()
     {
+        // Per GH#9913:
+        // Only works if distro implements newest (~2021) standard of FreeDesktop. GTK and others specific settings are ignored.
+        // Accent colors are not supported, and frame theme isn't changeable from the app (not sure if it's possible, if anybody wants to help - please do).
+        // No high contrast support.
+        // So we'll keep the existing logic here
+
         var aColor = LinuxThemeResolver.TryLoadAccentColor();
         if (aColor != null)
         {
@@ -598,11 +553,10 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     }
 
     private bool _hasLoaded;
-    private string _requestedTheme = null;
     private Uri _baseUri;
     private Color? _customAccentColor;
 
-    public static readonly string LightModeString = "Light";
-    public static readonly string DarkModeString = "Dark";
-    public static readonly string HighContrastModeString = "HighContrast";
+    public const string LightModeString = "Light";
+    public const string DarkModeString = "Dark";
+    public const string HighContrastModeString = "HighContrast";
 }

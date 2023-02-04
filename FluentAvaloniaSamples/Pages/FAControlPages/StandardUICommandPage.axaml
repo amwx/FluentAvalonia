@@ -43,7 +43,7 @@
                                              CommandParameter="{Binding #ListBox1.SelectedItem}"/>
                     </ui:CommandBar.SecondaryCommands>
                 </ui:CommandBar>
-                <ListBox Items="{Binding TempItems}" Name="ListBox1" VirtualizationMode="None">
+                <ListBox Items="{Binding TempItems}" Name="ListBox1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Background="Transparent">

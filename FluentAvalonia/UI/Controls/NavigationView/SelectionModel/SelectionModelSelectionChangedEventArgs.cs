@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 
-public class SelectionModelSelectionChangedEventArgs : EventArgs
+internal class SelectionModelSelectionChangedEventArgs : EventArgs
 {
     public SelectionModelSelectionChangedEventArgs(
         IReadOnlyList<IndexPath> deselectedIndices,

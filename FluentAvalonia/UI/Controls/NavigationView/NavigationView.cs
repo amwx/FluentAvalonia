@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
@@ -221,7 +222,7 @@ public partial class NavigationView : HeaderedContentControl
                 _paneHeaderContentBorderRow = placeholderGrid.RowDefinitions[0];
             }
 
-            _paneTitleFrameworkElement = e.NameScope.Get<IControl>(s_tpPaneTitleTextBlock);
+            _paneTitleFrameworkElement = e.NameScope.Get<Control>(s_tpPaneTitleTextBlock);
             _paneTitlePresenter = e.NameScope.Get<ContentControl>(s_tpPaneTitlePresenter);
 
             _paneTitleHolderFrameworkElement = e.NameScope.Get<Control>(s_tpPaneTitleHolder);
@@ -268,7 +269,7 @@ public partial class NavigationView : HeaderedContentControl
             _menuItemsScrollViewer = e.NameScope.Get<ScrollViewer>(s_tpMenuItemsScrollViewer);
             _footerItemsScrollViewer = e.NameScope.Get<ScrollViewer>(s_tpFooterItemsScrollViewer);
 
-            _itemsContainer = e.NameScope.Find<IControl>(s_tpItemsContainerGrid);
+            _itemsContainer = e.NameScope.Find<Control>(s_tpItemsContainerGrid);
             if (_itemsContainerRow != null)
             {
                 _itemsContainerSizeRevoker = _itemsContainer.GetObservable(BoundsProperty).Subscribe(OnItemsContainerSizeChanged);
@@ -433,6 +434,28 @@ public partial class NavigationView : HeaderedContentControl
         {
             OnSelectedItemPropertyChanged(change.OldValue, change.NewValue);
         }
+        else if (change.Property == IsBackButtonVisibleProperty)
+        {
+            UpdateBackAndCloseButtonsVisibility();
+            UpdateAdaptiveLayout(Bounds.Width);
+            if (IsTopNavigationView)
+            {
+                InvalidateTopNavPrimaryLayout();
+            }
+
+            // Enabling back button shifts grid instead of resizing, so let's update the layout.
+            if (_backButton != null)
+            {
+                //Don't have update layout, so
+                _backButton.InvalidateMeasure();
+            }
+            UpdatePaneLayout();
+        }
+        else if (change.Property == IsPaneOpenProperty)
+        {
+            OnIsPaneOpenChanged();
+            UpdateVisualStateForDisplayModeGroup(_displayMode);
+        }
     }
 
     //WinUI also uses PreviewKeyDown to reset m_TabKeyPrecedesFocusChange
@@ -479,7 +502,7 @@ public partial class NavigationView : HeaderedContentControl
                 else if (!isTopNav && _paneContentGrid == null)
                     break;
 
-                var current = FocusManager.Instance.Current;
+                var current = FocusManager.Instance.Current as InputElement;
 
                 if (current == null)
                     break;
@@ -491,7 +514,7 @@ public partial class NavigationView : HeaderedContentControl
 
                 if ((isTopNav && e.Key == Key.Left) || (!isTopNav && e.Key == Key.Up))
                 {
-                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous);
+                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous) as InputElement;
                     if (next == null)
                         break;
 
@@ -542,7 +565,7 @@ public partial class NavigationView : HeaderedContentControl
                 }
                 else if ((isTopNav && e.Key == Key.Right) || (!isTopNav && e.Key == Key.Down))
                 {
-                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next);
+                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next) as InputElement;
                     if (next == null)
                         break;
 
@@ -626,6 +649,14 @@ public partial class NavigationView : HeaderedContentControl
         }
 
         base.OnKeyDown(e);
+    }
+
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
     }
 
     private void OnLayoutUpdated(object sender, EventArgs e)
@@ -2046,7 +2077,7 @@ public partial class NavigationView : HeaderedContentControl
             var ct = ir.ItemsSourceView.Count;
             for (int i = 0; i < ct; i++)
             {
-                if (ir.TryGetElement(i) is IControl c && c.Focusable)
+                if (ir.TryGetElement(i) is Control c && c.Focusable)
                 {
                     FocusManager.Instance?.Focus(c, NavigationMethod.Directional);
                     c.BringIntoView();
@@ -2080,7 +2111,7 @@ public partial class NavigationView : HeaderedContentControl
 
         //We couldn't find another item to focus, move to next part of pane (this will also handle
         //the jump from Primary items to footer)
-        var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Next) as IControl;
+        var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Next) as Control;
         if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
             return;
 
@@ -2767,7 +2798,7 @@ public partial class NavigationView : HeaderedContentControl
         {
             for (int i = 0; i < size; i++)
             {
-                if (_topNavRepeater.TryGetElement(i) is IControl c)
+                if (_topNavRepeater.TryGetElement(i) is Control c)
                 {
                     _topDataProvider.UpdateWidthForPrimaryItem(i, c.DesiredSize.Width);
                 }
@@ -3257,7 +3288,7 @@ public partial class NavigationView : HeaderedContentControl
         _activeIndicator = nextIndicator;
     }
 
-    private IControl FindSelectionIndicator(object item)
+    private Control FindSelectionIndicator(object item)
     {
         if (item != null)
         {
@@ -3426,7 +3457,7 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private Action SetPaneTitleFrameworkElementParent(ContentControl parent, IControl paneTitle, bool shouldNotContainPaneTitle)
+    private Action SetPaneTitleFrameworkElementParent(ContentControl parent, Control paneTitle, bool shouldNotContainPaneTitle)
     {
         if (parent != null)
         {
@@ -3703,7 +3734,7 @@ public partial class NavigationView : HeaderedContentControl
 
     private void UpdatePaneShadow() { }
 
-    private T GetContainerForData<T>(object data) where T : IControl
+    private T GetContainerForData<T>(object data) where T : Control
     {
         if (data == null)
             return default;
@@ -3753,7 +3784,7 @@ public partial class NavigationView : HeaderedContentControl
         return default;
     }
 
-    private IControl SearchEntireTreeForContainer(ItemsRepeater ir, object data)
+    private Control SearchEntireTreeForContainer(ItemsRepeater ir, object data)
     {
         // (WinUI) TODO: Temporary inefficient solution that results in unnecessary time complexity, fix.
         var index = GetIndexFromItem(ir, data);
@@ -3879,14 +3910,14 @@ public partial class NavigationView : HeaderedContentControl
         return null;
     }
 
-    private void RecycleContainer(IControl container)
+    private void RecycleContainer(Control container)
     {
         var args = new ElementFactoryRecycleArgs();
         args.Element = container;
         _itemsFactory.RecycleElement(args);
     }
 
-    private IControl GetContainerForIndex(int index, bool inFooter)
+    private Control GetContainerForIndex(int index, bool inFooter)
     {
         if (IsTopNavigationView)
         {
@@ -3938,7 +3969,7 @@ public partial class NavigationView : HeaderedContentControl
         return null;
     }
 
-    private NavigationViewItemBase GetContainerForIndexPath(IControl first, IndexPath ip, bool lastVisible)
+    private NavigationViewItemBase GetContainerForIndexPath(Control first, IndexPath ip, bool lastVisible)
     {
         var cont = first;
         if (ip.GetSize() > 2)
@@ -3989,7 +4020,7 @@ public partial class NavigationView : HeaderedContentControl
         return null;
     }
 
-    private IEnumerable GetChildrenForItemInIndexPath(IControl first, IndexPath ip, bool forceRealize)
+    private IEnumerable GetChildrenForItemInIndexPath(Control first, IndexPath ip, bool forceRealize)
     {
         var container = first;
         bool shouldRecycle = false;

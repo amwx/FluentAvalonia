@@ -48,14 +48,14 @@ public partial class TaskDialog
     /// </summary>
     public static readonly DirectProperty<TaskDialog, IList<TaskDialogButton>> ButtonsProperty =
         AvaloniaProperty.RegisterDirect<TaskDialog, IList<TaskDialogButton>>(nameof(Buttons),
-            x => x.Buttons);
+            x => x.Buttons, (x,v) => x.Buttons = v);
 
     /// <summary>
     /// Defines the <see cref="Commands"/> property
     /// </summary>
     public static readonly DirectProperty<TaskDialog, IList<TaskDialogCommand>> CommandsProperty =
         AvaloniaProperty.RegisterDirect<TaskDialog, IList<TaskDialogCommand>>(nameof(Commands),
-            x => x.Commands);
+            x => x.Commands, (x, v) => x.Commands = v);
 
     /// <summary>
     /// Defines the <see cref="FooterVisibility"/> property
@@ -133,6 +133,7 @@ public partial class TaskDialog
     public IList<TaskDialogButton> Buttons
     {
         get => _buttons;
+        set => SetAndRaise(ButtonsProperty, ref _buttons, value);
     }
 
     /// <summary>
@@ -141,6 +142,7 @@ public partial class TaskDialog
     public IList<TaskDialogCommand> Commands
     {
         get => _commands;
+        set => SetAndRaise(CommandsProperty, ref _commands, value);
     }
 
     /// <summary>
@@ -197,7 +199,7 @@ public partial class TaskDialog
     /// and error. For desktop platforms, set it to the Window that should own the dialog.
     /// For others, set it to the root TopLevel.
     /// </remarks>
-    public IVisual XamlRoot { get; set; }
+    public Visual XamlRoot { get; set; }
 
     /// <summary>
     /// Raised when the TaskDialog is beginning to open, but is not yet visible

@@ -1,4 +1,5 @@
-﻿using Avalonia.Animation;
+﻿using Avalonia;
+using Avalonia.Animation;
 using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Media.Animation;
@@ -11,7 +12,7 @@ public class SuppressNavigationTransitionInfo : NavigationTransitionInfo
     public override void RunAnimation(Animatable ctrl)
     {
         //Do nothing
-        (ctrl as IVisual).Opacity = 1;
+        (ctrl as Visual).Opacity = 1;
     }
 }
 

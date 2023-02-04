@@ -50,9 +50,8 @@ public partial class TeachingTip : ContentControl
     /// <summary>
     /// Defines the <see cref="IsOpen"/> property
     /// </summary>
-    public static readonly DirectProperty<TeachingTip, bool> IsOpenProperty =
-        AvaloniaProperty.RegisterDirect<TeachingTip, bool>(nameof(IsOpen),
-            x => x.IsOpen, (x, v) => x.IsOpen = v);
+    public static readonly StyledProperty<bool> IsOpenProperty =
+        InfoBar.IsOpenProperty.AddOwner<TeachingTip>();
 
     /// <summary>
     /// Defines the <see cref="Target"/> property
@@ -148,8 +147,8 @@ public partial class TeachingTip : ContentControl
     /// <summary>
     /// Defines the <see cref="HeroContent"/> property
     /// </summary>
-    public static readonly StyledProperty<IControl> HeroContentProperty =
-        AvaloniaProperty.Register<TeachingTip, IControl>(nameof(HeroContent));
+    public static readonly StyledProperty<Control> HeroContentProperty =
+        AvaloniaProperty.Register<TeachingTip, Control>(nameof(HeroContent));
 
     /// <summary>
     /// Defines the <see cref="IconSource"/> property
@@ -186,8 +185,8 @@ public partial class TeachingTip : ContentControl
     /// </summary>
     public bool IsOpen
     {
-        get => _isOpen;
-        set => SetAndRaise(IsOpenProperty, ref _isOpen, value);
+        get => GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
     }
 
     /// <summary>
@@ -335,7 +334,7 @@ public partial class TeachingTip : ContentControl
     /// Border-to-border graphic content displayed in the header or footer
     /// of the teaching tip. Will appear opposite of the tail in targeted teaching tips unless otherwise set.
     /// </summary>
-    public IControl HeroContent
+    public Control HeroContent
     {
         get => GetValue(HeroContentProperty);
         set => SetValue(HeroContentProperty, value);
@@ -380,7 +379,6 @@ public partial class TeachingTip : ContentControl
     /// </summary>
     public event TypedEventHandler<TeachingTip, TeachingTipClosedEventArgs> Closed;
 
-    private bool _isOpen;
 
     private const string s_tpContainer = "Container";
     private const string s_tpTailOcclusionGrid = "TailOcclusionGrid";

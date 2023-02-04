@@ -59,11 +59,15 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
                         AddTabButtonCommandParameter="Normal"
                         TabCloseRequested="BindingTabView_TabCloseRequested"
                         TabItems="{Binding Documents}">
+                <ui:TabView.Styles>
+                    <Style Selector="ui|TabViewItem" x:DataType="vm:DocumentItem">
+                        <Setter Property="IconSource" Value="{CompiledBinding IconSource}" />
+                        <Setter Property="Content" Value="{CompiledBinding Content}" />
+                    </Style>
+                </ui:TabView.Styles>
                 <ui:TabView.TabItemTemplate>
                     <DataTemplate x:DataType="vm:DocumentItem">
-                        <ui:TabViewItem Header="{CompiledBinding Header}"
-                                        IconSource="{CompiledBinding IconSource}"
-                                        Content="{CompiledBinding Content}" />
+                        <TextBlock Text="{Binding Header}" />
                     </DataTemplate>
                 </ui:TabView.TabItemTemplate>
             </ui:TabView>
@@ -82,6 +86,13 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
                             TabItems="{Binding KeyBindingDocuments}"
                             MinHeight="350"
                             SelectedItem="{Binding KeyBindingSelectedDocument}">
+                    <ui:TabView.Styles>
+                        <Style Selector="ui|TabViewItem" x:DataType="vm:DocumentItem">
+                            <Setter Property="IconSource" Value="{CompiledBinding IconSource}" />
+                            <Setter Property="Content" Value="{CompiledBinding Content}" />
+                        </Style>
+                    </ui:TabView.Styles>
+
                     <ui:TabView.KeyBindings>
                         <KeyBinding Gesture="Ctrl+T" Command="{Binding KeyBindingCommand}"
                                     CommandParameter="Add" />
@@ -110,9 +121,7 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
 
                     <ui:TabView.TabItemTemplate>
                         <DataTemplate x:DataType="vm:DocumentItem">
-                            <ui:TabViewItem Header="{CompiledBinding Header}"
-                                            IconSource="{CompiledBinding IconSource}"
-                                            Content="{CompiledBinding Content}" />
+                            <TextBlock Text="{Binding Header}" />
                         </DataTemplate>
                     </ui:TabView.TabItemTemplate>
                 </ui:TabView>

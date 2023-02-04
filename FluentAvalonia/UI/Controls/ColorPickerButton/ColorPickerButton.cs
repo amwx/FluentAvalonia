@@ -20,6 +20,7 @@ public partial class ColorPickerButton : TemplatedControl, IStyleable
         UseSpectrumProperty.OverrideDefaultValue<ColorPickerButton>(true);
         UseColorWheelProperty.OverrideDefaultValue<ColorPickerButton>(true);
         UseColorTriangleProperty.OverrideDefaultValue<ColorPickerButton>(true);
+        IsCompactProperty.OverrideDefaultValue<ColorPickerButton>(true);
     }
 
     Type IStyleable.StyleKey => typeof(ColorPickerButton);

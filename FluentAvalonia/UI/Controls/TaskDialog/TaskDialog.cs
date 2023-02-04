@@ -41,8 +41,8 @@ public partial class TaskDialog : ContentControl
 
         base.OnApplyTemplate(e);
 
-        _buttonsHost = e.NameScope.Get<ItemsPresenter>(s_tpButtonsHost);
-        _commandsHost = e.NameScope.Get<ItemsPresenter>(s_tpCommandsHost);
+        _buttonsHost = e.NameScope.Get<ItemsControl>(s_tpButtonsHost);
+        _commandsHost = e.NameScope.Get<ItemsControl>(s_tpCommandsHost);
 
         _moreDetailsButton = e.NameScope.Find<Button>(s_tpMoreDetailsButton);
 
@@ -51,10 +51,7 @@ public partial class TaskDialog : ContentControl
         if (_moreDetailsButton != null)
         {
             _moreDetailsButton.Click += MoreDetailsButtonClick;
-        }
-
-        SetButtons();
-        SetCommands();
+        }        
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -90,6 +87,22 @@ public partial class TaskDialog : ContentControl
         {
             PseudoClasses.Set(s_pcSubheader, change.NewValue != null);
         }
+    }
+    
+    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    {
+        if (presenter.Name == "ContentPresenter")
+            return true;
+
+        return base.RegisterContentPresenter(presenter);
+    }
+
+    protected override void OnLoaded()
+    {
+        base.OnLoaded();
+
+        SetButtons();
+        SetCommands();
     }
 
     private void OnKeyDownPreview(object sender, KeyEventArgs e)
@@ -131,15 +144,15 @@ public partial class TaskDialog : ContentControl
     /// </remarks>
     public async Task<object> ShowAsync(bool showHosted = false)
     {
-        bool declaredInXaml = ((IVisual)this).IsAttachedToVisualTree;
+        bool declaredInXaml = this.IsAttachedToVisualTree();
         if (!declaredInXaml && XamlRoot == null)
         {
             throw new InvalidOperationException("XamlRoot not set on TaskDialog. This should be set to the TopLevel that should own or host the dialog.");
         }
 
         OnOpening();
-
-        var owner = XamlRoot ?? VisualRoot;
+        
+        var owner = XamlRoot ?? VisualRoot as Visual;
 
         void UnparentDialog()
         {
@@ -397,7 +410,7 @@ public partial class TaskDialog : ContentControl
             return;
 
         // TaskDialogCommandHost is a TaskDialogButtonHost, this captures everything
-        if (e.Source is IVisual v && v.FindAncestorOfType<TaskDialogButtonHost>(true) is TaskDialogButtonHost b)
+        if (e.Source is Visual v && v.FindAncestorOfType<TaskDialogButtonHost>(true) is TaskDialogButtonHost b)
         {
             // DataContext for the hosts are the user defined buttons/commands, get the dialog from that
             if (b.DataContext is TaskDialogControl tdb)
@@ -438,6 +451,9 @@ public partial class TaskDialog : ContentControl
 
     private void SetButtons()
     {
+        if (_buttons == null)
+            return;
+
         List<TaskDialogButtonHost> buttons = new List<TaskDialogButtonHost>();
         bool foundDefault = false;
         for (int i = 0; i < _buttons.Count; i++)
@@ -464,11 +480,15 @@ public partial class TaskDialog : ContentControl
             }
             buttons.Add(b);
         }
+
         _buttonsHost.Items = buttons;
     }
 
     private void SetCommands()
     {
+        if (_commands == null)
+            return;
+
         List<Control> commands = new List<Control>();
 
         bool foundDefault = _defaultButton != null;
@@ -533,7 +553,7 @@ public partial class TaskDialog : ContentControl
 
     private void TrySetInitialFocus()
     {
-        var curFocus = FocusManager.Instance?.Current;
+        var curFocus = FocusManager.Instance?.Current as InputElement;
         bool setFocus = false;
         if (curFocus?.FindAncestorOfType<TaskDialog>() == null)
         {
@@ -570,8 +590,8 @@ public partial class TaskDialog : ContentControl
         }
     }
 
-    private ItemsPresenter _buttonsHost;
-    private ItemsPresenter _commandsHost;
+    private ItemsControl _buttonsHost;
+    private ItemsControl _commandsHost;
     private ProgressBar _progressBar;
     private Button _moreDetailsButton;
 
@@ -579,9 +599,9 @@ public partial class TaskDialog : ContentControl
 
     private Button _defaultButton;
 
-    public IControl _xamlOwner;
+    public Control _xamlOwner;
     private int _xamlOwnerChildIndex;
-    private IControl _host;
+    private Control _host;
     private TaskCompletionSource<object> _tcs;
     internal bool _hasDeferralActive = false;
 
