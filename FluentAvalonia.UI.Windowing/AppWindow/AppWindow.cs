@@ -96,6 +96,10 @@ public partial class AppWindow : Window, IStyleable
             base.Icon = new WindowIcon(change.NewValue as IBitmap);
             PseudoClasses.Set(":icon", change.NewValue != null);
         }
+        else if (change.Property == ActualThemeVariantProperty)
+        {
+            SetTitleBarColors();
+        }
     }
 
     protected override async void OnOpened(EventArgs e)
@@ -299,8 +303,9 @@ public partial class AppWindow : Window, IStyleable
 
         bool foundAccent = _templateRoot.TryFindResource(s_SystemAccentColor, out var sysColor);
         Color? accentVariant = null;
+        var themeVar = ActualThemeVariant;
 
-        if (ActualThemeVariant == ThemeVariant.Light)
+        if (themeVar == ThemeVariant.Light)
         {
             if (_templateRoot.TryFindResource(s_SystemAccentColorDark1, out var v))
             {
@@ -316,7 +321,7 @@ public partial class AppWindow : Window, IStyleable
         }
 
         Color textColor;
-        if (_templateRoot.TryFindResource(s_TextFillColorPrimary, out var value))
+        if (_templateRoot.TryFindResource(s_TextFillColorPrimary, themeVar, out var value))
         {
             textColor = Unsafe.Unbox<Color>(value);
         }
