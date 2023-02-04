@@ -1,7 +1,9 @@
-﻿using Avalonia;
+﻿using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls;
@@ -13,8 +15,9 @@ public partial class FontIcon : FAIconElement
 {
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        if (change.Property == TextElement.ForegroundProperty ||
-            change.Property == TextElement.FontSizeProperty ||
+        base.OnPropertyChanged(change);
+
+        if (change.Property == TextElement.FontSizeProperty ||
             change.Property == TextElement.FontFamilyProperty ||
             change.Property == TextElement.FontWeightProperty ||
             change.Property == TextElement.FontStyleProperty ||
@@ -23,8 +26,11 @@ public partial class FontIcon : FAIconElement
             _textLayout = null;
             InvalidateMeasure();
         }
-
-        base.OnPropertyChanged(change);
+        else if (change.Property == TextElement.ForegroundProperty)
+        {
+            _textLayout = null;
+            // FAIconElement calls InvalidateVisual
+        }
     }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -40,7 +46,7 @@ public partial class FontIcon : FAIconElement
     public override void Render(DrawingContext context)
     {
         if (_textLayout == null)
-            return;
+            GenerateText();
 
         var dstRect = new Rect(Bounds.Size);
         using (context.PushClip(dstRect))
