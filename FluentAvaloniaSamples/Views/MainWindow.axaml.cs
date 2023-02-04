@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -148,7 +149,8 @@ public class MainWindow : AppWindow
         // CompositionBrush to properly change the color but I don't know if we can do that or not
         if (ActualThemeVariant == ThemeVariant.Dark)
         {
-            var color = this.TryFindResource("SolidBackgroundFillColorBase", out var value) ? (Color2)(Color)value : new Color2(32, 32, 32);
+            var color = this.TryFindResource("SolidBackgroundFillColorBase",
+                ThemeVariant.Dark, out var value) ? (Color2)(Color)value : new Color2(32, 32, 32);
 
             color = color.LightenPercent(-0.8f);
 
@@ -157,7 +159,8 @@ public class MainWindow : AppWindow
         else if (ActualThemeVariant == ThemeVariant.Light)
         {
             // Similar effect here
-            var color = this.TryFindResource("SolidBackgroundFillColorBase", out var value) ? (Color2)(Color)value : new Color2(243, 243, 243);
+            var color = this.TryFindResource("SolidBackgroundFillColorBase",
+                ThemeVariant.Light, out var value) ? (Color2)(Color)value : new Color2(243, 243, 243);
 
             color = color.LightenPercent(0.5f);
 

@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
@@ -179,6 +180,8 @@ public class ControlExample : HeaderedContentControl
 
         base.OnApplyTemplate(e);
 
+        _exampleThemeScopeProvider = e.NameScope.Find<ThemeVariantScope>("ThemeScopeProvider");
+
         _expandOptionsButton = e.NameScope.Find<Button>("ShowHideOptionsButton");
         _expandOptionsButton.Click += OnExpandOptionsClick;
 
@@ -342,8 +345,23 @@ public class ControlExample : HeaderedContentControl
         //}
     }
 
-    public void SetExampleTheme(bool isLightMode)
+    public void SetExampleTheme()
     {
+        var theme = _exampleThemeScopeProvider.ActualThemeVariant;
+
+        if (theme == ThemeVariant.Light)
+        {
+            _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Dark;
+            // Hack force resource invalidation as that doesn't seem to want to happen
+            // the first time toggle theme is set
+            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
+        }
+        else
+        {
+            _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Light;
+            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
+        }
+
         //if (_cSharpTextEditor != null)
         //{
         //    _xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
@@ -592,6 +610,7 @@ public class ControlExample : HeaderedContentControl
     private Button _copyCSharpButton;
     private Border _previewAreaHost;
     private Button _expandOptionsButton;
+    private ThemeVariantScope _exampleThemeScopeProvider;
 
     private Button _optionsMenuButton;
     //private TextEditor _xamlTextEditor;
