@@ -5,7 +5,8 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:sty="using:FluentAvalonia.Styling"
 			 xmlns:wnd="using:FluentAvaloniaSamples.Views.Internal"
-             xmlns:aedit="using:AvaloniaEdit">
+             xmlns:aedit="using:AvaloniaEdit"
+             RequestedThemeVariant="Light">
     <Application.Resources>
         <ResourceDictionary>
             <ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save" />
@@ -35,7 +36,7 @@
     </Application.Resources>
 
     <Application.Styles>
-        <sty:FluentAvaloniaTheme />
+        <sty:FluentAvaloniaTheme PreferUserAccentColor="True" PreferSystemTheme="True" />
         <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
         <!--<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />-->
         <StyleInclude Source="/Styles/OptionsDisplayItemStyles.axaml" />
