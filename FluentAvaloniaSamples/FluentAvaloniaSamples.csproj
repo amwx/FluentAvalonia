@@ -21,4 +21,7 @@
     <ProjectReference Include="..\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />
     <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <TrimmerRootDescriptor Include="link.xml" />
+  </ItemGroup>
 </Project>
