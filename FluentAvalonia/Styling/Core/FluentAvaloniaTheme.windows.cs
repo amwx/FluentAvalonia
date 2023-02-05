@@ -85,7 +85,7 @@ public partial class FluentAvaloniaTheme
             try
             {
                 var color = (Color)settings.UIElementColor(element);
-                var res = Resources.MergedDictionaries[1] as ResourceDictionary;
+                var res = Resources.MergedDictionaries[0] as ResourceDictionary;
                 (res.ThemeDictionaries[HighContrastTheme] as ResourceDictionary)[resKey] = color;
             }
             catch
