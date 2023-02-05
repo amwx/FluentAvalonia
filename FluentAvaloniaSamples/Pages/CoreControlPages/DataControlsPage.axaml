@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:pg="using:FluentAvaloniaSamples.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluentAvaloniaSamples.Pages.DataControlsPage">
     <ScrollViewer Padding="20 0 20 20">
@@ -18,7 +19,7 @@
                                   EnableShowDocsLink="True"
                                   EnableShowDefinitionLink="True">
 
-                <DataGrid Name="TargetDataGrid">
+                <DataGrid Name="TargetDataGrid" x:DataType="pg:Country">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" />
                         <DataGridTextColumn Header="Region" Binding="{Binding Region}" Width="4*" />

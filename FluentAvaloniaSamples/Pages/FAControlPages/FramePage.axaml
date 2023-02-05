@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:pg="using:FluentAvaloniaSamples.Pages"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1200"
              x:Class="FluentAvaloniaSamples.Pages.FramePage"
+             x:DataType="pg:FramePage"
              PreviewImage="/Assets/PageIcons/NavView.jpg">
 
     <StackPanel Spacing="8">

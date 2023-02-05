@@ -6,7 +6,8 @@
              xmlns:local="using:FluentAvaloniaSamples.Controls"
              xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FluentAvaloniaSamples.Pages.CoreControlsPage">
+             x:Class="FluentAvaloniaSamples.Pages.CoreControlsPage"
+             x:DataType="vm:CoreControlsPageViewModel">
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
 				  VerticalScrollBarVisibility="Auto">

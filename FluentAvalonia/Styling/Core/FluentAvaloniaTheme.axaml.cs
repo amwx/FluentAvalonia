@@ -200,6 +200,8 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
     private void Init()
     {
+        AvaloniaXamlLoader.Load(this);
+
         AvaloniaLocator.CurrentMutable.Bind<FluentAvaloniaTheme>().ToConstant(this);
 
         // First load our base and theme resources
@@ -208,18 +210,12 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         // explicitly disabled to enable setting the theme manually
         ResolveThemeAndInitializeSystemResources();
 
-        Resources.MergedDictionaries.Add(
-            (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/StylesV2/Fluentv2.axaml"), _baseUri));
-
         if (OSVersionHelper.IsWindows())
         {
             // Load this in all cases since with ThemeDictionaries, we always have a ref to the 
             // HighContrast dictionary
             TryLoadHighContrastThemeColors();
         }
-
-        // Load the controls
-        Add((Styles)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/ControlThemes/Controls.axaml"), _baseUri));
 
         SetTextAlignmentOverrides();
 
@@ -262,10 +258,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         if (theme != null)
         {
             Application.Current.RequestedThemeVariant = theme;
-        }
-
-        // Load the SymbolThemeFontFamily
-        AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));        
+        }     
     }
 
     private void OnPlatformColorValuesChanged(object sender, PlatformColorValues e)

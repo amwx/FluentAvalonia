@@ -7,7 +7,8 @@
              xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              xmlns:conv="using:FluentAvaloniaSamples.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
-             x:Class="FluentAvaloniaSamples.Pages.NewControlsPage">
+             x:Class="FluentAvaloniaSamples.Pages.NewControlsPage"
+             x:DataType="vm:NewControlsPageViewModel">
     <UserControl.Resources> 
         <conv:StringToURIConverter x:Key="StringToURIConv" />
     </UserControl.Resources>

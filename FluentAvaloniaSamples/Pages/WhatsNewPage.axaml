@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FluentAvaloniaSamples.Pages.WhatsNewPage">
+             x:Class="FluentAvaloniaSamples.Pages.WhatsNewPage"
+             x:DataType="vm:WhatsNewPageViewModel">
     <DockPanel Margin="12">
         <DockPanel LastChildFill="False" DockPanel.Dock="Top"
                    Margin="8">
