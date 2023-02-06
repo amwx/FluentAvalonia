@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
-             xmlns:pg="clr-namespace:FluentAvaloniaSamples.Pages;assembly=FluentAvaloniaSamples"
+             xmlns:pg="using:FluentAvaloniaSamples.Pages"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="2500"
              x:Class="FluentAvaloniaSamples.Pages.InfoBarPage"
+             x:DataType="vm:InfoBarPageViewModel"
              PreviewImage="/Assets/PageIcons/InfoBar.jpg">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="A Closable InfoBar with Options to Change its Severity">
@@ -14,7 +16,7 @@
                         Title="Title"
                         Message="Essential app message for your users to be informed of, acknowledge, or take action on."
                         IsOpen="True"
-                        Severity="{Binding #SevList1.SelectedItem.Content, Mode=TwoWay}"/>
+                        Severity="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SevList1, Mode=TwoWay}"/>
 
             <ctrls:ControlExample.Options>
                 <StackPanel Spacing="4">
@@ -49,7 +51,7 @@
                         Title="Title"
                         Message="{Binding Bar2CurrentMessage}"
                         IsOpen="True"
-                        Severity="{Binding #SevList1.SelectedItem.Content, Mode=TwoWay}"/>
+                        Severity="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SevList1, Mode=TwoWay}"/>
 
             <ctrls:ControlExample.Options>
                 <StackPanel Spacing="4">
@@ -95,7 +97,7 @@ $(Action)
                         Title="Title"
                         Message="Essential app message for your users to be informed of, acknowledge, or take action on."
                         IsOpen="True"
-                        Severity="{Binding #SevList1.SelectedItem.Content, Mode=TwoWay}"/>
+                        Severity="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SevList1, Mode=TwoWay}"/>
 
             <ctrls:ControlExample.Options>
                 <StackPanel Spacing="4">
@@ -125,7 +127,7 @@ $(Action)
                             Title="Title"
                             Message="Message"
                             IsOpen="True"
-                            Severity="{Binding #SevList2.SelectedItem.Content, Mode=TwoWay}">
+                            Severity="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SevList2, Mode=TwoWay}">
                 <CheckBox Content="Custom Content" IsVisible="{Binding #Bar4CustomContent.IsChecked}" />
             </ui:InfoBar>
 

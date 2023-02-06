@@ -148,7 +148,7 @@
                                   EnableShowDefinitionLink="True">
                 <ToggleSwitch OffContent="{Binding #OffContentBox.Text}"
                               OnContent="{Binding #OnContentBox.Text}"
-                              IsEnabled="{Binding #EnabledBox.Checked}"
+                              IsEnabled="{Binding #EnabledBox.IsChecked}"
                               Name="TargetToggleSwitch"/>
 
                 <ctrls:ControlExample.Options>

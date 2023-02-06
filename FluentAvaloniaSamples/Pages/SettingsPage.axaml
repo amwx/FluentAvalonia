@@ -6,7 +6,8 @@
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
              xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
-             x:Class="FluentAvaloniaSamples.Pages.SettingsPage">
+             x:Class="FluentAvaloniaSamples.Pages.SettingsPage"
+             x:DataType="vm:MainViewViewModel">
     <Design.DataContext>
         <vm:MainViewViewModel />
     </Design.DataContext>

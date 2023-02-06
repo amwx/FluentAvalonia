@@ -135,7 +135,7 @@
             </ResourceDictionary>
         </ControlTheme.Resources>
         <Setter Property="Template">
-            <ControlTemplate>
+            <ControlTemplate x:DataType="dialogsInt:ManagedFileChooserViewModel">
                 <Grid ColumnDefinitions="1*,0,4*">
                     <ListBox x:Name="PART_QuickLinks"
                              Grid.Column="0"

@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
-             x:Class="FluentAvaloniaSamples.Pages.TextControlsPage">
+             x:Class="FluentAvaloniaSamples.Pages.TextControlsPage"
+             x:DataType="vm:TextControlsPageViewModel">
     <ScrollViewer Padding="20 0 20 20">
         <StackPanel Spacing="8">
             <TextBlock Text="Text Controls"
@@ -73,7 +75,7 @@
                     <AutoCompleteBox HorizontalAlignment="Left"
                                      MinWidth="250"
                                      Items="{Binding States}"
-                                     ValueMemberBinding="{Binding Name}"
+                                     ValueMemberBinding="{Binding Name, DataType=vm:StateData}"
                                      Name="TargetAutoCompleteBox" />
                 </StackPanel>
 

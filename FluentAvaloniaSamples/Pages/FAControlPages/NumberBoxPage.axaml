@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:pg="using:FluentAvaloniaSamples.Pages"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="2000"
              x:Class="FluentAvaloniaSamples.Pages.NumberBoxPage"
+             x:DataType="pg:NumberBoxPage"
              PreviewImage="/Assets/PageIcons/NumberBox.jpg">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="A NumberBox that evaluates expressions">
@@ -26,7 +28,7 @@
                           Value="10"
                           Minimum="0"
                           Maximum="100"
-                          SpinButtonPlacementMode="{Binding #SpinPlacementBox.SelectedItem.Content}"/>
+                          SpinButtonPlacementMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SpinPlacementBox}"/>
 
 
             <ctrls:ControlExample.Options>

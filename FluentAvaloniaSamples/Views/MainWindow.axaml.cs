@@ -52,6 +52,7 @@ public class MainWindow : AppWindow
         MinHeight = 400;
 
         TitleBar.ExtendsContentIntoTitleBar = true;
+        TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
 
         Application.Current.ActualThemeVariantChanged += ApplicationActualThemeVariantChanged;
     }

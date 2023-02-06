@@ -23,7 +23,7 @@
                                VerticalAlignment="Center"
                                MinWidth="250"
                                Content="Item1"
-                               ButtonSpinnerLocation="{Binding SelectedItem.Content, ElementName=SpinButtonLoc}" />
+                               ButtonSpinnerLocation="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SpinButtonLoc}" />
 
                 <ctrls:ControlExample.Options>
                     <StackPanel Spacing="4">
@@ -70,7 +70,7 @@
                 <Panel MinHeight="275">
                     <Slider Name="TargetSlider" MaxWidth="200" MaxHeight="200" 
                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                            Orientation="{Binding #SliderOrientationBox.SelectedItem.Content}"
+                            Orientation="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SliderOrientationBox}"
                             Minimum="0" Maximum="100"/>
                 </Panel>
 
@@ -100,7 +100,7 @@
                 <Panel MinHeight="275">
                     <ProgressBar Name="TargetProgressBar" MaxWidth="200" MaxHeight="200"
                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                            Orientation="{Binding #ProgressBarOrientationBox.SelectedItem.Content}" />
+                            Orientation="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=ProgressBarOrientationBox}" />
                 </Panel>
 
                 <ctrls:ControlExample.Options>
