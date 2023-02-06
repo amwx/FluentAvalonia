@@ -1,6 +1,17 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
                     x:CompileBindings="True">
+
+    <ControlTheme TargetType="SelectableTextBlock"
+                  x:Key="{x:Type SelectableTextBlock}">
+        <Style Selector="^[IsEnabled=true]">
+            <Setter Property="Cursor" Value="IBeam" />
+            <!-- Defined in TextBoxStyles -->
+            <Setter Property="ContextFlyout" Value="{StaticResource DefaultTextBoxContextFlyout}" />
+        </Style>
+    </ControlTheme>
+    
     <ControlTheme TargetType="TextBlock" x:Key="BaseTextBlockStyle">
         <Setter Property="FontFamily" Value="XamlAutoFontFamily" />
         <Setter Property="FontSize" Value="14" />
