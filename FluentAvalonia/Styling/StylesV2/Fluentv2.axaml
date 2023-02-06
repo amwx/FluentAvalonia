@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:avconv="using:Avalonia.Controls.Converters"
-                    xmlns:sty="using:FluentAvalonia.Styling">
+                    xmlns:sty="using:FluentAvalonia.Styling"
+                    xmlns:conv="using:FluentAvalonia.Converters">
     <ResourceDictionary.ThemeDictionaries>
         <!-- NOTE: Default in FA is Light theme, in WinUI its dark-->
         <ResourceDictionary x:Key="Default">
@@ -5868,6 +5869,8 @@
     <avconv:CornerRadiusFilterConverter x:Key="BottomCornerRadiusFilterConverter" Filter="BottomLeft, BottomRight"/>
     <avconv:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
     <avconv:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
+
+    <conv:ColorToBrushConv x:Key="ColorBrushConv" />
 
     <x:String x:Key="ChevronDownGlyph">&#xE70D;</x:String>
     <x:String x:Key="ChevronUpGlyph">&#xE70E;</x:String>

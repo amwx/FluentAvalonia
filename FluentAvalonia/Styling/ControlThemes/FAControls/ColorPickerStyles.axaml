@@ -13,8 +13,7 @@
                             IsMoreButtonVisible="True"/>
         </Border>
     </Design.PreviewWith>
-
-    <conv:ColorToBrushConv x:Key="ColorBrushConv" />
+    
     <conv:ColorShadeBrushConv x:Key="ColorShadeBrushConv" />
     <x:Double x:Key="ColorPickerTabItemHeight">46</x:Double>
     <Thickness x:Key="ColorPickerSpectrumMargin">2 48 2 2</Thickness>
