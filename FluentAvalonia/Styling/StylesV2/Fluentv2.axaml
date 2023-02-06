@@ -1950,6 +1950,10 @@
             <Thickness x:Key="TeachingTipAlternateCloseButtonBorderThickness">1</Thickness>
             <StaticResource x:Key="TeachingTipTransientBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush"/>
 
+            <!-- Refresh Visualizer -->
+            <StaticResource x:Key="RefreshVisualizerForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
             <!-- Colors -->
@@ -3904,6 +3908,11 @@
             <StaticResource x:Key="TeachingTipAlternateCloseButtonBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
             <Thickness x:Key="TeachingTipAlternateCloseButtonBorderThickness">1</Thickness>
             <StaticResource x:Key="TeachingTipTransientBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush"/>
+
+            <!-- Refresh Visualizer -->
+            <StaticResource x:Key="RefreshVisualizerForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            
         </ResourceDictionary>
         <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
             <!-- These defaults are taken from Windows 10 High Contrast theme -->
@@ -5837,6 +5846,10 @@
             <StaticResource x:Key="TeachingTipAlternateCloseButtonBorderBrushDisabled" ResourceKey="SystemColorButtonFaceColorBrush" />
             <Thickness x:Key="TeachingTipAlternateCloseButtonBorderThickness">1</Thickness>
             <StaticResource x:Key="TeachingTipTransientBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush"/>
+
+            <!-- Refresh Visualizer -->
+            <StaticResource x:Key="RefreshVisualizerForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
 
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
