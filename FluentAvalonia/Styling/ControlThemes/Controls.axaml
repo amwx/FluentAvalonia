@@ -55,7 +55,8 @@
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/TransitioningContentControlStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPickerStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridStyles.axaml" />
-
+                <ResourceInclude Source="/Styling/ControlThemes/BasicControls/RefreshControlStyles.axaml" />
+                
                 <!-- FluentAvalonia Controls -->
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlThemes/FAControls/HyperlinkButtonStyles.axaml" />
