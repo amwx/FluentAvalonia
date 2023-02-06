@@ -2,6 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
       <TargetFramework>net6.0</TargetFramework>
+      <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -19,5 +20,8 @@
   <ItemGroup>
     <ProjectReference Include="..\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />
     <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <TrimmerRootDescriptor Include="link.xml" />
   </ItemGroup>
 </Project>

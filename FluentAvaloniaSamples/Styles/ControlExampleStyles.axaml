@@ -87,7 +87,6 @@
                                                   Margin="12 12 0 12"/>
 
                                 <Border Name="OptionsHost"
-                                        IsVisible="{Binding Options, Converter={x:Static ObjectConverters.IsNotNull}}"
                                         Margin="12"
                                         Padding="8"
                                         CornerRadius="{DynamicResource OverlayCornerRadius}">

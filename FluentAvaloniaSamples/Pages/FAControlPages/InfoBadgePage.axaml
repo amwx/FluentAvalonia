@@ -4,13 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1000"
              x:Class="FluentAvaloniaSamples.Pages.InfoBadgePage"
+             x:DataType="vm:InfoBadgePageViewModel"
              PreviewImage="/Assets/PageIcons/InfoBadge.jpg">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="InfoBadge embedded in NavigationView">
             <ui:NavigationView x:Name="nvSample1" Height="300" 
-								   PaneDisplayMode="{Binding #DisplayModeBox.SelectedItem.Content}">
+								   PaneDisplayMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=DisplayModeBox}">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem Content="Home" IconSource="Home"/>
                     <ui:NavigationViewItem Content="Account" IconSource="Contact"/>
@@ -48,7 +50,7 @@
             </ctrls:ControlExample.XamlSource>
 
             <ctrls:ControlExample.Substitutions>
-                <ctrls:ControlExampleSubstitution Key="Opacity" Value="{Binding InfoBarOpacity}" />
+                <ctrls:ControlExampleSubstitution Key="Opacity" Value="{Binding InfoBadgeOpacity}" />
             </ctrls:ControlExample.Substitutions>
             
         </ctrls:ControlExample>

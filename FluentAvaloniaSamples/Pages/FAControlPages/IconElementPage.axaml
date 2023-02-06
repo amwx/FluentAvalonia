@@ -7,12 +7,13 @@
              xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1500"
              x:Class="FluentAvaloniaSamples.Pages.IconElementPage"
+             x:DataType="vm:IconElementPageViewModel"
              PreviewImage="/Assets/PageIcons/Icons.jpg">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="SymbolIcon"
                               TargetType="ui:SymbolIcon">
             <ui:SymbolIcon Name="Icon" 
-                           Symbol="{Binding #SymbolTypeSelector.SelectedItem.Content}"
+                           Symbol="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SymbolTypeSelector}"
                            FontSize="{Binding #IconFontSize.Value}"/>
 
             <ctrls:ControlExample.Options>
