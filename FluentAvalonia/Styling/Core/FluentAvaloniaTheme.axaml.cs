@@ -77,8 +77,16 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// case of KDE) name to contain "dark". On GNOME or Xfce, it requires 'color-scheme'
     /// to be set to either 'prefer-light', 'prefer-dark', or 'gtk-theme' to contain 'dark'.
     /// Also note, that high contrast theme will only resolve here on Windows.
-    /// </remarks>
-    public bool PreferSystemTheme { get; set; } = true;
+    /// </remarks>    
+    public bool PreferSystemTheme
+    {
+        get => _preferSystemTheme;
+        set
+        {
+            _preferSystemTheme = value;
+            ResolveThemeAndInitializeSystemResources();
+        }
+    }
 
     /// <summary>
     /// Gets or sets whether to use the current user's accent color as the resource SystemAccentColor
@@ -88,7 +96,15 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// from wallpaper and custom), LXQt (from selection color) and LXDE (from custom selection
     /// color).
     /// </remarks>
-    public bool PreferUserAccentColor { get; set; } = true;
+    public bool PreferUserAccentColor
+    {
+        get => _preferUserAccentColor;
+        set
+        {
+            _preferUserAccentColor = value;
+            LoadCustomAccentColor();
+        }
+    }
 
     /// <summary>
     /// Gets or sets a <see cref="Color"/> to use as the SystemAccentColor for the app. Note this takes precedence over the
@@ -548,6 +564,8 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     private bool _hasLoaded;
     private Uri _baseUri;
     private Color? _customAccentColor;
+    private bool _preferSystemTheme;
+    private bool _preferUserAccentColor;
 
     public const string LightModeString = "Light";
     public const string DarkModeString = "Dark";
