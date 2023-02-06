@@ -8,6 +8,7 @@
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Hidden" Minimum="0" Maximum="100" Value="10" />
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -90,6 +91,7 @@
                                               VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
                                     <Panel>
                                         <TextBlock Name="PART_Watermark"
+                                                   Foreground="{DynamicResource TextControlPlaceholderForeground}"
                                                    Text="{TemplateBinding Watermark}"
                                                    TextAlignment="{TemplateBinding TextAlignment}"
                                                    TextWrapping="{TemplateBinding TextWrapping}"

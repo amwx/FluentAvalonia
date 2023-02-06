@@ -145,12 +145,13 @@
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
-            </Style>
-            <Style Selector="^:disabled /template/ ui|FABorder#Root">
-                <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
-            </Style>
-        </Style>        
+            </Style>           
+        </Style>
+        
+        <Style Selector="^:disabled /template/ ui|FABorder#Root">
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+        </Style>
     </ControlTheme>    
 </ResourceDictionary>

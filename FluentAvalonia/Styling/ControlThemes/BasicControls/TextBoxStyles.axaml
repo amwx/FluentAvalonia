@@ -177,13 +177,13 @@
                                                   AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
                                         <Panel>
                                             <TextBlock Name="PART_Watermark"
-                                                    Opacity="0.5"
-                                                    Text="{TemplateBinding Watermark}"
-                                                    TextAlignment="{TemplateBinding TextAlignment}"
-                                                    TextWrapping="{TemplateBinding TextWrapping}"
-                                                    IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                       Foreground="{DynamicResource TextControlPlaceholderForeground}"
+                                                       Text="{TemplateBinding Watermark}"
+                                                       TextAlignment="{TemplateBinding TextAlignment}"
+                                                       TextWrapping="{TemplateBinding TextWrapping}"
+                                                       IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                             <TextPresenter Name="PART_TextPresenter"
                                                           Text="{TemplateBinding Text, Mode=TwoWay}"
                                                           CaretIndex="{TemplateBinding CaretIndex}"

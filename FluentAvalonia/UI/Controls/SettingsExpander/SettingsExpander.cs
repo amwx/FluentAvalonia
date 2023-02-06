@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using Avalonia;
@@ -92,8 +93,30 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         }
         else if (change.Property == ItemsProperty)
         {
-            if (IsClickEnabled && change.GetNewValue<IEnumerable>() != null)
+            var newValue = change.GetNewValue<IEnumerable>();
+            if (IsClickEnabled && newValue is not null)
                 throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
+
+            if (_expanderToggleButton is not null)
+            {
+                // Disable the interaction states if items collection is cleared
+                bool isInteractable = newValue is not null && newValue.Count() > 0;
+                ((IPseudoClasses)_expanderToggleButton.Classes).Set(SharedPseudoclasses.s_pcAllowClick, isInteractable);
+                ((IPseudoClasses)_expanderToggleButton.Classes).Set(s_pcEmpty, !isInteractable);
+            }
+        }
+    }
+
+    protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        base.ItemsCollectionChanged(sender, e);
+
+        if (_expanderToggleButton is not null)
+        {
+            // Disable the interaction states if items collection is cleared
+            bool isInteractable = ItemCount > 0;
+            ((IPseudoClasses)_expanderToggleButton.Classes).Set(SharedPseudoclasses.s_pcAllowClick, isInteractable);
+            ((IPseudoClasses)_expanderToggleButton.Classes).Set(s_pcEmpty, !isInteractable); 
         }
     }
 

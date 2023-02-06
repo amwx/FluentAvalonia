@@ -77,8 +77,16 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// case of KDE) name to contain "dark". On GNOME or Xfce, it requires 'color-scheme'
     /// to be set to either 'prefer-light', 'prefer-dark', or 'gtk-theme' to contain 'dark'.
     /// Also note, that high contrast theme will only resolve here on Windows.
-    /// </remarks>
-    public bool PreferSystemTheme { get; set; } = true;
+    /// </remarks>    
+    public bool PreferSystemTheme
+    {
+        get => _preferSystemTheme;
+        set
+        {
+            _preferSystemTheme = value;
+            ResolveThemeAndInitializeSystemResources();
+        }
+    }
 
     /// <summary>
     /// Gets or sets whether to use the current user's accent color as the resource SystemAccentColor
@@ -88,7 +96,15 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// from wallpaper and custom), LXQt (from selection color) and LXDE (from custom selection
     /// color).
     /// </remarks>
-    public bool PreferUserAccentColor { get; set; } = true;
+    public bool PreferUserAccentColor
+    {
+        get => _preferUserAccentColor;
+        set
+        {
+            _preferUserAccentColor = value;
+            LoadCustomAccentColor();
+        }
+    }
 
     /// <summary>
     /// Gets or sets a <see cref="Color"/> to use as the SystemAccentColor for the app. Note this takes precedence over the
@@ -200,6 +216,8 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
     private void Init()
     {
+        AvaloniaXamlLoader.Load(this);
+
         AvaloniaLocator.CurrentMutable.Bind<FluentAvaloniaTheme>().ToConstant(this);
 
         // First load our base and theme resources
@@ -208,18 +226,12 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         // explicitly disabled to enable setting the theme manually
         ResolveThemeAndInitializeSystemResources();
 
-        Resources.MergedDictionaries.Add(
-            (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/StylesV2/Fluentv2.axaml"), _baseUri));
-
         if (OSVersionHelper.IsWindows())
         {
             // Load this in all cases since with ThemeDictionaries, we always have a ref to the 
             // HighContrast dictionary
             TryLoadHighContrastThemeColors();
         }
-
-        // Load the controls
-        Add((Styles)AvaloniaXamlLoader.Load(new Uri($"avares://FluentAvalonia/Styling/ControlThemes/Controls.axaml"), _baseUri));
 
         SetTextAlignmentOverrides();
 
@@ -262,10 +274,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         if (theme != null)
         {
             Application.Current.RequestedThemeVariant = theme;
-        }
-
-        // Load the SymbolThemeFontFamily
-        AddOrUpdateSystemResource("SymbolThemeFontFamily", new FontFamily(new Uri("avares://FluentAvalonia"), "/Fonts/#Symbols"));        
+        }     
     }
 
     private void OnPlatformColorValuesChanged(object sender, PlatformColorValues e)
@@ -555,6 +564,8 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     private bool _hasLoaded;
     private Uri _baseUri;
     private Color? _customAccentColor;
+    private bool _preferSystemTheme;
+    private bool _preferUserAccentColor;
 
     public const string LightModeString = "Light";
     public const string DarkModeString = "Dark";

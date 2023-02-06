@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="900"
              x:Class="FluentAvaloniaSamples.Pages.PickerFlyoutBasePage"
              PreviewImage="/Assets/PageIcons/PickerFlyoutBase.jpg">

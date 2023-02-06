@@ -68,7 +68,7 @@
         <Style Selector="^:allowClick">
             <Style Selector="^:pointerover /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
             </Style>
             <Style Selector="^:pressed /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />

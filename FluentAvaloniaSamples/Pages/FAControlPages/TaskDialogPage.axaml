@@ -39,7 +39,7 @@
                                    SubHeader="SubHeader"
                                    Content="This is some sample text, but you can put more advanced content here if you like"                                   
                                    core:VisualStateHelper.ForcedClassesProperty=":open,:hosted,:hidden!"
-                                   FooterVisibility="{Binding #FooterVisCB.SelectedItem.Content}">
+                                   FooterVisibility="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=FooterVisCB}">
                         <ui:TaskDialog.Commands>
                             <ui:TaskDialogCommand Text="{Binding #CommandText.Text}"
                                                   Description="{Binding #DescText.Text}"
@@ -181,7 +181,7 @@
             <ctrls:ControlExample.Substitutions>
                 <ctrls:ControlExampleSubstitution Key="title" Value="{Binding #TaskDialog1.Title}" />
                 <ctrls:ControlExampleSubstitution Key="header" Value="{Binding #TaskDialog1.Header}" />
-                <ctrls:ControlExampleSubstitution Key="subheader" Value="{Binding #TaskDialog1.Subheader}" />
+                <ctrls:ControlExampleSubstitution Key="subheader" Value="{Binding #TaskDialog1.SubHeader}" />
                 <ctrls:ControlExampleSubstitution Key="content" Value="{Binding #TaskDialog1.Content}" />
                 <ctrls:ControlExampleSubstitution Key="footervisibility" Value="{Binding #TaskDialog1.FooterVisibility}" />
                 <ctrls:ControlExampleSubstitution Key="footerexpanded" Value="{Binding #TaskDialog1.IsFooterExpanded}" />

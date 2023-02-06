@@ -102,11 +102,11 @@
 
                 <SplitView Name="SplitView"
                            MinHeight="400"
-                           PanePlacement="{Binding #PanePlacementBox.SelectedItem.Content}"
-                           PaneBackground="{Binding SelectedItem.Tag, ElementName=PaneBackgroundSelector}"
+                           PanePlacement="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=PanePlacementBox}"
+                           PaneBackground="{Binding ((ComboBoxItem)SelectedItem).Tag, ElementName=PaneBackgroundSelector}"
                            OpenPaneLength="{Binding Value, ElementName=OpenPaneLengthSlider}"
                            CompactPaneLength="{Binding Value, ElementName=CompactPaneLengthSlider}"
-                           DisplayMode="{Binding #PaneDisplayModeBox.SelectedItem.Content}">
+                           DisplayMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=PaneDisplayModeBox}">
                     <SplitView.Pane>
                         <Grid>
                             <Grid.RowDefinitions>

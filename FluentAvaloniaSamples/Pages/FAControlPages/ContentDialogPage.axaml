@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
              x:Class="FluentAvaloniaSamples.Pages.ContentDialogPage"
+             x:DataType="vm:ContentDialogPageViewModel"
              PreviewImage="/Assets/PageIcons/ContentDialog.jpg">
     <StackPanel Spacing="8">
         <ctrls:ControlExample TargetType="ui:ContentDialog"

@@ -8,6 +8,7 @@
              xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="3000"
              x:Class="FluentAvaloniaSamples.Pages.TabViewPage"
+             x:DataType="vm:TabViewPageViewModel"
              PreviewImage="/Assets/PageIcons/SplitButton.jpg">
     <StackPanel Spacing="8">
         <ctrls:ControlExample TargetType="ui:TabView"
@@ -134,8 +135,8 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
             <ui:TabView AddTabButtonClick="TabView_AddButtonClick"
                         TabCloseRequested="TabView_TabCloseRequested"
                         Name="APIInActionTabView"
-                        TabWidthMode="{Binding #TabModeBox.SelectedItem.Content}"
-                        CloseButtonOverlayMode="{Binding #CloseButtonBox.SelectedItem.Content}">
+                        TabWidthMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=TabModeBox}"
+                        CloseButtonOverlayMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=CloseButtonBox}">
                 <ui:TabViewItem Header="Document 0"
                                 IconSource="Document">
                     <spg:NVSamplePage2 />

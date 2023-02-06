@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
@@ -22,7 +23,15 @@ public class FALocalizationHelper
         using var al = AvaloniaLocator.Current.GetService<IAssetLoader>()
             .Open(new Uri("avares://FluentAvalonia/Assets/ControlStrings.json"));
 
-        _mappings = JsonSerializer.Deserialize<LocalizationMap>(al);        
+        KeepType<LocalizationMap>();
+        KeepType<LocalizationEntry>();
+        _mappings = JsonSerializer.Deserialize<LocalizationMap>(al);
+
+        static void KeepType<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+            T>() { }
     }
 
     static FALocalizationHelper()

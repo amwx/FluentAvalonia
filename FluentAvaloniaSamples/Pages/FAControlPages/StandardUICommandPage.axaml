@@ -6,7 +6,9 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:input="using:FluentAvalonia.UI.Input"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
+             xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
              x:Class="FluentAvaloniaSamples.Pages.StandardUICommandPage"
+             x:DataType="vm:StandardUICommandPageViewModel"
              PreviewImage="/Assets/PageIcons/UICommand.jpg">
 
     <UserControl.Resources>

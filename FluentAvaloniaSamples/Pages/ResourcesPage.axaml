@@ -8,7 +8,8 @@
              xmlns:sconv="using:FluentAvaloniaSamples.Converters"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FluentAvaloniaSamples.Pages.ResourcesPage">
+             x:Class="FluentAvaloniaSamples.Pages.ResourcesPage"
+             x:DataType="vm:ResourcesPageViewModel">
     <UserControl.Resources>
         <conv:ColorToBrushConv x:Key="CToBConv" />
         <sconv:InverseBrushConverter x:Key="InvBrushConv" />
@@ -52,7 +53,7 @@
                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                                            Classes="AppBarButton"
                                            Command="{Binding $parent[TextBox].Clear}"
-                                           IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                           IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                                 <Button Content="&#xE721;"
                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                                            Classes="AppBarButton"
@@ -80,7 +81,7 @@
                 <DataGridTemplateColumn Header="Resource Key"
                                         Width="2*" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ResourceItemBase">
                             <TextBlock Text="{Binding ResourceKey}"
                                        HorizontalAlignment="Left"
                                        Margin="12 0"
@@ -90,14 +91,14 @@
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="1.5*" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ResourceItemBase">
                             <TextBlock Text="{Binding ResourceType}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.HeaderTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ResourceItemBase">
                             <TextBlock Text="ResourceType"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -106,14 +107,14 @@
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="*">
                     <DataGridTemplateColumn.HeaderTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ResourceItemBase">
                             <TextBlock Text="Preview"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ResourceItemBase">
                             <ContentControl Content="{Binding}">
                                 <ContentControl.DataTemplates>
                                     <DataTemplate DataType="vm:BrushResourceItem">

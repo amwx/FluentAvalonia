@@ -7,6 +7,7 @@
     <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
     <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
     <PackageId>FluentAvalonia.UI.Windowing</PackageId>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,7 +21,7 @@
 
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>2.0.0-preview4</Version>
+    <Version>2.0.0-preview5</Version>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
