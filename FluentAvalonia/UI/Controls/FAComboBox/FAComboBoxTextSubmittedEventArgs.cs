@@ -2,6 +2,9 @@
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Provides data when the user enters custom text into the ComboBox.
+/// </summary>
 public class FAComboBoxTextSubmittedEventArgs : EventArgs
 {
     internal FAComboBoxTextSubmittedEventArgs(string text)

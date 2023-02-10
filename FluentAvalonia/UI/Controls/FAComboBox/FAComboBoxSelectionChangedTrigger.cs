@@ -1,5 +1,8 @@
 ﻿namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Defines constants that specify what action causes a SelectionChanged event to occur.
+/// </summary>
 public enum FAComboBoxSelectionChangedTrigger
 {
     /// <summary>
