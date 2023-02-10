@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
+    <ProjectReference Include="..\..\src\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
 
   <ItemGroup>

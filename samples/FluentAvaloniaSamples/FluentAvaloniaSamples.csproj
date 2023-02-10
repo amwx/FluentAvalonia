@@ -18,8 +18,8 @@
     <PackageReference Include="Avalonia.Diagnostics" Version="11.0-preview5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />
-    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
+    <ProjectReference Include="..\..\src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />
+    <ProjectReference Include="..\..\src\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
   <ItemGroup>
     <TrimmerRootDescriptor Include="link.xml" />
