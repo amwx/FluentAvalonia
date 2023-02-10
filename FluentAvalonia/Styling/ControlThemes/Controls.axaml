@@ -105,6 +105,10 @@
 
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/SettingsExpander/SettingsExpanderStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/SettingsExpander/SettingsExpanderItemStyles.axaml" />
+
+                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAComboBox/FAComboBoxStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAComboBox/FAComboBoxItemStyles.axaml" />
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
