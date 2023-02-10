@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -621,17 +622,20 @@ public partial class Frame : ContentControl
             //Default to entrance transition
             entry.NavigationTransitionInfo = entry.NavigationTransitionInfo ?? new EntranceNavigationTransitionInfo();
             _presenter.Opacity = 0;
-            // Very busy pages will delay loading b/c layout & render has to occur first
-            // Posting this helps a little bit, but not much
-            // Not really sure how to get the transition to occur while the page is loading
-            // so speed is comparable to WinUI...this may be an Avalonia limitation???
+
+            _cts?.Cancel();
+            _cts = new CancellationTokenSource();
+
+            // Post the animation otherwise pages that take slightly longer to load won't
+            // have an animation since it will run before layout is complete
             Dispatcher.UIThread.Post(() =>
             {
-                entry.NavigationTransitionInfo.RunAnimation(_presenter);
-            }, DispatcherPriority.Loaded);
+                entry.NavigationTransitionInfo.RunAnimation(_presenter, _cts.Token);
+            }, DispatcherPriority.Render);
         }
     }
 
+    private CancellationTokenSource _cts;
     private ContentPresenter _presenter;
     private readonly List<(Type pageSrcType, Control page)> _cache = new List<(Type, Control)>(10);
     private bool _isNavigating = false;

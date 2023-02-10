@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
+using System.Threading;
 
 namespace FluentAvalonia.UI.Media.Animation;
 
@@ -20,7 +21,7 @@ public class DrillInNavigationTransitionInfo : NavigationTransitionInfo
     public bool IsReversed { get; set; } = false; //Zoom out if true
 
     //Zoom & Fade
-    public async override void RunAnimation(Animatable ctrl)
+    public async override void RunAnimation(Animatable ctrl, CancellationToken cancellationToken)
     {
         var animation = new Avalonia.Animation.Animation
         {
@@ -52,7 +53,7 @@ public class DrillInNavigationTransitionInfo : NavigationTransitionInfo
             FillMode = FillMode.Forward
         };
 
-        await animation.RunAsync(ctrl, null);
+        await animation.RunAsync(ctrl, null, cancellationToken);
 
         (ctrl as Visual).Opacity = 1;
     }

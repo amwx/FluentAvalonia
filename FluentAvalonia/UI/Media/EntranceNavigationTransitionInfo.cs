@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
+using System.Threading;
 
 namespace FluentAvalonia.UI.Media.Animation;
 
@@ -24,7 +25,7 @@ public class EntranceNavigationTransitionInfo : NavigationTransitionInfo
     public double FromVerticalOffset { get; set; } = 28;
 
     //SlideUp and FadeIn
-    public async override void RunAnimation(Animatable ctrl)
+    public async override void RunAnimation(Animatable ctrl, CancellationToken cancellationToken)
     {
         var animation = new Avalonia.Animation.Animation
         {
@@ -56,7 +57,7 @@ public class EntranceNavigationTransitionInfo : NavigationTransitionInfo
             FillMode = FillMode.Forward
         };
 
-        await animation.RunAsync(ctrl, null);
+        await animation.RunAsync(ctrl, null, cancellationToken);
 
         (ctrl as Visual).Opacity = 1;
     }
