@@ -20,7 +20,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvaloniaTests", "test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FASandbox", "samples\FASandbox\FASandbox.csproj", "{3CD8ED83-02E7-4949-9C48-531E142A2695}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAvalonia.UI.Windowing", "src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj", "{4DEE35BC-DD05-4939-BC52-790F2D80C8F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvalonia.UI.Windowing", "src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj", "{4DEE35BC-DD05-4939-BC52-790F2D80C8F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7E9416E1-C672-4622-8D32-91A16802873A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F5EA8600-E6C8-4F4A-AF59-4941FA64682D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EDF76EAC-2EA9-49D5-9C33-372BC76305F2} = {7E9416E1-C672-4622-8D32-91A16802873A}
+		{8AE77DED-A81D-43DC-B4A2-AE03ED1C20F9} = {F5EA8600-E6C8-4F4A-AF59-4941FA64682D}
+		{3CD8ED83-02E7-4949-9C48-531E142A2695} = {7E9416E1-C672-4622-8D32-91A16802873A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E358197-10B9-4579-8309-5D9BCB8E7F3E}
