@@ -3,7 +3,6 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
-using Avalonia.VisualTree;
 using System;
 using System.Threading;
 
@@ -22,7 +21,7 @@ public class EntranceNavigationTransitionInfo : NavigationTransitionInfo
     /// <summary>
     /// Gets or sets the Vertical Offset used when animating
     /// </summary>
-    public double FromVerticalOffset { get; set; } = 28;
+    public double FromVerticalOffset { get; set; } = 100;
 
     //SlideUp and FadeIn
     public async override void RunAnimation(Animatable ctrl, CancellationToken cancellationToken)
@@ -53,7 +52,7 @@ public class EntranceNavigationTransitionInfo : NavigationTransitionInfo
                     Cue = new Cue(1d)
                 }
             },
-            Duration = TimeSpan.FromSeconds(0.67),
+            Duration = TimeSpan.FromSeconds(0.5),
             FillMode = FillMode.Forward
         };
 
