@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <StackPanel>
+            <StackPanel.Resources>
+                <StreamGeometry x:Key="FA_Icon">M 125.47244 132.01313 L 110.78962 177.32871 L 121.0231 177.32871 L 123.88236 168.07553 L 135.81755 168.07553 L 138.27115 177.23259 L 148.49791 177.23259 L 133.92619 132.01313 L 125.47244 132.01313 z M 91.768559 132.14646 L 91.768559 177.19642 L 101.55711 177.19642 L 101.55711 158.95412 L 115.35007 158.95412 L 117.32514 151.58351 L 101.446 151.58351 L 101.446 139.93306 L 120.912 139.93306 L 123.69271 132.48029 L 91.768559 132.14646 z M 129.05259 145.59576 L 129.0531 145.59576 C 133.03726 145.58777 136.37241 148.60671 136.78442 152.56226 C 136.7789 152.55772 136.77502 152.55621 136.78545 152.57053 L 136.88518 160.62327 C 136.88464 160.87438 136.68103 161.07749 136.42992 161.07802 L 129.70733 161.1266 C 129.41639 161.1615 129.37352 161.13287 129.08049 161.13487 C 128.76286 161.12787 128.44334 161.10792 128.17202 161.07802 C 124.29079 160.5967 121.31012 157.28817 121.30112 153.3772 C 121.29412 149.0942 124.76965 145.60654 129.05259 145.59576 z M 128.17202 161.07802 L 128.16995 161.07596 C 128.14955 161.07396 128.13003 161.07 128.11053 161.0651 L 128.17202 161.07802 z</StreamGeometry>
+            </StackPanel.Resources>
+            <PathIcon Data="{StaticResource FA_Icon}" />
+        </StackPanel>
+    </Design.PreviewWith>
+    <ControlTheme x:Key="{x:Type PathIcon}" TargetType="PathIcon">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Height" Value="{DynamicResource IconElementThemeHeight}" />
+        <Setter Property="Width" Value="{DynamicResource IconElementThemeWidth}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}">
+                    <Viewbox Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+                        <Path Fill="{TemplateBinding Foreground}" Data="{TemplateBinding Data}" Stretch="Uniform" />
+                    </Viewbox>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

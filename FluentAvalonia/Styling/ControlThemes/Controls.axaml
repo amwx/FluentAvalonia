@@ -56,6 +56,7 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPickerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/RefreshControlStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PathIcon.axaml" />
                 
                 <!-- FluentAvalonia Controls -->
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
