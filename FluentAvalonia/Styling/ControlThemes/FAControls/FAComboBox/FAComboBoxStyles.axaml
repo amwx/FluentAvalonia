@@ -165,6 +165,7 @@
 									 HorizontalAlignment="Stretch"
 									 CornerRadius="{DynamicResource OverlayCornerRadius}">
                             <ScrollViewer Name="ScrollViewer"
+                                          AutomationProperties.AccessibilityView="Raw"
 										  Foreground="{DynamicResource ComboBoxDropDownForeground}"
 										  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
 										  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">

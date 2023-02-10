@@ -1,5 +1,7 @@
 ﻿using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
@@ -388,10 +390,10 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
     }
 
-    //protected override AutomationPeer OnCreateAutomationPeer()
-    //{
-    //    return new ComboBoxAutomationPeer(this)
-    //}
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new FAComboBoxAutomationPeer(this);
+    }
 
     internal void ItemFocused(FAComboBoxItem item)
     {
