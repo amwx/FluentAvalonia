@@ -153,10 +153,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         get => GetValue(IsDropDownOpenProperty);
         set => SetValue(IsDropDownOpenProperty, value);
     }
-
-    // Per WPF:
-    // !comboBox.IsDropDownOpen && comboBox.IsKeyboardFocusWithin ||
-    // comboBox.HighlightedElement != null && highlightedElement.Content == comboBox._clonedElement
+        
     /// <summary>
     /// Gets whether the SelectionBox is hightlighted
     /// </summary>

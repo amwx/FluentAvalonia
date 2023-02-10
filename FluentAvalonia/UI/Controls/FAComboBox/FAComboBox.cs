@@ -326,6 +326,8 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 }
             }
         }
+
+        UpdateIsSelectionBoxHighlighted();
     }
 
     protected override void OnLostFocus(RoutedEventArgs e)
@@ -744,6 +746,16 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 }
             }
         }
+    }
+
+    private void UpdateIsSelectionBoxHighlighted()
+    {
+        // Per WPF:
+        // !comboBox.IsDropDownOpen && comboBox.IsKeyboardFocusWithin ||
+        // comboBox.HighlightedElement != null && highlightedElement.Content == comboBox._clonedElement
+        // Not sure how to handle that second clause, as this is different implementation
+        // so we'll just use the first
+        IsSelectionBoxHighlighted = !IsDropDownOpen && IsKeyboardFocusWithin;
     }
 
 
