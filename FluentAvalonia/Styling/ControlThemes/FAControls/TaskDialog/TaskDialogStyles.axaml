@@ -269,7 +269,7 @@
             </Style>
 
 
-            <!--<Style Selector="^:hidden /template/ Panel#LayoutRoot">
+            <Style Selector="^:hidden /template/ Panel#LayoutRoot">
                 <Style.Animations>
                     <Animation Duration="00:00:00.167" FillMode="Forward">
                         <KeyFrame Cue="0%">
@@ -297,13 +297,13 @@
                 </Style.Animations>
             </Style>
 
-            --><!--Handle open dialog--><!--
+            <!--Handle open dialog-->
             <Style Selector="^:open /template/ Panel#LayoutRoot">
                 <Setter Property="IsVisible" Value="True"/>
                 <Style.Animations>
-                    --><!-- Animation applies with priority of LocalValue
-                 To overrule the IsVisible=False in :hidden, set
-                 IsVisible=True in BOTH KeyFrames here --><!--
+                     <!--Animation applies with priority of LocalValue
+                         To overrule the IsVisible=False in :hidden, set
+                         IsVisible=True in BOTH KeyFrames here--> 
                     <Animation Duration="00:00:00.250" FillMode="Forward">
                         <KeyFrame Cue="0%">
                             <Setter Property="IsVisible" Value="True"/>
@@ -329,7 +329,7 @@
                         </KeyFrame>
                     </Animation>
                 </Style.Animations>
-            </Style>-->
+            </Style>
             
         </Style>
         
