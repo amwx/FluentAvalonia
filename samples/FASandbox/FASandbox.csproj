@@ -7,10 +7,10 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0-preview5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0-preview5" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0-preview5" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />

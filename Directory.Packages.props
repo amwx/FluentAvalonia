@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AvaloniaVersion>11.0-preview5</AvaloniaVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
+	<PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
+	<PackageVersion Include="Avalonia.Controls.ItemsRepeater" Version="$(AvaloniaVersion)" />
+	<PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+	<PackageVersion Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+
+    <PackageVersion Include="MicroCom.CodeGenerator.MSBuild" Version="0.11.0" />
+    <PackageVersion Include="MicroCom.Runtime" Version="0.11.0" />
+
+    <PackageVersion Include="System.Reactive" Version="5.0.0" />
+    <PackageVersion Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageVersion Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.1'" />
+
+    <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview1" />
+  </ItemGroup>
+</Project>

@@ -12,10 +12,10 @@
     <AvaloniaResource Include="Pages\SampleCode\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0-preview5" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0-preview5" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.0-preview5" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />
