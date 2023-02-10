@@ -123,6 +123,10 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 OnTextChanged(change.GetNewValue<string>());
             }
         }
+        else if (change.Property == HeaderProperty)
+        {
+            PseudoClasses.Set(SharedPseudoclasses.s_pcHeader, change.NewValue is not null);
+        }
     }
 
     protected override Control CreateContainerForItemOverride() => new FAComboBoxItem();

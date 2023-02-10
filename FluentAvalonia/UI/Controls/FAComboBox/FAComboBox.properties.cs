@@ -19,7 +19,7 @@ namespace FluentAvalonia.UI.Controls;
 [TemplatePart(s_tpEditableText, typeof(TextBox))]
 [TemplatePart(s_tpDropDownOverlay, typeof(ComboBox))]
 [PseudoClasses(s_pcSelected, s_pcFocus, SharedPseudoclasses.s_pcPressed)]
-[PseudoClasses(s_pcEditable, s_pcDropDownOpen, s_pcPopupAbove)]
+[PseudoClasses(s_pcEditable, s_pcDropDownOpen, s_pcPopupAbove, SharedPseudoclasses.s_pcHeader)]
 public partial class FAComboBox : HeaderedSelectingItemsControl
 {
     /// <summary>

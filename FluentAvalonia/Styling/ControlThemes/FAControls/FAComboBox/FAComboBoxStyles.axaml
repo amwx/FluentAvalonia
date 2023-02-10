@@ -260,6 +260,10 @@
             <!-- Skip FocusedDropDown state-->
         </Style>
 
+        <Style Selector="^:header /template/ ContentPresenter#HeaderContentPresenter">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
         <!-- Editable states -->
         <Style Selector="^:editable">
             <Style Selector="^ /template/ TextBox#EditableText">
