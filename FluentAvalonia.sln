@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvalonia", "FluentAvalonia\FluentAvalonia.csproj", "{E527B96A-67A6-41C1-92A8-E56E341BB947}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvalonia", "src\FluentAvalonia\FluentAvalonia.csproj", "{E527B96A-67A6-41C1-92A8-E56E341BB947}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvaloniaSamples", "FluentAvaloniaSamples\FluentAvaloniaSamples.csproj", "{EDF76EAC-2EA9-49D5-9C33-372BC76305F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvaloniaSamples", "samples\FluentAvaloniaSamples\FluentAvaloniaSamples.csproj", "{EDF76EAC-2EA9-49D5-9C33-372BC76305F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7086DAEA-90CD-46D3-9E68-D75DD19417F0}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvaloniaTests", "FluentAvaloniaTests\FluentAvaloniaTests.csproj", "{8AE77DED-A81D-43DC-B4A2-AE03ED1C20F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAvaloniaTests", "tests\FluentAvaloniaTests\FluentAvaloniaTests.csproj", "{8AE77DED-A81D-43DC-B4A2-AE03ED1C20F9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FASandbox", "FASandbox\FASandbox.csproj", "{3CD8ED83-02E7-4949-9C48-531E142A2695}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FASandbox", "samples\FASandbox\FASandbox.csproj", "{3CD8ED83-02E7-4949-9C48-531E142A2695}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAvalonia.UI.Windowing", "FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj", "{4DEE35BC-DD05-4939-BC52-790F2D80C8F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAvalonia.UI.Windowing", "src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj", "{4DEE35BC-DD05-4939-BC52-790F2D80C8F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
