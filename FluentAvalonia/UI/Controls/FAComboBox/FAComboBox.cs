@@ -214,7 +214,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             {
                 if (!isEditable)
                 {
-                    SelectPrev();
+                    SelectPrevious();
                 }
                 else
                 {
@@ -249,7 +249,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                     if (e.Delta.Y < 0)
                         SelectNext();
                     else
-                        SelectPrev();
+                        SelectPrevious();
 
                     e.Handled = true;
                 }
@@ -685,19 +685,39 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
     }
 
-    private void SelectNext()
-    {
-        if (ItemCount >= 1)
-        {
-            MoveSelection(NavigationDirection.Next, WrapSelection);
-        }
-    }
+    private void SelectNext() => MoveSelection(SelectedIndex, 1, WrapSelection);
+    private void SelectPrevious() => MoveSelection(SelectedIndex, -1, WrapSelection);
 
-    private void SelectPrev()
+    private void MoveSelection(int startIndex, int step, bool wrap)
     {
-        if (ItemCount >= 1)
+        static bool IsSelectable(object o) => (o as AvaloniaObject)?.GetValue(IsEnabledProperty) ?? true;
+
+        var count = ItemCount;
+        for (int i = startIndex + step; i != startIndex; i += step)
         {
-            MoveSelection(NavigationDirection.Previous, WrapSelection);
+            if (i < 0 || i >= count)
+            {
+                if (wrap)
+                {
+                    if (i < 0)
+                        i += count;
+                    else if (i >= count)
+                        i %= count;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            var item = ItemsView[i];
+            var container = ContainerFromIndex(i);
+
+            if (IsSelectable(item) && IsSelectable(container))
+            {
+                SelectedIndex = i;
+                break;
+            }
         }
     }
 
