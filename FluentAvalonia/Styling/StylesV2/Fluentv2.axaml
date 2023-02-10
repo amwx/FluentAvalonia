@@ -5923,6 +5923,10 @@
     <Thickness x:Key="MenuIconPresenterMargin">0,0,12,0</Thickness>
     <Thickness x:Key="MenuInputGestureTextMargin">24,0,0,0</Thickness>
 
+    <!-- PathIcon  -->
+    <x:Double x:Key="IconElementThemeHeight">20</x:Double>
+    <x:Double x:Key="IconElementThemeWidth">20</x:Double>
+    
     <!--
         Preserving for reference:
         <x:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</x:String>
