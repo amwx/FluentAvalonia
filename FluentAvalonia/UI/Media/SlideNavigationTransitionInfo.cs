@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
+using System.Threading;
 
 namespace FluentAvalonia.UI.Media.Animation;
 
@@ -28,7 +29,7 @@ public class SlideNavigationTransitionInfo : NavigationTransitionInfo
     /// </summary>
     public double FromVerticalOffset { get; set; } = 56;
 
-    public async override void RunAnimation(Animatable ctrl)
+    public async override void RunAnimation(Animatable ctrl, CancellationToken cancellationToken)
     {
         double length = 0;
         bool isVertical = false;
@@ -86,7 +87,7 @@ public class SlideNavigationTransitionInfo : NavigationTransitionInfo
             FillMode = FillMode.Forward
         };
 
-        await animation.RunAsync(ctrl, null);
+        await animation.RunAsync(ctrl, null, cancellationToken);
 
         (ctrl as Visual).Opacity = 1;
     }

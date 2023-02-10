@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Threading;
+using Avalonia;
 using Avalonia.Animation;
 
 namespace FluentAvalonia.UI.Media.Animation;
@@ -15,5 +16,5 @@ public abstract class NavigationTransitionInfo : AvaloniaObject
     /// Executes a predefined animation on the desired object
     /// </summary>
     /// <param name="ctrl">The object to animate</param>
-    public abstract void RunAnimation(Animatable ctrl);
+    public abstract void RunAnimation(Animatable ctrl, CancellationToken cancellationToken);
 }
