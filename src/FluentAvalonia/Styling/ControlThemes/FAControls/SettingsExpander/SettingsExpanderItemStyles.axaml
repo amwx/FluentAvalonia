@@ -61,7 +61,8 @@
                                               Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Viewbox>
 
-                        <StackPanel HorizontalAlignment="Left"
+                        <StackPanel HorizontalAlignment="Stretch"
+                                    Name="ContentStackPanel"
                                     VerticalAlignment="Center"
                                     Margin="{DynamicResource SettingsExpanderItemContentMargin}">
                             <ContentPresenter Content="{TemplateBinding Content}"

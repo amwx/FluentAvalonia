@@ -194,7 +194,7 @@ public partial class Frame : ContentControl
     {
         // Check the cache first to see if we have an existing page that matches
         // For this check we check by both type and object reference
-        var existing = CheckCacheAndGetPage(target.GetType(), target);
+        var existing = CheckCacheAndGetPage(null, target);
 
         if (existing == null)
         {
