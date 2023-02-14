@@ -6,8 +6,19 @@
     <ResourceDictionary.ThemeDictionaries>
         <!-- NOTE: Default in FA is Light theme, in WinUI its dark-->
         <ResourceDictionary x:Key="Default">
-            <!-- Colors -->
+            
+            <!-- Only For HC parity -->
+            <!--<Color x:Key="SystemColorWindowTextColor">#FFFFFF</Color>
+            <Color x:Key="SystemColorGrayTextColor">#FF3FF23F</Color>
+            <Color x:Key="SystemColorButtonFaceColor">#FF000000</Color>
+            <Color x:Key="SystemColorWindowColor">#FF000000</Color>
+            <Color x:Key="SystemColorButtonTextColor">#FFFFFF</Color>
+            <Color x:Key="SystemColorHighlightColor">#FF1AEBFF</Color>
+            <Color x:Key="SystemColorHighlightTextColor">#FF000000</Color>
+            <Color x:Key="SystemColorHotlightColor">#FFFE55</Color>-->
 
+
+            <!-- Colors -->
             <Color x:Key="TextFillColorPrimary">#E4000000</Color>
             <Color x:Key="TextFillColorSecondary">#9E000000</Color>
             <Color x:Key="TextFillColorTertiary">#72000000</Color>
@@ -1955,9 +1966,21 @@
             <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
             
         </ResourceDictionary>
+        
         <ResourceDictionary x:Key="Dark">
-            <!-- Colors -->
 
+            <!-- Only For HC parity -->
+            <!--<Color x:Key="SystemColorWindowTextColor">#FFFFFF</Color>
+            <Color x:Key="SystemColorGrayTextColor">#FF3FF23F</Color>
+            <Color x:Key="SystemColorButtonFaceColor">#FF000000</Color>
+            <Color x:Key="SystemColorWindowColor">#FF000000</Color>
+            <Color x:Key="SystemColorButtonTextColor">#FFFFFF</Color>
+            <Color x:Key="SystemColorHighlightColor">#FF1AEBFF</Color>
+            <Color x:Key="SystemColorHighlightTextColor">#FF000000</Color>
+            <Color x:Key="SystemColorHotlightColor">#FFFE55</Color>-->
+            
+            
+            <!-- Colors -->
             <Color x:Key="TextFillColorPrimary">#FFFFFF</Color>
             <Color x:Key="TextFillColorSecondary">#C5FFFFFF</Color>
             <Color x:Key="TextFillColorTertiary">#87FFFFFF</Color>
@@ -3914,6 +3937,7 @@
             <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
             
         </ResourceDictionary>
+        
         <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
             <!-- These defaults are taken from Windows 10 High Contrast theme -->
             <Color x:Key="SystemColorWindowTextColor">#FFFFFF</Color>

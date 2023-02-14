@@ -66,7 +66,7 @@ public class MainWindow : AppWindow
             {
                 TryEnableMicaEffect();
             }
-            else if (ActualThemeVariant != FluentAvaloniaTheme.HighContrastTheme)
+            else if (ActualThemeVariant == FluentAvaloniaTheme.HighContrastTheme)
             {
                 // Clear the local value here, and let the normal styles take over for HighContrast theme
                 SetValue(BackgroundProperty, AvaloniaProperty.UnsetValue);

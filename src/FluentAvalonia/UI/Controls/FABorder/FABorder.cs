@@ -57,12 +57,12 @@ public class FABorder : Border
         }
     }
 
-    public override void Render(DrawingContext context)
-    {
-        _helper ??= new BorderRenderHelper(Background, BorderBrush, BorderThickness, CornerRadius, BoxShadow, BackgroundSizing);
+    //public override void Render(DrawingContext context)
+    //{
+    //    _helper ??= new BorderRenderHelper(Background, BorderBrush, BorderThickness, CornerRadius, BoxShadow, BackgroundSizing);
 
-        _helper.Render(context, Bounds.Size);
-    }
+    //    _helper.Render(context, Bounds.Size);
+    //}
 
     private BorderRenderHelper _helper;    
 }

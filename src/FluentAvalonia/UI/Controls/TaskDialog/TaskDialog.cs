@@ -156,7 +156,7 @@ public partial class TaskDialog : ContentControl
 
         void UnparentDialog()
         {
-            _xamlOwner = Parent;
+            _xamlOwner = (Control)Parent;
             if (_xamlOwner is Panel p)
             {
                 _xamlOwnerChildIndex = p.Children.IndexOf(this);

@@ -32,7 +32,7 @@ public class MainViewViewModel : ViewModelBase
 
 
     public ThemeVariant[] AppThemes { get; } =
-        new[] { ThemeVariant.Light, ThemeVariant.Dark/*, FluentAvaloniaTheme.HighContrastTheme*/ };
+        new[] { ThemeVariant.Light, ThemeVariant.Dark, FluentAvaloniaTheme.HighContrastTheme };
 
     public FlowDirection[] AppFlowDirections { get; } =
         new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft };
