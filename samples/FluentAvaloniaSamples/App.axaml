@@ -36,7 +36,7 @@
     </Application.Resources>
 
     <Application.Styles>
-        <sty:FluentAvaloniaTheme PreferUserAccentColor="True" PreferSystemTheme="True" />
+        <sty:FluentAvaloniaTheme PreferUserAccentColor="True" />
         <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
         <!--<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />-->
         <StyleInclude Source="/Styles/OptionsDisplayItemStyles.axaml" />
