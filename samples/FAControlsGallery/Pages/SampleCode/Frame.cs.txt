@@ -1,0 +1,34 @@
+﻿//To Navigate to a page, where a page is any derivative of IControl:
+TestFrame.Navigate(typeof(SamplePage));
+
+//To Navigate adding a parameter:
+TestFrame.Navigate(typeof(SamplePage), paramHere);
+
+//To Navigate with a custom animation:
+TestFrame.Navigate(typeof(SamplePage), paramHere, transitionInfo);
+
+// Where transitionInfo is a NavigationTransitionInfo type
+//    SlideNavigationTransitionInfo
+//    EntranceNavigationTranstionInfo (default, Slide up & fade in)
+//    DrillInNavigationTransitionInfo (zoom in like effect)
+//    SuppressNavigationTransitionInfo (no animation)
+
+//To Go Back:
+TestFrame.GoBack();
+TestFrame.GoBack(transitionInfo); //With custom transition info
+
+//To Go Forward:
+TestFrame.GoForward();
+TestFrame.GoForward(transitionInfo); //With custom transtion info
+
+//NOTE: you can also bind Button commands to the frame as in the XamlSource above.
+
+//You can disable the Back & Forward stacks with
+TestFrame.IsNavigationStackEnabled = false;
+
+//And you can change the size of the page cache (defaults to 10)
+//Pages are kept in the cache until it is filled, unless it is disabled
+//And an attempt to reuse each internal entry in the cache is made for performance.
+//Having the cache allows pages to reload quicker.
+//Depending on page content, first time load may be slow & the animation may not play correctly
+TestFrame.CacheSize = 10;

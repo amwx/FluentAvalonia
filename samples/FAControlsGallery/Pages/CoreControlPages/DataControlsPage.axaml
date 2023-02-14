@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:pg="using:FAControlsGallery.Pages"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FAControlsGallery.Pages.DataControlsPage">
+    <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
+        <StackPanel Spacing="8">
+            <DockPanel LastChildFill="False">
+
+                <Viewbox Width="80" Height="80"
+                         DockPanel.Dock="Left">
+                    <ui:IconSourceElement IconSource="{StaticResource DataPageIcon}" />
+                </Viewbox>
+                <TextBlock Text="Data Controls"
+                           Theme="{StaticResource TitleTextBlockStyle}"
+                           Name="HeaderText"
+                           VerticalAlignment="Center"
+                           Margin="12 0"
+                           DockPanel.Dock="Left"/>
+
+                <Button DockPanel.Dock="Right"
+                        Theme="{StaticResource TransparentButton}">
+                    <Panel>
+                        <ui:SymbolIcon Symbol="EditFilled"
+                                       FontSize="20"
+                                       HorizontalAlignment="Left"/>
+                        <TextBlock Text="Toggle Theme"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Margin="32 4 0 4" />
+                    </Panel>
+                </Button>
+
+            </DockPanel>
+
+            <ctrls:ControlExample Header="DataGrid"
+                                  TargetType="DataGrid"
+                                  EnableShowDocsLink="True"
+                                  EnableShowDefinitionLink="True">
+
+                <DataGrid Name="TargetDataGrid" x:DataType="pg:Country">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" />
+                        <DataGridTextColumn Header="Region" Binding="{Binding Region}" Width="4*" />
+                        <DataGridTextColumn DisplayIndex="3" Header="Population" Binding="{Binding Population}" Width="3*" />
+                        <DataGridTextColumn DisplayIndex="2" Header="Area" Binding="{Binding Area}" Width="3*" />
+                        <DataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                
+            </ctrls:ControlExample>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

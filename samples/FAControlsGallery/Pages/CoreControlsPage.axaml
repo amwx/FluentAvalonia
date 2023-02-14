@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:FAControlsGallery.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:conv="using:FAControlsGallery.Converters"
+             mc:Ignorable="d" d:DesignWidth="800"
+             x:Class="FAControlsGallery.Pages.CoreControlsPage"
+             x:DataType="vm:CoreControlsPageViewModel"
+             x:CompileBindings="True">
+
+    <UserControl.Resources>
+        <conv:ResourceKeyToIconConverter x:Key="ResKeyToIconConv" />
+        <!-- override some SettingsExpander resources to make the icons bigger -->
+        <x:Double x:Key="SettingsExpanderItemIconSize">48</x:Double>
+        <Thickness x:Key="SettingsExpanderItemContentMargin">64 0 0 0</Thickness>
+    </UserControl.Resources>
+    
+    <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
+        <StackPanel Spacing="25"
+                    Margin="0 0 0 30">
+            <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader_CoreControls.png"/>
+
+            <TextBlock Text="Controls included with Avalonia"
+                       Theme="{StaticResource SubtitleTextBlockStyle}" />
+            <TextBlock Text="{Binding NoteText}"
+                       Margin="0 -25 0 0"
+                       Theme="{StaticResource CaptionTextBlockStyle}"/>
+            
+            <ItemsControl Items="{Binding CoreControlGroups}"
+                          Name="ItemsControl"
+                          ClipToBounds="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="4" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="vm:PageBaseViewModel">
+                        <ui:SettingsExpander Command="{Binding InvokeCommand}"
+                                             Header="{Binding Header}"
+                                             Description="{Binding Description}"
+                                             IsClickEnabled="True"
+                                             IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}">
+                            
+                        </ui:SettingsExpander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Pages\SampleCode\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" />
+    <PackageReference Include="AvaloniaEdit.TextMate" />
+    <PackageReference Include="Avalonia.Diagnostics" />
+    <PackageReference Include="XamlNameReferenceGenerator" />
+  </ItemGroup>
+  <ItemGroup>    
+    <ProjectReference Include="..\..\src\FluentAvalonia\FluentAvalonia.csproj" />
+  </ItemGroup>
+</Project>

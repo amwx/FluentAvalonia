@@ -1,0 +1,123 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:local="using:FAControlsGallery.Controls"
+             xmlns:conv="using:FAControlsGallery.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FAControlsGallery.Pages.FAControlsOverviewPage"
+             x:DataType="vm:FAControlsOverviewPageViewModel"
+             x:CompileBindings="True">
+
+    <UserControl.Resources>
+        <conv:ResourceKeyToIconConverter x:Key="ResKeyToIconConv" />
+        <ControlTheme TargetType="ListBoxItem"
+                      x:Key="GridViewItem"
+                      BasedOn="{StaticResource {x:Type ListBoxItem}}">
+            <Setter Property="Padding" Value="0" />
+            <Style Selector="^:selected">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{DynamicResource ListViewItemBackground}" />
+                </Style> 
+                <Style Selector="^ /template/ ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForeground}" />
+                </Style>
+                <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
+                <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{DynamicResource ListViewItemBackground}" />
+                </Style>
+                <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForeground}" />
+                </Style>
+
+
+                <Style Selector="^:pointerover">
+                    <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPointerOver}" />
+                    </Style>
+                    <Style Selector="^ /template/ ContentPresenter">
+                        <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPointerOver}" />
+                    </Style>
+                </Style>
+
+                <Style Selector="^:pressed">
+                    <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPressed}" />
+                    </Style>
+                    <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPressed}" />
+                    </Style>
+                </Style>
+            </Style>
+        </ControlTheme>
+    </UserControl.Resources>
+
+        <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
+            <StackPanel Spacing="25"
+                        Margin="0 0 0 30">
+                <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader_NewControls.png"/>
+
+                <ItemsControl Items="{Binding ControlGroups}"
+                             Margin="0 0 0 20">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="20" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:FAControlsGroupItem">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Header}"
+                                           Theme="{StaticResource SubtitleTextBlockStyle}"
+                                           Margin="0 8"/>
+
+                                <ListBox Items="{Binding Controls}"
+                                         ItemContainerTheme="{StaticResource GridViewItem}">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="vm:FAControlsPageItem">
+                                            <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                                    CornerRadius="{StaticResource ControlCornerRadius}"
+                                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                                    BorderThickness="1"
+                                                    Width="300"
+                                                    Height="120">
+                                                <Grid ColumnDefinitions="Auto,*">
+                                                    <Viewbox Width="60" 
+                                                             Height="60"
+                                                             Margin="12 8"
+                                                             VerticalAlignment="Center">
+                                                        <ui:IconSourceElement IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}" />
+                                                    </Viewbox>
+
+                                                    <StackPanel Grid.Column="1"
+                                                                Margin="12 8"
+                                                                Spacing="4"
+                                                                VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Header}"
+                                                                   Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                                                        <TextBlock Text="{Binding Description}"
+                                                                   Theme="{StaticResource CaptionTextBlockStyle}"
+                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+</UserControl>

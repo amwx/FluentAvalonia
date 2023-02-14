@@ -1,0 +1,36 @@
+﻿<StackPanel Spacing="5">
+    <TextBlock Text="Attention" />
+    <StackPanel Orientation="Horizontal" Spacing="20">
+        <ui:InfoBadge Classes="Attention Icon" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Attention" Value="10" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Attention Dot" VerticalAlignment="Center" />
+    </StackPanel>
+
+    <TextBlock Text="Informational" />
+    <StackPanel Orientation="Horizontal" Spacing="20">
+        <ui:InfoBadge Classes="Informational Icon" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Informational" Value="10" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Informational Dot" VerticalAlignment="Center" />
+    </StackPanel>
+
+    <TextBlock Text="Success" />
+    <StackPanel Orientation="Horizontal" Spacing="20">
+        <ui:InfoBadge Classes="Success Icon" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Success" Value="10" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Success Dot" VerticalAlignment="Center" />
+    </StackPanel>
+
+    <TextBlock Text="Caution" />
+    <StackPanel Orientation="Horizontal" Spacing="20">
+        <ui:InfoBadge Classes="Caution Icon" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Caution" Value="10" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Caution Dot" VerticalAlignment="Center" />
+    </StackPanel>
+
+    <TextBlock Text="Critical" />
+    <StackPanel Orientation="Horizontal" Spacing="20">
+        <ui:InfoBadge Classes="Critical Icon" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Critical" Value="10" HorizontalAlignment="Right" />
+        <ui:InfoBadge Classes="Critical Dot" VerticalAlignment="Center" />
+    </StackPanel>
+</StackPanel>

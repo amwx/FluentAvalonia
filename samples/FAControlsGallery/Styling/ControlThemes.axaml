@@ -1,0 +1,91 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:FAControlsGallery.Controls"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls">
+
+    <Design.PreviewWith>
+        <StackPanel Spacing="10"
+                    Margin="50">
+            <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader2.png" />
+            
+            <local:CoreControlsPageHeader Content="Page Name"
+                                          IconSource="{StaticResource BasicInputPageIcon}" />
+        </StackPanel>
+    </Design.PreviewWith>
+    
+    <ImageBrush x:Key="PageHeaderBackgroundBrush"
+                Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground.png"
+                AlignmentY="Top"
+                Stretch="UniformToFill" />
+
+    <!--<ui:BitmapIconSource UriSource="/Assets/Images/FAHeader3.png"
+                         x:Key="VersionTextImage" />-->
+    
+
+    <ControlTheme TargetType="local:PageHeaderControl"
+                  x:Key="{x:Type local:PageHeaderControl}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Height="250"
+                        CornerRadius="8"
+                        ClipToBounds="True"
+                        Background="{StaticResource PageHeaderBackgroundBrush}">
+
+                    <Panel>
+                        <Image Name="TitleTextImageHost"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"
+                               MaxWidth="300"
+                               Margin="50 50 300 50"
+                               MinWidth="150"/>
+                        
+                        <Image Source="/Assets/Images/FAHeader3.png"
+                               VerticalAlignment="Bottom"
+                               HorizontalAlignment="Right"
+                               Height="36"
+                               MinWidth="30"
+                               Margin="350 25 25 25"/>
+                    </Panel>
+
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme TargetType="local:CoreControlsPageHeader"
+                  x:Key="{x:Type local:CoreControlsPageHeader}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DockPanel LastChildFill="False">
+
+                    <Viewbox Width="80" Height="80"
+                             DockPanel.Dock="Left">
+                        <ui:IconSourceElement IconSource="{TemplateBinding IconSource}" />
+                    </Viewbox>
+                    <TextBlock Text="{TemplateBinding Content}"
+                               Theme="{StaticResource TitleTextBlockStyle}"
+                               Name="HeaderText"
+                               VerticalAlignment="Center"
+                               Margin="12 0"
+                               DockPanel.Dock="Left"/>
+
+                    <Button DockPanel.Dock="Right"
+                            Theme="{StaticResource TransparentButton}"
+                            Name="ToggleThemeButton">
+                        <Panel>
+                            <ui:SymbolIcon Symbol="EditFilled"
+                                           FontSize="20"
+                                           HorizontalAlignment="Left"/>
+                            <TextBlock Text="Toggle Theme"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Margin="32 4 0 4" />
+                        </Panel>
+                    </Button>
+
+                </DockPanel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    
+</ResourceDictionary>

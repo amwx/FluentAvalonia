@@ -1,0 +1,146 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"             
+             xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             x:Class="FAControlsGallery.Views.MainView">
+   
+
+    <Grid RowDefinitions="Auto,*">
+        <Grid Name="TitleBarHost" 
+              ColumnDefinitions="Auto,Auto,*" 
+              Background="Transparent">
+            <Image Margin="12 4"
+                   IsHitTestVisible="False"
+                   Source="/Assets/FAIcon.ico"
+                   Width="18" Height="18"
+                   DockPanel.Dock="Left"
+                   Name="WindowIcon">
+                <Image.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows, Linux, macOS" Content="True" />
+                    </OnPlatform>
+                </Image.IsVisible>
+            </Image>
+
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                       FontSize="12"
+                       IsHitTestVisible="False"
+                       VerticalAlignment="Center"
+                       Grid.Column="1">
+                <TextBlock.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows, Linux, macOS" Content="True" />
+                    </OnPlatform>
+                </TextBlock.IsVisible>
+            </TextBlock>
+            
+            <Border Grid.Column="2" Padding="6">
+                <!--ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"-->
+                <AutoCompleteBox Name="SearchBox"
+                                 MaxWidth="500"
+                                 Watermark="Search"
+                                 Classes="SampleApp"
+                                 Items="{Binding MainSearchItems}">
+                    <!--
+                    wnd:AppWindow.AllowInteractionInTitleBar="True"
+                    <AutoCompleteBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MainAppSearchItem">
+                            <TextBlock Text="{Binding Header}" />
+                        </DataTemplate>
+                    </AutoCompleteBox.ItemTemplate>-->
+                </AutoCompleteBox>
+            </Border>
+        </Grid>
+
+        <ui:NavigationView Classes="SampleAppNav"
+                           AlwaysShowHeader="False"
+                           PaneDisplayMode="Left"
+                           IsPaneOpen="True"
+                           Grid.RowSpan="2"
+                           Name="NavView"
+                           IsSettingsVisible="False"
+                           IsBackEnabled="{Binding #FrameView.CanGoBack}">
+            <ui:Frame Name="FrameView" />
+        </ui:NavigationView>
+
+        <Panel Name="OverlayHost"
+               Grid.Row="1">
+            <Panel.Styles>
+                <!--<Style Selector="local|ControlDefinitionOverlay">
+                    <Setter Property="Template">
+                        <ControlTemplate>
+                            <Border Background="{TemplateBinding Background}">
+                                <Panel Margin="20">
+
+                                    <ExperimentalAcrylicBorder CornerRadius="8">
+                                        <ExperimentalAcrylicBorder.Material>
+                                            <ExperimentalAcrylicMaterial TintColor="{DynamicResource SolidBackgroundFillColorBase}"
+                                                                         FallbackColor="{DynamicResource SolidBackgroundFillColorBase}"
+                                                                         TintOpacity="0.85"
+                                                                         BackgroundSource="Digger"
+                                                                         MaterialOpacity="1" />
+                                        </ExperimentalAcrylicBorder.Material>
+                                    </ExperimentalAcrylicBorder>
+
+                                    <Panel>
+                                        <ScrollViewer>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding TargetType.Name, RelativeSource={RelativeSource TemplatedParent}}"
+                                                           Theme="{StaticResource TitleTextBlockStyle}"
+                                                           Margin="12 8 12 0"  />
+                                                <TextBlock Text="{Binding TargetType, RelativeSource={RelativeSource TemplatedParent}}"
+                                                           Classes="CaptionTextBlockStyle"
+                                                           Margin="12 0 12 8"
+                                                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                                           FontStyle="Italic"/>
+
+                                                <TextBlock Text="Inheritance"
+                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
+                                                           Margin="12 4"/>
+
+                                                <TextBlock Text="{TemplateBinding Inheritance}"
+                                                           Margin="24 4"
+                                                           TextWrapping="Wrap" />
+
+                                                <TextBlock Text="Pseudoclasses"
+                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
+                                                           Margin="12 4"/>
+
+                                                <TextBlock Text="{TemplateBinding PseudoclassesList}"
+                                                           Margin="24 4"
+                                                           TextWrapping="Wrap" />
+
+                                                <TextBlock Text="Definition"
+                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
+                                                           Margin="12 4"/>
+
+                                                --><!--<aedit:TextEditor Name="TextEditor"
+                                                                  Margin="12 0"
+                                                                  Background="Transparent" />--><!--
+                                            </StackPanel>
+                                        </ScrollViewer>
+
+
+                                        <Button Name="CloseButton"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Top"
+                                                   Theme="{StaticResource TransparentButton}"
+                                                   Margin="12">
+                                            <ui:SymbolIcon Symbol="Dismiss" FontSize="18" />
+                                        </Button>
+                                    </Panel>
+
+                                </Panel>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter>
+                </Style>-->
+            </Panel.Styles>
+            <!--<local:ControlDefinitionOverlay Name="CtrlDefOverlay" />-->
+        </Panel>
+    </Grid>
+    
+</UserControl>

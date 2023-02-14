@@ -1,0 +1,42 @@
+﻿<!-- 
+Use a top-level view here, something that won't get unloaded as part of navigation 
+MainWindow/MainView is a good place
+-->
+<Window xmlns...>
+    
+    <!-- 
+    Root element to contain the custom titlebar and window content 
+    I'm using a DockPanel, but any panel type will work
+    -->
+
+    <DockPanel>
+        <!--
+        Setup your xaml titlebar element. 
+        This can be any control, so long as it is hit testable 
+        -->
+        <Grid Background="Transparent"
+              Name="TitleBarHost"
+              ColumnDefinitions="Auto,*"
+              DockPanel.Dock="Top">
+
+            <!-- Adding an Image control to add an Icon -->
+            <Image Margin="12 4"
+                   IsHitTestVisible="False"
+                   Source="{Binding ...}"
+                   Width="18" Height="18"
+                   Name="WindowIcon" />
+
+            <!-- Add a TextBlock for the Window title text -->
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                       FontSize="12"
+                       IsHitTestVisible="False"
+                       VerticalAlignment="Center"
+                       Grid.Column="1"/>
+
+            <!-- You can of course add other content to your titlebar if you wish -->
+        </Grid>
+
+        <!-- Rest of your Window/View content goes here -->
+
+    </DockPanel>
+</Window>

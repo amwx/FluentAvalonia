@@ -1,0 +1,310 @@
+﻿[
+  {
+    "Header": "Windowing",
+    "Controls": [
+      {
+        "Header": "AppWindow",
+        "Description": "A modern window style for Windows with a graceful fallback on Mac/Linux",
+        "IconResourceKey": "AppWindowIcon",
+        "PageKey": "AppWindow",
+        "SearchKeywords": [
+          "AppWindow"
+        ],
+        "Namespace": "FluentAvalonia.UI.Windowing.AppWindow"
+      }
+    ]
+  },
+  {
+    "Header": "Basic Input Controls",
+    "Controls": [
+      {
+        "Header": "HyperlinkButton",
+        "Description": "A button that appears as a hyperlink, and can navigate to a URI or handle a click event.",
+        "IconResourceKey": "HyperlinkButtonIcon",
+        "PageKey": "HyperlinkButton",
+        "SearchKeywords": [
+          "Hyperlink",
+          "Button"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.HyperlinkButton",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.hyperlinkbutton",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/hyperlinks"
+      },
+      {
+        "Header": "NumberBox",
+        "Description": "A text control used for numeric input and evaluation of algebraic equations.",
+        "IconResourceKey": "NumberBoxIcon",
+        "PageKey": "NumberBox",
+        "SearchKeywords": [
+          "NumberBox"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.NumberBox",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.numberbox",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/number-box"
+      },
+      {
+        "Header": "FAComboBox",
+        "Description": "An enhanced ComboBox that features an editable TextBox",
+        "IconResourceKey": "FAComboBoxIcon",
+        "PageKey": "FAComboBox",
+        "SearchKeywords": [
+          "FAComboBox"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.combobox",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/combo-box"
+      }
+    ]
+  },
+  {
+    "Header": "Dialogs and Flyouts",
+    "Controls": [
+      {
+        "Header": "TaskDialog",
+        "Description": "An advanced dialog box",
+        "IconResourceKey": "TaskDialogIcon",
+        "PageKey": "TaskDialog",
+        "SearchKeywords": [
+          "TaskDialog"
+        ],
+        "Namespace" : "FluentAvalonia.UI.Controls"
+      },
+      {
+        "Header": "ContentDialog",
+        "Description": "A dialog box that can be customized to contain any XAML content",
+        "IconResourceKey": "ContentDialogIcon",
+        "PageKey": "ContentDialog",
+        "SearchKeywords": [
+          "ContentDialog"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ContentDialog",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.contentdialog",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/dialogs-and-flyouts/dialogs"
+      },
+      {
+        "Header": "PickerFlyoutBase",
+        "Description": "Base class of a special flyout that presents with confirm/dismiss buttons",
+        "IconResourceKey": "PickerFlyoutBaseIcon",
+        "PageKey": "PickerFlyoutBase",
+        "SearchKeywords": [
+          "PickerFlyoutBase"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls.Primitives"
+      },
+      {
+        "Header": "TeachingTip",
+        "Description": "A content-rich flyout for guiding users and enabling teaching moments",
+        "PageKey": "TeachingTip",
+        "IconResourceKey": "TeachingTipIcon",
+        "SearchKeywords": [
+          "TeachingTip"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.TeachingTip",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.teachingtip",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/dialogs-and-flyouts/teaching-tip"
+      }
+    ]
+  },
+  {
+    "Header": "Icons",
+    "Controls": [
+      {
+        "Header": "FAIconElement/IconSource",
+        "Description": "Icons that use different image types as its content",
+        "IconResourceKey": "IconsIcon",
+        "PageKey": "Icons",
+        "SearchKeywords": [
+          "Icons"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUIDocsLink": null,
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/style/icons"
+      }
+    ]
+  },
+  {
+    "Header": "Navigation Controls",
+    "Controls": [
+      {
+        "Header": "NavigationView",
+        "Description": "Common vertical layout for top-level areas of your app via a collapsible navigation menu",
+        "IconResourceKey": "NavigationViewIcon",
+        "PageKey": "NavigationView",
+        "SearchKeywords": [
+          "NavigationView"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.Controls.NavigationView",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview"
+      },
+      {
+        "Header": "Frame",
+        "Description": "Displays Page instances, supports navigation to new pages, and maintains a navigation history to support forward and backward navigation.",
+        "IconResourceKey": "FrameIcon",
+        "PageKey": "Frame",
+        "SearchKeywords": [
+          "Frame"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.Frame",
+        "WinUIDocsLink": "https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.frame?view=winui-3.0"
+      },
+      {
+        "Header": "TabView",
+        "Description": "TabView provides the user with a collection of tabs that can be used to display several documents",
+        "PageKey": "TabView",
+        "IconResourceKey": "TabViewIcon",
+        "SearchKeywords": [
+          "TabView"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.TabView",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.tabview",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/tab-view"
+      }
+    ]
+  },
+  {
+    "Header": "Menus and Toolbars",
+    "Controls": [
+      {
+        "Header": "MenuFlyout",
+        "Description": "Shows a contextual list of simple commands or options",
+        "IconResourceKey": "MenusPageIcon",
+        "PageKey": "FAMenuFlyout",
+        "SearchKeywords": [
+          "FAMenuFlyout",
+          "MenuFlyoutItem",
+          "MenuFlyoutSubItem",
+          "ToggleMenuFlyoutItem",
+          "RadioMenuFlyoutItem",
+          "MenuFlyoutSeparator"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.MenuFlyout",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.menuflyout",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/menus"
+      },
+      {
+        "Header": "CommandBar",
+        "Description": "A toolbar for displaying application-specific commands that handles layout and resizing of its contents",
+        "IconResourceKey": "CommandBarIcon",
+        "PageKey": "CommandBar",
+        "SearchKeywords": [
+          "CommandBar",
+          "CommandBarButton",
+          "CommandBarToggleButton",
+          "CommandBarSeparator",
+          "CommandBarElementContainer"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.CommandBar",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.commandbar",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/command-bar"
+      },
+      {
+        "Header": "CommandBarFlyout",
+        "Description": "A mini-toolbar displaying proactive commands, and an optional menu of commands",
+        "IconResourceKey": "CommandBarFlyoutIcon",
+        "PageKey": "CommandBarFlyout",
+        "SearchKeywords": [
+          "CommandBarFlyout"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.CommandBarFlyout",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.commandbarflyout",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/command-bar-flyout"
+      },
+      {
+        "Header": "XamlUICommand",
+        "Description": "An object which is used to define the look and feel of a given command",
+        "IconResourceKey": "XamlUICommandIcon",
+        "PageKey": "XamlUICommand",
+        "SearchKeywords": [
+          "XamlUICommand",
+          "StandardUICommand"
+        ],
+        "Namespace": "FluentAvalonia.UI.Input",
+        "WinUINamespace": "Microsoft.UI.Xaml.Input.XamlUICommand",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.xamluicommand",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/commanding#command-experiences-using-the-xamluicommand-class"
+      }
+    ]
+  },
+  {
+    "Header": "Color Picker Controls",
+    "Controls": [
+      {
+        "Header": "ColorPicker",
+        "Description": "A control that displays a selectable color spectrum",
+        "IconResourceKey": "ColorPickerIcon",
+        "PageKey": "FAColorPicker",
+        "SearchKeywords": [
+          "FAColorPicker"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls"
+      },
+      {
+        "Header": "ColorPickerButton",
+        "Description": "A control that displays a ColorPicker in a flyout",
+        "IconResourceKey": "ColorPickerButtonIcon",
+        "PageKey": "ColorPickerButton",
+        "SearchKeywords": [
+          "ColorPickerButton"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls"
+      }
+    ]
+  },
+  {
+    "Header": "Information / Alert Controls",
+    "Controls": [
+      {
+        "Header": "InfoBar",
+        "Description": "An inline message to display app-wide status change information",
+        "IconResourceKey": "InfoBarIcon",
+        "PageKey": "InfoBar",
+        "SearchKeywords": [
+          "InfoBar"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.InfoBar",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.infobar",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/infobar"
+      },
+      {
+        "Header": "InfoBadge",
+        "Description": "A non-intrusive UI to display notifications or bring focus to an area",
+        "IconResourceKey": "InfoBadgeIcon",
+        "PageKey": "InfoBadge",
+        "SearchKeywords": [
+          "InfoBadge"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.infobadge?view=winui-2.8",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/infobadge"
+      }
+    ]
+  },
+  {
+    "Header": "View Controls",
+    "Controls": [
+      {
+        "Header": "SettingsExpander",
+        "Description": null,
+        "IconResourceKey": "SettingsExpanderIcon",
+        "PageKey": "SettingsExpander",
+        "SearchKeywords": [
+          "SettingsExpander"
+        ]
+      }
+    ]
+  }
+]

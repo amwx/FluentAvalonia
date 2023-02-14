@@ -1,0 +1,57 @@
+﻿var td = new TaskDialog
+{
+    Title = "FluentAvalonia",
+    ShowProgressBar = true,
+    IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+    SubHeader = "Downloading",
+    Content = "Please wait while your file downloads",
+    Buttons =
+    {
+        TaskDialogButton.CancelButton
+    }
+};
+
+td.Opened += async (s, e) =>
+{
+    // We immediately begin the progress task as soon as the dialog opens
+
+    // NOTE: Cancelling the dialog while this is running won't stop this this async process, you should
+    //       use a CancellationToken and monitor the dialog result to cancel this task
+    await Task.Run(async () =>
+    {
+        int progress = 0;
+        TaskDialogProgressState state = TaskDialogProgressState.Normal;
+        int delay = 100;
+        while (progress < 100)
+        {
+            await Task.Delay(delay);
+            progress++;
+
+            if (progress == 50)
+            {
+                state = TaskDialogProgressState.Indeterminate | TaskDialogProgressState.Suspended;
+
+                // If you update the TaskDialog - remember we're not on the UI Thread, post via dispatcher
+                Dispatcher.UIThread.Post(() => { td.Content = "Experiencing network connectivitiy issues. Download speed reduced"; });
+                delay = 1000;
+            }
+            else if (progress == 60)
+            {
+                state = TaskDialogProgressState.Normal;
+
+                Dispatcher.UIThread.Post(() => { td.Content = "All good. Resuming normal downloading."; });
+                delay = 100;
+            }
+
+            // This automatically does UIThread invoking, so just call this normally
+            td.SetProgressBarState(progress, state);
+        }
+
+        // All done, auto close the dialog here
+        Dispatcher.UIThread.Post(() => { td.Hide(TaskDialogStandardResult.OK); });
+    });
+};
+
+// Don't forget to set the XamlRoot!!
+td.XamlRoot = VisualRoot;
+var result = await td.ShowAsync();

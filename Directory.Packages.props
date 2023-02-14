@@ -22,6 +22,8 @@
 
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
 
-    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview1" />
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview5" />
+    <PackageVersion Include="AvaloniaEdit.TextMate" Version="11.0.0-preview5" />
+    <PackageVersion Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
 </Project>

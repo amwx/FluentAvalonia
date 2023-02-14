@@ -1,0 +1,9 @@
+﻿<ui:DropDownButton Content="Click Me!">
+    <ui:DropDownButton.Flyout>
+        <MenuFlyout Placement="Bottom">
+            <MenuItem Header="Item 1" />
+            <MenuItem Header="Item 2" />
+            <MenuItem Header="Item 3" />
+        </MenuFlyout>
+    </ui:DropDownButton.Flyout>
+</ui:DropDownButton>

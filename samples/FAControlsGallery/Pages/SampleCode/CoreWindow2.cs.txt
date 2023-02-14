@@ -1,0 +1,29 @@
+﻿// Setting Custom Colors
+
+// The CaptionButton color properties apply in all cases as CaptionButtons can't be replaced
+
+// Normal state Background and Foreground
+public Color? ButtonBackgroundColor { get; set; }
+public Color? ButtonForeroundColor { get; set; }
+
+// Hover state Background and Foreground
+public Color? ButtonHoverBackgroundColor { get; set; }
+public Color? ButtonHoverForegroundColor { get; set; }
+
+// Window inactive Background and Foreground
+public Color? ButtonInactiveBackgroundColor { get; set; }
+public Color? ButtonInactiveForegroundColor { get; set; }
+
+// Pressed state Background and Foreground
+public Color? ButtonPressedBackgroundColor { get; set; }
+public Color? ButtonPressedForegroundColor { get; set; }
+
+// The following ONLY apply to the default titlebar. If you supply a custom titlebar, you must manage the colors yourself.
+
+// Normal state Background and Foreground
+public Color? BackgroundColor { get; set; }
+public Color? ForegroundColor { get; set; }
+
+// Window inactive Background and Foreground
+public Color? InactiveBackgroundColor { get; set; }
+public Color? InactiveForegroundColor { get; set; }
