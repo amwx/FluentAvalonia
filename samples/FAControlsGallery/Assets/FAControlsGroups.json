@@ -174,7 +174,7 @@
     "Header": "Menus and Toolbars",
     "Controls": [
       {
-        "Header": "MenuFlyout",
+        "Header": "FAMenuFlyout",
         "Description": "Shows a contextual list of simple commands or options",
         "IconResourceKey": "MenusPageIcon",
         "PageKey": "FAMenuFlyout",
