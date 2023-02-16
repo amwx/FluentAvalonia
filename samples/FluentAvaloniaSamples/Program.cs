@@ -20,6 +20,5 @@ class Program
             {
                 UseWindowsUIComposition = true,
                 CompositionBackdropCornerRadius = 8f
-            })
-            .UseFAWindowing();
+            });
 }
