@@ -106,6 +106,7 @@ public partial class AppWindow : Window, IStyleable
             if (change.Property == WindowStateProperty)
             {
                 HandleFullScreenTransition(change.GetNewValue<WindowState>());
+                OnExtendsContentIntoTitleBarChanged(TitleBar.ExtendsContentIntoTitleBar);
             }
 
             if (!_hasShown)
