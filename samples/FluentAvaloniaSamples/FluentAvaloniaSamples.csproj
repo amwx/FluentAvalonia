@@ -18,7 +18,6 @@
     <PackageReference Include="Avalonia.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />
     <ProjectReference Include="..\..\src\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
   <ItemGroup>
