@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Logging;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Avalonia.Threading;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -36,6 +37,33 @@ internal unsafe class Win32WindowManager
     public double LastUserWidth { get; set; } = double.NaN;
 
     public double LastUserHeight { get; set; } = double.NaN;
+
+    public bool IsFullscreen { get; set; }
+
+    public void GoToFullScreen()
+    {
+        RECT lpRect;
+        GetWindowRect(Hwnd, &lpRect);
+
+        _restoreRect = lpRect;
+        IsFullscreen = true;
+    }
+
+    public void RestoreFromFullScreen()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            SetWindowPos(Hwnd, HWND.NULL,
+                _restoreRect.left, _restoreRect.top,
+                _restoreRect.right - _restoreRect.left,
+                _restoreRect.bottom - _restoreRect.top,
+                SWP_NOZORDER | SWP_FRAMECHANGED | SWP_NOACTIVATE);
+
+            EnsureExtended();
+        });
+
+        IsFullscreen = false;
+    }
 
     private LRESULT WndProc(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam)
     {
@@ -429,5 +457,5 @@ internal unsafe class Win32WindowManager
 
     private nint _oldWndProc;
     private nint _wndProc;
-    
+    private RECT _restoreRect;
 }

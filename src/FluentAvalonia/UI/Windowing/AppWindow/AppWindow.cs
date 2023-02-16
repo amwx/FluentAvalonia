@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -13,6 +9,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Controls.Primitives;
 using FluentAvalonia.UI.Media;
@@ -97,36 +94,44 @@ public partial class AppWindow : Window, IStyleable
         if (change.Property == IconProperty)
         {
             base.Icon = new WindowIcon(change.NewValue as IBitmap);
-            PseudoClasses.Set(":icon", change.NewValue != null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
         }
         else if (change.Property == ActualThemeVariantProperty)
         {
             SetTitleBarColors();
         }
 
-        if (IsWindows && !_hasShown)
+        if (IsWindows)
         {
-            // HACK: Because of the frame adjustments made to AppWindow, setting the window
-            // size before it is shown will result in an incorrect window size
-            // To determine this, we check if WM_SIZE has been sent, if it hasn't, this is a
-            // user requested size and we store it and apply it in Opened
-            // Changing the size while the window is active works correctly
-            if (change.Property == WidthProperty)
+            if (change.Property == WindowStateProperty)
             {
-                var newV = change.GetNewValue<double>();
-                if (double.IsInfinity(_win32Manager.LastWMSizeSize.Width))
-                {
-                    _win32Manager.LastUserWidth = newV;
-                }
+                HandleFullScreenTransition(change.GetNewValue<WindowState>());
             }
-            else if (change.Property == HeightProperty)
+
+            if (!_hasShown)
             {
-                var newV = change.GetNewValue<double>();
-                if (double.IsInfinity(_win32Manager.LastWMSizeSize.Height))
+                // HACK: Because of the frame adjustments made to AppWindow, setting the window
+                // size before it is shown will result in an incorrect window size
+                // To determine this, we check if WM_SIZE has been sent, if it hasn't, this is a
+                // user requested size and we store it and apply it in Opened
+                // Changing the size while the window is active works correctly
+                if (change.Property == WidthProperty)
                 {
-                    _win32Manager.LastUserHeight = newV;
+                    var newV = change.GetNewValue<double>();
+                    if (double.IsInfinity(_win32Manager.LastWMSizeSize.Width))
+                    {
+                        _win32Manager.LastUserWidth = newV;
+                    }
                 }
-            }
+                else if (change.Property == HeightProperty)
+                {
+                    var newV = change.GetNewValue<double>();
+                    if (double.IsInfinity(_win32Manager.LastWMSizeSize.Height))
+                    {
+                        _win32Manager.LastUserHeight = newV;
+                    }
+                }
+            }            
         }
     }
 

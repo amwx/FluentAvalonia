@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Avalonia.Controls;
 using FluentAvalonia.Interop;
 
 namespace FluentAvalonia.UI.Windowing;
@@ -22,6 +23,19 @@ public partial class AppWindow
         PseudoClasses.Add(":windows");
 
         PlatformFeatures = new Win32AppWindowFeatures(this);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void HandleFullScreenTransition(WindowState state)
+    {
+        if (state == WindowState.FullScreen && !_win32Manager.IsFullscreen)
+        {
+            _win32Manager.GoToFullScreen();
+        }
+        else if (_win32Manager.IsFullscreen)
+        {
+            _win32Manager.RestoreFromFullScreen();
+        }
     }
 
     private Win32WindowManager _win32Manager;
