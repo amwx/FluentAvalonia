@@ -11,7 +11,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using FAControlsGallery.Views;
 
-namespace FAControlsGallery.Desktop;
+namespace FAControlsGallery;
 
 public partial class App : Application
 {

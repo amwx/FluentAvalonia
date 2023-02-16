@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -9,7 +8,7 @@ using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Windowing;
 
-namespace FAControlsGallery.Desktop;
+namespace FAControlsGallery;
 
 public partial class MainWindow : AppWindow
 {

@@ -18,14 +18,6 @@
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
 
-    <ProjectReference Include="..\..\src\FluentAvalonia.UI.Windowing\FluentAvalonia.UI.Windowing.csproj" />
-
     <ProjectReference Include="..\FAControlsGallery\FAControlsGallery.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="App.axaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

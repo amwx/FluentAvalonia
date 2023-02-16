@@ -1,6 +1,5 @@
 ﻿using System;
 using Avalonia;
-using FluentAvalonia.UI.Windowing;
 
 namespace FAControlsGallery.Desktop;
 
@@ -17,7 +16,5 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .LogToTrace()
-            // This is needed for if you want to use TaskDialog in windowed mode
-            .UseFAWindowing();
+            .LogToTrace();
 }
