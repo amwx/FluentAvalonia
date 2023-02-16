@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 
 namespace FluentAvalonia.UI.Controls;
 
