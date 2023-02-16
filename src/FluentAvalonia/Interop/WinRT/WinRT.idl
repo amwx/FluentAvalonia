@@ -22,8 +22,18 @@
 @clr-map WCHAR System.Char
 @clr-map Color FluentAvalonia.Interop.WinRT.WinRTColor
 @clr-map Size FluentAvalonia.Interop.WinRT.WinRTSize
-//@clr-map TypedEventHandler<TSender, TArgs> FluentAvalonia.Core.TypeEventHandler<TSender, TArgs>
-//@clr-map EventRegistrationToken FluentAvalonia.Interop.WinRT.EventRegistrationToken
+@clr-map ULONGLONG ulong
+@clr-map HIMAGELIST IntPtr
+@clr-map THUMBBUTTONFLAGS int
+@clr-map THUMBBUTTONMASK int
+@clr-map THUMBBUTTON int
+@clr-map TBPFLAG int
+@clr-map UINT uint
+@clr-map LPTHUMBBUTTON int
+@clr-map HICON void*
+@clr-map LPCWSTR ushort*
+@clr-map RECT FluentAvalonia.Interop.Win32.RECT
+
 
 enum TrustLevel
 {
@@ -145,4 +155,82 @@ interface IAccessibilitySettings : IInspectable
     [propget] HRESULT HighContrastScheme([out][retval] HSTRING* value);
     //[eventadd] HRESULT HighContrastChanged([in] Windows.Foundation.TypedEventHandler<Windows.UI.ViewManagement.AccessibilitySettings*, IInspectable*>* handler, [out][retval] EventRegistrationToken* cookie);
     //[eventremove] HRESULT HighContrastChanged([in] EventRegistrationToken cookie);
+}
+
+[uuid(56FDF342-FD6D-11d0-958A-006097C9A090)]
+interface ITaskbarList : IUnknown
+{
+    HRESULT HrInit();
+
+    HRESULT AddTab([in] HWND hwnd);
+
+    HRESULT DeleteTab([in] HWND hwnd);
+
+    HRESULT ActivateTab([in] HWND hwnd);
+
+    HRESULT SetActiveAlt([in] HWND hwnd);
+}
+
+[uuid(602D4995-B13A-429b-A66E-1935E44F4317)]
+interface ITaskbarList2 : ITaskbarList
+{
+    HRESULT MarkFullscreenWindow(
+        [in] HWND hwnd,
+        [in] BOOL fFullscreen);
+}
+
+[uuid(ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf)]
+interface ITaskbarList3 : ITaskbarList2
+{
+    HRESULT SetProgressValue(
+        [in] HWND hwnd,
+        [in] ULONGLONG ullCompleted,
+        [in] ULONGLONG ullTotal);
+
+    HRESULT SetProgressState(
+        [in] HWND hwnd,
+        [in] TBPFLAG tbpFlags);
+
+    HRESULT RegisterTab(
+        [in] HWND hwndTab,
+        [in] HWND hwndMDI);
+
+    HRESULT UnregisterTab(
+        [in] HWND hwndTab);
+
+    HRESULT SetTabOrder(
+        [in] HWND hwndTab,
+        [in] HWND hwndInsertBefore);
+
+    HRESULT SetTabActive(
+        [in] HWND hwndTab,
+        [in] HWND hwndMDI,
+        [in] DWORD dwReserved);
+
+    HRESULT ThumbBarAddButtons(
+        [in] HWND hwnd,
+        [in] UINT cButtons,
+        [in, size_is(cButtons)] LPTHUMBBUTTON pButton);
+
+    HRESULT ThumbBarUpdateButtons(
+        [in] HWND hwnd,
+        [in] UINT cButtons,
+        [in, size_is(cButtons)] LPTHUMBBUTTON pButton);
+
+    HRESULT ThumbBarSetImageList(
+        [in] HWND hwnd,
+        [in] HIMAGELIST himl);
+
+    HRESULT SetOverlayIcon(
+        [in] HWND hwnd,
+        [in] HICON hIcon,
+        [in, unique, string] LPCWSTR pszDescription);
+
+    HRESULT SetThumbnailTooltip(
+        [in] HWND hwnd,
+        [in, unique, string] LPCWSTR pszTip);
+
+    HRESULT SetThumbnailClip(
+        [in] HWND hwnd,
+        [in] RECT* prcClip);
 }

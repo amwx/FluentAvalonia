@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Animation.Easings;
@@ -17,7 +16,7 @@ using Avalonia.Rendering.Composition.Animations;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using FluentAvalonia.UI.Controls.Internal;
+using Path = Avalonia.Controls.Shapes.Path;
 
 namespace FluentAvalonia.UI.Controls;
 

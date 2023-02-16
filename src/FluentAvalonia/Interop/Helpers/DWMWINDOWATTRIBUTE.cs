@@ -1,4 +1,4 @@
-﻿namespace FluentAvalonia.Interop;
+﻿namespace FluentAvalonia.Interop.Win32;
 
 internal enum DWMWINDOWATTRIBUTE
 {

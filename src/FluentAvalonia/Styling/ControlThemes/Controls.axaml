@@ -108,7 +108,8 @@
 
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAComboBox/FAComboBoxStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAComboBox/FAComboBoxItemStyles.axaml" />
-                
+
+                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/AppWindowStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
