@@ -123,10 +123,12 @@ public class ControlExample : HeaderedContentControl
 
         bool hasXaml = XamlSource != null;
         bool hasCSharp = CSharpSource != null;
-        PseudoClasses.Set(":codepreview", hasXaml || hasCSharp || UsageNotes != null);
+        bool hasNotes = UsageNotes != null;
+        PseudoClasses.Set(":codepreview", hasXaml || hasCSharp || hasNotes);
 
         PseudoClasses.Set(":xamlsource", hasXaml);
         PseudoClasses.Set(":csharpsource", hasCSharp);
+        PseudoClasses.Set(":usagenotes", hasNotes);
     }
 
     protected override void OnLoaded()
@@ -585,6 +587,27 @@ public class SampleCodePresenter : HeaderedContentControl
         }, DispatcherPriority.Background);
     }
 
+    internal static RegistryOptions GetTextMateRegistryOptions()
+    {
+        if (_options == null)
+        {
+            _options = new RegistryOptions(ThemeName.Light);
+            _cSharpLangId = _options.GetScopeByLanguageId(_options.GetLanguageByExtension(".cs").Id);
+            _xamlLangId = _options.GetScopeByLanguageId(_options.GetLanguageByExtension(".xaml").Id);
+        }
+
+        return _options;
+    }
+
+    internal static TextMateSharp.Themes.IRawTheme GetDarkTheme()
+    {
+        if (_darkTheme == null)
+        {
+            _darkTheme = _options.LoadTheme(ThemeName.Dark);
+        }
+
+        return _darkTheme;
+    }
 
     private Button _copyCodeButton;
     private static TeachingTip _confirmCopyTeachingTip;
@@ -596,7 +619,7 @@ public class SampleCodePresenter : HeaderedContentControl
     private TextEditor _textHost;
     private TextMate.Installation _textMateInstall;
     private static RegistryOptions _options;
-    private static string _cSharpLangId;
+    internal static string _cSharpLangId;
     private static string _xamlLangId;
     private static TextMateSharp.Themes.IRawTheme _darkTheme;
 }

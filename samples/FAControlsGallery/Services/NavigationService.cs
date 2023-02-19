@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Platform;
 using FluentAvalonia.UI.Controls;
 using FAControlsGallery.ViewModels;
+using FAControlsGallery.Controls;
 
 namespace FAControlsGallery.Services;
 
@@ -34,11 +35,11 @@ public class NavigationService
 
     public void ShowControlDefinitionOverlay(Type targetType)
     {
-        //if (_overlayHost != null)
-        //{
-        //    (_overlayHost.Children[0] as ControlDefinitionOverlay).TargetType = targetType;
-        //    (_overlayHost.Children[0] as ControlDefinitionOverlay).Show();
-        //}
+        if (_overlayHost != null)
+        {
+            (_overlayHost.Children[0] as ControlDefinitionOverlay).TargetType = targetType;
+            (_overlayHost.Children[0] as ControlDefinitionOverlay).Show();
+        }
     }
 
     public void ClearOverlay()

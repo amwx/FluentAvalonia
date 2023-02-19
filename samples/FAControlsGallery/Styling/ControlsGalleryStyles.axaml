@@ -1,20 +1,23 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="using:FluentAvalonia.UI.Controls"
-        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
+        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+        xmlns:aedit="using:AvaloniaEdit">
 
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Styling/ControlThemes.axaml" />
                 <ResourceInclude Source="/Styling/ControlExampleStyles.axaml" />
-                <ResourceInclude Source="/Styling/FAPageHeaderStyles.axaml" />                
+                <ResourceInclude Source="/Styling/FAPageHeaderStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlDefinitionOverlayStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
 
     <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
     <StyleInclude Source="/Styling/FAPageBaseStyles.axaml" />
+    
     <!-- 
          NavView style in MainView for main app navigation
          While you are free to copy this into your own apps
@@ -129,4 +132,8 @@
         </Setter>
     </Style>
 
+    <!-- Adjust the ScrollViewer padding in AvaloniaEdit so scrollbar doesn't overlap text -->
+    <Style Selector="aedit|TextEditor /template/ ScrollViewer ScrollContentPresenter">
+        <Setter Property="Padding" Value="0 0 0 20" />
+    </Style>
 </Styles>

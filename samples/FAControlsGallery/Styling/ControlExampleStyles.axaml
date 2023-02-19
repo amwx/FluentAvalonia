@@ -29,13 +29,16 @@
         </Border>
     </Design.PreviewWith>
 
+    
     <ControlTheme x:Key="{x:Type local:SampleCodePresenter}"
                   TargetType="local:SampleCodePresenter">
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="Auto,*">
                     <ContentPresenter Name="HeaderPresenter"
-                                      Content="{TemplateBinding Header}" />
+                                      Content="{TemplateBinding Header}"
+                                      FontWeight="SemiBold"
+                                      VerticalAlignment="Top"/>
 
                     <Button Name="CopyCodeButton"
                             Padding="4"
@@ -45,14 +48,14 @@
                         <ui:SymbolIcon Symbol="ClipboardCode" FontSize="20" />
                     </Button>
                     
-                    <ui:TeachingTip Name="ConfirmCopyTeachingTip"
+                    <!--<ui:TeachingTip Name="ConfirmCopyTeachingTip"
                                     IsLightDismissEnabled="True"
                                     Subtitle="Copied!"
                                     Target="{Binding #CopyCodeButton}"
-                                    IsVisible="False" />
+                                    IsVisible="False" />-->
 
                     <!-- AvaloniaEdit text box here -->
-                    <aedit:TextEditor Name="TextHost" 
+                    <aedit:TextEditor Name="TextHost"
                                       IsReadOnly="True"
                                       Grid.Row="1"/>
                 </Grid>
@@ -196,7 +199,7 @@
                             </Panel>
                         </Expander.Header>
 
-                        <StackPanel Spacing="4">
+                        <StackPanel>
 
                             <!-- Xaml source first -->
                            <local:SampleCodePresenter Header="XAML"
@@ -208,7 +211,8 @@
                             
                             <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
                                        Height="1"
-                                       IsVisible="{Binding #XamlPresenter.IsVisible}"/>
+                                       IsVisible="{Binding #XamlPresenter.IsVisible}"
+                                       Margin="0 0 0 8" />
 
                              <local:SampleCodePresenter Header="C#"
                                                         Code="{TemplateBinding CSharpSource}"
@@ -218,8 +222,9 @@
                                                         IsVisible="False"/>
 
                             <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
-                                       Height="1"
-                                       IsVisible="{Binding #CSharpPresenter.IsVisible}"/>
+                                       Height="1" 
+                                       IsVisible="{Binding #CSharpPresenter.IsVisible}"
+                                       Margin="0 0 0 8" />
  
                             <local:SampleCodePresenter Header="Additional Notes"
                                                        Code="{TemplateBinding UsageNotes}"
