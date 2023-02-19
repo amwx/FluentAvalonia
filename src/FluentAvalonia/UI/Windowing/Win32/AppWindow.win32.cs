@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using FluentAvalonia.Interop;
+using FluentAvalonia.Interop.Win32;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -13,6 +14,9 @@ public partial class AppWindow
         IsWindows11 = OSVersionHelper.IsWindows11();
 
         _win32Manager = new Win32WindowManager(this);
+
+        // Force AppWindow into darkmode at the system level
+        Win32Interop.ApplyTheme(_win32Manager.Hwnd, true);
 
         // NOTE FOR FUTURE: 
         // Do NOT enable these properties, doing so causes a clash of logic between here and

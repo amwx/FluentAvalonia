@@ -33,9 +33,6 @@ internal unsafe class Win32WindowManager
 
         var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
         ps.ColorValuesChanged += OnPlatformColorValuesChanged;
-
-        // Force AppWindow into darkmode at the system level
-        ApplyTheme(Hwnd, true);
     }
 
     public HWND Hwnd { get; }
