@@ -30,6 +30,7 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         // The Expander's template hasn't been loaded yet, so defer until later when it has
         // so we can load the ToggleButton within the template
         _expander.Loaded += ExpanderLoaded;
+        _expander.Expanding += ExpanderExpanding;
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -165,6 +166,15 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         // ControlThemes don't let is drill into sub-templates so we have to do this manually here
         // Set a style on the ToggleButton to indicate we want to hide the expand/collapse chevron
         ((IPseudoClasses)_expanderToggleButton.Classes).Set(s_pcEmpty, IsClickEnabled || ItemCount == 0);
+    }
+    
+    private void ExpanderExpanding(object sender, CancelRoutedEventArgs e)
+    {
+        if (ItemCount == 0 && IsClickEnabled)
+        {
+            e.Cancel = true;
+            e.Handled = true;
+        }
     }
 
     private void ExpanderToggleButtonClick(object sender, RoutedEventArgs e)
