@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Media;
@@ -17,10 +18,7 @@ public partial class MainWindow : AppWindow
         AvaloniaXamlLoader.Load(this);
 
         this.AttachDevTools();
-
-        MinWidth = 450;
-        MinHeight = 400;
-
+        
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
 

@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
@@ -20,7 +21,57 @@ public class MainViewViewModel : ViewModelBase
     }
 
     public NavigationFactory NavigationFactory { get; }
-    
+
+    public AvaloniaList<MainAppSearchItem> SearchTerms { get; } = new AvaloniaList<MainAppSearchItem>();
+
+    public void BuildSearchTerms(MainPageViewModelBase pageItem)
+    {
+        if (pageItem is HomePageViewModel || pageItem is SettingsPageViewModel)
+            return;
+
+        if (pageItem is CoreControlsPageViewModel ccpg)
+        {
+            for (int i = 0; i < ccpg.CoreControlGroups.Count; i++)
+            {
+                var item = ccpg.CoreControlGroups[i];
+
+                Add(item);
+            }
+        }
+        else if (pageItem is FAControlsOverviewPageViewModel fapg)
+        {
+            for (int i = 0; i < fapg.ControlGroups.Count; i++)
+            {
+                for (int j = 0; j < fapg.ControlGroups[i].Controls.Count; j++)
+                {
+                    var item = fapg.ControlGroups[i].Controls[j];
+
+                    Add(item);
+                }
+            }
+        }
+
+        void Add(PageBaseViewModel item)
+        {
+            if (item.SearchKeywords is null)
+                return;
+
+            string ctrlNamespace = "Avalonia.UI.Controls";
+            if (item is FAControlsPageItem fa)
+                ctrlNamespace = fa.Namespace;
+
+            for (int i = 0; i < item.SearchKeywords.Length; i++)
+            {
+                SearchTerms.Add(new MainAppSearchItem
+                {
+                    Header = item.SearchKeywords[i],
+                    ViewModel = item,
+                    Namespace = ctrlNamespace
+                });
+            }            
+        }
+    }
+
     private void GetSearchTerms()
     {
         //MainSearchItems = new List<MainAppSearchItem>();
@@ -199,6 +250,8 @@ public class NavigationFactory : INavigationPageFactory
 
 public class MainAppSearchItem
 {
+    public MainAppSearchItem() { }
+
     public MainAppSearchItem(string pageHeader, Type pageType)
     {
         Header = pageHeader;
@@ -206,6 +259,10 @@ public class MainAppSearchItem
     }
 
     public string Header { get; set; }
+
+    public PageBaseViewModel ViewModel { get; set; }
+
+    public string Namespace { get; set; }
 
     public Type PageType { get; set; }
 }

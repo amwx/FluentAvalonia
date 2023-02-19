@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"             
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:local="using:FAControlsGallery.Controls"
              mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
-             x:Class="FAControlsGallery.Views.MainView">
+             x:Class="FAControlsGallery.Views.MainView"
+             x:DataType="vm:MainViewViewModel"
+             x:CompileBindings="True">
    
 
     <Grid RowDefinitions="Auto,*">
@@ -38,19 +42,28 @@
             </TextBlock>
             
             <Border Grid.Column="2" Padding="6">
-                <!--ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"-->
+                <!---->
                 <AutoCompleteBox Name="SearchBox"
                                  MaxWidth="500"
                                  Watermark="Search"
                                  Classes="SampleApp"
-                                 Items="{Binding MainSearchItems}">
-                    <!--
-                    wnd:AppWindow.AllowInteractionInTitleBar="True"
+                                 ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"
+                                 Items="{Binding SearchTerms}">
+                    <!--wnd:AppWindow.AllowInteractionInTitleBar="True"-->
                     <AutoCompleteBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:MainAppSearchItem">
-                            <TextBlock Text="{Binding Header}" />
+                            <Panel>
+                                <StackPanel HorizontalAlignment="Left"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Header}" />
+                                    <TextBlock Text="{Binding Namespace}"
+                                               Theme="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                               FontStyle="Italic"/>
+                                </StackPanel>
+                            </Panel>
                         </DataTemplate>
-                    </AutoCompleteBox.ItemTemplate>-->
+                    </AutoCompleteBox.ItemTemplate>
                 </AutoCompleteBox>
             </Border>
         </Grid>
@@ -68,78 +81,7 @@
 
         <Panel Name="OverlayHost"
                Grid.Row="1">
-            <Panel.Styles>
-                <!--<Style Selector="local|ControlDefinitionOverlay">
-                    <Setter Property="Template">
-                        <ControlTemplate>
-                            <Border Background="{TemplateBinding Background}">
-                                <Panel Margin="20">
-
-                                    <ExperimentalAcrylicBorder CornerRadius="8">
-                                        <ExperimentalAcrylicBorder.Material>
-                                            <ExperimentalAcrylicMaterial TintColor="{DynamicResource SolidBackgroundFillColorBase}"
-                                                                         FallbackColor="{DynamicResource SolidBackgroundFillColorBase}"
-                                                                         TintOpacity="0.85"
-                                                                         BackgroundSource="Digger"
-                                                                         MaterialOpacity="1" />
-                                        </ExperimentalAcrylicBorder.Material>
-                                    </ExperimentalAcrylicBorder>
-
-                                    <Panel>
-                                        <ScrollViewer>
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding TargetType.Name, RelativeSource={RelativeSource TemplatedParent}}"
-                                                           Theme="{StaticResource TitleTextBlockStyle}"
-                                                           Margin="12 8 12 0"  />
-                                                <TextBlock Text="{Binding TargetType, RelativeSource={RelativeSource TemplatedParent}}"
-                                                           Classes="CaptionTextBlockStyle"
-                                                           Margin="12 0 12 8"
-                                                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                           FontStyle="Italic"/>
-
-                                                <TextBlock Text="Inheritance"
-                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
-                                                           Margin="12 4"/>
-
-                                                <TextBlock Text="{TemplateBinding Inheritance}"
-                                                           Margin="24 4"
-                                                           TextWrapping="Wrap" />
-
-                                                <TextBlock Text="Pseudoclasses"
-                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
-                                                           Margin="12 4"/>
-
-                                                <TextBlock Text="{TemplateBinding PseudoclassesList}"
-                                                           Margin="24 4"
-                                                           TextWrapping="Wrap" />
-
-                                                <TextBlock Text="Definition"
-                                                           Theme="{StaticResource SubtitleTextBlockStyle}"
-                                                           Margin="12 4"/>
-
-                                                --><!--<aedit:TextEditor Name="TextEditor"
-                                                                  Margin="12 0"
-                                                                  Background="Transparent" />--><!--
-                                            </StackPanel>
-                                        </ScrollViewer>
-
-
-                                        <Button Name="CloseButton"
-                                                   HorizontalAlignment="Right"
-                                                   VerticalAlignment="Top"
-                                                   Theme="{StaticResource TransparentButton}"
-                                                   Margin="12">
-                                            <ui:SymbolIcon Symbol="Dismiss" FontSize="18" />
-                                        </Button>
-                                    </Panel>
-
-                                </Panel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter>
-                </Style>-->
-            </Panel.Styles>
-            <!--<local:ControlDefinitionOverlay Name="CtrlDefOverlay" />-->
+            <local:ControlDefinitionOverlay Name="CtrlDefOverlay" />
         </Panel>
     </Grid>
     

@@ -3,7 +3,6 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform;
-using Avalonia.Rendering.Composition;
 using Avalonia.Styling;
 using FAControlsGallery.Pages;
 using FAControlsGallery.Services;
@@ -21,28 +20,28 @@ public partial class MainView : UserControl
         
         SearchBox.KeyUp += (s, e) =>
         {
-            //if (e.Key == Key.Enter)
-            //{
-            //    var acb = (s as AutoCompleteBox);
-            //    if (acb.SelectedItem != null)
-            //    {
-            //        var item = acb.SelectedItem as MainAppSearchItem;
-            //        NavigationService.Instance.Navigate(item.PageType);
-            //    }
-            //    else
-            //    {
-            //        var items = (DataContext as MainViewViewModel).MainSearchItems;
-            //        foreach (var item in items)
-            //        {
-            //            if (string.Equals(item.Header, acb.Text, StringComparison.OrdinalIgnoreCase))
-            //            {
-            //                NavigationService.Instance.Navigate(item.PageType);
-            //                break;
-            //            }
-            //        }
-            //    }
-            //    e.Handled = true;
-            //}
+            if (e.Key == Key.Enter)
+            {
+                var acb = (s as AutoCompleteBox);
+                if (acb.SelectedItem != null)
+                {
+                    var item = acb.SelectedItem as MainAppSearchItem;
+                    NavigationService.Instance.NavigateFromContext(item.ViewModel);
+                }
+                else
+                {
+                    var items = (DataContext as MainViewViewModel).SearchTerms;
+                    foreach (var item in items)
+                    {
+                        if (string.Equals(item.Header, acb.Text, StringComparison.OrdinalIgnoreCase))
+                        {
+                            NavigationService.Instance.NavigateFromContext(item.ViewModel);
+                            break;
+                        }
+                    }
+                }
+                e.Handled = true;
+            }
         };
     }
 
@@ -54,6 +53,7 @@ public partial class MainView : UserControl
         DataContext = vm;
         FrameView.NavigationPageFactory = vm.NavigationFactory;
         NavigationService.Instance.SetFrame(FrameView);
+        NavigationService.Instance.SetOverlayHost(OverlayHost);
 
         // On desktop, the window will call this during the splashscreen
         //if (e.Root is not Window)
@@ -64,13 +64,8 @@ public partial class MainView : UserControl
         FrameView.Navigated += OnFrameViewNavigated;
         NavView.ItemInvoked += OnNavigationViewItemInvoked;
         NavView.BackRequested += OnNavigationViewBackRequested;
-        //NavView.MenuItems = GetNavigationViewItems();
-        //NavView.FooterMenuItems = GetFooterNavigationViewItems();
 
-        //FrameView.Navigate(typeof(CoreControlsPage));
-
-        
-        //
+        FrameView.NavigateFromObject((NavView.MenuItems.ElementAt(0) as Control).Tag);
     }
 
     public void InitializeNavigationPages()
@@ -117,6 +112,7 @@ public partial class MainView : UserControl
         var menuItems = new List<NavigationViewItemBase>(4);
         var footerItems = new List<NavigationViewItemBase>(2);
 
+        bool inDesign = Design.IsDesignMode;
         for (int i = 0; i < mainPages.Length; i++)
         {
             var pg = mainPages[i];
@@ -135,6 +131,11 @@ public partial class MainView : UserControl
                 footerItems.Add(nvi);
             else
                 menuItems.Add(nvi);
+
+            if (!inDesign)
+            {
+                (DataContext as MainViewViewModel).BuildSearchTerms(pg);
+            }
         }
 
         NavView.MenuItems = menuItems;
@@ -145,6 +146,7 @@ public partial class MainView : UserControl
     {
         var pt = e.GetCurrentPoint(this);
 
+        // TODO: Use BackRequested from TopLevel
         // This enables the X1/X2 buttons of my mouse to handle back & forward navigation
         if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton1Released)
         {
@@ -165,72 +167,6 @@ public partial class MainView : UserControl
 
         base.OnPointerReleased(e);
     }
-
-    private List<NavigationViewItem> GetNavigationViewItems()
-    {
-        return new List<NavigationViewItem>
-        {
-            new NavigationViewItem
-            {
-                Content = "Home",
-                Tag = typeof(HomePage),
-                IconSource = (IconSource)this.FindResource("HomeIcon"),
-                Classes =
-                {
-                    "SampleAppNav"
-                }
-            },
-             new NavigationViewItem
-            {
-                Content = "Core Controls",
-                Tag = typeof(CoreControlsPage),
-                IconSource = (IconSource)this.FindResource("CoreCtrlsIcon"),
-                Classes =
-                {
-                    "SampleAppNav"
-                }
-            },
-            new NavigationViewItem
-            {
-                Content = "FA Controls",
-                Tag = typeof(FAControlsOverviewPage),
-                IconSource = (IconSource)this.FindResource("CtrlsIcon"),
-                Classes =
-                {
-                    "SampleAppNav"
-                }
-            },
-            
-        };
-    }
-
-    private List<NavigationViewItem> GetFooterNavigationViewItems()
-    {
-        return new List<NavigationViewItem>
-        {
-            new NavigationViewItem
-            {
-                Content = "Resources",
-               // Tag = typeof(ResourcesPage),
-                IconSource = (IconSource)this.FindResource("ResourcesIcon"),
-                Classes =
-                {
-                    "SampleAppNav"
-                }
-            },
-            new NavigationViewItem
-            {
-                Content = "Settings",
-                Tag = typeof(SettingsPage),
-                IconSource = (IconSource)this.FindResource("SettingsIcon"),
-                Classes =
-                {
-                    "SampleAppNav"
-                }
-            }
-        };
-    }
-
 
     private void OnNavigationViewBackRequested(object sender, NavigationViewBackRequestedEventArgs e)
     {
@@ -293,40 +229,7 @@ public partial class MainView : UserControl
                 }
             }            
         }
-
-        //if (false) //e.SourcePageType.IsAssignableTo(typeof(FAControlsPageBase)))
-        //{
-        //    // Keep new Control tab selected if we're within a new controls page
-        //    NavView.SelectedItem = NavView.MenuItems.ElementAt(2);
-        //}
-        //else
-        //{
-        //    bool found = false;
-        //    foreach (NavigationViewItem nvi in NavView.MenuItems)
-        //    {
-        //        if (nvi.Tag is Type tag && tag == e.SourcePageType)
-        //        {
-        //            found = true;
-        //            NavView.SelectedItem = nvi;
-        //            SetNVIIcon(nvi, true);
-        //            break;
-        //        }
-        //    }
-
-        //    if (!found)
-        //    {
-        //        if (e.SourcePageType == typeof(SettingsPage))
-        //        {
-        //            NavView.SelectedItem = NavView.FooterMenuItems.ElementAt(0);
-        //        }
-        //        else
-        //        {
-        //            // only remaining page type is core controls pages
-        //            NavView.SelectedItem = NavView.MenuItems.ElementAt(1);
-        //        }
-        //    }
-        //}
-
+           
         if (FrameView.BackStackDepth > 0 && !NavView.IsBackButtonVisible)
         {
             AnimateContentForBackButton(true);
