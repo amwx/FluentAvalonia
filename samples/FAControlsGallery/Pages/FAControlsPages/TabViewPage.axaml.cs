@@ -15,12 +15,7 @@ public partial class TabViewPage : FAControlsPageBase
     public TabViewPage()
     {
         InitializeComponent();
-        //TargetType = typeof(TabView);
-        //WinUINamespace = "Microsoft.UI.Xaml.Controls.TabView";
-        //WinUIDocsLink = new Uri("https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.tabview");
-        //WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/controls/tab-view");
-        //Description = "TabView provides the user with a collection of tabs that can be used to display several documents";
-
+        
         var txt = "Make sure this TabView is focused before trying these Keyboard shortcuts. (Click on first tab)\n";
         txt += $"- {new KeyGesture(Key.T, KeyModifiers.Control)} opens a new tab\n";
         txt += $"- {new KeyGesture(Key.W, KeyModifiers.Control)} opens a new tab\n";

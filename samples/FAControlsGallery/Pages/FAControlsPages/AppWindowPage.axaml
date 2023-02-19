@@ -4,12 +4,119 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
-             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:wnd="using:FluentAvalonia.UI.Windowing"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="1400"
              x:Class="FAControlsGallery.Pages.AppWindowPage">
+    
     <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
         <StackPanel Spacing="8">
-            <ctrls:ControlExample Header="AppWindow">
+            
+            <ctrls:ControlExample Header="What is AppWindow?">
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding AppWindowDesc1}" TextWrapping="Wrap" />
+
+                    <TextBlock Text="{Binding AppWindowDesc2}" TextWrapping="Wrap" />
+
+                    <TextBlock Text="{Binding AppWindowDesc3}" TextWrapping="Wrap" />
+                </StackPanel>
                 
+                
+                <ctrls:ControlExample.CSharpSource>
+                    <x:String xml:space="preserve">using FluentAvalonia.UI.Windowing; 
+
+public class MainWindow : AppWindow
+                    </x:String>
+                </ctrls:ControlExample.CSharpSource>
+                
+            </ctrls:ControlExample>
+
+            <ui:InfoBar IsOpen="True" IsClosable="False"
+                        Title="WARNING"
+                        Severity="Warning"
+                        IconSource="ImportantFilled"
+                        Message="{Binding AppWindowWarning}" />
+
+            <ctrls:ControlExample Header="AppWindowTitleBar"
+                                  TargetType="wnd:AppWindowTitleBar"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding AppWindowTitleBarDesc}"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock Text="{Binding AppWindowTitleBarDesc2}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample TargetType="wnd:IApplicationSplashScreen"
+                                  Header="IApplicationSplashScreen"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding AppWindowSplashScreenDesc}" />
+
+                    <StackPanel Spacing="4">
+                        <StackPanel.IsVisible>
+                            <OnPlatform Default="False">
+                                <On Options="macOS, Linux, Windows" Content="True" />
+                            </OnPlatform>
+                        </StackPanel.IsVisible>
+                        <Button Content="Show SplashScreen with AppName" Name="SplashButton1" />
+                        <Button Content="Show SplashScreen with Icon" Name="SplashButton2" />
+                        <Button Content="Show SplashScreen with Complex Content" Name="SplashButton3" />
+                    </StackPanel>
+                </StackPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample TargetType="wnd:IAppWindowPlatformFeatures"
+                                  Header="Platform Features (Windows only currently)"
+                                  EnableShowDefinitionLink="True">
+                <StackPanel Spacing="8">
+                    <ui:InfoBar IsOpen="True"
+                                IsClosable="False"
+                                Title="NOTE"
+                                Severity="Informational"
+                                Message="These features are currently on available on Windows" />
+                    
+                    <TextBlock Text="{Binding PlatformFeaturesDesc1}" />
+                    <TextBlock Text="{Binding PlatformFeaturesDesc2}" Margin="24 0 0 0" />
+                    <TextBlock Text="{Binding PlatformFeaturesDesc3}" Margin="24 0 0 0" />
+
+                    <StackPanel Spacing="4">
+                        <StackPanel.IsVisible>
+                            <OnPlatform Default="False">
+                                <On Options="macOS, Linux, Windows" Content="True" />
+                            </OnPlatform>
+                        </StackPanel.IsVisible>
+                        <TextBlock Text="Window Border Color" />
+                        <ui:ColorPickerButton Color="{DynamicResource SystemAccentColor}" 
+                                              Name="ColorPickerButton1" />
+
+                        <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
+                                   Height="1" 
+                                   Margin="0 20"/>
+                        
+                        <ui:FAComboBox Header="TaskBarProgressBarState"
+                                       Name="ProgressStateCB"
+                                       SelectedIndex="0">
+                            <ui:FAComboBoxItem Content="{x:Static wnd:TaskBarProgressBarState.None}" />
+                            <ui:FAComboBoxItem Content="{x:Static wnd:TaskBarProgressBarState.Normal}" />
+                            <ui:FAComboBoxItem Content="{x:Static wnd:TaskBarProgressBarState.Paused}" />
+                            <ui:FAComboBoxItem Content="{x:Static wnd:TaskBarProgressBarState.Error}" />
+                            <ui:FAComboBoxItem Content="{x:Static wnd:TaskBarProgressBarState.Indeterminate}" />
+                        </ui:FAComboBox>
+                        
+                        <ui:NumberBox Minimum="0" Maximum="100"
+                                      Name="ProgressValue"
+                                      Value="50" 
+                                      SpinButtonPlacementMode="Inline"
+                                      MinWidth="150"/>
+                        <Button Content="Set TaskBarProgressBar"
+                                Name="SetTaskBarProgressBar"/>
+                        
+                    </StackPanel>
+                </StackPanel>
             </ctrls:ControlExample>
         </StackPanel>
     </ScrollViewer>

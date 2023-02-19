@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="3000"
              x:Class="FAControlsGallery.Pages.MenuFlyoutPage"
              x:DataType="vm:MenuFlyoutPageViewModel">
-    <UserControl.DataTemplates> 
+    <UserControl.DataTemplates>
         <DataTemplate DataType="{x:Type vm:TempMenuItem}">
             <ui:MenuFlyoutItem Text="{Binding Text}" IconSource="{Binding Icon}" />
         </DataTemplate>
@@ -25,7 +25,7 @@
                                     GroupName="{Binding GroupName}"/>
         </DataTemplate>
         <!-- You can also bind to the Icon property, using a converter to get an IconElement -->
-        <ui:MenuFlyoutSubItemTemplate x:DataType="vm:TempSubItem"
+        <ui:MenuFlyoutSubItemTemplate DataType="vm:TempSubItem"
 									  SubItems="{Binding SubItems}"
 									  HeaderText="{Binding Text}" />
     </UserControl.DataTemplates>
@@ -76,7 +76,7 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
                                                 GroupName="Test Group" />
                     </ui:FAMenuFlyout>
                 </Button.Flyout>
-            </Button>            
+            </Button>          
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="MenuFlyout Binding (experimental, but generally stable)"

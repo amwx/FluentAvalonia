@@ -1,32 +1,23 @@
-using System;
 using System.Collections;
 using System.Collections.Specialized;
-using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
-//using FluentAvalonia.UI.Windowing;
+using FluentAvalonia.UI.Windowing;
 
 namespace FAControlsGallery.Pages;
 
-public partial class TabViewWindowingSample : Window// AppWindow
+public partial class TabViewWindowingSample : AppWindow
 {
     public TabViewWindowingSample()
     {
         InitializeComponent();
-#if DEBUG
-        this.AttachDevTools();
-#endif
-        //TabView = this.FindControl<TabView>("TabView");
 
         TabView.TabItemsChanged += TabView_TabItemsChanged;
     }
-
-    //public TabView TabView { get; }
 
     public static readonly string DataIdentifier = "MyTabItem";
 
@@ -60,24 +51,19 @@ public partial class TabViewWindowingSample : Window// AppWindow
         tvws.Show();
     }
 
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
     protected override void OnOpened(EventArgs e)
     {
         base.OnOpened(e);
 
-        //if (TitleBar != null)
-        //{
-        //    TitleBar.ExtendsContentIntoTitleBar = true;
-        //    TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
+        if (TitleBar != null)
+        {
+            TitleBar.ExtendsContentIntoTitleBar = true;
+            TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
 
-        //    var dragRegion = this.FindControl<Panel>("CustomDragRegion");
-        //    dragRegion.MinWidth = FlowDirection == Avalonia.Media.FlowDirection.LeftToRight ?
-        //        TitleBar.RightInset : TitleBar.LeftInset;
-        //}
+            var dragRegion = this.FindControl<Panel>("CustomDragRegion");
+            dragRegion.MinWidth = FlowDirection == Avalonia.Media.FlowDirection.LeftToRight ?
+                TitleBar.RightInset : TitleBar.LeftInset;
+        }
     }
 
     private void TabView_TabItemsChanged(TabView sender, NotifyCollectionChangedEventArgs args)
@@ -162,8 +148,8 @@ public partial class TabViewWindowingSample : Window// AppWindow
             // here if we should close the window if TabItems.Count() == 0
             if (srcTabView.TabItems.Count() == 0)
             {
-                //var wnd = srcTabView.FindAncestorOfType<AppWindow>();
-                //wnd.Close();
+                var wnd = srcTabView.FindAncestorOfType<AppWindow>();
+                wnd.Close();
             }
         }
     }

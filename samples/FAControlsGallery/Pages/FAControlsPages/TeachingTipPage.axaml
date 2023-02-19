@@ -4,9 +4,67 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FAControlsGallery.Pages.TeachingTipPage">
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="450"
+             x:Class="FAControlsGallery.Pages.TeachingTipPage"
+             x:CompileBindings="True">
+
     <StackPanel Spacing="8">
-        
+        <ctrls:ControlExample Header="Show a targeted TeachingTip">
+            <Panel>
+                <Button Name="Button1" Content="Show TeachingTip" />
+
+                <ui:TeachingTip Name="TeachingTip1"
+                                Target="{Binding #Button1}"
+                                Title="Title"
+                                Subtitle="Your teaching text here"
+                                IconSource="Refresh" />
+            </Panel>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Show an untargeted TeachingTip with buttons">
+            <Panel>
+                <Button Name="Button2" Content="Show TeachingTip" />
+
+                <ui:TeachingTip Name="TeachingTip2"
+                                Title="Title"
+                                Subtitle="Your teaching text here. This one is untargeted"
+                                ActionButtonContent="Action Button"
+                                CloseButtonContent="Close"/>
+            </Panel>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Show a targeted TeachingTip with hero content">
+            <Panel>
+                <Button Name="Button3" Content="Show TeachingTip" />
+
+                <ui:TeachingTip Name="TeachingTip3"
+                                Target="{Binding #Button3}"
+                                Title="Title"
+                                Subtitle="Your teaching text here."
+                                ActionButtonContent="Action Button"
+                                CloseButtonContent="Close"
+                                Content="alskdgasd"
+                                HeroContentPlacement="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=HeroContentPlacementCB, Mode=TwoWay}">
+                    <ui:TeachingTip.HeroContent>
+                        <Image Source="/Assets/headerimage.jpeg" />
+                    </ui:TeachingTip.HeroContent>
+                </ui:TeachingTip>
+            </Panel>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="8">
+                    <TextBlock Text="HeroContentPlacement" />
+                    <ComboBox MinWidth="120"
+                              Name="HeroContentPlacementCB"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="{x:Static ui:TeachingTipHeroContentPlacementMode.Auto}" />
+                        <ComboBoxItem Content="{x:Static ui:TeachingTipHeroContentPlacementMode.Top}" />
+                        <ComboBoxItem Content="{x:Static ui:TeachingTipHeroContentPlacementMode.Bottom}" />
+                    </ComboBox>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+        </ctrls:ControlExample>
+
+
     </StackPanel>
 </UserControl>

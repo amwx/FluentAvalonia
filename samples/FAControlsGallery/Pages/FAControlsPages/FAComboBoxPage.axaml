@@ -4,9 +4,55 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FAControlsGallery.Pages.FAComboBoxPage">
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             x:Class="FAControlsGallery.Pages.FAComboBoxPage"
+             x:DataType="vm:FAComboBoxPageViewModel"
+             x:CompileBindings="True">
+    
     <StackPanel Spacing="8">
-        
+        <ctrls:ControlExample Header="FAComboBox with items declared in Xaml">
+            <ui:FAComboBox MinWidth="200"
+                           Name="CB1">
+                <ui:FAComboBoxItem Content="Item 1" />
+                <ui:FAComboBoxItem Content="Item 2" />
+                <ui:FAComboBoxItem Content="Different Name" />
+                <ui:FAComboBoxItem Content="ComboBoxItem4" />
+                <ui:FAComboBoxItem Content="Item 5" />
+            </ui:FAComboBox>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <CheckBox Content="IsEditable" 
+                              MinWidth="0"
+                              IsChecked="{Binding #CB1.IsEditable}"/>
+
+                    <CheckBox Content="IsTextSearchEnabled"
+                              MinWidth="0"
+                              IsChecked="{Binding #CB1.IsTextSearchEnabled}"/>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="FAComboBox bound to a collection of Items">
+            <ui:FAComboBox MinWidth="200"
+                           Name="CB2"
+                           DisplayMemberBinding="{Binding DisplayName, DataType=vm:ComboItem}"
+                           Items="{Binding Items}">
+            </ui:FAComboBox>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <CheckBox Content="IsEditable"
+                              MinWidth="0"
+                              IsChecked="{Binding #CB2.IsEditable}"/>
+
+                    <CheckBox Content="IsTextSearchEnabled"
+                              MinWidth="0"
+                              IsChecked="{Binding #CB2.IsTextSearchEnabled}"/>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+        </ctrls:ControlExample>
     </StackPanel>
+    
 </UserControl>

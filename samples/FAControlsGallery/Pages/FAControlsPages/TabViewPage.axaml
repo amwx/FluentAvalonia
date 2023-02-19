@@ -180,10 +180,10 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
             </ctrls:ControlExample.Options>            
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="TabView Windowing Sample" IsVisible="False"
+        <ctrls:ControlExample Header="TabView Windowing Sample"
                               UsageNotes="See the TabViewWindowingSample source code for how this is implemented.">
             <Button Content="Click to launch"
-                       Click="LaunchWindowingSample"/>
+                    Click="LaunchWindowingSample"/>
         </ctrls:ControlExample>
     </StackPanel>
 </UserControl>

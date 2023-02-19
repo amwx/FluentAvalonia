@@ -2,7 +2,111 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FAControlsGallery.Pages.SettingsExpanderPage">
-  Welcome to Avalonia!
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:conv="using:FAControlsGallery.Converters"
+             xmlns:sys="using:System"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="1200"
+             x:Class="FAControlsGallery.Pages.SettingsExpanderPage"
+             x:DataType="vm:SettingsExpanderPageViewModel"
+             x:CompileBindings="True">
+
+    <UserControl.Resources>
+        <ui:SymbolIconSource x:Key="VolumeIcon" Symbol="Volume" />
+        <ui:SymbolIconSource x:Key="GoIcon" Symbol="ChevronRight" />
+        <conv:ResourceKeyToIconConverter x:Key="ResKeyIconConv" />
+    </UserControl.Resources>
+
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="vm:RecentImagesSettingsItem">
+            <StackPanel Spacing="4">
+                <TextBlock Text="{Binding Header}" />
+                <ItemsControl Items="{Binding Images}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="4" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="sys:String">
+                            <Border Width="75" Height="75">
+                                <ui:IconSourceElement IconSource="{Binding , Converter={StaticResource ResKeyIconConv}}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:SettingsItemBase">
+            <TextBlock Text="{Binding Header}" />
+        </DataTemplate>
+        
+        <DataTemplate DataType="vm:SettingsItemButtonFooter">
+            <Button Content="{Binding Caption}" />
+        </DataTemplate>
+    </UserControl.DataTemplates>
+    
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample TargetType="ui:SettingsExpander"
+                              Header="Clickable SettingsExpander">
+
+            <ui:SettingsExpander Header="Sound"
+                                 IconSource="{StaticResource VolumeIcon}"
+                                 Description="Volume levels, output, input, sound devices"
+                                 IsClickEnabled="True" 
+                                 ActionIconSource="{StaticResource GoIcon}"
+                                 Name="SettingsExpander1">
+                
+            </ui:SettingsExpander>
+            
+        </ctrls:ControlExample>
+        
+        <ctrls:ControlExample Header="A SettingsExpander with footer content">
+            <ui:SettingsExpander Header="Volume"
+                                 Name="SettingsExpander2">
+                <ui:SettingsExpander.Footer>
+                    <Slider Minimum="0" Maximum="100" Value="50"
+                            Width="160"/>
+                </ui:SettingsExpander.Footer>
+            </ui:SettingsExpander>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A SettingsExpander with items">
+
+            <ui:SettingsExpander Header="Choose a device for speaking or recording"
+                                 IconSource="Microphone"
+                                 Description="Apps might have their own settings"
+                                 Name="SettingsExpander3">
+                <ui:SettingsExpanderItem Content="Headset"
+                                         Description="Device Name" />
+                <ui:SettingsExpanderItem Content="This one has footer content"
+                                         Description="Device Name">
+                    <ui:SettingsExpanderItem.Footer>
+                        <Button Content="Add new device" />
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>
+
+                <ui:SettingsExpanderItem Content="This one is clickable"
+                                         ActionIconSource="{StaticResource GoIcon}"
+                                         IsClickEnabled="True" />
+            </ui:SettingsExpander>
+            
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A SettingsExpander with bound Items">
+            <ui:SettingsExpander Header="Personalize your background"
+                                 IconSource="Image"
+                                 Name="SettingsExpander4"
+                                 Items="{Binding Items}">
+                <ui:SettingsExpander.Styles>
+                    <Style Selector="ui|SettingsExpanderItem">
+                        <Setter Property="Footer" Value="{Binding Footer, DataType=vm:SettingsItemBase}" />
+                    </Style>
+                </ui:SettingsExpander.Styles>
+            </ui:SettingsExpander>
+        </ctrls:ControlExample>
+    </StackPanel>
 </UserControl>

@@ -35,7 +35,7 @@
                 <TextBlock Text="{Binding LastAction, StringFormat='You Clicked: {0}'}" DockPanel.Dock="Bottom" />
 
                 <Button Name="myImageButton" Padding="0" Click="MyImageButton_Click">
-                    <!--<Image Name="Image1" Source="/Assets/rainier.jpg" Height="300" />-->
+                    <Image Name="Image1" Source="/Assets/rainier.jpg" Height="300" />
                 </Button>
             </DockPanel>
 

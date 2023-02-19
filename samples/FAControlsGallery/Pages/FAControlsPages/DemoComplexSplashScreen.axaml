@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FAControlsGallery.Pages.DemoComplexSplashScreen">
+
+    <Panel>
+        <StackPanel Spacing="10"
+                    VerticalAlignment="Center">
+            <Image Source="/Assets/FAIcon.ico"
+                   Width="150"
+                   Height="150" />
+            
+            
+            <ProgressBar Name="ProgressBar1"
+                         MaxWidth="200"
+                         Margin="0 20"/>
+            
+            <TextBlock Text="Loading..."
+                       Name="LoadingText"
+                       HorizontalAlignment="Center" 
+                       FontSize="20"/>
+        </StackPanel>
+    </Panel>
+    
+</UserControl>
