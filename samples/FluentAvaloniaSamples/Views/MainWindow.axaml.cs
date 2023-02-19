@@ -13,6 +13,8 @@ using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Windowing;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FluentAvaloniaSamples.Views;
 
@@ -33,10 +35,7 @@ public class SampleAppSplashScreen : IApplicationSplashScreen
 
     int IApplicationSplashScreen.MinimumShowTime => 2000;
 
-    void IApplicationSplashScreen.RunTasks()
-    {
-
-    }
+    Task IApplicationSplashScreen.RunTasks(CancellationToken token) => null;
 }
 
 public class MainWindow : AppWindow
