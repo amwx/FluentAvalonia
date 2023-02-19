@@ -185,6 +185,9 @@ internal static unsafe partial class Win32Interop
 
 
     public const int GWLP_WNDPROC = -4;
+    public const int GWL_STYLE = -16;
+
+    public const uint WS_MAXIMIZE = 0x01000000;
 
     public const int WM_CREATE = 0x0001;
     public const int WM_SIZE = 0x0005;

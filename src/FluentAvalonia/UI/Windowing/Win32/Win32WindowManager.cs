@@ -149,7 +149,7 @@ internal unsafe class Win32WindowManager
 
     private int GetTopBorderHeight()
     {
-        if (_window.WindowState == WindowState.Maximized || _window.WindowState == WindowState.FullScreen)
+        if (_isMaximized || _window.WindowState == WindowState.FullScreen)
         {
             return 0;
         }
@@ -196,7 +196,9 @@ internal unsafe class Win32WindowManager
         newSize.top = originalTop;
         var windowState = _window.WindowState;
 
-        if (windowState == WindowState.Maximized)
+        UpdateMaximizeState();
+                
+        if (_isMaximized)
         {
             newSize.top += GetResizeHandleHeight();
         }
@@ -370,7 +372,14 @@ internal unsafe class Win32WindowManager
         Win32Interop.ApplyTheme(Hwnd, true);
     }
 
-
+    private void UpdateMaximizeState()
+    {
+        // Using the WindowState property is unreliable - seems to fail if titlebar
+        // is double clicked, but works with the maximize button - this will work
+        // in all cases
+        var sty = GetWindowLongPtrW(Hwnd, GWL_STYLE);
+        _isMaximized = (sty & WS_MAXIMIZE) == WS_MAXIMIZE;
+    }
 
 #if NET5_0_OR_GREATER
     [UnmanagedCallersOnly]
@@ -392,8 +401,7 @@ internal unsafe class Win32WindowManager
     private bool _fakingMaximizeButton;
     private bool _wasFakeMaximizeDown;
     private bool _isFullScreen;
-    private RECT _beforeFullScreenBounds;
-    private bool _hasShown;
+    private bool _isMaximized;
 
     private nint _oldWndProc;
     private nint _wndProc;
