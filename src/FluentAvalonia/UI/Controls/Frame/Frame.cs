@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Logging;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Media.Animation;
@@ -537,21 +538,23 @@ public partial class Frame : ContentControl
 
     private void OnForwardStackChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        // 11.0 changed the API surface an outside implementations can no longer call RaisePropertyChanged and will need to 
-        // "Set" the property to do so. CanGoBack and CanGoForward derive their value by checking the list counts and don't
-        // use a backing boolean field so prior to 11.0 I just used RaisePropertyChanged. Now, I've made the CLR properties
-        // private set, and we use SetAndRaise but just throw away the ref param
-        CanGoForward = _forwardStack.Count > 0;
+        int oldCount = (_forwardStack.Count - (e.NewItems?.Count ?? 0) + (e.OldItems?.Count ?? 0));
+
+        bool oldForward = oldCount > 0;
+        bool newForward = _forwardStack.Count > 0;
+        RaisePropertyChanged(CanGoForwardProperty, oldForward, newForward,
+            BindingPriority.LocalValue);
     }
 
     private void OnBackStackChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        // 11.0 changed the API surface an outside implementations can no longer call RaisePropertyChanged and will need to 
-        // "Set" the property to do so. CanGoBack and CanGoForward derive their value by checking the list counts and don't
-        // use a backing boolean field so prior to 11.0 I just used RaisePropertyChanged. Now, I've made the CLR properties
-        // private set, and we use SetAndRaise but just throw away the ref param
-        CanGoForward = _forwardStack.Count > 0;
-        CanGoBack = _backStack.Count > 0;
+        int oldCount = (_backStack.Count - (e.NewItems?.Count ?? 0) + (e.OldItems?.Count ?? 0));
+
+        bool oldBack = oldCount > 0;
+        bool newBack = _backStack.Count > 0;
+        RaisePropertyChanged(CanGoBackProperty, oldBack, newBack, BindingPriority.LocalValue);
+        RaisePropertyChanged(BackStackDepthProperty, oldCount, _backStack.Count, 
+            BindingPriority.LocalValue);
     }
 
     private Control CreatePageAndCacheIfNecessary(Type srcPageType)
