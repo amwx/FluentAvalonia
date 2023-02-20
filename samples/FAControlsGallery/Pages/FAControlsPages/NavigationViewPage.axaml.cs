@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.Core;
@@ -14,12 +13,8 @@ public partial class NavigationViewPage : FAControlsPageBase
     {
         InitializeComponent();
 
-        //TargetType = typeof(NavigationView);
-        //WinUINamespace = "Microsoft.UI.Xaml.Controls.NavigationView";
-        //WinUIDocsLink = new Uri("https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.frame?view=winui-3.0");
-        //WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/controls/navigationview");
-        //Description = "The navigation view control provides a common vertical layout for top-level areas of your app via a collapsible navigation menu";
-
+        TargetType = typeof(NavigationView);
+        
         DataContext = new NavViewPageViewModel();
 
         // Default NavView

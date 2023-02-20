@@ -4,6 +4,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using FAControlsGallery.Controls;
+using FAControlsGallery.Services;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
@@ -162,7 +163,7 @@ public class FAControlsPageBase : UserControl, IStyleable
 
     internal void ShowPageControlDefinition()
     {
-        //NavigationService.Instance.ShowControlDefinitionOverlay(TargetType);
+        NavigationService.Instance.ShowControlDefinitionOverlay(TargetType);
     }
 
     internal void TogglePageTheme()

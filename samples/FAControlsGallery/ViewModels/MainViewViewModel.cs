@@ -198,9 +198,6 @@ public class NavigationFactory : INavigationPageFactory
             if (dc.WinUIGuidelinesLink is not null)
                 pg.WinUIGuidelinesLink = new Uri(dc.WinUIGuidelinesLink);
 
-            var type = Type.GetType($"{dc.Namespace}.{dc.Header}");
-            pg.TargetType = type;
-
             page = pg;
         }
 

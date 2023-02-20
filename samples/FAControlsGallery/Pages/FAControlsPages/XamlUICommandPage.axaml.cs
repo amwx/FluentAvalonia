@@ -11,6 +11,7 @@ public partial class XamlUICommandPage : FAControlsPageBase
         InitializeComponent();
 
         DataContext = new StandardUICommandPageViewModel();
+        TargetType = typeof(XamlUICommand);
     }
 
     public void CustomXamlUICommand_ExecuteRequested(XamlUICommand command, ExecuteRequestedEventArgs args)

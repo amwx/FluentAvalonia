@@ -23,6 +23,7 @@ public partial class AppWindowPage : FAControlsPageBase
         var vm = JsonSerializer.Deserialize<AppWindowPageViewModel>(stream);
 
         DataContext = vm;
+        TargetType = typeof(AppWindow);
 
         SplashButton1.Click += ShowSplashClick;
         SplashButton2.Click += ShowSplashClick;

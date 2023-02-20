@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Controls;
@@ -11,12 +10,8 @@ public partial class NumberBoxPage : FAControlsPageBase
     {
         InitializeComponent();
 
-        //TargetType = typeof(NumberBox);
-        //WinUINamespace = "Microsoft.UI.Xaml.Controls.NumberBox";
-        //WinUIDocsLink = new Uri("https://docs.microsoft.com/uwp/api/microsoft.ui.xaml.controls.numberbox");
-        //WinUIGuidelinesLink = new Uri("https://docs.microsoft.com/en-us/windows/apps/design/controls/number-box");
-        //Description = "Use NumberBox to allow users to enter algebraic equations and numeric input in your app";
-
+        TargetType = typeof(NumberBox);
+        
         var nm = this.FindControl<NumberBox>("FormattedNumBox");
         nm.NumberFormatter = (input) =>
         {

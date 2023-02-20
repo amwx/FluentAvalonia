@@ -13,6 +13,7 @@ public partial class CommandBarFlyoutPage : FAControlsPageBase
         InitializeComponent();
                
         DataContext = new CommandBarFlyoutPageViewModel();
+        TargetType = typeof(CommandBarFlyout);
 
         this.FindControl<Button>("myImageButton").ContextRequested += OnMyImageButtonContextRequested;
     }

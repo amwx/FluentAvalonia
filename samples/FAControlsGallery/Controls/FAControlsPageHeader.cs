@@ -176,7 +176,7 @@ public class FAControlsPageHeader : TemplatedControl
             {
                 _suppressAnimation = false;
             }
-        }
+        }        
     }
 
     private void OnShowDefinitionButtonClick(object sender, RoutedEventArgs e)

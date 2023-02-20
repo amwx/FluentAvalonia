@@ -13,6 +13,7 @@ public partial class InfoBarPage : FAControlsPageBase
         InitializeComponent();
 
         DataContext = new InfoBarPageViewModel(this);
+        TargetType = typeof(InfoBar);
 
         _apiInActionBar = this.FindControl<InfoBar>("Bar4");
 

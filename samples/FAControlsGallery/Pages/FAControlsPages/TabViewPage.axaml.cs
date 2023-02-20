@@ -26,6 +26,8 @@ public partial class TabViewPage : FAControlsPageBase
         {
             KeyBindingText = txt
         };
+
+        TargetType = typeof(TabView);
     }
 
     private void InitializeComponent()

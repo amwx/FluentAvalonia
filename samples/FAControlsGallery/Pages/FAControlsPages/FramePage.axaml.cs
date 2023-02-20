@@ -31,6 +31,7 @@ public partial class FramePage : FAControlsPageBase
         _frame.Navigate(typeof(NVSamplePage6), null, new SuppressNavigationTransitionInfo());
 
         DataContext = this;
+        TargetType = typeof(Frame);
     }
 
     public List<string> PageOptions { get; }

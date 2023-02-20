@@ -1,4 +1,3 @@
-using Avalonia.Controls;
 using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
 
@@ -12,6 +11,8 @@ public partial class TeachingTipPage : FAControlsPageBase
         Button1.Click += Button1Click;
         Button2.Click += Button2Click;
         Button3.Click += Button3Click;
+
+        TargetType = typeof(TeachingTip);
     }
 
     private void Button1Click(object sender, RoutedEventArgs e)

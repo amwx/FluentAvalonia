@@ -13,7 +13,9 @@
                        TextWrapping="Wrap"/>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="PickerFlyoutPresenter">
+        <ctrls:ControlExample Header="PickerFlyoutPresenter"
+                              TargetType="ui:PickerFlyoutPresenter"
+                              EnableShowDefinitionLink="True">
             <ui:PickerFlyoutPresenter Width="200" Height="150" Content="Content for flyout goes here"/>
 
             <ctrls:ControlExample.UsageNotes>

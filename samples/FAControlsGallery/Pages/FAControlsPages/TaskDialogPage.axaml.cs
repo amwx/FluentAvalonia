@@ -15,6 +15,7 @@ public partial class TaskDialogPage : FAControlsPageBase
     {
         InitializeComponent();
         _apiInActionTD = this.FindControl<TaskDialog>("TaskDialog1");
+        TargetType = typeof(TaskDialog);
     }
 
     private void InitializeComponent()

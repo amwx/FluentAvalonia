@@ -16,12 +16,13 @@
         <ui:ImageIconSource x:Key="AvaloniaLogoImage" Source="avares://FAControlsGallery/Assets/avalonia-logo.ico" />
     </UserControl.Resources>
     
-    <TabControl>
+    <TabControl Name="TabControl1">
         
         <TabItem Header="FAIconElement">
             <StackPanel Spacing="8">
                 <ctrls:ControlExample Header="SymbolIcon"
-                                      TargetType="ui:SymbolIcon">
+                                      TargetType="ui:SymbolIcon"
+                                      EnableShowDefinitionLink="True">
                     <ui:SymbolIcon Name="Icon"
                                    Symbol="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SymbolTypeSelector}"
                                    FontSize="{Binding #IconFontSize.Value}"/>
@@ -71,7 +72,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                 </ctrls:ControlExample>
 
                 <ctrls:ControlExample Header="FontIcon"
-                                      TargetType="ui:FontIcon">
+                                      TargetType="ui:FontIcon"
+                                      EnableShowDefinitionLink="True">
                     <ui:FontIcon Name="FontIcon"
                                  Glyph="A"
                                  FontSize="18"/>
@@ -87,8 +89,9 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                     </ctrls:ControlExample.Substitutions>
                 </ctrls:ControlExample>
 
-                <ctrls:ControlExample Header="PathIcon"
-                                      TargetType="ui:FAPathIcon">
+                <ctrls:ControlExample Header="FAPathIcon"
+                                      TargetType="ui:FAPathIcon"
+                                      EnableShowDefinitionLink="True">
                     <ui:FAPathIcon Name="PathIcon"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -102,7 +105,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                 </ctrls:ControlExample>
 
                 <ctrls:ControlExample Header="BitmapIcon"
-                                      TargetType="ui:BitmapIcon">
+                                      TargetType="ui:BitmapIcon"
+                                      EnableShowDefinitionLink="True">
                     <ui:BitmapIcon Name="BitmapIcon"
                                    UriSource="avares://FAControlsGallery/Assets/avalonia-logo.ico"
                                    HorizontalAlignment="Center"
@@ -125,7 +129,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                 </ctrls:ControlExample>
 
                 <ctrls:ControlExample Header="ImageIcon"
-                                      TargetType="ui:ImageIcon">
+                                      TargetType="ui:ImageIcon"
+                                      EnableShowDefinitionLink="True">
                     <ui:ImageIcon Width="100" Height="100">
                         <DrawingImage>
                             <DrawingGroup>
@@ -173,7 +178,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
             <StackPanel Spacing="8">
                 
                 <ctrls:ControlExample Header="SymbolIconSource"
-                                             TargetType="ui:SymbolIconSource">
+                                      TargetType="ui:SymbolIconSource"                                      
+                                      EnableShowDefinitionLink="True">
 
                     <ui:IconSourceElement IconSource="{StaticResource SaveIcon}" />
 
@@ -193,7 +199,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                 </ctrls:ControlExample>
 
                 <ctrls:ControlExample Header="FontIconSource"
-                                      TargetType="ui:FontIconSource">
+                                      TargetType="ui:FontIconSource"                                      
+                                      EnableShowDefinitionLink="True">
                     <ui:IconSourceElement IconSource="{StaticResource FGlyph}" />
 
                     <ctrls:ControlExample.XamlSource>
@@ -211,7 +218,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                 </ctrls:ControlExample>
 
                 <ctrls:ControlExample Header="PathIconSource"
-                                      TargetType="ui:PathIconSource">
+                                      TargetType="ui:PathIconSource"
+                                      EnableShowDefinitionLink="True">
                     <ui:IconSourceElement IconSource="{StaticResource SamplePathIcon}"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
@@ -232,7 +240,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                 </ctrls:ControlExample>
 
                 <ctrls:ControlExample Header="BitmapIconSource"
-                                      TargetType="ui:BitmapIcon">
+                                      TargetType="ui:BitmapIcon"
+                                      EnableShowDefinitionLink="True">
                     <ui:IconSourceElement IconSource="{StaticResource AvaloniaLogo}"
                                           Width="50" Height="50"/>
 
@@ -251,7 +260,8 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                 </ctrls:ControlExample>
 
                 <ctrls:ControlExample Header="ImageIconSource"
-                                      TargetType="ui:ImageIconSource">
+                                      TargetType="ui:ImageIconSource"
+                                      EnableShowDefinitionLink="True">
                     <ui:IconSourceElement IconSource="{StaticResource AvaloniaLogoImage}"
                                           Width="50" Height="50"/>
                     <ctrls:ControlExample.XamlSource>

@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Controls;
 using FAControlsGallery.ViewModels;
@@ -12,6 +11,7 @@ public partial class ContentDialogPage : FAControlsPageBase
         InitializeComponent();
 
         DataContext = new ContentDialogPageViewModel();
+        TargetType = typeof(ContentDialog);
     }
 
     private void InitializeComponent()
