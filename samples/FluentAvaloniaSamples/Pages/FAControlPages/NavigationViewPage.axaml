@@ -5,7 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FluentAvaloniaSamples.Controls"
              xmlns:vm="using:FluentAvaloniaSamples.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1500"
              x:Class="FluentAvaloniaSamples.Pages.NavigationViewPage"
              x:DataType="vm:NavViewPageViewModel"
              PreviewImage="/Assets/PageIcons/NavView.jpg">
@@ -155,7 +155,7 @@ Known issues:
 
         <ctrls:ControlExample Header="NavigationView API in Action"
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView6.xaml.txt">
-            <ui:NavigationView x:Name="nvSample6" Height="460"
+            <ui:NavigationView x:Name="nvSample6" Height="460" Header="asdf"
                                PaneDisplayMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=DispModeAPIBox}">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play" />

@@ -23,13 +23,9 @@ public interface IApplicationSplashScreen
     object SplashScreenContent { get; }
 
     /// <summary>
-    /// Called by CoreWindow to run necessary background tasks during the splashscreen
+    /// Called by AppWindow to run necessary background tasks during the splashscreen
     /// </summary>
-    /// <remarks>
-    /// This method is called in a background thread (i.e., you don't need to include your own Task). 
-    /// Remember that UI thread related tasks must be posted to the dispatcher from this method
-    /// </remarks>
-    void RunTasks();
+    Task RunTasks(CancellationToken cancellationToken);
 
     /// <summary>
     /// Specifies the minimum show time (in milliseconds) for the SplashScreen.
@@ -38,7 +34,7 @@ public interface IApplicationSplashScreen
     /// For quick background loading jobs, you may get undesirable visual effects from the window opening,
     /// and immediately switching from Splash to main content. If the background tasks (i.e., RunTasks()) 
     /// finishes before this time, the background thread will hold until the desired time elapses, before
-    /// returning to let CoreWindow finish opening.
+    /// returning to let AppWindow finish opening.
     /// </remarks>
     int MinimumShowTime { get; }
 }

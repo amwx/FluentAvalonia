@@ -4,7 +4,7 @@
                     xmlns:core="using:FluentAvalonia.Core">
 
     <Design.PreviewWith>
-        <Border Padding="50" Width="300" Height="300">
+        <Border Padding="50" Width="300" Height="300"> 
             <ui:TeachingTip Title="Change themes without hassle"
                             Subtitle="It's easier than ever to see control samples in both light and dark themes!"
                             IconSource="Refresh" IsLightDismissEnabled="False"
@@ -542,7 +542,7 @@
 
         <!-- SubTitleBlockStates -->
 
-        <Style Selector="^:showSubtitle /template/ TextBlock#SubtitleTextBlock">
+        <Style Selector="^:showSubTitle /template/ TextBlock#SubtitleTextBlock">
             <Setter Property="IsVisible" Value="True" />
         </Style>
         

@@ -3,19 +3,19 @@
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
     <Design.PreviewWith>
         <Border Padding="20" Width="700" Height="250">
-            <ui:SettingsExpander IconSource="Globe" Header="Test Header" IsExpanded="True"
+            <ui:SettingsExpander IconSource="Globe" Header="Test Header"
                                  Description="This is a description for the SettingsExpander"
-                                 ActionIconSource="Save" IsClickEnabled="False">
+                                 ActionIconSource="Save" IsClickEnabled="True">
                 <ui:SettingsExpander.Footer>
                     <Button Content="FooterButton" />
                 </ui:SettingsExpander.Footer>
                 
-                <ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
+                <!--<ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
                 <ui:SettingsExpanderItem Content="Content Here">
                     <ui:SettingsExpanderItem.Footer>
                         <Button Content="FooterButton" />
                     </ui:SettingsExpanderItem.Footer>
-                </ui:SettingsExpanderItem>
+                </ui:SettingsExpanderItem>-->
             </ui:SettingsExpander>
         </Border>
     </Design.PreviewWith>
