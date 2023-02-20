@@ -104,6 +104,7 @@ public partial class TaskDialog : ContentControl
 
         SetButtons();
         SetCommands();
+        TrySetInitialFocus();
     }
 
     private void OnKeyDownPreview(object sender, KeyEventArgs e)
@@ -209,8 +210,6 @@ public partial class TaskDialog : ContentControl
             (overlayLayer.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
 
             OnOpened();
-
-            TrySetInitialFocus();
 
             PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, true);
             PseudoClasses.Set(s_pcHidden, false);
