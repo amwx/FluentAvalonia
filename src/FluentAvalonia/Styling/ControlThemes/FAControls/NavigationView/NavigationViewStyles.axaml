@@ -145,7 +145,7 @@
                                                Grid.Column="4"
                                                Content="More"
                                                Margin="{DynamicResource TopNavigationViewOverflowButtonMargin}"
-                                               Classes="NavigationViewOverflowButtonStyleWhenPaneOnTop"
+                                               Theme="{StaticResource NavigationViewOverflowButtonStyleWhenPaneOnTop}"
                                                IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.OverflowButtonVisibility}">
                                         <Button.Styles>
                                             <Style Selector="FlyoutPresenter">
@@ -370,7 +370,7 @@
 														ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HeaderTemplate}"
 														VerticalContentAlignment="Stretch"
 														HorizontalContentAlignment="Stretch"
-														Classes="NavigationViewTitleHeaderContentControlTextStyle" />
+														Theme="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}" />
 
                                         <ContentPresenter Grid.Row="2"
 														  Grid.ColumnSpan="2"

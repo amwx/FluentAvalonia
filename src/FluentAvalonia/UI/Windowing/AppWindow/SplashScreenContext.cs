@@ -1,8 +1,6 @@
 ﻿using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -30,10 +28,7 @@ internal class SplashScreenContext
     public async Task RunJobs()
     {
         _splashCTS = new CancellationTokenSource();
-        await Task.Run(() =>
-        {
-            SplashScreen.RunTasks();
-        });
+        await SplashScreen.RunTasks(_splashCTS.Token);
         _splashCTS.Dispose();
         _splashCTS = null;
     }

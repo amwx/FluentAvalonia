@@ -6,6 +6,8 @@ using Avalonia.Logging;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Avalonia.Threading;
+using Avalonia.Platform;
+using FluentAvalonia.Interop;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -28,6 +30,9 @@ internal unsafe class Win32WindowManager
 #endif
 
         SetWindowLongPtrW(Hwnd, GWLP_WNDPROC, _wndProc);
+
+        var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
+        ps.ColorValuesChanged += OnPlatformColorValuesChanged;
     }
 
     public HWND Hwnd { get; }
@@ -132,12 +137,6 @@ internal unsafe class Win32WindowManager
                     return DefWindowProcW((HWND)hWnd, msg, (WPARAM)wParam, lParam);
                 }
                 break;
-
-            case WM_SETTINGCHANGE:
-                {
-                    HandleSETTINGCHANGED((WPARAM)wParam, lParam);
-                }
-                break;
         }
 
 
@@ -150,7 +149,7 @@ internal unsafe class Win32WindowManager
 
     private int GetTopBorderHeight()
     {
-        if (_window.WindowState == WindowState.Maximized || _window.WindowState == WindowState.FullScreen)
+        if (_isMaximized || _window.WindowState == WindowState.FullScreen)
         {
             return 0;
         }
@@ -197,7 +196,9 @@ internal unsafe class Win32WindowManager
         newSize.top = originalTop;
         var windowState = _window.WindowState;
 
-        if (windowState == WindowState.Maximized)
+        UpdateMaximizeState();
+                
+        if (_isMaximized)
         {
             newSize.top += GetResizeHandleHeight();
         }
@@ -349,39 +350,6 @@ internal unsafe class Win32WindowManager
         }
     }
 
-    private unsafe void HandleSETTINGCHANGED(WPARAM wParam, LPARAM lParam)
-    {
-        if (_window == null)
-            return;
-
-        //// In my testing, this message is sent 4 times for every system change...YIKES
-        //try
-        //{
-        //    var str = new string((char*)(nint)lParam);
-        //    if (str.Equals("ImmersiveColorSet", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        // Theme change was done - this is anything in the Windows Setting area,
-        //        // So it could be Light/Dark mode, or Accent Color
-        //        // Tell FATheme to requery the system theme
-        //        var faTheme = AvaloniaLocator.Current.GetRequiredService<FluentAvaloniaTheme>();
-        //        faTheme.ForceWin32WindowToTheme(_window);
-        //        faTheme.InvalidateThemingFromSystemThemeChanged();
-        //    }
-        //    else if (str.Equals("WindowsThemeElement"))
-        //    {
-        //        // When a constrast theme is activated, we get an ImmersiveColorSet message
-        //        // one with wParam = 67, one with wParam = 4131, and one with lParam
-        //        // set to "WindowsThemeElement" (the last one)
-        //        // So we'll use this to trigger an invalidation of the HighContrast theme
-        //        var faTheme = AvaloniaLocator.Current.GetRequiredService<FluentAvaloniaTheme>();
-        //        faTheme.ForceWin32WindowToTheme(_owner);
-        //        faTheme.InvalidateThemingFromSystemThemeChanged();
-        //    }
-        //}
-        //catch { }
-
-    }
-
     private void UpdateContentPosition()
     {
         var topHeight = GetTopBorderHeight() / _window.PlatformImpl.RenderScaling;
@@ -396,41 +364,22 @@ internal unsafe class Win32WindowManager
         _window?.UpdateContentPosition(new Thickness(0, (topHeight == 0 && !_isFullScreen) ? (-1 / _window.PlatformImpl.RenderScaling) : topHeight, 0, 0));
     }
 
-    private void HandleWindowStateChanged(bool isFullScreen)
+    private void OnPlatformColorValuesChanged(object sender, PlatformColorValues e)
     {
-        // Avalonia's logic doesn't expect our window style to be the way it is, so when the saved window information
-        // they use is restored, it causes the window y-coor to decrease and height to grow so we need to save that
-        // information ourselves to override what they do upstream. It'll cause multiple window moves/sizes but
-        // its better than nothing and properly allows handling full screen
-        if (isFullScreen)
-        {
-            // if isFullScreen is true, this method is called before passing the WindowState upstream to Avalonia
-            // We need to store the window state ourselves to we have the required information to restore it later
-
-            _isFullScreen = true;
-
-            // To make this work we only need to store the WindowRect (including NC frame) and restore it later
-            // it automatically works this way
-            RECT rw;
-            GetWindowRect((HWND)Hwnd, &rw);
-
-            _beforeFullScreenBounds = rw;
-        }
-        else
-        {
-            // If isFullScreen is passed as false, this method is called AFTER the WindowState is handled upstream
-            // We now need to correct the window top and height using our stored information
-
-            SetWindowPos((HWND)Hwnd, HWND.NULL, _beforeFullScreenBounds.left,
-               _beforeFullScreenBounds.top,
-               _beforeFullScreenBounds.Width, _beforeFullScreenBounds.Height,
-               SWP_NOACTIVATE | SWP_NOZORDER | SWP_FRAMECHANGED);
-
-            _isFullScreen = false;
-        }
+        // We need to override Avalonia's default setting of this to always keep AppWindow
+        // in dark mode, which matches what windows do on Win 10/11, regardless of the actual
+        // app or system theme.
+        Win32Interop.ApplyTheme(Hwnd, true);
     }
 
-
+    private void UpdateMaximizeState()
+    {
+        // Using the WindowState property is unreliable - seems to fail if titlebar
+        // is double clicked, but works with the maximize button - this will work
+        // in all cases
+        var sty = GetWindowLongPtrW(Hwnd, GWL_STYLE);
+        _isMaximized = (sty & WS_MAXIMIZE) == WS_MAXIMIZE;
+    }
 
 #if NET5_0_OR_GREATER
     [UnmanagedCallersOnly]
@@ -452,8 +401,7 @@ internal unsafe class Win32WindowManager
     private bool _fakingMaximizeButton;
     private bool _wasFakeMaximizeDown;
     private bool _isFullScreen;
-    private RECT _beforeFullScreenBounds;
-    private bool _hasShown;
+    private bool _isMaximized;
 
     private nint _oldWndProc;
     private nint _wndProc;

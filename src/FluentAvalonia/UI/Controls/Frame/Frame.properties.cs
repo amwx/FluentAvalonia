@@ -108,30 +108,12 @@ public partial class Frame : ContentControl
     /// <summary>
     /// Gets a value that indicates whether there is at least one entry in back navigation history.
     /// </summary>
-    public bool CanGoBack
-    {
-        get => _backStack.Count > 0;
-        private set
-        {
-            // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
-            bool throwAway = (_backStack.Count - 1) > 0;
-            SetAndRaise(CanGoBackProperty, ref throwAway, value);
-        }
-    }
+    public bool CanGoBack => _backStack.Count > 0;
 
     /// <summary>
     /// Gets a value that indicates whether there is at least one entry in forward navigation history.
     /// </summary>
-    public bool CanGoForward
-    {
-        get => _forwardStack.Count > 0;
-        private set
-        {
-            // 11.0 changed API surface for this, see OnForwardStackChanged or OnBackStackChanged for more
-            bool throwAway = (_forwardStack.Count - 1) > 0;
-            SetAndRaise(CanGoForwardProperty, ref throwAway, value);
-        }
-    }
+    public bool CanGoForward=> _forwardStack.Count > 0;
 
     /// <summary>
     /// Gets a type reference for the content that is currently displayed.

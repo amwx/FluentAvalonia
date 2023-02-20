@@ -151,9 +151,8 @@ internal static unsafe partial class Win32Interop
             unsafe
             {
                 int dark = useDark ? 1 : 0;
-                //DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, &dark, sizeof(int));
+                DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, &dark, sizeof(int));
             }
-
         }
         else
         {
@@ -176,15 +175,19 @@ internal static unsafe partial class Win32Interop
             if (success == 0)
                 return false;
         }
-
+        
         // Try to get the window to redraw to reflect the changes
-        //SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, (uint)(0x0001 | 0x0002 | 0x0004 | 0x0010 | 0x0020 | 0x0200));
+        SetWindowPos((HWND)hwnd, HWND.NULL, 0, 0, 0, 0,
+            SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 
         return true;
     }
 
 
     public const int GWLP_WNDPROC = -4;
+    public const int GWL_STYLE = -16;
+
+    public const uint WS_MAXIMIZE = 0x01000000;
 
     public const int WM_CREATE = 0x0001;
     public const int WM_SIZE = 0x0005;
