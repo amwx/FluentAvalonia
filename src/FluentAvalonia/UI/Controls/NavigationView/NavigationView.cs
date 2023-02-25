@@ -2832,7 +2832,7 @@ public partial class NavigationView : HeaderedContentControl
         PaneClosed?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnSplitViewPaneClosing(object sender, SplitViewPaneClosingEventArgs e)
+    private void OnSplitViewPaneClosing(object sender, CancelRoutedEventArgs e)
     {
         bool pendingCancel = false;
 

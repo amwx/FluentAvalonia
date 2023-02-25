@@ -521,7 +521,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                 return null;
             if (item is IMenuItem menuItem)
                 return menuItem;
-            item = item.Parent;
+            item = (Control)item.Parent;
         }
     }
 

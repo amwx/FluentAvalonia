@@ -22,7 +22,7 @@ public partial class InfoBarPanel : Panel
         double hgtOfTallestInHorizontal = 0;
         int nItems = 0;
 
-        var parent = this.Parent;
+        var parent = Parent as Control;
         var minHeight = parent == null ? 0d : (parent.MinHeight - Margin.Vertical());
 
         var children = Children;

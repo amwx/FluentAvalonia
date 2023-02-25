@@ -130,7 +130,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         if (Parent != null)
         {
-            _originalHost = Parent;
+            _originalHost = (Control)Parent;
             switch (_originalHost)
             {
                 case Panel p:

@@ -542,8 +542,7 @@ public partial class Frame : ContentControl
 
         bool oldForward = oldCount > 0;
         bool newForward = _forwardStack.Count > 0;
-        RaisePropertyChanged(CanGoForwardProperty, oldForward, newForward,
-            BindingPriority.LocalValue);
+        RaisePropertyChanged(CanGoForwardProperty, oldForward, newForward);
     }
 
     private void OnBackStackChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -552,9 +551,8 @@ public partial class Frame : ContentControl
 
         bool oldBack = oldCount > 0;
         bool newBack = _backStack.Count > 0;
-        RaisePropertyChanged(CanGoBackProperty, oldBack, newBack, BindingPriority.LocalValue);
-        RaisePropertyChanged(BackStackDepthProperty, oldCount, _backStack.Count, 
-            BindingPriority.LocalValue);
+        RaisePropertyChanged(CanGoBackProperty, oldBack, newBack);
+        RaisePropertyChanged(BackStackDepthProperty, oldCount, _backStack.Count);
     }
 
     private Control CreatePageAndCacheIfNecessary(Type srcPageType)

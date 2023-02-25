@@ -388,39 +388,40 @@ public partial class ColorRamp : ColorPickerComponent
 
     private static IBrush CreateCheckeredBrush()
     {
+        return null;
         //this is only created once
 
-        RenderTargetBitmap rtb = new RenderTargetBitmap(new PixelSize(50, 50));
-        using (var context = rtb.CreateDrawingContext(null))
-        {
-            bool white = true;
-            for (int i = 0; i < 50; i += 5)
-            {
+        //RenderTargetBitmap rtb = new RenderTargetBitmap(new PixelSize(50, 50));
+        //using (var context = rtb.CreateDrawingContext(null))
+        //{
+        //    bool white = true;
+        //    for (int i = 0; i < 50; i += 5)
+        //    {
 
-                for (int j = 0; j < 50; j += 5)
-                {
-                    if (white)
-                    {
-                        context.DrawRectangle(Brushes.White, null, new Rect(i, j, 5, 5));
-                    }
-                    else
-                    {
-                        context.DrawRectangle(Brushes.LightGray, null, new Rect(i, j, 5, 5));
-                    }
-                    white = !white;
-                }
-                white = !white;
-            }
-        }
+        //        for (int j = 0; j < 50; j += 5)
+        //        {
+        //            if (white)
+        //            {
+        //                context.DrawRectangle(Brushes.White, null, new Rect(i, j, 5, 5));
+        //            }
+        //            else
+        //            {
+        //                context.DrawRectangle(Brushes.LightGray, null, new Rect(i, j, 5, 5));
+        //            }
+        //            white = !white;
+        //        }
+        //        white = !white;
+        //    }
+        //}
 
-        var b = new ImageBrush(rtb);
-        b.TileMode = TileMode.Tile;
-        // b.SourceRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
-        b.DestinationRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
-        b.BitmapInterpolationMode = BitmapInterpolationMode.HighQuality;
-        return b.ToImmutable();
+        //var b = new ImageBrush(rtb);
+        //b.TileMode = TileMode.Tile;
+        //// b.SourceRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
+        //b.DestinationRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
+        //b.BitmapInterpolationMode = BitmapInterpolationMode.HighQuality;
+        //return b.ToImmutable();
 
-        //_checkBrush = b;//.ToImmutable();
+        ////_checkBrush = b;//.ToImmutable();
 
     }
 
