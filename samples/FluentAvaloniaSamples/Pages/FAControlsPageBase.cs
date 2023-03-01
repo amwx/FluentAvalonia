@@ -96,7 +96,7 @@ namespace FluentAvaloniaSamples.Pages
             set => SetValue(PageCSharpSourceLinkProperty, value);
         }
 
-        public static string GithubPrefixString => "https://github.com/amwx/FluentAvalonia/tree/master/FluentAvaloniaSamples/Pages/FAControlPages";
+        public static string GithubPrefixString => "https://github.com/amwx/FluentAvalonia/tree/master/samples/FluentAvaloniaSamples/Pages/FAControlPages";
 
         Type IStyleable.StyleKey => typeof(FAControlsPageBase);
 
