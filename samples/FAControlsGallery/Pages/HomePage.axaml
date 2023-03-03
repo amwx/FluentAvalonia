@@ -5,6 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:vm="using:FAControlsGallery.ViewModels"
              xmlns:local="using:FAControlsGallery.Controls"
+             xmlns:conv="using:FAControlsGallery.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
              x:Class="FAControlsGallery.Pages.HomePage"
              x:DataType="vm:HomePageViewModel"
@@ -13,8 +14,8 @@
         <ControlTheme x:Key="NavButtonStyle"
                       TargetType="Button"
                       BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Width" Value="150" />
-            <Setter Property="Height" Value="150" />
+            <Setter Property="Width" Value="170" />
+            <Setter Property="Height" Value="160" />
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="6" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -24,6 +25,8 @@
                 <Setter Property="ClipToBounds" Value="True" />
             </Style>
         </ControlTheme>
+
+        <conv:StringToBitmapConverter x:Key="StringBmpConv" />
     </UserControl.Resources>
     
     <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
@@ -46,8 +49,9 @@
                                         VerticalAlignment="Stretch"
                                         HorizontalAlignment="Stretch">
                                     <Border.Background>
-                                        <ImageBrush Source="C:/Users/Andrew/Pictures/asdklf.jpg"
-                                                    Stretch="Fill"/>
+                                        <ImageBrush Source="{Binding ImageUri, Converter={StaticResource StringBmpConv}}"
+                                                    Stretch="Fill"
+                                                    RenderOptions.BitmapInterpolationMode="HighQuality"/>
                                     </Border.Background>
                                 </Border>
                                 <TextBlock Text="{Binding Title}"

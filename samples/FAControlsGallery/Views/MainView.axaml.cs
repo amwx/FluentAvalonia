@@ -12,6 +12,7 @@ using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Navigation;
 
 namespace FAControlsGallery.Views;
+
 public partial class MainView : UserControl
 {
     public MainView()
@@ -100,7 +101,6 @@ public partial class MainView : UserControl
                 NavHeader = "FA Controls",
                 IconKey = "CtrlsIcon"
             },
-            // Resources Page (ResourcesIcon)
             new SettingsPageViewModel
             {
                 NavHeader = "Settings",

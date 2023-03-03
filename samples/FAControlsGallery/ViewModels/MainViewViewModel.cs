@@ -1,11 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Media;
-using Avalonia.Styling;
 using FAControlsGallery.Pages;
-using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.ViewModels;

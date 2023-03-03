@@ -16,10 +16,22 @@ public class HomePageViewModel : MainPageViewModelBase
     {
         Pages = new List<HomeNavPageViewModel>
         {
-            new HomeNavPageViewModel("Documentation", new Uri("https://amwx.github.io/FluentAvaloniaDocs/")),
-            new HomeNavPageViewModel("Github Repo", new Uri("https://www.github.com/amwx/FluentAvalonia")),
-            new HomeNavPageViewModel("Avalonia Repo", new Uri("https://www.github.com/AvaloniaUI/Avalonia")),
+            new HomeNavPageViewModel("Documentation", new Uri("https://amwx.github.io/FluentAvaloniaDocs/"))
+            {
+                ImageUri = "avares://FAControlsGallery/Assets/Images/Documentation.png"
+            },
+            new HomeNavPageViewModel("Github Repo", new Uri("https://www.github.com/amwx/FluentAvalonia"))
+            {
+                ImageUri = "avares://FAControlsGallery/Assets/Images/Github.png"
+            },
+            new HomeNavPageViewModel("Avalonia Repo", new Uri("https://www.github.com/AvaloniaUI/Avalonia"))
+            {
+                ImageUri = "avares://FAControlsGallery/Assets/Images/AvGithub.png"
+            },
             new HomeNavPageViewModel("Fluent Design", new Uri("https://learn.microsoft.com/en-us/windows/apps/design/"))
+            {
+                ImageUri = "avares://FAControlsGallery/Assets/Images/FluentDesign.png"
+            }
         };
     }
 
