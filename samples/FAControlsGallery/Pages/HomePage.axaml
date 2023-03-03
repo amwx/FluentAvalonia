@@ -34,7 +34,7 @@
             <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader2.png"/>
             
             <ItemsControl Items="{Binding Pages}"
-                          Name="ItemsControl"
+                          Name="TileItemsControl"
                           ClipToBounds="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

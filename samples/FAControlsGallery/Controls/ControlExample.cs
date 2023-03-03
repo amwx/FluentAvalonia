@@ -26,9 +26,7 @@ public class ControlExample : HeaderedContentControl
     public ControlExample()
     {
         _substitutions = new List<ControlExampleSubstitution>();
-        _flyoutOptions = new List<MenuFlyoutItemBase>();
 
-        //ResourcesChanged += OnResourcesChanged;
         PseudoClasses.Add(":optionsfull");
     }
 
@@ -339,19 +337,12 @@ public class ControlExample : HeaderedContentControl
     private IList<ControlExampleSubstitution> _substitutions;
 
     public static Flyout _copiedNoticeFlyout;
-    //private Button _copyXamlButton;
-    //private Button _copyCSharpButton;
     private Border _previewAreaHost;
     private Button _expandOptionsButton;
     private ThemeVariantScope _exampleThemeScopeProvider;
     private Border _optionsHost;
 
     private Button _moreButton;
-    //private TextEditor _xamlTextEditor;
-    //private TextEditor _cSharpTextEditor;
-    private TextBlock _usageNotesTextBlock;
-
-    private IList<MenuFlyoutItemBase> _flyoutOptions;
 
     private static ImplicitAnimationCollection _optionsHostAnimation;
 
@@ -374,7 +365,8 @@ public class SampleCodePresenter : HeaderedContentControl
         AvaloniaProperty.Register<SampleCodePresenter, SampleCodePresenterType>(nameof(SampleType));
 
     public static readonly DirectProperty<SampleCodePresenter, IList<ControlExampleSubstitution>> SubstitutionsProperty =
-        ControlExample.SubstitutionsProperty.AddOwner<SampleCodePresenter>(x => x.Substitutions, (x,v) => x.Substitutions = v);
+        ControlExample.SubstitutionsProperty.AddOwner<SampleCodePresenter>(x => x.Substitutions, 
+            (x,v) => x.Substitutions = v);
 
     public string Code
     {
@@ -490,7 +482,6 @@ public class SampleCodePresenter : HeaderedContentControl
                 await Application.Current.Clipboard.SetTextAsync(_textHost.Text);
             }
 
-
             ShowCopiedFlyout(sender as Button);
         }
         catch
@@ -542,49 +533,31 @@ public class SampleCodePresenter : HeaderedContentControl
         TrimAndSubstitute();
         _textHost.Document = new TextDocument(new StringTextSource(sampleString));
         _textHost.TextArea.IndentationStrategy.IndentLines(_textHost.Document, 0, _textHost.Document.LineCount);
-
-        //if (isCSharpSample && _cSharpTextEditor != null)
-        //{
-        //    TrimAndSubstitute();
-
-        //    _cSharpTextEditor.Text = sampleString;
-        //    _cSharpTextEditor.TextArea.IndentationStrategy.IndentLines(_cSharpTextEditor.Document, 0, _cSharpTextEditor.Document.LineCount);
-        //}
-        //else if (_xamlTextEditor != null)
-        //{
-        //    TrimAndSubstitute();
-
-        //    _xamlTextEditor.Text = sampleString;
-        //}
     }
 
     private void ShowCopiedFlyout(Button host, string message = "Copied!", bool fail = false)
     {
-        if (_confirmCopyTeachingTip == null)
+        if (_confirmCopiedFlyout == null)
         {
-            _confirmCopyTeachingTip = new TeachingTip
+            _confirmCopiedFlyout = new Flyout
             {
-                Subtitle = message,
-                IsLightDismissEnabled = true,
-                Target = host
+                Content = new TextBlock
+                {
+                    Text = message
+                }
             };
         }
         else
         {
-            _confirmCopyTeachingTip.Subtitle = message;
-            _confirmCopyTeachingTip.Target = host;
+            (_confirmCopiedFlyout.Content as TextBlock).Text = message;
         }
 
-        _confirmCopyTeachingTip.IsOpen = true;
+        _confirmCopiedFlyout.ShowAt(host);
 
-        Dispatcher.UIThread.Post(async () =>
+        DispatcherTimer.RunOnce(() =>
         {
-            await Task.Delay(1000);
-            _confirmCopyTeachingTip.IsOpen = true;
-            // Make sure we don't hold a ref to the control
-            _confirmCopyTeachingTip.Target = null;
-
-        }, DispatcherPriority.Background);
+            _confirmCopiedFlyout.Hide();
+        }, TimeSpan.FromSeconds(1), DispatcherPriority.Background);
     }
 
     internal static RegistryOptions GetTextMateRegistryOptions()
@@ -610,7 +583,7 @@ public class SampleCodePresenter : HeaderedContentControl
     }
 
     private Button _copyCodeButton;
-    private static TeachingTip _confirmCopyTeachingTip;
+    private static Flyout _confirmCopiedFlyout;
 
     private static readonly Regex SubstitutionPattern = new Regex(@"\$\(([^\)]+)\)");
     private IList<ControlExampleSubstitution> _substitutions;

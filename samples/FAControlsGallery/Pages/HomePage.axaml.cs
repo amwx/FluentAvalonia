@@ -14,7 +14,7 @@ public partial class HomePage : UserControl
 
         AddHandler(Button.ClickEvent, OnNavButtonClick);
 
-        ItemsControl.Loaded += ItemsControlLoaded;
+        TileItemsControl.Loaded += ItemsControlLoaded;
     }
 
     private void OnNavButtonClick(object sender, RoutedEventArgs args)
@@ -28,9 +28,9 @@ public partial class HomePage : UserControl
 
     private void ItemsControlLoaded(object sender, RoutedEventArgs e)
     {
-        ItemsControl.Loaded -= ItemsControlLoaded;
+        TileItemsControl.Loaded -= ItemsControlLoaded;
 
-        var panel = ItemsControl.ItemsPanelRoot;
+        var panel = TileItemsControl.ItemsPanelRoot;
 
         _animations = GetAnimations();
         for (int i = 0; i < panel.Children.Count; i++)
