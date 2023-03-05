@@ -1,7 +1,7 @@
 ﻿[
   {
     "Header": "Basic Input Controls",
-    "Description": "Button, ToggleButton, RepeatButton, RadioButton, CheckBox, ToggleSwitch",
+    "Description": "Button, ToggleButton, RepeatButton, RadioButton, CheckBox, ToggleSwitch, SplitButton, DropDownButton",
     "IconResourceKey": "BasicInputPageIcon",
     "PageKey": "BasicInput",
     "SearchKeywords": [
@@ -10,7 +10,10 @@
       "RepeatButton",
       "RadioButton",
       "CheckBox",
-      "ToggleSwitch"
+      "ToggleSwitch",
+      "SplitButton",
+      "ToggleSplitButton",
+      "DropDownButton"
     ]
   },
   {

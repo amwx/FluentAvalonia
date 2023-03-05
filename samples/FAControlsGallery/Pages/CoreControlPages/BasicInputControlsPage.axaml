@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1500"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1800"
              x:Class="FAControlsGallery.Pages.BasicInputControlsPage">
     <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
         <StackPanel Spacing="8">
@@ -146,7 +146,6 @@
                                   EnableShowDefinitionLink="True">
                 <ToggleSwitch OffContent="{Binding #OffContentBox.Text}"
                               OnContent="{Binding #OnContentBox.Text}"
-                              IsEnabled="{Binding #EnabledBox.IsChecked}"
                               Name="TargetToggleSwitch"/>
 
                 <ctrls:ControlExample.Options>

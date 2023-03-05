@@ -136,7 +136,7 @@ internal class DemoSplashScreen : IApplicationSplashScreen
     // if any UI thread work needs to be done, use Dispatcher.UIThread.Post or .InvokeAsync
     public Task RunTasks(CancellationToken token)
     {
-        return null;
+        return Task.CompletedTask;
     }
 }
 

@@ -241,7 +241,7 @@
     "Header": "Color Picker Controls",
     "Controls": [
       {
-        "Header": "ColorPicker",
+        "Header": "FAColorPicker",
         "Description": "A control that displays a selectable color spectrum",
         "IconResourceKey": "ColorPickerIcon",
         "PageKey": "FAColorPicker",

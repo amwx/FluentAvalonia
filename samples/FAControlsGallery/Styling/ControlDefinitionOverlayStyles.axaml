@@ -199,7 +199,8 @@
                                     
                                     <aedit:TextEditor Name="TextEditor"
                                                       Margin="0"
-                                                      Background="Transparent" />
+                                                      Background="Transparent"
+                                                      IsReadOnly="True"/>
                                 </StackPanel>
                             </ScrollViewer>
 
