@@ -1,9 +1,3 @@
-// NOTE: It's ultimately up to you how you structure your project.
-// The base Avalonia templates put the App in the shared project
-// However, this won't work if you want to use AppWindow, as that
-// is a desktop only package and will cause issues if used in places
-// where Avalonia.Desktop in incompatible
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FAControlsGallery.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52048;http://localhost:52049"
+    }
+  }
+}

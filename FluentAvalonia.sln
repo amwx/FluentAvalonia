@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FAControlsGallery", "sample
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FAControlsGallery.Desktop", "samples\FAControlsGallery.Desktop\FAControlsGallery.Desktop.csproj", "{C219E984-3F2B-4963-B6F7-FAD8F6AE3E7A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FAControlsGallery.Web", "samples\FAControlsGallery.Web\FAControlsGallery.Web.csproj", "{C777C63B-4141-4094-99A6-99FB2FB5B0E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{C219E984-3F2B-4963-B6F7-FAD8F6AE3E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C219E984-3F2B-4963-B6F7-FAD8F6AE3E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C219E984-3F2B-4963-B6F7-FAD8F6AE3E7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C777C63B-4141-4094-99A6-99FB2FB5B0E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C777C63B-4141-4094-99A6-99FB2FB5B0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C777C63B-4141-4094-99A6-99FB2FB5B0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C777C63B-4141-4094-99A6-99FB2FB5B0E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{3CD8ED83-02E7-4949-9C48-531E142A2695} = {7E9416E1-C672-4622-8D32-91A16802873A}
 		{056431DC-CA05-4093-B39E-C413FEC0E08A} = {7E9416E1-C672-4622-8D32-91A16802873A}
 		{C219E984-3F2B-4963-B6F7-FAD8F6AE3E7A} = {7E9416E1-C672-4622-8D32-91A16802873A}
+		{C777C63B-4141-4094-99A6-99FB2FB5B0E2} = {7E9416E1-C672-4622-8D32-91A16802873A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E358197-10B9-4579-8309-5D9BCB8E7F3E}
