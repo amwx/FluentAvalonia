@@ -24,7 +24,7 @@
 
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>2.0.0-preview5.1</Version>
+        <Version>2.0.0-preview5.2</Version>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>        
     </PropertyGroup>
 
