@@ -3,7 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>11.0.999-cibuild0030643-beta</AvaloniaVersion>
+    <AvaloniaVersion>11.0.999-cibuild0031748-beta</AvaloniaVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />

@@ -136,9 +136,10 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         RaiseEvent(args);
 
         var @param = CommandParameter;
-        if (!args.Handled && _command?.CanExecute(@param) == true)
+        var command = Command;
+        if (!args.Handled && command?.CanExecute(@param) == true)
         {
-            _command.Execute(@param);
+            command.Execute(@param);
         }
     }
        
@@ -188,7 +189,8 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 
     private void CanExecuteChanged(object sender, EventArgs e)
     {
-        var canExecute = _command == null || _command.CanExecute(CommandParameter);
+        var command = Command;
+        var canExecute = command == null || command.CanExecute(CommandParameter);
 
         if (canExecute != _commandCanExecute)
         {

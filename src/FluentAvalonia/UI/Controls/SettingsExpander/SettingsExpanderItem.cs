@@ -117,9 +117,9 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
     {
         base.OnAttachedToLogicalTree(e);
 
-        if (_command != null)
+        if (Command != null)
         {
-            _command.CanExecuteChanged += CanExecuteChanged;
+            Command.CanExecuteChanged += CanExecuteChanged;
             CanExecuteChanged(this, EventArgs.Empty);
         }
     }
@@ -131,8 +131,8 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         _adaptiveWidthDisposable?.Dispose();
         _adaptiveWidthDisposable = null;
 
-        if (_command != null)
-            _command.CanExecuteChanged -= CanExecuteChanged;
+        if (Command != null)
+            Command.CanExecuteChanged -= CanExecuteChanged;
     }
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -216,9 +216,10 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         RaiseEvent(args);
 
         var @param = CommandParameter;
-        if (!args.Handled && _command?.CanExecute(@param) == true)
+        var command = Command;
+        if (!args.Handled && command?.CanExecute(@param) == true)
         {
-            _command.Execute(@param);
+            command.Execute(@param);
         }
     }
 
@@ -280,7 +281,8 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
 
     private void CanExecuteChanged(object sender, EventArgs e)
     {
-        var canExecute = _command == null || _command.CanExecute(CommandParameter);
+        var command = Command;
+        var canExecute = command == null || command.CanExecute(CommandParameter);
 
         if (canExecute != _commandCanExecute)
         {

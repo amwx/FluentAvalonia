@@ -558,7 +558,7 @@ public partial class NavigationView : HeaderedContentControl
 
         if (_topNavOverflowButton != null)
         {
-            var flyout = _topNavOverflowButton.Flyout;
+            var flyout = _topNavOverflowButton.Flyout as PopupFlyoutBase;
             if (flyout != null)
             {
                 flyout.Closing -= OnFlyoutClosing;

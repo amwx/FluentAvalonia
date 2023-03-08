@@ -41,16 +41,16 @@ public partial class NavigationViewItem : NavigationViewItemBase
         UpdateVisualState();
         ReparentRepeater();
 
-        //We can't set the Flyout position in Styles, so we change the position here
+        // We can't set the Flyout position in Styles, so we change the position here
         if (_rootGrid != null)
         {
-            var flyout = _rootGrid.GetValue(FlyoutBase.AttachedFlyoutProperty);
+            var flyout = _rootGrid.GetValue(FlyoutBase.AttachedFlyoutProperty) as PopupFlyoutBase;
             if (flyout != null)
             {
                 flyout.Placement = (Position == NavigationViewRepeaterPosition.TopPrimary ||
                     Position == NavigationViewRepeaterPosition.TopFooter) ?
-                    FlyoutPlacementMode.BottomEdgeAlignedLeft :
-                    FlyoutPlacementMode.RightEdgeAlignedTop;
+                    PlacementMode.BottomEdgeAlignedLeft :
+                    PlacementMode.RightEdgeAlignedTop;
 
             }
         }
@@ -69,7 +69,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
         _rootGrid = e.NameScope.Find<Grid>(s_tpNVIRootGrid);
         if (_rootGrid != null)
         {
-            var flyout = FlyoutBase.GetAttachedFlyout(_rootGrid);
+            var flyout = FlyoutBase.GetAttachedFlyout(_rootGrid) as PopupFlyoutBase;
             if (flyout != null)
             {
                 flyout.Closing += OnFlyoutClosing;
@@ -532,7 +532,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
     {
         if (_rootGrid != null)
         {
-            var flyout = FlyoutBase.GetAttachedFlyout(_rootGrid);
+            var flyout = FlyoutBase.GetAttachedFlyout(_rootGrid) as PopupFlyoutBase;
             if (flyout != null)
             {
                 flyout.Closing -= OnFlyoutClosing;

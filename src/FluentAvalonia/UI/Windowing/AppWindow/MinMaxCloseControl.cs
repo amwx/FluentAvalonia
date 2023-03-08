@@ -164,7 +164,7 @@ public class MinMaxCloseControl : TemplatedControl
     {
         if (_maximizeButton != null)
         {
-            _maximizeButton.SetValue(Button.IsPressedProperty, pressed);
+            ((IPseudoClasses)_maximizeButton.Classes).Set(":pressed", pressed);
         }
     }
 

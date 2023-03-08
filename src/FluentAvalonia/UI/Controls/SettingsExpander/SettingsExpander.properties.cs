@@ -58,9 +58,8 @@ public partial class SettingsExpander
     /// <summary>
     /// Defines the <see cref="Command"/> property
     /// </summary>
-    public static readonly DirectProperty<SettingsExpander, ICommand> CommandProperty = 
-        Button.CommandProperty.AddOwner<SettingsExpander>(x => x.Command,
-            (x, v) => x.Command = v);
+    public static readonly StyledProperty<ICommand> CommandProperty = 
+        Button.CommandProperty.AddOwner<SettingsExpander>();
 
     /// <summary>
     /// Defines the <see cref="CommandParameter"/> property
@@ -147,8 +146,8 @@ public partial class SettingsExpander
     /// </summary>
     public ICommand Command
     {
-        get => _command;
-        set => SetAndRaise(CommandProperty, ref _command, value);
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
     }
 
     /// <summary>
@@ -170,8 +169,6 @@ public partial class SettingsExpander
         add => AddHandler(ClickEvent, value);
         remove => RemoveHandler(ClickEvent, value);
     }
-
-    private ICommand _command;
 
     private const string s_tpExpander = "Expander";
 

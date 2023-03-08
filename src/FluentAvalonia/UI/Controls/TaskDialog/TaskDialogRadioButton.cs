@@ -11,18 +11,15 @@ public class TaskDialogRadioButton : TaskDialogCommand
     /// <summary>
     /// Defines the <see cref="IsChecked"/> property
     /// </summary>
-    public static readonly DirectProperty<TaskDialogRadioButton, bool?> IsCheckedProperty =
-        ToggleButton.IsCheckedProperty.AddOwner<TaskDialogRadioButton>(x => x.IsChecked,
-            (x, v) => x.IsChecked = v);
+    public static readonly StyledProperty<bool?> IsCheckedProperty =
+        ToggleButton.IsCheckedProperty.AddOwner<TaskDialogRadioButton>();
 
     /// <summary>
     /// Gets or sets whether this RadioButton is checked
     /// </summary>
     public bool? IsChecked
     {
-        get => _isChecked;
-        set => SetAndRaise(IsCheckedProperty, ref _isChecked, value);
+        get => GetValue(IsCheckedProperty);
+        set => SetValue(IsCheckedProperty, value);
     }
-
-    private bool? _isChecked = false;
 }

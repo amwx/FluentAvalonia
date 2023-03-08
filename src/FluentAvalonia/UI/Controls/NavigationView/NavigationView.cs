@@ -161,7 +161,7 @@ public partial class NavigationView : HeaderedContentControl
             {
                 // Newest style doesn't have content, only an icon, so we'll skip setting that here like WinUI
                 // TODO: Automation
-                var flyout = _topNavOverflowButton.Flyout;
+                var flyout = _topNavOverflowButton.Flyout as PopupFlyoutBase;
                 if (flyout != null)
                 {
                     flyout.Closing += OnFlyoutClosing;

@@ -16,7 +16,7 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a flyout that displays a menu of commands.
 /// </summary>
-public class FAMenuFlyout : FlyoutBase
+public class FAMenuFlyout : PopupFlyoutBase
 {
     public FAMenuFlyout()
     {
