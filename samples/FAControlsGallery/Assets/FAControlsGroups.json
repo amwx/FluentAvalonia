@@ -298,7 +298,7 @@
     "Controls": [
       {
         "Header": "SettingsExpander",
-        "Description": null,
+        "Description": "An expandable container that can be used to organize and present app settings",
         "IconResourceKey": "SettingsExpanderIcon",
         "PageKey": "SettingsExpander",
         "SearchKeywords": [
