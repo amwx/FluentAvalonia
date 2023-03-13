@@ -10,6 +10,7 @@ using FAControlsGallery.ViewModels;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Navigation;
+using FluentAvalonia.UI.Windowing;
 
 namespace FAControlsGallery.Views;
 
@@ -67,6 +68,16 @@ public partial class MainView : UserControl
         NavView.BackRequested += OnNavigationViewBackRequested;
 
         FrameView.NavigateFromObject((NavView.MenuItems.ElementAt(0) as Control).Tag);
+    }
+
+    protected override void OnLoaded()
+    {
+        base.OnLoaded();
+
+        if (VisualRoot is AppWindow aw)
+        {
+            TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
+        }
     }
 
     public void InitializeNavigationPages()

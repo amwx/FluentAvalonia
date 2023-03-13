@@ -321,16 +321,19 @@ public class AppWindowTitleBar
 
     internal void SetInset(double inset, FlowDirection dir)
     {
-        if (dir == FlowDirection.LeftToRight)
-        {
-            _leftInset = inset;
-            _rightInset = 0;
-        }
-        else
-        {
-            _rightInset = inset;
-            _leftInset = 0;
-        }
+        // For now, setting both insets to the same value. FlowDirection is mostly handled by
+        // the mirror transform which means technically we always want the right inset
+        _rightInset = _leftInset = inset;
+        //if (dir == FlowDirection.LeftToRight)
+        //{
+        //    _leftInset = inset;
+        //    _rightInset = 0;
+        //}
+        //else
+        //{
+        //    _rightInset = inset;
+        //    _leftInset = 0;
+        //}
     }
 
     private AppWindow _parent;

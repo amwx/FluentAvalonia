@@ -13,8 +13,8 @@
    
 
     <Grid RowDefinitions="Auto,*">
-        <Grid Name="TitleBarHost" 
-              ColumnDefinitions="Auto,Auto,*" 
+        <Grid Name="TitleBarHost"
+              ColumnDefinitions="Auto,Auto,*,Auto" 
               Background="Transparent">
             <Image Margin="12 4"
                    IsHitTestVisible="False"
@@ -24,7 +24,7 @@
                    Name="WindowIcon">
                 <Image.IsVisible>
                     <OnPlatform Default="False">
-                        <On Options="Windows, Linux, macOS" Content="True" />
+                        <On Options="Windows" Content="True" />
                     </OnPlatform>
                 </Image.IsVisible>
             </Image>
@@ -36,13 +36,12 @@
                        Grid.Column="1">
                 <TextBlock.IsVisible>
                     <OnPlatform Default="False">
-                        <On Options="Windows, Linux, macOS" Content="True" />
+                        <On Options="Windows" Content="True" />
                     </OnPlatform>
                 </TextBlock.IsVisible>
             </TextBlock>
             
             <Border Grid.Column="2" Padding="6">
-                <!---->
                 <AutoCompleteBox Name="SearchBox"
                                  MaxWidth="500"
                                  Watermark="Search"
