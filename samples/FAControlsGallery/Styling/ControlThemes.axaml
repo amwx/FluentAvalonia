@@ -30,13 +30,20 @@
                         CornerRadius="8"
                         ClipToBounds="True"
                         Background="{StaticResource PageHeaderBackgroundBrush}">
+                    <Border.Transitions>
+                        <Transitions>
+                            <DoubleTransition Property="Height"
+                                              Duration="00:00:00.25"
+                                              Easing="0,0 0,1" />
+                        </Transitions>
+                    </Border.Transitions>
 
                     <Panel>
                         <Image Name="TitleTextImageHost"
                                VerticalAlignment="Top"
                                HorizontalAlignment="Left"
                                MaxWidth="300"
-                               Margin="50 50 300 50"
+                               Margin="30 50 0 50"
                                MinWidth="150"/>
                         
                         <Image Source="/Assets/Images/FAHeader3.png"
@@ -44,12 +51,17 @@
                                HorizontalAlignment="Right"
                                Height="36"
                                MinWidth="30"
-                               Margin="350 25 25 25"/>
+                               Margin="0 25 25 25"
+                               Name="VersionTextHost"/>
                     </Panel>
 
                 </Border>
             </ControlTemplate>
         </Setter>
+
+        <Style Selector="^:small /template/ Border">
+            <Setter Property="Height" Value="150" />
+        </Style>
     </ControlTheme>
 
     <ControlTheme TargetType="local:CoreControlsPageHeader"
