@@ -17,4 +17,5 @@
     <None Include="$(MSBuildThisFileDirectory)/../Assets/FAIcon.png" Pack="true" Visible="false" PackagePath=""/>
   </ItemGroup>
 
+  <Import Project="$(MSBuildThisFileDirectory)/SourceLink.props"/>
 </Project>
