@@ -51,7 +51,6 @@
 		<PackageReference Include="MicroCom.CodeGenerator.MSBuild" />
 		<PackageReference Include="MicroCom.Runtime" />
         <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />        
-        <PackageReference Include="System.Reactive" />
         <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.1'" />
 	</ItemGroup>
