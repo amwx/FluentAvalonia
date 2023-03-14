@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Reactive.Disposables;
+﻿using System.Globalization;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
@@ -153,9 +150,9 @@ public partial class TabViewItem : ListBoxItem
 
             TabView.TabDragCompletedWeakEvent.Subscribe(tabView, _completedDragSub);
 
-            _tabDragRevoker = new CompositeDisposable(
-                Disposable.Create(() => TabView.TabDragStartingWeakEvent.Unsubscribe(tabView, _startingDragSub)),
-                Disposable.Create(() => TabView.TabDragCompletedWeakEvent.Unsubscribe(tabView, _completedDragSub)));
+            _tabDragRevoker = new FACompositeDisposable(
+                new FADisposable(() => TabView.TabDragStartingWeakEvent.Unsubscribe(tabView, _startingDragSub)),
+                new FADisposable(() => TabView.TabDragCompletedWeakEvent.Unsubscribe(tabView, _completedDragSub)));
         }
 
         // Add this to fix a bug that's clearly in WinUI, adding a new TabViewItem doesn't check
@@ -541,7 +538,7 @@ public partial class TabViewItem : ListBoxItem
     // Close Button click revoker
     //TabDragStarting revoker
     //TabDragCompleted revoker
-    private CompositeDisposable _tabDragRevoker;
+    private FACompositeDisposable _tabDragRevoker;
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;

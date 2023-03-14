@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Reactive.Disposables;
+﻿using System.Collections.Specialized;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
@@ -439,7 +436,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             }
         }
 
-        _scrollViewerViewChangedRevoker = new CompositeDisposable(
+        _scrollViewerViewChangedRevoker = new FACompositeDisposable(
             _scrollViewer.GetPropertyChangedObservable(ScrollViewer.OffsetProperty).Subscribe(OnScrollViewerViewChanged),
             _scrollViewer.GetPropertyChangedObservable(ScrollViewer.ExtentProperty).Subscribe(OnScrollViewerViewChanged),
             _scrollViewer.GetPropertyChangedObservable(ScrollViewer.ViewportProperty).Subscribe(OnScrollViewerViewChanged)

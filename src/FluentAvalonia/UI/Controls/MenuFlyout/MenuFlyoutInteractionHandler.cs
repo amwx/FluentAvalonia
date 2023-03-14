@@ -7,10 +7,9 @@ using Avalonia.LogicalTree;
 using Avalonia.Rendering;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using System;
 using System.ComponentModel;
-using Avalonia.Platform;
 using Avalonia;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
