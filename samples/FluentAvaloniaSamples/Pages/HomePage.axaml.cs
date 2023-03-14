@@ -7,7 +7,7 @@ using FluentAvaloniaSamples.Services;
 
 namespace FluentAvaloniaSamples.Pages;
 
-public class HomePage : UserControl
+public partial class HomePage : UserControl
 {
     public HomePage()
     {
