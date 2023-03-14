@@ -124,8 +124,8 @@ public partial class NavigationView : HeaderedContentControl
     /// Defines the <see cref="IsPaneOpen"/> property
     /// </summary>
     public static readonly StyledProperty<bool> IsPaneOpenProperty =
-        AvaloniaProperty.Register<NavigationView, bool>(nameof(IsPaneOpen),
-            defaultValue: true);
+        SplitView.IsPaneOpenProperty.AddOwner<NavigationView>(
+            new StyledPropertyMetadata<bool>(defaultValue: true));
 
     /// <summary>
     /// Defines the <see cref="IsPaneToggleButtonVisible"/> property
