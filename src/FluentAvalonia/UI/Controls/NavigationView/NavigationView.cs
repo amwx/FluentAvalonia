@@ -2827,13 +2827,19 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnSplitViewPaneClosed(object sender, EventArgs e)
+    private void OnSplitViewPaneClosed(object sender, RoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         PaneClosed?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnSplitViewPaneClosing(object sender, CancelRoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         bool pendingCancel = false;
 
         if (!_blockNextClosingEvent)
@@ -2868,13 +2874,19 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnSplitViewPaneOpened(object sender, EventArgs e)
+    private void OnSplitViewPaneOpened(object sender, RoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         PaneOpened?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnSplitViewPaneOpening(object sender, EventArgs e)
+    private void OnSplitViewPaneOpening(object sender, RoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         if (_leftNavRepeater != null)
         {
             PseudoClasses.Set(s_pcListSizeCompact, false);
