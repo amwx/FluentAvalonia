@@ -8,15 +8,10 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using FluentAvalonia.Core;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -97,7 +92,7 @@ public partial class NavigationView : HeaderedContentControl
             _splitView = e.NameScope.Get<SplitView>(s_tpRootSplitView);
             if (_splitView != null)
             {
-                _splitViewRevokers = new CompositeDisposable(
+                _splitViewRevokers = new FACompositeDisposable(
                     _splitView.GetPropertyChangedObservable(SplitView.IsPaneOpenProperty).Subscribe(OnSplitViewClosedCompactChanged),
                     _splitView.GetPropertyChangedObservable(SplitView.DisplayModeProperty).Subscribe(OnSplitViewClosedCompactChanged));
 
@@ -953,7 +948,7 @@ public partial class NavigationView : HeaderedContentControl
                 nvi.Tapped += OnNavigationViewItemTapped;
                 nvi.KeyDown += OnNavigationViewItemKeyDown;
                 nvi.GotFocus += OnNavigationViewItemGotFocus;
-                var nviRevokers = new CompositeDisposable(
+                var nviRevokers = new FACompositeDisposable(
                     nvi.GetPropertyChangedObservable(NavigationViewItem.IsSelectedProperty).Subscribe(OnNavigationViewItemIsSelectedPropertyChanged),
                     nvi.GetPropertyChangedObservable(NavigationViewItem.IsExpandedProperty).Subscribe(OnNavigationViewItemExpandedPropertyChanged));
 
@@ -1142,17 +1137,19 @@ public partial class NavigationView : HeaderedContentControl
         // this is main menu or footer
         if (e.SourceIndex.GetSize() == 1)
         {
-            e.Children = (new List<object> { e.Source }).ToObservable();
+            e.Children = e.Source;
         }
         else if (e.Source is NavigationViewItem nvi)
         {
-            e.Children = nvi.GetObservable(NavigationViewItem.MenuItemsProperty);
+            e.Children = GetChildren(nvi);
         }
         else
         {
-            //AHHH I HATE IENUMERABLE & OBSERVABLES...
             var children = GetChildrenForItemInIndexPath(e.SourceIndex, true);
-            e.Children = new List<object>() { children }.ToObservable();
+            if (children != null)
+            {
+                e.Children = children;
+            }           
         }
     }
 

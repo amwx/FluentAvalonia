@@ -8,10 +8,8 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
-using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Reactive.Disposables;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -92,7 +90,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
         var splitView = GetSplitView;
         if (splitView != null)
         {
-            _splitViewRevokers = new CompositeDisposable(
+            _splitViewRevokers = new FACompositeDisposable(
                 splitView.GetPropertyChangedObservable(SplitView.IsPaneOpenProperty).Subscribe(OnSplitViewPropertyChanged),
                 splitView.GetPropertyChangedObservable(SplitView.DisplayModeProperty).Subscribe(OnSplitViewPropertyChanged),
                 splitView.GetPropertyChangedObservable(SplitView.CompactPaneLengthProperty).Subscribe(OnSplitViewPropertyChanged));
@@ -573,7 +571,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
     }
 
 
-    private CompositeDisposable _splitViewRevokers;
+    private FACompositeDisposable _splitViewRevokers;
     private NavigationViewItemPresenter _presenter;
     private object _suggestedToolTipContent;
     private ItemsRepeater _repeater;

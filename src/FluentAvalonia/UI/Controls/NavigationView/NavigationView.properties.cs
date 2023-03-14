@@ -5,10 +5,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
 using FluentAvalonia.Core;
-using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Reactive.Disposables;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -594,8 +592,8 @@ public partial class NavigationView : HeaderedContentControl
     /// Property that stores disposables to each NavigationViewItem when their created in the ItemsRepeater,
     /// so they can be disposed when the item is removed
     /// </summary>
-    internal static readonly AttachedProperty<CompositeDisposable> NavigationViewItemRevokersProperty =
-        AvaloniaProperty.RegisterAttached<NavigationView, NavigationViewItem, CompositeDisposable>("NavigationViewItemRevokers");
+    internal static readonly AttachedProperty<FACompositeDisposable> NavigationViewItemRevokersProperty =
+        AvaloniaProperty.RegisterAttached<NavigationView, NavigationViewItem, FACompositeDisposable>("NavigationViewItemRevokers");
 
     private object _selectedItem;
     private IEnumerable _menuItems;
