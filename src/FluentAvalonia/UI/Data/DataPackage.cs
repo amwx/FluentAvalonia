@@ -22,7 +22,7 @@ public class DataPackage : IDataObject
         _data.Keys;
 
     public IEnumerable<string> GetFileNames() =>
-        Get(DataFormats.FileNames) as IEnumerable<string>;
+        Get(DataFormats.Files) as IEnumerable<string>;
 
     public string GetText() =>
         Get(DataFormats.Text) as string;
