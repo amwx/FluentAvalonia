@@ -112,7 +112,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         {
             _presenter = new FAMenuFlyoutPresenter()
             {
-                Items = _generatedItems,
+                ItemsSource = _generatedItems,
                 [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty]
             };
 
