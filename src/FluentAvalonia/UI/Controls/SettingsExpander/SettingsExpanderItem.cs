@@ -229,6 +229,12 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, newIcon != null);
 
         TemplateSettings.Icon = IconHelpers.CreateFromUnknown(newIcon);
+
+        var se = this.FindAncestorOfType<SettingsExpander>();
+        if (se != null)
+        {
+            se.InvalidateIcons(this);
+        }
     }
 
     private void OnActionIconSourceChanged(AvaloniaPropertyChangedEventArgs args)

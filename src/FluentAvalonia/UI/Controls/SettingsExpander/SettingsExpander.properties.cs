@@ -11,6 +11,7 @@ namespace FluentAvalonia.UI.Controls;
 
 [PseudoClasses(SharedPseudoclasses.s_pcAllowClick, s_pcEmpty)]
 [TemplatePart(s_tpExpander, typeof(Expander))]
+[TemplatePart(s_tpContentHost, typeof(SettingsExpanderItem))]
 public partial class SettingsExpander
 {
     /// <summary>
@@ -171,6 +172,8 @@ public partial class SettingsExpander
     }
 
     private const string s_tpExpander = "Expander";
+    private const string s_tpContentHost = "ContentHost";
 
     private const string s_pcEmpty = ":empty";
+    private const string s_pcIconPlaceholder = ":iconPlaceholder";
 }

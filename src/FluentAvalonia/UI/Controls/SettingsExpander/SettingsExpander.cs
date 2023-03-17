@@ -33,6 +33,11 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         // so we can load the ToggleButton within the template
         _expander.Loaded += ExpanderLoaded;
         _expander.Expanding += ExpanderExpanding;
+
+        _contentHost = e.NameScope.Get<SettingsExpanderItem>(s_tpContentHost);
+        _hasAppliedTemplate = true;
+
+        SetIcons();
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -94,6 +99,18 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         {
             CanExecuteChanged(this, EventArgs.Empty);
         }
+        else if (change.Property == IconSourceProperty)
+        {
+            var oldVal = change.OldValue;
+            if (oldVal != null)
+                _iconCount--;
+
+            var newVal = change.NewValue;
+            if (newVal != null)
+                _iconCount++;
+
+            SetIcons();
+        }
     }
 
     private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -117,6 +134,34 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 
     protected override Control CreateContainerForItemOverride() =>
         new SettingsExpanderItem();
+
+    protected override void PrepareContainerForItemOverride(Control container, object item, int index)
+    {
+        base.PrepareContainerForItemOverride(container, item, index);
+
+        if (container is SettingsExpanderItem sei)
+        {
+            if (sei.IconSource != null)
+                _iconCount++;
+        }
+    }
+
+    protected override void ClearContainerForItemOverride(Control container)
+    {
+        base.ClearContainerForItemOverride(container);
+
+        if (container is SettingsExpanderItem sei)
+        {
+            if (sei.IconSource != null)
+                _iconCount--;
+        }
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        SetIcons();
+        return base.MeasureOverride(availableSize);
+    }
 
     /// <summary>
     /// Invoked when the SettingsExpander is clicked when IsClickEnabled = true
@@ -193,7 +238,38 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
     void ICommandSource.CanExecuteChanged(object sender, EventArgs e) =>
        CanExecuteChanged(sender, e);
 
+    private void SetIcons()
+    {
+        if (!_hasAppliedTemplate)
+            return;
+
+        // If the item count is 0, setting IconSource will automatically handle this
+        // by the :icon in the SettingsExpanderItem
+        if (ItemCount == 0)
+            return;
+
+        bool usePlaceholder = _iconCount > 0;
+        ((IPseudoClasses)_contentHost.Classes).Set(s_pcIconPlaceholder, usePlaceholder);
+
+        var rc = GetRealizedContainers();
+        foreach (var item in GetRealizedContainers())
+        {
+            ((IPseudoClasses)item.Classes).Set(s_pcIconPlaceholder, usePlaceholder);
+        }
+    }
+
+    internal void InvalidateIcons(SettingsExpanderItem item)
+    {
+        if (item == _contentHost)
+            return;
+
+        SetIcons();
+    }
+
     private bool _commandCanExecute = true;
     private Expander _expander;
     private ToggleButton _expanderToggleButton;
+    private SettingsExpanderItem _contentHost;
+    private int _iconCount = 0;
+    private bool _hasAppliedTemplate;
 }
