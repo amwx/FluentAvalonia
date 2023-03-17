@@ -133,6 +133,11 @@ public partial class NavigationView : HeaderedContentControl
 
     private bool DoesNavigationViewItemHaveChildren(NavigationViewItem nvi)
     {
+        var miSource = nvi?.MenuItemsSource;
+        if (miSource != null)
+        {
+            return miSource.Count() > 0;
+        }
         return nvi != null &&
             ((nvi.MenuItems != null && nvi.MenuItems.Count() > 0) || nvi.HasUnrealizedChildren);
     }
@@ -443,7 +448,7 @@ public partial class NavigationView : HeaderedContentControl
 
     private IEnumerable GetChildren(NavigationViewItem nvi)
     {
-        return nvi.MenuItems;
+        return nvi.MenuItems.Count > 0 ? nvi.MenuItems : nvi.MenuItemsSource;
     }
 
     private ItemsRepeater GetChildRepeaterForIndexPath(IndexPath ip)
@@ -684,6 +689,8 @@ public partial class NavigationView : HeaderedContentControl
 
     private SelectionModel _selectionModel;
     private AvaloniaList<IEnumerable> _selectionModelSource;
+    private ItemsSourceView _menuItemsSource;
+    private ItemsSourceView _footerItemsSource;
 
     //private ItemsSourceView _menuItemsSource;
     //private ItemsSourceView _footerItemsSource;

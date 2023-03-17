@@ -20,7 +20,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
 {
     public NavigationViewItem()
     {
-        _menuItems = new AvaloniaList<object>();
+        MenuItems = new AvaloniaList<object>();
     }
 
     protected override void OnNavigationViewItemBaseDepthChanged()
@@ -145,6 +145,14 @@ public partial class NavigationViewItem : NavigationViewItemBase
         {
             UpdateVisualStateForInfoBadge();
         }
+        else if (change.Property == MenuItemsProperty)
+        {
+            OnMenuItemsPropertyChanged();
+        }
+        else if (change.Property == MenuItemsSourceProperty)
+        {
+            OnMenuItemsSourcePropertyChanged();
+        }
     }
 
     private void UpdateRepeaterItemsSource()
@@ -155,7 +163,10 @@ public partial class NavigationViewItem : NavigationViewItemBase
             {
                 _repeater.ItemsSourceView.CollectionChanged -= OnItemsSourceViewChanged;
             }
-            _repeater.Items = MenuItems;
+
+            var miSource = MenuItemsSource;
+
+            _repeater.Items = miSource != null ? miSource : _menuItems;
 
             if (_repeater.ItemsSourceView != null)
             {
@@ -284,10 +295,25 @@ public partial class NavigationViewItem : NavigationViewItemBase
 
     protected virtual void OnMenuItemsPropertyChanged()
     {
+        // We shouldn't need this now as Avalonia has no support for x:Load
+        // see WinUI #6808
+        //if (_menuItems.Count > 0)
+        //{
+        //    LoadElementsForDisplayingChildren();
+        //}
+
         UpdateRepeaterItemsSource();
         UpdateVisualStateForChevron();
     }
 
+    protected virtual void OnMenuItemsSourcePropertyChanged()
+    {
+        // See above
+        //LoadElementsForDisplayingChildren();
+        UpdateRepeaterItemsSource();
+        UpdateVisualStateForChevron();
+    }
+        
     private void OnHasUnrealizedChildrenPropertyChanged()
     {
         UpdateVisualStateForChevron();

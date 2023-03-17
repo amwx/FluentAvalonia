@@ -55,9 +55,11 @@ public partial class NavigationViewItem
     /// <summary>
     /// Defines the <see cref="MenuItems"/> property
     /// </summary>
-    public static readonly DirectProperty<NavigationViewItem, IEnumerable> MenuItemsProperty =
-        AvaloniaProperty.RegisterDirect<NavigationViewItem, IEnumerable>(nameof(MenuItems),
-            x => x.MenuItems, (x, v) => x.MenuItems = v);
+    public static readonly DirectProperty<NavigationViewItem, IList<object>> MenuItemsProperty =
+        NavigationView.MenuItemsProperty.AddOwner<NavigationViewItem>(x => x.MenuItems);
+
+    public static readonly StyledProperty<IEnumerable> MenuItemsSourceProperty =
+        NavigationView.MenuItemsSourceProperty.AddOwner<NavigationViewItem>();
 
     /// <summary>
     /// Defines the <see cref="SelectsOnInvoked"/> property
@@ -132,16 +134,22 @@ public partial class NavigationViewItem
     /// <summary>
     /// Gets or sets the collection of menu items displayed as children of the NavigationViewItem.
     /// </summary>
-    public IEnumerable MenuItems
+    public IList<object> MenuItems
     {
         get => _menuItems;
-        set
-        {
-            if (SetAndRaise(MenuItemsProperty, ref _menuItems, value))
-            {
-                OnMenuItemsPropertyChanged();
-            }
-        }
+        private set => SetAndRaise(MenuItemsProperty, ref _menuItems, value);
+        //{
+        //    if (SetAndRaise(MenuItemsProperty, ref _menuItems, value))
+        //    {
+        //        OnMenuItemsPropertyChanged();
+        //    }
+        //}
+    }
+
+    public IEnumerable MenuItemsSource
+    {
+        get => GetValue(MenuItemsSourceProperty);
+        set => SetValue(MenuItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -168,7 +176,12 @@ public partial class NavigationViewItem
 
     internal NavigationViewItemPresenter NVIPresenter => _presenter;
 
-    private bool HasChildren => (MenuItems != null && MenuItems.Count() > 0) || HasUnrealizedChildren;
+    private bool HasChildren =>       
+        (MenuItems != null && MenuItems.Count() > 0) ||
+        (MenuItemsSource != null && _repeater != null &&
+        _repeater.ItemsSourceView != null &&
+        _repeater.ItemsSourceView.Count > 0) ||
+        HasUnrealizedChildren;
 
     private bool ShouldShowIcon => IconSource != null;
 
@@ -190,7 +203,7 @@ public partial class NavigationViewItem
     private bool _hasUnrealizedChildren;
     private bool _isChildSelected;
     private bool _isExpanded;
-    private IEnumerable _menuItems;
+    private IList<object> _menuItems;
     private bool _selectsOnInvoked = true;
 
     private const string s_tpNVIPresenter = "NVIPresenter";

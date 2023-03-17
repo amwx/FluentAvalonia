@@ -76,8 +76,8 @@ public partial class MainView : UserControl
         _windowIconControl = this.FindControl<Control>("WindowIcon");
         _frameView = this.FindControl<Frame>("FrameView");
         _navView = this.FindControl<NavigationView>("NavView");
-        _navView.MenuItems = GetNavigationViewItems();
-        _navView.FooterMenuItems = GetFooterNavigationViewItems();
+        _navView.MenuItemsSource = GetNavigationViewItems();
+        _navView.FooterMenuItemsSource = GetFooterNavigationViewItems();
 
         _frameView.Navigated += OnFrameViewNavigated;
         _navView.ItemInvoked += OnNavigationViewItemInvoked;
@@ -261,12 +261,13 @@ public partial class MainView : UserControl
         if (e.SourcePageType.IsAssignableTo(typeof(FAControlsPageBase)))
         {
             // Keep new Control tab selected if we're within a new controls page
-            _navView.SelectedItem = _navView.MenuItems.ElementAt(2);
+            _navView.SelectedItem = _navView.MenuItemsSource.ElementAt(2);
         }
         else
         {
+            var items = _navView.MenuItemsSource as List<NavigationViewItem>;
             bool found = false;
-            foreach (NavigationViewItem nvi in _navView.MenuItems)
+            foreach (NavigationViewItem nvi in items)
             {
                 if (nvi.Tag is Type tag && tag == e.SourcePageType)
                 {
@@ -281,12 +282,12 @@ public partial class MainView : UserControl
             {
                 if (e.SourcePageType == typeof(SettingsPage))
                 {
-                    _navView.SelectedItem = _navView.FooterMenuItems.ElementAt(0);
+                    _navView.SelectedItem = _navView.FooterMenuItemsSource.ElementAt(0);
                 }
                 else
                 {
                     // only remaining page type is core controls pages
-                    _navView.SelectedItem = _navView.MenuItems.ElementAt(1);
+                    _navView.SelectedItem = _navView.MenuItemsSource.ElementAt(1);
                 }
             }
         }

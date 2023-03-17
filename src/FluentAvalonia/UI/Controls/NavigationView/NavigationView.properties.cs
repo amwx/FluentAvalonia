@@ -97,9 +97,12 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="FooterMenuItemsProperty"/>
     /// </summary>
-    public static readonly DirectProperty<NavigationView, IEnumerable> FooterMenuItemsProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>(nameof(FooterMenuItems),
-            x => x.FooterMenuItems, (x, v) => x.FooterMenuItems = v);
+    public static readonly DirectProperty<NavigationView, IList<object>> FooterMenuItemsProperty =
+        AvaloniaProperty.RegisterDirect<NavigationView, IList<object>>(nameof(FooterMenuItems),
+            x => x.FooterMenuItems);
+
+    public static readonly StyledProperty<IEnumerable> FooterMenuItemsSourceProperty =
+        AvaloniaProperty.Register<NavigationView, IEnumerable>(nameof(FooterMenuItemsSource));
 
     //In WinUI, this is enum NavigationViewBackButtonVisible
     //Visible
@@ -148,9 +151,12 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="MenuItems"/> property
     /// </summary>
-    public static readonly DirectProperty<NavigationView, IEnumerable> MenuItemsProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>(nameof(MenuItems),
-            o => o.MenuItems, (o, v) => o.MenuItems = v);
+    public static readonly DirectProperty<NavigationView, IList<object>> MenuItemsProperty =
+        AvaloniaProperty.RegisterDirect<NavigationView, IList<object>>(nameof(MenuItems),
+            o => o.MenuItems);
+
+    public static readonly StyledProperty<IEnumerable> MenuItemsSourceProperty =
+        AvaloniaProperty.Register<NavigationView, IEnumerable>(nameof(MenuItemsSource));
 
     /// <summary>
     /// Defines the <see cref="MenuItemTemplate"/> property
@@ -301,26 +307,16 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Gets or sets the list of objects to be used as navigation items in the footer menu.
     /// </summary>
-    public IEnumerable FooterMenuItems
+    public IList<object> FooterMenuItems
     {
         get => _footerMenuItems;
-        set
-        {
-            var old = _footerMenuItems;
-            if (SetAndRaise(FooterMenuItemsProperty, ref _footerMenuItems, value))
-            {
-                if (old is INotifyCollectionChanged oldINCC)
-                {
-                    oldINCC.CollectionChanged -= OnFooterItemsSourceCollectionChanged;
-                }
-                if (value is INotifyCollectionChanged newINCC)
-                {
-                    newINCC.CollectionChanged += OnFooterItemsSourceCollectionChanged;
-                }
+        private set => SetAndRaise(FooterMenuItemsProperty, ref _footerMenuItems, value);
+    }
 
-                UpdateFooterRepeaterItemsSource(true, true);
-            }
-        }
+    public IEnumerable FooterMenuItemsSource
+    {
+        get => GetValue(FooterMenuItemsSourceProperty);
+        set => SetValue(FooterMenuItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -403,25 +399,16 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Gets or sets the collection of menu items displayed in the NavigationView.
     /// </summary>
-    public IEnumerable MenuItems
+    public IList<object> MenuItems
     {
         get => _menuItems;
-        set
-        {
-            var old = _menuItems;
-            if (SetAndRaise(MenuItemsProperty, ref _menuItems, value))
-            {
-                if (_menuItems is INotifyCollectionChanged oldINCC)
-                {
-                    oldINCC.CollectionChanged -= OnMenuItemsSourceCollectionChanged;
-                }
-                if (value is INotifyCollectionChanged newINCC)
-                {
-                    newINCC.CollectionChanged += OnMenuItemsSourceCollectionChanged;
-                }
-                UpdateRepeaterItemsSource(true);
-            }
-        }
+        set => SetAndRaise(MenuItemsProperty, ref _menuItems, value);
+    }
+
+    public IEnumerable MenuItemsSource
+    {
+        get => GetValue(MenuItemsSourceProperty);
+        set => SetValue(MenuItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -596,8 +583,8 @@ public partial class NavigationView : HeaderedContentControl
         AvaloniaProperty.RegisterAttached<NavigationView, NavigationViewItem, FACompositeDisposable>("NavigationViewItemRevokers");
 
     private object _selectedItem;
-    private IEnumerable _menuItems;
-    private IEnumerable _footerMenuItems;
+    private IList<object> _menuItems;
+    private IList<object> _footerMenuItems;
     private NavigationViewDisplayMode _displayMode = NavigationViewDisplayMode.Minimal;
     private NavigationViewItem _settingsItem;
 
