@@ -193,7 +193,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
         //      items in the OverlayLayer materialize at the absolute last moment making init
         //      a very difficult task to do
-        (ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
+        // v2-preview6: This doesn't appear necessary anymore...will preserve this for now
+        // but has to be removed to solve GH#315
+        //(ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
 
         IsVisible = true;
         ShowCore();
