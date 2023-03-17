@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Linq;
+﻿using System.Collections.Specialized;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
@@ -22,6 +19,11 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 {
+    public SettingsExpander()
+    {
+        ItemsView.CollectionChanged += ItemsCollectionChanged;
+    }
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
@@ -92,25 +94,14 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         {
             CanExecuteChanged(this, EventArgs.Empty);
         }
-        else if (change.Property == ItemsProperty)
-        {
-            var newValue = change.GetNewValue<IEnumerable>();
-            if (IsClickEnabled && newValue is not null)
-                throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
-
-            if (_expanderToggleButton is not null)
-            {
-                // Disable the interaction states if items collection is cleared
-                bool isInteractable = newValue is not null && newValue.Count() > 0;
-                ((IPseudoClasses)_expanderToggleButton.Classes).Set(SharedPseudoclasses.s_pcAllowClick, isInteractable);
-                ((IPseudoClasses)_expanderToggleButton.Classes).Set(s_pcEmpty, !isInteractable);
-            }
-        }
     }
 
-    protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        base.ItemsCollectionChanged(sender, e);
+        // This fires for collection changes, whether they originate from Items or ItemsSource
+
+        if (IsClickEnabled && ItemsView.Count > 0)
+            throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
 
         if (_expanderToggleButton is not null)
         {
