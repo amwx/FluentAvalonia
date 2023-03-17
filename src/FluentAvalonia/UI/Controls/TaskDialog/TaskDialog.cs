@@ -486,7 +486,7 @@ public partial class TaskDialog : ContentControl
             buttons.Add(b);
         }
 
-        _buttonsHost.Items = buttons;
+        _buttonsHost.ItemsSource = buttons;
     }
 
     private void SetCommands()
@@ -553,7 +553,7 @@ public partial class TaskDialog : ContentControl
             }
         }
 
-        _commandsHost.Items = commands;
+        _commandsHost.ItemsSource = commands;
     }
 
     private void TrySetInitialFocus()
