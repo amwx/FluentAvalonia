@@ -30,7 +30,7 @@
     </UserControl.Resources>
     
     <ScrollViewer>
-        <StackPanel Spacing="25">
+        <StackPanel Spacing="-75">
             <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader2.png"/>
             
             <ItemsControl Items="{Binding Pages}"
