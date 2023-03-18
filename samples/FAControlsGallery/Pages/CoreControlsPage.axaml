@@ -18,20 +18,22 @@
         <Thickness x:Key="SettingsExpanderItemContentMargin">64 0 0 0</Thickness>
     </UserControl.Resources>
     
-    <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
+    <ScrollViewer>
         <StackPanel Spacing="25"
                     Margin="0 0 0 30">
-            <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader_CoreControls.png"/>
+            <local:PageHeaderControl TextType="CoreControls"/>
 
             <TextBlock Text="Controls included with Avalonia"
-                       Theme="{StaticResource SubtitleTextBlockStyle}" />
+                       Theme="{StaticResource SubtitleTextBlockStyle}"
+                       Margin="30 0 0 0"/>
             <TextBlock Text="{Binding NoteText}"
-                       Margin="0 -25 0 0"
+                       Margin="30 -25 0 0"
                        Theme="{StaticResource CaptionTextBlockStyle}"/>
             
             <ItemsControl Items="{Binding CoreControlGroups}"
                           Name="ItemsControl"
-                          ClipToBounds="False">
+                          ClipToBounds="False"
+                          Padding="{StaticResource SampleAppPageMargin}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Spacing="4" />

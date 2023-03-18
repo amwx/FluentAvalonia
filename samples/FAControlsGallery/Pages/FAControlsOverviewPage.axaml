@@ -56,13 +56,14 @@
         </ControlTheme>
     </UserControl.Resources>
 
-        <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
+        <ScrollViewer>
             <StackPanel Spacing="25"
                         Margin="0 0 0 30">
-                <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader_NewControls.png"/>
+                <local:PageHeaderControl TextType="FAControls"/>
 
                 <ItemsControl Items="{Binding ControlGroups}"
-                             Margin="0 0 0 20">
+                              Padding="{StaticResource SampleAppPageMargin}" 
+                              Margin="0 0 0 20">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Spacing="20" />

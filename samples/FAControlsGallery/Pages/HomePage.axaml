@@ -29,13 +29,14 @@
         <conv:StringToBitmapConverter x:Key="StringBmpConv" />
     </UserControl.Resources>
     
-    <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
+    <ScrollViewer>
         <StackPanel Spacing="25">
             <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader2.png"/>
             
             <ItemsControl Items="{Binding Pages}"
                           Name="TileItemsControl"
-                          ClipToBounds="False">
+                          ClipToBounds="False"
+                          Margin="{StaticResource SampleAppPageMargin}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
