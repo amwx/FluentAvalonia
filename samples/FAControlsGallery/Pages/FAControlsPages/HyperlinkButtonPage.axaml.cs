@@ -4,7 +4,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class HyperlinkButtonPage : FAControlsPageBase
+public partial class HyperlinkButtonPage : ControlsPageBase
 {
     public HyperlinkButtonPage()
     {

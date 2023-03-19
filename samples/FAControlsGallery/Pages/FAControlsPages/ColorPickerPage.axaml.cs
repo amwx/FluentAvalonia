@@ -4,7 +4,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class ColorPickerPage : FAControlsPageBase
+public partial class ColorPickerPage : ControlsPageBase
 {
     public ColorPickerPage()
     {

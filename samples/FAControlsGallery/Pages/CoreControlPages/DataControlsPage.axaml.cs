@@ -1,15 +1,18 @@
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class DataControlsPage : UserControl
+public partial class DataControlsPage : ControlsPageBase
 {
     public DataControlsPage()
     {
         InitializeComponent();
-
+        ControlName = "Data Controls";
+        App.Current.Resources.TryGetResource("DataPageIcon", null, out var icon);
+        PreviewImage = (IconSource)icon;
         var dg = this.FindControl<DataGrid>("TargetDataGrid");
 
         dg.Items = new DataGridCollectionView(Countries.All)

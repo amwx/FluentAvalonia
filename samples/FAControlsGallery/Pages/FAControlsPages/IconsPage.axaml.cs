@@ -3,7 +3,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class IconsPage : FAControlsPageBase
+public partial class IconsPage : ControlsPageBase
 {
     public IconsPage()
     {

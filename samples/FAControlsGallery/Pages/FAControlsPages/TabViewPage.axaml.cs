@@ -10,7 +10,7 @@ using FAControlsGallery.ViewModels;
 
 namespace FAControlsGallery.Pages;
 
-public partial class TabViewPage : FAControlsPageBase
+public partial class TabViewPage : ControlsPageBase
 {
     public TabViewPage()
     {

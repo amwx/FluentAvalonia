@@ -2,7 +2,7 @@ using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
-public partial class TeachingTipPage : FAControlsPageBase
+public partial class TeachingTipPage : ControlsPageBase
 {
     public TeachingTipPage()
     {

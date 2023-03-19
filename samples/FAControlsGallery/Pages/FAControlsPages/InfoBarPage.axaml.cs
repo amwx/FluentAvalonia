@@ -6,7 +6,7 @@ using FAControlsGallery.ViewModels;
 
 namespace FAControlsGallery.Pages;
 
-public partial class InfoBarPage : FAControlsPageBase
+public partial class InfoBarPage : ControlsPageBase
 {
     public InfoBarPage()
     {

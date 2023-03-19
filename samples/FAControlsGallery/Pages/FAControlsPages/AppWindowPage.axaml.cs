@@ -1,5 +1,4 @@
 using Avalonia;
-using System.Xml.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using System.Text.Json;
@@ -9,11 +8,10 @@ using FluentAvalonia.UI.Windowing;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using FluentAvalonia.UI.Controls;
-using FluentAvalonia.Interop;
 
 namespace FAControlsGallery.Pages;
 
-public partial class AppWindowPage : FAControlsPageBase
+public partial class AppWindowPage : ControlsPageBase
 {
     public AppWindowPage()
     {

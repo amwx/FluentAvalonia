@@ -4,7 +4,7 @@ using FluentAvalonia.UI.Input;
 
 namespace FAControlsGallery.Pages;
 
-public partial class XamlUICommandPage : FAControlsPageBase
+public partial class XamlUICommandPage : ControlsPageBase
 {
     public XamlUICommandPage()
     {

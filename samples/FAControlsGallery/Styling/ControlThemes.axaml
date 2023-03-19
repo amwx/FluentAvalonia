@@ -9,10 +9,7 @@
         <ThemeVariantScope RequestedThemeVariant="Light">
             <StackPanel Spacing="10" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
                     Margin="50" Width="500">
-                <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader2.png" />
-
-                <local:CoreControlsPageHeader Content="Page Name"
-                                              IconSource="{StaticResource BasicInputPageIcon}" />
+                <local:PageHeaderControl Classes="smaller" />
             </StackPanel>
         </ThemeVariantScope>
     </Design.PreviewWith>
@@ -88,78 +85,59 @@
     </ResourceDictionary.ThemeDictionaries>
    
     <ControlTheme TargetType="local:PageHeaderControl"
-                  x:Key="{x:Type local:PageHeaderControl}">        
+                  x:Key="{x:Type local:PageHeaderControl}">
+        <Setter Property="Height" Value="296" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>                    
-                    <Border Height="296" VerticalAlignment="Top"
-                            CornerRadius="8 0 0 0"
+                    <Border CornerRadius="8 0 0 0"
                             ClipToBounds="True"
                             Background="{DynamicResource PageHeaderBackgroundBrush}"
                             RenderOptions.BitmapInterpolationMode="HighQuality"
-                            OpacityMask="{DynamicResource HeaderOpacityMaskBrush}">
-                        <Border.Transitions>
-                            <Transitions>
-                                <DoubleTransition Property="Height"
-                                                  Duration="00:00:00.25"
-                                                  Easing="0,0 0,1" />
-                            </Transitions>
-                        </Border.Transitions>
-                    </Border>
+                            OpacityMask="{DynamicResource HeaderOpacityMaskBrush}" />
                     
                     <Panel>
                         <Image Name="TitleTextImageHost"
                                VerticalAlignment="Top"
                                HorizontalAlignment="Left"
                                MaxWidth="400"
-                               Margin="30 50 0 50"
+                               Margin="30 50 0 0"
                                MinWidth="150"
-                               IsVisible="True"/>
+                               IsVisible="True">
+                            <Image.Transitions>
+                                <Transitions>
+                                    <ThicknessTransition Duration="00:00:00.25"
+                                                         Property="Margin"
+                                                         Easing="0,0 0,1" />
+                                </Transitions>
+                            </Image.Transitions>
+                        </Image>
                     </Panel>
                 </Panel>
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^:small /template/ Border">
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Height"
+                                  Duration="00:00:00.25"
+                                  Easing="0,0 0,1" />
+            </Transitions>
+        </Setter>
+
+        <Style Selector="^.smaller">
+            <Setter Property="Height" Value="200" />
+            <Style Selector="^ /template/ Image#TitleTextImageHost">
+                <Setter Property="Margin" Value="30 25 0 0" />
+            </Style>
+        </Style>
+        <Style Selector="^:small">
             <Setter Property="Height" Value="150" />
+
+            <Style Selector="^ /template/ Image#TitleTextImageHost">
+                <Setter Property="Margin" Value="30 25 0 25" />
+            </Style>
         </Style>
     </ControlTheme>
 
-    <ControlTheme TargetType="local:CoreControlsPageHeader"
-                  x:Key="{x:Type local:CoreControlsPageHeader}">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <DockPanel LastChildFill="False">
-
-                    <Viewbox Width="80" Height="80"
-                             DockPanel.Dock="Left">
-                        <ui:IconSourceElement IconSource="{TemplateBinding IconSource}" />
-                    </Viewbox>
-                    <TextBlock Text="{TemplateBinding Content}"
-                               Theme="{StaticResource TitleTextBlockStyle}"
-                               Name="HeaderText"
-                               VerticalAlignment="Center"
-                               Margin="12 0"
-                               DockPanel.Dock="Left"/>
-
-                    <Button DockPanel.Dock="Right"
-                            Theme="{StaticResource TransparentButton}"
-                            Name="ToggleThemeButton">
-                        <Panel>
-                            <Viewbox Width="16" Height="16"
-                                     HorizontalAlignment="Left">
-                                <ui:IconSourceElement IconSource="{StaticResource SwapThemeIcon}" />
-                            </Viewbox>
-                            <TextBlock Text="Toggle Theme"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left"
-                                       Margin="32 4 0 4" />
-                        </Panel>
-                    </Button>
-
-                </DockPanel>
-            </ControlTemplate>
-        </Setter>
-    </ControlTheme>
-    
 </ResourceDictionary>

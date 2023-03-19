@@ -7,7 +7,7 @@ using FAControlsGallery.ViewModels;
 
 namespace FAControlsGallery.Pages;
 
-public partial class NavigationViewPage : FAControlsPageBase
+public partial class NavigationViewPage : ControlsPageBase
 {
     public NavigationViewPage()
     {

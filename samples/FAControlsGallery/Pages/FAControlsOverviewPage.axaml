@@ -59,7 +59,8 @@
         <ScrollViewer>
             <StackPanel Spacing="25"
                         Margin="0 0 0 30">
-                <local:PageHeaderControl TextType="FAControls"/>
+                <local:PageHeaderControl TextType="FAControls"
+                                         Classes="smaller"/>
 
                 <ItemsControl Items="{Binding ControlGroups}"
                               Padding="{StaticResource SampleAppPageMargin}" 

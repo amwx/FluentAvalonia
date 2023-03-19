@@ -3,7 +3,7 @@ using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FAControlsGallery.Pages;
 
-public partial class PickerFlyoutBasePage : FAControlsPageBase
+public partial class PickerFlyoutBasePage : ControlsPageBase
 {
     public PickerFlyoutBasePage()
     {

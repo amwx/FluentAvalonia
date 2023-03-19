@@ -6,7 +6,7 @@ using FAControlsGallery.ViewModels;
 
 namespace FAControlsGallery.Pages;
 
-public partial class CommandBarFlyoutPage : FAControlsPageBase
+public partial class CommandBarFlyoutPage : ControlsPageBase
 {
     public CommandBarFlyoutPage()
     {

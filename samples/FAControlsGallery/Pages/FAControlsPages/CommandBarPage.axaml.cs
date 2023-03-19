@@ -3,7 +3,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class CommandBarPage : FAControlsPageBase
+public partial class CommandBarPage : ControlsPageBase
 {
     public CommandBarPage()
     {

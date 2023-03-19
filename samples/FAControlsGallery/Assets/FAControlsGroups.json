@@ -26,7 +26,7 @@
           "Hyperlink",
           "Button"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.HyperlinkButton",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.HyperlinkButton",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.hyperlinkbutton",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/hyperlinks"
@@ -39,7 +39,7 @@
         "SearchKeywords": [
           "NumberBox"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.NumberBox",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.NumberBox",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.numberbox",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/number-box"
@@ -52,7 +52,7 @@
         "SearchKeywords": [
           "FAComboBox"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.FAComboBox",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.combobox",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/combo-box"
@@ -70,7 +70,7 @@
         "SearchKeywords": [
           "TaskDialog"
         ],
-        "Namespace" : "FluentAvalonia.UI.Controls"
+        "Namespace" : "FluentAvalonia.UI.Controls.TaskDialog"
       },
       {
         "Header": "ContentDialog",
@@ -80,7 +80,7 @@
         "SearchKeywords": [
           "ContentDialog"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.ContentDialog",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.ContentDialog",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.contentdialog",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/dialogs-and-flyouts/dialogs"
@@ -93,7 +93,7 @@
         "SearchKeywords": [
           "PickerFlyoutBase"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.Primitives"
+        "Namespace": "FluentAvalonia.UI.Controls.Primitives.PickerFlyoutBase"
       },
       {
         "Header": "TeachingTip",
@@ -103,7 +103,7 @@
         "SearchKeywords": [
           "TeachingTip"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.TeachingTip",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.TeachingTip",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.teachingtip",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/dialogs-and-flyouts/teaching-tip"
@@ -121,7 +121,7 @@
         "SearchKeywords": [
           "Icons"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.FAIconElement",
         "WinUIDocsLink": null,
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/style/icons"
       }
@@ -138,7 +138,7 @@
         "SearchKeywords": [
           "NavigationView"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.NavigationView",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.Controls.NavigationView",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview"
@@ -151,7 +151,7 @@
         "SearchKeywords": [
           "Frame"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.Frame",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.Frame",
         "WinUIDocsLink": "https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.frame?view=winui-3.0"
       },
@@ -163,7 +163,7 @@
         "SearchKeywords": [
           "TabView"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.TabView",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.TabView",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.tabview",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/tab-view"
@@ -186,7 +186,7 @@
           "RadioMenuFlyoutItem",
           "MenuFlyoutSeparator"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.FAMenuFlyout",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.MenuFlyout",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.menuflyout",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/menus"
@@ -203,7 +203,7 @@
           "CommandBarSeparator",
           "CommandBarElementContainer"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.FACommandBar",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.CommandBar",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.commandbar",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/command-bar"
@@ -214,9 +214,14 @@
         "IconResourceKey": "CommandBarFlyoutIcon",
         "PageKey": "CommandBarFlyout",
         "SearchKeywords": [
-          "CommandBarFlyout"
+          "CommandBarFlyout",
+          "CommandBar",
+          "CommandBarButton",
+          "CommandBarToggleButton",
+          "CommandBarSeparator",
+          "CommandBarElementContainer"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.CommandBarFlyout",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.CommandBarFlyout",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.commandbarflyout",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/command-bar-flyout"
@@ -230,7 +235,7 @@
           "XamlUICommand",
           "StandardUICommand"
         ],
-        "Namespace": "FluentAvalonia.UI.Input",
+        "Namespace": "FluentAvalonia.UI.Input.XamlUICommand",
         "WinUINamespace": "Microsoft.UI.Xaml.Input.XamlUICommand",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.xamluicommand",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/commanding#command-experiences-using-the-xamluicommand-class"
@@ -246,9 +251,10 @@
         "IconResourceKey": "ColorPickerIcon",
         "PageKey": "FAColorPicker",
         "SearchKeywords": [
-          "FAColorPicker"
+          "FAColorPicker",
+          "ColorPicker"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls"
+        "Namespace": "FluentAvalonia.UI.Controls.FAColorPicker"
       },
       {
         "Header": "ColorPickerButton",
@@ -256,9 +262,11 @@
         "IconResourceKey": "ColorPickerButtonIcon",
         "PageKey": "ColorPickerButton",
         "SearchKeywords": [
-          "ColorPickerButton"
+          "ColorPickerButton",
+          "ColorPicker",
+          "FAColorPicker"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls"
+        "Namespace": "FluentAvalonia.UI.Controls.ColorPickerButton"
       }
     ]
   },
@@ -273,7 +281,7 @@
         "SearchKeywords": [
           "InfoBar"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
+        "Namespace": "FluentAvalonia.UI.Controls.InfoBar",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.InfoBar",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.infobar",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/infobar"
@@ -286,8 +294,8 @@
         "SearchKeywords": [
           "InfoBadge"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls",
-        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
+        "Namespace": "FluentAvalonia.UI.Controls.InfoBadge",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.InfoBadge",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.infobadge?view=winui-2.8",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/infobadge"
       }
@@ -302,8 +310,10 @@
         "IconResourceKey": "SettingsExpanderIcon",
         "PageKey": "SettingsExpander",
         "SearchKeywords": [
-          "SettingsExpander"
-        ]
+          "SettingsExpander",
+          "Expander"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls.SettingsExpander"
       }
     ]
   }

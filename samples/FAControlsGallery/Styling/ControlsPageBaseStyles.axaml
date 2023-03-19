@@ -1,0 +1,183 @@
+<Styles xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrls="using:FAControlsGallery.Controls"
+                    xmlns:pg="using:FAControlsGallery.Pages"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls">
+
+    <Design.PreviewWith>
+        <Border Width="700" Height="500" Padding="20"
+                Background="{DynamicResource LayerFillColorDefaultBrush}">
+            <pg:ControlsPageBase PreviewImage="{StaticResource BasicInputPageIcon}"
+                                 ControlName="PageName"
+                                 ControlNamespace="asdf">
+                <ctrls:ControlExample Header="A hyperlink button that handles a Click event">
+                    <ui:HyperlinkButton Content="Go to Settings"
+                                        Name="TargetClickHyperlinkButton"/>
+
+                    <ctrls:ControlExample.XamlSource>
+                        <x:String>
+                            &lt;HyperlinkButton Content="FluentAvalonia Github repo" Click="HyperlinkButton_Click" /&gt;
+                        </x:String>
+                    </ctrls:ControlExample.XamlSource>
+
+                    <ctrls:ControlExample.CSharpSource>
+                        <x:String>
+                            public void HyperlinkButton_Click(object sender, RoutedEventArgs args)
+                            {
+                            // Handle navigation logic here, for example:
+                            NavigationService.Instance.Navigate(typeof(SettingsPage));
+                            }
+                        </x:String>
+                    </ctrls:ControlExample.CSharpSource>
+                </ctrls:ControlExample>
+            </pg:ControlsPageBase>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="pg|ControlsPageBase">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DockPanel Name="Root">
+                    <Panel Name="HeaderRegion"
+                           DockPanel.Dock="Top">
+                        <Border Background="{DynamicResource PageHeaderBackgroundBrush}"
+                                OpacityMask="{DynamicResource HeaderOpacityMaskBrush}"
+                                Height="80"
+                                VerticalAlignment="Top"/>
+                        <Grid ColumnDefinitions="*,Auto"
+                              RowDefinitions="*,Auto"
+                              Margin="0 30 0 0">
+                            <Panel Name="PageDetails"
+                                   Margin="20 0 0 0">
+                                <Border Background="{DynamicResource ControlOnImageFillColorDefaultBrush}"
+                                        Width="120" Height="120"
+                                        CornerRadius="{DynamicResource OverlayCornerRadius}"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Name="ImageHost">
+                                    <Border.Transitions>
+                                        <Transitions>
+                                            <DoubleTransition Property="Width"
+                                                              Duration="00:00:00.25"
+                                                              Easing="0,0 0,1" />
+                                            <DoubleTransition Property="Height"
+                                                              Duration="00:00:00.25"
+                                                              Easing="0,0 0,1" />
+                                        </Transitions>
+                                    </Border.Transitions>
+                                    <Viewbox Margin="12">
+                                        <ui:IconSourceElement IconSource="{TemplateBinding PreviewImage}" />
+                                    </Viewbox>
+                                </Border>
+                                <StackPanel Margin="130 0 0 0"
+                                            VerticalAlignment="Bottom"
+                                            Name="DetailsTextHost">
+                                    <TextBlock Text="{TemplateBinding ControlName}"
+                                               Theme="{StaticResource TitleTextBlockStyle}"
+                                               FontSize="40"
+                                               Name="ControlNameTextBlock">
+                                        <TextBlock.Transitions>
+                                            <Transitions>
+                                                <DoubleTransition Duration="00:00:00.167"
+                                                                  Property="FontSize" />
+                                            </Transitions>
+                                        </TextBlock.Transitions>
+                                    </TextBlock>
+                                    <TextBlock Text="{TemplateBinding ControlNamespace}"
+                                               Theme="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                               FontStyle="Italic"
+                                               Name="NamespaceText"
+                                               IsVisible="False" />
+                                </StackPanel>
+                            </Panel>
+
+                            <StackPanel Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Bottom"
+                                        Name="OptionsRegion"
+                                        Margin="0 0 20 0"
+                                        Spacing="2">
+                                <StackPanel.RenderTransform>
+                                    <TranslateTransform X="0" Y="0" />
+                                </StackPanel.RenderTransform>
+                                <Button DockPanel.Dock="Right"
+                                        Theme="{StaticResource TransparentButton}"
+                                        Padding="8 4"
+                                        Name="ToggleThemeButton">
+                                    <Panel>
+                                        <Viewbox Width="16" Height="16"
+                                                 HorizontalAlignment="Left">
+                                            <ui:IconSourceElement IconSource="{StaticResource SwapThemeIcon}" />
+                                        </Viewbox>
+                                        <TextBlock Text="Toggle Theme"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="28 4 0 4" />
+                                    </Panel>
+                                </Button>
+                                <Button Content="&#xE712;"
+                                        FontSize="20"
+                                        Padding="8"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        Theme="{StaticResource TransparentButton}"/>
+                            </StackPanel>
+                        
+                        </Grid>
+                    </Panel>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Padding="{DynamicResource SampleAppPageMargin}"
+                                  Name="PageScroller">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          Name="PART_ContentPresenter"
+                                          Margin="0 0 0 20"/>
+                    </ScrollViewer>
+                </DockPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="pg|ControlsPageBase:namespace /template/ TextBlock#NamespaceText">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+    
+    <Style Selector="pg|ControlsPageBase:smallWidth">
+        <Style Selector="^ /template/ TextBlock#ControlNameTextBlock">
+            <Setter Property="FontSize" Value="28" />
+        </Style>
+        <Style Selector="^ /template/ StackPanel#DetailsTextHost">
+            <Setter Property="Margin" Value="110 0 0 0" />
+        </Style>
+        <Style Selector="^ /template/ Border#ImageHost">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="100" />
+        </Style>
+    </Style>
+    
+    <Style Selector="pg|ControlsPageBase:smallWidth2">
+
+        <Style Selector="^ /template/ StackPanel#OptionsRegion">
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0 12" />
+        </Style>
+
+        <Style Selector="^ /template/ Panel#PageDetails">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+    </Style>
+    
+</Styles>

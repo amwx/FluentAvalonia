@@ -4,7 +4,7 @@ using FAControlsGallery.ViewModels;
 
 namespace FAControlsGallery.Pages;
 
-public partial class ContentDialogPage : FAControlsPageBase
+public partial class ContentDialogPage : ControlsPageBase
 {
     public ContentDialogPage()
     {

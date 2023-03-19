@@ -4,7 +4,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class InfoBadgePage : FAControlsPageBase
+public partial class InfoBadgePage : ControlsPageBase
 {
     public InfoBadgePage()
     {

@@ -4,7 +4,7 @@ using FAControlsGallery.ViewModels;
 
 namespace FAControlsGallery.Pages;
 
-public partial class MenuFlyoutPage : FAControlsPageBase
+public partial class MenuFlyoutPage : ControlsPageBase
 {
     public MenuFlyoutPage()
     {

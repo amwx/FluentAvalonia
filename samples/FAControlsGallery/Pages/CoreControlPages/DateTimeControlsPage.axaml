@@ -6,38 +6,33 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
              x:Class="FAControlsGallery.Pages.DateTimeControlsPage">
-    <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
-        <StackPanel Spacing="8">
-            <ctrls:CoreControlsPageHeader IconSource="{StaticResource DatePageIcon}"
-                                          Content="Date and Time Controls" />
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="Calendar"
+                              TargetType="Calendar"
+                              EnableShowDocsLink="True"
+                              EnableShowDefinitionLink="True">
+            <Calendar />
+        </ctrls:ControlExample>
 
-            <ctrls:ControlExample Header="Calendar"
-                                  TargetType="Calendar"
-                                  EnableShowDocsLink="True"
-                                  EnableShowDefinitionLink="True">
-                <Calendar />
-            </ctrls:ControlExample>
+        <ctrls:ControlExample Header="CalendarDatePicker"
+                              TargetType="CalendarDatePicker"
+                              EnableShowDocsLink="True"
+                              EnableShowDefinitionLink="True">
+            <CalendarDatePicker />
+        </ctrls:ControlExample>
 
-            <ctrls:ControlExample Header="CalendarDatePicker"
-                                  TargetType="CalendarDatePicker"
-                                  EnableShowDocsLink="True"
-                                  EnableShowDefinitionLink="True">
-                <CalendarDatePicker />
-            </ctrls:ControlExample>
+        <ctrls:ControlExample Header="DatePicker"
+                              TargetType="DatePicker"
+                              EnableShowDocsLink="True"
+                              EnableShowDefinitionLink="True">
+            <DatePicker />
+        </ctrls:ControlExample>
 
-            <ctrls:ControlExample Header="DatePicker"
-                                  TargetType="DatePicker"
-                                  EnableShowDocsLink="True"
-                                  EnableShowDefinitionLink="True">
-                <DatePicker />
-            </ctrls:ControlExample>
-
-            <ctrls:ControlExample Header="TimePicker"
-                                  TargetType="TimePicker"
-                                  EnableShowDocsLink="True"
-                                  EnableShowDefinitionLink="True">
-                <TimePicker />
-            </ctrls:ControlExample>
-        </StackPanel>
-    </ScrollViewer>
+        <ctrls:ControlExample Header="TimePicker"
+                              TargetType="TimePicker"
+                              EnableShowDocsLink="True"
+                              EnableShowDefinitionLink="True">
+            <TimePicker />
+        </ctrls:ControlExample>
+    </StackPanel>
 </UserControl>

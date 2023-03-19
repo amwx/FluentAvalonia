@@ -3,7 +3,7 @@ using FAControlsGallery.ViewModels;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
-public partial class FAComboBoxPage : FAControlsPageBase
+public partial class FAComboBoxPage : ControlsPageBase
 {
     public FAComboBoxPage()
     {

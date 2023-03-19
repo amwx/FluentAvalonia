@@ -9,7 +9,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class TaskDialogPage : FAControlsPageBase
+public partial class TaskDialogPage : ControlsPageBase
 {
     public TaskDialogPage()
     {

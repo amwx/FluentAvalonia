@@ -4,7 +4,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class NumberBoxPage : FAControlsPageBase
+public partial class NumberBoxPage : ControlsPageBase
 {
     public NumberBoxPage()
     {

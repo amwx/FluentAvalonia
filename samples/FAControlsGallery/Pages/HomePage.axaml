@@ -31,7 +31,7 @@
     
     <ScrollViewer>
         <StackPanel Spacing="-75">
-            <local:PageHeaderControl TitleTextImage="avares://FAControlsGallery/Assets/Images/FAHeader2.png"/>
+            <local:PageHeaderControl />
             
             <ItemsControl Items="{Binding Pages}"
                           Name="TileItemsControl"

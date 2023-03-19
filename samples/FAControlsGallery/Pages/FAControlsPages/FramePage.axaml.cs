@@ -6,7 +6,7 @@ using FAControlsGallery.Pages.NVSamplePages;
 
 namespace FAControlsGallery.Pages;
 
-public partial class FramePage : FAControlsPageBase
+public partial class FramePage : ControlsPageBase
 {
     public FramePage()
     {

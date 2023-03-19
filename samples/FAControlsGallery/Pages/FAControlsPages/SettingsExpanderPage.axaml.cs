@@ -3,7 +3,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class SettingsExpanderPage : FAControlsPageBase
+public partial class SettingsExpanderPage : ControlsPageBase
 {
     public SettingsExpanderPage()
     {

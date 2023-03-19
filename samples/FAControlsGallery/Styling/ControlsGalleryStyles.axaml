@@ -10,15 +10,14 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Styling/ControlThemes.axaml" />
                 <ResourceInclude Source="/Styling/ControlExampleStyles.axaml" />
-                <ResourceInclude Source="/Styling/FAPageHeaderStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlDefinitionOverlayStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
 
     <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
-    <StyleInclude Source="/Styling/FAPageBaseStyles.axaml" />
-
+    <StyleInclude Source="/Styling/ControlsPageBaseStyles.axaml" />
+    
     <!-- set the selection color for the AvaloniaEdit boxes -->
     <Style Selector="aedit2|TextArea">
         <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />

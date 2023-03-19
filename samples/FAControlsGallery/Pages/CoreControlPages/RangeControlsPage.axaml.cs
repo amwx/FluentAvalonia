@@ -1,13 +1,18 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
-public partial class RangeControlsPage : UserControl
+public partial class RangeControlsPage : ControlsPageBase
 {
     public RangeControlsPage()
     {
         InitializeComponent();
+
+        ControlName = "Range Controls";
+        App.Current.Resources.TryGetResource("RangePageIcon", null, out var icon);
+        PreviewImage = (IconSource)icon;
 
         this.FindControl<ButtonSpinner>("TargetButtonSpinner").Spin += (s, e) =>
         {

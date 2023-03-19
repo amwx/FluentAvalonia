@@ -178,7 +178,7 @@ public class NavigationFactory : INavigationPageFactory
         }
         else if (FAPages.TryGetValue(key, out func))
         {
-            var pg = (FAControlsPageBase)func();
+            var pg = (ControlsPageBase)func();
             var dc = (FAControlsPageItem)pbvm;
 
             pg.PreviewImage = Application.Current.FindResource(dc.IconResourceKey) as IconSource;
