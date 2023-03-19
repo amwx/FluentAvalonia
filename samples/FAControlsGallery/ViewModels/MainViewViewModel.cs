@@ -175,12 +175,20 @@ public class NavigationFactory : INavigationPageFactory
         if (CorePages.TryGetValue(key, out var func))
         {
             page = func();
+
+            const string faPageGithub =
+               "https://github.com/amwx/FluentAvalonia/tree/master/samples/FAControlsGallery/Pages/CoreControlPages";
+
+            (page as ControlsPageBase).GithubPrefixString = faPageGithub;
         }
         else if (FAPages.TryGetValue(key, out func))
         {
             var pg = (ControlsPageBase)func();
             var dc = (FAControlsPageItem)pbvm;
+            const string faPageGithub =
+               "https://github.com/amwx/FluentAvalonia/tree/master/samples/FAControlsGallery/Pages/FAControlPages";
 
+            pg.GithubPrefixString = faPageGithub;
             pg.PreviewImage = Application.Current.FindResource(dc.IconResourceKey) as IconSource;
             pg.ControlName = dc.Header;
             pg.ControlNamespace = dc.Namespace;

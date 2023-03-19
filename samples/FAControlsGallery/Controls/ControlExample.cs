@@ -169,7 +169,7 @@ public class ControlExample : HeaderedContentControl
                 var docsItem = new MenuFlyoutItem
                 {
                     Text = DocsLinkHeader,
-                    IconSource = new SymbolIconSource { Symbol = Symbol.Link }
+                    IconSource = App.Current.FindResource("LinkIconDocs") as IconSource
                 };
 
                 docsItem.Click += LaunchAvaloniaDocs;
@@ -182,7 +182,7 @@ public class ControlExample : HeaderedContentControl
                 var defItem = new MenuFlyoutItem
                 {
                     Text = "Show Definition",
-                    IconSource = new SymbolIconSource { Symbol = Symbol.CodeFilled }
+                    IconSource = App.Current.FindResource("CodeIconBraces") as IconSource
                 };
 
                 defItem.Click += ShowControlDefintion;
@@ -193,7 +193,7 @@ public class ControlExample : HeaderedContentControl
             _moreButton.Flyout = new FAMenuFlyout
             {
                 Items = l,
-                Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft
+                Placement = FlyoutPlacementMode.BottomEdgeAlignedRight
             };
         }
     }

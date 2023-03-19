@@ -5,11 +5,13 @@
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
 
     <Design.PreviewWith>
-        <Border Width="700" Height="500" Padding="20"
+        <Border Width="500" Height="500" Padding="20"
                 Background="{DynamicResource LayerFillColorDefaultBrush}">
             <pg:ControlsPageBase PreviewImage="{StaticResource BasicInputPageIcon}"
                                  ControlName="PageName"
-                                 ControlNamespace="asdf">
+                                 Description="This is a control description "
+                                 WinUINamespace="Microsoft.UI.Xaml.Controls.Control"
+                                 ControlNamespace="FluentAvalonia.UI.Controls.Control">
                 <ctrls:ControlExample Header="A hyperlink button that handles a Click event">
                     <ui:HyperlinkButton Content="Go to Settings"
                                         Name="TargetClickHyperlinkButton"/>
@@ -91,6 +93,12 @@
                                                FontStyle="Italic"
                                                Name="NamespaceText"
                                                IsVisible="False" />
+                                    <TextBlock Text="{Binding Path=WinUINamespace, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}(WinUI) {0}'}"
+                                               Theme="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               FontStyle="Italic"
+                                               Name="WinUINamespaceText"
+                                               IsVisible="True" />
                                 </StackPanel>
                             </Panel>
 
@@ -119,11 +127,34 @@
                                                    Margin="28 4 0 4" />
                                     </Panel>
                                 </Button>
-                                <Button Content="&#xE712;"
+                                <DropDownButton Content="&#xE712;"
                                         FontSize="20"
                                         Padding="8"
                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                        Theme="{StaticResource TransparentButton}"/>
+                                        Theme="{StaticResource TransparentButton}"
+                                        Name="OptionsButton">
+                                    <DropDownButton.Flyout>
+                                        <ui:FAMenuFlyout Placement="BottomEdgeAlignedRight">
+                                            <ui:MenuFlyoutItem Text="WinUI Documentation"
+                                                               Name="WinUIDocsItem"
+                                                               IconSource="{StaticResource PageIconDocs}"/>
+                                            <ui:MenuFlyoutItem Text="WinUI Guidelines"
+                                                               Name="WinUIGuidelinesItem"
+                                                               IconSource="{StaticResource ListIcon}"/>
+                                            <ui:MenuFlyoutSeparator Name="Sep1" />
+                                            <ui:MenuFlyoutItem Name="XamlSourceItem"
+                                                               Text="Page Source (xaml)"
+                                                               IconSource="{StaticResource CodeIcon}"/>
+                                            <ui:MenuFlyoutItem Name="CSharpSourceItem"
+                                                               Text="Page Source (csharp)"
+                                                               IconSource="{StaticResource CSharpIcon}" />
+                                            <ui:MenuFlyoutSeparator Name="Sep2" />
+                                            <ui:MenuFlyoutItem Name="ShowDefItem"
+                                                               Text="Show Control Definition"
+                                                               IconSource="{StaticResource CodeIconBraces}"/>
+                                        </ui:FAMenuFlyout>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </StackPanel>
                         
                         </Grid>
@@ -133,14 +164,19 @@
                                   VerticalScrollBarVisibility="Auto"
                                   Padding="{DynamicResource SampleAppPageMargin}"
                                   Name="PageScroller">
-                        <ContentPresenter Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Stretch"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
-                                          Name="PART_ContentPresenter"
-                                          Margin="0 0 0 20"/>
+                        <StackPanel Margin="0 0 0 20" Spacing="8">
+                            
+                            
+                            <TextBlock Text="{TemplateBinding Description}" />
+                            
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalContentAlignment="Stretch"
+                                              VerticalContentAlignment="Stretch"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              Name="PART_ContentPresenter" />
+                        </StackPanel>
                     </ScrollViewer>
                 </DockPanel>
             </ControlTemplate>

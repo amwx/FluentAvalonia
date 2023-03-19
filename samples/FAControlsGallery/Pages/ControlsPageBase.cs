@@ -1,12 +1,15 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Rendering.Composition;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using FAControlsGallery.Controls;
+using FAControlsGallery.Services;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
@@ -14,9 +17,7 @@ namespace FAControlsGallery.Pages;
 public class ControlsPageBase : UserControl, IStyleable
 {
     public ControlsPageBase()
-    {
-        PageXamlSourceLink = new Uri($"{GithubPrefixString}/{GetType().Name}.axaml");
-        PageCSharpSourceLink = new Uri($"{GithubPrefixString}/{GetType().Name}.axaml.cs");
+    {        
         SizeChanged += ControlsPageBaseSizeChanged;
     }
 
@@ -110,7 +111,14 @@ public class ControlsPageBase : UserControl, IStyleable
         set => SetValue(PageCSharpSourceLinkProperty, value);
     }
 
-    public static string GithubPrefixString => "https://github.com/amwx/FluentAvalonia/tree/master/FluentAvaloniaSamples/Pages/FAControlPages";
+    public string GithubPrefixString
+    {
+        set
+        {
+            PageXamlSourceLink = new Uri($"{value}/{GetType().Name}.axaml");
+            PageCSharpSourceLink = new Uri($"{value}/{GetType().Name}.axaml.cs");
+        }
+    }
 
     Type IStyleable.StyleKey => typeof(ControlsPageBase);
 
@@ -122,6 +130,71 @@ public class ControlsPageBase : UserControl, IStyleable
 
         _optionsHost = e.NameScope.Find<StackPanel>("OptionsRegion");
         _detailsPanel = e.NameScope.Find<Panel>("PageDetails");
+
+        _toggleThemeButton = e.NameScope.Find<Button>("ToggleThemeButton");
+        _toggleThemeButton.Click += ToggleThemeButtonClick;
+
+        _winUIDocsItem = e.NameScope.Find<MenuFlyoutItem>("WinUIDocsItem");
+        _winUIGuidelinesItem = e.NameScope.Find<MenuFlyoutItem>("WinUIGuidelinesItem");
+        _xamlSourceItem = e.NameScope.Find<MenuFlyoutItem>("XamlSourceItem");
+        _cSharpSourceItem = e.NameScope.Find<MenuFlyoutItem>("CSharpSourceItem");
+        _showDefItem = e.NameScope.Find<MenuFlyoutItem>("ShowDefItem");
+        _sep1 = e.NameScope.Find<MenuFlyoutSeparator>("Sep1");
+        _sep2 = e.NameScope.Find<MenuFlyoutSeparator>("Sep2");
+
+        var winUIDocs = WinUIDocsLink;
+        var winUIGuidelines = WinUIGuidelinesLink;
+        var type = TargetType;
+
+        if (winUIDocs == null)
+            _winUIDocsItem.IsVisible = false;
+        else
+            _winUIDocsItem.Click += MoreOptionsItemClick;
+
+        if (winUIGuidelines == null)
+            _winUIGuidelinesItem.IsVisible = false;
+        else
+            _winUIGuidelinesItem.Click += MoreOptionsItemClick;
+
+        if (type == null)
+            _showDefItem.IsVisible = false;
+        else
+            _showDefItem.Click += MoreOptionsItemClick;
+
+        _xamlSourceItem.Click += MoreOptionsItemClick;
+        _cSharpSourceItem.Click += MoreOptionsItemClick;
+
+        _sep1.IsVisible = _winUIDocsItem.IsVisible && _winUIGuidelinesItem.IsVisible;
+        _sep2.IsVisible = _showDefItem.IsVisible;
+    }
+
+    private void MoreOptionsItemClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuFlyoutItem mfi)
+        {
+            switch (mfi.Name)
+            {
+                case "WinUIDocsItem":
+                    LaunchLink(WinUIDocsLink);
+                    break;
+
+                case "WinUIGuidelinesItem":
+                    LaunchLink(WinUIGuidelinesLink);
+                    break;
+
+                case "XamlSourceItem":
+                    LaunchLink(PageXamlSourceLink);
+                    break;
+
+                case "CSharpSourceItem":
+                    LaunchLink(PageCSharpSourceLink);
+                    break;
+
+                case "ShowDefItem":
+                    NavigationService.Instance.ShowControlDefinitionOverlay(TargetType);
+                    break;
+            }
+        }
     }
 
     protected override void OnLoaded()
@@ -212,28 +285,47 @@ public class ControlsPageBase : UserControl, IStyleable
         offsetAnimation.InsertExpressionKeyFrame(1.0f, "this.FinalValue");
         offsetAnimation.Duration = TimeSpan.FromMilliseconds(250);
 
-        //// Weirdness, wrap panel doesn't work right if we only have the offset animation
-        //// Copied from ControlCatalog page, but changed the rotation to 0 (filed issue for this)
-        //var rotationAnimation = compositor.CreateScalarKeyFrameAnimation();
-        //rotationAnimation.Target = "RotationAngle";
-        //rotationAnimation.InsertKeyFrame(.5f, 0f);
-        //rotationAnimation.InsertKeyFrame(1f, 0f);
-        //rotationAnimation.Duration = TimeSpan.FromMilliseconds(400);
-
-        //var animationGroup = compositor.CreateAnimationGroup();
-        //animationGroup.Add(offsetAnimation);
-        //animationGroup.Add(rotationAnimation);
-
         var ani = compositor.CreateImplicitAnimationCollection();
         ani["Offset"] = offsetAnimation;
 
         ec.ImplicitAnimations = ani;
     }
 
+    private void ToggleThemeButtonClick(object sender, RoutedEventArgs e)
+    {
+        var examples = this.GetVisualDescendants()
+            .OfType<ControlExample>();
+
+        foreach (var ex in examples)
+        {
+            ex.SetExampleTheme();
+        }
+    }
+
+    private async void LaunchLink(Uri link)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(link.ToString()) { UseShellExecute = true, Verb = "open" });
+        }
+        catch
+        {
+            await DialogHelper.ShowUnableToOpenLinkDialog(link);
+        }
+    }
+
     private bool _isSmallWidth2;
     private CancellationTokenSource _cts;
     private bool _hasLoaded;
 
+    private Button _toggleThemeButton;
     private Panel _detailsPanel;
     private StackPanel _optionsHost;
+
+    private MenuFlyoutItem _winUIDocsItem;
+    private MenuFlyoutItem _winUIGuidelinesItem;
+    private MenuFlyoutItem _xamlSourceItem;
+    private MenuFlyoutItem _cSharpSourceItem;
+    private MenuFlyoutItem _showDefItem;
+    private MenuFlyoutSeparator _sep1, _sep2;
 }

@@ -54,6 +54,7 @@ public partial class MainWindow : AppWindow
 
     private void TryEnableMicaEffect()
     {
+        return;
         TransparencyBackgroundFallback = Brushes.Transparent;
         TransparencyLevelHint = WindowTransparencyLevel.Mica;
 
