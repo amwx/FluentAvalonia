@@ -4,17 +4,13 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
+using Avalonia.Interactivity;
 using Avalonia.Logging;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
-using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Text;
-using System.Threading;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -80,6 +76,26 @@ public partial class Frame : ContentControl
             return true;
 
         return base.RegisterContentPresenter(presenter);
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        if (e.Root is TopLevel tl)
+        {
+            tl.BackRequested += OnTopLevelBackRequested;
+        }
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        if (e.Root is TopLevel tl)
+        {
+            tl.BackRequested -= OnTopLevelBackRequested;
+        }
     }
 
     /// <summary>
@@ -633,6 +649,15 @@ public partial class Frame : ContentControl
             {
                 entry.NavigationTransitionInfo.RunAnimation(_presenter, _cts.Token);
             }, DispatcherPriority.Render);
+        }
+    }
+
+    private void OnTopLevelBackRequested(object sender, RoutedEventArgs e)
+    {
+        if (!e.Handled && IsNavigationStackEnabled && CanGoBack)
+        {
+            GoBack();
+            e.Handled = true;
         }
     }
 
