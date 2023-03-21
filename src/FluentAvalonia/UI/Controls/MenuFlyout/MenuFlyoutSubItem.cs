@@ -4,11 +4,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using FluentAvalonia.Core;
-using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -58,22 +57,16 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     {
         base.OnPointerEntered(e);
 
-        // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
-        //      this is to just change the event name and source and re-raise it. This isn't ideal
-        e.RoutedEvent = MenuItem.PointerEnteredItemEvent;
-        e.Source = this;
-        RaiseEvent(e);
+        var args = new RoutedEventArgs(MenuItem.PointerEnteredItemEvent, this);
+        RaiseEvent(args);
     }
 
     protected override void OnPointerExited(PointerEventArgs e)
     {
         base.OnPointerExited(e);
 
-        // v2 - Avalonia decided PointerEventArgs and like shouldn't be publicly constructable so our way to get around
-        //      this is to just change the event name and source and re-raise it. This isn't ideal
-        e.RoutedEvent = MenuItem.PointerExitedItemEvent;
-        e.Source = this;
-        RaiseEvent(e);
+        var args = new RoutedEventArgs(MenuItem.PointerExitedItemEvent, this);
+        RaiseEvent(args);
     }
 
     /// <summary>
