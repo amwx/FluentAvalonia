@@ -111,16 +111,13 @@ public partial class FluentAvaloniaTheme
         {
             var settings3 = WinRTInterop.CreateInstance<IUISettings3>("Windows.UI.ViewManagement.UISettings");
 
-            // TODO
-            AddOrUpdateSystemResource("SystemAccentColor", (Color)settings3.GetColorValue(UIColorType.Accent));
-
-            AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)settings3.GetColorValue(UIColorType.AccentLight1));
-            AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)settings3.GetColorValue(UIColorType.AccentLight2));
-            AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)settings3.GetColorValue(UIColorType.AccentLight3));
-
-            AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)settings3.GetColorValue(UIColorType.AccentDark1));
-            AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)settings3.GetColorValue(UIColorType.AccentDark2));
-            AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)settings3.GetColorValue(UIColorType.AccentDark3));
+            UpdateAccentColors((Color)settings3.GetColorValue(UIColorType.Accent),
+                (Color)settings3.GetColorValue(UIColorType.AccentLight1),
+                (Color)settings3.GetColorValue(UIColorType.AccentLight2),
+                (Color)settings3.GetColorValue(UIColorType.AccentLight3),
+                (Color)settings3.GetColorValue(UIColorType.AccentDark1),
+                (Color)settings3.GetColorValue(UIColorType.AccentDark2),
+                (Color)settings3.GetColorValue(UIColorType.AccentDark3));
         }
         catch
         {

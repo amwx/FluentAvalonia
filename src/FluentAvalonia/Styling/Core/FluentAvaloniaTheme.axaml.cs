@@ -475,15 +475,14 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         }
 
         Color2 col = _customAccentColor.Value;
-        AddOrUpdateSystemResource("SystemAccentColor", (Color)_customAccentColor.Value);
 
-        AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)col.LightenPercent(0.15f));
-        AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)col.LightenPercent(0.30f));
-        AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)col.LightenPercent(0.45f));
-
-        AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)col.LightenPercent(-0.15f));
-        AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)col.LightenPercent(-0.30f));
-        AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)col.LightenPercent(-0.45f));
+        UpdateAccentColors((Color)_customAccentColor.Value,
+            (Color)col.LightenPercent(0.15f),
+            (Color)col.LightenPercent(0.30f),
+            (Color)col.LightenPercent(0.45f),
+            (Color)col.LightenPercent(-0.15f),
+            (Color)col.LightenPercent(-0.30f),
+            (Color)col.LightenPercent(-0.45f));
     }
         
     private void TryLoadMacOSAccentColor(IPlatformSettings platformSettings)
@@ -492,16 +491,14 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         {
             // Replaced old logic with PlatformSettings from Avalonia
             Color2 aColor = platformSettings.GetColorValues().AccentColor1;
-            
-            AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor);
 
-            AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.LightenPercent(0.15f));
-            AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)aColor.LightenPercent(0.30f));
-            AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)aColor.LightenPercent(0.45f));
-
-            AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)aColor.LightenPercent(-0.15f));
-            AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)aColor.LightenPercent(-0.30f));
-            AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)aColor.LightenPercent(-0.45f));
+            UpdateAccentColors((Color)aColor,
+                (Color)aColor.LightenPercent(0.15f),
+                (Color)aColor.LightenPercent(0.30f),
+                (Color)aColor.LightenPercent(0.45f),
+                (Color)aColor.LightenPercent(-0.15f),
+                (Color)aColor.LightenPercent(-0.30f),
+                (Color)aColor.LightenPercent(-0.45f));
         }
         catch
         {
@@ -520,15 +517,15 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         var aColor = LinuxThemeResolver.TryLoadAccentColor();
         if (aColor != null)
         {
-            AddOrUpdateSystemResource("SystemAccentColor", (Color)aColor.Value);
+            Color2 col = aColor.Value;
 
-            AddOrUpdateSystemResource("SystemAccentColorLight1", (Color)aColor.Value.LightenPercent(0.15f));
-            AddOrUpdateSystemResource("SystemAccentColorLight2", (Color)aColor.Value.LightenPercent(0.30f));
-            AddOrUpdateSystemResource("SystemAccentColorLight3", (Color)aColor.Value.LightenPercent(0.45f));
-
-            AddOrUpdateSystemResource("SystemAccentColorDark1", (Color)aColor.Value.LightenPercent(-0.15f));
-            AddOrUpdateSystemResource("SystemAccentColorDark2", (Color)aColor.Value.LightenPercent(-0.30f));
-            AddOrUpdateSystemResource("SystemAccentColorDark3", (Color)aColor.Value.LightenPercent(-0.45f));
+            UpdateAccentColors((Color)col,
+                (Color)col.LightenPercent(0.15f),
+                (Color)col.LightenPercent(0.30f),
+                (Color)col.LightenPercent(0.45f),
+                (Color)col.LightenPercent(-0.15f),
+                (Color)col.LightenPercent(-0.30f),
+                (Color)col.LightenPercent(-0.45f));
         }
         else
         {
@@ -538,15 +535,13 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
     private void LoadDefaultAccentColor()
     {
-        AddOrUpdateSystemResource("SystemAccentColor", Colors.SlateBlue);
-
-        AddOrUpdateSystemResource("SystemAccentColorLight1", Color.Parse("#7F69FF"));
-        AddOrUpdateSystemResource("SystemAccentColorLight2", Color.Parse("#9B8AFF"));
-        AddOrUpdateSystemResource("SystemAccentColorLight3", Color.Parse("#B9ADFF"));
-
-        AddOrUpdateSystemResource("SystemAccentColorDark1", Color.Parse("#43339C"));
-        AddOrUpdateSystemResource("SystemAccentColorDark2", Color.Parse("#33238C"));
-        AddOrUpdateSystemResource("SystemAccentColorDark3", Color.Parse("#1D115C"));
+        UpdateAccentColors(Colors.SlateBlue,
+            Color.Parse("#7F69FF"),
+            Color.Parse("#9B8AFF"),
+            Color.Parse("#B9ADFF"),
+            Color.Parse("#43339C"),
+            Color.Parse("#33238C"),
+            Color.Parse("#1D115C"));
     }
 
     private void AddOrUpdateSystemResource(object key, object value)
@@ -561,11 +556,33 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         }
     }
 
+    private void UpdateAccentColors(Color accent,
+        Color light1, Color light2, Color light3,
+        Color dark1, Color dark2, Color dark3)
+    {
+        if (_accentColorsDictionary != null)
+            Resources.MergedDictionaries.Remove(_accentColorsDictionary);
+
+        _accentColorsDictionary = new ResourceDictionary
+        {
+            { "SystemAccentColor", accent },
+            { "SystemAccentColorLight1", light1 },
+            { "SystemAccentColorLight2", light2 },
+            { "SystemAccentColorLight3", light3 },
+            { "SystemAccentColorDark1", dark1 },
+            { "SystemAccentColorDark2", dark2 },
+            { "SystemAccentColorDark3", dark3 }
+        };
+
+        Resources.MergedDictionaries.Add(_accentColorsDictionary);
+    }
+
     private bool _hasLoaded;
     private Uri _baseUri;
     private Color? _customAccentColor;
     private bool _preferSystemTheme;
     private bool _preferUserAccentColor;
+    private ResourceDictionary _accentColorsDictionary;
 
     public const string LightModeString = "Light";
     public const string DarkModeString = "Dark";
