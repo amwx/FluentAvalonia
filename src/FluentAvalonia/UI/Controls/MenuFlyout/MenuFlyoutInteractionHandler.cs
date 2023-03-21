@@ -297,7 +297,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
         e.Handled = true;
     }
 
-    protected internal virtual void PointerEnter(object sender, PointerEventArgs e)
+    protected internal virtual void PointerEnter(object sender, RoutedEventArgs e)
     {
         var item = GetMenuItem(e.Source as Control);
 
@@ -324,7 +324,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
         }
     }
 
-    protected internal virtual void PointerLeave(object sender, PointerEventArgs e)
+    protected internal virtual void PointerLeave(object sender, RoutedEventArgs e)
     {
         var item = GetMenuItem(e.Source as Control);
 
