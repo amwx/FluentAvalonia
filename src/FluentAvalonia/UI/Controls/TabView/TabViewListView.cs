@@ -323,7 +323,7 @@ public class TabViewListView : ListBox
             {
                 WindowManagerAddShadowHint = false,
                 PlacementTarget = this,
-                PlacementMode = PlacementMode.Pointer
+                Placement = PlacementMode.Pointer
             };
 
             ((ISetLogicalParent)_dragReorderPopup).SetParent(this);

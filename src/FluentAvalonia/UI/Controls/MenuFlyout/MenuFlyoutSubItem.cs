@@ -114,7 +114,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
                 Child = _presenter,
                 HorizontalOffset = -4,
                 WindowManagerAddShadowHint = false,
-                PlacementMode = PlacementMode.AnchorAndGravity,
+                Placement = PlacementMode.AnchorAndGravity,
                 PlacementAnchor = Avalonia.Controls.Primitives.PopupPositioning.PopupAnchor.TopRight,
                 PlacementGravity = Avalonia.Controls.Primitives.PopupPositioning.PopupGravity.BottomRight,
                 PlacementTarget = this
