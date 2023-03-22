@@ -6,7 +6,7 @@ namespace FluentAvalonia.UI.Controls.Primitives;
 /// <summary>
 /// The base class for a Flyout that allows confirming or dismissing
 /// </summary>
-public abstract class PickerFlyoutBase : FlyoutBase
+public abstract class PickerFlyoutBase : PopupFlyoutBase
 {
     /// <summary>
     /// Provides logic that should performed when the confirmed button is tapped

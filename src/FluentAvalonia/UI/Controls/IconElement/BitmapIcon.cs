@@ -63,7 +63,7 @@ public partial class BitmapIcon : FAIconElement
         var hei = (int)dst.Height;
 
         using (var bmp = new RenderTargetBitmap(new PixelSize(wid, hei)))
-        using (var ctx = bmp.CreateDrawingContext(null))
+        using (var ctx = bmp.PlatformImpl.Item.CreateDrawingContext())
         {
             var feat = ctx.GetFeature<ISkiaSharpApiLeaseFeature>();
             if (feat == null)

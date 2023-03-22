@@ -44,6 +44,8 @@ public class TabViewListView : ListBox
 
         AddHandler(DragDrop.DragEnterEvent, OnDragEnter, RoutingStrategies.Bubble, true);
         AddHandler(DragDrop.DragLeaveEvent, OnDragLeave, RoutingStrategies.Bubble, true);
+
+        ItemsView.CollectionChanged += OnItemsChanged;
     }
 
     /// <summary>
@@ -107,19 +109,10 @@ public class TabViewListView : ListBox
             _noAutoScrollRect = new Rect(viewportWidth * 0.1, 0,
                 viewportWidth - (viewportWidth * 0.1), Scroller.Viewport.Height);
         }
-        else if (change.Property == ItemsProperty)
-        {
-            var tv = this.FindAncestorOfType<TabView>();
-            if (tv != null)
-            {
-                tv.OnItemsChanged(null);
-            }
-        }
     }
 
-    protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        base.ItemsCollectionChanged(sender, e);
         var tv = this.FindAncestorOfType<TabView>();
         if (tv != null)
         {
@@ -330,7 +323,7 @@ public class TabViewListView : ListBox
             {
                 WindowManagerAddShadowHint = false,
                 PlacementTarget = this,
-                PlacementMode = PlacementMode.Pointer
+                Placement = PlacementMode.Pointer
             };
 
             ((ISetLogicalParent)_dragReorderPopup).SetParent(this);
@@ -414,7 +407,7 @@ public class TabViewListView : ListBox
         // to handle this themselves
         if (reorderIndex != -1 && _processReorder)
         {
-            if (Items is IList l && l.Count > 0)
+            if (ItemsSource is IList l && l.Count > 0)
             {
                 var oldItem = l[_dragIndex];
                 l.RemoveAt(_dragIndex);
@@ -439,7 +432,7 @@ public class TabViewListView : ListBox
         // First fire DragItemsStarting
         var disArgs = new DragItemsStartingEventArgs
         {
-            Items = new[] { Items.ElementAt(_dragIndex) },
+            Items = new[] { ItemsView.GetAt(_dragIndex) },
             Data = new Data.DataPackage()
         };
         DragItemsStarting?.Invoke(this, disArgs);

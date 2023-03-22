@@ -69,7 +69,7 @@ public partial class ColorSpectrum : ColorPickerComponent
                 // Rather than creating the bitmap everytime the color changes, we can fake the change in
                 // Value by drawing a Black ellipse behind the image and the using the Value as the opacity
                 // to draw the bitmap
-                using (context.PushOpacity(Color.Valuef))
+                using (context.PushOpacity(Color.Valuef, rect))
                     context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, BitmapInterpolationMode.HighQuality);
             }
             else if (Shape == ColorSpectrumShape.Triangle)
@@ -473,7 +473,7 @@ public partial class ColorSpectrum : ColorPickerComponent
 
     private void DrawWheelBitmap()
     {
-        using (var dc = (_tempBitmap as RenderTargetBitmap).CreateDrawingContext(null))
+        using (var dc = (_tempBitmap as RenderTargetBitmap).PlatformImpl.Item.CreateDrawingContext())
         {
             var leaseFeature = dc.GetFeature<ISkiaSharpApiLeaseFeature>();
             if (leaseFeature == null)
@@ -525,7 +525,7 @@ public partial class ColorSpectrum : ColorPickerComponent
 
     private void DrawTriangleWheelBitmap()
     {
-        using (var dc = (_tempBitmap as RenderTargetBitmap).CreateDrawingContext(null))
+        using (var dc = (_tempBitmap as RenderTargetBitmap).PlatformImpl.Item.CreateDrawingContext())
         {
             var leaseFeature = dc.GetFeature<ISkiaSharpApiLeaseFeature>();
             if (leaseFeature == null)

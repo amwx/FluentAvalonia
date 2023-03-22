@@ -1,11 +1,16 @@
 ﻿using Avalonia.Controls;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
+using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
+
+internal enum SelectionState
+{
+    Selected,
+    NotSelected,
+    PartiallySelected
+}
 
 /// <summary>
 /// Tracks nested selection.
@@ -18,54 +23,10 @@ namespace FluentAvalonia.UI.Controls;
 /// </remarks>
 internal class SelectionNode : IDisposable
 {
-    private readonly SelectionModel _manager;
-    private readonly List<SelectionNode> _childrenNodes = new List<SelectionNode>();
-    private readonly SelectionNode _parent;
-    private readonly List<IndexRange> _selected = new List<IndexRange>();
-    private readonly List<int> _selectedIndicesCached = new List<int>();
-    private IDisposable _childrenSubscription;
-    private SelectionNodeOperation _operation;
-    private object _source;
-    private bool _selectedIndicesCacheIsValid;
-    private bool _retainSelectionOnReset;
-    private List<object> _selectedItems;
-
     public SelectionNode(SelectionModel manager, SelectionNode parent)
     {
         _manager = manager;
         _parent = parent;
-    }
-
-    public int AnchorIndex { get; set; } = -1;
-
-    public bool RetainSelectionOnReset
-    {
-        get => _retainSelectionOnReset;
-        set
-        {
-            if (_retainSelectionOnReset != value)
-            {
-                _retainSelectionOnReset = value;
-
-                if (_retainSelectionOnReset)
-                {
-                    _selectedItems = new List<object>();
-                    PopulateSelectedItemsFromSelectedIndices();
-                }
-                else
-                {
-                    _selectedItems = null;
-                }
-
-                foreach (var child in _childrenNodes)
-                {
-                    if (child != null)
-                    {
-                        child.RetainSelectionOnReset = value;
-                    }
-                }
-            }
-        }
     }
 
     public object Source
@@ -75,73 +36,53 @@ internal class SelectionNode : IDisposable
         {
             if (_source != value)
             {
-                if (_source != null)
-                {
-                    ClearSelection();
-                    ClearChildNodes();
-                    UnhookCollectionChangedHandler();
-                }
+                ClearSelection();
+                UnhookCollectionChangedHandler();
 
                 _source = value;
 
                 // Setup ItemsSourceView
                 var newDataSource = value as ItemsSourceView;
-
                 if (value != null && newDataSource == null)
                 {
-                    newDataSource = ItemsSourceView.GetOrCreate((IEnumerable)value);
+                    newDataSource = ItemsSourceView.GetOrCreate(value as IEnumerable);
                 }
 
-                ItemsSourceView = newDataSource;
+                _dataSource = newDataSource;
 
-                TrimInvalidSelections();
-                PopulateSelectedItemsFromSelectedIndices();
                 HookupCollectionChangedHandler();
                 OnSelectionChanged();
             }
         }
     }
 
-    private void TrimInvalidSelections()
-    {
-        if (_selected == null || ItemsSourceView == null)
-        {
-            return;
-        }
+    public ItemsSourceView ItemsSourceView => _dataSource;
 
-        var validRange = ItemsSourceView.Count > 0 ? new IndexRange(0, ItemsSourceView.Count - 1) : new IndexRange(-1, -1);
-        var removed = new List<IndexRange>();
-        var removedCount = IndexRange.Intersect(_selected, validRange, removed);
+    public int DataCount => _dataSource != null ? _dataSource.Count : 0;
 
-        if (removedCount > 0)
-        {
-            using var operation = _manager.Update();
-            SelectedCount -= removedCount;
-            OnSelectionChanged();
-            _operation!.Deselected(removed);
-        }
-    }
-
-    public ItemsSourceView ItemsSourceView { get; private set; }
-    public int DataCount => ItemsSourceView?.Count ?? 0;
     public int ChildrenNodeCount => _childrenNodes.Count;
-    public int RealizedChildrenNodeCount { get; private set; }
+
+    public int RealizedChildrenNodeCount => _realizedChildrenNodeCount;
+
+    public int AnchorIndex
+    {
+        get => _anchorIndex;
+        set => _anchorIndex = value;
+    }
 
     public IndexPath IndexPath
     {
         get
         {
             var path = new List<int>();
-            ;
             var parent = _parent;
             var child = this;
-
             while (parent != null)
             {
                 var childNodes = parent._childrenNodes;
                 var index = childNodes.IndexOf(child);
-
-                // We are walking up to the parent, so the path will be backwards
+                Debug.Assert(index >= 0);
+                // we are walking up to the parent, so the path will be backwards
                 path.Insert(0, index);
                 child = parent;
                 parent = parent._parent;
@@ -156,61 +97,48 @@ internal class SelectionNode : IDisposable
     // create a bunch of leaf node instances - instead i use the same instance m_leafNode to avoid 
     // an explosion of node objects. However, I'm still creating the m_childrenNodes 
     // collection unfortunately.
-    public SelectionNode GetAt(int index, bool realizeChild, IndexPath finalIndexPath)
+    public SelectionNode GetAt(int index, bool realizeChild)
     {
         SelectionNode child = null;
-
         if (realizeChild)
         {
-            if (ItemsSourceView == null || index < 0 || index >= ItemsSourceView.Count)
-            {
-                throw new IndexOutOfRangeException();
-            }
-
             if (_childrenNodes.Count == 0)
             {
-                if (ItemsSourceView != null)
+                if (_dataSource != null)
                 {
-                    for (int i = 0; i < ItemsSourceView.Count; i++)
+                    for (int i = 0; i < _dataSource.Count; i++)
                     {
                         _childrenNodes.Add(null);
                     }
                 }
             }
 
+            Debug.Assert(0 <= index && index <= _childrenNodes.Count);
+
             if (_childrenNodes[index] == null)
             {
-                var childData = ItemsSourceView!.GetAt(index);
-                IObservable<object> resolver = null;
-
+                var childData = _dataSource.GetAt(index);
                 if (childData != null)
                 {
                     var childDataIndexPath = IndexPath.CloneWithChildIndex(index);
-                    resolver = _manager.ResolvePath(childData, childDataIndexPath, finalIndexPath);
-                }
-
-                if (resolver != null)
-                {
-                    child = new SelectionNode(_manager, parent: this);
-                    child.SetChildrenObservable(resolver);
-                }
-                else if (childData is IEnumerable<object> || childData is IList)
-                {
-                    child = new SelectionNode(_manager, parent: this);
-                    child.Source = childData;
+                    var resolvedChild = _manager.ResolvePath(childData, childDataIndexPath);
+                    if (resolvedChild != null)
+                    {
+                        child = new SelectionNode(_manager, this);
+                        child.Source = resolvedChild;
+                    }
+                    else
+                    {
+                        child = _manager.SharedLeafNode;
+                    }
                 }
                 else
                 {
                     child = _manager.SharedLeafNode;
                 }
 
-                if (_operation != null && child != _manager.SharedLeafNode)
-                {
-                    child.BeginOperation();
-                }
-
                 _childrenNodes[index] = child;
-                RealizedChildrenNodeCount++;
+                _realizedChildrenNodeCount++;
             }
             else
             {
@@ -221,6 +149,7 @@ internal class SelectionNode : IDisposable
         {
             if (_childrenNodes.Count > 0)
             {
+                Debug.Assert(0 <= index && index <= _childrenNodes.Count);
                 child = _childrenNodes[index];
             }
         }
@@ -228,34 +157,14 @@ internal class SelectionNode : IDisposable
         return child;
     }
 
-    public void SetChildrenObservable(IObservable<object> resolver)
-    {
-        _childrenSubscription = resolver.Subscribe(x =>
-        {
-            if (Source != null)
-            {
-                using (_manager.Update())
-                {
-                    SelectionTreeHelper.Traverse(
-                        this,
-                        realizeChildren: false,
-                        info => info.Node.Clear());
-                }
-            }
-
-            Source = x;
-        });
-    }
-
-    public int SelectedCount { get; private set; }
+    public int SelectedCount => _selectedCount;
 
     public bool IsSelected(int index)
     {
-        var isSelected = false;
-
-        foreach (var range in _selected)
+        bool isSelected = false;
+        for (int i = 0; i < _selected.Count; i++)
         {
-            if (range.Contains(index))
+            if (_selected[i].Contains(index))
             {
                 isSelected = true;
                 break;
@@ -270,17 +179,14 @@ internal class SelectionNode : IDisposable
     // Null  -> Some descendents are selected and some are not
     public bool? IsSelectedWithPartial()
     {
-        var isSelected = (bool?)false;
-
+        bool? isSelected = false;
         if (_parent != null)
         {
             var parentsChildren = _parent._childrenNodes;
-
-            var myIndexInParent = parentsChildren.IndexOf(this);
-
-            if (myIndexInParent != -1)
+            var index = parentsChildren.IndexOf(this);
+            if (index != -1)
             {
-                isSelected = _parent.IsSelectedWithPartial(myIndexInParent);
+                isSelected = _parent.IsSelectedWithPartial(index);
             }
         }
 
@@ -292,15 +198,16 @@ internal class SelectionNode : IDisposable
     // Null  -> Some descendents are selected and some are not
     public bool? IsSelectedWithPartial(int index)
     {
-        SelectionState selectionState;
+        var state = SelectionState.NotSelected;
+        Debug.Assert(index >= 0);
 
-        if (_childrenNodes.Count == 0 || // no nodes realized
-            _childrenNodes.Count <= index || // target node is not realized 
+        if (_childrenNodes.Count == 0 || //no nodes realized
+            _childrenNodes.Count <= index || // target node is not realized
             _childrenNodes[index] == null || // target node is not realized
-            _childrenNodes[index] == _manager.SharedLeafNode)  // target node is a leaf node.
+            _childrenNodes[index] == _manager.SharedLeafNode) // target node is a leaf node
         {
-            // Ask parent if the target node is selected.
-            selectionState = IsSelected(index) ? SelectionState.Selected : SelectionState.NotSelected;
+            // Ask parent if the target node is selected
+            state = IsSelected(index) ? SelectionState.Selected : SelectionState.NotSelected;
         }
         else
         {
@@ -308,142 +215,57 @@ internal class SelectionNode : IDisposable
             // targetNode is a non-leaf node, containing one or many children nodes. Evaluate 
             // based on children of targetNode.
             var targetNode = _childrenNodes[index];
-            selectionState = targetNode!.EvaluateIsSelectedBasedOnChildrenNodes();
+            state = targetNode.EvaluateIsSelectedBasedOnChildrenNodes();
         }
 
-        return ConvertToNullableBool(selectionState);
+        return ConvertToNullableBool(state);
     }
 
-    public int SelectedIndex
+    public int SelectedIndex()
     {
-        get => SelectedCount > 0 ? SelectedIndices[0] : -1;
-        set
-        {
-            if (IsValidIndex(value) && (SelectedCount != 1 || !IsSelected(value)))
-            {
-                ClearSelection();
+        return SelectedCount > 0 ? SelectedIndices()[0] : -1;
+    }
 
-                if (value != -1)
-                {
-                    Select(value, true);
-                }
+    public void SelectedIndex(int value)
+    {
+        if (IsValidIndex(value) && (SelectedCount != -1 || !IsSelected(value)))
+        {
+            ClearSelection();
+
+            if (value != -1)
+            {
+                Select(value, true);
             }
         }
     }
 
-    public List<int> SelectedIndices
+    public List<int> SelectedIndices()
     {
-        get
+        if (!_selectedIndicesCacheIsValid)
         {
-            if (!_selectedIndicesCacheIsValid)
+            _selectedIndicesCacheIsValid = true;
+            foreach(var range in _selected)
             {
-                _selectedIndicesCacheIsValid = true;
-
-                foreach (var range in _selected)
+                for (int index = range.Begin; index <= range.End; index++)
                 {
-                    for (int index = range.Begin; index <= range.End; index++)
+                    // Avoid duplicates
+                    if (!_selectedIndicesCached.Contains(index))
                     {
-                        // Avoid duplicates
-                        if (!_selectedIndicesCached.Contains(index))
-                        {
-                            _selectedIndicesCached.Add(index);
-                        }
+                        _selectedIndicesCached.Add(index);
                     }
                 }
-
-                // Sort the list for easy consumption
-                _selectedIndicesCached.Sort();
             }
 
-            return _selectedIndicesCached;
-        }
-    }
-
-    public IEnumerable<object> SelectedItems
-    {
-        get => SelectedIndices.Select(x => ItemsSourceView!.GetAt(x));
-    }
-
-    public void Dispose()
-    {
-        UnhookCollectionChangedHandler();
-        _childrenSubscription?.Dispose();
-        ClearChildNodes();
-    }
-
-    public void BeginOperation()
-    {
-        if (_operation != null)
-        {
-            throw new InvalidOperationException("Selection operation already in progress.");
+            // Sort the list for easy consumption
+            _selectedIndicesCached.Sort();
         }
 
-        _operation = new SelectionNodeOperation(this);
-
-        for (var i = 0; i < _childrenNodes.Count; ++i)
-        {
-            var child = _childrenNodes[i];
-
-            if (child != null && child != _manager.SharedLeafNode)
-            {
-                child.BeginOperation();
-            }
-        }
-    }
-
-    public void EndOperation(List<SelectionNodeOperation> changes)
-    {
-        if (_operation == null)
-        {
-            throw new InvalidOperationException("No selection operation in progress.");
-        }
-
-        if (_operation.HasChanges)
-        {
-            changes.Add(_operation);
-        }
-
-        _operation = null;
-
-        for (var i = 0; i < _childrenNodes.Count; ++i)
-        {
-            var child = _childrenNodes[i];
-
-            if (child != null && child != _manager.SharedLeafNode)
-            {
-                child.EndOperation(changes);
-            }
-        }
-    }
-
-    public bool Cleanup()
-    {
-        var result = SelectedCount == 0;
-
-        for (var i = 0; i < _childrenNodes.Count; ++i)
-        {
-            var child = _childrenNodes[i];
-
-            if (child != null)
-            {
-                if (child.Cleanup())
-                {
-                    child.Dispose();
-                    _childrenNodes[i] = null;
-                }
-                else
-                {
-                    result = false;
-                }
-            }
-        }
-
-        return result;
+        return _selectedIndicesCached;
     }
 
     public bool Select(int index, bool select)
     {
-        return Select(index, select, raiseOnSelectionChanged: true);
+        return Select(index, select, true /* raiseOnSelectionChanged */);
     }
 
     public bool ToggleSelect(int index)
@@ -453,18 +275,20 @@ internal class SelectionNode : IDisposable
 
     public void SelectAll()
     {
-        if (ItemsSourceView != null)
+        if (_dataSource != null)
         {
-            var size = ItemsSourceView.Count;
-
-            if (size > 0)
+            var count = _dataSource.Count;
+            if (count > 0)
             {
-                SelectRange(new IndexRange(0, size - 1), select: true);
+                SelectRange(new IndexRange(0, count - 1), true /*select*/);
             }
         }
     }
 
-    public void Clear() => ClearSelection();
+    public void Clear()
+    {
+        ClearSelection();
+    }
 
     public bool SelectRange(IndexRange range, bool select)
     {
@@ -472,11 +296,11 @@ internal class SelectionNode : IDisposable
         {
             if (select)
             {
-                AddRange(range, raiseOnSelectionChanged: true);
+                AddRange(range, true /* raiseOnSelectionChanged */);
             }
             else
             {
-                RemoveRange(range, raiseOnSelectionChanged: true);
+                RemoveRange(range, true /* raiseOnSelectionChanged */);
             }
 
             return true;
@@ -485,44 +309,49 @@ internal class SelectionNode : IDisposable
         return false;
     }
 
+    public void Dispose()
+    {
+        UnhookCollectionChangedHandler();
+    }
+
     private void HookupCollectionChangedHandler()
     {
-        if (ItemsSourceView != null)
+        if (_dataSource != null)
         {
-            ItemsSourceView.CollectionChanged += OnSourceListChanged;
+            _dataSource.CollectionChanged += OnSourceListChanged;
         }
     }
 
     private void UnhookCollectionChangedHandler()
     {
-        if (ItemsSourceView != null)
+        if (_dataSource != null)
         {
-            ItemsSourceView.CollectionChanged -= OnSourceListChanged;
+            _dataSource.CollectionChanged -= OnSourceListChanged;
         }
     }
 
     private bool IsValidIndex(int index)
     {
-        return ItemsSourceView == null || (index >= 0 && index < ItemsSourceView.Count);
+        return ItemsSourceView == null || (index >= 0 && index <= ItemsSourceView.Count);
     }
 
     private void AddRange(IndexRange addRange, bool raiseOnSelectionChanged)
     {
-        var selected = new List<IndexRange>();
+        // TODO: Check for duplicates (Task 14107720)
+        // TODO: Optimize by merging adjacent ranges (Task 14107720)
 
-        SelectedCount += IndexRange.Add(_selected, addRange, selected);
-
-        if (selected.Count > 0)
+        int oldCount = SelectedCount;
+        for (int i = addRange.Begin; i <= addRange.End; i++)
         {
-            _operation?.Selected(selected);
-
-            if (_selectedItems != null && ItemsSourceView != null)
+            if (!IsSelected(i))
             {
-                for (var i = addRange.Begin; i <= addRange.End; ++i)
-                {
-                    _selectedItems.Add(ItemsSourceView!.GetAt(i));
-                }
+                _selectedCount++;
             }
+        }
+
+        if (oldCount != _selectedCount)
+        {
+            _selected.Add(addRange);
 
             if (raiseOnSelectionChanged)
             {
@@ -533,58 +362,100 @@ internal class SelectionNode : IDisposable
 
     private void RemoveRange(IndexRange removeRange, bool raiseOnSelectionChanged)
     {
-        var removed = new List<IndexRange>();
+        int oldCount = _selectedCount;
 
-        SelectedCount -= IndexRange.Remove(_selected, removeRange, removed);
-
-        if (removed.Count > 0)
+        // TODO: Prevent overlap of Ranges in _selected (Task 14107720)
+        for (int i = removeRange.Begin; i <= removeRange.End; i++)
         {
-            _operation?.Deselected(removed);
-
-            if (_selectedItems != null)
+            if (IsSelected(i))
             {
-                for (var i = removeRange.Begin; i <= removeRange.End; ++i)
+                _selectedCount--;
+            }
+        }
+
+        if (oldCount != _selectedCount)
+        {
+            // Build up a both a list of Ranges to remove and ranges to add
+            var toRemove = new List<IndexRange>();
+            var toAdd = new List<IndexRange>();
+
+            foreach (var range in _selected)
+            {
+                // If this range intersects the remove range, we have to do something
+                if (removeRange.Intersects(range))
                 {
-                    _selectedItems.Remove(ItemsSourceView!.GetAt(i));
+                    var before = new IndexRange(-1, -1);
+                    var cut = new IndexRange(-1, -1);
+                    var after = new IndexRange(-1, -1);
+
+                    // Intersection with the beginning of the range
+                    //  Anything to the left of the point (exclusive) stays
+                    //  Anything to the right of the point (inclusive) gets clipped
+                    if (range.Contains(removeRange.Begin - 1))
+                    {
+                        range.Split(removeRange.Begin - 1, out before, out cut);
+                        toAdd.Add(before);
+                    }
+
+                    // Intersection with the end of the range
+                    //  Anything to the left of the point (inclusive) gets clipped
+                    //  Anything to the right of the point (exclusive) stays
+                    if (range.Contains(removeRange.End))
+                    {
+                        if (range.Split(removeRange.End, out cut, out after))
+                        {
+                            toAdd.Add(after);
+                        }
+                    }
+
+                    // Remove this Range from the collection
+                    // New ranges will be added for any remaining subsections
+                    toRemove.Add(range);
                 }
             }
 
-            if (raiseOnSelectionChanged)
+            bool change = (toRemove.Count > 0) || (toAdd.Count > 0);
+
+            if (change)
             {
-                OnSelectionChanged();
+                // Remove tagged ranges
+                foreach (var remove in toRemove)
+                {
+                    var index = _selected.IndexOf(remove);
+                    _selected.RemoveAt(index);
+                }
+
+                // Add new ranges
+                foreach (var add in toAdd)
+                {
+                    _selected.Add(add);
+                }
+
+                if (raiseOnSelectionChanged)
+                {
+                    OnSelectionChanged();
+                }
             }
         }
     }
 
     private void ClearSelection()
     {
-        // Deselect all items
         if (_selected.Count > 0)
         {
-            _operation?.Deselected(_selected);
             _selected.Clear();
             OnSelectionChanged();
         }
 
-        _selectedItems?.Clear();
-        SelectedCount = 0;
+        _selectedCount = 0;
         AnchorIndex = -1;
-    }
 
-    private void ClearChildNodes()
-    {
-        for (int i = 0; i < _childrenNodes.Count; i++)
-        {
-            var child = _childrenNodes[i];
-
-            if (child != null && child != _manager.SharedLeafNode)
-            {
-                child.Dispose();
-                _childrenNodes[i] = null;
-            }
-        }
-
-        RealizedChildrenNodeCount = 0;
+        // This will throw away all the children SelectionNodes
+        // causing them to be unhooked from their data source. This
+        // essentially cleans up the tree.
+        foreach (var node in _childrenNodes)
+            node?.Dispose();
+        _childrenNodes.Clear();
     }
 
     private bool Select(int index, bool select, bool raiseOnSelectionChanged)
@@ -617,60 +488,39 @@ internal class SelectionNode : IDisposable
     private void OnSourceListChanged(object dataSource, NotifyCollectionChangedEventArgs args)
     {
         bool selectionInvalidated = false;
-        List<object> removed = null;
-
         switch (args.Action)
         {
             case NotifyCollectionChangedAction.Add:
-                {
-                    selectionInvalidated = OnItemsAdded(args.NewStartingIndex, args.NewItems.Count);
-                    break;
-                }
+                selectionInvalidated = OnItemsAdded(args.NewStartingIndex, args.NewItems.Count);
+                break;
 
             case NotifyCollectionChangedAction.Remove:
-                {
-                    (selectionInvalidated, removed) = OnItemsRemoved(args.OldStartingIndex, args.OldItems);
-                    break;
-                }
+                selectionInvalidated = OnItemsRemoved(args.OldStartingIndex, args.OldItems.Count);
+                break;
 
             case NotifyCollectionChangedAction.Reset:
-                {
-                    if (_selectedItems == null)
-                    {
-                        ClearSelection();
-                    }
-                    else
-                    {
-                        removed = RecreateSelectionFromSelectedItems();
-                    }
-
-                    selectionInvalidated = true;
-                    break;
-                }
+                ClearSelection();
+                selectionInvalidated = true;
+                break;
 
             case NotifyCollectionChangedAction.Replace:
-                {
-                    (selectionInvalidated, removed) = OnItemsRemoved(args.OldStartingIndex, args.OldItems);
-                    selectionInvalidated |= OnItemsAdded(args.NewStartingIndex, args.NewItems.Count);
-                    break;
-                }
+                selectionInvalidated = OnItemsRemoved(args.OldStartingIndex, args.OldItems.Count);
+                selectionInvalidated |= OnItemsAdded(args.NewStartingIndex, args.NewItems.Count);
+                break;
         }
 
         if (selectionInvalidated)
         {
             OnSelectionChanged();
+            _manager.OnSelectionInvalidatedDueToCollectionChange();
         }
-
-        _manager.OnSelectionInvalidatedDueToCollectionChange(selectionInvalidated, removed);
     }
 
     private bool OnItemsAdded(int index, int count)
     {
-        var selectionInvalidated = false;
-
+        bool selectionInvalidated = false;
         // Update ranges for leaf items
         var toAdd = new List<IndexRange>();
-
         for (int i = 0; i < _selected.Count; i++)
         {
             var range = _selected[i];
@@ -679,12 +529,13 @@ internal class SelectionNode : IDisposable
             if (range.End >= index)
             {
                 int begin = range.Begin;
-
                 // If the index left of newIndex is inside the range,
                 // Split the range and remember the left piece to add later
                 if (range.Contains(index - 1))
                 {
-                    range.Split(index - 1, out var before, out _);
+                    var before = new IndexRange(-1, -1);
+                    var after = new IndexRange(-1, -1);
+                    range.Split(index - 1, out before, out after);
                     toAdd.Add(before);
                     begin = index;
                 }
@@ -695,8 +546,10 @@ internal class SelectionNode : IDisposable
             }
         }
 
-        // Add the left sides of the split ranges
-        _selected.AddRange(toAdd);
+        if (toAdd.Count > 0)
+        {
+            _selected.AddRange(toAdd);
+        }
 
         // Update for non-leaf if we are tracking non-leaf nodes
         if (_childrenNodes.Count > 0)
@@ -711,7 +564,7 @@ internal class SelectionNode : IDisposable
         // Adjust the anchor
         if (AnchorIndex >= index)
         {
-            AnchorIndex += count;
+            AnchorIndex = AnchorIndex + count;
         }
 
         // Check if adding a node invalidated an ancestors
@@ -720,14 +573,12 @@ internal class SelectionNode : IDisposable
         if (!selectionInvalidated)
         {
             var parent = _parent;
-
             while (parent != null)
             {
                 var isSelected = parent.IsSelectedWithPartial();
-
                 // If a parent is selected, then it will become partially selected.
                 // If it is not selected or partially selected - there is no change.
-                if (isSelected == true)
+                if (isSelected.HasValue && isSelected.Value)
                 {
                     selectionInvalidated = true;
                     break;
@@ -740,73 +591,93 @@ internal class SelectionNode : IDisposable
         return selectionInvalidated;
     }
 
-    private (bool, List<object>) OnItemsRemoved(int index, IList items)
+    private bool OnItemsRemoved(int index, int count)
     {
-        var selectionInvalidated = false;
-        var removed = new List<object>();
-        var count = items.Count;
-        var isSelected = false;
-
-        for (int i = 0; i <= count - 1; i++)
+        bool selectionInvalidated = false;
+        // Remove the items from the selection for leaf
+        if (ItemsSourceView.Count > 0)
         {
-            if (IsSelected(index + i))
+            bool isSelected = false;
+            for (int i = index; i <= index + count - 1; i++)
             {
-                isSelected = true;
-                removed.Add(items[i]);
-            }
-        }
-
-        if (isSelected)
-        {
-            var removeRange = new IndexRange(index, index + count - 1);
-            SelectedCount -= IndexRange.Remove(_selected, removeRange);
-            selectionInvalidated = true;
-
-            if (_selectedItems != null)
-            {
-                foreach (var i in items)
+                if (IsSelected(i))
                 {
-                    _selectedItems.Remove(i);
+                    isSelected = true;
+                    break;
                 }
             }
-        }
 
-        for (int i = 0; i < _selected.Count; i++)
-        {
-            var range = _selected[i];
-
-            // The range is after the removed items, need to shift the range left
-            if (range.End > index)
+            if (isSelected)
             {
-                // Shift the range to the left
-                _selected[i] = new IndexRange(range.Begin - count, range.End - count);
+                RemoveRange(new IndexRange(index, index + count - 1), false /* raiseOnSelectionChanged */);
                 selectionInvalidated = true;
             }
+
+            for (int i = 0; i < _selected.Count; i++)
+            {
+                var range = _selected[i];
+
+                // The range is after the removed items, need to shift the range left
+                if (range.End > index)
+                {
+                    Debug.Assert(!range.Contains(index));
+
+                    // Shift the range to the left
+                    _selected[i] = new IndexRange(range.Begin - count, range.End - count);
+                    selectionInvalidated = true;
+                }
+            }
+
+            // Update for non-leaf if we are tracking non-leaf nodes
+            if (_childrenNodes.Count > 0)
+            {
+                selectionInvalidated = true;
+                for (int i = 0; i < count; i++)
+                {
+                    if (_childrenNodes[index] != null)
+                    {
+                        _realizedChildrenNodeCount--;
+                    }
+                    _childrenNodes.RemoveAt(index);
+                }
+            }
+
+            // Adjust the anchor
+            if (AnchorIndex >= index)
+            {
+                AnchorIndex = AnchorIndex - count;
+            }
+        }
+        else
+        {
+            // No more items in the list, clear
+            ClearSelection();
+            _realizedChildrenNodeCount = 0;
+            selectionInvalidated = true;
         }
 
-        // Update for non-leaf if we are tracking non-leaf nodes
-        if (_childrenNodes.Count > 0)
+        // Check if removing a node invalidated an ancestors
+        // selection state. For example if parent was partially selected before
+        // removing an item, it could be selected now.
+        if (!selectionInvalidated)
         {
-            selectionInvalidated = true;
-            for (int i = 0; i < count; i++)
+            var parent = _parent;
+            while (parent != null)
             {
-                if (_childrenNodes[index] != null)
+                var isSelected = parent.IsSelectedWithPartial();
+                // If a parent is partially selected, then it will become selected.
+                // If it is selected or not selected - there is no change.
+                if (isSelected == null)
                 {
-                    removed.AddRange(_childrenNodes[index]!.SelectedItems);
-                    RealizedChildrenNodeCount--;
-                    _childrenNodes[index]!.Dispose();
+                    selectionInvalidated = true;
+                    break;
                 }
-                _childrenNodes.RemoveAt(index);
+
+                parent = parent._parent;
             }
         }
 
-        //Adjust the anchor
-        if (AnchorIndex >= index)
-        {
-            AnchorIndex -= count;
-        }
-
-        return (selectionInvalidated, removed);
+        return selectionInvalidated;
     }
 
     private void OnSelectionChanged()
@@ -815,32 +686,22 @@ internal class SelectionNode : IDisposable
         _selectedIndicesCached.Clear();
     }
 
-    public static bool? ConvertToNullableBool(SelectionState isSelected)
+    internal static bool? ConvertToNullableBool(SelectionState isSelected)
     {
-        bool? result = null; // PartialySelected
-
-        if (isSelected == SelectionState.Selected)
-        {
-            result = true;
-        }
-        else if (isSelected == SelectionState.NotSelected)
-        {
-            result = false;
-        }
-
-        return result;
+        return isSelected == SelectionState.Selected ? true :
+            isSelected == SelectionState.NotSelected ? false : null;
     }
 
-    public SelectionState EvaluateIsSelectedBasedOnChildrenNodes()
+    internal SelectionState EvaluateIsSelectedBasedOnChildrenNodes()
     {
         var selectionState = SelectionState.NotSelected;
-        int realizedChildrenNodeCount = RealizedChildrenNodeCount;
+        var realizedChildrenNodeCount = RealizedChildrenNodeCount;
         int selectedCount = SelectedCount;
 
         if (realizedChildrenNodeCount != 0 || selectedCount != 0)
         {
             // There are realized children or some selected leaves.
-            int dataCount = DataCount;
+            var dataCount = DataCount;
             if (realizedChildrenNodeCount == 0 && selectedCount > 0)
             {
                 // All nodes are leaves under it - we didn't create children nodes as an optimization.
@@ -857,8 +718,7 @@ internal class SelectionNode : IDisposable
                 int notSelectedCount = 0;
                 for (int i = 0; i < ChildrenNodeCount; i++)
                 {
-                    var child = GetAt(i, false, default);
-
+                    var child = GetAt(i, false /* realizeChild */);
                     if (child != null)
                     {
                         // child is realized, ask it.
@@ -868,7 +728,7 @@ internal class SelectionNode : IDisposable
                             selectionState = SelectionState.PartiallySelected;
                             break;
                         }
-                        else if (isChildSelected == true)
+                        else if (isChildSelected.HasValue && isChildSelected.Value)
                         {
                             selectedCount++;
                         }
@@ -879,7 +739,7 @@ internal class SelectionNode : IDisposable
                     }
                     else
                     {
-                        // not realized.
+                        // not realized
                         if (IsSelected(i))
                         {
                             selectedCount++;
@@ -914,50 +774,16 @@ internal class SelectionNode : IDisposable
         return selectionState;
     }
 
-    private void PopulateSelectedItemsFromSelectedIndices()
-    {
-        if (_selectedItems != null)
-        {
-            _selectedItems.Clear();
 
-            foreach (var i in SelectedIndices)
-            {
-                _selectedItems.Add(ItemsSourceView!.GetAt(i));
-            }
-        }
-    }
-
-    private List<object> RecreateSelectionFromSelectedItems()
-    {
-        var removed = new List<object>();
-
-        _selected.Clear();
-        SelectedCount = 0;
-
-        for (var i = 0; i < _selectedItems!.Count; ++i)
-        {
-            var item = _selectedItems[i];
-            var index = ItemsSourceView!.IndexOf(item);
-
-            if (index != -1)
-            {
-                IndexRange.Add(_selected, new IndexRange(index, index));
-                ++SelectedCount;
-            }
-            else
-            {
-                removed.Add(item);
-                _selectedItems.RemoveAt(i--);
-            }
-        }
-
-        return removed;
-    }
-
-    public enum SelectionState
-    {
-        Selected,
-        NotSelected,
-        PartiallySelected
-    }
+    private readonly SelectionModel _manager;
+    private readonly List<SelectionNode> _childrenNodes = new List<SelectionNode>();
+    private readonly SelectionNode _parent;
+    private readonly List<IndexRange> _selected = new List<IndexRange>();
+    private object _source;
+    private ItemsSourceView _dataSource;
+    private int _selectedCount;
+    private readonly List<int> _selectedIndicesCached = new List<int>();
+    private bool _selectedIndicesCacheIsValid;
+    private int _anchorIndex = -1;
+    private int _realizedChildrenNodeCount;
 }

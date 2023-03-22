@@ -8,15 +8,10 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using FluentAvalonia.Core;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -41,10 +36,12 @@ public partial class NavigationView : HeaderedContentControl
         _selectionModelSource.Add(null);
         _selectionModelSource.Add(null);
 
-        _menuItems = new AvaloniaList<object>();
-        _footerMenuItems = new AvaloniaList<object>();
 
         _topDataProvider = new TopNavigationViewDataProvider(this);
+
+        MenuItems = new AvaloniaList<object>();
+        FooterMenuItems = new AvaloniaList<object>();
+                
         _topDataProvider.OnRawDataChanged((args) => OnTopNavDataSourceChanged(args));
 
         //Loaded & Unloaded Event...
@@ -97,7 +94,7 @@ public partial class NavigationView : HeaderedContentControl
             _splitView = e.NameScope.Get<SplitView>(s_tpRootSplitView);
             if (_splitView != null)
             {
-                _splitViewRevokers = new CompositeDisposable(
+                _splitViewRevokers = new FACompositeDisposable(
                     _splitView.GetPropertyChangedObservable(SplitView.IsPaneOpenProperty).Subscribe(OnSplitViewClosedCompactChanged),
                     _splitView.GetPropertyChangedObservable(SplitView.DisplayModeProperty).Subscribe(OnSplitViewClosedCompactChanged));
 
@@ -161,7 +158,7 @@ public partial class NavigationView : HeaderedContentControl
             {
                 // Newest style doesn't have content, only an icon, so we'll skip setting that here like WinUI
                 // TODO: Automation
-                var flyout = _topNavOverflowButton.Flyout;
+                var flyout = _topNavOverflowButton.Flyout as PopupFlyoutBase;
                 if (flyout != null)
                 {
                     flyout.Closing += OnFlyoutClosing;
@@ -451,6 +448,22 @@ public partial class NavigationView : HeaderedContentControl
             }
             UpdatePaneLayout();
         }
+        else if (change.Property == MenuItemsSourceProperty)
+        {
+            UpdateRepeaterItemsSource(true /*forceSelectionModelUpdate*/);
+        }
+        else if (change.Property == MenuItemsProperty)
+        {
+            UpdateRepeaterItemsSource(true /*forceSelectionModelUpdate*/);
+        }
+        else if (change.Property == FooterMenuItemsSourceProperty)
+        {
+            UpdateFooterRepeaterItemsSource(true /*sourceCollectionReset*/, true /*sourceCollectionChanged*/);
+        }
+        else if (change.Property == FooterMenuItemsProperty)
+        {
+            UpdateFooterRepeaterItemsSource(true /*sourceCollectionReset*/, true /*sourceCollectionChanged*/);
+        }
         else if (change.Property == IsPaneOpenProperty)
         {
             OnIsPaneOpenChanged();
@@ -721,25 +734,31 @@ public partial class NavigationView : HeaderedContentControl
 
     private void UpdateRepeaterItemsSource(bool forceSelectionModelUpdate)
     {
-        UpdateSelectionForMenuItems();
-        var itemsSource = MenuItems;
+        IEnumerable itemsSource;
+        var miSource = MenuItemsSource;
+        if (miSource != null)
+        {
+            itemsSource = miSource;
+        }
+        else
+        {
+            UpdateSelectionForMenuItems();
+            itemsSource = _menuItems;
+        }
 
         if (forceSelectionModelUpdate)
         {
             _selectionModelSource[0] = itemsSource;
         }
 
-        //if (_menuItemsSource != null)
-        //    _menuItemsSource.CollectionChanged -= OnMenuItemsSourceCollectionChanged;
+        if (_menuItemsSource != null)
+            _menuItemsSource.CollectionChanged -= OnMenuItemsSourceCollectionChanged;
 
-        //We don't need to do this b/c we don't have MenuItemsSource, just MenuItems
-        //and MenuItems is IEnumerable already (we'll still subscribe if INCC, but that's
-        //handled in the Property itself
-        //if (itemsSource != null)
-        //{
-        //    _menuItemsSource = new ItemsSourceView(itemsSource);
-        //    _menuItemsSource.CollectionChanged += OnMenuItemsSourceCollectionChanged;
-        //}  
+        if (itemsSource != null)
+        {
+            _menuItemsSource = ItemsSourceView.GetOrCreate(itemsSource);
+            _menuItemsSource.CollectionChanged += OnMenuItemsSourceCollectionChanged;
+        }
 
         if (IsTopNavigationView)
         {
@@ -828,8 +847,17 @@ public partial class NavigationView : HeaderedContentControl
         if (!_appliedTemplate)
             return;
 
-        UpdateSelectionForMenuItems();
-        var itemsSource = FooterMenuItems;
+        IEnumerable itemsSource;
+        var fmiSource = FooterMenuItemsSource;
+        if (fmiSource != null)
+        {
+            itemsSource = fmiSource;
+        }
+        else
+        {
+            UpdateSelectionForMenuItems();
+            itemsSource = _footerMenuItems;
+        }
 
         UpdateItemsRepeaterItemsSource(_leftNavFooterMenuRepeater, null);
         UpdateItemsRepeaterItemsSource(_topNavFooterMenuRepeater, null);
@@ -846,28 +874,28 @@ public partial class NavigationView : HeaderedContentControl
             }
 
             //We don't need to do this (already have IEnumerable)
-            //if (sourceCollectionReset)
-            //{
-            //    if (_footerItemsSource != null)
-            //    {
-            //        _footerItemsSource.CollectionChanged -= OnFooterItemsSourceCollectionChanged;
-            //        _footerItemsSource = null;
-            //    }
-            //}
-
-            //if (_footerItemsSource == null)
-            //{
-            //    _footerItemsSource = new ItemsSourceView(itemsSource);
-            //    _footerItemsSource.CollectionChanged += OnFooterItemsSourceCollectionChanged;
-            //}
-
-            if (itemsSource != null)
+            if (sourceCollectionReset)
             {
-                var size = itemsSource.Count();// _footerItemsSource.Count;
+                if (_footerItemsSource != null)
+                {
+                    _footerItemsSource.CollectionChanged -= OnFooterItemsSourceCollectionChanged;
+                    _footerItemsSource = null;
+                }
+            }
+
+            if (_footerItemsSource == null)
+            {
+                _footerItemsSource = ItemsSourceView.GetOrCreate(itemsSource);
+                _footerItemsSource.CollectionChanged += OnFooterItemsSourceCollectionChanged;
+            }
+
+            if (_footerItemsSource != null)
+            {
+                var size = _footerItemsSource.Count;
 
                 for (int i = 0; i < size; i++)
                 {
-                    dataSource.Add(itemsSource.ElementAt(i));
+                    dataSource.Add(_footerItemsSource.GetAt(i));
                 }
 
                 if (IsSettingsVisible)
@@ -953,7 +981,7 @@ public partial class NavigationView : HeaderedContentControl
                 nvi.Tapped += OnNavigationViewItemTapped;
                 nvi.KeyDown += OnNavigationViewItemKeyDown;
                 nvi.GotFocus += OnNavigationViewItemGotFocus;
-                var nviRevokers = new CompositeDisposable(
+                var nviRevokers = new FACompositeDisposable(
                     nvi.GetPropertyChangedObservable(NavigationViewItem.IsSelectedProperty).Subscribe(OnNavigationViewItemIsSelectedPropertyChanged),
                     nvi.GetPropertyChangedObservable(NavigationViewItem.IsExpandedProperty).Subscribe(OnNavigationViewItemExpandedPropertyChanged));
 
@@ -1142,17 +1170,19 @@ public partial class NavigationView : HeaderedContentControl
         // this is main menu or footer
         if (e.SourceIndex.GetSize() == 1)
         {
-            e.Children = (new List<object> { e.Source }).ToObservable();
+            e.Children = e.Source;
         }
         else if (e.Source is NavigationViewItem nvi)
         {
-            e.Children = nvi.GetObservable(NavigationViewItem.MenuItemsProperty);
+            e.Children = GetChildren(nvi);
         }
         else
         {
-            //AHHH I HATE IENUMERABLE & OBSERVABLES...
             var children = GetChildrenForItemInIndexPath(e.SourceIndex, true);
-            e.Children = new List<object>() { children }.ToObservable();
+            if (children != null)
+            {
+                e.Children = children;
+            }           
         }
     }
 
@@ -2306,28 +2336,7 @@ public partial class NavigationView : HeaderedContentControl
                 double itemsContMargin = _itemsContainer?.Margin.Vertical() ?? 0d;
                 var availHgt = _itemsContainerRow.ActualHeight - itemsContMargin;
 
-                return _itemsContainerRow.ActualHeight - itemsContMargin;
-
-                //// The c_paneItemsSeparatorHeight is to account for the 9px separator height that we need to subtract.
-                //if (PaneFooter != null)
-                //{
-                //	availHgt -= _paneItemsSeparatorHeight;
-                //	if (_leftNavFooterContentBorder != null)
-                //	{
-                //		availHgt -= _leftNavFooterContentBorder.Bounds.Height;
-                //	}
-                //}
-                //else if (IsSettingsVisible)
-                //{
-                //	availHgt -= _paneItemsSeparatorHeight;
-                //}
-                //else if (_footerMenuItems != null && _menuItems != null &&
-                //	_footerMenuItems.Count() * _menuItems.Count() > 0)
-                //{
-                //	availHgt -= _paneItemsSeparatorHeight;
-                //}
-
-                //return availHgt;
+                return _itemsContainerRow.ActualHeight - itemsContMargin;                
             }
             return 0;
         }
@@ -2373,12 +2382,12 @@ public partial class NavigationView : HeaderedContentControl
                             // Footer and PaneFooter are included in the footerGroup to calculate available height for menu items.
                             var footerGroupActualHeight = footerActualHeight + paneFooterActualHeight;
 
-                            if ((_footerMenuItems != null && _footerMenuItems.Count() == 0) && !IsSettingsVisible)
+                            if (_footerItemsSource.Count == 0 && !IsSettingsVisible)
                             {
                                 PseudoClasses.Set(s_pcSeparator, false);
                                 return totalHeight;
                             }
-                            else if (_menuItems != null && _menuItems.Count() == 0)
+                            else if (_menuItemsSource.Count == 0)
                             {
                                 _footerItemsScrollViewer.MaxHeight = totalHeight;
                                 PseudoClasses.Set(s_pcSeparator, false);
@@ -2827,13 +2836,19 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnSplitViewPaneClosed(object sender, EventArgs e)
+    private void OnSplitViewPaneClosed(object sender, RoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         PaneClosed?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnSplitViewPaneClosing(object sender, SplitViewPaneClosingEventArgs e)
+    private void OnSplitViewPaneClosing(object sender, CancelRoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         bool pendingCancel = false;
 
         if (!_blockNextClosingEvent)
@@ -2868,13 +2883,19 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnSplitViewPaneOpened(object sender, EventArgs e)
+    private void OnSplitViewPaneOpened(object sender, RoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         PaneOpened?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnSplitViewPaneOpening(object sender, EventArgs e)
+    private void OnSplitViewPaneOpening(object sender, RoutedEventArgs e)
     {
+        if (e.Source != _splitView)
+            return;
+
         if (_leftNavRepeater != null)
         {
             PseudoClasses.Set(s_pcListSizeCompact, false);
@@ -3488,7 +3509,7 @@ public partial class NavigationView : HeaderedContentControl
     {
         if (_appliedTemplate)
         {
-            if (MenuItems == null) // WinUI #5558
+            if (MenuItemsSource == null) // WinUI #5558
             {
                 _topDataProvider.InvalidWidthCache();
             }

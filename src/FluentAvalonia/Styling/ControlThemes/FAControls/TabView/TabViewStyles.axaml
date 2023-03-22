@@ -117,7 +117,7 @@
                         <uip:TabViewListView Grid.Column="1"
                                              Name="TabListView"
                                              Padding="{TemplateBinding Padding}"
-                                             Items="{TemplateBinding TabItems}"
+                                             ItemsSource="{TemplateBinding TabItems}"
                                              ItemTemplate="{TemplateBinding TabItemTemplate}"
                                              CanReorderItems="{TemplateBinding CanReorderTabs}"
                                              CanDragItems="{TemplateBinding CanDragTabs}"

@@ -21,7 +21,7 @@ internal static class SelectionTreeHelper
 
             if (depth < path.GetSize() - 1)
             {
-                node = node.GetAt(childIndex, realizeChildren, path)!;
+                node = node.GetAt(childIndex, realizeChildren);
             }
         }
     }
@@ -43,7 +43,7 @@ internal static class SelectionTreeHelper
             int count = realizeChildren ? nextNode.Node.DataCount : nextNode.Node.ChildrenNodeCount;
             for (int i = count - 1; i >= 0; i--)
             {
-                var child = nextNode.Node.GetAt(i, realizeChildren, nextNode.Path);
+                var child = nextNode.Node.GetAt(i, realizeChildren);
                 var childPath = nextNode.Path.CloneWithChildIndex(i);
                 if (child != null)
                 {
@@ -78,12 +78,12 @@ internal static class SelectionTreeHelper
                 bool isStartPath = IsSubSet(start, currentPath);
                 bool isEndPath = IsSubSet(end, currentPath);
 
-                int startIndex = depth < start.GetSize() && isStartPath ? start.GetAt(depth) : 0;
-                int endIndex = depth < end.GetSize() && isEndPath ? end.GetAt(depth) : node.DataCount - 1;
+                int startIndex = depth < start.GetSize() && isStartPath ? Math.Max(0, start.GetAt(depth)) : 0;
+                int endIndex = depth < end.GetSize() && isEndPath ? Math.Min(node.DataCount - 1, end.GetAt(depth)) : node.DataCount - 1;
 
                 for (int i = endIndex; i >= startIndex; i--)
                 {
-                    var child = node.GetAt(i, true, end);
+                    var child = node.GetAt(i, true);
                     if (child != null)
                     {
                         var childPath = currentPath.CloneWithChildIndex(i);
@@ -105,7 +105,7 @@ internal static class SelectionTreeHelper
             int endIndex = depth < end.GetSize() && isEndPath ? end.GetAt(depth) : info.Node.DataCount - 1;
             for (int i = endIndex; i >= startIndex; i--)
             {
-                var child = info.Node.GetAt(i, true, end);
+                var child = info.Node.GetAt(i, true);
                 if (child != null)
                 {
                     var childPath = info.Path.CloneWithChildIndex(i);

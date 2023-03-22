@@ -57,7 +57,7 @@ Known issues:
                               XamlSource="avares://FluentAvaloniaSamples/Pages/SampleCode/NavView3.xaml.txt">
             <ui:NavigationView x:Name="nvSample3" Height="460"
                                            PaneDisplayMode="LeftCompact"
-                                           MenuItems="{Binding Categories}"
+                                           MenuItemsSource="{Binding Categories}"
                                            Content="{Binding CurrentPage}"
                                            SelectedItem="{Binding SelectedCategory}">
 

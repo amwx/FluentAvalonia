@@ -18,11 +18,11 @@
     <x:Double x:Key="CheckBoxGlyphSize">12</x:Double>
     <x:Double x:Key="CheckBoxHeight">32</x:Double>
     <x:Double x:Key="CheckBoxMinWidth">120</x:Double>
-    <Thickness x:Key="CheckBoxPadding">8,5,0,0</Thickness>
+    <!-- This was amended to add 8px padding to the right, as I've removed the forced MinWidth-->
+    <Thickness x:Key="CheckBoxPadding">8,5,8,0</Thickness>
     <Thickness x:Key="CheckBoxFocusVisualMargin">-7,-3,-7,-3</Thickness>
     <x:String x:Key="CheckBoxCheckedGlyph">&#xE10B;</x:String>
     <x:String x:Key="CheckBoxIndeterminateGlyph">&#xE108;</x:String>
-
 
     <ControlTheme x:Key="{x:Type CheckBox}" TargetType="CheckBox">
         <Setter Property="Background" Value="{DynamicResource CheckBoxBackgroundUnchecked}" />
@@ -35,7 +35,6 @@
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-        <Setter Property="MinWidth" Value="{DynamicResource CheckBoxMinWidth}" />
         <Setter Property="MinHeight" Value="{DynamicResource CheckBoxHeight}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">

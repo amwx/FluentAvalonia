@@ -18,6 +18,10 @@ namespace FluentAvalonia.UI.Controls;
 [PseudoClasses(s_pcIcons, s_pcToggle)]
 public class CommandBarOverflowPresenter : ItemsControl, IStyleable
 {
+    public CommandBarOverflowPresenter()
+    {
+        ItemsView.CollectionChanged += ItemsCollectionChanged;
+    }
     Type IStyleable.StyleKey => typeof(CommandBarOverflowPresenter);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -33,10 +37,8 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
     protected override bool IsItemItsOwnContainerOverride(Control item) =>
         item is ICommandBarElement;
 
-    protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        base.ItemsCollectionChanged(sender, e);
-
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:

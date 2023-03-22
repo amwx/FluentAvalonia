@@ -9,14 +9,13 @@ using Avalonia.Styling;
 using FluentAvalonia.Core;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
 /// Represents a flyout that displays a menu of commands.
 /// </summary>
-public class FAMenuFlyout : FlyoutBase
+public class FAMenuFlyout : PopupFlyoutBase
 {
     public FAMenuFlyout()
     {
@@ -29,8 +28,8 @@ public class FAMenuFlyout : FlyoutBase
     /// Defines the <see cref="Items"/> property
     /// </summary>
     public static readonly DirectProperty<FAMenuFlyout, IEnumerable> ItemsProperty =
-        ItemsControl.ItemsProperty.AddOwner<FAMenuFlyout>(x => x.Items,
-            (x, v) => x.Items = v);
+        AvaloniaProperty.RegisterDirect<FAMenuFlyout, IEnumerable>(nameof(Items),
+            x => x.Items, (x, v) => x.Items = v);
 
     /// <summary>
     /// Defines the <see cref="ItemTemplate"/> property
@@ -84,7 +83,7 @@ public class FAMenuFlyout : FlyoutBase
     {
         return new FAMenuFlyoutPresenter
         {
-            Items = _itemsInternal,
+            ItemsSource = _itemsInternal,
             [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty]
         };
     }

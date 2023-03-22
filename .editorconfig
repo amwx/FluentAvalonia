@@ -22,6 +22,9 @@ dotnet_style_collection_initializer = true:suggestion
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 dotnet_style_namespace_match_folder = true:suggestion
 dotnet_style_prefer_conditional_expression_over_assignment = true:silent
+dotnet_style_prefer_conditional_expression_over_return = true:silent
+dotnet_style_explicit_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
 
 # C# files
 [*.cs]
@@ -66,16 +69,17 @@ dotnet_naming_symbols.constant_fields.required_modifiers = const
 
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
-# static fields should have s_ prefix
-dotnet_naming_rule.static_fields_should_have_prefix.severity = suggestion
-dotnet_naming_rule.static_fields_should_have_prefix.symbols  = static_fields
-dotnet_naming_rule.static_fields_should_have_prefix.style = static_prefix_style
+# private static fields should have s_ prefix
+dotnet_naming_rule.private_static_fields_should_have_prefix.severity = suggestion
+dotnet_naming_rule.private_static_fields_should_have_prefix.symbols  = private_static_fields
+dotnet_naming_rule.private_static_fields_should_have_prefix.style    = private_static_prefix_style
 
-dotnet_naming_symbols.static_fields.applicable_kinds   = field
-dotnet_naming_symbols.static_fields.required_modifiers = static
+dotnet_naming_symbols.private_static_fields.applicable_kinds   = field
+dotnet_naming_symbols.private_static_fields.required_modifiers = static
+dotnet_naming_symbols.private_static_fields.applicable_accessibilities = private
 
-dotnet_naming_style.static_prefix_style.required_prefix = s_
-dotnet_naming_style.static_prefix_style.capitalization = camel_case
+dotnet_naming_style.private_static_prefix_style.required_prefix = s_
+dotnet_naming_style.private_static_prefix_style.capitalization = camel_case
 
 # internal and private fields should be _camelCase
 dotnet_naming_rule.camel_case_for_private_internal_fields.severity = suggestion

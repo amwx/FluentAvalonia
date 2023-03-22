@@ -130,24 +130,24 @@ internal class BorderRenderHelper
                 var rrect = new RoundedRect(rect, _cornerRadius.TopLeft, _cornerRadius.TopRight,
                     _cornerRadius.BottomRight, _cornerRadius.BottomLeft);
 
-                context.PlatformImpl.DrawRectangle(Background, null, rrect, BoxShadow);
-
+                context.DrawRectangle(Background, null, rrect, BoxShadow);
+                
                 rrect = new RoundedRect(new Rect(_size).Deflate(borderThickness / 2), _cornerRadius.TopLeft, _cornerRadius.TopRight,
                     _cornerRadius.BottomRight, _cornerRadius.BottomLeft);
 
-                context.PlatformImpl.DrawRectangle(null, pen, rrect, BoxShadow);
+                context.DrawRectangle(null, pen, rrect, BoxShadow);
             }
             else
             {
                 var rrect = new RoundedRect(rect, _cornerRadius.TopLeft, _cornerRadius.TopRight,
                     _cornerRadius.BottomRight, _cornerRadius.BottomLeft);
 
-                context.PlatformImpl.DrawRectangle(Background, null, rrect, BoxShadow);
+                context.DrawRectangle(Background, null, rrect, BoxShadow);
 
                 rrect = new RoundedRect(new Rect(_size).Deflate(borderThickness / 2), _cornerRadius.TopLeft, _cornerRadius.TopRight,
                     _cornerRadius.BottomRight, _cornerRadius.BottomLeft);
 
-                context.PlatformImpl.DrawRectangle(null, pen, rrect, BoxShadow);
+                context.DrawRectangle(null, pen, rrect, BoxShadow);
             }
         }
     }

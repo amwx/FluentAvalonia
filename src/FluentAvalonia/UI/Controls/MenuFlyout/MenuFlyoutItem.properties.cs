@@ -3,8 +3,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia;
-using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using Avalonia.Controls.Metadata;
 using FluentAvalonia.Core;
@@ -30,9 +28,8 @@ public partial class MenuFlyoutItem
     /// <summary>
     /// Defines the <see cref="Command"/> property
     /// </summary>
-    public static readonly DirectProperty<MenuFlyoutItem, ICommand> CommandProperty =
-        Button.CommandProperty.AddOwner<MenuFlyoutItem>(x => x.Command,
-            (x, v) => x.Command = v);
+    public static readonly StyledProperty<ICommand> CommandProperty =
+        Button.CommandProperty.AddOwner<MenuFlyoutItem>();
 
     /// <summary>
     /// Defines the <see cref="CommandParameter"/> property
@@ -104,8 +101,8 @@ public partial class MenuFlyoutItem
     /// </summary>
     public ICommand Command
     {
-        get => _command;
-        set => SetAndRaise(CommandProperty, ref _command, value);
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
     }
 
     /// <summary>
@@ -168,6 +165,4 @@ public partial class MenuFlyoutItem
     }
 
     bool IMenuItem.StaysOpenOnClick { get => false; set { } }
-
-    private ICommand _command;
 }

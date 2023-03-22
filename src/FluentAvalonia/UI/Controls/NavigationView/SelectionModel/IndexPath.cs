@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace FluentAvalonia.UI.Controls;
+﻿namespace FluentAvalonia.UI.Controls;
 
 internal struct IndexPath : IComparable<IndexPath>, IEquatable<IndexPath>
 {
@@ -10,27 +6,24 @@ internal struct IndexPath : IComparable<IndexPath>, IEquatable<IndexPath>
 
     public IndexPath(int index)
     {
-        _path = new List<int>();
-        _path.Add(index);
+        _path = new List<int>
+        {
+            index
+        };
     }
 
     public IndexPath(int groupIndex, int itemIndex)
     {
-        _path = new List<int>();
-        _path.Add(groupIndex);
-        _path.Add(itemIndex);
+        _path = new List<int>
+        {
+            groupIndex,
+            itemIndex
+        };
     }
 
     public IndexPath(IEnumerable<int> indices)
     {
-        _path = new List<int>();
-        if (indices != null)
-        {
-            for (int i = 0; i < indices.Count(); i++)
-            {
-                _path.Add(indices.ElementAt(i));
-            }
-        }
+        _path = indices != null ? new List<int>(indices) : new List<int>();
     }
 
     public static IndexPath CreateFrom(int index)

@@ -1,8 +1,21 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace FluentAvalonia.Core;
+
+internal class FADisposable : IDisposable
+{
+    public FADisposable(Action dispose)
+    {
+        _dispose = dispose;
+    }
+
+    public void Dispose()
+    {
+        _dispose();
+    }
+
+    private Action _dispose;
+}
 
 internal class FACompositeDisposable : ICollection<IDisposable>, IEnumerable<IDisposable>, IEnumerable, IDisposable
 {

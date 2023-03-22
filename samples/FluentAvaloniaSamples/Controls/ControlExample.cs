@@ -234,7 +234,7 @@ public class ControlExample : HeaderedContentControl
                 _optionsMenuButton.Flyout = new FluentAvalonia.UI.Controls.FAMenuFlyout
                 {
                     Items = l,
-                    Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft
+                    Placement = PlacementMode.BottomEdgeAlignedLeft
                 };
             }
         }

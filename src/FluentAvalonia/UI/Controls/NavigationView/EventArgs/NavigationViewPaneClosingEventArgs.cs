@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using System;
 
 namespace FluentAvalonia.UI.Controls;
@@ -27,7 +28,7 @@ public class NavigationViewPaneClosingEventArgs : EventArgs
     /// <summary>
     /// Gets the events pane closing event args from the SplitView
     /// </summary>
-    public SplitViewPaneClosingEventArgs SplitViewClosingArgs { get; internal set; }
+    public CancelRoutedEventArgs SplitViewClosingArgs { get; internal set; }
 
     private bool _cancel;
 }

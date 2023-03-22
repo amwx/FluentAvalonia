@@ -21,12 +21,12 @@ public partial class TabViewWindowingSample : AppWindow
 #if DEBUG
         this.AttachDevTools();
 #endif
-        TabView = this.FindControl<TabView>("TabView");
+        //TabView = this.FindControl<TabView>("TabView");
 
         TabView.TabItemsChanged += TabView_TabItemsChanged;
     }
 
-    public TabView TabView { get; }
+    //public TabView TabView { get; }
 
     public static readonly string DataIdentifier = "MyTabItem";
 

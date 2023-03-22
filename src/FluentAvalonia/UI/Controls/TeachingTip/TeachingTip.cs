@@ -1171,7 +1171,7 @@ public partial class TeachingTip : ContentControl
             PlacementTarget = (Control)VisualRoot,
             // Raw Popups in WinUI don't have placement methods like we have and always positioned at <0,0> in the Window
             // so we mimic that here so that the remaining positioning logic elsewhere in this code still works
-            PlacementMode = PlacementMode.AnchorAndGravity,
+            Placement = PlacementMode.AnchorAndGravity,
             PlacementAnchor = Avalonia.Controls.Primitives.PopupPositioning.PopupAnchor.TopLeft,
             PlacementGravity = Avalonia.Controls.Primitives.PopupPositioning.PopupGravity.BottomRight
         };

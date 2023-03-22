@@ -6,7 +6,6 @@ using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -14,7 +13,7 @@ namespace FluentAvalonia.UI.Controls;
 /// Represents a specialized flyout that provides layout for CommandBarButton,
 /// CommandBarToggleButton, and CommandBarSeparator controls.
 /// </summary>
-public class CommandBarFlyout : FlyoutBase
+public class CommandBarFlyout : PopupFlyoutBase
 {
     public CommandBarFlyout()
     {

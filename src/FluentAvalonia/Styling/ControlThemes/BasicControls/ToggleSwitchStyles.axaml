@@ -14,6 +14,7 @@
     <!-- Changed to GridLength -->
     <GridLength x:Key="ToggleSwitchPreContentMargin">10</GridLength>
     <GridLength x:Key="ToggleSwitchPostContentMargin">10</GridLength>
+    <!-- Not forced as of v2, but available if still wanted-->
     <x:Double x:Key="ToggleSwitchThemeMinWidth">154</x:Double>
 
     <ControlTheme x:Key="{x:Type ToggleSwitch}" TargetType="ToggleSwitch">
@@ -23,7 +24,6 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-        <Setter Property="MinWidth" Value="{StaticResource ToggleSwitchThemeMinWidth}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>

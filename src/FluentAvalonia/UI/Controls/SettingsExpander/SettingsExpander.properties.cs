@@ -11,6 +11,7 @@ namespace FluentAvalonia.UI.Controls;
 
 [PseudoClasses(SharedPseudoclasses.s_pcAllowClick, s_pcEmpty)]
 [TemplatePart(s_tpExpander, typeof(Expander))]
+[TemplatePart(s_tpContentHost, typeof(SettingsExpanderItem))]
 public partial class SettingsExpander
 {
     /// <summary>
@@ -58,9 +59,8 @@ public partial class SettingsExpander
     /// <summary>
     /// Defines the <see cref="Command"/> property
     /// </summary>
-    public static readonly DirectProperty<SettingsExpander, ICommand> CommandProperty = 
-        Button.CommandProperty.AddOwner<SettingsExpander>(x => x.Command,
-            (x, v) => x.Command = v);
+    public static readonly StyledProperty<ICommand> CommandProperty = 
+        Button.CommandProperty.AddOwner<SettingsExpander>();
 
     /// <summary>
     /// Defines the <see cref="CommandParameter"/> property
@@ -147,8 +147,8 @@ public partial class SettingsExpander
     /// </summary>
     public ICommand Command
     {
-        get => _command;
-        set => SetAndRaise(CommandProperty, ref _command, value);
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
     }
 
     /// <summary>
@@ -171,9 +171,9 @@ public partial class SettingsExpander
         remove => RemoveHandler(ClickEvent, value);
     }
 
-    private ICommand _command;
-
     private const string s_tpExpander = "Expander";
+    private const string s_tpContentHost = "ContentHost";
 
     private const string s_pcEmpty = ":empty";
+    private const string s_pcIconPlaceholder = ":iconPlaceholder";
 }

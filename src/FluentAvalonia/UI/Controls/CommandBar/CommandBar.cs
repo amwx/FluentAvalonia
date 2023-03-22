@@ -352,7 +352,7 @@ public partial class CommandBar : ContentControl
                 }
             }
 
-            _primaryItemsHost.Items = _primaryItems;
+            _primaryItemsHost.ItemsSource = _primaryItems;
         }
 
         if (_secondaryCommands.Count > 0 || IsDynamicOverflowEnabled)
@@ -363,7 +363,7 @@ public partial class CommandBar : ContentControl
             _overflowItems.Add(_overflowSeparator);
             _overflowItems.AddRange(_secondaryCommands);
 
-            _overflowItemsHost.Items = _overflowItems;
+            _overflowItemsHost.ItemsSource = _overflowItems;
         }
 
         PseudoClasses.Set(s_pcPrimaryOnly, _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);

@@ -26,9 +26,10 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
     /// <summary>
     /// Defines the <see cref="GroupName"/> property
     /// </summary>
-    public static readonly DirectProperty<RadioMenuFlyoutItem, string> GroupNameProperty =
-        RadioButton.GroupNameProperty.AddOwner<RadioMenuFlyoutItem>(x => x.GroupName,
-            (x, v) => x.GroupName = v);
+    public static readonly StyledProperty<string> GroupNameProperty =
+        RadioButton.GroupNameProperty.AddOwner<RadioMenuFlyoutItem>(
+            new StyledPropertyMetadata<string>(
+                coerce: (_, x) => x ?? string.Empty));
 
     /// <summary>
     /// Defines the <see cref="IsChecked"/> property
@@ -42,12 +43,8 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
     /// </summary>
     public string GroupName
     {
-        get => _groupName;
-        set
-        {
-            value ??= string.Empty;
-            SetAndRaise(GroupNameProperty, ref _groupName, value);
-        }
+        get => GetValue(GroupNameProperty);
+        set => SetValue(GroupNameProperty, value);
     }
 
     /// <summary>
@@ -119,7 +116,6 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
         IsChecked = !IsChecked;
     }
 
-    private string _groupName = string.Empty;
     private bool _isSafeUncheck = false;
 
     internal static readonly SortedDictionary<string, WeakReference<RadioMenuFlyoutItem>> SelectionMap;
