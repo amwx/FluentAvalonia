@@ -87,7 +87,7 @@
             <Style Selector="^ /template/ ui|SymbolIcon#ExpandCollapseChevron">
                 <Setter Property="RenderTransform" Value="rotate(180deg)" />
             </Style>
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^:not(:empty) /template/ ui|FABorder#Root">
                 <Setter Property="CornerRadius" Value="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}" />
             </Style>
         </Style>
@@ -165,7 +165,8 @@
                                                  Footer="{TemplateBinding Footer}"
                                                  FooterTemplate="{TemplateBinding FooterTemplate}"
                                                  Padding="{DynamicResource SettingsExpanderPadding}"
-                                                 Background="Transparent"/>
+                                                 Background="Transparent"
+                                                 Name="ContentHost" />
                     </Expander.Header>
                     
                     <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />

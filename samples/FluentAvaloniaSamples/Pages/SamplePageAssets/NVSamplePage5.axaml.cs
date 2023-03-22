@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 
 namespace FluentAvaloniaSamples.Pages.NVSamplePages;
 
-public class NVSamplePage5 : UserControl
+public partial class NVSamplePage5 : UserControl
 {
     public NVSamplePage5()
     {

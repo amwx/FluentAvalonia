@@ -45,6 +45,7 @@
         <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ExpanderHeaderBorderThickness}" />
+        <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderForeground}" />
         <Setter Property="Padding" Value="{DynamicResource ExpanderHeaderPadding}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -104,10 +105,10 @@
         
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ Border#Root">
-                <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPointerOverBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderPointerOverBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderForegroundPointerOver}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPointerOverBrush}" />
@@ -123,7 +124,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPressedBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderForegroundPressed}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPressedBrush}" />
@@ -136,26 +137,26 @@
 
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ Border#Root">
-                <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderDisabledBorderBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderDisabledForeground}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />
                 <Setter Property="Background" Value="{DynamicResource ExpanderChevronBackground}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
-                <Setter Property="Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderDisabledForeground}" />
             </Style>
         </Style>
 
         <Style Selector="^:checked">
             <Style Selector="^ /template/ Border#Root">
-                <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ExpanderForeground}" />
+                <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderForeground}" />
             </Style>
             <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderBrush}" />
@@ -168,10 +169,10 @@
 
             <Style Selector="^:pointerover">
                 <Style Selector="^ /template/ Border#Root">
-                    <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPointerOverBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderPointerOverBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                    <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPointerOver}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderForegroundPointerOver}" />
                 </Style>
                 <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPointerOverBrush}" />
@@ -185,10 +186,10 @@
 
             <Style Selector="^:pressed">
                 <Style Selector="^ /template/ Border#Root">
-                    <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPressedBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderPressedBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                    <Setter Property="Foreground" Value="{DynamicResource ExpanderForegroundPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderForegroundPressed}" />
                 </Style>
                 <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderChevronBorderPressedBrush}" />
@@ -202,10 +203,10 @@
 
             <Style Selector="^:disabled">
                 <Style Selector="^ /template/ Border#Root">
-                    <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderDisabledBorderBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                    <Setter Property="Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderDisabledForeground}" />
                 </Style>
                 <Style Selector="^ /template/ Border#ExpandCollapseChevronBorder">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderDisabledBorderBrush}" />

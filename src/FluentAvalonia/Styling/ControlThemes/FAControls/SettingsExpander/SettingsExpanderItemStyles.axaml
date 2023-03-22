@@ -61,10 +61,9 @@
                                               Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Viewbox>
 
-                        <StackPanel HorizontalAlignment="Stretch"
-                                    Name="ContentStackPanel"
-                                    VerticalAlignment="Center"
-                                    Margin="{DynamicResource SettingsExpanderItemContentMargin}">
+                        <StackPanel HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"                                    
+                                    Name="HeaderRegion">
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Name="ContentPresenter"
@@ -133,8 +132,18 @@
         <Style Selector="^:description /template/ TextBlock#DescriptionText">
             <Setter Property="IsVisible" Value="True" />
         </Style>
-        <Style Selector="^:icon /template/ Viewbox#IconHost">
-            <Setter Property="IsVisible" Value="True" />
+        <Style Selector="^:icon">            
+            <Style Selector="^ /template/ Viewbox#IconHost">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ StackPanel#HeaderRegion">
+                <Setter Property="Margin" Value="{DynamicResource SettingsExpanderItemContentMargin}" />
+            </Style>
+        </Style>
+        <Style Selector="^:iconPlaceholder">
+            <Style Selector="^ /template/ StackPanel#HeaderRegion">
+                <Setter Property="Margin" Value="{DynamicResource SettingsExpanderItemContentMargin}" />
+            </Style>
         </Style>
 
         <Style Selector="^:allowClick">

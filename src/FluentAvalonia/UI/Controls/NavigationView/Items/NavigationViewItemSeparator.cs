@@ -2,8 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using System;
-using System.Reactive.Disposables;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -27,7 +26,7 @@ public class NavigationViewItemSeparator : NavigationViewItemBase
         var splitView = GetSplitView;
         if (splitView != null)
         {
-            _splitViewRevokers = new CompositeDisposable(
+            _splitViewRevokers = new FACompositeDisposable(
                 splitView.GetPropertyChangedObservable(SplitView.IsPaneOpenProperty).Subscribe(OnSplitViewPropertyChanged),
                 splitView.GetPropertyChangedObservable(SplitView.DisplayModeProperty).Subscribe(OnSplitViewPropertyChanged));
 
@@ -90,7 +89,7 @@ public class NavigationViewItemSeparator : NavigationViewItemBase
         }
     }
 
-    private IDisposable _splitViewRevokers;
+    private FACompositeDisposable _splitViewRevokers;
     private bool _appliedTemplate;
     private bool _isClosedCompact;
     private Panel _rootGrid;

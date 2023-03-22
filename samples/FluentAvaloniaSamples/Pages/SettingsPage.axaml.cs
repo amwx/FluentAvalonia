@@ -9,7 +9,7 @@ using Avalonia.Styling;
 
 namespace FluentAvaloniaSamples.Pages;
 
-public class SettingsPage : UserControl
+public partial class SettingsPage : UserControl
 {
     public SettingsPage()
     {

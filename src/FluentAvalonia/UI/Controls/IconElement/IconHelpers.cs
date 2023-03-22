@@ -1,8 +1,7 @@
-﻿using System.Reactive.Linq;
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia;
 using Avalonia.Controls.Documents;
 using Avalonia.Data;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 

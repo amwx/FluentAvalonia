@@ -7,10 +7,9 @@ using Avalonia.LogicalTree;
 using Avalonia.Rendering;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using System;
 using System.ComponentModel;
-using Avalonia.Platform;
 using Avalonia;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -298,7 +297,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
         e.Handled = true;
     }
 
-    protected internal virtual void PointerEnter(object sender, PointerEventArgs e)
+    protected internal virtual void PointerEnter(object sender, RoutedEventArgs e)
     {
         var item = GetMenuItem(e.Source as Control);
 
@@ -325,7 +324,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
         }
     }
 
-    protected internal virtual void PointerLeave(object sender, PointerEventArgs e)
+    protected internal virtual void PointerLeave(object sender, RoutedEventArgs e)
     {
         var item = GetMenuItem(e.Source as Control);
 
@@ -521,7 +520,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                 return null;
             if (item is IMenuItem menuItem)
                 return menuItem;
-            item = item.Parent;
+            item = (Control)item.Parent;
         }
     }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Linq;
+﻿using System.Collections.Specialized;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
@@ -22,6 +19,11 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 {
+    public SettingsExpander()
+    {
+        ItemsView.CollectionChanged += ItemsCollectionChanged;
+    }
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
@@ -31,6 +33,11 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         // so we can load the ToggleButton within the template
         _expander.Loaded += ExpanderLoaded;
         _expander.Expanding += ExpanderExpanding;
+
+        _contentHost = e.NameScope.Get<SettingsExpanderItem>(s_tpContentHost);
+        _hasAppliedTemplate = true;
+
+        SetIcons();
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -92,25 +99,26 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         {
             CanExecuteChanged(this, EventArgs.Empty);
         }
-        else if (change.Property == ItemsProperty)
+        else if (change.Property == IconSourceProperty)
         {
-            var newValue = change.GetNewValue<IEnumerable>();
-            if (IsClickEnabled && newValue is not null)
-                throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
+            var oldVal = change.OldValue;
+            if (oldVal != null)
+                _iconCount--;
 
-            if (_expanderToggleButton is not null)
-            {
-                // Disable the interaction states if items collection is cleared
-                bool isInteractable = newValue is not null && newValue.Count() > 0;
-                ((IPseudoClasses)_expanderToggleButton.Classes).Set(SharedPseudoclasses.s_pcAllowClick, isInteractable);
-                ((IPseudoClasses)_expanderToggleButton.Classes).Set(s_pcEmpty, !isInteractable);
-            }
+            var newVal = change.NewValue;
+            if (newVal != null)
+                _iconCount++;
+
+            SetIcons();
         }
     }
 
-    protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        base.ItemsCollectionChanged(sender, e);
+        // This fires for collection changes, whether they originate from Items or ItemsSource
+
+        if (IsClickEnabled && ItemsView.Count > 0)
+            throw new InvalidOperationException("Cannot set Items and mark IsClickEnabled to true on a SettingsExpander");
 
         if (_expanderToggleButton is not null)
         {
@@ -127,6 +135,34 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
     protected override Control CreateContainerForItemOverride() =>
         new SettingsExpanderItem();
 
+    protected override void PrepareContainerForItemOverride(Control container, object item, int index)
+    {
+        base.PrepareContainerForItemOverride(container, item, index);
+
+        if (container is SettingsExpanderItem sei)
+        {
+            if (sei.IconSource != null)
+                _iconCount++;
+        }
+    }
+
+    protected override void ClearContainerForItemOverride(Control container)
+    {
+        base.ClearContainerForItemOverride(container);
+
+        if (container is SettingsExpanderItem sei)
+        {
+            if (sei.IconSource != null)
+                _iconCount--;
+        }
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        SetIcons();
+        return base.MeasureOverride(availableSize);
+    }
+
     /// <summary>
     /// Invoked when the SettingsExpander is clicked when IsClickEnabled = true
     /// </summary>
@@ -136,9 +172,10 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         RaiseEvent(args);
 
         var @param = CommandParameter;
-        if (!args.Handled && _command?.CanExecute(@param) == true)
+        var command = Command;
+        if (!args.Handled && command?.CanExecute(@param) == true)
         {
-            _command.Execute(@param);
+            command.Execute(@param);
         }
     }
        
@@ -188,7 +225,8 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 
     private void CanExecuteChanged(object sender, EventArgs e)
     {
-        var canExecute = _command == null || _command.CanExecute(CommandParameter);
+        var command = Command;
+        var canExecute = command == null || command.CanExecute(CommandParameter);
 
         if (canExecute != _commandCanExecute)
         {
@@ -200,7 +238,38 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
     void ICommandSource.CanExecuteChanged(object sender, EventArgs e) =>
        CanExecuteChanged(sender, e);
 
+    private void SetIcons()
+    {
+        if (!_hasAppliedTemplate)
+            return;
+
+        // If the item count is 0, setting IconSource will automatically handle this
+        // by the :icon in the SettingsExpanderItem
+        if (ItemCount == 0)
+            return;
+
+        bool usePlaceholder = _iconCount > 0;
+        ((IPseudoClasses)_contentHost.Classes).Set(s_pcIconPlaceholder, usePlaceholder);
+
+        var rc = GetRealizedContainers();
+        foreach (var item in GetRealizedContainers())
+        {
+            ((IPseudoClasses)item.Classes).Set(s_pcIconPlaceholder, usePlaceholder);
+        }
+    }
+
+    internal void InvalidateIcons(SettingsExpanderItem item)
+    {
+        if (item == _contentHost)
+            return;
+
+        SetIcons();
+    }
+
     private bool _commandCanExecute = true;
     private Expander _expander;
     private ToggleButton _expanderToggleButton;
+    private SettingsExpanderItem _contentHost;
+    private int _iconCount = 0;
+    private bool _hasAppliedTemplate;
 }

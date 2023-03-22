@@ -4,7 +4,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
-using System;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 

@@ -12,18 +12,23 @@
         </Border>
     </Design.PreviewWith>
 
+    <!-- NOTE: this value is not forced as of v2, but this maintained here if you
+               want to keep the min width from WinUI
+    -->
+    <x:Double x:Key="RadioButtonMinWidth">120</x:Double>
+
     <ControlTheme x:Key="{x:Type RadioButton}" TargetType="RadioButton">
         <Setter Property="Background" Value="{DynamicResource RadioButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource RadioButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource RadioButtonBorderBrush}" />
-        <Setter Property="Padding" Value="8,6,0,0" />
+        <!-- Amended padding to add 8px right, to account for no forced MinWidth any more -->
+        <Setter Property="Padding" Value="8,6,8,0" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-        <Setter Property="MinWidth" Value="120" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>

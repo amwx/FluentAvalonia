@@ -38,7 +38,7 @@ public class SampleAppSplashScreen : IApplicationSplashScreen
     Task IApplicationSplashScreen.RunTasks(CancellationToken token) => null;
 }
 
-public class MainWindow : AppWindow
+public partial class MainWindow : AppWindow
 {
     public MainWindow()
     {

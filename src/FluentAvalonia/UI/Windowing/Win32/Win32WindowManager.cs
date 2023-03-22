@@ -255,7 +255,7 @@ internal unsafe class Win32WindowManager
         // On the Top border, the resize handle overlaps with the Titlebar area, which matches
         // a typical Win32 window or modern app window
         var resizeBorderHeight = GetResizeHandleHeight();
-        var isOnResizeBorder = point.Y < resizeBorderHeight && !_isFullScreen;
+        var isOnResizeBorder = point.Y < resizeBorderHeight && !IsFullscreen;
 
         // Make sure the caption buttons still get precedence
         // This is where things get tricky too. On Win11, we still want to support the snap
@@ -297,7 +297,7 @@ internal unsafe class Win32WindowManager
             }
 
             // Hit Test titlebar region, except in full screen mode
-            if (!_isFullScreen && _window.HitTestTitleBar(point))
+            if (!IsFullscreen && _window.HitTestTitleBar(point))
             {
                 return HTCAPTION;
             }
@@ -363,7 +363,7 @@ internal unsafe class Win32WindowManager
         // get correct results - since scaling is automatically done for us
         // We also need to make the top border 0 when maximized otherwise the top pixel row
         // won't allow interactions
-        _window?.UpdateContentPosition(new Thickness(0, (topHeight == 0 && !_isFullScreen) ? (-1 / _window.PlatformImpl.RenderScaling) : topHeight, 0, 0));
+        _window?.UpdateContentPosition(new Thickness(0, (topHeight == 0 && !IsFullscreen) ? (-1 / _window.PlatformImpl.RenderScaling) : topHeight, 0, 0));
     }
 
     private void OnPlatformColorValuesChanged(object sender, PlatformColorValues e)
@@ -399,13 +399,12 @@ internal unsafe class Win32WindowManager
         new Dictionary<HWND, Win32WindowManager>();
 #endif
 
-    private AppWindow _window;
+    private readonly AppWindow _window;
     private bool _fakingMaximizeButton;
     private bool _wasFakeMaximizeDown;
-    private bool _isFullScreen;
     private bool _isMaximized;
 
-    private nint _oldWndProc;
-    private nint _wndProc;
+    private readonly nint _oldWndProc;
+    private readonly nint _wndProc;
     private RECT _restoreRect;
 }

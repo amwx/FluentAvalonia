@@ -1,8 +1,6 @@
-﻿using System;
-using Avalonia.Data;
+﻿using Avalonia.Data;
 using Avalonia;
 using Avalonia.Media;
-using System.Collections.Generic;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using FluentAvalonia.Core;
@@ -84,9 +82,9 @@ public partial class ColorPickerButton
     /// <summary>
     /// Defines the <see cref="FlyoutPlacement"/> property
     /// </summary>
-    public static readonly StyledProperty<FlyoutPlacementMode> FlyoutPlacementProperty =
-        AvaloniaProperty.Register<ColorPickerButton, FlyoutPlacementMode>(nameof(FlyoutPlacement),
-            defaultValue: FlyoutPlacementMode.Bottom);
+    public static readonly StyledProperty<PlacementMode> FlyoutPlacementProperty =
+        AvaloniaProperty.Register<ColorPickerButton, PlacementMode>(nameof(FlyoutPlacement),
+            defaultValue: PlacementMode.Bottom);
 
 
     /// <summary>
@@ -199,7 +197,7 @@ public partial class ColorPickerButton
     /// <summary>
     /// Gets or sets the placement for the color picker flyout
     /// </summary>
-    public FlyoutPlacementMode FlyoutPlacement
+    public PlacementMode FlyoutPlacement
     {
         get => GetValue(FlyoutPlacementProperty);
         set => SetValue(FlyoutPlacementProperty, value);

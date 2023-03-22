@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace FluentAvalonia.UI.Controls;
+﻿namespace FluentAvalonia.UI.Controls;
 
 internal readonly struct IndexRange : IEquatable<IndexRange>
 {
@@ -22,7 +19,9 @@ internal readonly struct IndexRange : IEquatable<IndexRange>
     }
 
     public int Begin { get; }
+
     public int End { get; }
+
     public int Count => (End - Begin) + 1;
 
     public bool Contains(int index) => index >= Begin && index <= End;
@@ -78,6 +77,7 @@ internal readonly struct IndexRange : IEquatable<IndexRange>
     public override string ToString() => $"[{Begin}..{End}]";
 
     public static bool operator ==(IndexRange left, IndexRange right) => left.Equals(right);
+    
     public static bool operator !=(IndexRange left, IndexRange right) => !(left == right);
 
     public static int Add(

@@ -3,8 +3,7 @@ using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Input;
-using System.Reactive.Disposables;
-using System;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -67,7 +66,7 @@ public class MinMaxCloseControl : TemplatedControl
 
     private void OwnerWindowOpened(object sender, EventArgs args)
     {
-        _windowStateObservable = new CompositeDisposable(
+        _windowStateObservable = new FACompositeDisposable(
             _owner.GetObservable(Window.WindowStateProperty).Subscribe(OnWindowStateChanged),
             _owner.GetObservable(WindowBase.IsActiveProperty).Subscribe(OnWindowActiveChanged));
     }
@@ -164,7 +163,7 @@ public class MinMaxCloseControl : TemplatedControl
     {
         if (_maximizeButton != null)
         {
-            _maximizeButton.SetValue(Button.IsPressedProperty, pressed);
+            ((IPseudoClasses)_maximizeButton.Classes).Set(":pressed", pressed);
         }
     }
 

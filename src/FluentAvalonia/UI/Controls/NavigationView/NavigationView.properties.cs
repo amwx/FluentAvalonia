@@ -5,10 +5,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
 using FluentAvalonia.Core;
-using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Reactive.Disposables;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -99,18 +97,24 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="FooterMenuItemsProperty"/>
     /// </summary>
-    public static readonly DirectProperty<NavigationView, IEnumerable> FooterMenuItemsProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>(nameof(FooterMenuItems),
-            x => x.FooterMenuItems, (x, v) => x.FooterMenuItems = v);
+    public static readonly DirectProperty<NavigationView, IList<object>> FooterMenuItemsProperty =
+        AvaloniaProperty.RegisterDirect<NavigationView, IList<object>>(nameof(FooterMenuItems),
+            x => x.FooterMenuItems);
 
-    //In WinUI, this is enum NavigationViewBackButtonVisible
-    //Visible
-    //Collapsed
-    //Auto - depends on form factor, for now, not concern
-    //So fall back to bool
+    /// <summary>
+    /// Defines the <see cref="FooterMenuItems"/> property
+    /// </summary>
+    public static readonly StyledProperty<IEnumerable> FooterMenuItemsSourceProperty =
+        AvaloniaProperty.Register<NavigationView, IEnumerable>(nameof(FooterMenuItemsSource));
+        
     /// <summary>
     /// Defines the <see cref="IsBackButtonVisible"/> property
     /// </summary>
+    /// <remarks>
+    /// In WinUI, this is an enum NavigationViewBackButtonVisible with values
+    /// Visible, Collapsed, and Auto (depends on form factor). For our purposes,
+    /// bool works just fine for now
+    /// </remarks>
     public static readonly StyledProperty<bool> IsBackButtonVisibleProperty =
         AvaloniaProperty.Register<NavigationView, bool>(nameof(IsBackButtonVisible));
 
@@ -124,8 +128,8 @@ public partial class NavigationView : HeaderedContentControl
     /// Defines the <see cref="IsPaneOpen"/> property
     /// </summary>
     public static readonly StyledProperty<bool> IsPaneOpenProperty =
-        AvaloniaProperty.Register<NavigationView, bool>(nameof(IsPaneOpen),
-            defaultValue: true);
+        SplitView.IsPaneOpenProperty.AddOwner<NavigationView>(
+            new StyledPropertyMetadata<bool>(defaultValue: true));
 
     /// <summary>
     /// Defines the <see cref="IsPaneToggleButtonVisible"/> property
@@ -150,9 +154,15 @@ public partial class NavigationView : HeaderedContentControl
     /// <summary>
     /// Defines the <see cref="MenuItems"/> property
     /// </summary>
-    public static readonly DirectProperty<NavigationView, IEnumerable> MenuItemsProperty =
-        AvaloniaProperty.RegisterDirect<NavigationView, IEnumerable>(nameof(MenuItems),
-            o => o.MenuItems, (o, v) => o.MenuItems = v);
+    public static readonly DirectProperty<NavigationView, IList<object>> MenuItemsProperty =
+        AvaloniaProperty.RegisterDirect<NavigationView, IList<object>>(nameof(MenuItems),
+            o => o.MenuItems);
+
+    /// <summary>
+    /// Defines the <see cref="MenuItemsSource"/> property
+    /// </summary>
+    public static readonly StyledProperty<IEnumerable> MenuItemsSourceProperty =
+        AvaloniaProperty.Register<NavigationView, IEnumerable>(nameof(MenuItemsSource));
 
     /// <summary>
     /// Defines the <see cref="MenuItemTemplate"/> property
@@ -214,10 +224,12 @@ public partial class NavigationView : HeaderedContentControl
             (x, v) => x.SelectedItem = v, 
             defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
 
-    //WinUI uses an enum here, but only has Disabled/Enabled, so just use bool
     /// <summary>
     /// Defines the <see cref="SelectionFollowsFocus"/> property
     /// </summary>
+    /// <remarks>
+    /// WinUI uses an enum here, but only has Disabled/Enabled, so just use bool
+    /// </remarks>
     public static readonly StyledProperty<bool> SelectionFollowsFocusProperty =
         AvaloniaProperty.Register<NavigationView, bool>(nameof(SelectionFollowsFocus));
 
@@ -301,28 +313,21 @@ public partial class NavigationView : HeaderedContentControl
     }
 
     /// <summary>
-    /// Gets or sets the list of objects to be used as navigation items in the footer menu.
+    /// Gets the list of objects to be used as navigation items in the footer menu.
     /// </summary>
-    public IEnumerable FooterMenuItems
+    public IList<object> FooterMenuItems
     {
         get => _footerMenuItems;
-        set
-        {
-            var old = _footerMenuItems;
-            if (SetAndRaise(FooterMenuItemsProperty, ref _footerMenuItems, value))
-            {
-                if (old is INotifyCollectionChanged oldINCC)
-                {
-                    oldINCC.CollectionChanged -= OnFooterItemsSourceCollectionChanged;
-                }
-                if (value is INotifyCollectionChanged newINCC)
-                {
-                    newINCC.CollectionChanged += OnFooterItemsSourceCollectionChanged;
-                }
+        private set => SetAndRaise(FooterMenuItemsProperty, ref _footerMenuItems, value);
+    }
 
-                UpdateFooterRepeaterItemsSource(true, true);
-            }
-        }
+    /// <summary>
+    /// Gets or sets the object that represents the navigation items to be used in the footer menu.
+    /// </summary>
+    public IEnumerable FooterMenuItemsSource
+    {
+        get => GetValue(FooterMenuItemsSourceProperty);
+        set => SetValue(FooterMenuItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -403,27 +408,21 @@ public partial class NavigationView : HeaderedContentControl
     }
 
     /// <summary>
-    /// Gets or sets the collection of menu items displayed in the NavigationView.
+    /// Gets the collection of menu items displayed in the NavigationView.
     /// </summary>
-    public IEnumerable MenuItems
+    public IList<object> MenuItems
     {
         get => _menuItems;
-        set
-        {
-            var old = _menuItems;
-            if (SetAndRaise(MenuItemsProperty, ref _menuItems, value))
-            {
-                if (_menuItems is INotifyCollectionChanged oldINCC)
-                {
-                    oldINCC.CollectionChanged -= OnMenuItemsSourceCollectionChanged;
-                }
-                if (value is INotifyCollectionChanged newINCC)
-                {
-                    newINCC.CollectionChanged += OnMenuItemsSourceCollectionChanged;
-                }
-                UpdateRepeaterItemsSource(true);
-            }
-        }
+        set => SetAndRaise(MenuItemsProperty, ref _menuItems, value);
+    }
+
+    /// <summary>
+    /// Gets or sets an object source used to generate the content of the NavigationView menu.
+    /// </summary>
+    public IEnumerable MenuItemsSource
+    {
+        get => GetValue(MenuItemsSourceProperty);
+        set => SetValue(MenuItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -594,12 +593,12 @@ public partial class NavigationView : HeaderedContentControl
     /// Property that stores disposables to each NavigationViewItem when their created in the ItemsRepeater,
     /// so they can be disposed when the item is removed
     /// </summary>
-    internal static readonly AttachedProperty<CompositeDisposable> NavigationViewItemRevokersProperty =
-        AvaloniaProperty.RegisterAttached<NavigationView, NavigationViewItem, CompositeDisposable>("NavigationViewItemRevokers");
+    internal static readonly AttachedProperty<FACompositeDisposable> NavigationViewItemRevokersProperty =
+        AvaloniaProperty.RegisterAttached<NavigationView, NavigationViewItem, FACompositeDisposable>("NavigationViewItemRevokers");
 
     private object _selectedItem;
-    private IEnumerable _menuItems;
-    private IEnumerable _footerMenuItems;
+    private IList<object> _menuItems;
+    private IList<object> _footerMenuItems;
     private NavigationViewDisplayMode _displayMode = NavigationViewDisplayMode.Minimal;
     private NavigationViewItem _settingsItem;
 

@@ -158,7 +158,7 @@ public partial class TaskDialog : ContentControl
 
         void UnparentDialog()
         {
-            _xamlOwner = Parent;
+            _xamlOwner = (Control)Parent;
             if (_xamlOwner is Panel p)
             {
                 _xamlOwnerChildIndex = p.Children.IndexOf(this);
@@ -207,7 +207,9 @@ public partial class TaskDialog : ContentControl
             // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
             //      items in the OverlayLayer materialize at the absolute last moment making init
             //      a very difficult task to do
-            (overlayLayer.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
+            // v2-preview6: This doesn't appear necessary anymore...will preserve this for now
+            // but has to be removed to solve GH#315
+            //(overlayLayer.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
 
             OnOpened();
 
@@ -486,7 +488,7 @@ public partial class TaskDialog : ContentControl
             buttons.Add(b);
         }
 
-        _buttonsHost.Items = buttons;
+        _buttonsHost.ItemsSource = buttons;
     }
 
     private void SetCommands()
@@ -553,7 +555,7 @@ public partial class TaskDialog : ContentControl
             }
         }
 
-        _commandsHost.Items = commands;
+        _commandsHost.ItemsSource = commands;
     }
 
     private void TrySetInitialFocus()

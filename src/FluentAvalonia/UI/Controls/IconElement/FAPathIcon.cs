@@ -186,7 +186,7 @@ public partial class FAPathIcon : FAIconElement
         if (geometry == null)
             return;
 
-        using var s = context.PushPreTransform(_transform);
+        using var s = context.PushTransform(_transform);
 
         context.DrawGeometry(Foreground, null, geometry);
     }

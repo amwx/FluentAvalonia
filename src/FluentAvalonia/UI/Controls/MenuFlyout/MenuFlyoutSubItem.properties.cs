@@ -29,7 +29,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// Defines the <see cref="Items"/> property
     /// </summary>
     public static readonly DirectProperty<MenuFlyoutSubItem, IEnumerable> ItemsProperty =
-        ItemsControl.ItemsProperty.AddOwner<MenuFlyoutSubItem>(x => x.Items,
+        FAMenuFlyout.ItemsProperty.AddOwner<MenuFlyoutSubItem>(x => x.Items,
             (x, v) => x.Items = v);
 
     /// <summary>

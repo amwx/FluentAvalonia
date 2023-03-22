@@ -2,8 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using System;
-using System.Reactive.Disposables;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -24,7 +23,7 @@ public class NavigationViewItemHeader : NavigationViewItemBase
         var splitView = GetSplitView;
         if (splitView != null)
         {
-            _splitViewRevokers = new CompositeDisposable(
+            _splitViewRevokers = new FACompositeDisposable(
                 splitView.GetPropertyChangedObservable(SplitView.IsPaneOpenProperty).Subscribe(OnSplitViewPropertyChanged),
                 splitView.GetPropertyChangedObservable(SplitView.DisplayModeProperty).Subscribe(OnSplitViewPropertyChanged));
 
