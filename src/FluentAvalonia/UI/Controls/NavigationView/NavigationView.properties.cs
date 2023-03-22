@@ -101,17 +101,20 @@ public partial class NavigationView : HeaderedContentControl
         AvaloniaProperty.RegisterDirect<NavigationView, IList<object>>(nameof(FooterMenuItems),
             x => x.FooterMenuItems);
 
+    /// <summary>
+    /// Defines the <see cref="FooterMenuItems"/> property
+    /// </summary>
     public static readonly StyledProperty<IEnumerable> FooterMenuItemsSourceProperty =
         AvaloniaProperty.Register<NavigationView, IEnumerable>(nameof(FooterMenuItemsSource));
-
-    //In WinUI, this is enum NavigationViewBackButtonVisible
-    //Visible
-    //Collapsed
-    //Auto - depends on form factor, for now, not concern
-    //So fall back to bool
+        
     /// <summary>
     /// Defines the <see cref="IsBackButtonVisible"/> property
     /// </summary>
+    /// <remarks>
+    /// In WinUI, this is an enum NavigationViewBackButtonVisible with values
+    /// Visible, Collapsed, and Auto (depends on form factor). For our purposes,
+    /// bool works just fine for now
+    /// </remarks>
     public static readonly StyledProperty<bool> IsBackButtonVisibleProperty =
         AvaloniaProperty.Register<NavigationView, bool>(nameof(IsBackButtonVisible));
 
@@ -155,6 +158,9 @@ public partial class NavigationView : HeaderedContentControl
         AvaloniaProperty.RegisterDirect<NavigationView, IList<object>>(nameof(MenuItems),
             o => o.MenuItems);
 
+    /// <summary>
+    /// Defines the <see cref="MenuItemsSource"/> property
+    /// </summary>
     public static readonly StyledProperty<IEnumerable> MenuItemsSourceProperty =
         AvaloniaProperty.Register<NavigationView, IEnumerable>(nameof(MenuItemsSource));
 
@@ -218,10 +224,12 @@ public partial class NavigationView : HeaderedContentControl
             (x, v) => x.SelectedItem = v, 
             defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
 
-    //WinUI uses an enum here, but only has Disabled/Enabled, so just use bool
     /// <summary>
     /// Defines the <see cref="SelectionFollowsFocus"/> property
     /// </summary>
+    /// <remarks>
+    /// WinUI uses an enum here, but only has Disabled/Enabled, so just use bool
+    /// </remarks>
     public static readonly StyledProperty<bool> SelectionFollowsFocusProperty =
         AvaloniaProperty.Register<NavigationView, bool>(nameof(SelectionFollowsFocus));
 
@@ -305,7 +313,7 @@ public partial class NavigationView : HeaderedContentControl
     }
 
     /// <summary>
-    /// Gets or sets the list of objects to be used as navigation items in the footer menu.
+    /// Gets the list of objects to be used as navigation items in the footer menu.
     /// </summary>
     public IList<object> FooterMenuItems
     {
@@ -313,6 +321,9 @@ public partial class NavigationView : HeaderedContentControl
         private set => SetAndRaise(FooterMenuItemsProperty, ref _footerMenuItems, value);
     }
 
+    /// <summary>
+    /// Gets or sets the object that represents the navigation items to be used in the footer menu.
+    /// </summary>
     public IEnumerable FooterMenuItemsSource
     {
         get => GetValue(FooterMenuItemsSourceProperty);
@@ -397,7 +408,7 @@ public partial class NavigationView : HeaderedContentControl
     }
 
     /// <summary>
-    /// Gets or sets the collection of menu items displayed in the NavigationView.
+    /// Gets the collection of menu items displayed in the NavigationView.
     /// </summary>
     public IList<object> MenuItems
     {
@@ -405,6 +416,9 @@ public partial class NavigationView : HeaderedContentControl
         set => SetAndRaise(MenuItemsProperty, ref _menuItems, value);
     }
 
+    /// <summary>
+    /// Gets or sets an object source used to generate the content of the NavigationView menu.
+    /// </summary>
     public IEnumerable MenuItemsSource
     {
         get => GetValue(MenuItemsSourceProperty);

@@ -58,6 +58,9 @@ public partial class NavigationViewItem
     public static readonly DirectProperty<NavigationViewItem, IList<object>> MenuItemsProperty =
         NavigationView.MenuItemsProperty.AddOwner<NavigationViewItem>(x => x.MenuItems);
 
+    /// <summary>
+    /// Defines the <see cref="MenuItemsSource"/> property
+    /// </summary>
     public static readonly StyledProperty<IEnumerable> MenuItemsSourceProperty =
         NavigationView.MenuItemsSourceProperty.AddOwner<NavigationViewItem>();
 
@@ -132,20 +135,17 @@ public partial class NavigationViewItem
     }
 
     /// <summary>
-    /// Gets or sets the collection of menu items displayed as children of the NavigationViewItem.
+    /// Gets the collection of menu items displayed as children of the NavigationViewItem.
     /// </summary>
     public IList<object> MenuItems
     {
         get => _menuItems;
         private set => SetAndRaise(MenuItemsProperty, ref _menuItems, value);
-        //{
-        //    if (SetAndRaise(MenuItemsProperty, ref _menuItems, value))
-        //    {
-        //        OnMenuItemsPropertyChanged();
-        //    }
-        //}
     }
 
+    /// <summary>
+    /// Gets or sets an object source used to generate the content of the NavigationViewItem submenu.
+    /// </summary>
     public IEnumerable MenuItemsSource
     {
         get => GetValue(MenuItemsSourceProperty);
