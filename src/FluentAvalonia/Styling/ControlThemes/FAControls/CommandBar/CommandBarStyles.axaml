@@ -5,13 +5,13 @@
     <Design.PreviewWith>
         <Border Padding="50" Width="400">
             <StackPanel>
-                <ui:CommandBar ClosedDisplayMode="Compact"
+                <ui:CommandBar ClosedDisplayMode="Compact" ItemsAlignment="Left"
 							   DefaultLabelPosition="Right">
                     <ui:CommandBar.PrimaryCommands>
-                        <ui:CommandBarButton Label="Test" Icon="Save" IsCompact="False"  />
+                        <ui:CommandBarButton Label="Test" IconSource="Save" IsCompact="False"  />
                     </ui:CommandBar.PrimaryCommands>
                     <ui:CommandBar.SecondaryCommands>
-                        <ui:CommandBarButton Label="Test" Icon="Save" IsCompact="False"  />
+                        <ui:CommandBarButton Label="Test" IconSource="Save" IsCompact="False"  />
                     </ui:CommandBar.SecondaryCommands>
                 </ui:CommandBar>
             </StackPanel>
@@ -259,6 +259,10 @@
         
         <Style Selector="^:open /template/ Button#MoreButton">
             <Setter Property="VerticalAlignment" Value="Stretch" />
+        </Style>
+
+        <Style Selector="^:itemsRight /template/ ItemsControl#PrimaryItemsControl">
+            <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
     </ControlTheme>
 </ResourceDictionary>

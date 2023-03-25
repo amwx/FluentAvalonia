@@ -4,10 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
-using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -61,7 +58,12 @@ public partial class CommandBar : ContentControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property == DefaultLabelPositionProperty)
+
+        if (change.Property == IsOpenProperty)
+        {
+            OnIsOpenedChanged(change.GetNewValue<bool>());
+        }
+        else if (change.Property == DefaultLabelPositionProperty)
         {
             var newVal = change.GetNewValue<CommandBarDefaultLabelPosition>();
             PseudoClasses.Set(s_pcLabelRight, newVal == CommandBarDefaultLabelPosition.Right);
@@ -75,11 +77,17 @@ public partial class CommandBar : ContentControl
             PseudoClasses.Set(s_pcMinimal, newVal == CommandBarClosedDisplayMode.Minimal);
             PseudoClasses.Set(s_pcHidden, newVal == CommandBarClosedDisplayMode.Hidden);
         }
+        else if (change.Property == ItemsAlignmentProperty)
+        {
+            var val = change.GetNewValue<CommandBarItemsAlignment>();
+            PseudoClasses.Set(":itemsRight", val == CommandBarItemsAlignment.Right);
+        }
     }
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        if (_isDynamicOverflowEnabled)
+        bool isDynamic = IsDynamicOverflowEnabled;
+        if (isDynamic)
         {
             if (!_moreButton.IsVisible)
                 _moreButton.IsVisible = true;
@@ -171,7 +179,7 @@ public partial class CommandBar : ContentControl
         var overflowVis = OverflowButtonVisibility;
         if (overflowVis == CommandBarOverflowButtonVisibility.Auto)
         {
-            _moreButton.IsVisible = _overflowItems != null && (_isDynamicOverflowEnabled ? _overflowItems.Count > 1 : _overflowItems.Count > 0);
+            _moreButton.IsVisible = _overflowItems != null && (isDynamic ? _overflowItems.Count > 1 : _overflowItems.Count > 0);
         }
         else
         {
@@ -211,12 +219,34 @@ public partial class CommandBar : ContentControl
         _moreButton?.Focus();
     }
 
+    private void OnIsOpenedChanged(bool newValue)
+    {
+        if (newValue)
+        {
+            OnOpening();
+
+            PseudoClasses.Set(":open", true);
+            SetElementVisualStateForOpen(true);
+
+            OnOpened();
+        }
+        else
+        {
+            OnClosing();
+
+            PseudoClasses.Set(":open", false);
+            SetElementVisualStateForOpen(false);
+
+            OnClosed();
+        }
+    }
+
     private void OnPrimaryCommandsChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         if (!_appliedTemplate)
             return;
 
-        if (_isDynamicOverflowEnabled)
+        if (IsDynamicOverflowEnabled)
         {
             // While not the most performant or best solution, we return all Overflowed items back
             // to the primary list. This probably isn't a huge deal since you probably aren't 
@@ -343,7 +373,7 @@ public partial class CommandBar : ContentControl
             _primaryItems.CollectionChanged += PrimaryItemsCollectionChanged;
             _primaryItems.AddRange(_primaryCommands);
 
-            if (_isDynamicOverflowEnabled)
+            if (IsDynamicOverflowEnabled)
             {
                 for (int i = 0; i < _primaryItems.Count; i++)
                 {
