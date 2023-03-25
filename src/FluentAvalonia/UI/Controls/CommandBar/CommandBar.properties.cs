@@ -1,9 +1,7 @@
 ﻿using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia;
 using FluentAvalonia.Core;
-using System;
 using Avalonia.Controls.Metadata;
 
 namespace FluentAvalonia.UI.Controls;
@@ -29,9 +27,8 @@ public partial class CommandBar
     /// <summary>
     /// Define the <see cref="IsOpen"/> property
     /// </summary>
-    public static readonly DirectProperty<CommandBar, bool> IsOpenProperty =
-        AvaloniaProperty.RegisterDirect<CommandBar, bool>(nameof(IsOpen),
-            x => x.IsOpen, (x, v) => x.IsOpen = v);
+    public static readonly StyledProperty<bool> IsOpenProperty =
+        AvaloniaProperty.Register<CommandBar, bool>(nameof(IsOpen));
 
     /// <summary>
     /// Defines the <see cref="ClosedDisplayMode"/> property
@@ -63,13 +60,15 @@ public partial class CommandBar
     /// Defines the <see cref="IsDynamicOverflowEnabled"/>
     /// </summary>
     public static readonly StyledProperty<bool> IsDynamicOverflowEnabledProperty =
-        AvaloniaProperty.Register<CommandBar, bool>(nameof(SecondaryCommands));
+        AvaloniaProperty.Register<CommandBar, bool>(nameof(IsDynamicOverflowEnabled),
+            defaultValue: true);
 
     /// <summary>
     /// Defines the <see cref="ItemsAlignment"/> property
     /// </summary>
-    public static readonly StyledProperty<HorizontalAlignment> ItemsAlignmentProperty =
-        AvaloniaProperty.Register<CommandBar, HorizontalAlignment>(nameof(ItemsAlignment), HorizontalAlignment.Left);
+    public static readonly StyledProperty<CommandBarItemsAlignment> ItemsAlignmentProperty =
+        AvaloniaProperty.Register<CommandBar, CommandBarItemsAlignment>(nameof(ItemsAlignment),
+            CommandBarItemsAlignment.Left);
 
     /// <summary>
     /// Defines the <see cref="DefaultLabelPosition"/> property
@@ -91,33 +90,8 @@ public partial class CommandBar
     /// </summary>
     public bool IsOpen
     {
-        get => _isOpen;
-        set
-        {
-            if (value)
-            {
-                OnOpening();
-            }
-            else
-            {
-                OnClosing();
-            }
-
-            if (SetAndRaise(IsOpenProperty, ref _isOpen, value))
-            {
-                PseudoClasses.Set(":open", value);
-                SetElementVisualStateForOpen(value);
-
-                if (value)
-                {
-                    OnOpened();
-                }
-                else
-                {
-                    OnClosed();
-                }
-            }
-        }
+        get => GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
     }
 
     /// <summary>
@@ -174,7 +148,7 @@ public partial class CommandBar
     /// This property doesn't exist in WinUI, where PrimaryCommands are always right aligned.
     /// This property gives you more flexibility to control this behavior.
     /// </remarks>
-    public HorizontalAlignment ItemsAlignment
+    public CommandBarItemsAlignment ItemsAlignment
     {
         get => GetValue(ItemsAlignmentProperty);
         set => SetValue(ItemsAlignmentProperty, value);
@@ -213,10 +187,8 @@ public partial class CommandBar
     // TODO:
     //public event TypedEventHandler<CommandBar, DynamicOverflowItemsChangingEventArgs> DynamicOverflowItemsChanging;
 
-    private bool _isOpen;
     private IAvaloniaList<ICommandBarElement> _primaryCommands;
     private IAvaloniaList<ICommandBarElement> _secondaryCommands;
-    private bool _isDynamicOverflowEnabled = true;
 
     private const string s_tpPrimaryItemsControl = "PrimaryItemsControl";
     private const string s_tpContentControl = "ContentControl";
