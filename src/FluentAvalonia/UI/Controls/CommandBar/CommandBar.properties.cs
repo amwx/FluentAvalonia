@@ -1,9 +1,7 @@
 ﻿using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia;
 using FluentAvalonia.Core;
-using System;
 using Avalonia.Controls.Metadata;
 
 namespace FluentAvalonia.UI.Controls;
