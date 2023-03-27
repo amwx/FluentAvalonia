@@ -15,14 +15,14 @@
         </ResourceDictionary>
     </Styles.Resources>
 
-    <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+    <!--<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />-->
     <StyleInclude Source="/Styling/ControlsPageBaseStyles.axaml" />
     
     <!-- set the selection color for the AvaloniaEdit boxes -->
-    <Style Selector="aedit2|TextArea">
+    <!--<Style Selector="aedit2|TextArea">
         <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
         <Setter Property="SelectionForeground" Value="{DynamicResource TextOnAccentFillColorSelectedTextBrush}" />
-    </Style>
+    </Style>-->
     
     <!-- 
          NavView style in MainView for main app navigation

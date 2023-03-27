@@ -19,6 +19,7 @@ public class PageHeaderControl : TemplatedControl
     public PageHeaderControl()
     {
         SizeChanged += OnSizeChanged;
+        ActualThemeVariantChanged += OnActualThemeVariantChanged;
     }
 
     public static readonly DirectProperty<PageHeaderControl, PageHeaderTextType> TextTypeProperty =
@@ -47,15 +48,6 @@ public class PageHeaderControl : TemplatedControl
 
         _text1 = e.NameScope.Get<Image>("TitleTextImageHost");
         UpdateTitleText();
-    }
-
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
-        if (change.Property == ActualThemeVariantProperty)
-        {
-            UpdateTitleText();
-        }
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -101,6 +93,11 @@ public class PageHeaderControl : TemplatedControl
         var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
         using var s = al.Open(new Uri($"{asset}{header}"));
         _text1.Source = new Bitmap(s);
+    }
+
+    private void OnActualThemeVariantChanged(object sender, EventArgs e)
+    {
+        UpdateTitleText();
     }
 
     private Uri _titleTextImage;

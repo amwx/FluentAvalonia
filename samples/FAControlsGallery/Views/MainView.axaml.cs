@@ -67,7 +67,7 @@ public partial class MainView : UserControl
         NavView.ItemInvoked += OnNavigationViewItemInvoked;
         NavView.BackRequested += OnNavigationViewBackRequested;
 
-        FrameView.NavigateFromObject((NavView.MenuItems.ElementAt(0) as Control).Tag);
+        FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);
     }
 
     protected override void OnLoaded()
@@ -149,8 +149,8 @@ public partial class MainView : UserControl
             }
         }
 
-        NavView.MenuItems = menuItems;
-        NavView.FooterMenuItems = footerItems;
+        NavView.MenuItemsSource = menuItems;
+        NavView.FooterMenuItemsSource = footerItems;
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -216,7 +216,7 @@ public partial class MainView : UserControl
         }
 
         bool found = false;
-        foreach (NavigationViewItem nvi in NavView.MenuItems)
+        foreach (NavigationViewItem nvi in NavView.MenuItemsSource)
         {
             if (nvi.Tag == mainPage)
             {
@@ -229,7 +229,7 @@ public partial class MainView : UserControl
 
         if (!found)
         {
-            foreach (NavigationViewItem nvi in NavView.FooterMenuItems)
+            foreach (NavigationViewItem nvi in NavView.FooterMenuItemsSource)
             {
                 if (nvi.Tag == mainPage)
                 {

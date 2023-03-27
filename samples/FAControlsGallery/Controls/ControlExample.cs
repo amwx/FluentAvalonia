@@ -193,7 +193,7 @@ public class ControlExample : HeaderedContentControl
             _moreButton.Flyout = new FAMenuFlyout
             {
                 Items = l,
-                Placement = FlyoutPlacementMode.BottomEdgeAlignedRight
+                Placement = PlacementMode.BottomEdgeAlignedRight
             };
         }
     }
