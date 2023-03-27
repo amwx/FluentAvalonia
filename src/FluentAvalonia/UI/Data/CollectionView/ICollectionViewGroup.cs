@@ -1,6 +1,4 @@
-﻿using Avalonia.Collections;
-
-namespace FluentAvalonia.UI.Data;
+﻿namespace FluentAvalonia.UI.Data;
 
 /// <summary>
 /// Represents any grouped items within a view
@@ -16,5 +14,5 @@ public interface ICollectionViewGroup
     /// <summary>
     /// Gets the collection of grouped items that this ICollectionViewGroup implementation represents
     /// </summary>
-    IAvaloniaList<object> GroupItems { get; }
+    IList<object> GroupItems { get; }
 }
