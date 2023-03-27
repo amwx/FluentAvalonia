@@ -1196,6 +1196,7 @@
             <!-- Fontsize increased from 12 - 14 since Fluent UI icons are smaller than Segoe Fluent -->
             <x:Double x:Key="AppBarButtonSecondarySubItemChevronFontSize">14</x:Double>
             <Thickness x:Key="AppBarButtonSubItemChevronMargin">-23,20,12,0</Thickness>
+            <Thickness x:Key="AppBarButtonSubItemChevronLabelOnRightMargin">-7,20,12,0</Thickness>
             <Thickness x:Key="AppBarButtonSecondarySubItemChevronMargin">0,0,16,0</Thickness>
 
 
@@ -3145,6 +3146,7 @@
             <!-- Fontsize increased from 12 - 14 since Fluent UI icons are smaller than Segoe Fluent -->
             <x:Double x:Key="AppBarButtonSecondarySubItemChevronFontSize">14</x:Double>
             <Thickness x:Key="AppBarButtonSubItemChevronMargin">-23,20,12,0</Thickness>
+            <Thickness x:Key="AppBarButtonSubItemChevronLabelOnRightMargin">-7,20,12,0</Thickness>
             <Thickness x:Key="AppBarButtonSecondarySubItemChevronMargin">0,0,16,0</Thickness>
 
 
@@ -5145,6 +5147,7 @@
             <!-- Fontsize increased from 12 - 14 since Fluent UI icons are smaller than Segoe Fluent -->
             <x:Double x:Key="AppBarButtonSecondarySubItemChevronFontSize">14</x:Double>
             <Thickness x:Key="AppBarButtonSubItemChevronMargin">-23,20,12,0</Thickness>
+            <Thickness x:Key="AppBarButtonSubItemChevronLabelOnRightMargin">-7,20,12,0</Thickness>
             <Thickness x:Key="AppBarButtonSecondarySubItemChevronMargin">0,0,16,0</Thickness>
 
 

@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup Label="Package Info">
+    <RepositoryUrl>https://github.com/amwx/FluentAvalonia</RepositoryUrl>
+    <Description>Control library focused on fluent design and bringing more WinUI controls into Avalonia </Description>
+    <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>2.0.0-preview6</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <!-- Add Package Icon -->
+  <PropertyGroup>
+    <PackageIcon>FAIcon.png</PackageIcon>
+  </PropertyGroup>
+  
+  <ItemGroup Label="PackageIcon">
+    <None Include="$(MSBuildThisFileDirectory)/../Assets/FAIcon.png" Pack="true" Visible="false" PackagePath=""/>
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)/SourceLink.props"/>
+</Project>
