@@ -7,6 +7,7 @@ using Avalonia.Styling;
 using FAControlsGallery.Pages;
 using FAControlsGallery.Services;
 using FAControlsGallery.ViewModels;
+using FAControlsGallery.ViewModels.DesignPages;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Navigation;
@@ -67,7 +68,8 @@ public partial class MainView : UserControl
         NavView.ItemInvoked += OnNavigationViewItemInvoked;
         NavView.BackRequested += OnNavigationViewBackRequested;
 
-        FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);
+        //FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);        
+        FrameView.NavigateFromObject((NavView.FooterMenuItemsSource.ElementAt(0) as Control).Tag);
     }
 
     protected override void OnLoaded()
@@ -111,6 +113,12 @@ public partial class MainView : UserControl
             {
                 NavHeader = "FA Controls",
                 IconKey = "CtrlsIcon"
+            },
+            new DesignPageViewModel
+            {
+                NavHeader = "Design",
+                IconKey = "DesignIcon",
+                ShowsInFooter = true
             },
             new SettingsPageViewModel
             {

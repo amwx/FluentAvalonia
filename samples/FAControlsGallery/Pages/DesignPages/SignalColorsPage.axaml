@@ -1,0 +1,104 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1950"
+             x:Class="FAControlsGallery.Pages.DesignPages.SignalColorsPage">
+    <StackPanel Spacing="12">
+        <ctrls:DesignColorSection Header="System"
+                                   Description="Used for accent fills on controls">
+
+            <ui:InfoBar Title="Title" IsOpen="True" 
+                        Message="This is body text."
+                        Severity="Error" />
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="System / Success"
+                                 Description="Badge"
+                                 ColorBrushName="SystemFillColorSuccessBrush"
+                                 Background="{DynamicResource SystemFillColorSuccessBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"/>
+                <ctrls:ColorTile ColorName="System / Caution"
+                                 Description="Badge"
+                                 ColorBrushName="SystemFillColorCautionBrush"
+                                 Background="{DynamicResource SystemFillColorCautionBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"/>
+                <ctrls:ColorTile ColorName="System / Critical"
+                                 Description="Badge"
+                                 ColorBrushName="SystemFillColorCriticalBrush"
+                                 Background="{DynamicResource SystemFillColorCriticalBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                 Classes="last"
+                                 Margin="0 0 0 20"/>
+
+                <ctrls:ColorTile ColorName="System / Success Background"
+                                 Description="Infobar Background"
+                                 ColorBrushName="SystemFillColorSuccessBackgroundBrush"
+                                 Background="{DynamicResource SystemFillColorSuccessBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="first"/>
+                <ctrls:ColorTile ColorName="System / Caution Background"
+                                 Description="Infobar Background"
+                                 ColorBrushName="SystemFillColorCautionBackgroundBrush"
+                                 Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="System / Critical Background"
+                                 Description="Infobar Background"
+                                 ColorBrushName="SystemFillColorCriticalBackgroundBrush"
+                                 Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="last"
+                                 Margin="0 0 0 20"/>
+
+                <ctrls:ColorTile ColorName="System / Attention"
+                                 Description="Badge"
+                                 ColorBrushName="SystemFillColorAttentionBrush"
+                                 Background="{DynamicResource SystemFillColorAttentionBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="first"/>
+                <ctrls:ColorTile ColorName="System / Neutral"
+                                 Description="Badge"
+                                 ColorBrushName="SystemFillColorNeutralBrush"
+                                 Background="{DynamicResource SystemFillColorNeutralBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True" />
+                <ctrls:ColorTile ColorName="System / Solid Neutral"
+                                 Description="Badge"
+                                 ColorBrushName="SystemFillColorSolidNeutralBrush"
+                                 Background="{DynamicResource SystemFillColorSolidNeutralBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="last" />
+
+                <ctrls:ColorTile ColorName="System / Attention Background"
+                                 Description="Infobar Background"
+                                 ColorBrushName="SystemFillColorAttentionBackgroundBrush"
+                                 Background="{DynamicResource SystemFillColorAttentionBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="first"
+                                 ShowSeparator="True" />
+                <ctrls:ColorTile ColorName="System / Neutral Background"
+                                 Description="Infobar Background"
+                                 ColorBrushName="SystemFillColorNeutralBackgroundBrush"
+                                 Background="{DynamicResource SystemFillColorNeutralBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True" />
+                <ctrls:ColorTile ColorName="System / Solid Neutral Background"
+                                 Description="Infobar Background"
+                                 ColorBrushName="SystemFillColorSolidNeutralBackgroundBrush"
+                                 Background="{DynamicResource SystemFillColorSolidNeutralBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="last"
+                                 Margin="0 0 0 20"/>
+
+                <ctrls:ColorTile ColorName="System / Solid Attention Background"
+                                 ColorBrushName="SystemFillColorSolidAttentionBackgroundBrush"
+                                 Background="{DynamicResource SystemFillColorSolidAttentionBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="single" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+    </StackPanel>
+</UserControl>

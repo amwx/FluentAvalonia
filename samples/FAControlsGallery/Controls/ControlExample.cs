@@ -238,14 +238,10 @@ public class ControlExample : HeaderedContentControl
         if (theme == ThemeVariant.Light)
         {
             _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Dark;
-            // Hack force resource invalidation as that doesn't seem to want to happen
-            // the first time toggle theme is set
-            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
         }
         else
         {
             _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Light;
-            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
         }
     }
 

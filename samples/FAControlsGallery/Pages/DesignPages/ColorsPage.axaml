@@ -1,0 +1,123 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1450"
+             x:Class="FAControlsGallery.Pages.DesignPages.ColorsPage">
+
+    <UserControl.Resources>
+        <ControlTheme x:Key="Tab"
+                      TargetType="TabStripItem">
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+            <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+            <Setter Property="BorderThickness" Value="0 1" />
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <ui:FABorder BackgroundSizing="InnerBorderEdge" 
+                                     Background="{TemplateBinding Background}"
+                                     BorderBrush="{TemplateBinding BorderBrush}"
+                                     BorderThickness="{TemplateBinding BorderThickness}"
+                                     Name="LayoutRoot">
+                            <ui:FABorder.Transitions>
+                                <Transitions>
+                                    <BrushTransition Property="Background"
+                                                     Duration="00:00:00.25"
+                                                     Easing="0,0 0,1"/>
+                                </Transitions>
+                            </ui:FABorder.Transitions>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </ui:FABorder>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^.left /template/ ui|FABorder#LayoutRoot">
+                <Setter Property="CornerRadius" Value="4 0 0 4" />
+                <Setter Property="BorderThickness" Value="1 1 0 1" />
+            </Style>
+            <Style Selector="^.right /template/ ui|FABorder#LayoutRoot">
+                <Setter Property="CornerRadius" Value="0 4 4 0" />
+                <Setter Property="BorderThickness" Value="0 1 1 1" />
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ui|FABorder#LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+            </Style>
+            <Style Selector="^:pressed /template/ ui|FABorder#LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+            </Style>
+
+            <Style Selector="^:selected">
+                <Style Selector="^ /template/ ui|FABorder#LayoutRoot">
+                    <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorOnAccentDefaultBrush}" />
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                </Style>
+
+                <Style Selector="^:pointerover /template/ ui|FABorder#LayoutRoot">
+                    <Setter Property="Background" Value="{DynamicResource AccentFillColorSecondaryBrush}" />
+                </Style>
+                <Style Selector="^:pressed /template/ ui|FABorder#LayoutRoot">
+                    <Setter Property="Background" Value="{DynamicResource AccentFillColorTertiaryBrush}" />
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource TextOnAccentFillColorSecondaryBrush}" />
+                </Style>
+            </Style>
+        </ControlTheme>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="ctrls|ControlExample">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+        <TextBlock Text="Colors in Fluent v2"
+                   Theme="{StaticResource BodyStrongTextBlockStyle}" />
+        <TextBlock TextWrapping="Wrap" Grid.Row="1">
+            <Run>
+                The colors below are provided as part of WinUI 3. You can reference them in your app using markup bindings. For example:
+            </Run>
+            <Run>
+                Color="{DynamicResource TextFillColorPrimary}"
+            </Run>
+            <LineBreak />
+            <Run>
+                or its corresponding brush
+            </Run>
+            <LineBreak />
+            <Run>
+                Background="{DynamicResource TextFillColorPrimaryBrush}"
+            </Run>
+        </TextBlock>
+
+        <TabStrip Grid.Row="2"
+                  ItemContainerTheme="{StaticResource Tab}"
+                  Margin="0 12"
+                  Name="TabHost">
+            <TabStripItem Content="Text" Classes="left" />
+            <TabStripItem Content="Fill" />
+            <TabStripItem Content="Stroke" />
+            <TabStripItem Content="Background" />
+            <TabStripItem Content="Signal" Classes="right" />
+        </TabStrip>
+
+        <ui:Frame Grid.Row="3" Name="ColorsPageFrame"
+                  IsNavigationStackEnabled="False">
+            
+        </ui:Frame>
+    </Grid>
+    
+</UserControl>

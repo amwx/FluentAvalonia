@@ -2,16 +2,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FAControlsGallery.Pages.DesignPage">
 
-    <TabControl>
-        <TabItem Header="Icons">
-            
-        </TabItem>
-        <TabItem Header="Colors">
-            
-        </TabItem>
-    </TabControl>
+    <UserControl.Resources>
+        <ControlTheme x:Key="TabItemStyle"
+                      TargetType="TabStripItem"
+                      BasedOn="{StaticResource {x:Type TabStripItem}}">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PART_LayoutRoot"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{Binding $parent[TabStripItem].Background}">
+                        <Panel>
+                            <Viewbox Width="30"
+                                     Height="30"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Margin="8 0">
+                                <ui:IconSourceElement IconSource="{TemplateBinding Tag}" />
+                            </Viewbox>
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              FontFamily="{TemplateBinding FontFamily}"
+                                              FontSize="{TemplateBinding FontSize}"
+                                              FontWeight="{TemplateBinding FontWeight}"
+                                              Margin="48 0 0 0"/>
+                            <Rectangle Name="PART_SelectedPipe"
+                                       Fill="{DynamicResource AccentFillColorDefaultBrush}"
+                                       RadiusX="2"
+                                       RadiusY="2"
+                                       VerticalAlignment="Bottom"
+                                       IsVisible="False"
+                                       Height="{DynamicResource TabItemPipeThickness}"
+                                       Margin="0 0 0 2"
+                                       HorizontalAlignment="Stretch"/>
+                        </Panel>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+    </UserControl.Resources>
+
+    <Panel>
+        <TabStrip ItemContainerTheme="{StaticResource TabItemStyle}"
+                  Name="TabStrip1"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  ZIndex="100">
+            <TabStripItem Content="Typography">
+                <TabStripItem.Tag>
+                    <ui:SymbolIconSource Symbol="EditFilled" />
+                </TabStripItem.Tag>
+            </TabStripItem>
+            <TabStripItem Content="Icons">
+                <TabStripItem.Tag>
+                    <ui:SymbolIconSource Symbol="IconsFilled" />
+                </TabStripItem.Tag>
+            </TabStripItem>
+            <TabStripItem Content="Colors">
+                <TabStripItem.Tag>
+                    <ui:SymbolIconSource Symbol="ColorFillFilled" />
+                </TabStripItem.Tag>
+            </TabStripItem>
+        </TabStrip>
+
+        <ui:Frame Name="InnerNavFrame" />
+    </Panel>
     
 </UserControl>

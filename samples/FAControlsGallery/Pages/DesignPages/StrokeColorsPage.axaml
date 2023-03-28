@@ -1,0 +1,237 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="4450"
+             x:Class="FAControlsGallery.Pages.DesignPages.StrokeColorsPage">
+    <StackPanel Spacing="12">
+        <ctrls:DesignColorSection Header="Control Elevation (gradient strokes)"
+                                  Description="Used for standard control strokes and stroke states">
+
+            <Button HorizontalAlignment="Center"
+                    Content="Text" />
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control / Border"
+                                 Description="Rest"
+                                 ColorBrushName="ControlElevationBorderBrush"
+                                 Background="{DynamicResource ControlElevationBorderBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Margin="0 5"
+                                 Classes="single"/>
+                <ctrls:ColorTile ColorName="Circle / Border"
+                                 Description="Rest"
+                                 ColorBrushName="CircleElevationBorderBrush"
+                                 Background="{DynamicResource CircleElevationBorderBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Margin="0 5"
+                                 Classes="single" />
+                <ctrls:ColorTile ColorName="Text Control / Border"
+                                 Description="Rest"
+                                 ColorBrushName="TextControlElevationBorderBrush"
+                                 Background="{DynamicResource TextControlElevationBorderBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Margin="0 5"
+                                 Classes="single" />
+                <ctrls:ColorTile ColorName="Text Control / Border Focused"
+                                 Description="Rest"
+                                 ColorBrushName="TextControlElevationBorderFocusedBrush"
+                                 Background="{DynamicResource TextControlElevationBorderFocusedBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Margin="0 5"
+                                 Classes="single"/>
+                <ctrls:ColorTile ColorName="Accent Control / Border"
+                                 Description="Rest"
+                                 ColorBrushName="AccentControlElevationBorderBrush"
+                                 Background="{DynamicResource AccentControlElevationBorderBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Margin="0 5"
+                                 Classes="single"/>                
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Control Stroke"
+                                  Description="Used for gradient stops in elevation borders, and for control states">
+
+            <Button HorizontalAlignment="Center"
+                    Content="Text" />
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control Stroke / Default"
+                                 Description="Used in Control Elevation Brushes. Pressed or Disabled"
+                                 ColorBrushName="ControlStrokeColorDefaultBrush"
+                                 Background="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control Stroke / Secondary"
+                                 Description="Used in Control Elevation Brushes"
+                                 ColorBrushName="ControlStrokeColorSecondaryBrush"
+                                 Background="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="last"
+                                 Margin="0 20 0 0"/>
+
+                <ctrls:ColorTile ColorName="Control Stroke / On Accent Default"
+                                 Description="Used in Control Elevation Brushes. Pressed or Disabled"
+                                 ColorBrushName="ControlStrokeColorSecondaryBrush"
+                                 Background="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="first"/>
+                <ctrls:ColorTile ColorName="Control Stroke / On Accent Secondary"
+                                 Description="Used in Control Elevation Brushes"
+                                 ColorBrushName="ControlStrokeColorOnAccentSecondaryBrush"
+                                 Background="{DynamicResource ControlStrokeColorOnAccentSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True" />                
+                <ctrls:ColorTile ColorName="Control Stroke / On Accent Tertiary"
+                                 Description="Linework on Accent controls, i.e., dividers"
+                                 ColorBrushName="ControlStrokeColorOnAccentTertiaryBrush"
+                                 Background="{DynamicResource ControlStrokeColorOnAccentTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True" />
+                <ctrls:ColorTile ColorName="Control Stroke / On Accent Disabled"
+                                 Description="Disabled"
+                                 ColorBrushName="ControlStrokeColorOnAccentDisabledBrush"
+                                 Background="{DynamicResource ControlStrokeColorOnAccentDisabledBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="last"/>
+
+                <ctrls:ColorTile ColorName="Control Stroke / For Strong Fill When On Image"
+                                 Description="When used with a 'strong' fill color, ensures a 3:1 contrast on any background"
+                                 ColorBrushName="ControlStrokeColorForStrongFillWhenOnImageBrush"
+                                 Background="{DynamicResource ControlStrokeColorForStrongFillWhenOnImageBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="single"
+                                 Margin="0 20 0 0"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Card Stroke"
+                                  Description="Used for card and layer colors">
+
+            <ComboBox HorizontalAlignment="Center"
+                      Width="95"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Card Stroke / Default"
+                                 Description="Card layer and strokes"
+                                 ColorBrushName="CardStrokeColorDefaultBrush"
+                                 Background="{DynamicResource CardStrokeColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Card Stroke / Default Solid"
+                                 Description="Solid equivalent of Card Stroke / Default. Used in command bar for expanded states"
+                                 ColorBrushName="CardStrokeColorDefaultSolidBrush"
+                                 Background="{DynamicResource CardStrokeColorDefaultSolidBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Control Strong Stroke"
+                                  Description="Used for control strokes that must meet contrast ratio requirements of 3:1">
+
+            <ToggleSwitch OffContent="" OnContent=""
+                          HorizontalAlignment="Center"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control Strong Stroke / Default"
+                                 Description="3:1 control border"
+                                 ColorBrushName="ControlStrongStrokeColorDefaultBrush"
+                                 Background="{DynamicResource ControlStrongStrokeColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Control Strong Stroke / Disabled"
+                                 Description="Disabled"
+                                 ColorBrushName="ControlStrongStrokeColorDisabledBrush"
+                                 Background="{DynamicResource ControlStrongStrokeColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Surface Stroke"
+                                  Description="Used for strokes on background surfaces, i.e., flyouts, windows, dialogs">
+
+            <Border Width="120" Height="40"
+                    Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"
+                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource OverlayCornerRadius}" />
+
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Surface Stroke / Default"
+                                 Description="Window and dialog borders, theme inverse"
+                                 ColorBrushName="SurfaceStrokeColorDefaultBrush"
+                                 Background="{DynamicResource SurfaceStrokeColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Surface Stroke / Flyout"
+                                 Description="Control flyouts, always dark"
+                                 ColorBrushName="SurfaceStrokeColorFlyoutBrush"
+                                 Background="{DynamicResource SurfaceStrokeColorFlyoutBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Divider Stroke"
+                                  Description="Used for divider and graphic lines. Theme inverse: dark in light theme and light in dark theme">
+
+            <Border Width="120" Height="40"
+                    Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"
+                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource OverlayCornerRadius}">
+                <Border Width="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Stretch"
+                        Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
+            </Border>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Divider Stroke / Default"
+                                 Description="Content dividers"
+                                 ColorBrushName="DividerStrokeColorDefaultBrush"
+                                 Background="{DynamicResource DividerStrokeColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Focus Stroke"
+                                  Description="Colors used for focus adorners">
+
+            <Panel HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Width="90">
+                <Border BorderBrush="{DynamicResource FocusStrokeColorOuterBrush}"
+                        BorderThickness="2"
+                        CornerRadius="10">
+                    <Border BorderBrush="{DynamicResource FocusStrokeColorInnerBrush}"
+                            BorderThickness="2"
+                            CornerRadius="9">
+                        <Button Content="Text"
+                                HorizontalAlignment="Stretch"/>
+                    </Border>
+                </Border>
+            </Panel>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Focus / Outer"
+                                 Description="Outer stroke color"
+                                 ColorBrushName="FocusStrokeColorOuterBrush"
+                                 Background="{DynamicResource FocusStrokeColorOuterBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Focus / Inner"
+                                 Description="Inner stroke color"
+                                 ColorBrushName="FocusStrokeColorInnerBrush"
+                                 Background="{DynamicResource FocusStrokeColorInnerBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" 
+                                 Warning="Not currently used in FluentAvalonia"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+    </StackPanel>
+</UserControl>

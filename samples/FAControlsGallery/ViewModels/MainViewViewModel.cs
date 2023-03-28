@@ -2,6 +2,7 @@
 using Avalonia.Collections;
 using Avalonia.Controls;
 using FAControlsGallery.Pages;
+using FAControlsGallery.ViewModels.DesignPages;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.ViewModels;
@@ -147,6 +148,13 @@ public class NavigationFactory : INavigationPageFactory
         else if (target is FAControlsOverviewPageViewModel)
         {
             return new FAControlsOverviewPage
+            {
+                DataContext = target
+            };
+        }
+        else if (target is DesignPageViewModel)
+        {
+            return new DesignPage
             {
                 DataContext = target
             };

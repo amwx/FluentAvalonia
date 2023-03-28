@@ -1,0 +1,121 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1950"
+             x:Class="FAControlsGallery.Pages.DesignPages.TextColorsPage">
+
+    <StackPanel Spacing="12">
+        <ctrls:DesignColorSection Header="Text"
+                                  Description="For UI labels and static text">
+
+            <TextBlock Text="Aa"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                       Theme="{StaticResource TitleTextBlockStyle}"
+                       HorizontalAlignment="Center" />
+            
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Text / Primary"
+                                 Description="Rest or Hover"
+                                 ColorBrushName="TextFillColorPrimaryBrush"
+                                 Background="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Text / Secondary"
+                                 Description="Rest or Hover"
+                                 ColorBrushName="TextFillColorSecondaryBrush"
+                                 Background="{DynamicResource TextFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Text / Tertiary"
+                                 Description="Rest or Hover"
+                                 ColorBrushName="TextFillColorTertiaryBrush"
+                                 Background="{DynamicResource TextFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Text / Disabled"
+                                 Description="Disabled only (not accessible)"
+                                 ColorBrushName="TextFillColorDisabledBrush"
+                                 Background="{DynamicResource TextFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+            
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Accent Text"
+                                  Description="Recommended for links">
+
+            <TextBlock Text="Aa"
+                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                       Theme="{StaticResource TitleTextBlockStyle}"
+                       HorizontalAlignment="Center" />
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Accent Text / Primary"
+                                 Description="Rest or Hover"
+                                 ColorBrushName="AccentTextFillColorPrimaryBrush"
+                                 Background="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Accent Text / Secondary"
+                                 Description="Rest or Hover"
+                                 ColorBrushName="AccentTextFillColorSecondaryBrush"
+                                 Background="{DynamicResource AccentTextFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Accent Text / Tertiary"
+                                 Description="Pressed only (not accessible)"
+                                 ColorBrushName="AccentTextFillColorTertiaryBrush"
+                                 Background="{DynamicResource AccentTextFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Accent Text / Disabled"
+                                 Description="Disabled only (not accessible)"
+                                 ColorBrushName="AccentTextFillColorDisabledBrush"
+                                 Background="{DynamicResource AccentTextFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+
+        <ctrls:DesignColorSection Header="Text On Accent"
+                                  Description="Used for text on accent colored controls or fills">
+
+            <Border Background="{DynamicResource AccentFillColorDefaultBrush}"
+                    HorizontalAlignment="Center"
+                    Padding="32 16"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+                <TextBlock Text="Aa"
+                           Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                           Theme="{StaticResource TitleTextBlockStyle}" />
+            </Border>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Text On Accent / Primary"
+                                 Description="Rest or Hover"
+                                 ColorBrushName="TextOnAccentFillColorPrimaryBrush"
+                                 Background="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimary}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Text On Accent / Secondary"
+                                 Description="Pressed only (not accessible)"
+                                 ColorBrushName="TextOnAccentFillColorSecondaryBrush"
+                                 Background="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimary}"/>
+                <ctrls:ColorTile ColorName="Text On Accent / Disabled"
+                                 Description="Disabled only (not accessible)"
+                                 ColorBrushName="TextOnAccentFillColorDisabledBrush"
+                                 Background="{DynamicResource TextOnAccentFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                 Margin="0 0 0 20"
+                                 Classes="last"/>
+
+                <ctrls:ColorTile ColorName="Text on Accent / Selected Text"
+                                 Description="For highlighted text in text entry experiences"
+                                 ColorBrushName="TextOnAccentFillColorSelectedTextBrush"
+                                 Background="{DynamicResource TextOnAccentFillColorSelectedTextBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                 Classes="single"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+    </StackPanel>
+    
+</UserControl>

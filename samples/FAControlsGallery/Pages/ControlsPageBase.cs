@@ -122,11 +122,16 @@ public class ControlsPageBase : UserControl, IStyleable
 
     Type IStyleable.StyleKey => typeof(ControlsPageBase);
 
+    protected ThemeVariantScope ThemeScopeProvider { get; private set; }
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
 
         PseudoClasses.Set(":namespace", ControlNamespace != null);
+        PseudoClasses.Set(":winuiNamespace", WinUINamespace != null);
+
+        ThemeScopeProvider = e.NameScope.Find<ThemeVariantScope>("ThemeScopeProvider");
 
         _optionsHost = e.NameScope.Find<StackPanel>("OptionsRegion");
         _detailsPanel = e.NameScope.Find<Panel>("PageDetails");
@@ -291,7 +296,7 @@ public class ControlsPageBase : UserControl, IStyleable
         ec.ImplicitAnimations = ani;
     }
 
-    private void ToggleThemeButtonClick(object sender, RoutedEventArgs e)
+    protected virtual void ToggleThemeButtonClick(object sender, RoutedEventArgs e)
     {
         var examples = this.GetVisualDescendants()
             .OfType<ControlExample>();

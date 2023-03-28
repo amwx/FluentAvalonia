@@ -11,6 +11,7 @@
                 <ResourceInclude Source="/Styling/ControlThemes.axaml" />
                 <ResourceInclude Source="/Styling/ControlExampleStyles.axaml" />
                 <ResourceInclude Source="/Styling/ControlDefinitionOverlayStyles.axaml" />
+                <ResourceInclude Source="/Styling/ColorTileStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
