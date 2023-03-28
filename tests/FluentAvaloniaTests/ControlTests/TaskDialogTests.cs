@@ -1,4 +1,5 @@
 ﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -27,7 +28,7 @@ public class TaskDialogTestContext : IDisposable
 
     public TestRoot Root { get; private set; }
 
-    public IVisual VisualRoot { get; private set; }
+    public Visual VisualRoot { get; private set; }
 
     private void Setup()
     {
@@ -36,7 +37,7 @@ public class TaskDialogTestContext : IDisposable
         Root.Child = vlm;
 
         VisualRoot = new Decorator();
-        vlm.Child = VisualRoot as IControl;
+        vlm.Child = VisualRoot as Control;
         
         Root.StylingParent = UnitTestApplication.Current;
         

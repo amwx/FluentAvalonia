@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Input;
-using Avalonia.Input.Raw;
+using Avalonia.Reactive;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using FluentAvalonia.Styling;
@@ -17,7 +16,7 @@ public class UnitTestApplication : Application
     {
         LoadCoreStyles = loadCoreStyles;
         AvaloniaLocator.CurrentMutable.BindToSelf<Application>(this);
-        RegisterServices();            
+        RegisterServices();
     }
 
     static UnitTestApplication()
@@ -45,7 +44,6 @@ public class UnitTestApplication : Application
     {
         AvaloniaLocator.CurrentMutable
             .Bind<IAssetLoader>().ToConstant(new AssetLoader())
-            .Bind<IStyler>().ToConstant(new Styler())
             .BindToSelf<IGlobalStyles>(this)
             .Bind<IFontManagerImpl>().ToConstant(new MockFontManager())
             .Bind<ITextShaperImpl>().ToConstant(new MockTextShaper())

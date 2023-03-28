@@ -48,13 +48,12 @@ public class NavViewTestContext : IDisposable
         //UnitTestApplication.Current.Styles.Add(
         //   (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/BasicControls/ButtonStyles.axaml")));
 
-
         var navView = new NavigationView()
         {
-            MenuItems = new List<NavigationViewItemBase>()
+            MenuItems = new List<object>()
             {
-                new NavigationViewItem { Content = "MenuItem 1", Icon = new SymbolIcon { Symbol = Symbol.Cut }},
-                new NavigationViewItem { Content = "MenuItem 2", Icon = new SymbolIcon { Symbol = Symbol.Copy }},
+                new NavigationViewItem { Content = "MenuItem 1", IconSource = new SymbolIconSource { Symbol = Symbol.Cut }},
+                new NavigationViewItem { Content = "MenuItem 2", IconSource = new SymbolIconSource { Symbol = Symbol.Copy }},
             }
         };
 
@@ -105,7 +104,7 @@ public class NavigationViewTests : IClassFixture<NavViewTestContext>
             closed = true;
         }
 
-        
+
 
         var navView = Context.NavigationView;
 
@@ -189,5 +188,5 @@ public class NavigationViewTests : IClassFixture<NavViewTestContext>
         navView.ItemInvoked -= ItemInvoked;
     }
 
-    
+
 }

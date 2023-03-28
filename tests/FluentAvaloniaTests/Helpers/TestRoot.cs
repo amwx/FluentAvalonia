@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Input.Raw;
 using Avalonia.Layout;
 using Avalonia.LogicalTree;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Styling;
-using Avalonia.VisualTree;
-using Moq;
 
 namespace FluentAvaloniaTests;
 
@@ -60,53 +58,48 @@ public class TestRoot : Decorator, IFocusScope, ILayoutRoot, IInputRoot, IRender
 
 public class MockRenderer : IRenderer
 {
-    public bool DrawFps { get; set; }
-    public bool DrawDirtyRects { get; set; }
+    public RendererDiagnostics Diagnostics { get; } = new();
 
-    public event EventHandler<SceneInvalidatedEventArgs> SceneInvalidated;
+    public event EventHandler<SceneInvalidatedEventArgs>? SceneInvalidated;
 
-    public void AddDirty(IVisual visual)
+    public MockRenderer()
     {
+    }
 
+    public void AddDirty(Visual visual)
+    {
     }
 
     public void Dispose()
     {
-
     }
 
-    public IEnumerable<IVisual> HitTest(Point p, IVisual root, Func<IVisual, bool> filter)
-    {
-        return root.Bounds.Contains(p) ? new IVisual[] { root } : new IVisual[0];
-    }
+    public IEnumerable<Visual> HitTest(Point p, Visual root, Func<Visual, bool> filter)
+        => Enumerable.Empty<Visual>();
 
-    public IVisual HitTestFirst(Point p, IVisual root, Func<IVisual, bool> filter)
-    {
-        return HitTest(p, root, filter).FirstOrDefault();
-    }
+    public Visual? HitTestFirst(Point p, Visual root, Func<Visual, bool> filter)
+        => null;
 
     public void Paint(Rect rect)
     {
-
     }
 
-    public void RecalculateChildren(IVisual visual)
+    public void RecalculateChildren(Visual visual)
     {
-
     }
 
     public void Resized(Size size)
     {
-
     }
 
     public void Start()
     {
-
     }
 
     public void Stop()
     {
-
     }
+
+    public ValueTask<object?> TryGetRenderInterfaceFeature(Type featureType)
+        => new((object?)null);
 }

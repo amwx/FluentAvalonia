@@ -1,4 +1,5 @@
 ﻿using Avalonia.Collections;
+using Avalonia.Data;
 using FluentAvalonia.UI.Data;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -51,7 +52,7 @@ public class CollectionViewSourceTests
 		var cvs = new CollectionViewSource();
 		cvs.Source = groups;
 		cvs.IsSourceGrouped = true;
-		cvs.ItemsPath = "Items";
+		cvs.ItemsBinding = new Binding("Items");
 
 		Assert.NotNull(cvs.View);
 		Assert.Equal(10, cvs.View.Count);
@@ -248,7 +249,7 @@ public class CollectionViewSourceTests
 
 		try
 		{
-			var isv = new Avalonia.Controls.ItemsSourceView(cvs.View);
+			var isv = Avalonia.Controls.ItemsSourceView.GetOrCreate(cvs.View);
 			Assert.True(true);
 		}
 		catch
