@@ -1098,6 +1098,13 @@ public partial class TeachingTip : ContentControl
                 // We have to do this so styles inherit 
                 ((ISetLogicalParent)_popup).SetParent(_target ?? (Control)VisualRoot);
 
+                // HACK
+                if (_repositionOnNextOpen)
+                {
+                    _repositionOnNextOpen = false;
+                    PositionPopup();
+                }
+
                 if (!_popup.IsOpen)
                 {
                     // We are about to begin the process of trying to open the teaching tip, so notify that we are no longer idle.
@@ -1150,6 +1157,8 @@ public partial class TeachingTip : ContentControl
                     SetIsIdle(true);
                 }
             }
+
+            ((ISetLogicalParent)_popup).SetParent(null);
         }
 
         _acceleratorKeyActivatedRevoker?.Dispose();
@@ -1595,6 +1604,14 @@ public partial class TeachingTip : ContentControl
                 SetViewportChangedEvent(_target);
             }
             PositionPopup();
+        }
+        else
+        {
+            // HACK: if the target is changed when the teaching tip is closed, it won't open at the new target
+            //       Not sure how WinUI handles this, or if its a bug in general, so I'm just tacking this
+            //       hack fix in here to get around this until I can look into this more
+            _repositionOnNextOpen = true;
+            _currentTargetBoundsInCoreWindowSpace = default;
         }
     }
 
@@ -2363,6 +2380,9 @@ public partial class TeachingTip : ContentControl
     private bool _ignoreNextIsOpenChanged;
     private bool _isTemplateApplied;
     private bool _createNewPopupOnOpen;
+
+    // HACK
+    private bool _repositionOnNextOpen;
 
     private bool _isExpandAnimationPlaying;
     private bool _isContractAnimationPlaying;
