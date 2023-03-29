@@ -16,5 +16,6 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .LogToTrace();
+            .LogToTrace()
+            .With(new Win32PlatformOptions { OverlayPopups = true });
 }
