@@ -223,7 +223,7 @@ public class ControlExample : HeaderedContentControl
                     var defItem = new MenuFlyoutItem
                     {
                         Text = "Show Definition",
-                        IconSource = new SymbolIconSource { Symbol = Symbol.CodeFilled }
+                        IconSource = new SymbolIconSource { Symbol = Symbol.Code }
                     };
 
                     defItem.Click += ShowControlDefintion;
