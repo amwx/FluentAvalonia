@@ -162,14 +162,14 @@
                     </Panel>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
                                   Padding="{DynamicResource SampleAppPageMargin}"
                                   Name="PageScroller">
-                        <StackPanel Margin="0 0 0 20" Spacing="8">
-                            
-                            
+                        <DockPanel Margin="0 0 0 20">
                             <TextBlock Text="{TemplateBinding Description}"
-                                       TextWrapping="Wrap"/>
+                                       TextWrapping="Wrap"
+                                       DockPanel.Dock="Top"
+                                       Margin="0 0 0 8" />
                             
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -178,7 +178,7 @@
                                               HorizontalAlignment="Stretch"
                                               VerticalAlignment="Stretch"
                                               Name="PART_ContentPresenter" />
-                        </StackPanel>
+                        </DockPanel>
                     </ScrollViewer>
                 </DockPanel>
             </ControlTemplate>

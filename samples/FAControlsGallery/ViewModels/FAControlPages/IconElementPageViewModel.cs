@@ -1,36 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using System.Reflection;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.ViewModels;
 
 public class IconElementPageViewModel : ViewModelBase
 {
-    public IList<SymbolItem> Symbols
+    public Task<List<SymbolItem>> Symbols => GetSymbols();
+
+    private async Task<List<SymbolItem>> GetSymbols()
     {
-        get
-        {
-            if (_symbols == null)
-            {
-                if (Design.IsDesignMode)
-                    LoadSymbols();
-                else
-                    LoadSymbolsAsync();
-            }
-
-            return _symbols;
-        }
-    }
-
-    private async void LoadSymbolsAsync()
-    {
-        var symbols = Enum.GetValues<Symbol>();
-
-        var result = await Task.Run(() =>
+        return await Task.Run(() =>
         {
             var symbols = Enum.GetValues<Symbol>();
             var symbolList = new List<SymbolItem>(symbols.Length);
@@ -39,59 +18,67 @@ public class IconElementPageViewModel : ViewModelBase
             for (int i = 0; i < symbols.Length; i++)
             {
                 var str = symbols[i].ToString();
-                if (str.Contains("Filled"))
-                    continue;
 
                 var field = type.GetField(str);
                 if (field.GetCustomAttribute<ObsoleteAttribute>() == null)
                 {
-                    symbolList.Add(new SymbolItem
-                    {
-                        Symbol = str,
-                        SymbolFilled = Enum.TryParse(str + "Filled", out Symbol res) ? res.ToString() : null
-                    });
+                    symbolList.Add(new SymbolItem(str, (int)symbols[i]));
                 }
             }
 
-            return symbolList.OrderBy(x => x.Symbol.Substring(0, 1).ToUpper()).ToList();
+            symbolList.Sort();
 
+            return symbolList;
         });
-
-        _symbols = result;
-        RaisePropertyChanged(nameof(Symbols));
     }
 
-    private void LoadSymbols()
+    public string FilterText
     {
-        var symbols = Enum.GetValues<Symbol>();
-        var symbolList = new List<SymbolItem>(symbols.Length);
-
-        var type = typeof(Symbol);
-        for (int i = 0; i < symbols.Length; i++)
+        get => _filterText;
+        set
         {
-            var str = symbols[i].ToString();
-            if (str.Contains("Filled"))
-                continue;
-
-            var field = type.GetField(str);
-            if (field.GetCustomAttribute<ObsoleteAttribute>() == null)
+            if (RaiseAndSetIfChanged(ref _filterText, value))
             {
-                symbolList.Add(new SymbolItem
-                {
-                    Symbol = str,
-                    SymbolFilled = Enum.TryParse(str + "Filled", out Symbol res) ? res.ToString() : null
-                });
+                RaisePropertyChanged(nameof(Filter));
             }
         }
-        _symbols = symbolList.OrderBy(x => x.Symbol.Substring(0, 1).ToUpper()).ToList();
-        RaisePropertyChanged(nameof(Symbols));
     }
 
-    private IList<SymbolItem> _symbols;
+    public Predicate<object> Filter
+    {
+        get
+        {
+            return obj =>
+            {
+                if (string.IsNullOrEmpty(_filterText))
+                    return true;
+
+                return obj is SymbolItem si && si.Symbol.Contains(_filterText, StringComparison.OrdinalIgnoreCase);
+            };
+        }
+    }
+
+    private string _filterText;
 }
 
-public class SymbolItem
+public class SymbolItem : IComparable<SymbolItem>
 {
+    public SymbolItem(string name, int value)
+    {
+        Symbol = name;
+        Glyph = char.ConvertFromUtf32(value).ToString();
+
+        UnicodePoint = Convert.ToString(value, 16).ToUpper();
+    }
+
     public string Symbol { get; set; }
-    public string SymbolFilled { get; set; }
+
+    public string Glyph { get; set; }
+
+    public string UnicodePoint { get; }
+
+    public int CompareTo(SymbolItem other)
+    {
+        return Symbol.CompareTo(other.Symbol);
+    }
 }

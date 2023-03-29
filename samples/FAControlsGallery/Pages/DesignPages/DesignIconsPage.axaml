@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:data="using:FluentAvalonia.UI.Data"
+             xmlns:vm="using:FAControlsGallery.ViewModels.DesignPages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1450"
+             x:Class="FAControlsGallery.Pages.DesignPages.DesignIconsPage"
+             x:DataType="vm:DesignIconsPageViewModel"
+             x:CompileBindings="False"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
+    <UserControl.Resources>
+        <data:CollectionViewSource Source="{Binding Icons^}"
+                                   Filter="{Binding Filter}"
+                                   x:Key="IconsSource"/>
+
+        <ControlTheme TargetType="ListBoxItem"
+                      x:Key="IconItem">
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ui:FABorder Background="{TemplateBinding Background}"
+                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                 Padding="{TemplateBinding Padding}"
+                                 CornerRadius="{TemplateBinding CornerRadius}"
+                                 ToolTip.Tip="{Binding Name}">
+                        <Panel x:DataType="vm:FontIconInfo">
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         Glyph="{Binding Glyph}"
+                                         FontSize="28"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"/>
+
+                            <TextBlock Text="{Binding Name}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       VerticalAlignment="Bottom"
+                                       HorizontalAlignment="Center"
+                                       Theme="{StaticResource CaptionTextBlockStyle}"
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </Panel>
+                    </ui:FABorder>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:selected /template/ ui|FABorder">
+                <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+            </Style>
+        </ControlTheme>
+
+        <ControlTheme x:Key="CopyTextBlock"
+                      TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Margin" Value="0 0 0 12" />
+            <Setter Property="FontFamily" Value="Cascadia Code, sans-serif" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </ControlTheme>
+    </UserControl.Resources>
+    
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
+        <TextBlock Name="Description1" TextWrapping="Wrap" />
+        <TextBlock Name="Description2" Grid.Row="1" TextWrapping="Wrap"/>
+        <TextBlock Text="Fluent Icon Library"
+                   Grid.Row="2"
+                   Margin="0 18 0 0"
+                   Theme="{StaticResource BodyStrongTextBlockStyle}"/>
+        <TextBox Text="{Binding FilterText}"
+                 Grid.Row="3"
+                 MinWidth="170"
+                 HorizontalAlignment="Right"
+                 Watermark="Search Icons"
+                 Margin="12">
+            <TextBox.InnerRightContent>
+                <ui:SymbolIcon Symbol="Find"
+                               Margin="8 0"
+                               FontSize="18"/>
+            </TextBox.InnerRightContent>
+        </TextBox>
+
+        <ScrollViewer VerticalScrollBarVisibility="Visible"
+                      Grid.Row="4">
+            <ItemsRepeater Grid.Row="4" 
+                           Items="{Binding Source={StaticResource IconsSource}, Path=View}"
+                           Name="IconPreview">
+                <ItemsRepeater.Layout>
+                    <WrapLayout />
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate DataType="vm:FontIconInfo">
+                        <ListBoxItem Theme="{StaticResource IconItem}"
+                                     Content="{Binding }"/>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+
+        <ui:TeachingTip Name="IconInfoTip"
+                        PreferredPlacement="Right">
+            <ui:TeachingTip.ContentTemplate>
+                <DataTemplate DataType="vm:FontIconInfo">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Icon Name" />
+                        <SelectableTextBlock Text="{Binding Name}"
+                                             Theme="{StaticResource CopyTextBlock}" />
+
+                        <TextBlock Text="Unicode point" />
+                        <SelectableTextBlock Text="{Binding Codepoint}"
+                                             Theme="{StaticResource CopyTextBlock}" />
+
+                        <TextBlock Text="Xaml" />
+                        <SelectableTextBlock Text="{Binding XamlGlyph}"
+                                             Theme="{StaticResource CopyTextBlock}" />
+
+                        <TextBlock Text="CSharp" />
+                        <SelectableTextBlock Text="{Binding CSharpGlyph}"
+                                             Theme="{StaticResource CopyTextBlock}" />
+
+                        <TextBlock Text="Xaml Usage" />
+                        <SelectableTextBlock Text="{Binding XamlExample}"
+                                             Theme="{StaticResource CopyTextBlock}" />
+
+                        <TextBlock Text="C#" />
+                        <SelectableTextBlock Text="{Binding CSharpExample}"
+                                             Theme="{StaticResource CopyTextBlock}" />
+                        
+                        <TextBlock Text="* remember to set the FontFamily to SymbolThemeFontFamily"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ui:TeachingTip.ContentTemplate>
+        </ui:TeachingTip>
+
+    </Grid>
+</UserControl>

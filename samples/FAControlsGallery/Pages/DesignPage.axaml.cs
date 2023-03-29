@@ -1,9 +1,7 @@
 using Avalonia.Controls;
 using FAControlsGallery.Pages.DesignPages;
 using FAControlsGallery.ViewModels.DesignPages;
-using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media.Animation;
-using FluentAvalonia.UI.Navigation;
 
 namespace FAControlsGallery.Pages;
 
@@ -14,14 +12,12 @@ public partial class DesignPage : UserControl
         InitializeComponent();
 
         TabStrip1.SelectionChanged += TabStrip1SelectionChanged;
-        InnerNavFrame.NavigationPageFactory = new DesignPageFactory();
     }
 
     protected override void OnLoaded()
     {
         base.OnLoaded();
 
-        TabStrip1.SelectedIndex = 0;
         TabStrip1SelectionChanged(null, null);
     }
 
@@ -36,21 +32,13 @@ public partial class DesignPage : UserControl
 
         var idx = TabStrip1.SelectedIndex;
 
-        InnerNavFrame.NavigateFromObject(idx switch
-                    {
-                        0 => "Typography",
-                        1 => "Icons",
-                        2 => "Colors",
-                        _ => throw new Exception()
-                    },
-                    new FrameNavigationOptions
-                    {
-                        TransitionInfoOverride = new SlideNavigationTransitionInfo
-                        {
-                            Effect = GetEffect(vm.LastSelectedIndex, idx),
-                            FromHorizontalOffset = 70
-                        }
-                    });
+        InnerNavFrame.Navigate(idx switch
+        {
+            0 => typeof(TypographyPage),
+            1 => typeof(DesignIconsPage),
+            2 => typeof(ColorsPage),
+            _ => throw new Exception()
+        }, null, GetTransitionInfo(vm.LastSelectedIndex, idx));
 
         vm.LastSelectedIndex = TabStrip1.SelectedIndex;
     }
@@ -66,26 +54,19 @@ public partial class DesignPage : UserControl
             return SlideNavigationTransitionEffect.FromLeft;
     }
 
-    private class DesignPageFactory : INavigationPageFactory
+    private NavigationTransitionInfo GetTransitionInfo(int oldIndex, int newIndex)
     {
-        public Control GetPage(Type srcType) => null;
-
-        public Control GetPageFromObject(object target)
+        if (oldIndex == -1)
         {
-            if (target.Equals("Typography"))
+            return new SuppressNavigationTransitionInfo();
+        }
+        else
+        {
+            return new SlideNavigationTransitionInfo
             {
-                return new TypographyPage();
-            }
-            else if (target.Equals("Icons"))
-            {
-                //return new DesignIconsPage();
-            }
-            else if (target.Equals("Colors"))
-            {
-                return new ColorsPage();
-            }
-
-            return null;
+                Effect = GetEffect(oldIndex, newIndex),
+                FromHorizontalOffset = 70
+            };
         }
     }
 }

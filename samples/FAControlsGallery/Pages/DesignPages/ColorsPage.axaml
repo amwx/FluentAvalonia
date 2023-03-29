@@ -90,6 +90,7 @@
             <Run>
                 The colors below are provided as part of WinUI 3. You can reference them in your app using markup bindings. For example:
             </Run>
+            <LineBreak />
             <Run>
                 Color="{DynamicResource TextFillColorPrimary}"
             </Run>

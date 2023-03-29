@@ -39,10 +39,7 @@ public partial class ColorsPage : ControlsPageBase
             3 => typeof(BackgroundColorsPage),
             4 => typeof(SignalColorsPage),
             _ => throw new ArgumentOutOfRangeException()
-        }, null, new SlideNavigationTransitionInfo
-        {
-            Effect = GetEffect(_oldIndex, idx)
-        });
+        }, null, GetTransitionInfo(_oldIndex, idx));
 
         _oldIndex = idx;
     }
@@ -58,6 +55,21 @@ public partial class ColorsPage : ControlsPageBase
             return SlideNavigationTransitionEffect.FromLeft;
     }
 
+    private NavigationTransitionInfo GetTransitionInfo(int oldIndex, int index)
+    {
+        if (oldIndex == -1)
+        {
+            return new SuppressNavigationTransitionInfo();
+        }
+        else
+        {
+            return new SlideNavigationTransitionInfo
+            {
+                Effect = GetEffect(oldIndex, index)
+            };
+        }
+    }
+
     protected override void ToggleThemeButtonClick(object sender, RoutedEventArgs e)
     {
         if (ThemeScopeProvider != null)
@@ -67,23 +79,12 @@ public partial class ColorsPage : ControlsPageBase
             if (theme == ThemeVariant.Light)
             {
                 ThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Dark;
-                // Hack force resource invalidation as that doesn't seem to want to happen
-                // the first time toggle theme is set
-                NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
             }
             else
             {
                 ThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Light;
-                NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
             }
         }
-        //var examples = this.GetVisualDescendants()
-        //    .OfType<DesignColorSection>();
-
-        //foreach (var ex in examples)
-        //{
-        //    ex.SetExampleTheme();
-        //}
     }
 
     private int _oldIndex = -1;

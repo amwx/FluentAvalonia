@@ -74,7 +74,8 @@
             </TabStripItem>
         </TabStrip>
 
-        <ui:Frame Name="InnerNavFrame" />
+        <ui:Frame Name="InnerNavFrame"
+                  IsNavigationStackEnabled="False"/>
     </Panel>
     
 </UserControl>
