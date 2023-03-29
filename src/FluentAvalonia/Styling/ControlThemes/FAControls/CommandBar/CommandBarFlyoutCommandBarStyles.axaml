@@ -741,7 +741,7 @@
 										Foreground="{TemplateBinding Foreground}"
 										Grid.Column="1"
 										Theme="{StaticResource CBFlyoutEllipsisButton}">
-                                <ui:SymbolIcon Symbol="MoreHorizontal"
+                                <ui:SymbolIcon Symbol="More"
 												FontSize="24"
 												Height="{StaticResource AppBarExpandButtonCircleDiameter}"
 												Name="EllipsisIcon"/>

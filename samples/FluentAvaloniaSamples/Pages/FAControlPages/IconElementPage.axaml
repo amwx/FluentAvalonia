@@ -22,11 +22,8 @@
                     <ComboBox MinWidth="125" Name="SymbolTypeSelector"
                               SelectedIndex="0">
                         <ComboBoxItem Content="{x:Static ui:Symbol.Cut}" />
-                        <ComboBoxItem Content="{x:Static ui:Symbol.CutFilled}" />
                         <ComboBoxItem Content="{x:Static ui:Symbol.Copy}" />
-                        <ComboBoxItem Content="{x:Static ui:Symbol.CopyFilled}" />
                         <ComboBoxItem Content="{x:Static ui:Symbol.Paste}" />
-                        <ComboBoxItem Content="{x:Static ui:Symbol.PasteFilled}" />
                         <ComboBoxItem Content="{x:Static ui:Symbol.Save}" />
                         <ComboBoxItem Content="{x:Static ui:Symbol.SaveFilled}" />
                         <ComboBoxItem Content="{x:Static ui:Symbol.Dismiss}" />
