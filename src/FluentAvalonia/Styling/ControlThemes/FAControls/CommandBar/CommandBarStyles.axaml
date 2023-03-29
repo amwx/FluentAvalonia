@@ -143,7 +143,7 @@
                                     Padding="{DynamicResource CommandBarMoreButtonMargin}"
                                     MinHeight="{StaticResource AppBarThemeCompactHeight}"
                                     VerticalAlignment="Top">
-                                <ui:SymbolIcon Symbol="MoreHorizontal"
+                                <ui:SymbolIcon Symbol="More"
 											   FontSize="24"
 											   Height="{StaticResource AppBarExpandButtonCircleDiameter}"
 											   Name="EllipsisIcon"/>

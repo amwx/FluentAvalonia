@@ -96,7 +96,7 @@
                                         Theme="{StaticResource TransparentButton}"
                                         HorizontalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Spacing="12">
-                                        <ui:SymbolIcon Symbol="CodeFilled" />
+                                        <ui:SymbolIcon Symbol="Code" />
                                         <TextBlock Text="Show Definition" />
                                     </StackPanel>
                                 </Button>
