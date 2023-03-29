@@ -1,3 +1,5 @@
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using FAControlsGallery.ViewModels;
 using FluentAvalonia.UI.Controls;
 
@@ -17,12 +19,21 @@ public partial class IconsPage : ControlsPageBase
         {
             var idx = TabControl1.SelectedIndex;
 
-            TargetType = idx switch
+            if (idx == 2)
             {
-                0 => typeof(FAIconElement),
-                1 => typeof(IconSource),
-                _ => null
-            };
+                TargetType = null;
+                SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+            }
+            else
+            {
+                SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+                TargetType = idx switch
+                {
+                    0 => typeof(FAIconElement),
+                    1 => typeof(IconSource),
+                    _ => null
+                };
+            }            
         };
     }
 }

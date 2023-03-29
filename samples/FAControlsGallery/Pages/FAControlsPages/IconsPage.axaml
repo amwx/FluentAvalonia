@@ -5,6 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:data="using:FluentAvalonia.UI.Data"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1200"
              x:Class="FAControlsGallery.Pages.IconsPage"
              x:DataType="vm:IconElementPageViewModel">
@@ -14,9 +15,13 @@
         <ui:FontIconSource x:Key="FGlyph" Glyph="F" FontSize="18" />
         <ui:BitmapIconSource x:Key="AvaloniaLogo" UriSource="avares://FAControlsGallery/Assets/avalonia-logo.ico" />
         <ui:ImageIconSource x:Key="AvaloniaLogoImage" Source="avares://FAControlsGallery/Assets/avalonia-logo.ico" />
+        
+        <data:CollectionViewSource Source="{Binding Symbols^}"
+                                   Filter="{Binding Filter}"
+                                   x:Key="IconsSource"/>
     </UserControl.Resources>
     
-    <TabControl Name="TabControl1">
+    <TabControl Name="TabControl1" SelectedIndex="2">
         
         <TabItem Header="FAIconElement">
             <StackPanel Spacing="8">
@@ -63,7 +68,7 @@ SymbolIcons are based on the new Fluent Icons from Microsoft, both filled and re
 Thanks to github user robloo, the glyph icons should now match the equivalent icons in Segoe Fluent Icons (the WinUI icon font).
 A select number of symbols are available via the Symbol enum, which you can preview below. 
 
-In addition, I've also added a FontSize property to the SymbolIcon to allow changing size.                   
+In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource to allow changing size.                   
                 </x:String>
                     </ctrls:ControlExample.UsageNotes>
                 </ctrls:ControlExample>
@@ -279,69 +284,65 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
         </TabItem>
         
         <TabItem Header="Symbol Enum">
-            <StackPanel>
-                <TextBlock Text="Predefined Symbols matching upstream WinUI Symbol enum &amp; some extras. Filled variants have 'Filled' appended to their enum value (Up -> UpFilled). Note that not all symbols have a corresponding filled variant."
+            <Grid RowDefinitions="Auto,Auto,*">
+                <TextBlock Text="Predefined Symbols matching upstream WinUI Symbol enum &amp; some extras. For the full icon list in the symbol font, see the Icons page in the 'Design' section"
                            TextWrapping="Wrap"
-                           Margin="8 4 8 12"/>
+                           Margin="0 6"/>
 
-                <ItemsControl Items="{Binding Symbols}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                <TextBox Grid.Row="1"
+                         HorizontalAlignment="Right"
+                         Width="170"
+                         Margin="12 6"
+                         Watermark="Search Symbols"
+                         Text="{Binding FilterText}">
+                    <TextBox.InnerRightContent>
+                        <ui:SymbolIcon Symbol="Find"
+                                       FontSize="18"
+                                       Margin="8 0" />
+                    </TextBox.InnerRightContent>
+                </TextBox>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="vm:SymbolItem">
-                            <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
-                                    Padding="8"
-                                    Width="175" Height="90"
-                                    CornerRadius="{StaticResource ControlCornerRadius}">
-                                <DockPanel>
-                                    <TextBlock Text="{CompiledBinding Symbol}" VerticalAlignment="Center"
-                                               HorizontalAlignment="Left" TextWrapping="Wrap"
-                                               FontWeight="SemiBold"
-                                               DockPanel.Dock="Top"/>
+                <ScrollViewer Grid.Row="2">
+                    <ItemsRepeater Items="{Binding Path=View, Source={StaticResource IconsSource}}">
+                        <ItemsRepeater.Layout>
+                            <WrapLayout HorizontalSpacing="4"
+                                        VerticalSpacing="4"/>
+                        </ItemsRepeater.Layout>
 
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <DockPanel Margin="6 0">
-                                            <TextBlock Text="Regular" VerticalAlignment="Top"
-                                               FontSize="12"
-                                               HorizontalAlignment="Center"
-                                               DockPanel.Dock="Bottom"/>
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SymbolItem">
+                                <ui:FABorder Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                             BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                             BorderThickness="1" Padding="8"
+                                             Width="150" Height="100"
+                                             CornerRadius="{StaticResource ControlCornerRadius}"
+                                             ToolTip.Tip="{Binding Symbol}">
+                                    <Panel>
+                                        <TextBlock Text="{CompiledBinding Symbol}"
+                                                   Theme="{StaticResource BodyStrongTextBlockStyle}"
+                                                   VerticalAlignment="Top"
+                                                   HorizontalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   DockPanel.Dock="Top"/>
 
-                                            <ui:SymbolIcon Symbol="{CompiledBinding Symbol}"
-                                                   FontSize="20"
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,4"
-                                                   Grid.Row="1"/>
-                                        </DockPanel>
+                                        <ui:FontIcon Glyph="{Binding Glyph}"
+                                                     FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="28"/>
 
-                                        <DockPanel Margin="6 0"
-                                                   IsVisible="{Binding SymbolFilled, Converter={x:Static ObjectConverters.IsNotNull}}">
-                                            <TextBlock Text="Filled" VerticalAlignment="Top"
-                                               FontSize="12"
-                                               HorizontalAlignment="Center"
-                                               DockPanel.Dock="Bottom" />
-
-                                            <ui:SymbolIcon Symbol="{CompiledBinding SymbolFilled}"
-                                                   FontSize="20"
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,4"
-                                                   Grid.Row="1" Grid.Column="1"/>
-                                        </DockPanel>
-
-                                    </StackPanel>
-
-
-                                </DockPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
+                                        <TextBlock Text="{CompiledBinding UnicodePoint}"
+                                                   Theme="{StaticResource CaptionTextBlockStyle}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   VerticalAlignment="Bottom"
+                                                   HorizontalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   DockPanel.Dock="Top"/>
+                                    </Panel>
+                                </ui:FABorder>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </ScrollViewer>
+            </Grid>
         </TabItem>
     </TabControl>
 </UserControl>
