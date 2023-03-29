@@ -76,7 +76,7 @@
                                 Margin="8"
                                 HorizontalAlignment="Right"
                                 Name="MoreButton">
-                            <ui:SymbolIcon Symbol="MoreHorizontal" FontSize="18" />
+                            <ui:SymbolIcon Symbol="More" FontSize="18" />
                         </Button>
 
                         <ContentPresenter Name="HeaderPresenter"
