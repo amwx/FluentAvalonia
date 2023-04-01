@@ -10,7 +10,6 @@
 
   <pc:ContrastBrushConverter x:Key="ContrastBrushConverter" />
   <converters:ColorToDisplayNameConverter x:Key="ColorToDisplayNameConverter" />
-  <converters:ColorToHexConverter x:Key="ColorToHexConverter" />
   <converters:DoNothingForNullConverter x:Key="DoNothingForNullConverter" />
   <globalization:NumberFormatInfo x:Key="ColorViewComponentNumberFormat" NumberDecimalDigits="0" />
   <x:Double x:Key="ColorViewTabStripHeight">48</x:Double>
@@ -228,6 +227,8 @@
   <ControlTheme x:Key="{x:Type ColorView}"
                 TargetType="ColorView">
     <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+    <!-- Alpha position should match CSS (and default slider order) instead of XAML/WinUI -->
+    <Setter Property="HexInputAlphaPosition" Value="Trailing" />
     <Setter Property="Palette">
       <controls:FluentColorPalette />
     </Setter>
@@ -347,7 +348,7 @@
               </TabItem.Header>
               <ListBox Theme="{StaticResource ColorViewPaletteListBoxTheme}"
                        ItemContainerTheme="{StaticResource ColorViewPaletteListBoxItemTheme}"
-                       Items="{TemplateBinding PaletteColors}"
+                       ItemsSource="{TemplateBinding PaletteColors}"
                        SelectedItem="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DoNothingForNullConverter}, Mode=TwoWay}"
                        UseLayoutRounding="False"
                        Margin="12">
@@ -399,6 +400,7 @@
                                  Content="RGB"
                                  CornerRadius="4,0,0,4"
                                  BorderThickness="1,1,0,1"
+                                 Height="{Binding ElementName=PART_HexTextBox, Path=Bounds.Height}"
                                  IsChecked="{TemplateBinding ColorModel, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Rgba}, Mode=TwoWay}" />
                     <RadioButton x:Name="HsvRadioButton"
                                  Theme="{StaticResource ColorViewColorModelRadioButtonTheme}"
@@ -406,6 +408,7 @@
                                  Content="HSV"
                                  CornerRadius="0,4,4,0"
                                  BorderThickness="0,1,1,1"
+                                 Height="{Binding ElementName=PART_HexTextBox, Path=Bounds.Height}"
                                  IsChecked="{TemplateBinding ColorModel, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Hsva}, Mode=TwoWay}" />
                   </Grid>
                   <Grid x:Name="HexInputGrid"
@@ -428,11 +431,12 @@
                                  VerticalAlignment="Center" />
                     </Border>
                     <!-- Color updated in code-behind -->
+                    <!-- Max length must include an optional '#' prefix (#FFFFFFFF) -->
                     <TextBox x:Name="PART_HexTextBox"
                              Grid.Column="1"
                              AutomationProperties.Name="Hexadecimal Color"
                              Height="32"
-                             MaxLength="8"
+                             MaxLength="9"
                              HorizontalAlignment="Stretch"
                              CornerRadius="0,4,4,0" />
                   </Grid>
