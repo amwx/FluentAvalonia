@@ -8,12 +8,15 @@
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel Spacing="20">
-                <NumericUpDown Minimum="0" Value="28393255555555"
-                               Maximum="1454350" ShowButtonSpinner="True"
+                <NumericUpDown Minimum="0"
+                               Value="28393255555555"
+                               Maximum="1454350"
+                               ShowButtonSpinner="True"
                                Increment="0.5"
-                               Width="150" 
+                               Width="150"
                                Watermark="Enter text" />
-                <NumericUpDown Minimum="0" Value="28393255555555"
+                <NumericUpDown Minimum="0"
+                               Value="28393255555555"
                                Maximum="10"
                                Increment="0.5"
                                Width="150"
@@ -141,14 +144,14 @@
                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                         </Panel>
                                     </ScrollViewer>
-                                </DockPanel>                                
+                                </DockPanel>
                             </Grid>
                         </Border>
                     </Panel>
                 </DataValidationErrors>
             </ControlTemplate>
         </Setter>
-        
+
         <Style Selector="^ /template/ ScrollViewer">
             <Setter Property="Padding" Value="68 0 0 0" />
         </Style>
@@ -173,6 +176,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <ButtonSpinner Name="PART_Spinner"
+                               CornerRadius="{TemplateBinding CornerRadius}"
                                Padding="0"
                                MinWidth="0"
                                HorizontalContentAlignment="Stretch"
@@ -186,6 +190,7 @@
                              Background="{TemplateBinding Background}"
                              BorderThickness="{TemplateBinding BorderThickness}"
                              BorderBrush="{TemplateBinding BorderBrush}"
+                             CornerRadius="{TemplateBinding CornerRadius}"
                              Padding="{TemplateBinding Padding}"
                              MinWidth="0"
                              Foreground="{TemplateBinding Foreground}"
@@ -201,8 +206,8 @@
                              Classes.spinRight="{TemplateBinding ButtonSpinnerLocation, Converter={StaticResource NUDSpinLocationConverter}}"
                              Classes.noSpin="{Binding !$parent[NumericUpDown].ShowButtonSpinner}" />
                 </ButtonSpinner>
-            </ControlTemplate>            
+            </ControlTemplate>
         </Setter>
     </ControlTheme>
-    
+
 </ResourceDictionary>
