@@ -63,10 +63,10 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         base.OnApplyTemplate(e);
 
-       // _textEditor = e.NameScope.Find<TextEditor>("TextEditor");
+        _textEditor = e.NameScope.Find<TextEditor>("TextEditor");
 
-        //_textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
-        //_textEditor.SyntaxHighlighting = CSharpHighlightingSource.CSharpDarkMode;
+        _textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
+        _textEditor.SyntaxHighlighting = CSharpHighlightingSource.CSharpDarkMode;
 
         _closeButton = e.NameScope.Find<Button>("CloseButton");
         _closeButton.Click += OnCloseClick;
@@ -79,8 +79,8 @@ public class ControlDefinitionOverlay : TemplatedControl
         Inheritance = null;
         PseudoclassesList = null;
 
-        //if (_textEditor != null)
-        //    _textEditor.Text = null;
+        if (_textEditor != null)
+            _textEditor.Text = null;
 
         Opacity = 0;
         IsVisible = true;
@@ -123,7 +123,7 @@ public class ControlDefinitionOverlay : TemplatedControl
             if (value is ISolidColorBrush sb)
             {
                 var b = new ImmutableSolidColorBrush(sb.Color, 0.5);
-                //_textEditor.TextArea.SelectionBrush = b;
+                _textEditor.TextArea.SelectionBrush = b;
             }
         }
     }
@@ -181,9 +181,9 @@ public class ControlDefinitionOverlay : TemplatedControl
                 {
                     Inheritance = inheritance;
                     PseudoclassesList = ps;
-                    //_textEditor.Text = src;
+                    _textEditor.Text = src;
 
-                    //_textEditor.TextArea.IndentationStrategy.IndentLines(_textEditor.Document, 0, _textEditor.Document.LineCount);
+                    _textEditor.TextArea.IndentationStrategy.IndentLines(_textEditor.Document, 0, _textEditor.Document.LineCount);
 
                 }, DispatcherPriority.Background);
 
@@ -471,5 +471,5 @@ public class ControlDefinitionOverlay : TemplatedControl
     }
 
     private Button _closeButton;
-    //private TextEditor _textEditor;
+    private TextEditor _textEditor;
 }

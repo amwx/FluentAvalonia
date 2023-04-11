@@ -6,5 +6,5 @@ public class FAControlsGroupItem
 {
     public string Header { get; set; }
 
-    public List<FAControlsItem> Controls { get; init; }
+    public List<FAControlsItem> Controls { get; set; }
 }

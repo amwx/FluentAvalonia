@@ -8,7 +8,7 @@ public class CoreControlsPageViewModel : ViewModelBase
     public CoreControlsPageViewModel()
     {
         var coreControls = GetAssemblyResource("avares://FluentAvaloniaSamples/Assets/CoreControlsGroups.json");
-        CoreControlGroups = JsonSerializer.Deserialize<List<CoreControlsGroupItem>>(coreControls);
+        CoreControlGroups = JsonSerializer.Deserialize(coreControls, FASampleJsonContext.Default.ListCoreControlsGroupItem);
     }
 
     public string PageHeader => "Core Controls";

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-      <TargetFramework>net6.0</TargetFramework>
-      <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <TargetFramework>net7.0</TargetFramework>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -22,5 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <TrimmerRootDescriptor Include="link.xml" />
+    <TrimmerRootAssembly Include="FluentAvaloniaSamples" />
   </ItemGroup>
 </Project>

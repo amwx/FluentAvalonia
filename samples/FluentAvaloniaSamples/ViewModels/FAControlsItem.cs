@@ -17,7 +17,7 @@ public class FAControlsItem
 
     public string PreviewImageSource { get; set; }
 
-    public string PageType { get; init; }
+    public string PageType { get; set; }
 
     public FACommand InvokeCommand { get; }
 

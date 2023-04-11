@@ -6,6 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using FluentAvalonia.Styling;
 using System.Text.Json;
 using Avalonia.Styling;
+using System.Text.Json.Serialization;
 
 namespace FluentAvaloniaSamples.ViewModels;
 
@@ -207,7 +208,7 @@ public class MainViewViewModel : ViewModelBase
         }
 
         var file = GetAssemblyResource("avares://FluentAvaloniaSamples/Assets/CoreControlsGroups.json");
-        var coreControls = JsonSerializer.Deserialize<List<CoreControlsGroupItem>>(file);
+        var coreControls = JsonSerializer.Deserialize(file, FASampleJsonContext.Default.ListCoreControlsGroupItem);
         for (int i = 1; i < coreControls.Count; i++)
         {
             var desc = coreControls[i].Description.Split(',');
@@ -220,7 +221,7 @@ public class MainViewViewModel : ViewModelBase
 
         // Get all FluentAvalonia pages
         file = GetAssemblyResource("avares://FluentAvaloniaSamples/Assets/FAControlsGroups.json");
-        var controls = JsonSerializer.Deserialize<List<FAControlsGroupItem>>(file);
+        var controls = JsonSerializer.Deserialize(file, FASampleJsonContext.Default.ListFAControlsGroupItem);
         foreach (var group in controls)
         {
             foreach (var ctrl in group.Controls)
@@ -247,6 +248,13 @@ public class MainViewViewModel : ViewModelBase
     private FlowDirection _currentFlowDirection;
     private Color _listBoxColor;
     private bool _ignoreSetListBoxColor = false;
+}
+
+[JsonSerializable(typeof(List<CoreControlsGroupItem>))]
+[JsonSerializable(typeof(List<FAControlsGroupItem>))]
+public partial class FASampleJsonContext : JsonSerializerContext
+{
+
 }
 
 public class MainAppSearchItem

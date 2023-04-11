@@ -11,15 +11,15 @@ public class CoreControlsGroupItem : ViewModelBase
         InvokeCommand = new FACommand(OnInvokeCommandExecute);
     }
 
-    public string IconResourceKey { get; init; }
+    public string IconResourceKey { get; set; }
 
-    public string Header { get; init; }
+    public string Header { get; set; }
 
-    public string Description { get; init; }
+    public string Description { get; set; }
 
-    public bool Navigates { get; init; }
+    public bool Navigates { get; set; }
 
-    public string PageType { get; init; }
+    public string PageType { get; set; }
 
     public FACommand InvokeCommand { get; }
 

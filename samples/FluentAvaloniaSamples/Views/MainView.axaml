@@ -216,9 +216,10 @@
                                                            Theme="{StaticResource SubtitleTextBlockStyle}"
                                                            Margin="12 4"/>
 
-                                                <!--<aedit:TextEditor Name="TextEditor"
+                                                <aedit:TextEditor Name="TextEditor"
                                                                   Margin="12 0"
-                                                                  Background="Transparent" />-->
+                                                                  FontFamily="Consolas"
+                                                                  Background="Transparent" />
                                             </StackPanel>
                                         </ScrollViewer>
 
