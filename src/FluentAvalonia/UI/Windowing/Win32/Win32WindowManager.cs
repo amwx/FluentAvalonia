@@ -33,6 +33,7 @@ internal unsafe class Win32WindowManager
 
         var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
         ps.ColorValuesChanged += OnPlatformColorValuesChanged;
+        _window.Closed += WindowOnClosed;
     }
 
     public HWND Hwnd { get; }
@@ -370,6 +371,13 @@ internal unsafe class Win32WindowManager
         // in dark mode, which matches what windows do on Win 10/11, regardless of the actual
         // app or system theme.
         Win32Interop.ApplyTheme(Hwnd, true);
+    }
+    
+    private void WindowOnClosed(object sender, EventArgs e)
+    {
+        var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
+        ps.ColorValuesChanged -= OnPlatformColorValuesChanged;
+        _window.Closed -= WindowOnClosed;
     }
 
     private void UpdateMaximizeState()
