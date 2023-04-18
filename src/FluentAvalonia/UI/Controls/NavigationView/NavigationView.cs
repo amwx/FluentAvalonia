@@ -44,7 +44,8 @@ public partial class NavigationView : HeaderedContentControl
                 
         _topDataProvider.OnRawDataChanged((args) => OnTopNavDataSourceChanged(args));
 
-        //Loaded & Unloaded Event...
+        Loaded += OnNavViewLoaded;
+        // Unloaded is titlebar related - ignore
 
         _selectionModel = new SelectionModel();
         _selectionModel.SingleSelect = true;
@@ -118,7 +119,7 @@ public partial class NavigationView : HeaderedContentControl
                 _leftNavRepeater.ElementPrepared += OnRepeaterElementPrepared;
                 _leftNavRepeater.ElementClearing += OnRepeaterElementClearing;
 
-                //repeater Loaded Event
+                _leftNavRepeater.Loaded += OnRepeaterLoaded;
                 _leftNavRepeater.GotFocus += OnRepeaterGettingFocus;
 
                 _leftNavRepeater.ItemTemplate = _itemsFactory;
@@ -134,7 +135,7 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavRepeater.ElementPrepared += OnRepeaterElementPrepared;
                 _topNavRepeater.ElementClearing += OnRepeaterElementClearing;
 
-                //repeater Loaded Event
+                _topNavRepeater.Loaded += OnRepeaterLoaded;
                 _topNavRepeater.GotFocus += OnRepeaterGettingFocus;
 
                 _topNavRepeater.ItemTemplate = _itemsFactory;
@@ -181,7 +182,7 @@ public partial class NavigationView : HeaderedContentControl
                 _leftNavFooterMenuRepeater.ElementPrepared += OnRepeaterElementPrepared;
                 _leftNavFooterMenuRepeater.ElementClearing += OnRepeaterElementClearing;
 
-                //repeater Loaded Event
+                _leftNavFooterMenuRepeater.Loaded += OnRepeaterLoaded;
                 _leftNavFooterMenuRepeater.GotFocus += OnRepeaterGettingFocus;
 
                 _leftNavFooterMenuRepeater.ItemTemplate = _itemsFactory;
@@ -197,7 +198,7 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavFooterMenuRepeater.ElementPrepared += OnRepeaterElementPrepared;
                 _topNavFooterMenuRepeater.ElementClearing += OnRepeaterElementClearing;
 
-                //repeater Loaded Event
+                _topNavFooterMenuRepeater.Loaded += OnRepeaterLoaded;
                 _topNavFooterMenuRepeater.GotFocus += OnRepeaterGettingFocus;
 
                 _topNavFooterMenuRepeater.ItemTemplate = _itemsFactory;
@@ -693,11 +694,8 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    private void OnNavViewLoaded(object sender, RoutedEventArgs e)
     {
-        base.OnAttachedToVisualTree(e);
-        //Takes place on OnLoaded event
-
         if (_updateVisualStateForDisplayModeFromOnLoaded)
         {
             _updateVisualStateForDisplayModeFromOnLoaded = false;
@@ -712,12 +710,11 @@ public partial class NavigationView : HeaderedContentControl
 
 
 
-
     /////////////////////////////////////////////
     //////// ITEMS REPEATER RELATED ////////////
     ///////////////////////////////////////////
 
-    private void OnRepeaterLoaded()
+    private void OnRepeaterLoaded(object sender, RoutedEventArgs args)
     {
         var item = SelectedItem;
         if (item != null && !IsSelectionSuppressed(item))
