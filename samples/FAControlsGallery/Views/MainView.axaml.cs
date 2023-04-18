@@ -52,6 +52,9 @@ public partial class MainView : UserControl
     {
         base.OnAttachedToVisualTree(e);
 
+        // Simple check - all desktop versions of this app will have a window as the TopLevel
+        // Mobile and WASM will have something else
+        _isDesktop = TopLevel.GetTopLevel(this) is Window;
         var vm = new MainViewViewModel();
         DataContext = vm;
         FrameView.NavigationPageFactory = vm.NavigationFactory;
@@ -132,6 +135,7 @@ public partial class MainView : UserControl
         var footerItems = new List<NavigationViewItemBase>(2);
 
         bool inDesign = Design.IsDesignMode;
+        
         for (int i = 0; i < mainPages.Length; i++)
         {
             var pg = mainPages[i];
@@ -139,12 +143,13 @@ public partial class MainView : UserControl
             {
                 Content = pg.NavHeader,
                 Tag = pg,
-                IconSource = (IconSource)this.FindResource(pg.IconKey),
-                Classes =
-                {
-                    "SampleAppNav"
-                }
+                IconSource = (IconSource)this.FindResource(pg.IconKey)
             };
+
+            if (_isDesktop)
+            {
+                nvi.Classes.Add("SampleAppNav");
+            }
 
             if (pg.ShowsInFooter)
                 footerItems.Add(nvi);
@@ -159,6 +164,12 @@ public partial class MainView : UserControl
 
         NavView.MenuItemsSource = menuItems;
         NavView.FooterMenuItemsSource = footerItems;
+
+        if (!_isDesktop)
+        {
+            NavView.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftMinimal;
+            NavView.Classes.Remove("SampleAppNav");
+        }
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -362,4 +373,6 @@ public partial class MainView : UserControl
             await ani.RunAsync(WindowIcon, null);
         }
     }
+
+    private bool _isDesktop;
 }

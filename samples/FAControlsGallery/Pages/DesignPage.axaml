@@ -8,8 +8,9 @@
 
     <UserControl.Resources>
         <ControlTheme x:Key="TabItemStyle"
-                      TargetType="TabStripItem"
-                      BasedOn="{StaticResource {x:Type TabStripItem}}">
+                      TargetType="TabStripItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="{StaticResource TabItemHeaderMargin}" />
             <Setter Property="Template">
                 <ControlTemplate>
                     <Border Name="PART_LayoutRoot"
@@ -17,16 +18,17 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="{TemplateBinding Padding}"
-                            Background="{Binding $parent[TabStripItem].Background}">
+                            Background="{TemplateBinding Background}"
+                            ToolTip.Tip="{TemplateBinding Content}">
                         <Panel>
-                            <Viewbox Width="30"
-                                     Height="30"
+                            <Viewbox Width="28"
+                                     Height="28"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Center"
-                                     Margin="8 0">
+                                     Margin="12 6">
                                 <ui:IconSourceElement IconSource="{TemplateBinding Tag}" />
                             </Viewbox>
-                            <ContentPresenter Name="PART_ContentPresenter"
+                            <!--<ContentPresenter Name="PART_ContentPresenter"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}"
                                               HorizontalAlignment="Left"
@@ -34,13 +36,13 @@
                                               FontFamily="{TemplateBinding FontFamily}"
                                               FontSize="{TemplateBinding FontSize}"
                                               FontWeight="{TemplateBinding FontWeight}"
-                                              Margin="48 0 0 0"/>
+                                              Margin="48 0 0 0"/>-->
                             <Rectangle Name="PART_SelectedPipe"
                                        Fill="{DynamicResource AccentFillColorDefaultBrush}"
                                        RadiusX="2"
                                        RadiusY="2"
                                        VerticalAlignment="Bottom"
-                                       IsVisible="False"
+                                       Opacity="0"
                                        Height="{DynamicResource TabItemPipeThickness}"
                                        Margin="0 0 0 2"
                                        HorizontalAlignment="Stretch"/>
@@ -48,29 +50,64 @@
                     </Border>
                 </ControlTemplate>
             </Setter>
+
+            <Style Selector="^:pointerover /template/ Rectangle#PART_SelectedPipe">
+                <Setter Property="Opacity" Value="0.2" />
+                <Setter Property="Fill" Value="{DynamicResource ControlStrongFillColorDefaultBrush}" />
+            </Style>
+
+            <Style Selector="^:selected">
+                <Style Selector="^ /template/ Rectangle#PART_SelectedPipe">
+                    <Setter Property="Opacity" Value="1" />                    
+                </Style>
+
+                <Style Selector="^:pointerover /template/ Rectangle#PART_SelectedPipe">
+                    <Setter Property="Opacity" Value="0.75" />
+                    <Setter Property="Fill" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                </Style>
+            </Style>
         </ControlTheme>
+        
+        <ItemsPanelTemplate x:Key="DefaultPanel">
+            <StackPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
     </UserControl.Resources>
 
     <Panel>
         <TabStrip ItemContainerTheme="{StaticResource TabItemStyle}"
+                  Background="{DynamicResource ControlOnImageFillColorDefaultBrush}"
+                  CornerRadius="{StaticResource ControlCornerRadius}"
+                  Margin="4"
                   Name="TabStrip1"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Top"
                   ZIndex="100">
-            <TabStripItem Content="Typography">
-                <TabStripItem.Tag>
+            <TabStrip.ItemsPanel>
+                <OnFormFactor Default="{StaticResource DefaultPanel}">
+                    <On Options="Mobile">
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </On>
+                </OnFormFactor>
+            </TabStrip.ItemsPanel>
+            <TabStripItem Content="Typography"
+                          Tag="{StaticResource DesignTypographyIcon}">
+                <!--<TabStripItem.Tag>
                     <ui:SymbolIconSource Symbol="EditFilled" />
-                </TabStripItem.Tag>
+                </TabStripItem.Tag>-->
             </TabStripItem>
-            <TabStripItem Content="Icons">
-                <TabStripItem.Tag>
+            <TabStripItem Content="Icons"
+                          Tag="{StaticResource DesignIconsIcon}">
+                <!--<TabStripItem.Tag>
                     <ui:SymbolIconSource Symbol="IconsFilled" />
-                </TabStripItem.Tag>
+                </TabStripItem.Tag>-->
             </TabStripItem>
-            <TabStripItem Content="Colors">
-                <TabStripItem.Tag>
+            <TabStripItem Content="Colors"
+                          Tag="{StaticResource DesignColorsIcon}">
+                <!--<TabStripItem.Tag>
                     <ui:SymbolIconSource Symbol="ColorFillFilled" />
-                </TabStripItem.Tag>
+                </TabStripItem.Tag>-->
             </TabStripItem>
         </TabStrip>
 

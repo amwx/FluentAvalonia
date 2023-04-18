@@ -75,8 +75,8 @@
 
                 <ctrls:ColorTile ColorName="Control Stroke / On Accent Default"
                                  Description="Used in Control Elevation Brushes. Pressed or Disabled"
-                                 ColorBrushName="ControlStrokeColorSecondaryBrush"
-                                 Background="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                 ColorBrushName="ControlStrokeColorOnAccentDefaultBrush"
+                                 Background="{DynamicResource ControlStrokeColorOnAccentDefaultBrush}"
                                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                  Classes="first"/>
                 <ctrls:ColorTile ColorName="Control Stroke / On Accent Secondary"
