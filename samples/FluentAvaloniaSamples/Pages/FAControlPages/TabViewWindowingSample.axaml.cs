@@ -56,13 +56,9 @@ public partial class TabViewWindowingSample : AppWindow
                 Content = new TabViewWindowSampleContent("This is TabPage 3")
             },
         };
+        tvws.TabView.SelectedItem = tvws.TabView.TabItems.ElementAt(0);
 
         tvws.Show();
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
     }
 
     protected override void OnOpened(EventArgs e)
@@ -179,27 +175,31 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
     {
-        // In this case, the tab was dropped outside of any tabstrip, let's move it to
-        // a new window
-        var s = new TabViewWindowingSample();
-
-        // TabItems is by default initialized to an AvaloniaList<object>, so we can just
-        // cast to IList and add
-        // Be sure to remove the tab item from it's old TabView FIRST or else you'll get the
-        // annoying "Item already has a Visual parent error"
-        if (s.TabView.TabItems is IList l)
+        if ((sender.TabItems as IList).Count > 1)
         {
-            // If you're binding, args also as 'Item' where you can retrieve the data item instead
-            (sender.TabItems as IList).Remove(args.Tab);
+            // In this case, the tab was dropped outside of any tabstrip, let's move it to
+            // a new window
+            var s = new TabViewWindowingSample();
 
-            // Preserving tab content state is easiest if you aren't binding. If you are, you will
-            // need to manage preserving the state of the tabcontent across the different TabViews
-            l.Add(args.Tab);
+            // TabItems is by default initialized to an AvaloniaList<object>, so we can just
+            // cast to IList and add
+            // Be sure to remove the tab item from it's old TabView FIRST or else you'll get the
+            // annoying "Item already has a Visual parent error"
+            if (s.TabView.TabItems is IList l)
+            {
+                // If you're binding, args also as 'Item' where you can retrieve the data item instead
+                (sender.TabItems as IList).Remove(args.Tab);
+
+                // Preserving tab content state is easiest if you aren't binding. If you are, you will
+                // need to manage preserving the state of the tabcontent across the different TabViews
+                l.Add(args.Tab);
+                s.TabView.SelectedItem = args.Tab;
+            }
+
+            s.Show();
+
+            // TabItemsChanged will fire here and will check if the window is closed, only because it
+            // is raised after drag/drop completes, so we don't have to do that here
         }
-
-        s.Show();
-
-        // TabItemsChanged will fire here and will check if the window is closed, only because it
-        // is raised after drag/drop completes, so we don't have to do that here
     }
 }
