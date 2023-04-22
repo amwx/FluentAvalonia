@@ -18,7 +18,7 @@ Xaml inside the control example:
             <ui:CommandBarButton Command="{StaticResource DeleteCommand}" CommandParameter="{Binding #ListBox1.SelectedItem}"/>
         </ui:CommandBar.SecondaryCommands>
     </ui:CommandBar>
-    <ListBox Items="{Binding TempItems}" Name="ListBox1" VirtualizationMode="None">
+    <ListBox ItemsSource="{Binding TempItems}" Name="ListBox1" VirtualizationMode="None">
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Border Background="Transparent">

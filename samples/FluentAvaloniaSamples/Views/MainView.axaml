@@ -141,7 +141,7 @@
                                  Watermark="Search"
                                  Classes="SampleApp"
                                  ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"
-                                 Items="{Binding MainSearchItems}"
+                                 ItemsSource="{Binding MainSearchItems}"
                                  wnd:AppWindow.AllowInteractionInTitleBar="True">
                     <AutoCompleteBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:MainAppSearchItem">

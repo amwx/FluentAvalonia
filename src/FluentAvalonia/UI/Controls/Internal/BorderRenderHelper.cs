@@ -71,8 +71,10 @@ internal class BorderRenderHelper
 
     void Update(Size finalSize)
     {
-        _backendSupportsIndividualCorners ??= AvaloniaLocator.Current.GetRequiredService<IPlatformRenderInterface>()
-            .SupportsIndividualRoundRects;
+        // v2p6.1 - lost access to this, always false now (probably the case anyway)
+        _backendSupportsIndividualCorners = false;
+        //??= AvaloniaLocator.Current.GetRequiredService<IPlatformRenderInterface>()
+        //    .SupportsIndividualRoundRects;
         _size = finalSize;
 
         _initialized = true;

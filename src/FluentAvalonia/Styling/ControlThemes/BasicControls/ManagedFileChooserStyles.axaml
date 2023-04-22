@@ -139,7 +139,7 @@
                 <Grid ColumnDefinitions="1*,0,4*">
                     <ListBox x:Name="PART_QuickLinks"
                              Grid.Column="0"
-                             Items="{Binding QuickLinks}"
+                             ItemsSource="{Binding QuickLinks}"
                              SelectedIndex="{Binding QuickLinksSelectedIndex}"
                              Focusable="False">
                         <ListBox.ItemTemplate>
@@ -209,7 +209,7 @@
                                 <DockPanel DockPanel.Dock="Top">
                                     <ComboBox DockPanel.Dock="Right"
                                               IsVisible="{Binding ShowFilters}"
-                                              Items="{Binding Filters}"
+                                              ItemsSource="{Binding Filters}"
                                               SelectedItem="{Binding SelectedFilter}"
                                               Margin="2 0 0 0"/>
                                     <TextBox Text="{Binding FileName}" 
@@ -264,7 +264,7 @@
                                 <TextBlock Grid.Column="8" Text="Size" />
                             </Grid>
                             <ListBox x:Name="PART_Files"
-                                     Items="{Binding Items}"
+                                     ItemsSource="{Binding Items}"
                                      Margin="0 5"
                                      SelectionMode="{Binding SelectionMode}"
                                      SelectedItems="{Binding SelectedItems}"

@@ -31,7 +31,7 @@
             </Panel>
 
 
-            <ItemsRepeater Items="{Binding CoreControlGroups}"
+            <ItemsRepeater ItemsSource="{Binding CoreControlGroups}"
                            Margin="18 0 18 18">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />

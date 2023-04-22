@@ -36,7 +36,7 @@
             </Panel>
 
 
-            <ItemsRepeater Items="{Binding ControlGroups}"
+            <ItemsRepeater ItemsSource="{Binding ControlGroups}"
                            Margin="18 0 18 18">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="20" />
@@ -52,7 +52,7 @@
                             <ScrollViewer VerticalScrollBarVisibility="Disabled"
                                           HorizontalScrollBarVisibility="Auto"
                                           Padding="0 0 0 17">
-                                <ItemsRepeater Items="{Binding Controls}">
+                                <ItemsRepeater ItemsSource="{Binding Controls}">
                                     <ItemsRepeater.Layout>
                                         <StackLayout Orientation="Horizontal" Spacing="8"  />
                                     </ItemsRepeater.Layout>

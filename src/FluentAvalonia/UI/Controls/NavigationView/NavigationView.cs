@@ -809,7 +809,7 @@ public partial class NavigationView : HeaderedContentControl
             if (items != null)
             {
                 var itemsSource = _topDataProvider.GetOverflowItems();
-                _topNavRepeaterOverflowView.Items = itemsSource;
+                _topNavRepeaterOverflowView.ItemsSource = itemsSource;
 
                 // We listen to changes to the overflow menu item collection so we can set the visibility of the overflow button
                 // to collapsed when it no longer has any items.
@@ -826,7 +826,7 @@ public partial class NavigationView : HeaderedContentControl
             }
             else
             {
-                _topNavRepeaterOverflowView.Items = null;
+                _topNavRepeaterOverflowView.ItemsSource = null;
             }
         }
     }
@@ -835,7 +835,7 @@ public partial class NavigationView : HeaderedContentControl
     {
         if (ir != null)
         {
-            ir.Items = source;
+            ir.ItemsSource = source;
         }
     }
 

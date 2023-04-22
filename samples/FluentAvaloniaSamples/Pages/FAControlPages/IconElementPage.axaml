@@ -72,7 +72,7 @@ In addition, I've also added a FontSize property to the SymbolIcon to allow chan
                                TextWrapping="Wrap"
                                Margin="8 4 8 12"/>
                     
-                    <ItemsRepeater Items="{Binding Symbols}">
+                    <ItemsRepeater ItemsSource="{Binding Symbols}">
                         <ItemsRepeater.Layout>
                             <WrapLayout HorizontalSpacing="4" VerticalSpacing="4" />
                         </ItemsRepeater.Layout>

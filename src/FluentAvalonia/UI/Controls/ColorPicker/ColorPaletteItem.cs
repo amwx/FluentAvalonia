@@ -100,8 +100,11 @@ public partial class ColorPaletteItem : Control
 
         void Update(Size finalSize, Thickness borderThickness, CornerRadius cornerRadius)
         {
-            _backendSupportsIndividualCorners ??= AvaloniaLocator.Current.GetService<IPlatformRenderInterface>()
-                .SupportsIndividualRoundRects;
+            // v2p6.1 - no longer have access to this, always default to false
+            // (probably was the case anyway)
+            _backendSupportsIndividualCorners = false; 
+                //??= AvaloniaLocator.Current.GetService<IPlatformRenderInterface>()
+                //.SupportsIndividualRoundRects;
             _size = finalSize;
             _borderThickness = borderThickness;
             _cornerRadius = cornerRadius;

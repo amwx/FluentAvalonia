@@ -74,7 +74,7 @@
 
                 <ctrls:OptionsDisplayItem.ActionButton>
                     <ComboBox SelectedItem="{Binding CurrentAppTheme}"
-                              Items="{Binding AppThemes}"
+                              ItemsSource="{Binding AppThemes}"
                               MinWidth="150"/>
                 </ctrls:OptionsDisplayItem.ActionButton>
                 
@@ -86,7 +86,7 @@
 
                 <ctrls:OptionsDisplayItem.ActionButton>
                     <ComboBox SelectedItem="{Binding CurrentFlowDirection}"
-                              Items="{Binding AppFlowDirections}"
+                              ItemsSource="{Binding AppFlowDirections}"
                               MinWidth="150"/>
                 </ctrls:OptionsDisplayItem.ActionButton>
                 
@@ -165,7 +165,7 @@
                         <TextBlock Text="Pre-set Colors"
                                    Margin="24 24 0 0"/>
 
-                        <ListBox Items="{Binding PredefinedColors}"
+                        <ListBox ItemsSource="{Binding PredefinedColors}"
                                  SelectedItem="{Binding ListBoxColor}"
                                  MaxWidth="441"
                                  AutoScrollToSelectedItem="False"
