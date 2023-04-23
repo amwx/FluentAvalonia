@@ -56,7 +56,6 @@ public partial class TabViewWindowingSample : AppWindow
                 Content = new TabViewWindowSampleContent("This is TabPage 3")
             },
         };
-        tvws.TabView.SelectedItem = tvws.TabView.TabItems.ElementAt(0);
 
         tvws.Show();
     }
@@ -91,13 +90,14 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void AddTabButtonClick(TabView sender, EventArgs args)
     {
-        (sender.TabItems as IList).Add(
-            new TabViewItem
-            {
-                Header = "New Item",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
-                Content = new TabViewWindowSampleContent("New item content")
-            });
+        var newTab = new TabViewItem
+        {
+            Header = "New Item",
+            IconSource = new SymbolIconSource { Symbol = Symbol.Document },
+            Content = new TabViewWindowSampleContent("New item content")
+        };
+        (sender.TabItems as IList).Add(newTab);
+        sender.SelectedItem = newTab;
     }
 
     private void TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
