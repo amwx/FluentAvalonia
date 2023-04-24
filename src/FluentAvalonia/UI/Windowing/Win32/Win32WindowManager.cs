@@ -23,7 +23,10 @@ internal unsafe class Win32WindowManager
 
 #if NET5_0_OR_GREATER
         _appWindowRegistry.Add(Hwnd, this);
-        _wndProc = (nint)(delegate* unmanaged<HWND, uint, WPARAM, LPARAM, LRESULT>)&WndProcStatic;
+
+        // Apparently...nint and void* aren't blittable types to the mono-wasm compiler
+        // so the function pointer here needs to use IntPtr
+        _wndProc = (nint)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr>)&WndProcStatic;
 #else
         _wndProc = Marshal.GetFunctionPointerForDelegate(WndProc);
 #endif
@@ -396,14 +399,14 @@ internal unsafe class Win32WindowManager
 
 #if NET5_0_OR_GREATER
     [UnmanagedCallersOnly]
-    private static LRESULT WndProcStatic(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
+    private static IntPtr WndProcStatic(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
-        if (_appWindowRegistry.TryGetValue(hwnd, out var wnd))
+        if (_appWindowRegistry.TryGetValue((HWND)hwnd, out var wnd))
         {
-            return wnd.WndProc(hwnd, msg, wParam, lParam);
+            return wnd.WndProc((HWND)hwnd, msg, (WPARAM)wParam, (LPARAM)lParam);
         }
 
-        return 0;
+        return (IntPtr)0;
     }
 
     private static Dictionary<HWND, Win32WindowManager> _appWindowRegistry =
