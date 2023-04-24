@@ -14,7 +14,7 @@ public partial class DataControlsPage : UserControl
 
         var dg = this.FindControl<DataGrid>("TargetDataGrid");
 
-        dg.Items = new DataGridCollectionView(Countries.All)
+        dg.ItemsSource = new DataGridCollectionView(Countries.All)
         {
             GroupDescriptions =
             {

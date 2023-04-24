@@ -300,6 +300,7 @@
             <!--Handle open dialog-->
             <Style Selector="^:open /template/ Panel#LayoutRoot">
                 <Setter Property="IsVisible" Value="True"/>
+                <Setter Property="Opacity" Value="0" />
                 <Style.Animations>
                      <!--Animation applies with priority of LocalValue
                          To overrule the IsVisible=False in :hidden, set

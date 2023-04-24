@@ -477,7 +477,7 @@
                                                               VerticalScrollBarVisibility="Auto"
                                                               MaxHeight="450">
                                                     <ItemsRepeater Margin="5"
-                                                                   Items="{TemplateBinding CustomPaletteColors}">
+                                                                   ItemsSource="{TemplateBinding CustomPaletteColors}">
                                                         <ItemsRepeater.Layout>
                                                             <UniformGridLayout MaximumRowsOrColumns="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PaletteColumnCount}"
                                                                                Orientation="Horizontal"

@@ -61,16 +61,34 @@ public partial class NumberBox
     /// <summary>
     /// Defines the <see cref="Minimum"/> property
     /// </summary>
-    public static readonly DirectProperty<NumberBox, double> MinimumProperty =
-        RangeBase.MinimumProperty.AddOwner<NumberBox>(x => x.Minimum,
-            (x, v) => x.Minimum = v);
+    public static readonly StyledProperty<double> MinimumProperty =
+        RangeBase.MinimumProperty.AddOwner<NumberBox>(
+            new StyledPropertyMetadata<double>(
+                coerce: (ao, d1) =>
+                {
+                    var nb = ao as NumberBox;
+                    var max = nb.Maximum;
+                    if (d1 > max)
+                        d1 = max;
+                    nb.CoerceValueIfNeeded(d1, max);
+                    return d1;
+                }));
 
     /// <summary>
     /// Defines the <see cref="Maximum"/> property
     /// </summary>
-    public static readonly DirectProperty<NumberBox, double> MaximumProperty =
-        RangeBase.MaximumProperty.AddOwner<NumberBox>(x => x.Maximum,
-            (x, v) => x.Maximum = v);
+    public static readonly StyledProperty<double> MaximumProperty =
+        RangeBase.MaximumProperty.AddOwner<NumberBox>(
+            new StyledPropertyMetadata<double>(
+                coerce: (ao, d1) =>
+                {
+                    var nb = ao as NumberBox;
+                    var min = nb.Minimum;
+                    if (d1 < min)
+                        d1 = min;
+                    nb.CoerceValueIfNeeded(min, d1);
+                    return d1;
+                }));
 
     //Skip NumberFormatter
 
@@ -129,9 +147,11 @@ public partial class NumberBox
     /// <summary>
     /// Defines the <see cref="Value"/> property
     /// </summary>
-    public static readonly DirectProperty<NumberBox, double> ValueProperty =
-         RangeBase.ValueProperty.AddOwnerWithDataValidation<NumberBox>(x => x.Value,
-             (x, v) => x.Value = v, defaultBindingMode: BindingMode.TwoWay, enableDataValidation: true);
+    public static readonly StyledProperty<double> ValueProperty =
+         RangeBase.ValueProperty.AddOwner<NumberBox>(
+             new StyledPropertyMetadata<double>(
+                 enableDataValidation: true,
+                 coerce: (ao, d1) => ((NumberBox)ao).CoerceValueToRange(d1)));
 
     //Skip InputScope
 
@@ -209,16 +229,8 @@ public partial class NumberBox
     /// </summary>
     public double Minimum
     {
-        get => _minimum;
-        set
-        {
-            if (value > _maxmimum)
-                value = _maxmimum;
-
-            SetAndRaise(MinimumProperty, ref _minimum, value);
-            CoerceValueIfNeeded(value, _maxmimum);
-            UpdateSpinButtonEnabled();
-        }
+        get => GetValue(MinimumProperty);
+        set => SetValue(MinimumProperty, value);
     }
 
     /// <summary>
@@ -226,16 +238,8 @@ public partial class NumberBox
     /// </summary>
     public double Maximum
     {
-        get => _maxmimum;
-        set
-        {
-            if (value < _minimum)
-                value = _minimum;
-
-            SetAndRaise(MaximumProperty, ref _maxmimum, value);
-            CoerceValueIfNeeded(_minimum, value);
-            UpdateSpinButtonEnabled();
-        }
+        get => GetValue(MaximumProperty);
+        set => SetValue(MaximumProperty, value);
     }
 
     /// <summary>
@@ -352,19 +356,8 @@ public partial class NumberBox
     /// </summary>
     public double Value
     {
-        get => _value;
-        set
-        {
-            if (!double.IsNaN(value) || !double.IsNaN(_value))
-            {
-                var old = _value;
-                value = CoerceValueToRange(value);
-                if (SetAndRaise(ValueProperty, ref _value, value))
-                {
-                    OnValueChanged(old, value);
-                }
-            }
-        }
+        get => GetValue(ValueProperty);
+        set => SetValue(ValueProperty, value);
     }
 
     /// <summary>

@@ -98,11 +98,16 @@
                                                 Padding="1 0 0 0"
                                                 KeyboardNavigation.TabNavigation="Once"
                                                 Content="{TemplateBinding Content}"
-                                                CanHorizontallyScroll="{TemplateBinding CanHorizontallyScroll}"
-                                                CanVerticallyScroll="{TemplateBinding CanVerticallyScroll}"
-                                                Extent="{TemplateBinding Extent, Mode=TwoWay}"
-                                                Offset="{TemplateBinding Offset, Mode=TwoWay}"
-                                                Viewport="{TemplateBinding Viewport, Mode=TwoWay}"/>
+                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}">
+                            <ScrollContentPresenter.GestureRecognizers>
+                                <ScrollGestureRecognizer CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=ScrollContentPresenter}"
+                                                         CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=ScrollContentPresenter}"
+                                                         IsScrollInertiaEnabled="{Binding IsScrollInertiaEnabled, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </ScrollContentPresenter.GestureRecognizers>
+                        </ScrollContentPresenter>
 
                         <Border Name="ScrollIncreaseButtonContainer"
                                 IsVisible="{Binding HorizontalScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource SVVTBC}}"

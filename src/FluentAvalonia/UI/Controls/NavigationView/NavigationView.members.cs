@@ -6,9 +6,7 @@ using Avalonia.Layout;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Media.Animation;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -538,7 +536,7 @@ public partial class NavigationView : HeaderedContentControl
             _leftNavRepeater.ElementClearing -= OnRepeaterElementClearing;
             _leftNavRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
-            //loaded event;
+            _leftNavRepeater.Loaded -= OnRepeaterLoaded;
             _leftNavRepeater.GotFocus -= OnRepeaterGettingFocus;
             _leftNavRepeater = null;
         }
@@ -548,7 +546,7 @@ public partial class NavigationView : HeaderedContentControl
             _topNavRepeater.ElementClearing -= OnRepeaterElementClearing;
             _topNavRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
-            //loaded event;
+            _topNavRepeater.Loaded -= OnRepeaterLoaded;
             _topNavRepeater.GotFocus -= OnRepeaterGettingFocus;
             _topNavRepeater = null;
         }
@@ -575,7 +573,7 @@ public partial class NavigationView : HeaderedContentControl
             _leftNavFooterMenuRepeater.ElementClearing -= OnRepeaterElementClearing;
             _leftNavFooterMenuRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
-            //loaded event;
+            _leftNavFooterMenuRepeater.Loaded -= OnRepeaterLoaded;
             _leftNavFooterMenuRepeater.GotFocus -= OnRepeaterGettingFocus;
             _leftNavFooterMenuRepeater = null;
         }
@@ -585,7 +583,7 @@ public partial class NavigationView : HeaderedContentControl
             _topNavFooterMenuRepeater.ElementClearing -= OnRepeaterElementClearing;
             _topNavFooterMenuRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
-            //loaded event;
+            _topNavFooterMenuRepeater.Loaded -= OnRepeaterLoaded;
             _topNavFooterMenuRepeater.GotFocus -= OnRepeaterGettingFocus;
             _topNavFooterMenuRepeater = null;
         }

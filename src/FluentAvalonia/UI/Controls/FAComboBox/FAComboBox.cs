@@ -530,21 +530,25 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
         else
         {
-            var popupPosition = (_popup?.Host as PopupRoot)?.PlatformImpl?.Position;
+            // v2-p6.1, PlatformImpl was hidden and they're stupidly doing it without providing
+            // access to common APIs that are only accessible in the PlatformImpl, like the 
+            // Window position, so popup will always have the unrounded top, rounded bottoms
 
-            // If we can't get the screen position of the popup, cancel now, the result will
-            // be the default behavior of unrounded bottom ComboBox and unrounded top popup
-            if (!popupPosition.HasValue)
-                return;
+            //var popupPosition = (_popup?.Host as PopupRoot)?.PlatformImpl?.Position;
 
-            var pt = child.PointToScreen(new Point(0, 0));
-            var thisInScreenSpace = this.PointToScreen(new Point(0, 0));
+            //// If we can't get the screen position of the popup, cancel now, the result will
+            //// be the default behavior of unrounded bottom ComboBox and unrounded top popup
+            //if (!popupPosition.HasValue)
+            //    return;
 
-            isPopupAbove = pt.Y < thisInScreenSpace.Y;
+            //var pt = child.PointToScreen(new Point(0, 0));
+            //var thisInScreenSpace = this.PointToScreen(new Point(0, 0));
 
-            // HACK: Windowed popups appear to be +1 offset on x-axis for some reason
-            // which makes the popup look off center. Overlay popups are fine
-            _popup.HorizontalOffset = -1;
+            //isPopupAbove = pt.Y < thisInScreenSpace.Y;
+
+            //// HACK: Windowed popups appear to be +1 offset on x-axis for some reason
+            //// which makes the popup look off center. Overlay popups are fine
+            //_popup.HorizontalOffset = -1;
         }
 
         PseudoClasses.Set(s_pcPopupAbove, isPopupAbove);

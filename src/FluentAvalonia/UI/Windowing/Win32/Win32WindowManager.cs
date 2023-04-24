@@ -17,14 +17,16 @@ internal unsafe class Win32WindowManager
     {
         _window = window;
 
-        Hwnd = (HWND)_window.PlatformImpl.Handle.Handle;
+        Hwnd = (HWND)_window.TryGetPlatformHandle().Handle;
         
-
         _oldWndProc = GetWindowLongPtrW(Hwnd, GWLP_WNDPROC);
 
 #if NET5_0_OR_GREATER
         _appWindowRegistry.Add(Hwnd, this);
-        _wndProc = (nint)(delegate* unmanaged<HWND, uint, WPARAM, LPARAM, LRESULT>)&WndProcStatic;
+
+        // Apparently...nint and void* aren't blittable types to the mono-wasm compiler
+        // so the function pointer here needs to use IntPtr
+        _wndProc = (nint)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr>)&WndProcStatic;
 #else
         _wndProc = Marshal.GetFunctionPointerForDelegate(WndProc);
 #endif
@@ -140,13 +142,18 @@ internal unsafe class Win32WindowManager
                 break;
         }
 
-
         return CallWindowProcW(_oldWndProc, hWnd, msg, wParam, lParam);
     }
 
+    private double GetScaling()
+    {
+        // This is stupid
+        return _window.Screens.ScreenFromWindow(_window.PlatformImpl).Scaling;
+    }
+
     private int GetResizeHandleHeight() =>
-        GetSystemMetricsForDpi(SM_CXPADDEDBORDER, (uint)(96 * _window.PlatformImpl.RenderScaling)) +
-        GetSystemMetricsForDpi(SM_CYSIZEFRAME, (uint)(96 * _window.PlatformImpl.RenderScaling));
+        GetSystemMetricsForDpi(SM_CXPADDEDBORDER, (uint)(96 * GetScaling())) +
+        GetSystemMetricsForDpi(SM_CYSIZEFRAME, (uint)(96 * GetScaling()));
 
     private int GetTopBorderHeight()
     {
@@ -167,7 +174,7 @@ internal unsafe class Win32WindowManager
         var exStyle = (int)GetWindowLongPtr((HWND)Hwnd, -20);
 
         RECT frame;
-        AdjustWindowRectExForDpi(&frame, style, false, exStyle, (int)(_window.PlatformImpl.RenderScaling * 96));
+        AdjustWindowRectExForDpi(&frame, style, false, exStyle, (int)(GetScaling() * 96));
 
         marg.topHeight = -frame.top;
 
@@ -218,7 +225,7 @@ internal unsafe class Win32WindowManager
             var exStyle = (int)GetWindowLongPtr((HWND)Hwnd, -20);
 
             RECT frame;
-            AdjustWindowRectExForDpi(&frame, style, false, exStyle, (int)(_window.PlatformImpl.RenderScaling * 96));
+            AdjustWindowRectExForDpi(&frame, style, false, exStyle, (int)(GetScaling() * 96));
 
             newSize.left -= frame.left; // left frame is negative, subtract to add it back
             newSize.right -= frame.right; // right frame is positive, subtract to pull it back
@@ -314,7 +321,8 @@ internal unsafe class Win32WindowManager
     private unsafe void HandleRBUTTONUP(LPARAM lParam)
     {
         var pt = PointFromLParam(lParam);
-        if (_window.HitTestTitleBar(pt.ToPoint(_window.PlatformImpl.RenderScaling)))
+
+        if (_window.HitTestTitleBar(pt.ToPoint(GetScaling())))
         {
             var sysMenu = GetSystemMenu((HWND)Hwnd, false);
             bool isMax = _window.WindowState == WindowState.Maximized;
@@ -341,7 +349,7 @@ internal unsafe class Win32WindowManager
 
             SetMenuDefaultItem(sysMenu, uint.MaxValue, 0);
 
-            var scPt = _window.PointToScreen(pt.ToPoint(_window.PlatformImpl.RenderScaling));
+            var scPt = _window.PointToScreen(pt.ToPoint(GetScaling()));
 
             var ret = TrackPopupMenu(sysMenu, TPM_RETURNCMD, scPt.X, scPt.Y, 0, (HWND)Hwnd, null);
             if (ret)
@@ -353,7 +361,7 @@ internal unsafe class Win32WindowManager
 
     private void UpdateContentPosition()
     {
-        var topHeight = GetTopBorderHeight() / _window.PlatformImpl.RenderScaling;
+        var topHeight = GetTopBorderHeight() / GetScaling();
 
         // Why do we do this? We remove the entire top part of the frame between
         // DwmExtendFrameIntoClientArea and WM_NCCALCSIZE so we need to offset the 
@@ -362,7 +370,7 @@ internal unsafe class Win32WindowManager
         // get correct results - since scaling is automatically done for us
         // We also need to make the top border 0 when maximized otherwise the top pixel row
         // won't allow interactions
-        _window?.UpdateContentPosition(new Thickness(0, (topHeight == 0 && !IsFullscreen) ? (-1 / _window.PlatformImpl.RenderScaling) : topHeight, 0, 0));
+        _window?.UpdateContentPosition(new Thickness(0, (topHeight == 0 && !IsFullscreen) ? (-1 / GetScaling()) : topHeight, 0, 0));
     }
 
     private void OnPlatformColorValuesChanged(object sender, PlatformColorValues e)
@@ -391,14 +399,14 @@ internal unsafe class Win32WindowManager
 
 #if NET5_0_OR_GREATER
     [UnmanagedCallersOnly]
-    private static LRESULT WndProcStatic(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
+    private static IntPtr WndProcStatic(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
-        if (_appWindowRegistry.TryGetValue(hwnd, out var wnd))
+        if (_appWindowRegistry.TryGetValue((HWND)hwnd, out var wnd))
         {
-            return wnd.WndProc(hwnd, msg, wParam, lParam);
+            return wnd.WndProc((HWND)hwnd, msg, (WPARAM)wParam, (LPARAM)lParam);
         }
 
-        return 0;
+        return (IntPtr)0;
     }
 
     private static Dictionary<HWND, Win32WindowManager> _appWindowRegistry =
