@@ -26,6 +26,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
         <Setter Property="Width" Value="{DynamicResource TabViewItemScrollButtonWidth}"/>
         <Setter Property="Height" Value="{DynamicResource TabViewItemScrollButtonHeight}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <ContentPresenter Name="ContentPresenter"
