@@ -90,6 +90,11 @@ public partial class NumberBox : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+
+        if (change.Property == ValueProperty)
+        {
+            OnValueChanged(change.GetOldValue<double>(), change.GetNewValue<double>());
+        }
         if (change.Property == IsWrapEnabledProperty)
         {
             UpdateSpinButtonEnabled();
@@ -117,6 +122,10 @@ public partial class NumberBox : TemplatedControl
                 throw new InvalidOperationException("NumberFormatter must be null");
 
             UpdateTextToValue();
+        }
+        else if (change.Property == MinimumProperty || change.Property == MaximumProperty)
+        {
+            UpdateSpinButtonEnabled();
         }
     }
 

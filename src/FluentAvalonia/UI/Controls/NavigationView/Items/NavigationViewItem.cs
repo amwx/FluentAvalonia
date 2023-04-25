@@ -166,7 +166,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
 
             var miSource = MenuItemsSource;
 
-            _repeater.Items = miSource != null ? miSource : _menuItems;
+            _repeater.ItemsSource = miSource != null ? miSource : _menuItems;
 
             if (_repeater.ItemsSourceView != null)
             {
@@ -577,7 +577,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
             {
                 _repeater.ItemsSourceView.CollectionChanged -= OnItemsSourceViewChanged;
             }
-            _repeater.Items = null;
+            _repeater.ItemsSource = null;
             _repeater = null;
         }
 

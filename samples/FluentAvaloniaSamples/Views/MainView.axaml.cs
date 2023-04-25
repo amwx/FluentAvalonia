@@ -93,15 +93,16 @@ public partial class MainView : UserControl
     {
         var pt = e.GetCurrentPoint(this);
 
-        if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton1Released)
-        {
-            if (_frameView.CanGoBack)
-            {
-                _frameView.GoBack();
-                e.Handled = true;
-            }
-        }
-        else if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton2Released)
+        //if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton1Released)
+        //{
+        //    if (_frameView.CanGoBack)
+        //    {
+        //        _frameView.GoBack();
+        //        e.Handled = true;
+        //    }
+        //}
+        //else 
+        if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton2Released)
         {
             if (_frameView.CanGoForward)
             {

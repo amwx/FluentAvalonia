@@ -473,7 +473,7 @@ public partial class TabViewItem : ListBoxItem
             if (headerContent != null)
             {
                 _toolTip = headerContent;
-                ToolTip.SetTip(this, _toolTip);
+                //ToolTip.SetTip(this, _toolTip);
             }
         }
     }

@@ -22,13 +22,14 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
     {
         ItemsView.CollectionChanged += ItemsCollectionChanged;
     }
+
     Type IStyleable.StyleKey => typeof(CommandBarOverflowPresenter);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == ItemsProperty)
+        if (change.Property == ItemsSourceProperty)
         {
             ItemsChanged(change);
         }

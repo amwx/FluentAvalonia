@@ -364,7 +364,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
         //_listView.Items = TabItems;
 
-        if (this.GetDiagnostic(SelectedItemProperty).Priority != Avalonia.Data.BindingPriority.Unset)
+        if (SelectedItem != null)
         {
             UpdateSelectedItem();
         }

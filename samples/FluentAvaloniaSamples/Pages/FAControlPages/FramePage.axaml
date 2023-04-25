@@ -18,7 +18,7 @@
 
             <StackPanel>
                 <ListBox Name="PageSelection"
-                         Items="{Binding PageOptions}">
+                         ItemsSource="{Binding PageOptions}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel />

@@ -145,7 +145,7 @@ public partial class FluentAvaloniaTheme
 
         try
         {
-            Win32Interop.ApplyTheme(window.PlatformImpl.Handle.Handle, theme == ThemeVariant.Dark);
+            Win32Interop.ApplyTheme(window.TryGetPlatformHandle().Handle, theme == ThemeVariant.Dark);
         }
         catch
         {

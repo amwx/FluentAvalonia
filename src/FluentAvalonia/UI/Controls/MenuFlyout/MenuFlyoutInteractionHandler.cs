@@ -70,9 +70,10 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
             window.Deactivated += WindowDeactivated;
         }
 
-        if (_root is TopLevel tl && tl.PlatformImpl != null)
-            tl.PlatformImpl.LostFocus += TopLevelLostPlatformFocus;
-
+        // v2p6.1: Don't have access to this anymore...
+        //if (_root is TopLevel tl && tl.PlatformImpl != null)
+        //    tl.PlatformImpl.LostFocus += TopLevelLostPlatformFocus;
+        
         _inputManagerSubscription = InputManager?.Process.Subscribe(RawInput);
     }
 
@@ -103,8 +104,8 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
             root.Deactivated -= WindowDeactivated;
         }
 
-        if (_root is TopLevel tl && tl.PlatformImpl != null)
-            tl.PlatformImpl.LostFocus -= TopLevelLostPlatformFocus;
+        //if (_root is TopLevel tl && tl.PlatformImpl != null)
+        //    tl.PlatformImpl.LostFocus -= TopLevelLostPlatformFocus;
 
         _inputManagerSubscription?.Dispose();
 
