@@ -68,7 +68,7 @@
                            TextWrapping="Wrap"/>
                 <AutoCompleteBox HorizontalAlignment="Left"
                                  MinWidth="250"
-                                 Items="{Binding States}"
+                                 ItemsSource="{Binding States}"
                                  ValueMemberBinding="{Binding Name, DataType=vm:StateData}"
                                  Name="TargetAutoCompleteBox" />
             </StackPanel>

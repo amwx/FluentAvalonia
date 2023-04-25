@@ -32,7 +32,7 @@
                     </Expander>
                     <Expander Header="Default Button">
                         <ComboBox Name="DefButtonSelector" MinWidth="90" 
-                                  Items="{Binding ContentDialogButtons}"
+                                  ItemsSource="{Binding ContentDialogButtons}"
                                   SelectedItem="{Binding ContentDialogDefaultButton}" />
                     </Expander>
                     <Expander Header="Content">

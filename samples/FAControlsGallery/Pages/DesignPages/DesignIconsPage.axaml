@@ -9,7 +9,7 @@
              x:Class="FAControlsGallery.Pages.DesignPages.DesignIconsPage"
              x:DataType="vm:DesignIconsPageViewModel"
              x:CompileBindings="False"
-             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+             ScrollViewer.VerticalScrollBarVisibility="Auto">
 
     <UserControl.Resources>
         <data:CollectionViewSource Source="{Binding Icons^}"
@@ -87,10 +87,10 @@
             </TextBox.InnerRightContent>
         </TextBox>
 
-        <ScrollViewer VerticalScrollBarVisibility="Visible"
+        <ScrollViewer VerticalScrollBarVisibility="Disabled"
                       Grid.Row="4">
             <ItemsRepeater Grid.Row="4" 
-                           Items="{Binding Source={StaticResource IconsSource}, Path=View}"
+                           ItemsSource="{Binding Source={StaticResource IconsSource}, Path=View}"
                            Name="IconPreview">
                 <ItemsRepeater.Layout>
                     <WrapLayout />

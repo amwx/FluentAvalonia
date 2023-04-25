@@ -217,8 +217,8 @@ public class ControlDefinitionOverlay : TemplatedControl
             Dispatcher.UIThread.Post(() =>
             {
                 Inheritance = inheritance;
-                _pseudoclassesDisplay.Items = pc;
-                _templatePartsDisplay.Items = tp;
+                _pseudoclassesDisplay.ItemsSource = pc;
+                _templatePartsDisplay.ItemsSource = tp;
                 _textEditor.Document = new TextDocument(new StringTextSource(src));
 
                 _textEditor.TextArea.IndentationStrategy.IndentLines(_textEditor.Document, 0, _textEditor.Document.LineCount);

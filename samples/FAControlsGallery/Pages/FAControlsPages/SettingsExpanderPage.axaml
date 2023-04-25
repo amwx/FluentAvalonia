@@ -22,7 +22,7 @@
         <DataTemplate DataType="vm:RecentImagesSettingsItem">
             <StackPanel Spacing="4">
                 <TextBlock Text="{Binding Header}" />
-                <ItemsControl Items="{Binding Images}">
+                <ItemsControl ItemsSource="{Binding Images}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" Spacing="4" />
@@ -100,7 +100,7 @@
             <ui:SettingsExpander Header="Personalize your background"
                                  IconSource="Image"
                                  Name="SettingsExpander4"
-                                 Items="{Binding Items}">
+                                 ItemsSource="{Binding Items}">
                 <ui:SettingsExpander.Styles>
                     <Style Selector="ui|SettingsExpanderItem">
                         <Setter Property="Footer" Value="{Binding Footer, DataType=vm:SettingsItemBase}" />

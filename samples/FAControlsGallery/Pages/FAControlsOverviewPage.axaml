@@ -62,7 +62,7 @@
                 <local:PageHeaderControl TextType="FAControls"
                                          Classes="smaller"/>
 
-                <ItemsControl Items="{Binding ControlGroups}"
+                <ItemsControl ItemsSource="{Binding ControlGroups}"
                               Padding="{StaticResource SampleAppPageMargin}" 
                               Margin="0 0 0 20">
                     <ItemsControl.ItemsPanel>
@@ -78,7 +78,7 @@
                                            Theme="{StaticResource SubtitleTextBlockStyle}"
                                            Margin="0 8"/>
 
-                                <ListBox Items="{Binding Controls}"
+                                <ListBox ItemsSource="{Binding Controls}"
                                          ItemContainerTheme="{StaticResource GridViewItem}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>

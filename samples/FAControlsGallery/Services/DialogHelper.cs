@@ -39,7 +39,7 @@ public class DialogHelper
 
         copyLinkButton.Click += async (s, __) =>
         {
-            await Application.Current.Clipboard.SetTextAsync(uri.ToString());
+            await ClipboardService.SetTextAsync(uri.ToString());
 
             var flyout = new Flyout
             {

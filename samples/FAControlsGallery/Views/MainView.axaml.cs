@@ -176,17 +176,9 @@ public partial class MainView : UserControl
     {
         var pt = e.GetCurrentPoint(this);
 
-        // TODO: Use BackRequested from TopLevel
-        // This enables the X1/X2 buttons of my mouse to handle back & forward navigation
-        if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton1Released)
-        {
-            if (FrameView.CanGoBack)
-            {
-                FrameView.GoBack();
-                e.Handled = true;
-            }
-        }
-        else if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton2Released)
+        // Frame handles X1 -> BackRequested automatically, we can handle X2
+        // here to enable forward navigation
+        if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton2Released)
         {
             if (FrameView.CanGoForward)
             {

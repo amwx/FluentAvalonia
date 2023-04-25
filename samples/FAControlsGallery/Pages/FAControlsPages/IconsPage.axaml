@@ -303,7 +303,7 @@ In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource
                 </TextBox>
 
                 <ScrollViewer Grid.Row="2">
-                    <ItemsRepeater Items="{Binding Path=View, Source={StaticResource IconsSource}}">
+                    <ItemsRepeater ItemsSource="{Binding Path=View, Source={StaticResource IconsSource}}">
                         <ItemsRepeater.Layout>
                             <WrapLayout HorizontalSpacing="4"
                                         VerticalSpacing="4"/>

@@ -38,7 +38,7 @@
             <ui:FAComboBox MinWidth="200"
                            Name="CB2"
                            DisplayMemberBinding="{Binding DisplayName, DataType=vm:ComboItem}"
-                           Items="{Binding Items}">
+                           ItemsSource="{Binding Items}">
             </ui:FAComboBox>
 
             <ctrls:ControlExample.Options>

@@ -1,6 +1,6 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Styling;
+using FAControlsGallery.Services;
 
 namespace FAControlsGallery.ViewModels.DesignPages;
 
@@ -31,7 +31,7 @@ public class TypographyItemViewModel
         try
         {
             var text = "{StaticResource " + StyleName + "}";
-            await Application.Current.Clipboard.SetTextAsync(text);
+            await ClipboardService.SetTextAsync(text);
         }
         catch { }
     }

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using FAControlsGallery.Services;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Controls;
@@ -101,11 +102,11 @@ public class ColorTile : TemplatedControl
     {
         try
         {
-            await Application.Current.Clipboard.SetTextAsync(ColorBrushName);
+            await ClipboardService.SetTextAsync(ColorBrushName);
         }
         catch
         {
-
+            // TODO:
         }
     }
 

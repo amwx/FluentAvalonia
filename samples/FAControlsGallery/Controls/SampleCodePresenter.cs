@@ -12,6 +12,7 @@ using AvaloniaEdit;
 using TextMateSharp.Grammars;
 using AvaloniaEdit.TextMate;
 using AvaloniaEdit.Document;
+using FAControlsGallery.Services;
 
 namespace FAControlsGallery.Controls;
 
@@ -145,7 +146,7 @@ public class SampleCodePresenter : HeaderedContentControl
             else
             {
                 // Copy everything
-                await Application.Current.Clipboard.SetTextAsync(_textHost.Text);
+                await ClipboardService.SetTextAsync(_textHost.Text);
             }
 
             ShowCopiedFlyout(sender as Button);

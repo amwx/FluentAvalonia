@@ -116,7 +116,7 @@
                                                         <Run Text="{Binding DeclaredOnType.Name}"
                                                              Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
                                                     </TextBlock>
-                                                    <ItemsControl Items="{Binding Pseudoclasses}">
+                                                    <ItemsControl ItemsSource="{Binding Pseudoclasses}">
                                                         <ItemsControl.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <WrapPanel />

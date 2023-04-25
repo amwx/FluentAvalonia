@@ -31,7 +31,7 @@
                        Margin="30 -25 0 0"
                        Theme="{StaticResource CaptionTextBlockStyle}"/>
             
-            <ItemsControl Items="{Binding CoreControlGroups}"
+            <ItemsControl ItemsSource="{Binding CoreControlGroups}"
                           Name="ItemsControl"
                           ClipToBounds="False"
                           Padding="{StaticResource SampleAppPageMargin}">

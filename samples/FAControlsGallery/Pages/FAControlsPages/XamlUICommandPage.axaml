@@ -45,7 +45,7 @@
             <StackPanel Spacing="8">
                 <Expander Header="Defined StandardUICommands">
                     <ScrollViewer MaxHeight="400">
-                        <ItemsControl Items="{Binding StandardCommands}">
+                        <ItemsControl ItemsSource="{Binding StandardCommands}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
@@ -74,7 +74,7 @@
                                                      CommandParameter="{Binding #ListBox1.SelectedItem}"/>
                             </ui:CommandBar.SecondaryCommands>
                         </ui:CommandBar>
-                        <ListBox Items="{Binding TempItems}" Name="ListBox1">
+                        <ListBox ItemsSource="{Binding TempItems}" Name="ListBox1">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border Background="Transparent">

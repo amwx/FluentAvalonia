@@ -33,7 +33,7 @@
         <StackPanel Spacing="-75">
             <local:PageHeaderControl />
             
-            <ItemsControl Items="{Binding Pages}"
+            <ItemsControl ItemsSource="{Binding Pages}"
                           Name="TileItemsControl"
                           ClipToBounds="False"
                           Margin="{StaticResource SampleAppPageMargin}">
