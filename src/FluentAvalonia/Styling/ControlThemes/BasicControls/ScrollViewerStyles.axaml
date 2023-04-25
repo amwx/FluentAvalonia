@@ -34,7 +34,7 @@
                                             VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
                                             HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
                                             VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                                            Padding="{TemplateBinding Padding}">
+                                            Margin="{TemplateBinding Padding}">
                         <ScrollContentPresenter.GestureRecognizers>
                             <ScrollGestureRecognizer CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
                                                      CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
