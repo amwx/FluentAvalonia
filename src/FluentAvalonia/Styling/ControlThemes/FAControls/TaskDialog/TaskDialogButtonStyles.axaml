@@ -19,11 +19,11 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Name="Root">
-                    <Border.Transitions>
+                    <ui:FABorder.Transitions>
                         <Transitions>
                             <BrushTransition Duration="00:00:00.083" Property="Background" />
                         </Transitions>
-                    </Border.Transitions>
+                    </ui:FABorder.Transitions>
                     <StackPanel Spacing="12" 
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center"
