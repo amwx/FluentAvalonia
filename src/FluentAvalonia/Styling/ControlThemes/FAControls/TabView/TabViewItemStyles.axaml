@@ -105,14 +105,20 @@
                               Width="4"
                               Data="M0 0C0 1.19469 0.523755 2.26706 1.35418 3H4C2.34315 3 1 1.65685 1 0H0Z"/>
 
-                        <Path Name="SelectedBackgroundPath"
-                              Grid.ColumnSpan="3"
-                              Fill="{DynamicResource TabViewItemHeaderBackgroundSelected}"
-                              VerticalAlignment="Bottom"
-                              Margin="-4 0"
-                              IsVisible="False"
-                              Data="{Binding TabViewTemplateSettings.TabGeometry, RelativeSource={RelativeSource TemplatedParent}}"/>
-
+                        <!-- 
+                        This Path wrapped in a Canvas to prevent an infinite loop in calculating its width. 
+                        Added as part of WinUI #8430
+                        -->
+                        <Canvas>
+                            <Path Name="SelectedBackgroundPath"
+                                  Grid.ColumnSpan="3"
+                                  Fill="{DynamicResource TabViewItemHeaderBackgroundSelected}"
+                                  VerticalAlignment="Bottom"
+                                  Margin="-4 0"
+                                  IsVisible="False"
+                                  Data="{Binding TabViewTemplateSettings.TabGeometry, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Canvas>
+                        
                         <!-- Switched to background here as Avalonia won't render border brush with 1 edge set w/ 1px width -->
                         <Border Name="TabSeparator"
                                 HorizontalAlignment="Right"
