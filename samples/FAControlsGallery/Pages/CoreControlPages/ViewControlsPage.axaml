@@ -132,11 +132,11 @@
                 </SplitView.Pane>
 
                 <Grid>
-                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" HorizontalAlignment="Right" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" VerticalAlignment="Bottom" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" VerticalAlignment="Bottom" HorizontalAlignment="Right" TextAlignment="Left"  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" TextAlignment="Left" />
+                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" HorizontalAlignment="Right" TextAlignment="Left" />
+                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" VerticalAlignment="Bottom" TextAlignment="Left" />
+                    <TextBlock FontSize="14" FontWeight="700" Text="SplitViewContent" VerticalAlignment="Bottom" HorizontalAlignment="Right" TextAlignment="Left" />
                 </Grid>
 
             </SplitView>
