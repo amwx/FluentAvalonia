@@ -276,11 +276,13 @@ public partial class TabViewItem : ListBoxItem
 
         var builder = new StringBuilder();
         // WinUI 6644
-        builder.AppendFormat(CultureInfo.InvariantCulture, data, height,
-                leftCorner, leftCorner, leftCorner, leftCorner, leftCorner,
-                Bounds.Width - (leftCorner + rightCorner),
-                rightCorner, rightCorner, rightCorner, rightCorner,
-                height - (4 + rightCorner));
+        builder.AppendFormat(CultureInfo.InvariantCulture, 
+            data, 
+            height,
+            leftCorner, leftCorner, leftCorner, leftCorner, leftCorner,
+            Bounds.Width - (leftCorner + rightCorner),
+            rightCorner, rightCorner, rightCorner, rightCorner,
+            height - (4 + rightCorner));
 
         TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(builder.ToString());
     }
