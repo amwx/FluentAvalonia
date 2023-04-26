@@ -22,7 +22,7 @@
                 <Border Name="Container">
                     <Panel Name="LayoutRoot"
                            Background="{DynamicResource ContentDialogSmokeFill}">
-                        <Border Name="BackgroundElement"
+                        <ui:FABorder Name="BackgroundElement"
                                 Background="{TemplateBinding Background}"
                                 BorderThickness="{StaticResource ContentDialogBorderWidth}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -133,7 +133,7 @@
                                     </Border>
                                 </Grid>
                             </Border>
-                        </Border>
+                        </ui:FABorder>
                     </Panel>
                 </Border>
             </ControlTemplate>
@@ -209,7 +209,7 @@
         </Style>
 
         <!--Handle FullDialogSizing-->
-        <Style Selector="^:fullsize /template/ Border#BackgroundElement">
+        <Style Selector="^:fullsize /template/ ui|FABorder#BackgroundElement">
             <Setter Property="VerticalAlignment" Value="Stretch"/>
         </Style>
 
