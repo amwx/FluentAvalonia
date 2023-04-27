@@ -5,7 +5,6 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
-using System;
 using System.Globalization;
 
 namespace FluentAvalonia.UI.Controls;
@@ -65,7 +64,7 @@ public partial class NumberBox : TemplatedControl
 
         //UpdateVisualStateForIsEnabledChange();
 
-        if (_value == double.NaN &&
+        if (double.IsNaN(Value) &&
             !string.IsNullOrEmpty(_text))
         {
             // If Text has been set, but Value hasn't, update Value based on Text.
@@ -255,7 +254,7 @@ public partial class NumberBox : TemplatedControl
             }
             else
             {
-                if (value.Value == _value)
+                if (value.Value == Value)
                 {
                     // Even if the value hasn't changed, we still want to update the text (e.g. Value is 3, user types 1 + 2, we want to replace the text with 3)
                     UpdateTextToValue();
@@ -336,17 +335,19 @@ public partial class NumberBox : TemplatedControl
         // Before adjusting the value, validate the contents of the textbox so we don't override it.
         ValidateInput();
 
-        var newVal = _value;
+        var newVal = Value;
+        var max = Maximum;
+        var min = Minimum;
         if (!double.IsNaN(newVal))
         {
             newVal += change;
 
             if (IsWrapEnabled)
             {
-                if (newVal > _maxmimum)
-                    newVal = _minimum;
-                else if (newVal < _minimum)
-                    newVal = _maxmimum;
+                if (newVal > max)
+                    newVal = min;
+                else if (newVal < min)
+                    newVal = max;
             }
 
             Value = newVal;
@@ -364,12 +365,13 @@ public partial class NumberBox : TemplatedControl
             return;
 
         string newText = "";
+        var value = Value;
 
-        if (!double.IsNaN(_value))
+        if (!double.IsNaN(value))
         {
             // Round to 12 digits (standard .net rounding per WinUI in the NumberBox source)
             // We do this to prevent weirdness from floating point imprecision
-            var newValue = Math.Round(_value, 12);
+            var newValue = Math.Round(value, 12);
             if (SimpleNumberFormat != null)
             {
                 newText = newValue.ToString(SimpleNumberFormat);
@@ -451,7 +453,8 @@ public partial class NumberBox : TemplatedControl
         bool isUpEnabled = false;
         bool isDownEnabled = false;
 
-        if (!double.IsNaN(_value))
+        var value = Value;
+        if (!double.IsNaN(value))
         {
             if (IsWrapEnabled || ValidationMode != NumberBoxValidationMode.InvalidInputOverwritten)
             {
@@ -461,10 +464,10 @@ public partial class NumberBox : TemplatedControl
             }
             else
             {
-                if (_value < _maxmimum)
+                if (value < Maximum)
                     isUpEnabled = true;
 
-                if (_value > _minimum)
+                if (value > Minimum)
                     isDownEnabled = true;
             }
         }
@@ -511,24 +514,27 @@ public partial class NumberBox : TemplatedControl
 
     private void CoerceValueIfNeeded(double min, double max)
     {
-        if (double.IsNaN(_value))
+        var value = Value;
+        if (double.IsNaN(value))
             return;
 
-        if (_value < min)
+        if (value < min)
             Value = min;
-        else if (_value > max)
+        else if (value > max)
             Value = max;
     }
 
     private double CoerceValueToRange(double val)
     {
-        if (!double.IsNaN(val) && (val > _maxmimum || val < _minimum) && ValidationMode == NumberBoxValidationMode.InvalidInputOverwritten)
+        var maximum = Maximum;
+        var minimum = Minimum;
+        if (!double.IsNaN(val) && (val > maximum || val < minimum) && ValidationMode == NumberBoxValidationMode.InvalidInputOverwritten)
         {
-            if (val > _maxmimum)
-                return _maxmimum;
+            if (val > maximum)
+                return maximum;
 
-            if (val < _minimum)
-                return _minimum;
+            if (val < minimum)
+                return minimum;
         }
 
         return val;
