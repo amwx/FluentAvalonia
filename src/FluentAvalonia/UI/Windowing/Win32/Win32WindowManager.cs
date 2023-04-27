@@ -145,11 +145,9 @@ internal unsafe class Win32WindowManager
         return CallWindowProcW(_oldWndProc, hWnd, msg, wParam, lParam);
     }
 
-    private double GetScaling()
-    {
-        // This is stupid
-        return _window.Screens.ScreenFromWindow(_window.PlatformImpl).Scaling;
-    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private double GetScaling() =>
+        _window.RenderScaling;
 
     private int GetResizeHandleHeight() =>
         GetSystemMetricsForDpi(SM_CXPADDEDBORDER, (uint)(96 * GetScaling())) +
