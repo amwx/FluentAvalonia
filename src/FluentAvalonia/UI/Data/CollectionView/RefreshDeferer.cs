@@ -17,6 +17,5 @@ internal class RefreshDeferer : IDisposable
     }
 
     private readonly Action<object> _releaseAction;
-    private readonly ICollectionView _acvs;
     private readonly object _currentItem;
 }
