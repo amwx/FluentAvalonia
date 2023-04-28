@@ -58,10 +58,22 @@
               <Grid RowDefinitions="Auto,Auto">
 
                 <Grid.Resources>
-                  <StaticResource x:Key="ColorViewContentBackgroundBrush" ResourceKey="LayerFillColorAltBrush" />
-                  <StaticResource x:Key="ColorViewContentBorderBrush" ResourceKey="DividerStrokeColorDefaultBrush" />
-                  <SolidColorBrush x:Key="ColorViewTabBackgroundBrush" Color="Transparent" />
-                  <SolidColorBrush x:Key="ColorViewTabBorderBrush" Color="Transparent" />
+                  <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                      <ResourceDictionary x:Key="Default">
+                        <StaticResource x:Key="ColorViewContentBackgroundBrush" ResourceKey="LayerFillColorAltBrush" />
+                        <StaticResource x:Key="ColorViewContentBorderBrush" ResourceKey="DividerStrokeColorDefaultBrush" />
+                        <SolidColorBrush x:Key="ColorViewTabBackgroundBrush" Color="Transparent" />
+                        <SolidColorBrush x:Key="ColorViewTabBorderBrush" Color="Transparent" />
+                      </ResourceDictionary>
+                      <ResourceDictionary x:Key="Dark">
+                        <StaticResource x:Key="ColorViewContentBackgroundBrush" ResourceKey="LayerFillColorAltBrush" />
+                        <StaticResource x:Key="ColorViewContentBorderBrush" ResourceKey="DividerStrokeColorDefaultBrush" />
+                        <SolidColorBrush x:Key="ColorViewTabBackgroundBrush" Color="Transparent" />
+                        <SolidColorBrush x:Key="ColorViewTabBorderBrush" Color="Transparent" />
+                      </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                  </ResourceDictionary>
                   <!-- This radius must follow OverlayCornerRadius -->
                   <CornerRadius x:Key="ColorViewTabBackgroundCornerRadius">8,8,0,0</CornerRadius>
                 </Grid.Resources>
