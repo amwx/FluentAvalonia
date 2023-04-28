@@ -5,14 +5,15 @@
                     xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
                     x:CompileBindings="True">
     <Design.PreviewWith>
-        <Border Padding="20">
+        <Border Padding="20" Background="#CDCDCD" Height="530" Width="600">
             <Border BorderBrush="#35EFEFEF" BorderThickness="1">
                 <ui:TaskDialog IconSource="SaveFilled" IsVisible="True"
                                Header="Dialog Heading"
+                               SubHeader="Dialog SubHeader"
                                Content="Dialog Content goes here"
                                FooterVisibility="Auto"
                                ShowProgressBar="True" 
-                               core:VisualStateHelper.ForcedClassesProperty=":open,:progressSuspend">
+                               core:VisualStateHelper.ForcedClassesProperty=":open,:progressSuspend:hosted">
                     <ui:TaskDialog.Buttons>
                         <ui:TaskDialogButton Text="OK" IconSource="Checkmark" IsDefault="True" />
                         <ui:TaskDialogButton Text="Cancel" IconSource="Dismiss" IsEnabled="False"/>
@@ -42,8 +43,10 @@
     <x:String x:Key="TaskDialogFooterButtonNormalText">More Details</x:String>
     <x:String x:Key="TaskDialogFooterButtonExpandedText">Less Details</x:String>
 
-    <Thickness x:Key="TaskDialogHeaderPadding">18 9</Thickness>
-    <Thickness x:Key="TaskDialogSubHeaderPadding">18 9</Thickness>
+    <Thickness x:Key="TaskDialogIconMargin">12</Thickness>
+    <Thickness x:Key="TaskDialogHeaderPadding">60 9 12 9</Thickness>
+    <Thickness x:Key="TaskDialogHeaderPaddingNoIcon">18 9 12 9</Thickness>
+    <Thickness x:Key="TaskDialogSubHeaderPadding">18 4</Thickness>
     <x:Double x:Key="TaskDialogIconSize">36</x:Double>
     <Thickness x:Key="TaskDialogContentMargin">18 9</Thickness>
     <Thickness x:Key="TaskDialogButtonHostMargin">18</Thickness>
@@ -86,38 +89,43 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
                         <Grid RowDefinitions="Auto,Auto,*,Auto">
-                            <Border Background="{DynamicResource TaskDialogHeaderBackground}"
-                                    Padding="{DynamicResource TaskDialogHeaderPadding}"
-                                    Name="HeaderRoot"
-                                    IsVisible="False">
+                            <Panel Grid.Row="0"
+                                   Name="HeaderHost"
+                                   Background="{TemplateBinding HeaderBackground}"
+                                   IsVisible="False">
+                                <Viewbox Name="IconHost"
+                                         Width="{StaticResource TaskDialogIconSize}"
+                                         Height="{StaticResource TaskDialogIconSize}"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Left"
+                                         Margin="{DynamicResource TaskDialogIconMargin}"
+                                         IsVisible="False">
+                                    <ui:IconSourceElement IconSource="{TemplateBinding IconSource}"
+                                                          Name="IconElement"/>
+                                </Viewbox>
                                 <TextBlock Text="{TemplateBinding Header}"
                                            TextWrapping="Wrap"
                                            FontSize="{DynamicResource TaskDialogHeaderFontSize}"
-                                           FontWeight="{StaticResource TaskDialogHeaderFontWeight}" />
-                            </Border>
-
-                            <DockPanel Grid.Row="1"
-                                       Name="SubHeaderRoot"
-                                       Margin="{DynamicResource TaskDialogSubHeaderPadding}"
-                                       IsVisible="False">
-                                <Viewbox Name="IconHost"
-                                         DockPanel.Dock="Left"
-                                         Width="{StaticResource TaskDialogIconSize}"
-                                         Height="{StaticResource TaskDialogIconSize}"
-                                         Margin="0 0 12 0"
-                                         IsVisible="False">
-                                    <ui:IconSourceElement IconSource="{TemplateBinding IconSource}" />
-                                </Viewbox>
-
-                                <TextBlock Name="SubHeaderHost"
-                                           Text="{TemplateBinding SubHeader}"
-                                           FontWeight="{StaticResource TaskDialogSubHeaderFontWeight}"
-                                           HorizontalAlignment="Left"
+                                           FontWeight="{StaticResource TaskDialogHeaderFontWeight}"
                                            VerticalAlignment="Center"
-                                           TextWrapping="Wrap"
-                                           FontSize="{StaticResource TaskDialogSubHeaderFontSize}" />
-                            </DockPanel>
+                                           HorizontalAlignment="Left"
+                                           Margin="{DynamicResource TaskDialogHeaderPadding}"
+                                           IsVisible="False"
+                                           Name="HeaderText"/>
 
+                            </Panel>
+
+                            <TextBlock Name="SubHeaderText"
+                                       Text="{TemplateBinding SubHeader}"
+                                       FontWeight="{StaticResource TaskDialogSubHeaderFontWeight}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       FontSize="{StaticResource TaskDialogSubHeaderFontSize}"
+                                       Margin="{DynamicResource TaskDialogSubHeaderPadding}"
+                                       Grid.Row="1"
+                                       IsVisible="False"/>
+                            
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                           VerticalScrollBarVisibility="Auto"
                                           Grid.Row="2"
@@ -197,11 +205,19 @@
             <Setter Property="IsVisible" Value="True" />
         </Style>
 
-        <Style Selector="^:header /template/ Border#HeaderRoot">
-            <Setter Property="IsVisible" Value="True" />
+        <Style Selector="^:header">
+            <Style Selector="^ /template/ Panel#HeaderHost">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#HeaderText">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^:not(:icon) /template/ TextBlock#HeaderText">
+                <Setter Property="Margin" Value="{DynamicResource TaskDialogHeaderPaddingNoIcon}" />
+            </Style>
         </Style>
-
-        <Style Selector="^:subheader /template/ DockPanel#SubHeaderRoot">
+        
+        <Style Selector="^:subheader /template/ TextBlock#SubHeaderText">
             <Setter Property="IsVisible" Value="True" />
         </Style>
 
@@ -213,6 +229,9 @@
             <Style Selector="^ /template/ Viewbox#IconHost">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
+            <Style Selector="^ /template/ Panel#HeaderHost">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>            
         </Style>
 
         <Style Selector="^:footerAuto">
@@ -246,6 +265,14 @@
         <Style Selector="^:progressSuspend /template/ ProgressBar#ProgressBar">
             <Setter Property="Foreground" Value="{DynamicResource TaskDialogProgressBarSuspendColor}" />
             <Setter Property="Background" Value="{DynamicResource TaskDialogProgressBarSuspendBackgroundColor}" />
+        </Style>
+
+        <Style Selector="^:headerForeground /template/ TextBlock#HeaderText">
+            <Setter Property="Foreground" Value="{Binding $parent[ui:TaskDialog].HeaderForeground}" />
+        </Style>
+
+        <Style Selector="^:iconForeground /template/ ui|IconSourceElement#IconElement">
+            <Setter Property="Foreground" Value="{Binding $parent[ui:TaskDialog].IconForeground}" />
         </Style>
         
         

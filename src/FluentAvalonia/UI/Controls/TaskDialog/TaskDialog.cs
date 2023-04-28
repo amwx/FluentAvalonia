@@ -88,6 +88,14 @@ public partial class TaskDialog : ContentControl
         {
             PseudoClasses.Set(s_pcSubheader, change.NewValue != null);
         }
+        else if (change.Property == HeaderForegroundProperty)
+        {
+            PseudoClasses.Set(s_pcHeaderForeground, change.NewValue != null);
+        }
+        else if (change.Property == IconForegroundProperty)
+        {
+            PseudoClasses.Set(s_pcIconForeground, change.NewValue != null);
+        }
     }
     
     protected override bool RegisterContentPresenter(IContentPresenter presenter)
