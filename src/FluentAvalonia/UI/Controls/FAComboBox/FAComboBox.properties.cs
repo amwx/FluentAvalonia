@@ -68,12 +68,6 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         ComboBox.PlaceholderTextProperty.AddOwner<FAComboBox>();
 
     /// <summary>
-    /// Defines the <see cref="HeaderTemplate"/> property
-    /// </summary>
-    public static StyledProperty<IDataTemplate> HeaderTemplateProperty =
-        HeaderedContentControl.HeaderTemplateProperty.AddOwner<FAComboBox>();
-
-    /// <summary>
     /// Defines the <see cref="SelectionChangedTrigger"/> property
     /// </summary>
     public static StyledProperty<FAComboBoxSelectionChangedTrigger> SelectionChangedTriggerProperty =
@@ -189,15 +183,6 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     {
         get => GetValue(PlaceholderTextProperty);
         set => SetValue(PlaceholderTextProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the DataTemplate used to display the content of the control's header.
-    /// </summary>
-    public IDataTemplate HeaderTemplate
-    {
-        get => GetValue(HeaderTemplateProperty);
-        set => SetValue(HeaderTemplateProperty, value);
     }
 
     /// <summary>

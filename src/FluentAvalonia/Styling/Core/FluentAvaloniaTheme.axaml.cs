@@ -20,44 +20,13 @@ namespace FluentAvalonia.Styling;
 /// </summary>
 public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 {
-    public FluentAvaloniaTheme(Uri baseUri)
+    public FluentAvaloniaTheme()
     {
-        _baseUri = baseUri;
-        Init();
-    }
-
-    public FluentAvaloniaTheme(IServiceProvider serviceProvider)
-    {
-        _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
         Init();
     }
 
     public static readonly ThemeVariant HighContrastTheme = new ThemeVariant(HighContrastModeString,
         ThemeVariant.Light);
-
-    /// <summary>
-    /// Gets or sets the desired theme mode (Light, Dark, or HighContrast) for the app
-    /// </summary>
-    /// <remarks>
-    /// If <see cref="PreferSystemTheme"/> is set to true, on startup this value will
-    /// be overwritten with the system theme unless the attempt to read from the system
-    /// fails, in which case setting this can provide a fallback.
-    /// </remarks>
-    [Obsolete]
-    public string RequestedTheme
-    {
-        get => Application.Current.ActualThemeVariant.ToString();
-        set
-        {
-            Application.Current.RequestedThemeVariant = value switch
-            {
-                LightModeString => ThemeVariant.Light,
-                DarkModeString => ThemeVariant.Dark,
-                HighContrastModeString => HighContrastTheme,
-                _ => ThemeVariant.Default
-            };
-        }
-    }
 
     /// <summary>
     /// Gets or sets whether the system font should be used on Windows. Value only applies at startup
@@ -147,9 +116,6 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
       
     bool IResourceNode.HasResources => true;
 
-    [Obsolete]
-    public event TypedEventHandler<FluentAvaloniaTheme, RequestedThemeChangedEventArgs> RequestedThemeChanged;
-
     public new bool TryGetResource(object key, ThemeVariant theme, out object value)
     {
         // Github build failing with this not being set, even tho it passes locally
@@ -170,49 +136,6 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
     bool IResourceNode.TryGetResource(object key, ThemeVariant theme, out object value) =>
         this.TryGetResource(key, theme, out value);
-
-    /// <summary>
-    /// Call this method if you monitor for notifications from the OS that theme colors have changed. This can be
-    /// SystemAccentColor or Light/Dark/HighContrast theme. This method only works for AccentColors if
-    /// <see cref="UseUserAccentColorOnWindows"/> is true, and for app theme if <see cref="UseSystemThemeOnWindows"/> is true
-    /// </summary>
-    [Obsolete]
-    public void InvalidateThemingFromSystemThemeChanged()
-    {
-        if (PreferUserAccentColor)
-        {
-            if (OSVersionHelper.IsWindows())
-            {
-                TryLoadWindowsAccentColor();
-            }           
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                TryLoadLinuxAccentColor();
-            }
-            else
-            {
-                // This is used for Mac & WASM/Mobile
-                TryLoadMacOSAccentColor(AvaloniaLocator.Current.GetService<IPlatformSettings>());
-            }
-        }
-
-        if (PreferSystemTheme)
-        {
-           // Refresh(null);
-        }
-    }
-
-    private bool IsValidRequestedTheme(string thm)
-    {
-        if (LightModeString.Equals(thm, StringComparison.OrdinalIgnoreCase) ||
-            DarkModeString.Equals(thm, StringComparison.OrdinalIgnoreCase) ||
-            HighContrastModeString.Equals(thm, StringComparison.OrdinalIgnoreCase))
-        {
-            return true;
-        }
-
-        return false;
-    }
 
     private void Init()
     {
@@ -578,7 +501,6 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     }
 
     private bool _hasLoaded;
-    private Uri _baseUri;
     private Color? _customAccentColor;
     private bool _preferSystemTheme;
     private bool _preferUserAccentColor;

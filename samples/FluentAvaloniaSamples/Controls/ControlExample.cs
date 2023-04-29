@@ -252,7 +252,7 @@ public class ControlExample : HeaderedContentControl
 
         SetUsageNotes();
 
-        bool isLightMode = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().RequestedTheme == FluentAvaloniaTheme.LightModeString;
+        bool isLightMode = Application.Current.ActualThemeVariant == ThemeVariant.Light;
 
         //_xamlTextEditor.SyntaxHighlighting = isLightMode ? XamlHighlightingSource.LightModeXaml : XamlHighlightingSource.DarkModeXaml;
         //_cSharpTextEditor.SyntaxHighlighting = isLightMode ? CSharpHighlightingSource.CSharpLightMode : CSharpHighlightingSource.CSharpDarkMode;

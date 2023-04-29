@@ -7,7 +7,7 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="4">
-                <uip:NavigationViewItemPresenter Content="Hello" Icon="Save" />
+                <uip:NavigationViewItemPresenter Content="Hello" IconSource="Save" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -55,8 +55,7 @@
                                  for Foreground
                                  Thinking this is something with the new styling system but not entirely sure yet
                             -->
-                            <Border Name="IconColumn"
-                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerIconWidth}">
+                            <Border Name="IconColumn">
                                 <Viewbox Name="IconBox"
                                          Height="{DynamicResource NavigationViewItemOnLeftIconBoxHeight}"
 										 HorizontalAlignment="Center"
@@ -112,6 +111,11 @@
                 </Border>
             </ControlTemplate>
         </Setter>
+
+        <!-- Bindings in control templates still apply with local value -->
+        <Style Selector="^ /template/ Border#IconColumn">
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerIconWidth}" />
+        </Style>
 
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ Border#LayoutRoot">

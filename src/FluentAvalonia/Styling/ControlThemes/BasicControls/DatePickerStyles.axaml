@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
                     xmlns:sys="using:System"
                     x:CompileBindings="True">
 
@@ -37,6 +38,8 @@
     <Thickness x:Key="LoopingSelectorUpDownButtonMargin">0</Thickness>
     <x:Double  x:Key="LoopingSelectorUpDownButtonHeight">34</x:Double>
     <!--<x:Double  x:Key="LoopingSelectorUpDownButtonScalePressed">0.875</x:Double>-->
+
+    <Thickness x:Key="DateTimeFlyoutBorderThickness">1</Thickness>
 
     <ControlTheme x:Key="DateTimePickerItem" TargetType="ListBoxItem">
         <Setter Property="Foreground" Value="{DynamicResource LoopingSelectorItemForeground}" />
@@ -136,12 +139,16 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
-                <!-- I don't know what black magic Microsoft is doing here, but these are supposed to be opaque
-                     and that's how they show in WinUI, but no background is assigned here, AND the pointerover/
-                     pressed resources are transparent. So i'm just gonna force it to be opaque
+                <!-- 
+                I think...Microsoft is using a CompositionClip to make these buttons appear
+                opaque here - as no background is set in WinUI and the other visual state
+                styles are using transparent resources. Adding a clip is quite complex here
+                and would require changes in the actual code base, so we'll just add an
+                opaque background here
                 -->
                 <Border Name="ForcedOpaqueBorder"
-                        Background="{DynamicResource DatePickerFlyoutPresenterBackground}">
+                        Background="{DynamicResource DatePickerFlyoutPresenterBackground}"
+                        CornerRadius="{DynamicResource OverlayCornerRadius}">
                     <Border Name="RootBorder"
                             Padding="{TemplateBinding Padding}"
                             Background="{DynamicResource LoopingSelectorUpDownButtonBackground}">
@@ -212,14 +219,14 @@
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-               <ContentPresenter Background="{TemplateBinding Background}"
-                                 Foreground="{TemplateBinding Foreground}"
-                                 Content="{TemplateBinding Content}"
-                                 HorizontalContentAlignment="Stretch"
-                                 VerticalContentAlignment="Stretch"
-                                 CornerRadius="{TemplateBinding CornerRadius}"
-                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                 BorderThickness="{TemplateBinding BorderThickness}" />
+               <uip:FAContentPresenter Background="{TemplateBinding Background}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Content="{TemplateBinding Content}"
+                                       HorizontalContentAlignment="Stretch"
+                                       VerticalContentAlignment="Stretch"
+                                       CornerRadius="{TemplateBinding CornerRadius}"
+                                       BorderBrush="{TemplateBinding BorderBrush}"
+                                       BorderThickness="{TemplateBinding BorderThickness}" />
             </ControlTemplate>
         </Setter>
 
@@ -354,12 +361,12 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="Background" Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{DynamicResource DateTimeFlyoutBorderPadding}"
-                        MaxHeight="398"
-                        CornerRadius="{TemplateBinding CornerRadius}">
+                <ui:FABorder Name="Background" Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             Padding="{DynamicResource DateTimeFlyoutBorderPadding}"
+                             MaxHeight="398"
+                             CornerRadius="{TemplateBinding CornerRadius}">
                     <Grid Name="ContentRoot" RowDefinitions="*,Auto">
                         <Grid Name="PART_PickerContainer">
                             <Grid.Styles>
@@ -451,7 +458,7 @@
                             </Button>
                         </Grid>
                     </Grid>
-                </Border>
+                </ui:FABorder>
             </ControlTemplate>
         </Setter>
 

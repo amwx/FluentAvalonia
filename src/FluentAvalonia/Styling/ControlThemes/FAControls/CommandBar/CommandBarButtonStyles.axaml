@@ -28,7 +28,7 @@
                 </ui:CommandBarOverflowPresenter>
 
                 <ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False"
-							   DefaultLabelPosition="Right">
+							   DefaultLabelPosition="Bottom">
                     <ui:CommandBar.PrimaryCommands>
                         <ui:CommandBarButton Label="Test" IconSource="Save" IsCompact="False" />
                     </ui:CommandBar.PrimaryCommands>

@@ -6,7 +6,7 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <ui:FAMenuFlyoutPresenter>
-                <ui:MenuFlyoutItem Text="Hello" Icon="SaveFilled" InputGesture="Ctrl+k"/>
+                <ui:MenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
             </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
