@@ -14,7 +14,7 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="LayoutRoot"
+                <ui:FABorder Name="LayoutRoot"
 						Background="{TemplateBinding Background}"
 						Padding="{TemplateBinding Padding}"
 						BorderBrush="{TemplateBinding BorderBrush}"
@@ -26,7 +26,7 @@
 										Margin="{DynamicResource CommandBarOverflowPresenterMargin}"
 										KeyboardNavigation.TabNavigation="Cycle" />
                     </ScrollViewer>
-                </Border>
+                </ui:FABorder>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

@@ -80,7 +80,7 @@
             <ControlTemplate>
                 <Panel Name="LayoutRoot"
                        Background="{x:Null}">
-                    <Border Background="{TemplateBinding Background}"
+                    <ui:FABorder Background="{TemplateBinding Background}"
                             MinWidth="{DynamicResource TaskDialogMinWidth}"
                             MaxWidth="{DynamicResource TaskDialogMaxWidth}"
                             MinHeight="{DynamicResource TaskDialogMinHeight}"
@@ -193,7 +193,7 @@
                                 </ItemsControl>
                             </Border>
                         </Grid>
-                    </Border>
+                    </ui:FABorder>
                 </Panel>
             </ControlTemplate>
         </Setter>
@@ -280,7 +280,7 @@
             <Style Selector="^ /template/ Panel#LayoutRoot">
                 <Setter Property="Background" Value="{DynamicResource TaskDialogSmokeFill}" />
             </Style>
-            <Style Selector="^ /template/ Border#ContentRoot">
+            <Style Selector="^ /template/ ui|FABorder#ContentRoot">
                 <Setter Property="BorderBrush" Value="{DynamicResource TaskDialogBorderBrush}" />
                 <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
                 <Setter Property="BorderThickness" Value="{DynamicResource TaskDialogBorderWidth}" />
@@ -309,7 +309,7 @@
                     </Animation>
                 </Style.Animations>
             </Style>
-            <Style Selector="^:hidden /template/ Border#ContentRoot">
+            <Style Selector="^:hidden /template/ ui|FABorder#ContentRoot">
                 <Style.Animations>
                     <Animation Duration="00:00:00.167" FillMode="Forward">
                         <KeyFrame Cue="0%">
@@ -344,7 +344,7 @@
                     </Animation>
                 </Style.Animations>
             </Style>
-            <Style Selector="^:open /template/ Border#ContentRoot">
+            <Style Selector="^:open /template/ ui|FABorder#ContentRoot">
                 <Style.Animations>
                     <Animation Duration="00:00:00.250" FillMode="Forward">
                         <KeyFrame Cue="0%">

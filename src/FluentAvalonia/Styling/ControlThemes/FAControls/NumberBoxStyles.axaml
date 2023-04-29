@@ -165,7 +165,6 @@
                                           FontSize="{TemplateBinding FontSize}"
                                           FontFamily="{TemplateBinding FontFamily}"
                                           VerticalAlignment="Top"
-                                          Foreground="{DynamicResource TextControlHeaderForeground}"
                                           IsVisible="{TemplateBinding Header, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
                         <TextBox Name="InputBox"

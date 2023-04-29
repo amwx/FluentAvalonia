@@ -6,7 +6,6 @@ using Avalonia.Media;
 using Avalonia;
 using FluentAvalonia.Core.Attributes;
 using FluentAvalonia.Core;
-using System;
 using Avalonia.Controls.Metadata;
 
 namespace FluentAvalonia.UI.Controls;
@@ -375,11 +374,7 @@ public partial class NumberBox
     /// </summary>
     public event TypedEventHandler<NumberBox, NumberBoxValueChangedEventArgs> ValueChanged;
 
-
-    private double _minimum = double.MinValue;
-    private double _maxmimum = double.MaxValue;
     public string _text = null;
-    private double _value = double.NaN;
 
     private const string s_tpDownSpinButton = "DownSpinButton";
     private const string s_tpPopupDownSpinButton = "PopupDownSpinButton";

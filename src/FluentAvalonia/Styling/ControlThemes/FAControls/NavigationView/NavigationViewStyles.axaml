@@ -4,9 +4,9 @@
 
     <Design.PreviewWith>
         <Border Padding="40" >
-            <ui:NavigationView PaneDisplayMode="Top">
+            <ui:NavigationView PaneDisplayMode="Left">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Icon="Save" Content="Save" />
+                    <ui:NavigationViewItem Content="Save" />
                 </ui:NavigationView.MenuItems>
                 
                 <TextBlock Text="CONTENT" Margin="20" />

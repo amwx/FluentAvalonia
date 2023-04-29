@@ -175,20 +175,20 @@
                                PlacementTarget="Background"
                                IsLightDismissEnabled="True"
                                InheritsTransform="True">
-                            <Border x:Name="PopupBorder"
-                                    Background="{DynamicResource ComboBoxDropDownBackground}"
-                                    BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
-                                    BorderThickness="{DynamicResource ComboBoxDropdownBorderThickness}"
-                                    Padding="{DynamicResource ComboBoxDropdownBorderPadding}"
-                                    HorizontalAlignment="Stretch"
-                                    CornerRadius="{DynamicResource OverlayCornerRadius}">
+                            <ui:FABorder x:Name="PopupBorder"
+                                         Background="{DynamicResource ComboBoxDropDownBackground}"
+                                         BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
+                                         BorderThickness="{DynamicResource ComboBoxDropdownBorderThickness}"
+                                         Padding="{DynamicResource ComboBoxDropdownBorderPadding}"
+                                         HorizontalAlignment="Stretch"
+                                         CornerRadius="{DynamicResource OverlayCornerRadius}">
                                 <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                               VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                                     <ItemsPresenter Name="PART_ItemsPresenter"
                                                     Margin="{DynamicResource ComboBoxDropdownContentMargin}"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}" />
                                 </ScrollViewer>
-                            </Border>
+                            </ui:FABorder>
                         </Popup>
                     </Grid>
                 </DataValidationErrors>

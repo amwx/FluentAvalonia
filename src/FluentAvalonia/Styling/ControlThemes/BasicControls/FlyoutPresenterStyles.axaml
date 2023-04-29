@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
                     x:CompileBindings="True">
 
     <!-- FlyoutResources moved to BaseResources.axaml -->
@@ -20,11 +21,11 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Padding="{DynamicResource FlyoutBorderThemePadding}">
+                <ui:FABorder Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             CornerRadius="{TemplateBinding CornerRadius}"
+                             Padding="{DynamicResource FlyoutBorderThemePadding}">
                     <ScrollViewer Name="ScrollViewer"
                                   HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
@@ -34,7 +35,7 @@
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </ScrollViewer>
-                </Border>
+                </ui:FABorder>
             </ControlTemplate>
         </Setter>
     </ControlTheme>
@@ -52,12 +53,12 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="LayoutRoot"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{DynamicResource FlyoutBorderThemePadding}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
+                <ui:FABorder Name="LayoutRoot"
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             Padding="{DynamicResource FlyoutBorderThemePadding}"
+                             CornerRadius="{TemplateBinding CornerRadius}">
                     <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
                                   Margin="{TemplateBinding Padding}">
@@ -66,7 +67,7 @@
                                         KeyboardNavigation.TabNavigation="Continue"
                                         Grid.IsSharedSizeScope="True" />
                     </ScrollViewer>
-                </Border>
+                </ui:FABorder>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

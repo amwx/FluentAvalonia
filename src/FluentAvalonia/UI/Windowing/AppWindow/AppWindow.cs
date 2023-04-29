@@ -233,7 +233,7 @@ public partial class AppWindow : Window, IStyleable
 
             // What we know is that the default title bar will always be [0,0,WindowWidth,TitleBar.Height]
             // Therefore, we only need to do check the Y coordinate
-            var hgt = _titleBar.Height * GetScaling();
+            var hgt = _titleBar.Height * RenderScaling;
             if (p.Y < hgt)
             {
                 if (TitleBar.TitleBarHitTestType == TitleBarHitTestType.Complex &&
@@ -345,13 +345,7 @@ public partial class AppWindow : Window, IStyleable
             OnExtendsContentIntoTitleBarChanged(_titleBar.ExtendsContentIntoTitleBar);
         }
     }
-
-    private double GetScaling()
-    {
-        // This is stupid
-        return Screens.ScreenFromWindow(PlatformImpl).Scaling;
-    }
-
+    
     private void SetTitleBarColors()
     {
         if (_templateRoot == null)
