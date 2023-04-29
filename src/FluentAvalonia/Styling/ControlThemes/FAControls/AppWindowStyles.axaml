@@ -2,6 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:wnd="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
+
+    <x:Double x:Key="SplashScreenImageWidth">128</x:Double>
+    <x:Double x:Key="SplashScreenImageHeight">128</x:Double>
+    <x:Double x:Key="SplashScreenTextSize">32</x:Double>
+    <FontWeight x:Key="SplashScreenTextFontWeight">SemiBold</FontWeight>
     
     <ControlTheme TargetType="Button" x:Key="FA_SystemCaptionButton">
         <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackground}" />
