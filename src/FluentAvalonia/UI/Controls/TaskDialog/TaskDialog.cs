@@ -88,6 +88,14 @@ public partial class TaskDialog : ContentControl
         {
             PseudoClasses.Set(s_pcSubheader, change.NewValue != null);
         }
+        else if (change.Property == HeaderForegroundProperty)
+        {
+            PseudoClasses.Set(s_pcHeaderForeground, change.NewValue != null);
+        }
+        else if (change.Property == IconForegroundProperty)
+        {
+            PseudoClasses.Set(s_pcIconForeground, change.NewValue != null);
+        }
     }
     
     protected override bool RegisterContentPresenter(IContentPresenter presenter)
@@ -499,6 +507,8 @@ public partial class TaskDialog : ContentControl
         List<Control> commands = new List<Control>();
 
         bool foundDefault = _defaultButton != null;
+        int iconCount = 0;
+        int normalCommandCount = 0;
         for (int i = 0; i < _commands.Count; i++)
         {
             if (_commands[i] is TaskDialogCheckBox tdcb)
@@ -513,7 +523,7 @@ public partial class TaskDialog : ContentControl
 
                 com.Classes.Add(s_cFATDCom);
 
-                commands.Add(com);
+                commands.Add(com);                
             }
             else if (_commands[i] is TaskDialogRadioButton tdrb)
             {
@@ -552,6 +562,21 @@ public partial class TaskDialog : ContentControl
                 }
 
                 commands.Add(com);
+
+                // Icons are only supported on "normal" TaskDialogCommands
+                if (tdc.IconSource != null)
+                    iconCount++;
+                normalCommandCount++;
+            }
+        }
+
+        if (iconCount != normalCommandCount)
+        {
+            // We have an item with no icon - force it to display as if one
+            // was present so that its aligned with the others
+            for (int i = 0; i < commands.Count; i++)
+            {
+                (commands[i].Classes as IPseudoClasses).Set(SharedPseudoclasses.s_pcIcon, true);
             }
         }
 

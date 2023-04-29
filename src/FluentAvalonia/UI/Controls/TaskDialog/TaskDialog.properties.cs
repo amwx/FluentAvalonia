@@ -7,12 +7,14 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
+using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls;
 
 [PseudoClasses(s_pcHosted, s_pcHidden, SharedPseudoclasses.s_pcOpen)]
 [PseudoClasses(SharedPseudoclasses.s_pcHeader, s_pcSubheader, SharedPseudoclasses.s_pcIcon, s_pcFooter, s_pcFooterAuto, s_pcExpanded)]
 [PseudoClasses(s_pcProgress, s_pcProgressError, s_pcProgressSuspend)]
+[PseudoClasses(s_pcHeaderForeground, s_pcIconForeground)]
 [TemplatePart(s_tpButtonsHost, typeof(ItemsPresenter))]
 [TemplatePart(s_tpCommandsHost, typeof(ItemsPresenter))]
 [TemplatePart(s_tpMoreDetailsButton, typeof(Button))]
@@ -86,6 +88,24 @@ public partial class TaskDialog
     /// </summary>
     public static readonly StyledProperty<bool> ShowProgressBarProperty =
         AvaloniaProperty.Register<TaskDialog, bool>(nameof(ShowProgressBar));
+
+    /// <summary>
+    /// Defines the <see cref="HeaderBackground"/> property
+    /// </summary>
+    public static readonly StyledProperty<IBrush> HeaderBackgroundProperty =
+        AvaloniaProperty.Register<TaskDialog, IBrush>(nameof(HeaderBackground));
+
+    /// <summary>
+    /// Defines the <see cref="HeaderForeground"/> property
+    /// </summary>
+    public static readonly StyledProperty<IBrush> HeaderForegroundProperty =
+        AvaloniaProperty.Register<TaskDialog, IBrush>(nameof(HeaderForeground));
+
+    /// <summary>
+    /// Defines the <see cref="IconForeground"/> property
+    /// </summary>
+    public static readonly StyledProperty<IBrush> IconForegroundProperty =
+        AvaloniaProperty.Register<TaskDialog, IBrush>(nameof(IconForeground));
 
     /// <summary>
     /// Gets or sets the title of the dialog
@@ -191,6 +211,33 @@ public partial class TaskDialog
     }
 
     /// <summary>
+    /// Gets or sets the background of the header region of the task dialog
+    /// </summary>
+    public IBrush HeaderBackground
+    {
+        get => GetValue(HeaderBackgroundProperty);
+        set => SetValue(HeaderBackgroundProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the foreground of the header text for the TaskDialog
+    /// </summary>
+    public IBrush HeaderForeground
+    {
+        get => GetValue(HeaderForegroundProperty);
+        set => SetValue(HeaderForegroundProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the foreground of the <see cref="IconSource"/> for the TaskDialog
+    /// </summary>
+    public IBrush IconForeground
+    {
+        get => GetValue(IconForegroundProperty);
+        set => SetValue(IconForegroundProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets the root visual that should host this dialog
     /// </summary>
     /// <remarks>
@@ -238,6 +285,8 @@ public partial class TaskDialog
     private const string s_pcProgress = ":progress";
     private const string s_pcProgressError = ":progressError";
     private const string s_pcProgressSuspend = ":progressSuspend";
+    private const string s_pcHeaderForeground = ":headerForeground";
+    private const string s_pcIconForeground = ":iconForeground";
 
     private const string s_cFATDCom = "FA_TaskDialogCommand";
 }
