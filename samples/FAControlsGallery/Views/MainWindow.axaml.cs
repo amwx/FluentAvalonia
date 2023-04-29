@@ -18,10 +18,11 @@ public partial class MainWindow : AppWindow
 
         this.AttachDevTools();
 
+        SplashScreen = new MainAppSplashScreen();
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
-
-        Application.Current.ActualThemeVariantChanged += ActualThemeVariantChanged;
+        
+        Application.Current.ActualThemeVariantChanged += OnActualThemeVariantChanged;
     }
 
     protected override void OnOpened(EventArgs e)
@@ -35,7 +36,7 @@ public partial class MainWindow : AppWindow
         }
     }
 
-    private void ActualThemeVariantChanged(object sender, EventArgs e)
+    private void OnActualThemeVariantChanged(object sender, EventArgs e)
     {
         if (IsWindows11)
         {
@@ -82,6 +83,19 @@ public partial class MainWindow : AppWindow
             color = color.LightenPercent(0.5f);
 
             Background = new ImmutableSolidColorBrush(color, 0.9);
+        }
+    }
+
+    class MainAppSplashScreen : IApplicationSplashScreen
+    {
+        public string AppName => "FAControlsGallery";
+        public IImage AppIcon { get; }
+        public object SplashScreenContent { get; }
+        public int MinimumShowTime => 750;
+
+        public Task RunTasks(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }
