@@ -10,6 +10,7 @@ public partial class TypographyPage : ControlsPageBase
     {
         InitializeComponent();
 
+        ShowToggleThemeButton = false;
         ControlName = "Typography";
         PreviewImage = (IconSource)App.Current.FindResource("TextPageIcon");
 

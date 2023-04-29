@@ -116,7 +116,8 @@
                                 <Button DockPanel.Dock="Right"
                                         Theme="{StaticResource TransparentButton}"
                                         Padding="8 4"
-                                        Name="ToggleThemeButton">
+                                        Name="ToggleThemeButton"
+                                        IsVisible="{TemplateBinding ShowToggleThemeButton}">
                                     <Panel>
                                         <Viewbox Width="16" Height="16"
                                                  HorizontalAlignment="Left">

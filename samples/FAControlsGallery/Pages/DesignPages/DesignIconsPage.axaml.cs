@@ -13,6 +13,7 @@ public partial class DesignIconsPage : ControlsPageBase
     {
         InitializeComponent();
 
+        ShowToggleThemeButton = false;
         DataContext = new DesignIconsPageViewModel();
         ControlName = "Icons";
         PreviewImage = (IconSource)App.Current.FindResource("TextPageIcon");

@@ -51,6 +51,10 @@ public class ControlsPageBase : UserControl, IStyleable
     public static readonly StyledProperty<Uri> PageCSharpSourceLinkProperty =
         AvaloniaProperty.Register<ControlsPageBase, Uri>(nameof(PageCSharpSourceLink));
 
+    public static readonly StyledProperty<bool> ShowToggleThemeButtonProperty =
+        AvaloniaProperty.Register<ControlsPageBase, bool>(nameof(ShowToggleThemeButton),
+            defaultValue: true);
+
     public string ControlName
     {
         get => GetValue(ControlNameProperty);
@@ -118,6 +122,12 @@ public class ControlsPageBase : UserControl, IStyleable
             PageXamlSourceLink = new Uri($"{value}/{GetType().Name}.axaml");
             PageCSharpSourceLink = new Uri($"{value}/{GetType().Name}.axaml.cs");
         }
+    }
+
+    public bool ShowToggleThemeButton
+    {
+        get => GetValue(ShowToggleThemeButtonProperty);
+        set => SetValue(ShowToggleThemeButtonProperty, value);
     }
 
     Type IStyleable.StyleKey => typeof(ControlsPageBase);
