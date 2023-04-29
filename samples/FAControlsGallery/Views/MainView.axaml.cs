@@ -20,7 +20,7 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        
+
         SearchBox.KeyUp += (s, e) =>
         {
             if (e.Key == Key.Enter)
@@ -52,6 +52,7 @@ public partial class MainView : UserControl
     {
         base.OnAttachedToVisualTree(e);
 
+        ClipboardService.Owner = TopLevel.GetTopLevel(this);
         // Simple check - all desktop versions of this app will have a window as the TopLevel
         // Mobile and WASM will have something else
         _isDesktop = TopLevel.GetTopLevel(this) is Window;
@@ -71,8 +72,7 @@ public partial class MainView : UserControl
         NavView.ItemInvoked += OnNavigationViewItemInvoked;
         NavView.BackRequested += OnNavigationViewBackRequested;
 
-        //FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);        
-        FrameView.NavigateFromObject((NavView.FooterMenuItemsSource.ElementAt(0) as Control).Tag);
+        FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);
     }
 
     protected override void OnLoaded()

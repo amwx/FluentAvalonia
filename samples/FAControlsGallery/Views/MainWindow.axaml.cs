@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using Avalonia.Platform;
 using Avalonia.Styling;
-using FAControlsGallery.Services;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Windowing;
@@ -19,8 +17,6 @@ public partial class MainWindow : AppWindow
         AvaloniaXamlLoader.Load(this);
 
         this.AttachDevTools();
-
-        ClipboardService.Owner = this;
 
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
