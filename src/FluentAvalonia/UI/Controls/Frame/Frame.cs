@@ -7,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Logging;
 using Avalonia.Threading;
+using FluentAvalonia.UI.Controls.Experimental;
 using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
 using System.Collections.Specialized;
@@ -59,7 +60,7 @@ public partial class Frame : ContentControl
             {
                 _backStack.Clear();
                 _forwardStack.Clear();
-                _cache.Clear();
+                _pageCache.Clear();
             }
         }
     }
@@ -226,7 +227,8 @@ public partial class Frame : ContentControl
         // The page source Type here will be whatever was specified as 'target'
         var entry = new PageStackEntry(target.GetType(), null, navOptions?.TransitionInfoOverride)
         {
-            Instance = existing
+            Instance = existing,
+            Context = target
         };
 
         return NavigateCore(entry, NavigationMode.New, navOptions);
@@ -309,7 +311,7 @@ public partial class Frame : ContentControl
         ForwardStack.Clear();
         CurrentEntry = null;
         Content = null;
-        _cache.Clear();
+        _pageCache.Clear();
 
         // Format of the Navigation state string - this is not the same as WinUI
         // Full.Type.Name.Here|Serialized Parameter // First line is the current page
@@ -457,7 +459,7 @@ public partial class Frame : ContentControl
             {
                 // The page was already create for us when passed in (NavigateFromObject path)
                 // Try adding to the cache now
-                TryAddToCache(entry.SourcePageType, entry.Instance);
+                TryAddToCache(entry.Context, entry.Instance);
             }
 
             var oldEntry = CurrentEntry;
@@ -522,11 +524,16 @@ public partial class Frame : ContentControl
             Navigated?.Invoke(this, navEA);
 
             // New Page is loaded, let's tell the page
-            if (entry.Instance is Control newPage)
+            // Now posted to dispatcher to ensure page has loaded - enabling composition
+            // animations to work now - CompositionVisuals *should* be ready now
+            Dispatcher.UIThread.Post(() =>
             {
-                navEA.RoutedEvent = NavigatedToEvent;
-                newPage.RaiseEvent(navEA);
-            }
+                if (entry.Instance is Control newPage)
+                {
+                    navEA.RoutedEvent = NavigatedToEvent;
+                    newPage.RaiseEvent(navEA);
+                }
+            }, DispatcherPriority.Render);
 
             //Need to find compatible method for this
             //VisualTreeHelper.CloseAllPopups();
@@ -536,8 +543,6 @@ public partial class Frame : ContentControl
         catch (Exception ex)
         {
             NavigationFailed?.Invoke(this, new NavigationFailedEventArgs(ex, entry.SourcePageType));
-
-            //I don't really want to throw an exception and break things. Just return false
             return false;
         }
         finally
@@ -579,9 +584,10 @@ public partial class Frame : ContentControl
                 Activator.CreateInstance(srcPageType) as Control;
         }
 
-        for (int i = 0; i < _cache.Count; i++)
+        // This is triggered via Navigate(Type) - we only need to check the page type here
+        for (int i = 0; i < _pageCache.Count; i++)
         {
-            if (_cache[i].pageSrcType == srcPageType)
+            if (_pageCache[i].PageSrcType == srcPageType)
             {
                 throw new Exception($"An object of type {srcPageType} has already been added to the Navigation Stack");
             }
@@ -590,10 +596,11 @@ public partial class Frame : ContentControl
         var newPage = NavigationPageFactory?.GetPage(srcPageType) ??
             Activator.CreateInstance(srcPageType) as Control;
 
-        _cache.Add((srcPageType, newPage));
-        if (_cache.Count > CacheSize)
+        _pageCache.Add(new NavigationCacheItem(srcPageType, null, newPage));
+
+        if (_pageCache.Count > CacheSize)
         {
-            _cache.RemoveAt(0);
+            _pageCache.RemoveAt(0);
         }
 
         return newPage;
@@ -604,27 +611,54 @@ public partial class Frame : ContentControl
         if (CacheSize == 0)
             return null;
 
-        for (int i = _cache.Count - 1; i >= 0; i--)
+        // v2 - Changes for cache
+        // A page cached by Navigate(Type) and NavigateFromObject will be cached 
+        // separately and not shared between the two - users should be consistent
+        // here. Thus, srcType should be null when context isn't and vice-versa
+        for (int i = _pageCache.Count - 1; i >= 0; i--)
         {
-            if (_cache[i].pageSrcType == srcPageType || _cache[i].page == target)
+            var item = _pageCache[i];
+
+            if (srcPageType != null && item.PageSrcType == srcPageType)
             {
-                return _cache[i].page;
+                // Call to Navigate(Type)
+                return item.Page;
+            }
+            else if (target != null && item.Context == target)
+            {
+                // Call to NavigateFromObject()
+                return item.Page;
             }
         }
 
         return null;
     }
 
-    private void TryAddToCache(Type srcType, Control page)
+    private void TryAddToCache(object context, Control page)
     {
-        for (int i = _cache.Count - 1; i >= 0; i--)
+        // This is trigger by NavigateFromObject()
+
+        // v2 - Changes for cache
+        // A page cached by Navigate(Type) and NavigateFromObject will be cached 
+        // separately and not shared between the two - users should be consistent
+        // here. Thus, srcType should be null when context isn't and vice-versa
+        for (int i = _pageCache.Count - 1; i >= 0; i--)
         {
-            // Already exists in the cache, exit
-            if (_cache[i].pageSrcType == srcType || page == _cache[i].page)
+            var item = _pageCache[i];
+            if (context != null && item.Context == context)
+            {
+                // Call to NavigateFromObject() - page is already cached
                 return;
+            }
         }
 
-        _cache.Add((srcType, page));
+        // Page is not cached - add it
+        _pageCache.Add(new NavigationCacheItem(null, context, page));
+
+        if (_pageCache.Count > CacheSize)
+        {
+            _pageCache.RemoveAt(0);
+        }
     }
 
     private void SetContentAndAnimate(PageStackEntry entry)
@@ -663,8 +697,26 @@ public partial class Frame : ContentControl
 
     private CancellationTokenSource _cts;
     private ContentPresenter _presenter;
-    private readonly List<(Type pageSrcType, Control page)> _cache = new List<(Type, Control)>(10);
+    //private readonly List<(Type pageSrcType, Control page)> _cache = new List<(Type, Control)>(10);
+    private readonly List<NavigationCacheItem> _pageCache = new List<NavigationCacheItem>(10);
     private bool _isNavigating = false;
 
     private const string s_tpContentPresenter = "ContentPresenter";
+
+    private class NavigationCacheItem
+    {
+        public NavigationCacheItem(Type pageType, object context, Control page)
+        {
+            if (pageType != null && context != null)
+                throw new InvalidOperationException("PageType and Context cannot both be set");
+
+            PageSrcType = pageType;
+            Context = context;
+            Page = page;
+        }
+
+        public Type PageSrcType;
+        public object Context;
+        public Control Page;
+    }
 }
