@@ -1,17 +1,15 @@
-﻿using System;
-using Avalonia;
-using System.Xml.Linq;
-using Avalonia.Controls;
-using Avalonia.Platform;
+﻿using Avalonia.Controls;
 using FluentAvalonia.UI.Controls;
-using FAControlsGallery.ViewModels;
 using FAControlsGallery.Controls;
+using FluentAvalonia.UI.Media.Animation;
 
 namespace FAControlsGallery.Services;
 
 public class NavigationService
 {
     public static NavigationService Instance { get; } = new NavigationService();
+
+    public Control PreviousPage { get; set; }
 
     public void SetFrame(Frame f)
     {
@@ -28,9 +26,14 @@ public class NavigationService
         _frame.Navigate(t);
     }
 
-    public void NavigateFromContext(object dataContext)
+    public void NavigateFromContext(object dataContext, NavigationTransitionInfo transitionInfo = null)
     {
-        _frame.NavigateFromObject(dataContext);
+        _frame.NavigateFromObject(dataContext,
+            new FluentAvalonia.UI.Navigation.FrameNavigationOptions
+            {
+                IsNavigationStackEnabled = true,
+                TransitionInfoOverride = transitionInfo ?? new SuppressNavigationTransitionInfo()
+            });
     }
 
     public void ShowControlDefinitionOverlay(Type targetType)

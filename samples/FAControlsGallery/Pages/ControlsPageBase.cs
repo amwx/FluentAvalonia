@@ -5,12 +5,17 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FAControlsGallery.Controls;
 using FAControlsGallery.Services;
+using FAControlsGallery.ViewModels;
 using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Controls.Experimental;
+using FluentAvalonia.UI.Navigation;
 
 namespace FAControlsGallery.Pages;
 
@@ -19,6 +24,8 @@ public class ControlsPageBase : UserControl, IStyleable
     public ControlsPageBase()
     {        
         SizeChanged += ControlsPageBaseSizeChanged;
+        AddHandler(Frame.NavigatingFromEvent, FrameNavigatingFrom, RoutingStrategies.Direct);
+        AddHandler(Frame.NavigatedToEvent, FrameNavigatedTo, RoutingStrategies.Direct);
     }
 
     public static readonly StyledProperty<string> ControlNameProperty =
@@ -143,8 +150,11 @@ public class ControlsPageBase : UserControl, IStyleable
 
         ThemeScopeProvider = e.NameScope.Find<ThemeVariantScope>("ThemeScopeProvider");
 
+        _previewImageHost = e.NameScope.Find<IconSourceElement>("PreviewImageElement");
+        _detailsHost = e.NameScope.Find<StackPanel>("DetailsTextHost");
         _optionsHost = e.NameScope.Find<StackPanel>("OptionsRegion");
         _detailsPanel = e.NameScope.Find<Panel>("PageDetails");
+        _scroller = e.NameScope.Find<ScrollViewer>("PageScroller");
 
         _toggleThemeButton = e.NameScope.Find<Button>("ToggleThemeButton");
         _toggleThemeButton.Click += ToggleThemeButtonClick;
@@ -329,6 +339,46 @@ public class ControlsPageBase : UserControl, IStyleable
         }
     }
 
+    private void FrameNavigatingFrom(object sender, NavigatingCancelEventArgs e)
+    {
+        // If TargetType is not set, we know we're currently on a CoreControls page since those
+        // are grouped pages - whereas, FA controls only display one control per page and
+        // set all the extra properties
+        bool isFAControlPage = TargetType != null;
+
+        // Only setup the ConnectedAnimation if it makes sense
+        if ((!isFAControlPage && e.SourcePageType == typeof(CoreControlsPageViewModel)) || 
+            (isFAControlPage && e.SourcePageType == typeof(FAControlsOverviewPageViewModel)))
+        {
+            // Only setup the Back connected animation if we're going back to the
+            // controls list pages
+            var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+            svc.PrepareToAnimate("BackAnimation", (Control)_previewImageHost.Parent);
+            NavigationService.Instance.PreviousPage = this;
+        }
+    }
+
+    private void FrameNavigatedTo(object sender, NavigationEventArgs e)
+    {
+        var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+        var animation = svc.GetAnimation("ForwardAnimation");
+
+        if (animation != null)
+        {
+            var coordinated = new List<Visual>
+            {
+                _optionsHost,
+                _detailsHost,
+                _scroller
+            };
+
+            // PreviewImageHost is inside a Viewbox which can really mess with the Composition 
+            // animation - use the viewbox directly for the animation to ensure it works correctly
+            animation.TryStart((Control)_previewImageHost.Parent, coordinated);
+        }
+    }
+
+
     private bool _isSmallWidth2;
     private CancellationTokenSource _cts;
     private bool _hasLoaded;
@@ -336,6 +386,9 @@ public class ControlsPageBase : UserControl, IStyleable
     private Button _toggleThemeButton;
     private Panel _detailsPanel;
     private StackPanel _optionsHost;
+    private IconSourceElement _previewImageHost;
+    private StackPanel _detailsHost;
+    private ScrollViewer _scroller;
 
     private MenuFlyoutItem _winUIDocsItem;
     private MenuFlyoutItem _winUIGuidelinesItem;
@@ -343,4 +396,68 @@ public class ControlsPageBase : UserControl, IStyleable
     private MenuFlyoutItem _cSharpSourceItem;
     private MenuFlyoutItem _showDefItem;
     private MenuFlyoutSeparator _sep1, _sep2;
+}
+
+public class CompositionTarget
+{
+    public static event EventHandler Rendering
+    {
+        add
+        {
+            _subscribers++;
+            if (_subscribers == 1)
+                AttachRenderTask();
+            _renderTask._renderEvent += value;
+        }
+        remove
+        {
+            _subscribers--;
+            // It's possible the unsub from Rendering may come from within the Rendering handler
+            // which is on the Render thread. Removing the render task though requires the UIThread,
+            // so post it on the dispatcher to be processed ASAP
+            if (_subscribers == 0)
+                DetachRenderTask();
+            _renderTask._renderEvent -= value;
+        }
+    }
+
+    private static void AttachRenderTask()
+    {
+        _renderTask ??= new RenderTask();
+
+        var rl = AvaloniaLocator.Current.GetService<IRenderLoop>();
+        rl.Add(_renderTask);
+    }
+
+    private static void DetachRenderTask()
+    {
+        var rl = AvaloniaLocator.Current.GetService<IRenderLoop>();
+        rl.Remove(_renderTask);
+    }
+
+
+    private static RenderTask _renderTask;
+    private static int _subscribers;
+
+    private class RenderTask : IRenderLoopTask
+    {
+        public bool NeedsUpdate { get; }
+
+        public void Render()
+        {
+            // We're on the render thread, but it's expected by handlers to be on the 
+            // UI thread here, so post it ASAP to the dispatcher
+            Dispatcher.UIThread.Post(
+                () => _renderEvent?.Invoke(null, EventArgs.Empty),
+                DispatcherPriority.Send);
+
+        }
+
+        public void Update(TimeSpan time)
+        {
+
+        }
+
+        public EventHandler _renderEvent;
+    }
 }

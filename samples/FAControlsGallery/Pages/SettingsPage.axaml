@@ -92,15 +92,12 @@
                                  Description="Set a custom accent color for the App"
                                  IsExpanded="True">
 
-                <ui:SettingsExpanderItem>
-                    <Grid ColumnDefinitions="*,Auto">
-                        <TextBlock Text="Preview"
-                                   VerticalAlignment="Center" />
-                        
-                        <Grid RowDefinitions="*,*,*,*" 
-                              ColumnDefinitions="*,*"
-                              HorizontalAlignment="Right"
-                              Grid.Column="1">
+                <ui:SettingsExpanderItem Content="Preview">
+                    <ui:SettingsExpanderItem.Footer>
+                        <Grid RowDefinitions="*,*,*,*"
+                                  ColumnDefinitions="*,*"
+                                  HorizontalAlignment="Right"
+                                  Grid.Column="1">
                             <Border Background="{DynamicResource SystemAccentColor}"
                                     Height="40" Grid.ColumnSpan="2">
                                 <TextBlock Text="SystemAccentColor"
@@ -146,7 +143,7 @@
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                         </Grid>
-                    </Grid>
+                    </ui:SettingsExpanderItem.Footer>
                 </ui:SettingsExpanderItem>
 
                 <ui:SettingsExpanderItem>

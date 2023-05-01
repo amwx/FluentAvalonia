@@ -10,6 +10,7 @@ using FAControlsGallery.ViewModels;
 using FAControlsGallery.ViewModels.DesignPages;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
 using FluentAvalonia.UI.Windowing;
 
@@ -29,7 +30,8 @@ public partial class MainView : UserControl
                 if (acb.SelectedItem != null)
                 {
                     var item = acb.SelectedItem as MainAppSearchItem;
-                    NavigationService.Instance.NavigateFromContext(item.ViewModel);
+                    NavigationService.Instance.NavigateFromContext(item.ViewModel,
+                        new EntranceNavigationTransitionInfo());
                 }
                 else
                 {
@@ -38,7 +40,8 @@ public partial class MainView : UserControl
                     {
                         if (string.Equals(item.Header, acb.Text, StringComparison.OrdinalIgnoreCase))
                         {
-                            NavigationService.Instance.NavigateFromContext(item.ViewModel);
+                            NavigationService.Instance.NavigateFromContext(item.ViewModel,
+                                new EntranceNavigationTransitionInfo());
                             break;
                         }
                     }
@@ -202,11 +205,22 @@ public partial class MainView : UserControl
 
         if (e.InvokedItemContainer is NavigationViewItem nvi)
         {
-            FrameView.NavigateFromObject(nvi.Tag, new FrameNavigationOptions
+            NavigationTransitionInfo info;
+
+            // Keep the frame navigation when not using connected animation but suppress it
+            // if we have a connected animation binding two pages
+            if (FrameView.Content is ControlsPageBase cpb &&
+                ((cpb.TargetType == null && nvi.Tag is CoreControlsPageViewModel) ||
+                (cpb.TargetType != null && nvi.Tag is FAControlsOverviewPageViewModel)))
             {
-                IsNavigationStackEnabled = true,
-                TransitionInfoOverride = e.RecommendedNavigationTransitionInfo
-            });
+                info = new SuppressNavigationTransitionInfo();
+            }
+            else
+            {
+                info = e.RecommendedNavigationTransitionInfo;
+            }
+
+            NavigationService.Instance.NavigateFromContext(nvi.Tag, info);
         }
     }
 

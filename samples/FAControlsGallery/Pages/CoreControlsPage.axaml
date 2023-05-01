@@ -20,7 +20,8 @@
     
     <ScrollViewer>
         <StackPanel Spacing="25"
-                    Margin="0 0 0 30">
+                    Margin="0 0 0 30"
+                    ClipToBounds="False">
             <local:PageHeaderControl TextType="CoreControls"
                                      Classes="smaller"/>
 
@@ -37,7 +38,7 @@
                           Padding="{StaticResource SampleAppPageMargin}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Spacing="4" />
+                        <StackPanel Spacing="4" ClipToBounds="False" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
@@ -46,6 +47,7 @@
                                              Header="{Binding Header}"
                                              Description="{Binding Description}"
                                              IsClickEnabled="True"
+                                             ClipToBounds="False"
                                              IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}">
                             
                         </ui:SettingsExpander>

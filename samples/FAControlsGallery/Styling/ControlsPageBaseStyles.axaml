@@ -44,22 +44,26 @@
                 <DockPanel Name="Root"
                            Background="{DynamicResource SolidBackgroundFillColorTertiaryBrush}">
                     <Panel Name="HeaderRegion"
-                           DockPanel.Dock="Top">
+                           DockPanel.Dock="Top"
+                           ClipToBounds="False">
                         <Border Background="{DynamicResource PageHeaderBackgroundBrush}"
                                 OpacityMask="{DynamicResource HeaderOpacityMaskBrush}"
                                 Height="80"
                                 VerticalAlignment="Top"/>
                         <Grid ColumnDefinitions="*,Auto"
                               RowDefinitions="*,Auto"
-                              Margin="0 30 0 0">
+                              Margin="0 30 0 0"
+                              ClipToBounds="False">
                             <Panel Name="PageDetails"
-                                   Margin="20 0 0 0">
+                                   Margin="20 0 0 0"
+                                   ClipToBounds="False">
                                 <Border Background="{DynamicResource ControlOnImageFillColorDefaultBrush}"
                                         Width="120" Height="120"
                                         CornerRadius="{DynamicResource OverlayCornerRadius}"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
-                                        Name="ImageHost">
+                                        Name="ImageHost"
+                                        ClipToBounds="False">
                                     <Border.Transitions>
                                         <Transitions>
                                             <DoubleTransition Property="Width"
@@ -70,8 +74,8 @@
                                                               Easing="0,0 0,1" />
                                         </Transitions>
                                     </Border.Transitions>
-                                    <Viewbox Margin="12">
-                                        <ui:IconSourceElement IconSource="{TemplateBinding PreviewImage}" />
+                                    <Viewbox Margin="12" ClipToBounds="False">
+                                        <ui:IconSourceElement Name="PreviewImageElement" IconSource="{TemplateBinding PreviewImage}" />
                                     </Viewbox>
                                 </Border>
                                 <StackPanel Margin="130 0 0 0"

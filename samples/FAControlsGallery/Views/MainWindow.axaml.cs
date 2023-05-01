@@ -18,7 +18,7 @@ public partial class MainWindow : AppWindow
 
         this.AttachDevTools();
 
-        SplashScreen = new MainAppSplashScreen();
+        //SplashScreen = new MainAppSplashScreen();
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
         

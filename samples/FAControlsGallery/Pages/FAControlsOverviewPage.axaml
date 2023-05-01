@@ -54,6 +54,24 @@
                 </Style>
             </Style>
         </ControlTheme>
+
+        <ControlTheme TargetType="ListBox"
+                      x:Key="ListBoxNoScroller"
+                      BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="border" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                        Margin="{TemplateBinding Padding}"
+                                        AreVerticalSnapPointsRegular="{TemplateBinding AreVerticalSnapPointsRegular}"
+                                        AreHorizontalSnapPointsRegular="{TemplateBinding AreHorizontalSnapPointsRegular}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
     </UserControl.Resources>
 
         <ScrollViewer>
@@ -79,6 +97,7 @@
                                            Margin="0 8"/>
 
                                 <ListBox ItemsSource="{Binding Controls}"
+                                         Theme="{StaticResource ListBoxNoScroller}"
                                          ItemContainerTheme="{StaticResource GridViewItem}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -97,7 +116,8 @@
                                                     <Viewbox Width="60" 
                                                              Height="60"
                                                              Margin="12 8"
-                                                             VerticalAlignment="Center">
+                                                             VerticalAlignment="Center"
+                                                             Name="IconHost">
                                                         <ui:IconSourceElement IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}" />
                                                     </Viewbox>
 
