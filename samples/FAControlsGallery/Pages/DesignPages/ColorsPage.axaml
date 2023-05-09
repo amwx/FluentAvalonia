@@ -105,7 +105,8 @@
         </TextBlock>
 
         <TabStrip Grid.Row="2"
-                  ItemContainerTheme="{StaticResource Tab}"
+                  Theme="{StaticResource AlternateTabStripTheme}"
+                  ItemContainerTheme="{StaticResource AlternateTabStripItemTheme}"
                   Margin="0 12"
                   Name="TabHost">
             <TabStripItem Content="Text" Classes="left" />
