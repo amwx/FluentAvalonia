@@ -10,6 +10,11 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public class ImageIcon : FAIconElement
 {
+    public ImageIcon()
+    {
+        RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
+    }
+
     /// <summary>
     /// Defines the <see cref="Source"/> property
     /// </summary>
@@ -58,7 +63,7 @@ public class ImageIcon : FAIconElement
             Rect srcRect = new Rect(src.Size)
                 .CenterRect(new Rect(destRect.Size / scale));
 
-            context.DrawImage(src, srcRect, destRect, BitmapInterpolationMode.HighQuality);
+            context.DrawImage(src, srcRect, destRect);
         }
     }
 }

@@ -97,6 +97,9 @@ public partial class TabViewItem
     /// </summary>
     public event TypedEventHandler<TabViewItem, TabViewTabCloseRequestedEventArgs> CloseRequested;
 
+    internal bool IsContainerFromTemplate { get; set; }
+
+
     private const string s_pcForeground = ":foreground";
     private const string s_pcCloseCollapsed = ":closecollapsed";
 

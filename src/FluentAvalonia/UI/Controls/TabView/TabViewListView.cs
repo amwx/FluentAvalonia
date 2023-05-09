@@ -120,11 +120,26 @@ public class TabViewListView : ListBox
         }
     }
 
-    protected override bool IsItemItsOwnContainerOverride(Control item) =>
-        item is TabViewItem;
+    protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
+    {
+        bool isItem = item is TabViewItem;
+        recycleKey = isItem ? null : nameof(TabViewItem);
+        return !isItem;
+    }
 
-    protected override Control CreateContainerForItemOverride() => new TabViewItem();
-        
+    protected override Control CreateContainerForItemOverride(object item, int index, object recycleKey)
+    {
+        var cont = this.FindDataTemplate(item, ItemTemplate)?.Build(item);
+
+        if (cont is TabViewItem tvi)
+        {
+            tvi.IsContainerFromTemplate = true;
+            return tvi;
+        }
+
+        return new TabViewItem();
+    }
+
     protected override void PrepareContainerForItemOverride(Control element, object item, int index)
     {
         var tvi = element as TabViewItem;
@@ -147,7 +162,7 @@ public class TabViewListView : ListBox
 
         // Special b/c we use the header and not Content. Somehow this *just works* in
         // WinUI b/c they don't have to do this.
-        if (element == item)
+        if (element == item || tvi.IsContainerFromTemplate)
             return;
 
         tvi.Header = item;
