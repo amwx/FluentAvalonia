@@ -38,6 +38,7 @@
                 <VirtualizingStackPanel />
             </ItemsPanelTemplate>
         </Setter>
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="LayoutRoot"
@@ -103,7 +104,7 @@
 							   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 							   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
 							   Text="{TemplateBinding PlaceholderText}"
-							   Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={DynamicResource ComboBoxPlaceHolderForeground}}" />
+                               IsVisible="{TemplateBinding SelectionBoxItem, Converter={x:Static ObjectConverters.IsNull}}" />
 
                     <TextBox Name="EditableText"
 							 Grid.Row="1"
@@ -116,7 +117,7 @@
 							 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 							 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
 							 Watermark="{TemplateBinding PlaceholderText}"
-							 Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={DynamicResource ComboBoxPlaceHolderForeground}}"
+							 Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}}"
 							 Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, Mode=TwoWay}"
 							 IsVisible="False"
 							 AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}"
@@ -178,6 +179,13 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
+
+        <Style Selector="^ /template/ TextBlock#PlaceholderTextBlock">
+            <Setter Property="Foreground" Value="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}}" />
+        </Style>
+        <Style Selector="^ /template/ TextBox#EditableText">
+            <Setter Property="Foreground" Value="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}}" />
+        </Style>
 
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ Border#Background">
@@ -285,6 +293,11 @@
 				             ^:dropdownopen /template/ TextBox#EditableText">
                 <Setter Property="IsVisible" Value="True" />
                 <Setter Property="Width" Value="NaN" />
+            </Style>
+
+            <Style Selector="^:focus-within /template/ TextBlock#PlaceholderTextBlock
+                             ^:dropdownopen /template/ TextBlock#PlaceholderTextBlock">
+                <Setter Property="IsVisible" Value="False" />
             </Style>
 
             <Style Selector="^:dropdownopen /template/ ContentPresenter#ContentPresenter,
