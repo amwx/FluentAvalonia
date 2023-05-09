@@ -69,14 +69,11 @@ public partial class SettingsExpanderItem : ContentControl
     public static readonly StyledProperty<SettingsExpanderTemplateSettings> TemplateSettingsProperty =
         AvaloniaProperty.Register<SettingsExpanderItem, SettingsExpanderTemplateSettings>(nameof(TemplateSettings));
 
-    // NOTE: Don't use Button.Click event here - when SettingsExpanderItem is in the top-level SettingsExpander
-    // there is a ToggleButton that is used to raise this event. If we use Button.Click here, and someone is 
-    // listening to Button.Click event with handledEventsToo = true, they'll get 2 click events as a result
     /// <summary>
     /// Defines the <see cref="Click"/> event
     /// </summary>
     public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-        RoutedEvent.Register<SettingsExpanderItem, RoutedEventArgs>(nameof(Click), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+        SettingsExpander.ClickEvent;
 
     /// <summary>
     /// Gets or sets the description text
