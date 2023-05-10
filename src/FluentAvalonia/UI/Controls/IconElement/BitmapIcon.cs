@@ -10,6 +10,11 @@ namespace FluentAvalonia.UI.Controls;
 
 public partial class BitmapIcon : FAIconElement
 {
+    public BitmapIcon()
+    {
+        RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
+    }
+
     ~BitmapIcon()
     {
         Dispose();
@@ -95,7 +100,7 @@ public partial class BitmapIcon : FAIconElement
 
             using (context.PushClip(dst))
             {
-                context.DrawImage(bmp, new Rect(bmp.Size), dst, BitmapInterpolationMode.HighQuality);
+                context.DrawImage(bmp, new Rect(bmp.Size), dst);
             }
         }
     }

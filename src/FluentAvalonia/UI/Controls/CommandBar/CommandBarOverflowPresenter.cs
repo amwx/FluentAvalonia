@@ -35,8 +35,11 @@ public class CommandBarOverflowPresenter : ItemsControl, IStyleable
         }
     }
 
-    protected override bool IsItemItsOwnContainerOverride(Control item) =>
-        item is ICommandBarElement;
+    protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
+    {
+        recycleKey = null;
+        return !(item is ICommandBarElement);
+    }
 
     private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {

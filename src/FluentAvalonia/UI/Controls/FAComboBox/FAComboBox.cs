@@ -131,10 +131,16 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
     }
 
-    protected override Control CreateContainerForItemOverride() => new FAComboBoxItem();
+    protected override Control CreateContainerForItemOverride(object item, int index, object recycleKey)
+    {
+        return new FAComboBoxItem();
+    }
 
-    protected override bool IsItemItsOwnContainerOverride(Control item) =>
-        item is FAComboBoxItem;
+    protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
+    {
+        recycleKey = nameof(FAComboBoxItem);
+        return item is FAComboBoxItem;
+    }
 
     public override void InvalidateMirrorTransform()
     {

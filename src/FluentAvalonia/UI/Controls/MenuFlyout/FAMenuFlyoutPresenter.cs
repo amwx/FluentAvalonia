@@ -2,6 +2,7 @@
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Platform;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
@@ -64,14 +65,31 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         throw new NotSupportedException("Use MenuFlyout.ShowAt(Control) instead");
     }
 
-    protected override bool IsItemItsOwnContainerOverride(Control item) => true;
+    protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
+    {
+        recycleKey = typeof(MenuFlyoutItem);
+        return !(item is MenuFlyoutItemBase);
+    }
 
-    protected override Control CreateContainerForItemOverride() =>
-        new MenuFlyoutItem();
+    protected override Control CreateContainerForItemOverride(object item, int index, object recycleKey)
+    {
+        var cont = this.FindDataTemplate(item, ItemTemplate)?.Build(item);
+
+        if (cont is MenuFlyoutItemBase mfib)
+        {
+            mfib.IsContainerFromTemplate = true;
+            return mfib;
+        }
+
+        return new MenuFlyoutItem();
+    }
 
     protected override void PrepareContainerForItemOverride(Control element, object item, int index)
     {
-        base.PrepareContainerForItemOverride(element, item, index);
+        var mfib = element as MenuFlyoutItemBase;
+
+        if (!mfib.IsContainerFromTemplate)
+            base.PrepareContainerForItemOverride(element, item, index);
 
         var iconCount = _iconCount;
         var toggleCount = _toggleCount;

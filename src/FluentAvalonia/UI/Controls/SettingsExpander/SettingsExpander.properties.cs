@@ -68,12 +68,14 @@ public partial class SettingsExpander
     public static readonly StyledProperty<object> CommandParameterProperty = 
         Button.CommandParameterProperty.AddOwner<SettingsExpander>();
 
+    // NOTE: Don't use Button.Click event here - when SettingsExpanderItem is in the top-level SettingsExpander
+    // there is a ToggleButton that is used to raise this event. If we use Button.Click here, and someone is 
+    // listening to Button.Click event with handledEventsToo = true, they'll get 2 click events as a result
     /// <summary>
     /// Defines the <see cref="Click"/> event
     /// </summary>
     public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-        SettingsExpanderItem.ClickEvent;
-
+        RoutedEvent.Register<SettingsExpander, RoutedEventArgs>(nameof(Click), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
     /// <summary>
     /// Gets or sets the description text

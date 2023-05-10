@@ -12,6 +12,8 @@ public class MenuFlyoutItemBase : TemplatedControl
         FocusableProperty.OverrideDefaultValue<MenuFlyoutItemBase>(true);
     }
 
+    internal bool IsContainerFromTemplate { get; set; }
+
     protected override void OnPointerEntered(PointerEventArgs e)
     {
         base.OnPointerEntered(e);
