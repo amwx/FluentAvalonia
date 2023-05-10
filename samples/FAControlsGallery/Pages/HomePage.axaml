@@ -48,11 +48,11 @@
                             <Grid RowDefinitions="3*,*">
                                 <Border CornerRadius="4 4 0 0"
                                         VerticalAlignment="Stretch"
-                                        HorizontalAlignment="Stretch">
+                                        HorizontalAlignment="Stretch"
+                                        RenderOptions.BitmapInterpolationMode="HighQuality">
                                     <Border.Background>
                                         <ImageBrush Source="{Binding ImageUri, Converter={StaticResource StringBmpConv}}"
-                                                    Stretch="Fill"
-                                                    RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                                                    Stretch="Fill" />
                                     </Border.Background>
                                 </Border>
                                 <TextBlock Text="{Binding Title}"

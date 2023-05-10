@@ -32,11 +32,11 @@
                Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground_Dark.png"
                AlignmentY="Center"
                Stretch="UniformToFill">
-                <RenderOptions.BitmapInterpolationMode>
+                <!--<RenderOptions.BitmapInterpolationMode>
                     <OnPlatform Default="HighQuality">
                         <On Options="iOS,Android,Browser" Content="MediumQuality" />
                     </OnPlatform>
-                </RenderOptions.BitmapInterpolationMode>
+                </RenderOptions.BitmapInterpolationMode>-->
             </ImageBrush>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
@@ -56,11 +56,11 @@
                Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground.png"
                AlignmentY="Center"
                Stretch="UniformToFill">
-                <RenderOptions.BitmapInterpolationMode>
+                <!--<RenderOptions.BitmapInterpolationMode>
                     <OnPlatform Default="HighQuality">
                         <On Options="iOS,Android,Browser" Content="MediumQuality" />
                     </OnPlatform>
-                </RenderOptions.BitmapInterpolationMode>
+                </RenderOptions.BitmapInterpolationMode>-->
             </ImageBrush>
         </ResourceDictionary>
         <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
@@ -75,11 +75,11 @@
                Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground.png"
                AlignmentY="Center"
                Stretch="UniformToFill">
-                <RenderOptions.BitmapInterpolationMode>
+                <!--<RenderOptions.BitmapInterpolationMode>
                     <OnPlatform Default="HighQuality">
                         <On Options="iOS,Android,Browser" Content="MediumQuality" />
                     </OnPlatform>
-                </RenderOptions.BitmapInterpolationMode>
+                </RenderOptions.BitmapInterpolationMode>-->
             </ImageBrush>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
@@ -103,7 +103,8 @@
                                MaxWidth="400"
                                Margin="30 50 0 0"
                                MinWidth="150"
-                               IsVisible="True">
+                               IsVisible="True"
+                               RenderOptions.BitmapInterpolationMode="HighQuality">
                             <Image.Transitions>
                                 <Transitions>
                                     <ThicknessTransition Duration="00:00:00.25"
