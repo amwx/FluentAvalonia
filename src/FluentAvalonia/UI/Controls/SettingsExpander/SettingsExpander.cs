@@ -129,21 +129,40 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
         }
     }
 
-    protected override bool IsItemItsOwnContainerOverride(Control item) =>
-        item is SettingsExpanderItem;
+    protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
+    {
+        bool isItem = item is SettingsExpanderItem;
+        recycleKey = isItem ? null : nameof(SettingsExpanderItem);
+        return !isItem;
+    }
 
-    protected override Control CreateContainerForItemOverride() =>
-        new SettingsExpanderItem();
+    protected override Control CreateContainerForItemOverride(object item, int index, object recycleKey)
+    {
+        var cont = this.FindDataTemplate(item, ItemTemplate)?.Build(item);
+
+        if (cont is SettingsExpanderItem sei)
+        {
+            sei.DataContext = item;
+            sei.IsContainerFromTemplate = true;
+            return sei;
+        }
+
+        return new SettingsExpanderItem();
+    }
 
     protected override void PrepareContainerForItemOverride(Control container, object item, int index)
     {
-        base.PrepareContainerForItemOverride(container, item, index);
+        var sei = container as SettingsExpanderItem;
 
-        if (container is SettingsExpanderItem sei)
-        {
-            if (sei.IconSource != null)
-                _iconCount++;
-        }
+        // If the container was created from a DataTemplate, do NOT call PrepareContainer or it will
+        // do another template lookup and then put a item within an item as it sets the normal
+        // ContentControl properties. Items created from a DataTemplate are assumed to be
+        // initialized, to be sure the DataContext is set in CreateContainer
+        if (!sei.IsContainerFromTemplate)
+            base.PrepareContainerForItemOverride(container, item, index);
+
+        if (sei.IconSource != null)
+            _iconCount++;
     }
 
     protected override void ClearContainerForItemOverride(Control container)

@@ -29,6 +29,8 @@ public partial class ColorSpectrum : ColorPickerComponent
         MinHeight = 150;
         MaxWidth = 500;
         MaxHeight = 500;
+
+        RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
     }
 
     static ColorSpectrum()
@@ -47,7 +49,7 @@ public partial class ColorSpectrum : ColorPickerComponent
         {
             if (Shape == ColorSpectrumShape.Spectrum)
             {
-                context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), rect, BitmapInterpolationMode.HighQuality);
+                context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), rect);
 
                 RenderSelectorRects(context, rect.Width, rect.Height);
 
@@ -70,7 +72,7 @@ public partial class ColorSpectrum : ColorPickerComponent
                 // Value by drawing a Black ellipse behind the image and the using the Value as the opacity
                 // to draw the bitmap
                 using (context.PushOpacity(Color.Valuef, rect))
-                    context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, BitmapInterpolationMode.HighQuality);
+                    context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect);
             }
             else if (Shape == ColorSpectrumShape.Triangle)
             {
@@ -82,7 +84,7 @@ public partial class ColorSpectrum : ColorPickerComponent
                     CreateBitmap();
                 }
 
-                context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, BitmapInterpolationMode.HighQuality);
+                context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect);
 
                 RenderTriangleSelector(context);
             }

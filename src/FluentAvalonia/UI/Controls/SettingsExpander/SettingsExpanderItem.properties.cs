@@ -172,6 +172,8 @@ public partial class SettingsExpanderItem : ContentControl
         remove => RemoveHandler(ClickEvent, value);
     }
 
+    internal bool IsContainerFromTemplate { get; set; }
+
     private const string s_pcDescription = ":description";
     private const string s_pcContent = ":content";
     private const string s_pcActionIcon = ":actionIcon";
