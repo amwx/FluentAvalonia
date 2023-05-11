@@ -4,7 +4,6 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Styling;
 using FluentAvalonia.Core;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 

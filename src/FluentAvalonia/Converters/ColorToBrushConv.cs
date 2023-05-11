@@ -2,11 +2,13 @@
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 using FluentAvalonia.UI.Media;
-using System;
 using System.Globalization;
 
 namespace FluentAvalonia.Converters;
 
+/// <summary>
+/// Converter that converts a color to a SolidColorBrush
+/// </summary>
 public class ColorToBrushConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

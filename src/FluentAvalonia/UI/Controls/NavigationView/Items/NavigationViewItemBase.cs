@@ -1,9 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Represents the base class for <see cref="NavigationView"/> menu items
+/// </summary>
 public class NavigationViewItemBase : ListBoxItem
 {
     internal NavigationViewRepeaterPosition Position

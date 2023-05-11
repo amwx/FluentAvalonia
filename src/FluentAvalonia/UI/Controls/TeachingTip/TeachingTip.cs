@@ -2165,7 +2165,7 @@ public partial class TeachingTip : ContentControl
             // we'll return a normal rect like GetEffectiveWindowBoundsInCoreWindowSpace does
             if (VisualRoot is Window w)
             {
-                var displayInfo = w.Screens.ScreenFromWindow(w.PlatformImpl);
+                var displayInfo = w.Screens.ScreenFromWindow(w);
                 var scaleFactor = displayInfo.Scaling;
 
                 return new Rect(-w.Position.X, -w.Position.Y,

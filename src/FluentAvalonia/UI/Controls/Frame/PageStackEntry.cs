@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using FluentAvalonia.UI.Media.Animation;
-using System;
 
 namespace FluentAvalonia.UI.Navigation;
 
@@ -36,7 +35,6 @@ public class PageStackEntry
     /// Gets the navigation parameter associated with this navigation entry.
     /// </summary>
     public object Parameter { get; set; }
-
 
     internal Control Instance { get; set; }
 }

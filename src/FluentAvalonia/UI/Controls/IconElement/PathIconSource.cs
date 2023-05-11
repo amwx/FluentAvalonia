@@ -17,7 +17,7 @@ public class PathIconSource : IconSource
     /// <summary>
     /// Defines the <see cref="Data"/> property
     /// </summary>
-    public static StyledProperty<Geometry> DataProperty =
+    public static readonly StyledProperty<Geometry> DataProperty =
         FAPathIcon.DataProperty.AddOwner<PathIconSource>();
 
     /// <summary>

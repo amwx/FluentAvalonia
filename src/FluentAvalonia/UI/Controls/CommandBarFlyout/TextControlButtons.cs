@@ -4,7 +4,7 @@
 /// Defines constants to define which commands should be available
 /// in a <see cref="TextCommandBarFlyout"/>
 /// </summary>
-public enum TextControlButtons
+internal enum TextControlButtons
 {
     None = 0x0000,
     Cut = 0x0001,

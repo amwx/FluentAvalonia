@@ -4,8 +4,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Styling;
 using Avalonia.Threading;
-using System;
-using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 

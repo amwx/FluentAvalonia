@@ -6,10 +6,12 @@ using Avalonia.LogicalTree;
 using Avalonia.Styling;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Input;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Represents a button control that can be displayed in a CommandBar
+/// </summary>
 public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
 {
     public CommandBarButton()

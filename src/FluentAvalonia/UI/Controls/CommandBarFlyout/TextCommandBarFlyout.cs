@@ -2,8 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
 using FluentAvalonia.UI.Input;
-using System;
-using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 

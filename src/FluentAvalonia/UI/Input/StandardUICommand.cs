@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Input;
 using FluentAvalonia.UI.Controls;
-using System;
 
 namespace FluentAvalonia.UI.Input;
 

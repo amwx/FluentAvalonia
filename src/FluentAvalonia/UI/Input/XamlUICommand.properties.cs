@@ -2,7 +2,6 @@
 using Avalonia.Input;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
-using System;
 using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Input;

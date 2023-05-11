@@ -4,10 +4,12 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Skia;
 using SkiaSharp;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Represents and icon that uses a bitmap as its content
+/// </summary>
 public partial class BitmapIcon : FAIconElement
 {
     public BitmapIcon()

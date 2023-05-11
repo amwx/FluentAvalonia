@@ -1,6 +1,5 @@
 ﻿using Avalonia.Interactivity;
 using FluentAvalonia.UI.Media.Animation;
-using System;
 
 namespace FluentAvalonia.UI.Navigation;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Automation.Provider;
@@ -9,6 +7,9 @@ using Avalonia.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// AutomationPeer for the FAComboBox control
+/// </summary>
 public class FAComboBoxAutomationPeer : SelectingItemsControlAutomationPeer,
     IExpandCollapseProvider, IValueProvider
 {

@@ -2,6 +2,9 @@
 
 namespace FluentAvalonia.Core;
 
+/// <summary>
+/// 
+/// </summary>
 public static class ThicknessExtensions
 {
     /// <summary>

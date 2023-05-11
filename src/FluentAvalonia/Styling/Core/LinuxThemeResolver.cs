@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text.RegularExpressions;
 using Avalonia.Styling;
 using FluentAvalonia.UI.Media;

@@ -9,6 +9,9 @@ namespace FluentAvalonia.UI.Controls;
 // See /Internal/BorderRenderHelper.cs for a note on some changes made compared to upstream
 // Border and BorderRenderHelper
 
+/// <summary>
+/// Border control that allows specifying how the border and background align when rendered
+/// </summary>
 public class FABorder : Decorator
 {
     /// <summary>
