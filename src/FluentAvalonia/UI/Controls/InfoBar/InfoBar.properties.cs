@@ -173,7 +173,7 @@ public partial class InfoBar : ContentControl
     /// <summary>
     /// Occurs after the close button is clicked in the InfoBar.
     /// </summary>
-    public event TypedEventHandler<InfoBar, object> CloseButtonClick;
+    public event TypedEventHandler<InfoBar, EventArgs> CloseButtonClick;
 
     /// <summary>
     /// Occurs just before the InfoBar begins to close.

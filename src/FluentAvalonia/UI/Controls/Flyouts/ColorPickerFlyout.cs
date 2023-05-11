@@ -18,12 +18,12 @@ public sealed class ColorPickerFlyout : PickerFlyoutBase
     /// <summary>
     /// Raised when the Confirmed button is tapped indicating the new Color should be applied
     /// </summary>
-    public event TypedEventHandler<ColorPickerFlyout, object> Confirmed;
+    public event TypedEventHandler<ColorPickerFlyout, EventArgs> Confirmed;
 
     /// <summary>
     /// Raised when the Dismiss button is tapped, indicating the new color should not be applied
     /// </summary>
-    public event TypedEventHandler<ColorPickerFlyout, object> Dismissed;
+    public event TypedEventHandler<ColorPickerFlyout, EventArgs> Dismissed;
 
     protected override Control CreatePresenter()
     {
