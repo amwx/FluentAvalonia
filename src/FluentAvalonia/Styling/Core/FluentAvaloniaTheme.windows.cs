@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Logging;
 using FluentAvalonia.Interop;
-using System;
 using FluentAvalonia.Interop.WinRT;
 using Avalonia.Media;
 using Avalonia.Platform;

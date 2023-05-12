@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
-using System;
 using System.ComponentModel;
 using System.Globalization;
 

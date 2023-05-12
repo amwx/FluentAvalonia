@@ -1,7 +1,5 @@
-using System;
 using Avalonia;
 using Avalonia.Media;
-using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 

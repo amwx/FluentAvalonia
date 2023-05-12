@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Logging;
 using Avalonia.Styling;
-using System;
 using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;

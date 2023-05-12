@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
 using Avalonia.Logging;
-using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 

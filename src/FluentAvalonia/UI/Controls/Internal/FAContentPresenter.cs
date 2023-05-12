@@ -13,6 +13,12 @@ using Avalonia.Utilities;
 
 namespace FluentAvalonia.UI.Controls.Primitives;
 
+/// <summary>
+/// Special ContentPresenter that allows BackgroundSizing
+/// </summary>
+/// <remarks>
+/// This class should generally not be used outside of FluentAvalonia
+/// </remarks>
 [PseudoClasses(":empty")]
 public class FAContentPresenter : Control, IContentPresenter, IStyleable
 {

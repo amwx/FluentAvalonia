@@ -14,7 +14,7 @@ public partial class FAPathIcon : FAIconElement
     /// <summary>
     /// Defines the <see cref="Data"/> property
     /// </summary>
-    public static StyledProperty<Geometry> DataProperty =
+    public static readonly StyledProperty<Geometry> DataProperty =
         Path.DataProperty.AddOwner<FAPathIcon>();
 
     /// <summary>

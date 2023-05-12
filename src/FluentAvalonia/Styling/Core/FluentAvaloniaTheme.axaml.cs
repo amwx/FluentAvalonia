@@ -5,10 +5,8 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Styling;
-using FluentAvalonia.Core;
 using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Media;
-using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Platform;
 using SkiaSharp;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 

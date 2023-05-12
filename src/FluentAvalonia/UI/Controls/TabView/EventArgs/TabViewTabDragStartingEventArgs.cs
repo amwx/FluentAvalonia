@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAvalonia.UI.Data;
+﻿using FluentAvalonia.UI.Data;
 
 namespace FluentAvalonia.UI.Controls;
 

@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Controls.Primitives;
-using System;
 using Avalonia.Styling;
 using Avalonia.LogicalTree;
 using FluentAvalonia.UI.Input;

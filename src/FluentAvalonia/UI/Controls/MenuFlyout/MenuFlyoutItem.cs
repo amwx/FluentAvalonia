@@ -5,7 +5,6 @@ using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Input;
-using System;
 using System.Windows.Input;
 
 namespace FluentAvalonia.UI.Controls;

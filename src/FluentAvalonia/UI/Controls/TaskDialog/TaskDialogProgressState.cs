@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FluentAvalonia.UI.Controls;
+﻿namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
 /// Defines constants (flags) that describe the state of a progress 

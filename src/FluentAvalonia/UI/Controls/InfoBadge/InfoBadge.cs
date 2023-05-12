@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using FluentAvalonia.Core;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 

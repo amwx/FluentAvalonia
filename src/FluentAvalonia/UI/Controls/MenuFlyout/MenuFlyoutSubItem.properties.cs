@@ -5,8 +5,6 @@ using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
