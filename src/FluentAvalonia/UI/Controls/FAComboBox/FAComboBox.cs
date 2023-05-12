@@ -135,8 +135,9 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
     protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
     {
-        recycleKey = nameof(FAComboBoxItem);
-        return item is FAComboBoxItem;
+        bool isContainer = item is FAComboBoxItem;
+        recycleKey = isContainer ? null : nameof(FAComboBoxItem);
+        return !isContainer;
     }
 
     public override void InvalidateMirrorTransform()
