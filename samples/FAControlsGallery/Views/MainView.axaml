@@ -21,7 +21,8 @@
                    Source="/Assets/FAIcon.ico"
                    Width="18" Height="18"
                    DockPanel.Dock="Left"
-                   Name="WindowIcon">
+                   Name="WindowIcon"
+                   RenderOptions.BitmapInterpolationMode="HighQuality">
                 <Image.IsVisible>
                     <OnPlatform Default="False">
                         <On Options="Windows" Content="True" />
@@ -70,7 +71,7 @@
         <ui:NavigationView Classes="SampleAppNav"
                            AlwaysShowHeader="False"
                            PaneDisplayMode="Left"
-                           IsPaneOpen="True"
+                           IsPaneOpen="False"
                            Grid.RowSpan="2"
                            Name="NavView"
                            IsSettingsVisible="False"

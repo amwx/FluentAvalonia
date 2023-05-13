@@ -34,6 +34,7 @@
     <Style Selector="ui|NavigationView.SampleAppNav">
         <Setter Property="IsPaneToggleButtonVisible" Value="False" />
         <Setter Property="OpenPaneLength" Value="72" />
+        <Setter Property="CompactPaneLength" Value="72" />
     </Style>
     <Style Selector="ui|NavigationView.SampleAppNav[IsBackButtonVisible=False] SplitView /template/ ContentPresenter#PART_PanePresenter">
         <Setter Property="Margin" Value="0 40 0 0" />
@@ -75,7 +76,8 @@
                                               FontSize="10"
                                               Padding="0 4"
                                               Margin="0 -15 0 3"
-                                              DockPanel.Dock="Bottom">
+                                              DockPanel.Dock="Bottom"
+                                              IsVisible="False">
                                 <ContentPresenter.Styles>
                                     <Style Selector="TextBlock">
                                         <Setter Property="TextWrapping" Value="Wrap" />

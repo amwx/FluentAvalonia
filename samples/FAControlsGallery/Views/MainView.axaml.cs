@@ -113,12 +113,12 @@ public partial class MainView : UserControl
             new CoreControlsPageViewModel(coreControls)
             {
                 NavHeader = "Core Controls",
-                IconKey = "CoreCtrlsIcon"
+                IconKey = "CoreControlsIcon"
             },
             new FAControlsOverviewPageViewModel(faControls)
             {
                 NavHeader = "FA Controls",
-                IconKey = "CtrlsIcon"
+                IconKey = "FAControlsIcon"
             },
             new DesignPageViewModel
             {
@@ -148,6 +148,8 @@ public partial class MainView : UserControl
                 Tag = pg,
                 IconSource = (IconSource)this.FindResource(pg.IconKey)
             };
+
+            //ToolTip.SetTip(nvi, pg.NavHeader);
 
             if (_isDesktop)
             {
@@ -201,7 +203,7 @@ public partial class MainView : UserControl
     private void OnNavigationViewItemInvoked(object sender, NavigationViewItemInvokedEventArgs e)
     {
         // Change the current selected item back to normal
-        SetNVIIcon(NavView.SelectedItem as NavigationViewItem, false);
+        // SetNVIIcon(sender as NavigationViewItem, false);
 
         if (e.InvokedItemContainer is NavigationViewItem nvi)
         {
@@ -240,32 +242,37 @@ public partial class MainView : UserControl
             mainPage = pbvm.Parent;
         }
 
-        bool found = false;
+        //bool found = false;
         foreach (NavigationViewItem nvi in NavView.MenuItemsSource)
         {
             if (nvi.Tag == mainPage)
             {
-                found = true;
+                //found = true;
                 NavView.SelectedItem = nvi;
                 SetNVIIcon(nvi, true);
-                break;
+                //break;
+            }
+            else
+            {
+                SetNVIIcon(nvi, false);
             }
         }
 
-        if (!found)
+        foreach (NavigationViewItem nvi in NavView.FooterMenuItemsSource)
         {
-            foreach (NavigationViewItem nvi in NavView.FooterMenuItemsSource)
+            if (nvi.Tag == mainPage)
             {
-                if (nvi.Tag == mainPage)
-                {
-                    found = true;
-                    NavView.SelectedItem = nvi;
-                    SetNVIIcon(nvi, true);
-                    break;
-                }
-            }            
+                //found = true;
+                NavView.SelectedItem = nvi;
+                SetNVIIcon(nvi, true);
+                //break;
+            }
+            else
+            {
+                SetNVIIcon(nvi, false);
+            }
         }
-           
+
         if (FrameView.BackStackDepth > 0 && !NavView.IsBackButtonVisible)
         {
             AnimateContentForBackButton(true);
@@ -284,25 +291,29 @@ public partial class MainView : UserControl
         if (item == null)
             return;
 
-        Type t = item.Tag as Type;
+        var t = item.Tag;
 
-        if (t == typeof(HomePage))
+        if (t is HomePageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "HomeIconFilled" : "HomeIcon", out var value) ?
                 (IconSource)value : null;
         }
-        //else if (t == typeof(CoreControlsPage))
-        //{
-        //    item.IconSource = this.TryFindResource(selected ? "CoreCtrlsIconFilled" : "CoreCtrlsIcon", out var value) ?
-        //        (IconSource)value : null;
-        //}
-        //// Skip NewControlsPage as its icon is the same for both
-        //else if (t == typeof(ResourcesPage))
-        //{
-        //    item.IconSource = this.TryFindResource(selected ? "ResourcesIconFilled" : "ResourcesIcon", out var value) ?
-        //        (IconSource)value : null;
-        //}
-        else if (t == typeof(SettingsPage))
+        else if (t is CoreControlsPageViewModel)
+        {
+            item.IconSource = this.TryFindResource(selected ? "CoreControlsIconFilled" : "CoreControlsIcon", out var value) ?
+                (IconSource)value : null;
+        }
+        else if (t is FAControlsOverviewPageViewModel)
+        {
+            item.IconSource = this.TryFindResource(selected ? "FAControlsIconFilled" : "FAControlsIcon", out var value) ?
+                (IconSource)value : null;
+        }
+        else if (t is DesignPageViewModel)
+        {
+            item.IconSource = this.TryFindResource(selected ? "DesignIconFilled" : "DesignIcon", out var value) ?
+                (IconSource)value : null;
+        }
+        else if (t is SettingsPageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "SettingsIconFilled" : "SettingsIcon", out var value) ?
                (IconSource)value : null;
