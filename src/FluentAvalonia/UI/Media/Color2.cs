@@ -1,10 +1,7 @@
 ﻿using Avalonia.Media;
 using FluentAvalonia.Core;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Media;
 
@@ -17,6 +14,9 @@ internal enum ColorType
     CMYK
 }
 
+/// <summary>
+/// Represents a color in RGB, HSV, HSL, or CMYK colorspace
+/// </summary>
 [TypeConverter(typeof(Color2ToColorConverter))]
 public struct Color2 : IEquatable<Color2>
 {
@@ -1037,7 +1037,7 @@ public struct Color2 : IEquatable<Color2>
 
     public static implicit operator Color2(Color c)
     {
-        return FromUInt(c.ToUint32());
+        return FromUInt(c.ToUInt32());
     }
 
     public static bool AreColorsClose(Color2 col1, Color2 col2, float tolerance = 0.03f)
@@ -1787,6 +1787,9 @@ internal enum KnownColor : uint
     YellowGreen = 0xff9acd32
 }
 
+/// <summary>
+/// Special converter to auto convert Color2 to Avalonia.Media.Color
+/// </summary>
 public class Color2ToColorConverter : TypeConverter
 {
     public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
@@ -1803,7 +1806,7 @@ public class Color2ToColorConverter : TypeConverter
     {
         if (value is Color c)
         {
-            return Color2.FromUInt(c.ToUint32());
+            return Color2.FromUInt(c.ToUInt32());
         }
         return base.ConvertFrom(context, culture, value);
     }

@@ -26,7 +26,10 @@ public enum TitleBarHitTestType
     Complex
 }
 
-
+/// <summary>
+/// Represents the title bar of an <see cref="AppWindow"/> allowing customization such as
+/// colors, hit testing, and allowing app content in the title bar area
+/// </summary>
 public class AppWindowTitleBar
 {
     internal AppWindowTitleBar(AppWindow parent)

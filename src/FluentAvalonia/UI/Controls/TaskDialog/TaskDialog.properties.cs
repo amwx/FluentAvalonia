@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using Avalonia.Media;
 

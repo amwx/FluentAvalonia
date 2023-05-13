@@ -16,6 +16,10 @@ using FluentAvalonia.UI.Media;
 
 namespace FluentAvalonia.UI.Windowing;
 
+/// <summary>
+/// Custom Window that supports a modern Windows look and title bar customization,
+/// with a graceful fallback for MacOS and Linux
+/// </summary>
 public partial class AppWindow : Window, IStyleable
 {
     public AppWindow()

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FluentAvalonia.UI.Controls;
+﻿namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
 /// Provides data for the <see cref="TabView.TabDroppedOutside"/> event

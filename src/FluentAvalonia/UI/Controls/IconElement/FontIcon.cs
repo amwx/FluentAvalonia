@@ -1,10 +1,7 @@
-﻿using System.Diagnostics;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using Avalonia.Threading;
-using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls;
 

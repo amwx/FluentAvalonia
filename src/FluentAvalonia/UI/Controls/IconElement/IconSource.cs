@@ -1,11 +1,13 @@
 ﻿using Avalonia;
 using Avalonia.Media;
-using System;
 using System.ComponentModel;
 using System.Globalization;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Represents the base class for an icon source
+/// </summary>
 [TypeConverter(typeof(IconSourceConverter))]
 public abstract class IconSource : AvaloniaObject
 {

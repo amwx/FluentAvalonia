@@ -1,10 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
-using Avalonia.Data.Core;
-using Avalonia.Markup.Parsers;
-using Avalonia.Markup.Xaml.MarkupExtensions;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 

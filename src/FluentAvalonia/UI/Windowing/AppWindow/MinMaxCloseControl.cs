@@ -7,6 +7,9 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Windowing;
 
+/// <summary>
+/// Represents the caption buttons for a <see cref="AppWindow"/>
+/// </summary>
 public class MinMaxCloseControl : TemplatedControl
 {
     public MinMaxCloseControl()

@@ -1,13 +1,10 @@
 ﻿using Avalonia.Controls;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
-enum NavigationViewSplitVectorID
+internal enum NavigationViewSplitVectorID
 {
     NotInitialized = 0,
     PrimaryList,

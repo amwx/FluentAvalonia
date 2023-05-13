@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using FluentAvalonia.Interop;
-using FluentAvalonia.Interop.Win32;
 
 namespace FluentAvalonia.UI.Windowing;
 

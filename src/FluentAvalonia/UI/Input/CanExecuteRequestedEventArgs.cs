@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FluentAvalonia.UI.Input;
+﻿namespace FluentAvalonia.UI.Input;
 
 /// <summary>
 /// Provides event data for the CanExecuteRequested event.

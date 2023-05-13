@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FluentAvalonia.UI.Navigation;
+﻿namespace FluentAvalonia.UI.Navigation;
 
 /// <summary>
 /// Represents a method that will handle the Frame.NavigationFailed event.

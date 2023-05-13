@@ -1,7 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using Avalonia.Automation.Peers;
+
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// AutomationPeer for a <see cref="TeachingTip"/>
+/// </summary>
 public class TeachingTipAutomationPeer : ContentControlAutomationPeer
 {
     internal TeachingTipAutomationPeer(TeachingTip owner) 

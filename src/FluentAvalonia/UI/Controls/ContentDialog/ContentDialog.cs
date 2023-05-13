@@ -5,19 +5,15 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Layout;
 using Avalonia.Logging;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Presents a asyncronous dialog to the user.
+/// Presents a asynchronous dialog to the user.
 /// </summary>
 public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 {
@@ -111,7 +107,14 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         base.OnKeyUp(e);
     }
 
+    /// <summary>
+    /// Begins an asynchronous operation to show the dialog.
+    /// </summary>
     public async Task<ContentDialogResult> ShowAsync() => await ShowAsyncCore(null);
+
+    /// <summary>
+    /// Begins an asynchronous operation to show the dialog using the specified window
+    /// </summary>
     public async Task<ContentDialogResult> ShowAsync(Window w) => await ShowAsyncCore(w);
 
     /// <summary>

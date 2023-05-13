@@ -2,12 +2,34 @@
 
 namespace FluentAvalonia.UI.Windowing;
 
+/// <summary>
+/// Represents constants that define the TaskBarProgressBar's state
+/// </summary>
 public enum TaskBarProgressBarState
 {
+    /// <summary>
+    /// No TaskBarProgressBar is displayed
+    /// </summary>
     None = 0x00000000,
+
+    /// <summary>
+    /// A green indicator is displayed in the taskbar button
+    /// </summary>
     Normal = 0x00000002,
+
+    /// <summary>
+    /// A yellow progress indicator is displayed in the taskbar button.
+    /// </summary>
     Paused = 0x00000008,
+
+    /// <summary>
+    /// A red progress indicator is displayed in the taskbar button.
+    /// </summary>
     Error = 0x00000004,
+
+    /// <summary>
+    /// A pulsing green indicator is displayed in the taskbar button.
+    /// </summary>
     Indeterminate = 0x00000001
 }
 

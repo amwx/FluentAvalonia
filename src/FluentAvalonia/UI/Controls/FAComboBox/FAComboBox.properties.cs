@@ -1,5 +1,4 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
@@ -25,82 +24,82 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     /// <summary>
     /// Defines the <see cref="MaxDropDownHeight"/> property
     /// </summary>
-    public static StyledProperty<double> MaxDropDownHeightProperty =
+    public static readonly StyledProperty<double> MaxDropDownHeightProperty =
         ComboBox.MaxDropDownHeightProperty.AddOwner<FAComboBox>();
 
     /// <summary>
     /// Defines the <see cref="IsEditable"/> property
     /// </summary>
-    public static StyledProperty<bool> IsEditableProperty =
+    public static readonly StyledProperty<bool> IsEditableProperty =
         AvaloniaProperty.Register<FAComboBox, bool>(nameof(IsEditable));
 
     /// <summary>
     /// Defines the <see cref="IsDropDownOpen"/> property
     /// </summary>
-    public static StyledProperty<bool> IsDropDownOpenProperty =
+    public static readonly StyledProperty<bool> IsDropDownOpenProperty =
         AvaloniaProperty.Register<FAComboBox, bool>(nameof(IsDropDownOpen));
 
     /// <summary>
     /// Defines the <see cref="IsSelectionBoxHighlighted"/> property
     /// </summary>
-    public static DirectProperty<FAComboBox, bool> IsSelectionBoxHighlightedProperty =
+    public static readonly DirectProperty<FAComboBox, bool> IsSelectionBoxHighlightedProperty =
         AvaloniaProperty.RegisterDirect<FAComboBox, bool>(nameof(IsSelectionBoxHighlighted),
             x => x.IsSelectionBoxHighlighted);
 
     /// <summary>
     /// Defines the <see cref="SelectionBoxItem"/> property
     /// </summary>
-    public static DirectProperty<FAComboBox, object> SelectionBoxItemProperty =
+    public static readonly DirectProperty<FAComboBox, object> SelectionBoxItemProperty =
         AvaloniaProperty.RegisterDirect<FAComboBox, object>(nameof(SelectionBoxItem),
             x => x.SelectionBoxItem);
 
     /// <summary>
     /// Defines the <see cref="SelectionBoxItemTemplate"/> property
     /// </summary>
-    public static DirectProperty<FAComboBox, IDataTemplate> SelectionBoxItemTemplateProperty =
+    public static readonly DirectProperty<FAComboBox, IDataTemplate> SelectionBoxItemTemplateProperty =
         AvaloniaProperty.RegisterDirect<FAComboBox, IDataTemplate>(nameof(SelectionBoxItemTemplate),
             x => x.SelectionBoxItemTemplate);
 
     /// <summary>
     /// Defines the <see cref="PlaceholderText"/> property
     /// </summary>
-    public static StyledProperty<string> PlaceholderTextProperty =
+    public static readonly StyledProperty<string> PlaceholderTextProperty =
         ComboBox.PlaceholderTextProperty.AddOwner<FAComboBox>();
 
     /// <summary>
     /// Defines the <see cref="SelectionChangedTrigger"/> property
     /// </summary>
-    public static StyledProperty<FAComboBoxSelectionChangedTrigger> SelectionChangedTriggerProperty =
+    public static readonly StyledProperty<FAComboBoxSelectionChangedTrigger> SelectionChangedTriggerProperty =
         AvaloniaProperty.Register<FAComboBox, FAComboBoxSelectionChangedTrigger>(nameof(SelectionChangedTrigger));
 
     /// <summary>
     /// Defines the <see cref="PlaceholderForeground"/> property
     /// </summary>
-    public static StyledProperty<IBrush> PlaceholderForegroundProperty =
+    public static readonly StyledProperty<IBrush> PlaceholderForegroundProperty =
         ComboBox.PlaceholderForegroundProperty.AddOwner<FAComboBox>();
 
     /// <summary>
     /// Defines the <see cref="TextBoxTheme"/> property
     /// </summary>
-    public static StyledProperty<ControlTheme> TextBoxThemeProperty =
+    public static readonly StyledProperty<ControlTheme> TextBoxThemeProperty =
         AvaloniaProperty.Register<FAComboBox, ControlTheme>(nameof(TextBoxTheme));
 
     /// <summary>
     /// Defines the <see cref="Text"/> property
     /// </summary>
-    public static StyledProperty<string> TextProperty =
+    public static readonly StyledProperty<string> TextProperty =
         AvaloniaProperty.Register<FAComboBox, string>(nameof(Text));
 
     /// <summary>
     /// Defines the <see cref="HorizontalContentAlignment"/> property
     /// </summary>
-    public static StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty =
+    public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty =
         ContentControl.HorizontalContentAlignmentProperty.AddOwner<FAComboBox>();
 
     /// <summary>
     /// Defines the <see cref="VerticalContentAlignment"/> property
     /// </summary>
-    public static StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty =
+    public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty =
         ContentControl.VerticalContentAlignmentProperty.AddOwner<FAComboBox>();
 
     /// <summary>

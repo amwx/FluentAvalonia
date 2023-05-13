@@ -10,7 +10,6 @@ namespace FluentAvalonia.UI.Controls.Primitives;
 /// <summary>
 /// Represents the visual elements of a NavigationViewItem.
 /// </summary>
-
 public partial class NavigationViewItemPresenter : ContentControl
 {
     public NavigationViewItemPresenter()

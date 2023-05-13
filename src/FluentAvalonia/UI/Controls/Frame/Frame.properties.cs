@@ -2,8 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using FluentAvalonia.UI.Navigation;
-using System;
-using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 

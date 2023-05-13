@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Animation;
 
 namespace FluentAvalonia.UI.Media.Animation;

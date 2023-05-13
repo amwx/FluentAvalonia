@@ -5,7 +5,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
-using System;
 
 namespace FluentAvalonia.UI.Controls;
 

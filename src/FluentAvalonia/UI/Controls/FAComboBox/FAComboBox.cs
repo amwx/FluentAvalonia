@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
@@ -13,9 +12,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -138,8 +135,9 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
     protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
     {
-        recycleKey = nameof(FAComboBoxItem);
-        return item is FAComboBoxItem;
+        bool isContainer = item is FAComboBoxItem;
+        recycleKey = isContainer ? null : nameof(FAComboBoxItem);
+        return !isContainer;
     }
 
     public override void InvalidateMirrorTransform()

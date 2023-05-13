@@ -1,10 +1,9 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Avalonia.Data.Converters;
 
 namespace FluentAvalonia.Converters;
 
-class InverseBooleanValueConverter : IValueConverter
+internal class InverseBooleanValueConverter : IValueConverter
 {
     public bool Default { get; set; }
 

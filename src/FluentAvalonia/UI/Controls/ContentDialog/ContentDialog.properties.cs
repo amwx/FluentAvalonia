@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls.Templates;
 using Avalonia;
 using FluentAvalonia.Core;
-using System;
 using System.Windows.Input;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls;
