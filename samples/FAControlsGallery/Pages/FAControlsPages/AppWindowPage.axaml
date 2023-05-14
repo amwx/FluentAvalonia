@@ -6,55 +6,99 @@
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:vm="using:FAControlsGallery.ViewModels"
              xmlns:wnd="using:FluentAvalonia.UI.Windowing"
-             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="1400"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="2400"
              x:Class="FAControlsGallery.Pages.AppWindowPage">
     
     <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
         <StackPanel Spacing="8">
-            
-            <ctrls:ControlExample Header="What is AppWindow?">
-
-                <StackPanel Spacing="8">
-                    <TextBlock Text="{Binding AppWindowDesc1}" TextWrapping="Wrap" />
-
-                    <TextBlock Text="{Binding AppWindowDesc2}" TextWrapping="Wrap" />
-
-                    <TextBlock Text="{Binding AppWindowDesc3}" TextWrapping="Wrap" />
-                </StackPanel>
-                
-                
-                <ctrls:ControlExample.CSharpSource>
-                    <x:String xml:space="preserve">using FluentAvalonia.UI.Windowing; 
-
-public class MainWindow : AppWindow
-                    </x:String>
-                </ctrls:ControlExample.CSharpSource>
-                
-            </ctrls:ControlExample>
-
             <ui:InfoBar IsOpen="True" IsClosable="False"
                         Title="WARNING"
                         Severity="Warning"
-                        IconSource="ImportantFilled"
-                        Message="{Binding AppWindowWarning}" />
+                        IconSource="ImportantFilled">
+                <ui:InfoBar.Message>
+                    <x:String>When using AppWindow, you should not use any of the extended window frame/decorations stuff (ExtentClientAreaToDecorationsHint, for example) as it may break how AppWindow works. In addition, do not set the window to be transparent (Mica or acrylic is ok) as a transparent window will reveal the DWM titlebar that cannot be hidden.</x:String>
+                </ui:InfoBar.Message>
+            </ui:InfoBar>
 
-            <ctrls:ControlExample Header="AppWindowTitleBar"
+            <ctrls:ControlExample Header="Extend content into TitleBar"
+                                  TargetType="wnd:AppWindowTitleBar"
+                                  EnableShowDefinitionLink="True">
+                <TextBlock TextWrapping="Wrap">
+                    <x:String>
+To extend your app content into the titlebar area, use the ExtendsContentIntoTitleBar property on the AppWindow's TitleBar
+                    </x:String>
+                </TextBlock>
+
+                <ctrls:ControlExample.CSharpSource>
+                    <x:String>
+public class MainWindow : AppWindow
+{
+    public MainWindow()
+    {
+        TitleBar.ExtendsContentIntoTitleBar = true
+    }
+}
+                    </x:String>                   
+                </ctrls:ControlExample.CSharpSource>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="TitleBar colors"
                                   TargetType="wnd:AppWindowTitleBar"
                                   EnableShowDefinitionLink="True">
                 <StackPanel Spacing="8">
-                    <TextBlock Text="{Binding AppWindowTitleBarDesc}"
-                               TextWrapping="Wrap" />
+                    <TextBlock TextWrapping="Wrap">
+<x:String>The default titlebar and caption button colors can be customized by the properties on AppWindowTitleBar. Set a custom color or null to use the default. See the control definition for the list of properties.
+</x:String>
+                    </TextBlock>
 
-                    <TextBlock Text="{Binding AppWindowTitleBarDesc2}"
-                               TextWrapping="Wrap" />
+                    <ui:InfoBar IsOpen="True" IsClosable="False"
+                                Title="NOTE" Severity="Informational">
+                        <ui:InfoBar.Message>
+                            If ExtendsContentIntoTitleBar is true, only the caption buttons can be customized as you are now responsible for the design of the rest of the titlebar area.
+                        </ui:InfoBar.Message>
+                    </ui:InfoBar>
+                </StackPanel>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="Window drag region"
+                                  TargetType="wnd:AppWindowTitleBar"
+                                  CSharpSource="avares://FAControlsGallery/Pages/SampleCode/AppWindow1.cs.txt">
+                <StackPanel Spacing="8">
+                    <TextBlock TextWrapping="Wrap">
+                        <Run>
+                            <x:String>By default, AppWindow retains the top part of the window as the titlebar hit testing region for dragging, even with ExtendsContentIntoTitleBar = true. The size of this is determined by the Height property, which defaults to 32 DIP</x:String>
+                        </Run>
+                        <LineBreak />
+                        <Run>
+                            <x:String>There are 3 ways you can customize this behavior</x:String>
+                        </Run>
+                    </TextBlock>
+
+                    <TextBlock TextWrapping="Wrap"
+                               Margin="18 0 0 0">
+                        <Run>
+                            <x:String>    1. TitleBar.SetDragRectangles(Rect[] values)</x:String>
+                        </Run>
+                        <LineBreak />
+                        <Run>
+                            <x:String>    2. AllowInteractionInTitleBar attached property</x:String>
+                        </Run>
+                        <LineBreak />
+                        <Run>
+                            <x:String>    2. TitleBar.TitleBarHitTestType property</x:String>
+                        </Run>
+                    </TextBlock>
                 </StackPanel>
             </ctrls:ControlExample>
 
             <ctrls:ControlExample TargetType="wnd:IApplicationSplashScreen"
                                   Header="IApplicationSplashScreen"
-                                  EnableShowDefinitionLink="True">
+                                  EnableShowDefinitionLink="True"
+                                  CSharpSource="avares://FAControlsGallery/Pages/SampleCode/AppWindow2.cs.txt">
                 <StackPanel Spacing="8">
-                    <TextBlock Text="{Binding AppWindowSplashScreenDesc}" />
+                    <TextBlock>
+                        <x:String>AppWindow supports a modern style splashscreen which allows you to intialize your app before the content loads</x:String>
+                    </TextBlock>
 
                     <StackPanel Spacing="4">
                         <StackPanel.IsVisible>
@@ -71,7 +115,8 @@ public class MainWindow : AppWindow
 
             <ctrls:ControlExample TargetType="wnd:IAppWindowPlatformFeatures"
                                   Header="Platform Features (Windows only currently)"
-                                  EnableShowDefinitionLink="True">
+                                  EnableShowDefinitionLink="True"
+                                  CSharpSource="avares://FAControlsGallery/Pages/SampleCode/AppWindow3.cs.txt">
                 <StackPanel Spacing="8">
                     <ui:InfoBar IsOpen="True"
                                 IsClosable="False"
@@ -79,9 +124,9 @@ public class MainWindow : AppWindow
                                 Severity="Informational"
                                 Message="These features are currently on available on Windows" />
                     
-                    <TextBlock Text="{Binding PlatformFeaturesDesc1}" />
-                    <TextBlock Text="{Binding PlatformFeaturesDesc2}" Margin="24 0 0 0" />
-                    <TextBlock Text="{Binding PlatformFeaturesDesc3}" Margin="24 0 0 0" />
+                    <TextBlock Text="AppWindow also enables a couple more features" />
+                    <TextBlock Text="(Windows 11 only) Change the window's border color" Margin="24 0 0 0" />
+                    <TextBlock Text="Enable the TaskBar progress bar" Margin="24 0 0 0" />
 
                     <StackPanel Spacing="4">
                         <StackPanel.IsVisible>

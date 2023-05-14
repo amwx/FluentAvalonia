@@ -1,0 +1,39 @@
+﻿// 1. Use SetDragRectangles(Rect[] value)
+
+// This allows you to specify custom rectangles that are used when processing WM_NCHITTEST. 
+
+// The following sets two areas acceptable for dragging the window. All other areas in the top of the window, excluding the CaptionButtons, allow events to progress into the Avalonia visual tree.
+public MainWindow()
+{
+    var rects = new[]
+    {
+        new Rect(0, 0, 100, 32),
+        new Rect(300, 0, 100, 32)
+    };
+
+    TitleBar.SetDragRectangles(rects);
+}
+
+// 2. Use the AllowInteractionInTitleBar attached property
+
+// To leave the default hit test behavior, but allow a control to still exist in the titlebar,
+// you can set the AllowInteractionInTitleBar attached property
+
+AppWindow.SetAllowInteractionInTitleBar(MyControl, true);
+
+// This can, of course, be set in xaml too like any other AttachedProperty
+
+
+// 3. TitleBarHitTestType property
+
+// This is ideal for apps that use complex content in the titlebar region, such as a TabView or NavigationView.
+// In these cases, calculating drag rectangles or letting individual controls "pass through" would be difficult
+// or expensive to calculate and keep updated.
+
+// This is the default and just does a simple bounds check for the top of the window
+TitleBarHitTestType = TitleBarHitTestType.Simple;
+
+// Use this for complex content. Instead of just doing a Point in Rect check this will run a full 
+// input hit test to see if any interactable controls are beneath the pointer
+TitleBarHitTestType = TitleBarHitTestType.Complex;
+

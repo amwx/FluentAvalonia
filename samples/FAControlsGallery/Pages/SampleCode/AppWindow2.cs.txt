@@ -9,36 +9,10 @@
 // Show/Hide the main window, it won't show each time
 
 // This is the splash screen used by this sample app
-public class SampleAppSplashScreen : IApplicationSplashScreen
-{
-    public SampleAppSplashScreen()
-    {
-        var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using (var s = al.Open(new Uri("avares://FAControlsGallery/Assets/FAIcon.ico")))
-            AppIcon = new Bitmap(s);
-    }
 
-    string IApplicationSplashScreen.AppName { get; }
+TODO:
 
-    public IImage AppIcon { get; }
-
-    object IApplicationSplashScreen.SplashScreenContent { get; }
-
-    // You can also choose to set a minimum show time to hold the splash screen up if the background tasks
-    // complete too quickly. This might be desired to prevent weird animation related visual artifacts
-    int IApplicationSplashScreen.MinimumShowTime => 2000;
-
-
-    // This is where you run any custom background tasks. This is called on a background thread so you
-    // don't need to do your own Task.Run(); Note that any UI Thread related work must be posted to the
-    // dispatcher from here to prevent errors
-    void IApplicationSplashScreen.RunTasks()
-    {
-        
-    }
-}
-
-public class MainWindow : CoreWindow
+public class MainWindow : AppWindow
 {
     public MainWindow()
     {
