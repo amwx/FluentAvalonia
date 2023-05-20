@@ -241,16 +241,18 @@ public partial class MainView : UserControl
         {
             mainPage = pbvm.Parent;
         }
+        else if (page is ControlsPageBase cpb)
+        {
+            mainPage = cpb.CreationContext.Parent;
+        }
 
         //bool found = false;
         foreach (NavigationViewItem nvi in NavView.MenuItemsSource)
         {
             if (nvi.Tag == mainPage)
             {
-                //found = true;
                 NavView.SelectedItem = nvi;
                 SetNVIIcon(nvi, true);
-                //break;
             }
             else
             {
@@ -262,10 +264,8 @@ public partial class MainView : UserControl
         {
             if (nvi.Tag == mainPage)
             {
-                //found = true;
                 NavView.SelectedItem = nvi;
                 SetNVIIcon(nvi, true);
-                //break;
             }
             else
             {

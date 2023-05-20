@@ -71,7 +71,6 @@
         <ui:NavigationView Classes="SampleAppNav"
                            AlwaysShowHeader="False"
                            PaneDisplayMode="Left"
-                           IsPaneOpen="False"
                            Grid.RowSpan="2"
                            Name="NavView"
                            IsSettingsVisible="False"

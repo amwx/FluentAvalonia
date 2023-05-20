@@ -11,9 +11,6 @@ public class MainViewViewModel : ViewModelBase
 {
     public MainViewViewModel()
     {
-        //GetPredefColors();
-        //GetSearchTerms();
-
         NavigationFactory = new NavigationFactory(this);
     }
 
@@ -68,51 +65,6 @@ public class MainViewViewModel : ViewModelBase
             }            
         }
     }
-
-    private void GetSearchTerms()
-    {
-        //MainSearchItems = new List<MainAppSearchItem>();
-
-        //Type TryResolveAvaloniaType(string type)
-        //{
-        //    return Type.GetType($"Avalonia.Controls.{type}") ??
-        //        Type.GetType($"Avalonia.Controls.Primitives.{type}");
-        //}
-
-        //var file = GetAssemblyResource("avares://FluentAvaloniaSamples/Assets/CoreControlsGroups.json");
-        //var coreControls = JsonSerializer.Deserialize<List<CoreControlsGroupItem>>(file);
-        //for (int i = 1; i < coreControls.Count; i++)
-        //{
-        //    var desc = coreControls[i].Description.Split(',');
-
-        //    foreach (var item in desc)
-        //    {
-        //        MainSearchItems.Add(new MainAppSearchItem(item.Trim(), Type.GetType($"FluentAvaloniaSamples.Pages.{coreControls[i].PageType}")));
-        //    }
-        //}
-
-        //// Get all FluentAvalonia pages
-        //file = GetAssemblyResource("avares://FluentAvaloniaSamples/Assets/FAControlsGroups.json");
-        //var controls = JsonSerializer.Deserialize<List<FAControlsGroupItem>>(file);
-        //foreach (var group in controls)
-        //{
-        //    foreach (var ctrl in group.Controls)
-        //    {
-        //        // Differentiate between the Avalonia MenuFlyout and my own
-        //        if (ctrl.Header == "MenuFlyout")
-        //        {
-        //            MainSearchItems.Add(new MainAppSearchItem($"{ctrl.Header} (FluentAvalonia)", Type.GetType($"FluentAvaloniaSamples.Pages.{ctrl.PageType}")));
-        //        }
-        //        else
-        //        {
-        //            MainSearchItems.Add(new MainAppSearchItem(ctrl.Header, Type.GetType($"FluentAvaloniaSamples.Pages.{ctrl.PageType}")));
-        //        }
-
-        //    }
-        //}
-
-    }
-
 }
 
 public class NavigationFactory : INavigationPageFactory
@@ -188,6 +140,7 @@ public class NavigationFactory : INavigationPageFactory
                "https://github.com/amwx/FluentAvalonia/tree/master/samples/FAControlsGallery/Pages/CoreControlPages";
 
             (page as ControlsPageBase).GithubPrefixString = faPageGithub;
+            (page as ControlsPageBase).CreationContext = pbvm;
         }
         else if (FAPages.TryGetValue(key, out func))
         {
@@ -201,6 +154,7 @@ public class NavigationFactory : INavigationPageFactory
             pg.ControlName = dc.Header;
             pg.ControlNamespace = dc.Namespace;
             pg.Description = dc.Description;
+            pg.CreationContext = pbvm;
 
             if (dc.WinUIDocsLink is not null)
                 pg.WinUIDocsLink = new Uri(dc.WinUIDocsLink);
