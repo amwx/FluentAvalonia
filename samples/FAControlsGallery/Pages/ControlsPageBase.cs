@@ -131,6 +131,8 @@ public class ControlsPageBase : UserControl, IStyleable
         }
     }
 
+    public PageBaseViewModel CreationContext { get; set; }
+
     public bool ShowToggleThemeButton
     {
         get => GetValue(ShowToggleThemeButtonProperty);
