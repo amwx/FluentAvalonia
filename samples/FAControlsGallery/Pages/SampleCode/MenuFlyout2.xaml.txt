@@ -25,9 +25,8 @@
 									Text="{Binding Text}" />
     </DataTemplate>
 
-    <!-- To bind submenus, use MenuFlyoutSubItemTemplate, which is similar to a TreeDataTemplate -->
-    <!-- You can also bind to the Icon property -->
-    <ui:MenuFlyoutSubItemTemplate DataType="{x:Type vm:TempSubItem}"
-									SubItems="{Binding SubItems}"
-									HeaderText="{Binding Text}" />
+    <DataTemplate DataType="{x:Type vm:TempSubItem}">
+            <ui:MenuFlyoutSubItem Items="{Binding SubItems}"
+                                  Text="{Binding Text}" />
+    </DataTemplate>
 </UserControl.DataTemplates>

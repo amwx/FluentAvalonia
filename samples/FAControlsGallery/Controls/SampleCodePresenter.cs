@@ -167,7 +167,10 @@ public class SampleCodePresenter : HeaderedContentControl
         if (string.IsNullOrEmpty(sampleString))
             return;
 
-        if (Uri.TryCreate(sampleString, UriKind.Absolute, out Uri result))
+        const string avares = "avares";
+
+        if (sampleString.StartsWith(avares) && 
+            Uri.TryCreate(sampleString, UriKind.Absolute, out Uri result))
         {
             using (var s = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(result))
             using (var sr = new StreamReader(s))
@@ -176,28 +179,33 @@ public class SampleCodePresenter : HeaderedContentControl
             }
         }
 
-        void TrimAndSubstitute()
+        bool isCSharp = SampleType == SampleCodePresenterType.CSharp;
+
+        // Trim out stray blank lines at start and end.
+        sampleString = sampleString.TrimStart('\n').TrimEnd();
+
+        // Also trim out spaces at the end of each line
+        sampleString = string.Join('\n', sampleString.Split('\n').Select(s => s.TrimEnd()));
+
+        sampleString = SubstitutionPattern.Replace(sampleString, match =>
         {
-            // Trim out stray blank lines at start and end.
-            sampleString = sampleString.TrimStart('\n').TrimEnd();
-
-            // Also trim out spaces at the end of each line
-            sampleString = string.Join('\n', sampleString.Split('\n').Select(s => s.TrimEnd()));
-
-            sampleString = SubstitutionPattern.Replace(sampleString, match =>
+            foreach (var substitution in Substitutions)
             {
-                foreach (var substitution in Substitutions)
+                if (substitution.Key == match.Groups[1].Value)
                 {
-                    if (substitution.Key == match.Groups[1].Value)
-                    {
-                        return substitution.ValueAsString();
-                    }
-                }
-                throw new KeyNotFoundException(match.Groups[1].Value);
-            });
-        }
+                    var value = substitution.ValueAsString();
 
-        TrimAndSubstitute();
+                    if (isCSharp && (value.Equals("True") || value.Equals("False")))
+                    {
+                        return value.ToLower();
+                    }
+
+                    return value;
+                }
+            }
+            throw new KeyNotFoundException(match.Groups[1].Value);
+        });
+
         _textHost.Document = new TextDocument(new StringTextSource(sampleString));
         _textHost.TextArea.IndentationStrategy.IndentLines(_textHost.Document, 0, _textHost.Document.LineCount);
     }

@@ -5,7 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:vm="using:FAControlsGallery.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="1420"
              x:Class="FAControlsGallery.Pages.FAComboBoxPage"
              x:DataType="vm:FAComboBoxPageViewModel"
              x:CompileBindings="True">
@@ -32,9 +32,41 @@
                               IsChecked="{Binding #CB1.IsTextSearchEnabled}"/>
                 </StackPanel>
             </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:FAComboBox IsEditable="$(Editable)" IsTextSearchEnabled="$(TextSearch)"&gt;
+    &lt;ui:FAComboBoxItem Content="Item 1" /&gt;
+    &lt;ui:FAComboBoxItem Content="Item 2" /&gt;
+    &lt;ui:FAComboBoxItem Content="Different Name" /&gt;
+    &lt;ui:FAComboBoxItem Content="ComboBoxItem4" /&gt;
+    &lt;ui:FAComboBoxItem Content="Item 5" /&gt;
+&lt;/ui:FAComboBox&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Editable" Value="{Binding #CB1.IsEditable}" />
+                <ctrls:ControlExampleSubstitution Key="TextSearch" Value="{Binding #CB1.IsTextSearchEnabled}" />
+            </ctrls:ControlExample.Substitutions>
+            
+            <ctrls:ControlExample.CSharpSource>
+                <x:String xml:space="preserve">
+var comboBox = new FAComboBox();
+comboBox.IsEditable = $(Editable);
+comboBox.IsTextSearchEnabled = $(TextSearch);
+
+comboBox.Items.Add(new FAComboBoxItem() { Content = "Item 1" });
+comboBox.Items.Add(new FAComboBoxItem() { Content = "Item 2" });
+comboBox.Items.Add(new FAComboBoxItem() { Content = "Different Name" });
+comboBox.Items.Add(new FAComboBoxItem() { Content = "ComboBoxItem4" });
+comboBox.Items.Add(new FAComboBoxItem() { Content = "Item 5" });
+                </x:String>
+            </ctrls:ControlExample.CSharpSource>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="FAComboBox bound to a collection of Items">
+        <ctrls:ControlExample Header="FAComboBox bound to a collection of Items"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/FAComboBox.cs.txt">
             <ui:FAComboBox MinWidth="200"
                            Name="CB2"
                            DisplayMemberBinding="{Binding DisplayName, DataType=vm:ComboItem}"
@@ -52,6 +84,19 @@
                               IsChecked="{Binding #CB2.IsTextSearchEnabled}"/>
                 </StackPanel>
             </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:FAComboBox DisplayMemberBinding="{Binding DisplayName, DataType=vm:ComboItem}" ItemsSource="{Binding Items}"
+     IsEditable="$(Editable)" IsTextSearchEnabled="$(TextSearch)" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Editable" Value="{Binding #CB2.IsEditable}" />
+                <ctrls:ControlExampleSubstitution Key="TextSearch" Value="{Binding #CB2.IsTextSearchEnabled}" />
+            </ctrls:ControlExample.Substitutions>
+
         </ctrls:ControlExample>
     </StackPanel>
     

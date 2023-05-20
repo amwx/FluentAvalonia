@@ -1,6 +1,4 @@
-﻿namespace FAControlsGallery.ViewModels;
-
-public class SettingsExpanderPageViewModel : ViewModelBase
+﻿public class SettingsExpanderPageViewModel : ViewModelBase
 {
     public SettingsExpanderPageViewModel()
     {

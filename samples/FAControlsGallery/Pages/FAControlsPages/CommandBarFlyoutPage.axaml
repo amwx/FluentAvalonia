@@ -5,7 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:vm="using:FAControlsGallery.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="3500"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1500"
              x:Class="FAControlsGallery.Pages.CommandBarFlyoutPage"
              x:DataType="vm:CommandBarFlyoutPageViewModel">
 

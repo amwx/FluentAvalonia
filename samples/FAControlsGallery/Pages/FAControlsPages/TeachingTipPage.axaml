@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
-             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="2450"
              x:Class="FAControlsGallery.Pages.TeachingTipPage"
              x:CompileBindings="True">
 
     <StackPanel Spacing="8">
-        <ctrls:ControlExample Header="Show a targeted TeachingTip">
+        <ctrls:ControlExample Header="Show a targeted TeachingTip"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/TeachingTip1.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/TeachingTip1.cs.txt">
             <Panel>
                 <Button Name="Button1" Content="Show TeachingTip" />
 
@@ -21,7 +23,9 @@
             </Panel>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="Show an untargeted TeachingTip with buttons">
+        <ctrls:ControlExample Header="Show an untargeted TeachingTip with buttons"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/TeachingTip2.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/TeachingTip2.cs.txt">
             <Panel>
                 <Button Name="Button2" Content="Show TeachingTip" />
 
@@ -33,7 +37,9 @@
             </Panel>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="Show a targeted TeachingTip with hero content">
+        <ctrls:ControlExample Header="Show a targeted TeachingTip with hero content"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/TeachingTip3.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/TeachingTip3.cs.txt">
             <Panel>
                 <Button Name="Button3" Content="Show TeachingTip" />
 
@@ -63,6 +69,10 @@
                     </ComboBox>
                 </StackPanel>
             </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="HeroContent" Value="{Binding #TeachingTip3.HeroContentPlacement}" />
+            </ctrls:ControlExample.Substitutions>
         </ctrls:ControlExample>
 
 

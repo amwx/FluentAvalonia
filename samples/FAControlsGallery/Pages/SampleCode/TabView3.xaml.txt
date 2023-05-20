@@ -1,0 +1,21 @@
+﻿<ui:TabView AddTabButtonClick="TabView_AddButtonClick"
+            TabCloseRequested="TabView_TabCloseRequested"
+            Name="APIInActionTabView"
+            TabWidthMode="$(TabWidthMode)"
+            CloseButtonOverlayMode="$(CloseButtonMode)"
+            TabStripHeader="$(TabHeader)"
+            TabStripFooter="$(TabFooter)"
+            CanReorderTabs="$(CanReorder)">
+    <ui:TabViewItem Header="Document 0"
+                    IconSource="Document">
+        <spg:NVSamplePage2 />
+    </ui:TabViewItem>
+    <ui:TabViewItem Header="Document 1"
+                    IconSource="Document">
+        <spg:NVSamplePage3 />
+    </ui:TabViewItem>
+    <ui:TabViewItem Header="Document 2"
+                    IconSource="Document">
+        <spg:NVSamplePage6 />
+    </ui:TabViewItem>
+</ui:TabView>

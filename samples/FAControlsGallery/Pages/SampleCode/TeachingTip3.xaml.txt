@@ -1,0 +1,16 @@
+﻿<Panel>
+    <Button Name="Button3" Content="Show TeachingTip" />
+
+    <ui:TeachingTip Name="TeachingTip3"
+                    Target="{Binding #Button3}"
+                    Title="Title"
+                    Subtitle="Your teaching text here."
+                    ActionButtonContent="Action Button"
+                    CloseButtonContent="Close"
+                    Content="alskdgasd"
+                    HeroContentPlacement="$(HeroContent)">
+        <ui:TeachingTip.HeroContent>
+            <Image Source="/Assets/headerimage.jpeg" />
+        </ui:TeachingTip.HeroContent>
+    </ui:TeachingTip>
+</Panel>

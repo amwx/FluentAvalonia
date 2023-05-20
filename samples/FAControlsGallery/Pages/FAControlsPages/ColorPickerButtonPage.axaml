@@ -29,6 +29,14 @@
                 </StackPanel>
             </ctrls:ControlExample.Options>
 
+            <ctrls:ControlExample.XamlSource>
+                <x:String>
+                    &lt;ui:ColorPickerButton Name="PickerButton" Color="Lime"  /&gt;
+
+                    &lt;ui:ColorPickerButton Name="PickerButton2" Color="DarkSlateBlue" ShowAcceptDismissButtons="False" /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
             <ctrls:ControlExample.UsageNotes>
                 <x:String xml:space="preserve">
 Even my compacted ColorPicker implementation may not be suitable in all UX circumstances. ColorPickerButton offers an alternative to hide the ColorPicker away in a flyout. Because ColorPicker is not the lightest of controls, all ColorPickerButtons share one instance of a Flyout containing a color picker. Because Flyouts are light dismissable this shouldn't cause any problems. Most properties on ColorPicker are present on ColorPickerButton and despite sharing, each ColorPickerButton can be configured differently (all properties are reset upon opening each button)

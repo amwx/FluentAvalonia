@@ -3,13 +3,16 @@
     var dialog = new ContentDialog()
     {
         Title = "My Dialog Title", 
-        PrimaryButtonText = "Ok", SecondaryButtonText = "Not OK", CloseButtonText = "Close"
+        PrimaryButtonText = "Ok", 
+        SecondaryButtonText = "Not OK", 
+        CloseButtonText = "Close"
     };
 
-    
-    var viewModel = new MyViewModel(dialog); // Pass the dialog if you need to hide it from the ViewModel.
+    // Pass the dialog if you need to hide it from the ViewModel.
+    var viewModel = new MyViewModel(dialog); 
 
-    dialog.Content = new ContentDialogInputExample() // In our case the Content is a UserControl, but can be anything.
+    // In our case the Content is a UserControl, but can be anything.
+    dialog.Content = new ContentDialogInputExample() 
     {
         DataContext = viewModel
     };

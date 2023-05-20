@@ -1,0 +1,6 @@
+﻿<ui:SettingsExpander Header="Volume"
+                     Name="SettingsExpander2">
+    <ui:SettingsExpander.Footer>
+        <Slider Minimum="0" Maximum="100" Value="50" Width="160"/>
+    </ui:SettingsExpander.Footer>
+</ui:SettingsExpander>

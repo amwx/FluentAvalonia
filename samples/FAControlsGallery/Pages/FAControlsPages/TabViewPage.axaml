@@ -6,12 +6,11 @@
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:spg="using:FAControlsGallery.Pages.NVSamplePages"
              xmlns:vm="using:FAControlsGallery.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="3000"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="3000"
              x:Class="FAControlsGallery.Pages.TabViewPage"
              x:DataType="vm:TabViewPageViewModel">
     <StackPanel Spacing="8">
-        <ctrls:ControlExample TargetType="ui:TabView"
-                              Name="FirstExample"
+        <ctrls:ControlExample Name="FirstExample"
                               Header="A Basic TabView with Support for Adding, Closing, and Rearranging Tabs">
 
             <ui:TabView AddTabButtonClick="TabView_AddButtonClick"
@@ -52,29 +51,27 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
             
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample TargetType="ui:TabView"
-                              Header="A TabView Bound to a Collection of Items">
+        <ctrls:ControlExample Header="A TabView Bound to a Collection of Items"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/TabView1.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/TabView1.cs.txt">
 
             <ui:TabView AddTabButtonCommand="{Binding AddDocumentCommand}"
                         AddTabButtonCommandParameter="Normal"
                         TabCloseRequested="BindingTabView_TabCloseRequested"
                         TabItems="{Binding Documents}">
-                <ui:TabView.Styles>
-                    <Style Selector="ui|TabViewItem" x:DataType="vm:DocumentItem">
-                        <Setter Property="IconSource" Value="{CompiledBinding IconSource}" />
-                        <Setter Property="Content" Value="{CompiledBinding Content}" />
-                    </Style>
-                </ui:TabView.Styles>
                 <ui:TabView.TabItemTemplate>
-                    <DataTemplate x:DataType="vm:DocumentItem">
-                        <TextBlock Text="{Binding Header}" />
+                    <DataTemplate DataType="vm:DocumentItem">
+                        <ui:TabViewItem Header="{Binding Header}"
+                                        Content="{Binding Content}"
+                                        IconSource="{Binding IconSource}" />
                     </DataTemplate>
                 </ui:TabView.TabItemTemplate>
             </ui:TabView>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample TargetType="ui:TabView"
-                              Header="A TabView with Keyboarding Support">
+        <ctrls:ControlExample Header="A TabView with Keyboarding Support"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/TabView2.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/TabView2.cs.txt">
 
             <StackPanel Spacing="4">
                 <TextBlock Text="{Binding KeyBindingText}"
@@ -86,12 +83,6 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
                             TabItems="{Binding KeyBindingDocuments}"
                             MinHeight="350"
                             SelectedItem="{Binding KeyBindingSelectedDocument}">
-                    <ui:TabView.Styles>
-                        <Style Selector="ui|TabViewItem" x:DataType="vm:DocumentItem">
-                            <Setter Property="IconSource" Value="{CompiledBinding IconSource}" />
-                            <Setter Property="Content" Value="{CompiledBinding Content}" />
-                        </Style>
-                    </ui:TabView.Styles>
 
                     <ui:TabView.KeyBindings>
                         <KeyBinding Gesture="Ctrl+T" Command="{Binding KeyBindingCommand}"
@@ -121,15 +112,17 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
 
                     <ui:TabView.TabItemTemplate>
                         <DataTemplate x:DataType="vm:DocumentItem">
-                            <TextBlock Text="{Binding Header}" />
+                            <ui:TabViewItem Header="{Binding Header}"
+                                            Content="{Binding Content}"
+                                            IconSource="{Binding IconSource}" />
                         </DataTemplate>
                     </ui:TabView.TabItemTemplate>
                 </ui:TabView>
             </StackPanel>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample TargetType="ui:TabView"
-                              Header="TabView API in Action">
+        <ctrls:ControlExample Header="TabView API in Action"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/TabView3.xaml.txt">
 
             <ui:TabView AddTabButtonClick="TabView_AddButtonClick"
                         TabCloseRequested="TabView_TabCloseRequested"
@@ -177,7 +170,15 @@ private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedE
                     <CheckBox Content="CanReorderTabs"
                               IsChecked="{Binding #APIInActionTabView.CanReorderTabs}" />
                 </StackPanel>
-            </ctrls:ControlExample.Options>            
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="TabWidthMode" Value="{Binding #APIInActionTabView.TabWidthMode}" />
+                <ctrls:ControlExampleSubstitution Key="CloseButtonMode" Value="{Binding #APIInActionTabView.CloseButtonOverlayMode}" />
+                <ctrls:ControlExampleSubstitution Key="TabHeader" Value="{Binding #APIInActionTabView.TabStripHeader}" />
+                <ctrls:ControlExampleSubstitution Key="TabFooter" Value="{Binding #APIInActionTabView.TabStripFooter}" />
+                <ctrls:ControlExampleSubstitution Key="CanReorder" Value="{Binding #APIInActionTabView.CanReorderTabs}" />
+            </ctrls:ControlExample.Substitutions>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="TabView Windowing Sample"

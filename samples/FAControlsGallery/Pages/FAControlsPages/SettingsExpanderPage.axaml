@@ -20,32 +20,34 @@
 
     <UserControl.DataTemplates>
         <DataTemplate DataType="vm:RecentImagesSettingsItem">
-            <StackPanel Spacing="4">
-                <TextBlock Text="{Binding Header}" />
-                <ItemsControl ItemsSource="{Binding Images}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="4" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+            <ui:SettingsExpanderItem>
+                <StackPanel Spacing="4">
+                    <TextBlock Text="{Binding Header}" />
+                    <ItemsControl ItemsSource="{Binding Images}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="4" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="sys:String">
-                            <Border Width="75" Height="75">
-                                <ui:IconSourceElement IconSource="{Binding , Converter={StaticResource ResKeyIconConv}}" />
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate DataType="vm:SettingsItemBase">
-            <TextBlock Text="{Binding Header}" />
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="sys:String">
+                                <Border Width="75" Height="75">
+                                    <ui:IconSourceElement IconSource="{Binding , Converter={StaticResource ResKeyIconConv}}" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ui:SettingsExpanderItem>
         </DataTemplate>
         
-        <DataTemplate DataType="vm:SettingsItemButtonFooter">
-            <Button Content="{Binding Caption}" />
+        <DataTemplate DataType="vm:FooterButtonSettingsItem">
+            <ui:SettingsExpanderItem>
+                <ui:SettingsExpanderItem.Footer>
+                    <Button Content="{Binding Footer}" />
+                </ui:SettingsExpanderItem.Footer>
+            </ui:SettingsExpanderItem>
         </DataTemplate>
     </UserControl.DataTemplates>
     
@@ -61,10 +63,21 @@
                                  Name="SettingsExpander1">
                 
             </ui:SettingsExpander>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:SettingsExpander Header="Sound"
+                        IconSource="{StaticResource VolumeIcon}"
+                        Description="Volume levels, output, input, sound devices"
+                        IsClickEnabled="True"
+                        ActionIconSource="{StaticResource GoIcon}" /&gt;                    
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
             
         </ctrls:ControlExample>
         
-        <ctrls:ControlExample Header="A SettingsExpander with footer content">
+        <ctrls:ControlExample Header="A SettingsExpander with footer content"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/SettingsExpander1.xaml.txt">
             <ui:SettingsExpander Header="Volume"
                                  Name="SettingsExpander2">
                 <ui:SettingsExpander.Footer>
@@ -74,7 +87,8 @@
             </ui:SettingsExpander>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="A SettingsExpander with items">
+        <ctrls:ControlExample Header="A SettingsExpander with items"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/SettingsExpander2.xaml.txt">
 
             <ui:SettingsExpander Header="Choose a device for speaking or recording"
                                  IconSource="Microphone"
@@ -96,16 +110,13 @@
             
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="A SettingsExpander with bound Items">
+        <ctrls:ControlExample Header="A SettingsExpander with bound Items"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/SettingsExpander3.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/SettingsExpander3.cs.txt">
             <ui:SettingsExpander Header="Personalize your background"
                                  IconSource="Image"
                                  Name="SettingsExpander4"
                                  ItemsSource="{Binding Items}">
-                <ui:SettingsExpander.Styles>
-                    <Style Selector="ui|SettingsExpanderItem">
-                        <Setter Property="Footer" Value="{Binding Footer, DataType=vm:SettingsItemBase}" />
-                    </Style>
-                </ui:SettingsExpander.Styles>
             </ui:SettingsExpander>
         </ctrls:ControlExample>
     </StackPanel>
