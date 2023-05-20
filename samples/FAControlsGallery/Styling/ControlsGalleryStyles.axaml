@@ -16,14 +16,14 @@
         </ResourceDictionary>
     </Styles.Resources>
 
-    <!--<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />-->
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     <StyleInclude Source="/Styling/ControlsPageBaseStyles.axaml" />
     
     <!-- set the selection color for the AvaloniaEdit boxes -->
-    <!--<Style Selector="aedit2|TextArea">
+    <Style Selector="aedit2|TextArea">
         <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
         <Setter Property="SelectionForeground" Value="{DynamicResource TextOnAccentFillColorSelectedTextBrush}" />
-    </Style>-->
+    </Style>
     
     <!-- 
          NavView style in MainView for main app navigation
@@ -34,7 +34,10 @@
     <Style Selector="ui|NavigationView.SampleAppNav">
         <Setter Property="IsPaneToggleButtonVisible" Value="False" />
         <Setter Property="OpenPaneLength" Value="72" />
-        <Setter Property="CompactPaneLength" Value="72" />
+        <Setter Property="IsPaneOpen" Value="True" />
+    </Style>
+    <Style Selector="ui|NavigationView.SampleAppNav /template/ Button#NavigationViewBackButton">
+        <Setter Property="Width" Value="{DynamicResource NavigationBackButtonWidth}" />
     </Style>
     <Style Selector="ui|NavigationView.SampleAppNav[IsBackButtonVisible=False] SplitView /template/ ContentPresenter#PART_PanePresenter">
         <Setter Property="Margin" Value="0 40 0 0" />
