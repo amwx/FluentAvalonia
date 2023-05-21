@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Styling;
+using FAControlsGallery.Views;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Windowing;
@@ -18,7 +19,7 @@ public partial class MainWindow : AppWindow
 
         this.AttachDevTools();
 
-        //SplashScreen = new MainAppSplashScreen();
+        SplashScreen = new MainAppSplashScreen(this);
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
         
@@ -84,18 +85,30 @@ public partial class MainWindow : AppWindow
 
             Background = new ImmutableSolidColorBrush(color, 0.9);
         }
-    }
+    } 
+}
 
-    class MainAppSplashScreen : IApplicationSplashScreen
+internal class MainAppSplashScreen : IApplicationSplashScreen
+{
+    public MainAppSplashScreen(MainWindow owner)
     {
-        public string AppName => "FAControlsGallery";
-        public IImage AppIcon { get; }
-        public object SplashScreenContent { get; }
-        public int MinimumShowTime => 750;
-
-        public Task RunTasks(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
+        _owner = owner;
     }
+
+    public string AppName { get; }
+    public IImage AppIcon { get; }
+    public object SplashScreenContent => new MainAppSplashContent();
+    public int MinimumShowTime => 2000;
+
+    public Action InitApp { get; set; }
+
+    public Task RunTasks(CancellationToken cancellationToken)
+    {
+        if (InitApp == null)
+            return Task.CompletedTask;
+
+        return Task.Run(InitApp, cancellationToken);
+    }
+
+    private MainWindow _owner;
 }

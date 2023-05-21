@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using FAControlsGallery.Pages;
 using FAControlsGallery.Services;
 using FAControlsGallery.ViewModels;
@@ -66,16 +67,21 @@ public partial class MainView : UserControl
         NavigationService.Instance.SetOverlayHost(OverlayHost);
 
         // On desktop, the window will call this during the splashscreen
-        //if (e.Root is not Window)
-        //{
+        if (e.Root is AppWindow aw)
+        {
+            (aw.SplashScreen as MainAppSplashScreen).InitApp += () =>
+            {
+                InitializeNavigationPages();                
+            };
+        }
+        else
+        {
             InitializeNavigationPages();
-        //}
+        }
 
         FrameView.Navigated += OnFrameViewNavigated;
         NavView.ItemInvoked += OnNavigationViewItemInvoked;
-        NavView.BackRequested += OnNavigationViewBackRequested;
-
-        FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);
+        NavView.BackRequested += OnNavigationViewBackRequested;        
     }
 
     protected override void OnLoaded()
@@ -139,42 +145,47 @@ public partial class MainView : UserControl
 
         bool inDesign = Design.IsDesignMode;
         
-        for (int i = 0; i < mainPages.Length; i++)
+        Dispatcher.UIThread.Post(() =>
         {
-            var pg = mainPages[i];
-            var nvi = new NavigationViewItem
+            for (int i = 0; i < mainPages.Length; i++)
             {
-                Content = pg.NavHeader,
-                Tag = pg,
-                IconSource = (IconSource)this.FindResource(pg.IconKey)
-            };
+                var pg = mainPages[i];
+                var nvi = new NavigationViewItem
+                {
+                    Content = pg.NavHeader,
+                    Tag = pg,
+                    IconSource = (IconSource)this.FindResource(pg.IconKey)
+                };
 
-            //ToolTip.SetTip(nvi, pg.NavHeader);
+                //ToolTip.SetTip(nvi, pg.NavHeader);
 
-            if (_isDesktop)
-            {
-                nvi.Classes.Add("SampleAppNav");
+                if (_isDesktop)
+                {
+                    nvi.Classes.Add("SampleAppNav");
+                }
+
+                if (pg.ShowsInFooter)
+                    footerItems.Add(nvi);
+                else
+                    menuItems.Add(nvi);
+
+                if (!inDesign)
+                {
+                    (DataContext as MainViewViewModel).BuildSearchTerms(pg);
+                }
             }
 
-            if (pg.ShowsInFooter)
-                footerItems.Add(nvi);
-            else
-                menuItems.Add(nvi);
+            NavView.MenuItemsSource = menuItems;
+            NavView.FooterMenuItemsSource = footerItems;
 
-            if (!inDesign)
+            if (!_isDesktop)
             {
-                (DataContext as MainViewViewModel).BuildSearchTerms(pg);
+                NavView.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftMinimal;
+                NavView.Classes.Remove("SampleAppNav");
             }
-        }
 
-        NavView.MenuItemsSource = menuItems;
-        NavView.FooterMenuItemsSource = footerItems;
-
-        if (!_isDesktop)
-        {
-            NavView.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftMinimal;
-            NavView.Classes.Remove("SampleAppNav");
-        }
+            FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);
+        });        
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -246,7 +257,6 @@ public partial class MainView : UserControl
             mainPage = cpb.CreationContext.Parent;
         }
 
-        //bool found = false;
         foreach (NavigationViewItem nvi in NavView.MenuItemsSource)
         {
             if (nvi.Tag == mainPage)

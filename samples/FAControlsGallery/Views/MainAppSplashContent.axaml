@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             Background="#202020"
+             x:Class="FAControlsGallery.Views.MainAppSplashContent">
+
+    <Panel Width="512" Height="512">
+        <Path Opacity="0" Name="APPS_TOPLEFT" Data="M 83.688761,40.166 C 74.275825,40.166 66.697902,47.743923 66.697902,57.156859 V 193.08373 C 66.697902,202.49667 74.275825,210.07459 83.688761,210.07459 H 219.61563 C 229.02857,210.07459 236.60649,202.49667 236.60649,193.08373 V 57.156859 C 236.60649,47.743923 229.02857,40.166 219.61563,40.166 Z">
+            <Path.Fill>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#9BA5B1" Offset="0" />
+                    <GradientStop Color="#666666" Offset="1" />
+                </LinearGradientBrush>
+            </Path.Fill>
+        </Path>
+        <Path Opacity="0" Name="APPS_BOTTOMLEFT" Data="M 83.688761,220.69388 C 74.275825,220.69388 66.697902,228.2718 66.697902,237.68474 V 373.61161 C 66.697902,383.02455 74.275825,390.60247 83.688761,390.60247 H 219.61563 C 229.02857,390.60247 236.60649,383.02455 236.60649,373.61161 V 237.68474 C 236.60649,228.2718 229.02857,220.69388 219.61563,220.69388 Z">
+            <Path.Fill>
+                <LinearGradientBrush StartPoint="00%,100%" EndPoint="50%,200%">
+                    <GradientStop Color="#54555A" Offset="0" />
+                    <GradientStop Color="#393939" Offset="1" />
+                </LinearGradientBrush>
+            </Path.Fill>
+        </Path>
+        <Path Opacity="0" Name="APPS_BOTTOMRIGHT" Data="M 264.21664,220.69388 C 254.8037,220.69388 247.22578,228.2718 247.22578,237.68474 V 373.61161 C 247.22578,383.02455 254.8037,390.60247 264.21664,390.60247 H 400.14351 C 409.55645,390.60247 417.13437,383.02455 417.13437,373.61161 V 237.68474 C 417.13437,228.2718 409.55645,220.69388 400.14351,220.69388 Z">
+            <Path.Fill>
+                <LinearGradientBrush StartPoint="100%,100%" EndPoint="200%,200%">
+                    <GradientStop Color="#9CA5AE" Offset="0" />
+                    <GradientStop Color="#5C646C" Offset="1" />
+                </LinearGradientBrush>
+            </Path.Fill>
+        </Path>
+
+        <Path Opacity="0" Name="APPS_TOPRIGHT" Data="M 332.18008,12 C 327.83688,12 323.49291,13.66226 320.16494,16.990235 L 247.22578,89.929389 V 160.3112 L 296.98917,210.07459 H 367.37098 L 440.31014,137.13544 C 446.96608,130.47949 446.96608,119.7611 440.31014,113.10515 L 344.19522,16.990235 C 340.86725,13.66226 336.52327,12.000001 332.18008,12 Z">
+            <Path.Fill>
+                <RadialGradientBrush Center="250.01512,78.881859" 
+                                     GradientOrigin="250.01512,78.881859"
+                                     Radius="0.47">
+                    <RadialGradientBrush.Transform>
+                        <MatrixTransform Matrix="1.0619287,0,0,1.0619195,66.697902,40.166617" />
+                    </RadialGradientBrush.Transform>
+                    <GradientStop Color="#8376D5" Offset="0" />
+                    <GradientStop Color="#3A2C91" Offset="1" />
+                </RadialGradientBrush>
+            </Path.Fill>
+        </Path>
+
+        <Path Opacity="0" Name="GRAD_1" Data="M 20.000012,400.00003 H 134 V 500.00003 H 20.000012 C 15.581734,500.00003 12.000012,496.41831 12.000012,492.00003 V 408.00003 C 12.000012,403.58175 15.581734,400.00003 20.000012,400.00003 Z" Fill="#B5ADE6" />
+        <Path Opacity="0" Name="GRAD_2" Data="M 134.00001,400.00002 H 256.00001 V 500.00002 H 134.00001 Z" Fill="#8376D5" />
+        <Path Opacity="0" Name="GRAD_3" Data="M 256.00001,400.00002 H 378.00001 V 500.00002 H 256.00001 Z" Fill="#523FC5" />
+        <Path Opacity="0" Name="GRAD_4" Data="M 378,400.00003 H 491.99999 A 8,8 45 0 1 499.99999,408.00003 L 499.99999,492.00003 A 8,8 135 0 1 491.99999,500.00003 H 378 Z" Fill="#3A2C91" />
+
+        <Path  Opacity="0" Name="FA" Fill="White" Data="M 57.9576,66.462767 V 364.1397 H 119.29213 V 242.49288 H 211.53246 L 229.94986,193.01635 H 119.29213 V 116.14374 H 251.77473 V 116.09689 H 258.58116 L 277.05819,66.462767 H 251.77473 72.916412 Z M 285.78132,66.462767 174.97026,364.1397 H 240.18932 L 260.63416,302.80517 H 368.17405 L 388.82334,364.1397 H 454.0424 L 342.61799,66.462767 Z M 314.5191,152.77408 C 348.15387,152.77408 375.52279,179.36413 376.4031,212.49433 L 376.29662,262.31586 C 375.40577,269.75321 369.04196,275.50278 361.29948,275.50278 H 360.55834 313.4202 C 279.73536,274.92347 252.60956,247.66675 252.60956,214.13843 252.60956,180.24732 280.32891,152.77408 314.5191,152.77408 Z">
+            <!--
+            Ideally it'd be nice to have the dropshadow, but that seems to hurt the perf of the animation pretty badly
+            <Path.Effect>
+                <DropShadowEffect BlurRadius="16" Color="#4A000000" OffsetX="16" OffsetY="16" />
+            </Path.Effect>-->
+        </Path>
+    </Panel>
+    
+</UserControl>
