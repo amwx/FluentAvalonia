@@ -27,14 +27,9 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type vm:TempSubItem}">
-            <ui:MenuFlyoutSubItem Items="{Binding SubItems}"
+            <ui:MenuFlyoutSubItem ItemsSource="{Binding SubItems}"
                                   Text="{Binding Text}"/>
         </DataTemplate>
-
-        <!-- You can also bind to the Icon property, using a converter to get an IconElement -->
-        <ui:MenuFlyoutSubItemTemplate x:DataType="vm:TempSubItem"
-									  SubItems="{Binding SubItems}"
-									  HeaderText="{Binding Text}" />
     </UserControl.DataTemplates>
 
     <StackPanel Spacing="8">
