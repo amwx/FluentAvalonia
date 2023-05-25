@@ -239,7 +239,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                 {
                     if (item.Parent is MenuFlyoutSubItem mfsi)
                     {
-                        Menu.Close();
+                        //Menu.Close();
 
                         FocusManager.Instance.Focus(item.Parent, NavigationMethod.Directional);
                         e.Handled = true;
@@ -256,11 +256,11 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
                         {
                             if (mfib is MenuFlyoutSubItem mfsi)
                             {
-                                Open(mfsi, false);
+                                //Open(mfsi, false);
                             }
                             else
                             {
-                                Click((IMenuItem)mfib);
+                                //Click((IMenuItem)mfib);
                             }
                             e.Handled = true;
                         }
@@ -270,7 +270,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
             case Key.Escape:
                 {
-                    Menu.Close();
+                    //Menu.Close();
                     e.Handled = true;
                 }
                 break;
@@ -307,7 +307,7 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
             return;
         }
 
-        Menu.SelectedItem = item;
+        //Menu.SelectedItem = item;
 
         if (item.HasSubMenu)
         {
@@ -416,31 +416,31 @@ internal class MenuFlyoutInteractionHandler : IMenuInteractionHandler
 
         if (mouse?.Type == RawPointerEventType.NonClientLeftButtonDown)
         {
-            Menu?.Close();
+            //Menu?.Close();
         }
     }
 
     protected internal virtual void RootPointerPressed(object sender, PointerPressedEventArgs e)
     {
-        if (Menu?.IsOpen == true)
-        {
-            var control = e.Source as ILogical;
+        //if (Menu?.IsOpen == true)
+        //{
+        //    var control = e.Source as ILogical;
 
-            if (!Menu.IsLogicalAncestorOf(control))
-            {
-                Menu.Close();
-            }
-        }
+        //    if (!Menu.IsLogicalAncestorOf(control))
+        //    {
+        //        Menu.Close();
+        //    }
+        //}
     }
 
     protected internal virtual void WindowDeactivated(object sender, EventArgs e)
     {
-        Menu?.Close();
+       // Menu?.Close();
     }
 
     private void TopLevelLostPlatformFocus()
     {
-        Menu?.Close();
+        //Menu?.Close();
     }
 
     protected void Click(IMenuItem item)

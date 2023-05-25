@@ -25,6 +25,12 @@
 									Text="{Binding Text}"
                                     GroupName="{Binding GroupName}"/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:TempSubItem}">
+            <ui:MenuFlyoutSubItem Items="{Binding SubItems}"
+                                  Text="{Binding Text}"/>
+        </DataTemplate>
+
         <!-- You can also bind to the Icon property, using a converter to get an IconElement -->
         <ui:MenuFlyoutSubItemTemplate x:DataType="vm:TempSubItem"
 									  SubItems="{Binding SubItems}"
@@ -86,7 +92,7 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
             <Button Content="Click me for flyout!">
                 <Button.Flyout>
                     <ui:FAMenuFlyout Placement="Bottom"
-                                   Items="{Binding TestMenuItems}">
+                                   ItemsSource="{Binding TestMenuItems}">
 
                     </ui:FAMenuFlyout>
                 </Button.Flyout>

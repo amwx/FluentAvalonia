@@ -3,7 +3,6 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
-using Avalonia.Data;
 using Avalonia.Metadata;
 using Avalonia.Styling;
 using FluentAvalonia.Core;
@@ -27,9 +26,8 @@ public class FAMenuFlyout : PopupFlyoutBase
     /// <summary>
     /// Defines the <see cref="Items"/> property
     /// </summary>
-    public static readonly DirectProperty<FAMenuFlyout, IEnumerable> ItemsProperty =
-        AvaloniaProperty.RegisterDirect<FAMenuFlyout, IEnumerable>(nameof(Items),
-            x => x.Items, (x, v) => x.Items = v);
+    public static readonly StyledProperty<IEnumerable> ItemsSourceProperty =
+        ItemsControl.ItemsSourceProperty.AddOwner<FAMenuFlyout>();
 
     /// <summary>
     /// Defines the <see cref="ItemTemplate"/> property
@@ -44,13 +42,28 @@ public class FAMenuFlyout : PopupFlyoutBase
         ItemsControl.ItemContainerThemeProperty.AddOwner<ControlTheme>();
 
     /// <summary>
+    /// Defines the <see cref="FlyoutPresenterTheme"/> property
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme> FlyoutPresenterThemeProperty =
+        AvaloniaProperty.Register<FAMenuFlyout, ControlTheme>(nameof(FlyoutPresenterTheme));
+
+    /// <summary>
+    /// Gets the items of the MenuFlyoutSubItem
+    /// </summary>
+    /// <remarks>
+    /// NOTE: Unlike normal ItemsControls, when ItemsSource is set, this property will
+    /// not act as a view over the ItemsSource
+    /// </remarks>
+    [Content]
+    public IList Items { get; private set; }
+
+    /// <summary>
     /// Gets or sets the items of the MenuFlyout
     /// </summary>
-    [Content]
-    public IEnumerable Items
+    public IEnumerable ItemsSource
     {
-        get => _items;
-        set => SetAndRaise(ItemsProperty, ref _items, value);
+        get => GetValue(ItemsSourceProperty);
+        set => SetValue(ItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -71,84 +84,75 @@ public class FAMenuFlyout : PopupFlyoutBase
         set => SetValue(ItemContainerThemeProperty, value);
     }
 
-    internal AvaloniaList<MenuFlyoutItemBase> ItemsInternal => _itemsInternal;
-
     /// <summary>
     /// Sets the Classes used for styling the MenuFlyoutPresenter. This property
     /// takes the place of WinUI's MenuFlyoutPresenterStyle
     /// </summary>
     public Classes FlyoutPresenterClasses => _classes ??= new Classes();
 
+    /// <summary>
+    /// Gets or sets the ControlTheme for the flyout presenter
+    /// </summary>
+    public ControlTheme FlyoutPresenterTheme
+    {
+        get => GetValue(FlyoutPresenterThemeProperty);
+        set => SetValue(FlyoutPresenterThemeProperty, value);
+    }
+
+    internal void Close()
+    {
+        Hide();
+    }
+
     protected override Control CreatePresenter()
     {
-        return new FAMenuFlyoutPresenter
+        _presenter = new FAMenuFlyoutPresenter
         {
-            ItemsSource = _itemsInternal,
-            [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty]
+            ItemsSource = ItemsSource ?? Items,
+            [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty],
+            [!ItemTemplateProperty] = this[!ItemTemplateProperty],
+            InternalParent = this
         };
+
+        return _presenter;
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == ItemsProperty)
+        if (change.Property == ItemsSourceProperty)
         {
-            var (oldV, newV) = change.GetOldAndNewValue<IEnumerable>();
-
-            if (oldV is INotifyCollectionChanged inccOld)
+            if (Items.Count > 0)
             {
-                inccOld.CollectionChanged -= ItemsCollectionChanged;
+                throw new InvalidOperationException("Items collection must be empty before using ItemsSource.");
             }
 
-            if (_itemsInternal != null)
-            {
-                _itemsInternal?.Clear();
-            }
+            var newV = change.GetNewValue<IEnumerable>();
 
-            if (newV is INotifyCollectionChanged inccNew)
+            if (_presenter != null)
             {
-                inccNew.CollectionChanged += ItemsCollectionChanged;
-            }
-
-            // If the flyout is open and we receive a new Items list, generate now
-            // as we have the presenter reference. Otherwise, it will occur next
-            // time the flyout is opened
-            if (IsOpen && newV != null)
-            {
-                GenerateItems(Popup.Child as FAMenuFlyoutPresenter);
-            }
-        }
-        else if (change.Property == ItemTemplateProperty)
-        {
-            if (_itemsInternal != null)
-            {
-                _itemsInternal.Clear();
-
-                if (IsOpen)
-                {
-                    GenerateItems(Popup.Child as FAMenuFlyoutPresenter);
-                }                
+                _presenter.ItemsSource = newV ?? Items;
             }
         }
     }
 
     protected override void OnOpened()
     {
-        var presenter = Popup.Child as FAMenuFlyoutPresenter;
         if (_classes != null)
         {
-            SetPresenterClasses(presenter, FlyoutPresenterClasses);
+            SetPresenterClasses(_presenter, FlyoutPresenterClasses);
         }
 
-        if (_itemsInternal == null || _itemsInternal.Count == 0)
+        var theme = FlyoutPresenterTheme;
+        if (theme != null)
         {
-            GenerateItems(presenter);
+            _presenter.Theme = theme;
         }
 
         base.OnOpened();
 
-        presenter?.RaiseMenuOpened();
+        _presenter.MenuOpened();
     }
 
     private static void SetPresenterClasses(Control presenter, Classes classes)
@@ -169,130 +173,61 @@ public class FAMenuFlyout : PopupFlyoutBase
 
     private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
-        if (!IsOpen)
+        if (ItemsSource != null)
         {
-            // If the flyout isn't open we'll just trigger a refresh when the flyout next opens
-            // We can't add now b/c we don't have way to resolve item template (possibly)
-            _itemsInternal?.Clear();
-            return;
+            throw new InvalidOperationException("Cannot edit Items when ItemsSource is set.");
         }
+        //if (!IsOpen)
+        //{
+        //    // If the flyout isn't open we'll just trigger a refresh when the flyout next opens
+        //    // We can't add now b/c we don't have way to resolve item template (possibly)
+        //    _itemsInternal?.Clear();
+        //    return;
+        //}
 
-        var presenter = Popup.Child as FAMenuFlyoutPresenter;
-        var template = ItemTemplate;
-        switch (args.Action)
-        {
-            case NotifyCollectionChangedAction.Add:
-                Add(args.NewItems, args.NewStartingIndex);
-                break;
+        //var presenter = Popup.Child as FAMenuFlyoutPresenter;
+        //var template = ItemTemplate;
+        //switch (args.Action)
+        //{
+        //    case NotifyCollectionChangedAction.Add:
+        //        Add(args.NewItems, args.NewStartingIndex);
+        //        break;
 
-            case NotifyCollectionChangedAction.Remove:
-                Remove(args.OldStartingIndex, args.OldItems.Count);
-                break;
+        //    case NotifyCollectionChangedAction.Remove:
+        //        Remove(args.OldStartingIndex, args.OldItems.Count);
+        //        break;
 
-            case NotifyCollectionChangedAction.Reset:
-                _itemsInternal.Clear();
-                if (args.NewItems != null)
-                {
-                    Add(args.NewItems, args.NewStartingIndex);
-                }                
-                break;
+        //    case NotifyCollectionChangedAction.Reset:
+        //        _itemsInternal.Clear();
+        //        if (args.NewItems != null)
+        //        {
+        //            Add(args.NewItems, args.NewStartingIndex);
+        //        }                
+        //        break;
 
-            case NotifyCollectionChangedAction.Replace:
-            case NotifyCollectionChangedAction.Move:
-                Remove(args.OldStartingIndex, args.OldItems.Count);
-                Add(args.NewItems, args.NewStartingIndex);
-                break;
-        }
+        //    case NotifyCollectionChangedAction.Replace:
+        //    case NotifyCollectionChangedAction.Move:
+        //        Remove(args.OldStartingIndex, args.OldItems.Count);
+        //        Add(args.NewItems, args.NewStartingIndex);
+        //        break;
+        //}
 
-        void Add(IList items, int startIndex)
-        {
-            for (int i = 0, idx = startIndex; i < items.Count; i++, idx++)
-            {
-                var item = items[i];
-                _itemsInternal.Insert(idx, CreateContainer(item, presenter.FindDataTemplate(item, template)));
-            }
-        }
+        //void Add(IList items, int startIndex)
+        //{
+        //    for (int i = 0, idx = startIndex; i < items.Count; i++, idx++)
+        //    {
+        //        var item = items[i];
+        //        _itemsInternal.Insert(idx, CreateContainer(item, presenter.FindDataTemplate(item, template)));
+        //    }
+        //}
 
-        void Remove(int index, int count)
-        {
-            _itemsInternal.RemoveRange(index, count);
-        }
+        //void Remove(int index, int count)
+        //{
+        //    _itemsInternal.RemoveRange(index, count);
+        //}
     }
 
-    private void GenerateItems(FAMenuFlyoutPresenter presenter)
-    {
-        if (_items == null)
-            return;
-
-        _itemsInternal.Clear();
-
-        var first = _items.ElementAt(0);
-        // If the first item is a MenuFlyoutItemBase, assume all are (added via xaml or code)
-        if (first is MenuFlyoutItemBase)
-        {
-            _itemsInternal.AddRange(_items.Cast<MenuFlyoutItemBase>());
-            return;
-        }
-
-        var itemTemplate = ItemTemplate;
-        foreach(var item in _items)
-        {
-            var template = presenter.FindDataTemplate(item, itemTemplate);
-            _itemsInternal.Add(CreateContainer(item, template));
-        }
-    }
-
-    internal static MenuFlyoutItemBase CreateContainer(object item, IDataTemplate template)
-    {
-        if (item == null)
-            return null;
-
-        if (template is MenuFlyoutSubItemTemplate mfsit)
-        {
-            var mfsi = new MenuFlyoutSubItem
-            {
-                DataContext = item
-            };
-
-            if (mfsit.SubItems != null)
-            {
-                mfsi.Bind(MenuFlyoutSubItem.ItemsProperty, mfsit.SubItems);
-            }
-
-            if (mfsit.HeaderText != null)
-            {
-                mfsi.Bind(MenuFlyoutItem.TextProperty, mfsit.HeaderText);
-            }
-
-            if (mfsit.Icon != null)
-            {
-                mfsi[!MenuFlyoutItem.IconSourceProperty] = mfsit.Icon; 
-            }
-
-            return mfsi;
-        }
-        else
-        {
-            // Other templates will do whatever
-            var builtContent = template.Build(item);
-
-            if (builtContent is MenuFlyoutItemBase mfibFromTemplate)
-            {
-                mfibFromTemplate.DataContext = item;
-                return mfibFromTemplate;
-            }
-        }
-
-        // If we reach here, just create a normal MenuFlyoutItem b/c we don't have enough
-        // information on how to construct it.
-        return new MenuFlyoutItem
-        {
-            DataContext = item,
-            Text = item.ToString()
-        };
-    }
-
+   
+    private FAMenuFlyoutPresenter _presenter;
     private Classes _classes;
-    private IEnumerable _items;
-    private readonly AvaloniaList<MenuFlyoutItemBase> _itemsInternal = new AvaloniaList<MenuFlyoutItemBase>();
 }
