@@ -73,8 +73,26 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase
 
     internal void Close(bool isFullClose = false)
     {
+        if (_presenter == null)
+            return;
+
+        // This ensures any open submenus are closed with this
+        // This seems to only be needed with OverlayPopups
+        foreach (var item in _presenter.GetRealizedContainers())
+        {
+            if (item is MenuFlyoutSubItem mfsi)
+            {
+                mfsi.Close();
+            }
+        }
+
         if (_subMenu != null)
+        {
+            if (_subMenu.IsOpen == false)
+                return;
+
             _subMenu.IsOpen = false;
+        }
 
         if (isFullClose)
         {
@@ -89,7 +107,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase
         {
             _presenter = new FAMenuFlyoutPresenter()
             {
-                ItemsSource = Items,
+                ItemsSource = ItemsSource ?? Items,
                 [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty],
                 InternalParent = this
             };

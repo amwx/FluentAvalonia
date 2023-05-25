@@ -14,28 +14,20 @@ public class MenuFlyoutItemBase : TemplatedControl
 
     internal bool IsContainerFromTemplate { get; set; }
 
-    internal static readonly RoutedEvent<RoutedEventArgs> PointerEnteredItemEvent =
-        RoutedEvent.Register<MenuFlyoutItemBase, RoutedEventArgs>("PointerEnteredItem", 
-            RoutingStrategies.Bubble);
-
-    internal static readonly RoutedEvent<RoutedEventArgs> PointerExitedItemEvent =
-        RoutedEvent.Register<MenuFlyoutItemBase, RoutedEventArgs>("PointerExitedItem", 
-            RoutingStrategies.Bubble);
+    internal FAMenuFlyoutPresenter InternalParent { get; set; }
 
     protected override void OnPointerEntered(PointerEventArgs e)
     {
         base.OnPointerEntered(e);
 
-        var args = new RoutedEventArgs(PointerEnteredItemEvent, this);
-        RaiseEvent(args);
+        InternalParent.PointerEnteredItem(this);
     }
 
     protected override void OnPointerExited(PointerEventArgs e)
     {
         base.OnPointerExited(e);
 
-        var args = new RoutedEventArgs(PointerExitedItemEvent, this);
-        RaiseEvent(args);
+        InternalParent.PointerExitedItem(this);
     }
 
     protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)

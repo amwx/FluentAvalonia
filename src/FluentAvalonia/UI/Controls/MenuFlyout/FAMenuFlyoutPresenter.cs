@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Templates;
@@ -20,8 +21,6 @@ public class FAMenuFlyoutPresenter : ItemsControl
         KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Cycle);
 
         AddHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
-        AddHandler(MenuFlyoutItemBase.PointerEnteredItemEvent, PointerEnterItem);
-        AddHandler(MenuFlyoutItemBase.PointerExitedItemEvent, PointerExitedItem);
     }
 
     internal AvaloniaObject InternalParent { get; set; }
@@ -92,6 +91,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
         if (!mfib.IsContainerFromTemplate)
             base.PrepareContainerForItemOverride(element, item, index);
 
+        mfib.InternalParent = this;
         var iconCount = _iconCount;
         var toggleCount = _toggleCount;
         if (element is ToggleMenuFlyoutItem tmfi)
@@ -336,10 +336,8 @@ public class FAMenuFlyoutPresenter : ItemsControl
         }
     }
 
-    private void PointerEnterItem(object sender, RoutedEventArgs args)
+    internal void PointerEnteredItem(MenuFlyoutItemBase item)
     {
-        var item = GetMenuItem(args.Source);
-
         if (item is MenuFlyoutSubItem mfsi)
         {
             _openingItem = mfsi;
@@ -365,13 +363,10 @@ public class FAMenuFlyoutPresenter : ItemsControl
                 }
             }
         }
-        args.Handled = true;
     }
 
-    private void PointerExitedItem(object sender, RoutedEventArgs args)
+    internal void PointerExitedItem(MenuFlyoutItemBase item)
     {
-        var item = GetMenuItem(args.Source);
-
         if (_openingItem == item)
         {
             _openingItem = null;
@@ -396,15 +391,21 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
     internal void MenuOpened(bool fromKeyboard = false)
     {
-        var item = GetRealizedContainers()
+        // Overlay popups continue to be a pain, since they get added very late 
+        // after opening the popup - so post this to the dispatcher to run
+        // after the next layout pass
+        Dispatcher.UIThread.Post(() =>
+        {
+            var item = GetRealizedContainers()
             .Where(x => x.Focusable && x.IsEffectivelyEnabled)
             .FirstOrDefault();
 
-        if (item != null)
-        {
-            FocusManager.Instance.Focus(item, 
-                fromKeyboard ? NavigationMethod.Directional : NavigationMethod.Unspecified);
-        }
+            if (item != null)
+            {
+                FocusManager.Instance.Focus(item,
+                        fromKeyboard ? NavigationMethod.Directional : NavigationMethod.Unspecified);
+            }
+        }, DispatcherPriority.Render);        
     }
 
     private MenuFlyoutItemBase GetMenuItem(object src)
