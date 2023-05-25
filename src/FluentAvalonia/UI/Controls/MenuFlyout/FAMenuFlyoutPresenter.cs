@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Templates;
@@ -397,7 +396,6 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
     internal void MenuOpened(bool fromKeyboard = false)
     {
-        Debug.WriteLine("menuopenend:");
         var item = GetRealizedContainers()
             .Where(x => x.Focusable && x.IsEffectivelyEnabled)
             .FirstOrDefault();
