@@ -93,11 +93,13 @@ public class FAMenuFlyoutPresenter : ItemsControl
         {
             _iconCount = iconCount;
             _toggleCount = toggleCount;
-            UpdateVisualState();
-            // This container isn't realized yet, so we need to apply the classes here
-            ((IPseudoClasses)element.Classes).Set(s_pcIcons, iconCount != 0);
-            ((IPseudoClasses)element.Classes).Set(s_pcToggle, toggleCount != 0);
+            // Update all other items already realized based on changes to this one
+            UpdateVisualState();            
         }
+
+        // This container isn't realized yet, so we need to apply the classes here
+        ((IPseudoClasses)element.Classes).Set(s_pcIcons, iconCount != 0);
+        ((IPseudoClasses)element.Classes).Set(s_pcToggle, toggleCount != 0);
     }
 
     protected override void ClearContainerForItemOverride(Control element)
