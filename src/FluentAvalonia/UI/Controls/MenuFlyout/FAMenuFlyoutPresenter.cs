@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Templates;
@@ -24,43 +23,6 @@ public class FAMenuFlyoutPresenter : ItemsControl
     }
 
     internal AvaloniaObject InternalParent { get; set; }
-
-    ///// <summary>
-    ///// Closes the MenuFlyout.
-    ///// </summary>
-    ///// <remarks>
-    ///// This method should generally not be called directly and is present for the
-    ///// MenuInteractionHandler. Close Flyouts by calling Hide() on the Flyout object directly.
-    ///// </remarks>
-    //public override void Close()
-    //{
-    //    // DefaultMenuInteractionHandler calls this
-    //    var host = this.FindLogicalAncestorOfType<Popup>();
-    //    if (host != null)
-    //    {
-    //        for (int i = 0; i < LogicalChildren.Count; i++)
-    //        {
-    //            if (LogicalChildren[i] is IMenuItem item)
-    //            {
-    //                item.IsSubMenuOpen = false;
-    //            }
-    //        }
-
-    //        SelectedIndex = -1;
-    //        host.IsOpen = false;
-
-    //        RaiseMenuClosed();
-    //    }
-    //}
-
-    ///// <summary>
-    ///// This method has no functionality
-    ///// </summary>
-    ///// <exception cref="NotSupportedException" />
-    //public override void Open()
-    //{
-    //    throw new NotSupportedException("Use MenuFlyout.ShowAt(Control) instead");
-    //}
 
     protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
     {
@@ -340,6 +302,18 @@ public class FAMenuFlyoutPresenter : ItemsControl
     {
         if (item is MenuFlyoutSubItem mfsi)
         {
+            if (mfsi == _openedItem)
+            {
+                _closingCancelDisp?.Dispose();
+                return;
+            }
+
+            if (_openedItem != null)
+            {
+                _openedItem.Close();
+                _openedItem = null;
+            }
+
             _openingItem = mfsi;
             DispatcherTimer.RunOnce(() =>
             {
@@ -347,20 +321,19 @@ public class FAMenuFlyoutPresenter : ItemsControl
                 {
                     _openingItem = null;
                     mfsi.Open();
+                    _openedItem = mfsi;
                 }
             }, TimeSpan.FromMilliseconds(400));
         }
         else
         {
-            foreach (var cont in GetRealizedContainers())
+            if (_openedItem != null)
             {
-                if (cont is MenuFlyoutSubItem sub && item != cont)
+                _closingCancelDisp = DispatcherTimer.RunOnce(() =>
                 {
-                    DispatcherTimer.RunOnce(() =>
-                    {
-                        sub.Close();
-                    }, TimeSpan.FromMilliseconds(400));
-                }
+                    _openedItem?.Close();
+                    _openedItem = null;
+                }, TimeSpan.FromMilliseconds(400));
             }
         }
     }
@@ -440,6 +413,8 @@ public class FAMenuFlyoutPresenter : ItemsControl
     }
 
     private MenuFlyoutItemBase _openingItem;
+    private MenuFlyoutSubItem _openedItem;
+    private IDisposable _closingCancelDisp;
 
     private int _iconCount = 0;
     private int _toggleCount = 0;
