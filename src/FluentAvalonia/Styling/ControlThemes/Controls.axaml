@@ -67,6 +67,7 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBarStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/NumberBoxStyles.axaml" />
 
+                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/FAMenuFlyoutPresenter.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutItemStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/MenuFlyoutSubItemStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAMenuFlyout/ToggleMenuFlyoutItemStyles.axaml" />

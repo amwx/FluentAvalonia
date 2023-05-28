@@ -12,7 +12,7 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a command in a <see cref="FAMenuFlyout"/> control.
 /// </summary>
-public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSource
+public partial class MenuFlyoutItem : MenuFlyoutItemBase, ICommandSource
 {
     public MenuFlyoutItem()
     {
@@ -157,6 +157,11 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
         }
     }
 
+    internal void RaiseClick()
+    {
+        OnClick();
+    }
+
     private void CanExecuteChanged(object sender, EventArgs e)
     {
         var canExec = Command == null || Command.CanExecute(CommandParameter);
@@ -168,15 +173,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, IMenuItem, ICommandSou
         }
     }
 
-    bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;
-
-    void IMenuItem.RaiseClick() => OnClick();
-
     void ICommandSource.CanExecuteChanged(object sender, EventArgs e) => CanExecuteChanged(sender, e);
-
-    void IMenuElement.Close() { }
-
-    void IMenuElement.Open() { }
 
     private bool _canExecute = true;
     private KeyGesture _hotkey;
