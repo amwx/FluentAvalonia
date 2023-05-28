@@ -63,6 +63,7 @@ public partial class NumberBox
     public static readonly StyledProperty<double> MinimumProperty =
         RangeBase.MinimumProperty.AddOwner<NumberBox>(
             new StyledPropertyMetadata<double>(
+                defaultValue: double.MinValue,
                 coerce: (ao, d1) =>
                 {
                     var nb = ao as NumberBox;
@@ -79,6 +80,7 @@ public partial class NumberBox
     public static readonly StyledProperty<double> MaximumProperty =
         RangeBase.MaximumProperty.AddOwner<NumberBox>(
             new StyledPropertyMetadata<double>(
+                defaultValue: double.MaxValue,
                 coerce: (ao, d1) =>
                 {
                     var nb = ao as NumberBox;
