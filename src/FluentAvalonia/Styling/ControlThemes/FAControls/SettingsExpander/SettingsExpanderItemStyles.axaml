@@ -158,10 +158,16 @@
             </Style>           
         </Style>
         
-        <Style Selector="^:disabled /template/ ui|FABorder#Root">
-            <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
-            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+        <Style Selector="^:disabled">            
+            <Style Selector="^ /template/ ui|FABorder#Root">
+                <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            </Style>
+
+            <Style Selector="^ /template/ TextBlock#DescriptionText">
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            </Style>
         </Style>
     </ControlTheme>    
 </ResourceDictionary>
