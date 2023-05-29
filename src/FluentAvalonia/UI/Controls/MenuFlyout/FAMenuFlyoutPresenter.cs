@@ -1,12 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
-using Avalonia.Controls.Platform;
-using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using Avalonia.Styling;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -14,55 +13,16 @@ namespace FluentAvalonia.UI.Controls;
 /// Displays the content of a <see cref="FAMenuFlyout"/> control.
 /// </summary>
 [PseudoClasses(s_pcIcons, s_pcToggle)]
-public class FAMenuFlyoutPresenter : MenuBase, IStyleable
+public class FAMenuFlyoutPresenter : ItemsControl
 {
     public FAMenuFlyoutPresenter()
-        : base(new MenuFlyoutInteractionHandler(true))
     {
         KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Cycle);
+
+        AddHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
     }
 
-    public FAMenuFlyoutPresenter(IMenuInteractionHandler handler)
-        : base(handler) { }
-
-    Type IStyleable.StyleKey => typeof(MenuFlyoutPresenter);
-
-    /// <summary>
-    /// Closes the MenuFlyout.
-    /// </summary>
-    /// <remarks>
-    /// This method should generally not be called directly and is present for the
-    /// MenuInteractionHandler. Close Flyouts by calling Hide() on the Flyout object directly.
-    /// </remarks>
-    public override void Close()
-    {
-        // DefaultMenuInteractionHandler calls this
-        var host = this.FindLogicalAncestorOfType<Popup>();
-        if (host != null)
-        {
-            for (int i = 0; i < LogicalChildren.Count; i++)
-            {
-                if (LogicalChildren[i] is IMenuItem item)
-                {
-                    item.IsSubMenuOpen = false;
-                }
-            }
-
-            SelectedIndex = -1;
-            host.IsOpen = false;
-
-            RaiseMenuClosed();
-        }
-    }
-
-    /// <summary>
-    /// This method has no functionality
-    /// </summary>
-    /// <exception cref="NotSupportedException" />
-    public override void Open()
-    {
-        throw new NotSupportedException("Use MenuFlyout.ShowAt(Control) instead");
-    }
+    internal AvaloniaObject InternalParent { get; set; }
 
     protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
     {
@@ -80,7 +40,10 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
             return mfib;
         }
 
-        return new MenuFlyoutItem();
+        return new MenuFlyoutItem()
+        {
+            Text = item.ToString()
+        };
     }
 
     protected override void PrepareContainerForItemOverride(Control element, object item, int index)
@@ -90,6 +53,7 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         if (!mfib.IsContainerFromTemplate)
             base.PrepareContainerForItemOverride(element, item, index);
 
+        mfib.InternalParent = this;
         var iconCount = _iconCount;
         var toggleCount = _toggleCount;
         if (element is ToggleMenuFlyoutItem tmfi)
@@ -129,11 +93,13 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         {
             _iconCount = iconCount;
             _toggleCount = toggleCount;
-            UpdateVisualState();
-            // This container isn't realized yet, so we need to apply the classes here
-            ((IPseudoClasses)element.Classes).Set(s_pcIcons, iconCount != 0);
-            ((IPseudoClasses)element.Classes).Set(s_pcToggle, toggleCount != 0);
+            // Update all other items already realized based on changes to this one
+            UpdateVisualState();            
         }
+
+        // This container isn't realized yet, so we need to apply the classes here
+        ((IPseudoClasses)element.Classes).Set(s_pcIcons, iconCount != 0);
+        ((IPseudoClasses)element.Classes).Set(s_pcToggle, toggleCount != 0);
     }
 
     protected override void ClearContainerForItemOverride(Control element)
@@ -183,18 +149,256 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
         }
     }
 
-    internal void RaiseMenuOpened()
+    protected override void OnKeyDown(KeyEventArgs args)
     {
-        RaiseEvent(new RoutedEventArgs(MenuOpenedEvent) { Source = this });
+        base.OnKeyDown(args);
+        if (args.Handled)
+            return;
+
+        var item = GetMenuItem(args.Source);
+        switch (args.Key)
+        {
+            case Key.Down:
+                {
+                    var current = FocusManager.Instance.Current;
+                    if (current is MenuFlyoutItemBase mfib)
+                    {
+                        var index = IndexFromContainer(mfib);
+                        if (index == -1)
+                            return; // Somethings wrong
+
+                        while (true)
+                        {
+                            index++;
+                            if (index >= ItemCount)
+                                index = 0;
+
+                            var cont = ContainerFromIndex(index);
+                            if (cont != null && !(cont is MenuFlyoutSeparator) &&
+                                cont.Focusable && cont.IsEffectivelyEnabled)
+                            {
+                                FocusManager.Instance.Focus(cont, NavigationMethod.Directional);
+                                args.Handled = true;
+                                break;
+                            }
+                            else if (cont == item)
+                            {
+                                // If we loop back to the original item, stop 
+                                break; 
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case Key.Up:
+                {
+                    var current = FocusManager.Instance.Current;
+                    if (current is MenuFlyoutItemBase mfib)
+                    {
+                        var index = IndexFromContainer(mfib);
+                        if (index == -1)
+                            return; // Somethings wrong
+
+                        while (true)
+                        {
+                            index--;
+                            if (index < 0)
+                                index = ItemCount - 1;
+
+                            var cont = ContainerFromIndex(index);
+                            if (cont != null && !(cont is MenuFlyoutSeparator) &&
+                                cont.Focusable && cont.IsEffectivelyEnabled)
+                            {
+                                FocusManager.Instance.Focus(cont, NavigationMethod.Directional);
+                                args.Handled = true;
+                                break;
+                            }
+                            else if (cont == item)
+                            {
+                                // If we loop back to the original item, stop 
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case Key.Right:
+                {
+                    if (item is MenuFlyoutSubItem mfsi)
+                    {
+                        mfsi.Open(true);
+                        args.Handled = true;
+                    }
+                }
+                break;
+
+            case Key.Left:
+                {
+                    if (InternalParent is MenuFlyoutSubItem mfsi)
+                    {
+                        // NOTE: Order matters here for some reason, focus the MFSI FIRST,
+                        // then close it. Otherwise the focus adorner isn't shown
+                        FocusManager.Instance.Focus(mfsi, NavigationMethod.Directional);
+                        mfsi.Close();
+                        args.Handled = true;
+                    }
+                }
+                break;
+
+            case Key.Enter:
+                {
+                    var current = FocusManager.Instance.Current;
+                    if (current is MenuFlyoutItemBase mfib && mfib.Focusable && mfib.IsEffectivelyEnabled)
+                    {
+                        if (mfib is MenuFlyoutSubItem mfsi)
+                        {
+                            mfsi.Open(true);
+                        }
+                        else
+                        {
+                            (mfib as MenuFlyoutItem)?.RaiseClick();
+                            CloseMenu();
+                        }
+                        args.Handled = true;
+                    }
+                }
+                break;
+
+            case Key.Escape:
+                {
+                    if (InternalParent is MenuFlyoutSubItem mfsi)
+                    {
+                        // NOTE: Order matters here for some reason, focus the MFSI FIRST,
+                        // then close it. Otherwise the focus adorner isn't shown
+                        FocusManager.Instance.Focus(mfsi, NavigationMethod.Directional);
+                        mfsi.Close();                        
+                        args.Handled = true;
+                    }
+                    else
+                    {
+                        CloseMenu();
+                    }
+                }
+                break;
+        }
     }
 
-    internal void RaiseMenuClosed()
+    protected override void OnPointerReleased(PointerReleasedEventArgs args)
     {
-        RaiseEvent(new RoutedEventArgs(MenuClosedEvent) { Source = this });
+        base.OnPointerReleased(args);
+        var item = GetMenuItem(args.Source);
+
+        // MenuFlyoutSubItem doesn't support click, so we don't raise it there
+        // Toggle and Radio MFIs derive from MenuFlyoutItem so this handles everything
+        if (item is MenuFlyoutItem mfi)
+        {
+            mfi.RaiseClick();
+            CloseMenu();
+            args.Handled = true;
+        }
     }
 
-    internal bool InternalMoveSelection(NavigationDirection dir, bool wrap) =>
-        MoveSelection(dir, wrap);
+    internal void PointerEnteredItem(MenuFlyoutItemBase item)
+    {
+        if (item is MenuFlyoutSubItem mfsi)
+        {
+            if (mfsi == _openedItem)
+            {
+                _closingCancelDisp?.Dispose();
+                return;
+            }
+
+            if (_openedItem != null)
+            {
+                _openedItem.Close();
+                _openedItem = null;
+            }
+
+            _openingItem = mfsi;
+            DispatcherTimer.RunOnce(() =>
+            {
+                if (_openingItem == mfsi)
+                {
+                    _openingItem = null;
+                    mfsi.Open();
+                    _openedItem = mfsi;
+                }
+            }, TimeSpan.FromMilliseconds(400));
+        }
+        else
+        {
+            if (_openedItem != null)
+            {
+                _closingCancelDisp = DispatcherTimer.RunOnce(() =>
+                {
+                    _openedItem?.Close();
+                    _openedItem = null;
+                }, TimeSpan.FromMilliseconds(400));
+            }
+        }
+    }
+
+    internal void PointerExitedItem(MenuFlyoutItemBase item)
+    {
+        if (_openingItem == item)
+        {
+            _openingItem = null;
+        }
+    }
+
+    private void AccessKeyPressed(object sender, RoutedEventArgs args)
+    {
+        var src = GetMenuItem(args.Source);
+
+        if (src is MenuFlyoutSubItem mfsi)
+        {
+            mfsi.Open(true);
+        }
+        else
+        {
+            (src as MenuFlyoutItem)?.RaiseClick();
+        }
+
+        args.Handled = true;
+    }
+
+    internal void MenuOpened(bool fromKeyboard = false)
+    {
+        // Overlay popups continue to be a pain, since they get added very late 
+        // after opening the popup - so post this to the dispatcher to run
+        // after the next layout pass
+        Dispatcher.UIThread.Post(() =>
+        {
+            var item = GetRealizedContainers()
+            .Where(x => x.Focusable && x.IsEffectivelyEnabled)
+            .FirstOrDefault();
+
+            if (item != null)
+            {
+                FocusManager.Instance.Focus(item,
+                        fromKeyboard ? NavigationMethod.Directional : NavigationMethod.Unspecified);
+            }
+        }, DispatcherPriority.Render);        
+    }
+
+    private MenuFlyoutItemBase GetMenuItem(object src)
+    {
+        return ((Visual)src).FindAncestorOfType<MenuFlyoutItemBase>(true);
+    }
+
+    internal void CloseMenu()
+    {
+        if (InternalParent is MenuFlyoutSubItem mfsi)
+        {
+            mfsi.Close(true);
+        }
+        else if (InternalParent is FAMenuFlyout fmf)
+        {
+            fmf.Close();
+        }
+    }
         
     private void UpdateVisualState()
     {
@@ -209,6 +413,10 @@ public class FAMenuFlyoutPresenter : MenuBase, IStyleable
             ((IPseudoClasses)item.Classes).Set(s_pcToggle, toggle);
         }
     }
+
+    private MenuFlyoutItemBase _openingItem;
+    private MenuFlyoutSubItem _openedItem;
+    private IDisposable _closingCancelDisp;
 
     private int _iconCount = 0;
     private int _toggleCount = 0;

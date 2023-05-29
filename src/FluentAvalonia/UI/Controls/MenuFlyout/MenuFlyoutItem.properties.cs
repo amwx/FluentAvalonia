@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
 using Avalonia;
 using System.Windows.Input;
 using Avalonia.Controls.Metadata;
@@ -138,31 +137,4 @@ public partial class MenuFlyoutItem
         add => AddHandler(ClickEvent, value);
         remove => RemoveHandler(ClickEvent, value);
     }
-
-    bool IMenuItem.HasSubMenu => false;
-
-    bool IMenuItem.IsPointerOverSubMenu => false;
-
-    bool IMenuItem.IsSubMenuOpen { get => false; set { } }
-
-    public bool IsTopLevel => false;
-
-    IMenuItem IMenuElement.SelectedItem { get => null; set { } }
-
-    IEnumerable<IMenuItem> IMenuElement.SubItems => null;
-
-    IMenuElement IMenuItem.Parent
-    {
-        get
-        {
-            if (this.FindLogicalAncestorOfType<MenuFlyoutSubItem>() is MenuFlyoutSubItem mfsi)
-            {
-                return mfsi;
-            }
-
-            return Parent as IMenuElement;
-        }
-    }
-
-    bool IMenuItem.StaysOpenOnClick { get => false; set { } }
 }

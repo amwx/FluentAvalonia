@@ -178,8 +178,9 @@ public partial class SettingsExpander : HeaderedItemsControl, ICommandSource
 
     protected override Size MeasureOverride(Size availableSize)
     {
+        var sz = base.MeasureOverride(availableSize);
         SetIcons();
-        return base.MeasureOverride(availableSize);
+        return sz;
     }
 
     /// <summary>

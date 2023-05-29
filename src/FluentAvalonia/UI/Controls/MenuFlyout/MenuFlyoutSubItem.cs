@@ -2,10 +2,9 @@
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using FluentAvalonia.Core;
+using Avalonia.VisualTree;
 using System.Collections;
 using System.Collections.Specialized;
 
@@ -14,10 +13,11 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a menu item that displays a sub-menu in a <see cref="FAMenuFlyout"/> control.
 /// </summary>
-public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
+public partial class MenuFlyoutSubItem : MenuFlyoutItemBase
 {
     public MenuFlyoutSubItem()
     {
+        TemplateSettings = new MenuFlyoutItemTemplateSettings();
         var al = new AvaloniaList<object>();
         al.CollectionChanged += ItemsCollectionChanged;
         Items = al;
@@ -31,24 +31,18 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         {
             TemplateSettings.Icon = IconHelpers.CreateFromUnknown(change.GetNewValue<IconSource>());
         }
-        else if (change.Property == ItemsProperty)
+        else if (change.Property == ItemsSourceProperty)
         {
-            var (oldV, newV) = change.GetOldAndNewValue<IEnumerable>();
-            if (oldV is INotifyCollectionChanged oldINCC)
+            if (Items.Count > 0)
             {
-                oldINCC.CollectionChanged -= ItemsCollectionChanged;
+                throw new InvalidOperationException("Items collection must be empty before using ItemsSource.");
             }
 
-            _generatedItems.Clear();
+            var newV = change.GetNewValue<IEnumerable>();
 
-            if (newV is INotifyCollectionChanged newINCC)
+            if (_presenter != null)
             {
-                newINCC.CollectionChanged += ItemsCollectionChanged;
-            }
-
-            if ((_subMenu != null && _subMenu.IsOpen) && newV != null)
-            {
-                GenerateItems();
+                _presenter.ItemsSource = newV ?? Items;
             }
         }
     }
@@ -69,33 +63,41 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         RaiseEvent(args);
     }
 
-    /// <summary>
-    /// Opens the SubMenu
-    /// </summary>
-    public void Open()
+    internal void Open(bool fromKeyboard = false)
     {
         InitPopup();
-        if (_generatedItems.Count == 0)
-        {
-            GenerateItems();
-        }
-
+        
         _subMenu.IsOpen = true;
-        _presenter.RaiseMenuOpened();
+        _presenter.MenuOpened(fromKeyboard);
     }
 
-    /// <summary>
-    /// Closes the SubMenu
-    /// </summary>
-    public void Close()
+    internal void Close(bool isFullClose = false)
     {
-        if (_subMenu != null)
-            _subMenu.IsOpen = false;
+        if (_presenter == null)
+            return;
 
-        if (_presenter != null)
+        // This ensures any open submenus are closed with this
+        // This seems to only be needed with OverlayPopups
+        foreach (var item in _presenter.GetRealizedContainers())
         {
-            _presenter.SelectedIndex = -1;
-            _presenter.RaiseMenuClosed();
+            if (item is MenuFlyoutSubItem mfsi)
+            {
+                mfsi.Close();
+            }
+        }
+
+        if (_subMenu != null)
+        {
+            if (_subMenu.IsOpen == false)
+                return;
+
+            _subMenu.IsOpen = false;
+        }
+
+        if (isFullClose)
+        {
+            var anc = this.FindAncestorOfType<FAMenuFlyoutPresenter>();
+            anc.CloseMenu();
         }
     }
 
@@ -105,8 +107,9 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         {
             _presenter = new FAMenuFlyoutPresenter()
             {
-                ItemsSource = _generatedItems,
-                [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty]
+                ItemsSource = ItemsSource ?? Items,
+                [!ItemContainerThemeProperty] = this[!ItemContainerThemeProperty],
+                InternalParent = this
             };
 
             _subMenu = new Popup
@@ -137,42 +140,14 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         PseudoClasses.Set(s_pcSubmenuOpen, false);
     }
 
-    private void GenerateItems()
-    {
-        if (_items == null)
-            return;
-
-        _generatedItems.Clear();
-
-        var first = _items.ElementAt(0);
-        // If the first item is a MenuFlyoutItemBase, assume all are (added via xaml or code)
-        if (first is MenuFlyoutItemBase)
-        {
-            _generatedItems.AddRange(_items.Cast<MenuFlyoutItemBase>());
-            return;
-        }
-
-        var itemTemplate = ItemTemplate;
-        foreach (var item in _items)
-        {
-            var template = _presenter.FindDataTemplate(item, itemTemplate);
-            _generatedItems.Add(FAMenuFlyout.CreateContainer(item, template));
-        }
-    }
-
     private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        _generatedItems.Clear();
-
-        if (_subMenu != null && _subMenu.IsOpen)
+    {  
+        if (ItemsSource != null)
         {
-            GenerateItems();
-        }    
+            throw new InvalidOperationException("Cannot edit Items when ItemsSource is set");
+        }
     }
-
-    bool IMenuElement.MoveSelection(NavigationDirection direction, bool wrap) => false;
 
     private Popup _subMenu;
     private FAMenuFlyoutPresenter _presenter;
-    private readonly AvaloniaList<MenuFlyoutItemBase> _generatedItems = new AvaloniaList<MenuFlyoutItemBase>();
 }

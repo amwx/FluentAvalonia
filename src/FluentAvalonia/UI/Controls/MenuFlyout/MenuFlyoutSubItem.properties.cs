@@ -9,7 +9,7 @@ using System.Collections;
 namespace FluentAvalonia.UI.Controls;
 
 [PseudoClasses(s_pcSubmenuOpen)]
-public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
+public partial class MenuFlyoutSubItem : MenuFlyoutItemBase
 {
     /// <summary>
     /// Defines the <see cref="Text"/> property
@@ -26,9 +26,8 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
     /// <summary>
     /// Defines the <see cref="Items"/> property
     /// </summary>
-    public static readonly DirectProperty<MenuFlyoutSubItem, IEnumerable> ItemsProperty =
-        FAMenuFlyout.ItemsProperty.AddOwner<MenuFlyoutSubItem>(x => x.Items,
-            (x, v) => x.Items = v);
+    public static readonly StyledProperty<IEnumerable> ItemsSourceProperty =
+        ItemsControl.ItemsSourceProperty.AddOwner<MenuFlyoutSubItem>();
 
     /// <summary>
     /// Defines the <see cref="ItemTemplate"/> property
@@ -66,14 +65,24 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         set => SetValue(IconSourceProperty, value);
     }
 
+    
+    /// <summary>
+    /// Gets the items of the MenuFlyoutSubItem
+    /// </summary>
+    /// <remarks>
+    /// NOTE: Unlike normal ItemsControls, when ItemsSource is set, this property will
+    /// not act as a view over the ItemsSource
+    /// </remarks>
+    [Content]
+    public IList Items { get; }
+
     /// <summary>
     /// Gets or sets the collection used to generate the content of the sub-menu.
     /// </summary>
-    [Content]
-    public IEnumerable Items
+    public IEnumerable ItemsSource
     {
-        get => _items;
-        set => SetAndRaise(ItemsProperty, ref _items, value);
+        get => GetValue(ItemsSourceProperty);
+        set => SetValue(ItemsSourceProperty, value);
     }
 
     public IDataTemplate ItemTemplate
@@ -100,64 +109,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase, IMenuItem
         private set => SetValue(TemplateSettingsProperty, value);
     }
 
-    public bool HasSubMenu => true;
-
     public bool IsPointerOverSubMenu => _subMenu?.IsPointerOverPopup ?? false;
-
-    public bool IsSubMenuOpen
-    {
-        get => _subMenu?.IsOpen ?? false;
-        set
-        {
-            if (value)
-                Open();
-            else
-                Close();
-        }
-    }
-
-    bool IMenuItem.IsTopLevel => false;
-
-    IMenuElement IMenuItem.Parent => Parent as IMenuElement;
-
-    IMenuItem IMenuElement.SelectedItem
-    {
-        get
-        {
-            if (_presenter != null && _presenter.SelectedIndex != -1)
-            {
-                return _presenter.ContainerFromIndex(_presenter.SelectedIndex) as IMenuItem;
-            }
-
-            return null;
-        }
-        set
-        {
-            if (_presenter != null)
-            {
-                _presenter.SelectedIndex = _presenter.IndexFromContainer(value as Control);
-            }
-        }
-    }
-
-    IEnumerable<IMenuItem> IMenuElement.SubItems
-    {
-        get
-        {
-            return _presenter.GetRealizedContainers().Cast<IMenuItem>();
-            //_presenter?.ItemContainerGenerator.Containers
-            //    .Select(x => x.ContainerControl)
-            //    .OfType<IMenuItem>();
-        }
-    }
-
-
-    void IMenuItem.RaiseClick()
-    { }
-
-    bool IMenuItem.StaysOpenOnClick { get => false; set { } }
-
-    private IEnumerable _items;
 
     private const string s_pcSubmenuOpen = ":submenuopen";
 }
