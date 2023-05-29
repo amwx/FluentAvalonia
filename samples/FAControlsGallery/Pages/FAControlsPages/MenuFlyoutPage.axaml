@@ -25,7 +25,7 @@
                                     GroupName="{Binding GroupName}"/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:TempSubItem}">
-            <ui:MenuFlyoutSubItem Items="{Binding SubItems}"
+            <ui:MenuFlyoutSubItem ItemsSource="{Binding SubItems}"
                                   Text="{Binding Text}" />
         </DataTemplate>
     </UserControl.DataTemplates>
@@ -85,7 +85,7 @@ Note: these revamped items will not work in default menus of Avalonia, and are o
             <Button Content="Click me for flyout!">
                 <Button.Flyout>
                     <ui:FAMenuFlyout Placement="Bottom"
-                                   Items="{Binding TestMenuItems}">
+                                   ItemsSource="{Binding TestMenuItems}">
 
                     </ui:FAMenuFlyout>
                 </Button.Flyout>

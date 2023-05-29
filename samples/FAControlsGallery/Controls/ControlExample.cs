@@ -101,8 +101,6 @@ public class ControlExample : HeaderedContentControl
         _expandOptionsButton = e.NameScope.Find<Button>("ShowHideOptionsButton");
         _expandOptionsButton.Click += OnExpandOptionsClick;
 
-        _previewAreaHost = e.NameScope.Find<Border>("ControlPreviewAreaHost");
-
         _moreButton = e.NameScope.Find<Button>("MoreButton");
         if (_moreButton != null)
         {
@@ -192,7 +190,7 @@ public class ControlExample : HeaderedContentControl
 
             _moreButton.Flyout = new FAMenuFlyout
             {
-                Items = l,
+                ItemsSource = l,
                 Placement = PlacementMode.BottomEdgeAlignedRight
             };
         }
@@ -265,14 +263,10 @@ public class ControlExample : HeaderedContentControl
 
 
     private IList<ControlExampleSubstitution> _substitutions;
-
     public static Flyout _copiedNoticeFlyout;
-    private Border _previewAreaHost;
     private Button _expandOptionsButton;
     private ThemeVariantScope _exampleThemeScopeProvider;
     private Border _optionsHost;
-
     private Button _moreButton;
-
     private static ImplicitAnimationCollection _optionsHostAnimation;
 }
