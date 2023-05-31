@@ -47,7 +47,7 @@
                           </Viewbox>
                       </Button>
                       
-                      <Button x:Name="PART_MinimiseButton"
+                      <Button x:Name="PART_MinimizeButton"
                               Theme="{StaticResource FluentCaptionButton}">
                           <Viewbox Width="11" Margin="2">
                               <Path Stretch="UniformToFill"
@@ -92,7 +92,7 @@
         <Style Selector="^:fullscreen /template/ Panel#PART_RestoreButton">
             <Setter Property="IsVisible" Value="False" />
         </Style>
-        <Style Selector="^:fullscreen /template/ Panel#PART_MinimiseButton">
+        <Style Selector="^:fullscreen /template/ Panel#PART_MinimizeButton">
             <Setter Property="IsVisible" Value="False" />
         </Style>
     </ControlTheme>
