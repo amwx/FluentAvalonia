@@ -516,7 +516,7 @@ public partial class NavigationView : HeaderedContentControl
                 else if (!isTopNav && _paneContentGrid == null)
                     break;
 
-                var current = FocusManager.Instance.Current as InputElement;
+                var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as InputElement;
 
                 if (current == null)
                     break;
@@ -553,7 +553,7 @@ public partial class NavigationView : HeaderedContentControl
                                         var item = SearchTreeForLowestFocusItem(nvi2);
                                         if (item is NavigationViewItem c)
                                         {
-                                            FocusManager.Instance.Focus(c, NavigationMethod.Directional);
+                                            c.Focus(NavigationMethod.Directional);
                                             c.BringIntoView();
                                             e.Handled = true;
                                             break;
@@ -561,7 +561,7 @@ public partial class NavigationView : HeaderedContentControl
                                     }
                                     else
                                     {
-                                        FocusManager.Instance.Focus(nvi2, NavigationMethod.Directional);
+                                        nvi2.Focus(NavigationMethod.Directional);
                                         nvi2.BringIntoView();
                                         e.Handled = true;
                                         break;
@@ -573,7 +573,7 @@ public partial class NavigationView : HeaderedContentControl
 
                     if (!e.Handled)
                     {
-                        FocusManager.Instance.Focus(next, NavigationMethod.Directional);
+                        next.Focus(NavigationMethod.Directional);
                         e.Handled = true;
                     }
                 }
@@ -594,7 +594,7 @@ public partial class NavigationView : HeaderedContentControl
                             var rep = nvi.GetRepeater;
                             if (rep != null && rep.TryGetElement(0) is NavigationViewItem nvi2)
                             {
-                                FocusManager.Instance.Focus(nvi2, NavigationMethod.Directional);
+                                nvi2.Focus(NavigationMethod.Directional);
                                 nvi2.BringIntoView();
                                 e.Handled = true;
                                 break;
@@ -604,60 +604,10 @@ public partial class NavigationView : HeaderedContentControl
 
                     if (!e.Handled)
                     {
-                        FocusManager.Instance.Focus(next, NavigationMethod.Directional);
+                        next.Focus(NavigationMethod.Directional);
                         e.Handled = true;
                     }
                 }
-
-
-                //NavigationDirection dir = NavigationDirection.Next;
-                //if (IsTopNavigationView)
-                //{
-                //	dir = e.Key == Key.Left ? NavigationDirection.Previous : NavigationDirection.Next;
-                //}
-                //else
-                //{
-                //	dir = e.Key == Key.Up ? NavigationDirection.Previous : NavigationDirection.Next;
-                //}
-
-                //var next = KeyboardNavigationHandler.GetNext(current, dir);
-                //if (next != null)
-                //{
-                //	//Next focus falls outside of the pane, don't focus it
-                //	if (!VerifyInPane(next, isTopNav ? _topNavGrid : _paneContentGrid))
-                //		break;
-
-                //	if (next is NavigationViewItem nvi)
-                //	{
-                //		var rep = GetParentItemsRepeaterForContainer(nvi);
-                //		//null check here b/c if NVIs are used in PaneFooter, it won't have an
-                //		//items repeater & we want default logic there
-                //		if (rep != null)
-                //		{
-                //			var ct = rep.ItemsSourceView.Count;
-                //			for (int i = ct - 1; i >= 0; i--)
-                //			{
-                //				if (rep.TryGetElement(i) is NavigationViewItem nvi2)
-                //				{
-                //					var item = SearchTreeForLowestFocusItem(nvi2);
-                //					if (item is NavigationViewItem c)
-                //					{
-                //						FocusManager.Instance.Focus(c, NavigationMethod.Directional);
-                //						c.BringIntoView();
-                //						e.Handled = true;
-                //						break;
-                //					}
-                //				}
-                //			}
-                //		}
-                //	}
-
-                //	if (!e.Handled)
-                //	{
-                //		FocusManager.Instance.Focus(next, NavigationMethod.Directional);
-                //		e.Handled = true;
-                //	}
-                //}
 
                 break;
         }
@@ -665,7 +615,7 @@ public partial class NavigationView : HeaderedContentControl
         base.OnKeyDown(e);
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter")
             return true;
@@ -1912,7 +1862,7 @@ public partial class NavigationView : HeaderedContentControl
 
         if (firstElement != null)
         {
-            FocusManager.Instance?.Focus(firstElement, NavigationMethod.Directional);
+            firstElement.Focus(NavigationMethod.Directional);
             firstElement.BringIntoView();
         }
     }
@@ -1925,7 +1875,7 @@ public partial class NavigationView : HeaderedContentControl
             int lastIndex = parentIR.ItemsSourceView.Count - 1;
             if (parentIR.TryGetElement(lastIndex) is Control c)
             {
-                FocusManager.Instance?.Focus(c, NavigationMethod.Directional);
+                c.Focus(NavigationMethod.Directional);
                 c.BringIntoView();
             }
         }
@@ -1949,7 +1899,7 @@ public partial class NavigationView : HeaderedContentControl
         if (index == 0)
         {
             var parent = GetParentNavigationViewItemForContainer(nvi);
-            FocusManager.Instance?.Focus(parent, NavigationMethod.Directional);
+            parent.Focus(NavigationMethod.Directional);
             args.Handled = true;
             parent.BringIntoView();
             return;
@@ -1964,7 +1914,7 @@ public partial class NavigationView : HeaderedContentControl
                     var check = SearchTreeForLowestFocusItem(prevItem);
                     if (check != null)
                     {
-                        FocusManager.Instance?.Focus(check, NavigationMethod.Directional);
+                        check.Focus(NavigationMethod.Directional);
                         args.Handled = true;
                         check.BringIntoView();
                         return;
@@ -1972,128 +1922,13 @@ public partial class NavigationView : HeaderedContentControl
                 }
                 else
                 {
-                    FocusManager.Instance?.Focus(prevItem, NavigationMethod.Directional);
+                    prevItem.Focus(NavigationMethod.Directional);
                     args.Handled = true;
                     prevItem.BringIntoView();
                     return;
                 }
             }
         }
-
-
-        //if (parentRepeater == rootRep && index == 0) 
-        //{
-        //	//Toplevel item, we're either jumping from footer to 
-        //}
-        //else
-        //{				
-        //	if (index == 0)
-        //	{
-        //		nvi = GetParentNavigationViewItemForContainer(nvi);
-        //		FocusNextUpItem(nvi, args);
-        //	}
-        //	else
-        //	{
-
-
-        //		for (int i = index - 1; index >= 0; i--)
-        //		{
-        //			if (parentRepeater.TryGetElement(i) is NavigationViewItem nvi2)
-        //			{
-        //				if (DoesNavigationViewItemHaveChildren(nvi2) && nvi2.IsExpanded)
-        //				{
-        //					// Item is expanded, we need to traverse its tree to find the lowest
-        //					//container that's focusable
-
-        //					var possItem = SearchTreeForLowestFocusItem(nvi2);
-        //					if (possItem != null)
-        //					{
-        //						FocusManager.Instance?.Focus(possItem, NavigationMethod.Directional);
-        //						args.Handled = true;
-        //						possItem.BringIntoView();
-        //						return;
-        //					}
-        //				}
-        //				else
-        //				{
-        //					FocusManager.Instance?.Focus(nvi2, NavigationMethod.Directional);
-        //					args.Handled = true;
-        //					nvi2.BringIntoView();
-        //					return;
-        //				}
-        //			}
-        //		}
-        //	}
-        //}
-
-        //var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Previous) as IControl;
-        ////WinUI relies on XYKeyboardNav here, so we use our logic
-        //if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
-        //	return;
-
-        //FocusManager.Instance?.Focus(next, NavigationMethod.Directional);
-        //next.BringIntoView();
-        //args.Handled = true;
-
-
-
-        //         bool shouldHandleFocus = true;
-        //         var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Previous) as IControl;
-
-        //if (next is NavigationViewItem nextNVI)
-        //         {
-        //             if (nextNVI.Depth == nvi.Depth)
-        //             {
-        //                 // If we not at the top of the list for our current depth and the item above us has children, check whether we should move focus onto a child
-        //                 if (DoesNavigationViewItemHaveChildren(nextNVI))
-        //                 {
-        //                     // Focus on last lowest level visible container
-        //                     var childRepeater = nextNVI.GetRepeater;
-        //                     if (childRepeater != null)
-        //                     {
-        //                         //FocusManager.FindLastFocusableElement...
-        //                         var ct = childRepeater.ItemsSourceView?.Count ?? 0;
-        //                         for (int i = ct - 1; i >= 0; i--)
-        //                         {
-        //                             if (childRepeater.TryGetElement(i) is IControl c && c.Focusable)
-        //                             {
-        //                                 FocusManager.Instance?.Focus(c, NavigationMethod.Directional);
-        //                                 args.Handled = FocusManager.Instance?.Current == c;
-        //                                 break;
-        //                             }
-        //                         }
-
-        //                         if (!args.Handled)
-        //                         {
-        //                             FocusManager.Instance?.Focus(nextNVI, NavigationMethod.Directional);
-        //                             args.Handled = FocusManager.Instance?.Current == nextNVI;
-        //                         }
-        //                     }
-        //                 }
-        //                 else
-        //                 {
-        //			//WinUI relies on XYKeyboardNav here, so we use our logic
-        //			if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
-        //				return;
-
-        //			FocusManager.Instance?.Focus(next, NavigationMethod.Directional);
-        //			next.BringIntoView();
-        //			args.Handled = true;
-        //			shouldHandleFocus = false;
-        //                 }
-        //             }
-        //         }
-
-        //         // We are at the top of the list, focus on parent
-        //         if (shouldHandleFocus && !args.Handled && nvi.Depth > 0)
-        //         {
-        //             var parent = GetParentNavigationViewItemForContainer(nvi);
-        //             if (parent != null)
-        //             {
-        //                 FocusManager.Instance?.Focus(parent, NavigationMethod.Directional);
-        //                 args.Handled = FocusManager.Instance?.Current == parent;
-        //             }
-        //         }
     }
 
     private void FocusNextDownItem(NavigationViewItem nvi, KeyEventArgs args)
@@ -2106,7 +1941,7 @@ public partial class NavigationView : HeaderedContentControl
             {
                 if (ir.TryGetElement(i) is Control c && c.Focusable)
                 {
-                    FocusManager.Instance?.Focus(c, NavigationMethod.Directional);
+                    c.Focus(NavigationMethod.Directional);
                     c.BringIntoView();
                     args.Handled = true;
                     return;
@@ -2126,7 +1961,7 @@ public partial class NavigationView : HeaderedContentControl
                 {
                     if (parentIR.TryGetElement(index) is NavigationViewItem nvi2)
                     {
-                        FocusManager.Instance?.Focus(nvi2, NavigationMethod.Directional);
+                        nvi2.Focus(NavigationMethod.Directional);
                         nvi2.BringIntoView();
                         args.Handled = true;
                         return;
@@ -2142,7 +1977,7 @@ public partial class NavigationView : HeaderedContentControl
         if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
             return;
 
-        FocusManager.Instance?.Focus(next, NavigationMethod.Directional);
+        next.Focus(NavigationMethod.Directional);
         next.BringIntoView();
         args.Handled = true;
     }
@@ -2930,7 +2765,7 @@ public partial class NavigationView : HeaderedContentControl
 
         if (AutoCompleteBox != null)
         {
-            FocusManager.Instance?.Focus(AutoCompleteBox, NavigationMethod.Tab);
+            AutoCompleteBox.Focus(NavigationMethod.Tab);
         }
     }
 

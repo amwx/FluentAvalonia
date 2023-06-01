@@ -245,7 +245,7 @@ public class FAControlsPageHeader : TemplatedControl
 
         _cts = new CancellationTokenSource();
 
-        await Task.WhenAll(ani.RunAsync(_winUIPanel, null, _cts.Token), ani.RunAsync(_linksPanel, null, _cts.Token));
+        await Task.WhenAll(ani.RunAsync(_winUIPanel, _cts.Token), ani.RunAsync(_linksPanel, _cts.Token));
 
         _cts.Dispose();
         _cts = null;
@@ -299,7 +299,7 @@ public class FAControlsPageHeader : TemplatedControl
 
         _cts = new CancellationTokenSource();
 
-        await Task.WhenAll(ani.RunAsync(_winUIPanel, null, _cts.Token), ani.RunAsync(_linksPanel, null, _cts.Token));
+        await Task.WhenAll(ani.RunAsync(_winUIPanel, _cts.Token), ani.RunAsync(_linksPanel, _cts.Token));
 
         _cts.Dispose();
         _cts = null;

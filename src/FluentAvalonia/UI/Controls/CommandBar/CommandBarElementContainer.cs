@@ -12,9 +12,9 @@ namespace FluentAvalonia.UI.Controls;
 /// to be displayed in a command bar.
 /// </summary>
 [PseudoClasses(SharedPseudoclasses.s_pcOverflow)]
-public class CommandBarElementContainer : ContentControl, ICommandBarElement, IStyleable
+public class CommandBarElementContainer : ContentControl, ICommandBarElement
 {
-    Type IStyleable.StyleKey => typeof(CommandBarElementContainer);
+    protected override Type StyleKeyOverride => typeof(CommandBarElementContainer);
 
     /// <summary>
     /// Defines the <see cref="IsInOverflow"/> property
@@ -60,7 +60,7 @@ public class CommandBarElementContainer : ContentControl, ICommandBarElement, IS
         set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter")
             return true;

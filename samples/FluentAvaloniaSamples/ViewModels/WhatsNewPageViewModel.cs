@@ -12,44 +12,44 @@ public class WhatsNewPageViewModel : ViewModelBase
     {
         Versions = new List<FAVersionInfo>();
 
-        using (var stream = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(new Uri("avares://FluentAvaloniaSamples/Assets/ChangeLog.txt")))
-        using (var sr = new StreamReader(stream))
-        {
-            FAVersionInfo currentVersion = null;
-            bool hasVersion = false;
-            while (sr.Peek() != -1)
-            {
+        //using (var stream = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(new Uri("avares://FluentAvaloniaSamples/Assets/ChangeLog.txt")))
+        //using (var sr = new StreamReader(stream))
+        //{
+        //    FAVersionInfo currentVersion = null;
+        //    bool hasVersion = false;
+        //    while (sr.Peek() != -1)
+        //    {
 
-                var line = sr.ReadLine();
-                if (line.StartsWith('#')) // Comment
-                    continue;
+        //        var line = sr.ReadLine();
+        //        if (line.StartsWith('#')) // Comment
+        //            continue;
 
-                if (string.IsNullOrEmpty(line)) // Empty line
-                    continue;
+        //        if (string.IsNullOrEmpty(line)) // Empty line
+        //            continue;
 
-                if (line.StartsWith('['))
-                {
-                    if (!hasVersion)
-                    {
-                        currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
-                        hasVersion = true;
-                    }
-                    else
-                    {
-                        // new version found
+        //        if (line.StartsWith('['))
+        //        {
+        //            if (!hasVersion)
+        //            {
+        //                currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
+        //                hasVersion = true;
+        //            }
+        //            else
+        //            {
+        //                // new version found
 
-                        Versions.Insert(0, currentVersion);
-                        currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
-                    }
+        //                Versions.Insert(0, currentVersion);
+        //                currentVersion = new FAVersionInfo() { Version = line.Substring(1, line.Length - 2) };
+        //            }
 
-                    continue;
-                }
+        //            continue;
+        //        }
 
-                currentVersion.ChangeItems.Add(ReadLine(line));
-            }
+        //        currentVersion.ChangeItems.Add(ReadLine(line));
+        //    }
 
-            Versions.Insert(0, currentVersion);
-        }
+        //    Versions.Insert(0, currentVersion);
+        //}
 
 
         CurrentVersion = Versions[0];

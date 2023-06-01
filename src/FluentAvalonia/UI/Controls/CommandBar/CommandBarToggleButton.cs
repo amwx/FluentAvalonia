@@ -12,14 +12,14 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a button control that can switch states and be displayed in a CommandBar.
 /// </summary>
-public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, IStyleable
+public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement
 {
     public CommandBarToggleButton()
     {
         TemplateSettings = new CommandBarButtonTemplateSettings();
     }
 
-    Type IStyleable.StyleKey => typeof(CommandBarToggleButton);
+    protected override Type StyleKeyOverride => typeof(CommandBarToggleButton);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -97,7 +97,7 @@ public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, 
         }
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter")
             return true;

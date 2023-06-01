@@ -2,7 +2,6 @@
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Styling;
 using Avalonia.Threading;
 
 namespace FluentAvalonia.UI.Controls;
@@ -15,10 +14,8 @@ namespace FluentAvalonia.UI.Controls;
 /// the CommandBarFlyout implementations.
 /// </remarks>
 [TemplatePart(s_tpMoreButton, typeof(Button))]
-public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
+public class CommandBarFlyoutCommandBar : CommandBar
 {
-    Type IStyleable.StyleKey => typeof(CommandBarFlyoutCommandBar);
-
     // As said in the Template, this is a modified version of whats in WinUI b/c the WinUI version
     // is stupid. They have two popups that are blended to make this control - one for the flyout,
     // and one with the CommandBar. Instead of doing that, which would just be a giant headache,
@@ -57,7 +54,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                         {
                             if (IsControlFocusable(PrimaryCommands[i] as Control, false))
                             {
-                                FocusManager.Instance.Focus(PrimaryCommands[i] as IInputElement, NavigationMethod.Unspecified);
+                                (PrimaryCommands[i] as InputElement).Focus(NavigationMethod.Unspecified);
                                 handled = true;
                                 break;
                             }
@@ -67,7 +64,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                         {
                             if (_moreButton != null && _moreButton.IsVisible)
                             {
-                                FocusManager.Instance?.Focus(_moreButton, NavigationMethod.Unspecified);
+                                _moreButton.Focus(NavigationMethod.Unspecified);
                             }
                         }
                     }
@@ -75,7 +72,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                     {
                         if (_moreButton != null && _moreButton.IsVisible)
                         {
-                            FocusManager.Instance?.Focus(_moreButton, NavigationMethod.Unspecified);
+                            _moreButton.Focus(NavigationMethod.Unspecified);
                         }
                     }
 
@@ -105,6 +102,8 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
             PopulateAccessibleControls();
         };
     }
+
+    protected override Type StyleKeyOverride => typeof(CommandBarFlyoutCommandBar);
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -160,7 +159,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
         switch (args.Key)
         {
             case Key.Tab:
-                var current = FocusManager.Instance?.Current;
+                var current = TopLevel.GetTopLevel(_owningFlyout.Target).FocusManager.GetFocusedElement();
 
                 if (current == _moreButton)
                 {
@@ -174,7 +173,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                     {
                         if (IsControlFocusable(SecondaryCommands[i] as Control, false))
                         {
-                            FocusManager.Instance.Focus(SecondaryCommands[i] as IInputElement, NavigationMethod.Tab);
+                            (SecondaryCommands[i] as InputElement).Focus(NavigationMethod.Tab);
                             args.Handled = true;
                             break;
                         }
@@ -203,7 +202,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                             {
                                 if (IsControlFocusable(SecondaryCommands[i] as Control, false))
                                 {
-                                    FocusManager.Instance.Focus(SecondaryCommands[i] as IInputElement, NavigationMethod.Tab);
+                                    (SecondaryCommands[i] as InputElement).Focus(NavigationMethod.Tab);
                                     args.Handled = true;
                                     //Debug.Assert(FocusManager.Instance.Current == SecondaryCommands[i]);
                                     break;
@@ -213,7 +212,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
 
                         if (neededOpen)
                         {
-                            Dispatcher.UIThread.Post(FocusFirstSecondary, DispatcherPriority.Layout);
+                            Dispatcher.UIThread.Post(FocusFirstSecondary, DispatcherPriority.Render);
                         }
                         else
                         {
@@ -226,7 +225,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                         {
                             if (IsControlFocusable(PrimaryCommands[i] as Control, false))
                             {
-                                FocusManager.Instance.Focus(PrimaryCommands[i] as IInputElement, NavigationMethod.Tab);
+                                (PrimaryCommands[i] as InputElement).Focus(NavigationMethod.Tab);
                                 args.Handled = true;
                                 break;
                             }
@@ -236,7 +235,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                         {
                             if (_moreButton != null && _moreButton.IsVisible)
                             {
-                                FocusManager.Instance?.Focus(_moreButton, NavigationMethod.Tab);
+                                _moreButton.Focus(NavigationMethod.Tab);
                                 args.Handled = true;
                             }
                         }
@@ -307,7 +306,7 @@ public class CommandBarFlyoutCommandBar : CommandBar, IStyleable
                             }
                         }
 
-                        FocusManager.Instance.Focus(control, NavigationMethod.Directional);
+                        control.Focus(NavigationMethod.Directional);
                         args.Handled = true;
                         break;
                     }

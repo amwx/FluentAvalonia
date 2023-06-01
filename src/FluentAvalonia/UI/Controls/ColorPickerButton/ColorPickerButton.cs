@@ -12,7 +12,7 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// A button that hides a <see cref="FAColorPicker"/> within a <see cref="Flyout"/>
 /// </summary>
-public partial class ColorPickerButton : TemplatedControl, IStyleable
+public partial class ColorPickerButton : TemplatedControl
 {
     static ColorPickerButton()
     {
@@ -22,8 +22,6 @@ public partial class ColorPickerButton : TemplatedControl, IStyleable
         UseColorTriangleProperty.OverrideDefaultValue<ColorPickerButton>(true);
         IsCompactProperty.OverrideDefaultValue<ColorPickerButton>(true);
     }
-
-    Type IStyleable.StyleKey => typeof(ColorPickerButton);
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {

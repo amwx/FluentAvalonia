@@ -17,8 +17,7 @@ public class FALocalizationHelper
 {
     private FALocalizationHelper()
     {
-        using var al = AvaloniaLocator.Current.GetService<IAssetLoader>()
-            .Open(new Uri("avares://FluentAvalonia/Assets/ControlStrings.json"));
+        using var al = AssetLoader.Open(new Uri("avares://FluentAvalonia/Assets/ControlStrings.json"));
 
         KeepType<LocalizationMap>();
         KeepType<LocalizationEntry>();

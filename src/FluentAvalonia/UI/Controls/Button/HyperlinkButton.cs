@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Logging;
-using Avalonia.Styling;
 using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
@@ -10,10 +9,8 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a button control that functions as a hyperlink.
 /// </summary>
-public class HyperlinkButton : Button, IStyleable
+public class HyperlinkButton : Button
 {
-    Type IStyleable.StyleKey => typeof(HyperlinkButton);
-
     /// <summary>
     /// Defines the <see cref="NavigateUri"/> property
     /// </summary>
@@ -28,6 +25,8 @@ public class HyperlinkButton : Button, IStyleable
         get => _navigateUri;
         set => SetAndRaise(NavigateUriProperty, ref _navigateUri, value);
     }
+
+    protected override Type StyleKeyOverride => typeof(HyperlinkButton);
 
     protected override void OnClick()
     {
@@ -47,7 +46,7 @@ public class HyperlinkButton : Button, IStyleable
         }
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter")
         {

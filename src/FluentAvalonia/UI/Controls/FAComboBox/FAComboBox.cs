@@ -140,7 +140,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         return !isContainer;
     }
 
-    public override void InvalidateMirrorTransform()
+    protected override void InvalidateMirrorTransform()
     {
         base.InvalidateMirrorTransform();
         UpdateFlowDirection();
@@ -156,8 +156,8 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         bool isOpen = IsDropDownOpen;
         bool isEditable = IsEditable;
 
-        if ((e.Key == Key.F4 && e.KeyModifiers.HasAllFlags(KeyModifiers.Alt) == false) ||
-                ((e.Key == Key.Down || e.Key == Key.Up) && e.KeyModifiers.HasAllFlags(KeyModifiers.Alt)))
+        if ((e.Key == Key.F4 && e.KeyModifiers.HasFlag(KeyModifiers.Alt) == false) ||
+                ((e.Key == Key.Down || e.Key == Key.Up) && e.KeyModifiers.HasFlag(KeyModifiers.Alt)))
         {
             IsDropDownOpen = !isOpen;
             e.Handled = true;
@@ -240,7 +240,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             var firstChild = Presenter?.Panel?.Children.FirstOrDefault(c => CanFocus(c));
             if (firstChild != null)
             {
-                FocusManager.Instance?.Focus(firstChild, NavigationMethod.Directional);
+                firstChild.Focus(NavigationMethod.Directional);
                 e.Handled = true;
             }
         }
@@ -319,7 +319,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         {
             if (!IsDropDownOpen)
             {
-                FocusManager.Instance.Focus(_textBox, e.NavigationMethod);
+                _textBox.Focus(e.NavigationMethod);
                 HighlightTextBoxText();
             }
             else
@@ -362,7 +362,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
         bool HasImplicitFocus()
         {
-            var c = FocusManager.Instance.Current as Control;
+            var c = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Control;
             // FAComboBoxItem is the only container we allow, so if it has focus
             // we know we're in this ComboBox's dropdown and have implicit focus
             if (c is FAComboBoxItem)
@@ -782,7 +782,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             var first = ContainerFromIndex(0);
             if (first != null)
             {
-                FocusManager.Instance.Focus(first, NavigationMethod.Directional);
+                first.Focus(NavigationMethod.Directional);
                 e.Handled = true;
             }
         }

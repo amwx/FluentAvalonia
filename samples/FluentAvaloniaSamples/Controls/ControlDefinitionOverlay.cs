@@ -114,7 +114,7 @@ public class ControlDefinitionOverlay : TemplatedControl
             FillMode = FillMode.Forward
         };
 
-        await ani.RunAsync(this, null);
+        await ani.RunAsync(this);
 
         await BuildControlDefinition(TargetType);
 
@@ -160,7 +160,7 @@ public class ControlDefinitionOverlay : TemplatedControl
             FillMode = FillMode.Forward
         };
 
-        await ani.RunAsync(this, null);
+        await ani.RunAsync(this);
 
         IsVisible = false;
     }

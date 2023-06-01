@@ -444,7 +444,8 @@
                                             </TabItem.Header>
                                         </TabItem>
                                         <TabItem Name="WheelTab"
-                                                 IsVisible="{TemplateBinding UseColorWheel}">
+                                                 IsVisible="False">
+                                            <!--IsVisible="{TemplateBinding UseColorWheel}"-->
                                             <TabItem.Header>
                                                 <ui:FontIcon Glyph="&#xE790;"
                                                         FontSize="20"
@@ -453,7 +454,8 @@
                                             </TabItem.Header>
                                         </TabItem>
                                         <TabItem Name="TriangleTab"
-                                                 IsVisible="{TemplateBinding UseColorTriangle}">
+                                                 IsVisible="False">
+                                            <!--IsVisible="{TemplateBinding UseColorTriangle}"-->
                                             <TabItem.Header>
                                                 <ui:IconSourceElement Width="18" Height="18">
                                                     <ui:IconSourceElement.IconSource>

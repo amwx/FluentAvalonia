@@ -15,14 +15,14 @@ namespace FluentAvalonia.UI.Controls;
 /// the template of a <see cref="CommandBar"/>
 /// </remarks>
 [PseudoClasses(s_pcIcons, s_pcToggle)]
-public class CommandBarOverflowPresenter : ItemsControl, IStyleable
+public class CommandBarOverflowPresenter : ItemsControl
 {
     public CommandBarOverflowPresenter()
     {
         ItemsView.CollectionChanged += ItemsCollectionChanged;
     }
 
-    Type IStyleable.StyleKey => typeof(CommandBarOverflowPresenter);
+    protected override Type StyleKeyOverride => typeof(CommandBarOverflowPresenter);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
