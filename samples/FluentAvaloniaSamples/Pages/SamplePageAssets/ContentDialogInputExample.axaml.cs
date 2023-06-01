@@ -25,8 +25,7 @@ public partial class ContentDialogInputExample : UserControl
         {
             Dispatcher.UIThread.InvokeAsync(() =>
             {
-                KeyboardDevice.Instance.SetFocusedElement(inputElement, NavigationMethod.Unspecified,
-                    KeyModifiers.None);
+                inputElement.Focus();
             });
         }
     }

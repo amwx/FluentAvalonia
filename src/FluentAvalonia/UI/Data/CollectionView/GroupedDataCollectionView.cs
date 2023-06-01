@@ -270,7 +270,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
     private void CreateGroups()
     {
         bool useSpecialized = _hasSortOrFilter;
-        using var groups = new PooledList<CollectionViewGroup>();
+        var groups = new List<CollectionViewGroup>();
 
         _ignoreGroupChanges = true;
         var en = _source.GetEnumerator();
@@ -306,7 +306,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
             case NotifyCollectionChangedAction.Add:
                 {
                     var insertIndexInView = GetItemCountToIndex(groups, args.NewStartingIndex);
-                    using var list = new PooledList<CollectionViewGroup>(args.NewItems.Count);
+                    var list = new List<CollectionViewGroup>(args.NewItems.Count);
 
                     for (int i = 0; i < args.NewItems.Count; i++)
                     {
@@ -328,9 +328,6 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
                     OnVectorChanged(new NotifyCollectionChangedEventArgs(
                             NotifyCollectionChangedAction.Add, (IList)inccList, insertIndexInView));
-
-                    if (inccList is IDisposable d)
-                        d.Dispose();
                 }
                 break;
 
@@ -365,7 +362,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
                     _count -= dItems;
 
-                    using var list = new PooledList<CollectionViewGroup>(args.NewItems.Count);
+                    var list = new List<CollectionViewGroup>(args.NewItems.Count);
                     dItems = 0;
                     for (int i = 0; i < args.NewItems.Count; i++)
                     {
@@ -388,12 +385,6 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
                             NotifyCollectionChangedAction.Replace,
                             (IList)inccListNew, (IList)inccListOld, insertIndexInView));
                     }
-
-                    if (inccListNew is IDisposable d)
-                        d.Dispose();
-
-                    if (inccListOld is IDisposable d2)
-                        d2.Dispose();
                 }
                 break;
 
@@ -436,35 +427,17 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
         IList<object> PopulateINCCList(int groupStart, int groupCount, int itemCount)
         {
-            IList<object> list;
-            if (itemCount > 1024)
+            var l = new List<object>(itemCount);
+            for (int i = groupStart; i < groupStart + groupCount; i++)
             {
-                var l = new List<object>(itemCount);
-                for (int i = groupStart; i < groupStart + groupCount; i++)
-                {
-                    var g = CollectionGroups[i];
-                    if (g.GroupItems.Count == 0)
-                        continue;
+                var g = CollectionGroups[i];
+                if (g.GroupItems.Count == 0)
+                    continue;
 
-                    l.AddRange(g.GroupItems);
-                }
-                list = l;
-            }
-            else
-            {
-                var l = new PooledList<object>(itemCount);
-                for (int i = groupStart; i < groupStart + groupCount; i++)
-                {
-                    var g = CollectionGroups[i];
-                    if (g.GroupItems.Count == 0)
-                        continue;
-
-                    l.AddRange(g.GroupItems);
-                }
-                list = l;
+                l.AddRange(g.GroupItems);
             }
 
-            return list;
+            return l;
         }
 
         int GetItemCount(int start, int count)

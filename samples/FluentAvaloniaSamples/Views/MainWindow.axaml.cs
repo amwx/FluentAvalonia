@@ -22,9 +22,9 @@ public class SampleAppSplashScreen : IApplicationSplashScreen
 {
     public SampleAppSplashScreen()
     {
-        var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using (var s = al.Open(new Uri("avares://FluentAvaloniaSamples/Assets/FAIcon.ico")))
-            AppIcon = new Bitmap(s);
+        //var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
+        //using (var s = al.Open(new Uri("avares://FluentAvaloniaSamples/Assets/FAIcon.ico")))
+        //    AppIcon = new Bitmap(s);
     }
 
     string IApplicationSplashScreen.AppName { get; }
@@ -85,10 +85,10 @@ public partial class MainWindow : AppWindow
             // TODO: add Windows version to CoreWindow
             if (IsWindows11 && thm != FluentAvaloniaTheme.HighContrastTheme)
             {
-                TransparencyBackgroundFallback = Brushes.Transparent;
-                TransparencyLevelHint = WindowTransparencyLevel.Mica;
+                //TransparencyBackgroundFallback = Brushes.Transparent;
+                //TransparencyLevelHint = WindowTransparencyLevel.Mica;
 
-                TryEnableMicaEffect();
+                //TryEnableMicaEffect();
             }
         }
 

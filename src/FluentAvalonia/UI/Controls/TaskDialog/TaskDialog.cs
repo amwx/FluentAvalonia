@@ -93,7 +93,7 @@ public partial class TaskDialog : ContentControl
         }
     }
     
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter")
             return true;
@@ -167,11 +167,11 @@ public partial class TaskDialog : ContentControl
                 _xamlOwnerChildIndex = p.Children.IndexOf(this);
                 p.Children.RemoveAt(_xamlOwnerChildIndex);
             }
-            else if (_xamlOwner is IContentControl icc)
+            else if (_xamlOwner is ContentControl icc)
             {
                 icc.Content = null;
             }
-            else if (_xamlOwner is IContentPresenter icp)
+            else if (_xamlOwner is ContentPresenter icp)
             {
                 icp.Content = null;
             }
@@ -182,7 +182,7 @@ public partial class TaskDialog : ContentControl
         }
 
         object result = null;
-        _previousFocus = FocusManager.Instance?.Current;
+        _previousFocus = TopLevel.GetTopLevel(owner).FocusManager.GetFocusedElement();
 
         if (showHosted || !(owner is WindowBase))
         {
@@ -272,7 +272,7 @@ public partial class TaskDialog : ContentControl
         OnClosed();
         _host = null;
 
-        FocusManager.Instance?.Focus(_previousFocus);
+        _previousFocus.Focus();
 
         return result ?? TaskDialogStandardResult.None;
     }
@@ -353,11 +353,11 @@ public partial class TaskDialog : ContentControl
             {
                 d.Child = this;
             }
-            else if (_xamlOwner is IContentControl icc)
+            else if (_xamlOwner is ContentControl icc)
             {
                 icc.Content = this;
             }
-            else if (_xamlOwner is IContentPresenter icp)
+            else if (_xamlOwner is ContentPresenter icp)
             {
                 icp.Content = this;
             }
@@ -580,7 +580,7 @@ public partial class TaskDialog : ContentControl
 
     private void TrySetInitialFocus()
     {
-        var curFocus = FocusManager.Instance?.Current as InputElement;
+        var curFocus = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Control;
         bool setFocus = false;
         if (curFocus?.FindAncestorOfType<TaskDialog>() == null)
         {
@@ -604,11 +604,11 @@ public partial class TaskDialog : ContentControl
             var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next);
             if (next != null)
             {
-                FocusManager.Instance.Focus(next);
+                next.Focus();
             }
             else
             {
-                FocusManager.Instance.Focus(this);
+                this.Focus();
             }
 
 #if DEBUG

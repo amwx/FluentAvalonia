@@ -15,7 +15,7 @@ namespace FluentAvalonia.UI.Controls;
 /// This class should generally not be used outside of FluentAvalonia, and is
 /// only public for Xaml styling support
 /// </remarks>
-public class DialogHost : ContentControl, IStyleable
+public class DialogHost : ContentControl
 {
     public DialogHost()
     {
@@ -24,7 +24,7 @@ public class DialogHost : ContentControl, IStyleable
         VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
     }
 
-    Type IStyleable.StyleKey => typeof(OverlayPopupHost);
+    protected override Type StyleKeyOverride => typeof(OverlayPopupHost);
 
     protected override Size MeasureOverride(Size availableSize)
     {

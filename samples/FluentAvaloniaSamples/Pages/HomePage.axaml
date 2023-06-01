@@ -30,23 +30,22 @@
                 </StackPanel>
             </Panel>
 
-
-            <StackPanel>
-                <StackPanel Margin="18 0 18 18" Spacing="4">
-                    <local:OptionsDisplayItem Header="Getting started"
-                                              Description="See how to get FluentAvalonia integrated into your apps"
-                                              Icon="StarFilled"
-                                              Navigates="True"
-                                              Name="GettingStartedItem" />
-
-                    <local:OptionsDisplayItem Header="What's New"
-                                              Description="See what's been changed, fixed, and/or improved in the most recent version of FluentAvalonia"
-                                              Icon="M8.5 2C8.22386 2 8 2.22386 8 2.5C8 2.77614 8.22386 3 8.5 3H9.5V17H8.5C8.22386 17 8 17.2239 8 17.5C8 17.7761 8.22386 18 8.5 18H11.5C11.7761 18 12 17.7761 12 17.5C12 17.2239 11.7761 17 11.5 17H10.5V3H11.5C11.7761 3 12 2.77614 12 2.5C12 2.22386 11.7761 2 11.5 2H8.5ZM4.5 4H8.5V16H4.5C3.11929 16 2 14.8807 2 13.5V6.5C2 5.11929 3.11929 4 4.5 4ZM15.5 16H11.5V4H15.5C16.8807 4 18 5.11929 18 6.5V13.5C18 14.8807 16.8807 16 15.5 16Z"
-                                              Navigates="True"
-                                              Name="WhatsNewItem"/>
-
-                </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="12"
+                        Margin="18">
+                <Path Data="M 24,6.3476562 A 1.2622223,1.2622223 0 0 0 22.90625,6.9785156 L 3.9804688,39.759766 A 1.2622223,1.2622223 0 0 0 5.0742188,41.652344 H 42.925781 A 1.2622223,1.2622223 0 0 0 44.019531,39.759766 L 25.09375,6.9785156 A 1.2622223,1.2622223 0 0 0 24,6.3476562 Z M 22.363281,14.621094 H 25.460938 L 25.238281,31.306641 H 22.570312 Z M 23.992188,34.691406 C 24.566992,34.691406 25.002734,34.85752 25.300781,35.1875 25.598828,35.506836 25.748047,35.905762 25.748047,36.384766 25.748047,36.86377 25.598828,37.262695 25.300781,37.582031 25.002734,37.890723 24.566992,38.044922 23.992188,38.044922 23.417383,38.044922 22.981641,37.890723 22.683594,37.582031 22.396191,37.262695 22.251953,36.86377 22.251953,36.384766 22.251953,35.905762 22.396191,35.506836 22.683594,35.1875 22.981641,34.85752 23.417383,34.691406 23.992188,34.691406 Z"
+                      Fill="{DynamicResource SystemFillColorCriticalBrush}"
+                      Width="80" Height="80"
+                      Stretch="UniformToFill"/>
+                
+                <TextBlock Text="NOTICE"
+                           Theme="{StaticResource DisplayTextBlockStyle}"
+                           VerticalAlignment="Center"/>
             </StackPanel>
+            
+            <TextBlock Text="FluentAvaloniaSamples is now considered deprecated and not all features or examples may work. A refreshed sample app is coming very soon. I apologize for any inconvenience."
+                       TextWrapping="Wrap"
+                       Margin="18 0"/>
 		</StackPanel>
 	</ScrollViewer>
 </UserControl>

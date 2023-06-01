@@ -12,7 +12,7 @@ namespace FluentAvalonia.UI.Controls;
 /// between two states, checked or unchecked.
 /// </summary>
 [PseudoClasses(SharedPseudoclasses.s_pcChecked)]
-public class ToggleMenuFlyoutItem : MenuFlyoutItem, IStyleable
+public class ToggleMenuFlyoutItem : MenuFlyoutItem
 {
     /// <summary>
     /// Defines the <see cref="IsChecked"/> Property
@@ -30,7 +30,7 @@ public class ToggleMenuFlyoutItem : MenuFlyoutItem, IStyleable
         set => SetValue(IsCheckedProperty, value);
     }
 
-    Type IStyleable.StyleKey => typeof(ToggleMenuFlyoutItem);
+    protected override Type StyleKeyOverride => typeof(ToggleMenuFlyoutItem);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {

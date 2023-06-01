@@ -6,7 +6,7 @@ using Avalonia.Styling;
 
 namespace FluentAvalonia.UI.Windowing;
 
-public partial class AppWindow : Window, IStyleable
+public partial class AppWindow : Window
 {
     /// <summary>
     /// Defines the <see cref="TemplateSettings"/> property
@@ -121,7 +121,7 @@ public partial class AppWindow : Window, IStyleable
 
     protected internal bool IsWindows { get; internal set; }
 
-    Type IStyleable.StyleKey => typeof(AppWindow);
+    protected override Type StyleKeyOverride => typeof(AppWindow);
 
     internal MinMaxCloseControl SystemCaptionControl => _captionButtons;
 

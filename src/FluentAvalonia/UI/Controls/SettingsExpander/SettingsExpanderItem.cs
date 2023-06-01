@@ -198,7 +198,7 @@ public partial class SettingsExpanderItem : ContentControl, ICommandSource
         PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter" || presenter.Name == "FooterPresenter")
             return true;

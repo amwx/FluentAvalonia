@@ -7,7 +7,6 @@ using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -184,7 +183,7 @@ public partial class TeachingTip : ContentControl
         }
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "MainContentPresenter")
             return true;
@@ -1317,7 +1316,7 @@ public partial class TeachingTip : ContentControl
         {
             if (_rootElement != null)
             {
-                Visual current = FocusManager.Instance.Current as Visual;
+                Visual current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Visual;
 
                 while (current != null)
                 {
@@ -1335,10 +1334,10 @@ public partial class TeachingTip : ContentControl
         {
             if (_previouslyFocusedElement != null)
             {
-                FocusManager.Instance.Focus(_previouslyFocusedElement, NavigationMethod.Unspecified);
+                _previouslyFocusedElement.Focus(NavigationMethod.Unspecified);
                 _previouslyFocusedElement = null;
 
-                return FocusManager.Instance.Current == _previouslyFocusedElement;
+                return true;
             }
         }
         else if (!hasFocusInSubtree() && !fromPopup)
@@ -1362,9 +1361,9 @@ public partial class TeachingTip : ContentControl
 
             if (f6Button != null)
             {
-                _previouslyFocusedElement = FocusManager.Instance.Current;
-                FocusManager.Instance.Focus(f6Button, NavigationMethod.Directional);
-                return FocusManager.Instance.Current == f6Button;
+                _previouslyFocusedElement = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
+                f6Button.Focus(NavigationMethod.Directional);
+                return true;
             }
         }
 
@@ -1428,7 +1427,7 @@ public partial class TeachingTip : ContentControl
         //To give the tip focus, then we return focus when the popup closes.
         if (_lastCloseReason == TeachingTipCloseReason.CloseButton)
         {
-            FocusManager.Instance.Focus(_previouslyFocusedElement, NavigationMethod.Unspecified);
+            _previouslyFocusedElement?.Focus(NavigationMethod.Unspecified);
         }
         _previouslyFocusedElement = null;
 

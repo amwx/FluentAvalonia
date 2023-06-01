@@ -37,7 +37,7 @@ public partial class FontIcon : FAIconElement
             GenerateText();
         }
 
-        return _textLayout.Bounds.Size;
+        return new Size(_textLayout.Width, _textLayout.Height);
     }
 
     public override void Render(DrawingContext context)
@@ -48,8 +48,8 @@ public partial class FontIcon : FAIconElement
         var dstRect = new Rect(Bounds.Size);
         using (context.PushClip(dstRect))
         {
-            var pt = new Point(dstRect.Center.X - _textLayout.Bounds.Width / 2,
-                               dstRect.Center.Y - _textLayout.Bounds.Height / 2);
+            var pt = new Point(dstRect.Center.X - _textLayout.Width / 2,
+                               dstRect.Center.Y - _textLayout.Height / 2);
             _textLayout.Draw(context, pt);
         }
     }

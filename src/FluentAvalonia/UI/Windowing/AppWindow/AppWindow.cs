@@ -20,7 +20,7 @@ namespace FluentAvalonia.UI.Windowing;
 /// Custom Window that supports a modern Windows look and title bar customization,
 /// with a graceful fallback for MacOS and Linux
 /// </summary>
-public partial class AppWindow : Window, IStyleable
+public partial class AppWindow : Window
 {
     public AppWindow()
     {
@@ -97,7 +97,7 @@ public partial class AppWindow : Window, IStyleable
 
         if (change.Property == IconProperty)
         {
-            base.Icon = new WindowIcon(change.NewValue as IBitmap);
+            base.Icon = new WindowIcon(change.NewValue as Bitmap);
             PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
         }
         else if (change.Property == ActualThemeVariantProperty)
@@ -568,8 +568,8 @@ public partial class AppWindow : Window, IStyleable
             }
         };
 
-        await Task.WhenAll(aniSplash.RunAsync(_splashContext.Host, null),
-            aniCP.RunAsync((Animatable)Presenter, null));
+        await Task.WhenAll(aniSplash.RunAsync(_splashContext.Host),
+            aniCP.RunAsync((Animatable)Presenter));
 
         PseudoClasses.Set(":splashOpen", false);
         _splashContext.HasShownSplashScreen = true;

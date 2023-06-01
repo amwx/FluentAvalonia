@@ -27,40 +27,35 @@
 
     <ControlTheme x:Key="TimePickerFlyoutButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <uip:FAContentPresenter Background="{TemplateBinding Background}"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        Content="{TemplateBinding Content}"
-                                        HorizontalContentAlignment="Stretch"
-                                        VerticalContentAlignment="Stretch"
-                                        CornerRadius="{TemplateBinding CornerRadius}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"/>
-            </ControlTemplate>
-        </Setter>
+        <Setter Property="Padding" Value="0" />
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ContentPresenter">
+            <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPointerOver}" />
-                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPointerOver}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPointerOver}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ContentPresenter">
+            <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPressed}" />
-                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPressed}" />
             </Style>
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ContentPresenter">
+            <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundDisabled}" />
-                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundDisabled}" />
             </Style>
         </Style>
     </ControlTheme>

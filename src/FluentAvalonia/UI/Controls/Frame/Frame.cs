@@ -70,7 +70,7 @@ public partial class Frame : ContentControl
         _presenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter")
             return true;

@@ -11,7 +11,7 @@ namespace FluentAvalonia.UI.Controls;
 /// Represents a menu item that is mutually exclusive with other radio menu items in its group.
 /// </summary>
 [PseudoClasses(SharedPseudoclasses.s_pcChecked)]
-public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
+public class RadioMenuFlyoutItem : MenuFlyoutItem
 {
     static RadioMenuFlyoutItem()
     {
@@ -54,7 +54,7 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
         set => SetValue(IsCheckedProperty, value);
     }
 
-    Type IStyleable.StyleKey => typeof(RadioMenuFlyoutItem);
+    protected override Type StyleKeyOverride => typeof(RadioMenuFlyoutItem);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -96,6 +96,9 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem, IStyleable
             {
                 if (group.TryGetTarget(out var item))
                 {
+                    if (item == this)
+                        return;
+
                     item.UncheckFromGroupSelection();
                 }
 

@@ -236,7 +236,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
             }
             else if (target is TextBlock txtB)
             {
-                await AvaloniaLocator.Current.GetService<IClipboard>().SetTextAsync(txtB.Text);
+                await TopLevel.GetTopLevel(Target).Clipboard.SetTextAsync(txtB.Text);
             }
         }
         catch
@@ -262,7 +262,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
             }
             else if (target is TextBlock txtB)
             {
-                var txt = await AvaloniaLocator.Current.GetService<IClipboard>().GetTextAsync();
+                var txt = await TopLevel.GetTopLevel(target).Clipboard.GetTextAsync();
                 if (txt != null)
                 {
                     txtB.Text = txt;

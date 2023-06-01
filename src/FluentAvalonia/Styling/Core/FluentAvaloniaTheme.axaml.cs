@@ -139,8 +139,6 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     {
         AvaloniaXamlLoader.Load(this);
 
-        AvaloniaLocator.CurrentMutable.Bind<FluentAvaloniaTheme>().ToConstant(this);
-
         // First load our base and theme resources
 
         // When initializing, UseSystemTheme overrides any setting of RequestedTheme, this must be
@@ -163,7 +161,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     {
         ThemeVariant theme = null;
 
-        var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
+        var ps = Application.Current.PlatformSettings;
 
         ps.ColorValuesChanged += OnPlatformColorValuesChanged;
                 
@@ -229,7 +227,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
             }
             else if (OSVersionHelper.IsMacOS())
             {
-                TryLoadMacOSAccentColor(AvaloniaLocator.Current.GetService<IPlatformSettings>());
+                TryLoadMacOSAccentColor(Application.Current.PlatformSettings);
             }
             else if (OSVersionHelper.IsLinux())
             {
@@ -384,7 +382,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
                 }
                 else // Mac & WASM/Mobile
                 {
-                    TryLoadMacOSAccentColor(AvaloniaLocator.Current.GetService<IPlatformSettings>());
+                    TryLoadMacOSAccentColor(Application.Current.PlatformSettings);
                 }
             }
             else

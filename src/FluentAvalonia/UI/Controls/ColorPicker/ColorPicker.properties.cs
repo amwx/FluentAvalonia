@@ -1,10 +1,8 @@
-﻿using Avalonia.Controls;
-using Avalonia.Data;
+﻿using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Media;
-using System.Collections.Generic;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -67,13 +65,15 @@ public partial class FAColorPicker
     /// Defines the <see cref="UseColorWheel"/> property
     /// </summary>
     public static readonly StyledProperty<bool> UseColorWheelProperty =
-        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseColorWheel));
+        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseColorWheel),
+            defaultValue: false);
 
     /// <summary>
     /// Defines the <see cref="UseColorTriangle"/> property
     /// </summary>
     public static readonly StyledProperty<bool> UseColorTriangleProperty =
-        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseColorTriangle));
+        AvaloniaProperty.Register<FAColorPicker, bool>(nameof(UseColorTriangle),
+            defaultValue: false);
 
     /// <summary>
     /// Defines the <see cref="UseColorPalette"/> property
