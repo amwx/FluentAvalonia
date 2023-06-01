@@ -96,6 +96,9 @@ public class RadioMenuFlyoutItem : MenuFlyoutItem
             {
                 if (group.TryGetTarget(out var item))
                 {
+                    if (item == this)
+                        return;
+
                     item.UncheckFromGroupSelection();
                 }
 
