@@ -81,8 +81,7 @@ public partial class AppWindowPage : ControlsPageBase
 
     private Stream GetResource(string loc)
     {
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        return assets.Open(new Uri(loc));
+        return AssetLoader.Open(new Uri(loc));
     }
 
     private void ShowSplashClick(object sender, RoutedEventArgs e)

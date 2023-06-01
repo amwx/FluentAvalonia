@@ -297,7 +297,7 @@ public class ControlsPageBase : UserControl, IStyleable
             }
         };
 
-        await ani.RunAsync(_optionsHost, null, _cts.Token);
+        await ani.RunAsync(_optionsHost, _cts.Token);
 
         _cts = null;
     }
@@ -398,68 +398,4 @@ public class ControlsPageBase : UserControl, IStyleable
     private MenuFlyoutItem _cSharpSourceItem;
     private MenuFlyoutItem _showDefItem;
     private MenuFlyoutSeparator _sep1, _sep2;
-}
-
-public class CompositionTarget
-{
-    public static event EventHandler Rendering
-    {
-        add
-        {
-            _subscribers++;
-            if (_subscribers == 1)
-                AttachRenderTask();
-            _renderTask._renderEvent += value;
-        }
-        remove
-        {
-            _subscribers--;
-            // It's possible the unsub from Rendering may come from within the Rendering handler
-            // which is on the Render thread. Removing the render task though requires the UIThread,
-            // so post it on the dispatcher to be processed ASAP
-            if (_subscribers == 0)
-                DetachRenderTask();
-            _renderTask._renderEvent -= value;
-        }
-    }
-
-    private static void AttachRenderTask()
-    {
-        _renderTask ??= new RenderTask();
-
-        var rl = AvaloniaLocator.Current.GetService<IRenderLoop>();
-        rl.Add(_renderTask);
-    }
-
-    private static void DetachRenderTask()
-    {
-        var rl = AvaloniaLocator.Current.GetService<IRenderLoop>();
-        rl.Remove(_renderTask);
-    }
-
-
-    private static RenderTask _renderTask;
-    private static int _subscribers;
-
-    private class RenderTask : IRenderLoopTask
-    {
-        public bool NeedsUpdate { get; }
-
-        public void Render()
-        {
-            // We're on the render thread, but it's expected by handlers to be on the 
-            // UI thread here, so post it ASAP to the dispatcher
-            Dispatcher.UIThread.Post(
-                () => _renderEvent?.Invoke(null, EventArgs.Empty),
-                DispatcherPriority.Send);
-
-        }
-
-        public void Update(TimeSpan time)
-        {
-
-        }
-
-        public EventHandler _renderEvent;
-    }
 }

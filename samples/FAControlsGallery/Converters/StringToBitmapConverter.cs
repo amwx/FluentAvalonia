@@ -12,8 +12,7 @@ public class StringToBitmapConverter : IValueConverter
     {
         try
         {
-            var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using var s = al.Open(new Uri(value.ToString()));
+            using var s = AssetLoader.Open(new Uri(value.ToString()));
             return new Bitmap(s);
         }
         catch

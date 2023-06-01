@@ -172,7 +172,7 @@ public class SampleCodePresenter : HeaderedContentControl
         if (sampleString.StartsWith(avares) && 
             Uri.TryCreate(sampleString, UriKind.Absolute, out Uri result))
         {
-            using (var s = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(result))
+            using (var s = AssetLoader.Open(result))
             using (var sr = new StreamReader(s))
             {
                 sampleString = sr.ReadToEnd();

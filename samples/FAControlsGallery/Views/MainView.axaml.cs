@@ -98,8 +98,7 @@ public partial class MainView : UserControl
     {
         string GetControlsList(string name)
         {
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using (var stream = assets.Open(new Uri(name)))
+            using (var stream = AssetLoader.Open(new Uri(name)))
             using (StreamReader reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
@@ -363,7 +362,7 @@ public partial class MainView : UserControl
                 }
             };
 
-            await ani.RunAsync(WindowIcon, null);
+            await ani.RunAsync(WindowIcon);
 
             NavView.IsBackButtonVisible = true;
         }
@@ -397,7 +396,7 @@ public partial class MainView : UserControl
                 }
             };
 
-            await ani.RunAsync(WindowIcon, null);
+            await ani.RunAsync(WindowIcon);
         }
     }
 

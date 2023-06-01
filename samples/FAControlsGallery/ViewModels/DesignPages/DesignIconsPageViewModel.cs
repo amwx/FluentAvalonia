@@ -40,8 +40,7 @@ public class DesignIconsPageViewModel : ViewModelBase
     {
         return await Task.Run(() =>
         {
-            var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using var s = al.Open(new Uri("avares://FAControlsGallery/Assets/FASymbolFontList.json"));
+            using var s = AssetLoader.Open(new Uri("avares://FAControlsGallery/Assets/FASymbolFontList.json"));
             var icons = JsonSerializer.Deserialize<List<FontIconInfo>>(s);
 
             return icons;

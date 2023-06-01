@@ -65,25 +65,25 @@ public class SettingsPageViewModel : MainPageViewModelBase
         {
             if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
             {
-                if (value)
-                {
-                    var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
-                    {
-                        _customAccentColor = (Color)curColor;
-                        _listBoxColor = _customAccentColor;
+                //if (value)
+                //{
+                //    var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+                //    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
+                //    {
+                //        _customAccentColor = (Color)curColor;
+                //        _listBoxColor = _customAccentColor;
 
-                        RaisePropertyChanged(nameof(CustomAccentColor));
-                        RaisePropertyChanged(nameof(ListBoxColor));
-                    }
+                //        RaisePropertyChanged(nameof(CustomAccentColor));
+                //        RaisePropertyChanged(nameof(ListBoxColor));
+                //    }
 
-                    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
-                }
-                else
-                {
-                    CustomAccentColor = default;
-                    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
-                }
+                //    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
+                //}
+                //else
+                //{
+                //    CustomAccentColor = default;
+                //    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
+                //}
             }
         }
     }
@@ -107,7 +107,7 @@ public class SettingsPageViewModel : MainPageViewModelBase
         {
             if (RaiseAndSetIfChanged(ref _customAccentColor, value))
             {
-                AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
+                //AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
 
                 _ignoreSetListBoxColor = true;
                 ListBoxColor = value;

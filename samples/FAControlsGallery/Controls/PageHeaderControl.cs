@@ -90,8 +90,7 @@ public class PageHeaderControl : TemplatedControl
 
         header += ".png";
 
-        var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using var s = al.Open(new Uri($"{asset}{header}"));
+        using var s = AssetLoader.Open(new Uri($"{asset}{header}"));
         _text1.Source = new Bitmap(s);
     }
 

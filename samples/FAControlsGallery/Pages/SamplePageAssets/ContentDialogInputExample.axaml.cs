@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 
 namespace FAControlsGallery.Pages.SamplePageAssets;
@@ -20,8 +19,7 @@ public partial class ContentDialogInputExample : UserControl
         {
             Dispatcher.UIThread.InvokeAsync(() =>
             {
-                KeyboardDevice.Instance.SetFocusedElement(inputElement, NavigationMethod.Unspecified,
-                    KeyModifiers.None);
+                inputElement.Focus(NavigationMethod.Unspecified, KeyModifiers.None);
             });
         }
     }
