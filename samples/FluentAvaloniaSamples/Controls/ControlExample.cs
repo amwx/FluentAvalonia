@@ -354,12 +354,12 @@ public class ControlExample : HeaderedContentControl
             _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Dark;
             // Hack force resource invalidation as that doesn't seem to want to happen
             // the first time toggle theme is set
-            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
+            //NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
         }
         else
         {
             _exampleThemeScopeProvider.RequestedThemeVariant = ThemeVariant.Light;
-            NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
+            //NotifyChildResourcesChanged(ResourcesChangedEventArgs.Empty);
         }
 
         //if (_cSharpTextEditor != null)
@@ -392,7 +392,7 @@ public class ControlExample : HeaderedContentControl
 
         if (Uri.TryCreate(sampleString, UriKind.Absolute, out Uri result))
         {
-            using (var s = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(result))
+            using (var s = AssetLoader.Open(result))
             using (var sr = new StreamReader(s))
             {
                 sampleString = sr.ReadToEnd();
@@ -555,7 +555,7 @@ public class ControlExample : HeaderedContentControl
             // Uri may be created even when it shouldn't so Try-Catch this
             try
             {
-                using (var s = AvaloniaLocator.Current.GetService<IAssetLoader>().Open(result))
+                using (var s = AssetLoader.Open(result))
                 using (var sr = new StreamReader(s))
                 {
                     notes = sr.ReadToEnd();

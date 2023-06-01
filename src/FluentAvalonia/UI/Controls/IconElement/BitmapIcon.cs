@@ -70,40 +70,40 @@ public partial class BitmapIcon : FAIconElement
         var hei = (int)dst.Height;
 
         using (var bmp = new RenderTargetBitmap(new PixelSize(wid, hei)))
-        using (var ctx = bmp.PlatformImpl.Item.CreateDrawingContext())
+        using (var ctx = bmp.CreateDrawingContext())
         {
-            var feat = ctx.GetFeature<ISkiaSharpApiLeaseFeature>();
-            if (feat == null)
-                throw new Exception("BitmapIcon requires SkiaSharp to be rendering backend");
-            using var lease = feat.Lease();
-            var skDC = lease.SkCanvas;
+            //var feat = ctx.GetFeature<ISkiaSharpApiLeaseFeature>();
+            //if (feat == null)
+            //    throw new Exception("BitmapIcon requires SkiaSharp to be rendering backend");
+            //using var lease = feat.Lease();
+            //var skDC = lease.SkCanvas;
 
-            skDC.Clear(new SKColor(0, 0, 0, 0));
+            //skDC.Clear(new SKColor(0, 0, 0, 0));
 
-            var finalBmp = _bitmap.Resize(new SKImageInfo(wid, hei), SKFilterQuality.High);
+            //var finalBmp = _bitmap.Resize(new SKImageInfo(wid, hei), SKFilterQuality.High);
 
-            if (ShowAsMonochrome)
-            {
-                var avColor = Foreground is ISolidColorBrush sc ? sc.Color : Colors.White;
+            //if (ShowAsMonochrome)
+            //{
+            //    var avColor = Foreground is ISolidColorBrush sc ? sc.Color : Colors.White;
 
-                var color = new SKColor(avColor.R, avColor.G, avColor.B, avColor.A);
-                SKPaint paint = new SKPaint();
-                paint.ColorFilter = SKColorFilter.CreateBlendMode(color, SKBlendMode.SrcATop);
+            //    var color = new SKColor(avColor.R, avColor.G, avColor.B, avColor.A);
+            //    SKPaint paint = new SKPaint();
+            //    paint.ColorFilter = SKColorFilter.CreateBlendMode(color, SKBlendMode.SrcATop);
 
-                skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei), paint);
-                paint.Dispose();
-            }
-            else
-            {
-                skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei));
-            }
+            //    skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei), paint);
+            //    paint.Dispose();
+            //}
+            //else
+            //{
+            //    skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei));
+            //}
 
-            finalBmp.Dispose();
+            //finalBmp.Dispose();
 
-            using (context.PushClip(dst))
-            {
-                context.DrawImage(bmp, new Rect(bmp.Size), dst);
-            }
+            //using (context.PushClip(dst))
+            //{
+            //    context.DrawImage(bmp, new Rect(bmp.Size), dst);
+            //}
         }
     }
 
@@ -123,8 +123,7 @@ public partial class BitmapIcon : FAIconElement
         }
         else
         {
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            _bitmap = SKBitmap.Decode(assets.Open(src));
+            _bitmap = SKBitmap.Decode(AssetLoader.Open(src));
         }
         _originalSize = new Size(_bitmap.Width, _bitmap.Height);
     }

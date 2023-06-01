@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="using:FluentAvalonia.UI.Controls"
-                    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
                     xmlns:sys="using:System"
                     x:CompileBindings="True">
 
@@ -217,40 +216,35 @@
     <!-- This is the main button of the non-flyout part of the DatePicker -->
     <ControlTheme x:Key="DatePickerFlyoutButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-        <Setter Property="Template">
-            <ControlTemplate>
-               <uip:FAContentPresenter Background="{TemplateBinding Background}"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       Content="{TemplateBinding Content}"
-                                       HorizontalContentAlignment="Stretch"
-                                       VerticalContentAlignment="Stretch"
-                                       CornerRadius="{TemplateBinding CornerRadius}"
-                                       BorderBrush="{TemplateBinding BorderBrush}"
-                                       BorderThickness="{TemplateBinding BorderThickness}" />
-            </ControlTemplate>
-        </Setter>
+        <Setter Property="Padding" Value="0" />
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ContentPresenter">
+            <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundPointerOver}" />
-                <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundPointerOver}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundPointerOver}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ContentPresenter">
+            <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundPressed}" />
-                <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundPressed}" />
             </Style>
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ContentPresenter">
+            <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundDisabled}" />
-                <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundDisabled}" />
             </Style>
         </Style>
     </ControlTheme>

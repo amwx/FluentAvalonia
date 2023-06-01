@@ -333,7 +333,7 @@ public partial class MainView : UserControl
                 }
             };
 
-            await ani.RunAsync((Animatable)_windowIconControl, null);
+            //await ani.RunAsync((Animatable)_windowIconControl, null);
 
             _navView.IsBackButtonVisible = true;
         }
@@ -367,7 +367,7 @@ public partial class MainView : UserControl
                 }
             };
 
-            await ani.RunAsync((Animatable)_windowIconControl, null);
+            //await ani.RunAsync((Animatable)_windowIconControl, null);
         }
     }
 

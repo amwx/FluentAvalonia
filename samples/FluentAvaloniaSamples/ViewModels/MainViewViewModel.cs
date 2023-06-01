@@ -13,16 +13,16 @@ public class MainViewViewModel : ViewModelBase
 {
     public MainViewViewModel()
     {
-        var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+        //var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
         
-        // TODO in SampleApp refresh: Make sure we keep this up to date with ActualThemeVariant
-        CurrentAppTheme = Application.Current.ActualThemeVariant;
+        //// TODO in SampleApp refresh: Make sure we keep this up to date with ActualThemeVariant
+        //CurrentAppTheme = Application.Current.ActualThemeVariant;
 
-        if (faTheme.TryGetResource("SystemAccentColor", null, out var value))
-        {
-            _customAccentColor = (Color)value;
-            _listBoxColor = _customAccentColor;
-        }
+        //if (faTheme.TryGetResource("SystemAccentColor", null, out var value))
+        //{
+        //    _customAccentColor = (Color)value;
+        //    _listBoxColor = _customAccentColor;
+        //}
 
         GetPredefColors();
 
@@ -68,28 +68,28 @@ public class MainViewViewModel : ViewModelBase
         get => _useCustomAccentColor;
         set
         {
-            if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
-            {
-                if (value)
-                {
-                    var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
-                    {
-                        _customAccentColor = (Color)curColor;
-                        _listBoxColor = _customAccentColor;
+            //if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
+            //{
+            //    if (value)
+            //    {
+            //        var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+            //        if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
+            //        {
+            //            _customAccentColor = (Color)curColor;
+            //            _listBoxColor = _customAccentColor;
 
-                        RaisePropertyChanged(nameof(CustomAccentColor));
-                        RaisePropertyChanged(nameof(ListBoxColor));
-                    }
+            //            RaisePropertyChanged(nameof(CustomAccentColor));
+            //            RaisePropertyChanged(nameof(ListBoxColor));
+            //        }
 
-                    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
-                }
-                else
-                {
-                    CustomAccentColor = default;
-                    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
-                }
-            }
+            //        AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
+            //    }
+            //    else
+            //    {
+            //        CustomAccentColor = default;
+            //        AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
+            //    }
+            //}
         }
     }
 
@@ -110,14 +110,14 @@ public class MainViewViewModel : ViewModelBase
         get => _customAccentColor;
         set
         {
-            if (RaiseAndSetIfChanged(ref _customAccentColor, value))
-            {
-                AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
+            //if (RaiseAndSetIfChanged(ref _customAccentColor, value))
+            //{
+            //    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
 
-                _ignoreSetListBoxColor = true;
-                ListBoxColor = value;
-                _ignoreSetListBoxColor = false;
-            }
+            //    _ignoreSetListBoxColor = true;
+            //    ListBoxColor = value;
+            //    _ignoreSetListBoxColor = false;
+            //}
         }
     }
 

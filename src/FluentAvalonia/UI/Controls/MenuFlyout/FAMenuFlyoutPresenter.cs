@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -19,7 +20,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
     {
         KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Cycle);
 
-        AddHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
+        //AddHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
     }
 
     internal AvaloniaObject InternalParent { get; set; }
@@ -160,7 +161,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
         {
             case Key.Down:
                 {
-                    var current = FocusManager.Instance.Current;
+                    var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
                     if (current is MenuFlyoutItemBase mfib)
                     {
                         var index = IndexFromContainer(mfib);
@@ -177,7 +178,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
                             if (cont != null && !(cont is MenuFlyoutSeparator) &&
                                 cont.Focusable && cont.IsEffectivelyEnabled)
                             {
-                                FocusManager.Instance.Focus(cont, NavigationMethod.Directional);
+                                cont.Focus(NavigationMethod.Directional);
                                 args.Handled = true;
                                 break;
                             }
@@ -193,7 +194,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             case Key.Up:
                 {
-                    var current = FocusManager.Instance.Current;
+                    var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
                     if (current is MenuFlyoutItemBase mfib)
                     {
                         var index = IndexFromContainer(mfib);
@@ -210,7 +211,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
                             if (cont != null && !(cont is MenuFlyoutSeparator) &&
                                 cont.Focusable && cont.IsEffectivelyEnabled)
                             {
-                                FocusManager.Instance.Focus(cont, NavigationMethod.Directional);
+                                cont.Focus(NavigationMethod.Directional);
                                 args.Handled = true;
                                 break;
                             }
@@ -240,7 +241,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
                     {
                         // NOTE: Order matters here for some reason, focus the MFSI FIRST,
                         // then close it. Otherwise the focus adorner isn't shown
-                        FocusManager.Instance.Focus(mfsi, NavigationMethod.Directional);
+                        mfsi.Focus(NavigationMethod.Directional);
                         mfsi.Close();
                         args.Handled = true;
                     }
@@ -249,7 +250,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             case Key.Enter:
                 {
-                    var current = FocusManager.Instance.Current;
+                    var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
                     if (current is MenuFlyoutItemBase mfib && mfib.Focusable && mfib.IsEffectivelyEnabled)
                     {
                         if (mfib is MenuFlyoutSubItem mfsi)
@@ -272,7 +273,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
                     {
                         // NOTE: Order matters here for some reason, focus the MFSI FIRST,
                         // then close it. Otherwise the focus adorner isn't shown
-                        FocusManager.Instance.Focus(mfsi, NavigationMethod.Directional);
+                        mfsi.Focus(NavigationMethod.Directional);
                         mfsi.Close();                        
                         args.Handled = true;
                     }
@@ -377,8 +378,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             if (item != null)
             {
-                FocusManager.Instance.Focus(item,
-                        fromKeyboard ? NavigationMethod.Directional : NavigationMethod.Unspecified);
+                item.Focus(fromKeyboard ? NavigationMethod.Directional : NavigationMethod.Unspecified);
             }
         }, DispatcherPriority.Render);        
     }

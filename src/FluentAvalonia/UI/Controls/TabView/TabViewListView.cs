@@ -659,7 +659,7 @@ public class TabViewListView : ListBox
         if (_scrollTimer == null)
         {
             _scrollTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(50),
-                DispatcherPriority.Layout, OnScrollTimerTick);
+                DispatcherPriority.Render, OnScrollTimerTick);
         }
 
         _scrollTimer.Start();

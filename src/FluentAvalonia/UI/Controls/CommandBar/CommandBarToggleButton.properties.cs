@@ -6,7 +6,7 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
-public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement, IStyleable
+public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement
 {
     /// <summary>
     /// Defines the <see cref="IsInOverflow"/> property

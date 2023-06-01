@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Avalonia;
 using Avalonia.Platform;
 
 namespace FluentAvaloniaSamples.ViewModels;
@@ -14,8 +13,7 @@ public class ViewModelBase : INotifyPropertyChanged
 
     protected string GetAssemblyResource(string name)
     {
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using (var stream = assets.Open(new Uri(name)))
+        using (var stream = AssetLoader.Open(new Uri(name)))
         using (StreamReader reader = new StreamReader(stream))
         {
             return reader.ReadToEnd();

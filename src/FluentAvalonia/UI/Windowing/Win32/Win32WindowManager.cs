@@ -33,7 +33,7 @@ internal unsafe class Win32WindowManager
 
         SetWindowLongPtrW(Hwnd, GWLP_WNDPROC, _wndProc);
 
-        var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
+        var ps = Application.Current.PlatformSettings;
         ps.ColorValuesChanged += OnPlatformColorValuesChanged;
         _window.Closed += WindowOnClosed;
     }
@@ -381,7 +381,7 @@ internal unsafe class Win32WindowManager
     
     private void WindowOnClosed(object sender, EventArgs e)
     {
-        var ps = AvaloniaLocator.Current.GetService<IPlatformSettings>();
+        var ps = Application.Current.PlatformSettings;
         ps.ColorValuesChanged -= OnPlatformColorValuesChanged;
         _window.Closed -= WindowOnClosed;
     }

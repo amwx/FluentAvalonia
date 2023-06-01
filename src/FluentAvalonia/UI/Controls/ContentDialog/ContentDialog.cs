@@ -54,7 +54,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         }
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "Content")
             return true;
@@ -143,10 +143,10 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 case Decorator d:
                     d.Child = null;
                     break;
-                case IContentControl cc:
+                case ContentControl cc:
                     cc.Content = null;
                     break;
-                case IContentPresenter cp:
+                case ContentPresenter cp:
                     cp.Content = null;
                     break;
             }
@@ -156,13 +156,12 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         _host.Content = this;
 
-        _lastFocus = FocusManager.Instance.Current;
-
         OverlayLayer ol = null;
 
         if (window != null)
         {
             ol = OverlayLayer.GetOverlayLayer(window);
+            _lastFocus = window.FocusManager.GetFocusedElement();
         }
         else
         {
@@ -180,13 +179,17 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 //Fallback, just in case
                 window ??= al.MainWindow;
 
+                _lastFocus = window.FocusManager.GetFocusedElement();
                 ol = OverlayLayer.GetOverlayLayer(window);
             }
             else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
             {
+                _lastFocus = TopLevel.GetTopLevel(sl.MainView).FocusManager.GetFocusedElement();
                 ol = OverlayLayer.GetOverlayLayer(sl.MainView);
             }
         }
+
+        
 
         if (ol == null)
             throw new InvalidOperationException();
@@ -201,6 +204,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         //(ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
 
         IsVisible = true;
+        ol.UpdateLayout();
         ShowCore();
         SetupDialog();
         return await _tcs.Task;
@@ -327,7 +331,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         PseudoClasses.Set(s_pcSecondary, !string.IsNullOrEmpty(SecondaryButtonText));
         PseudoClasses.Set(s_pcClose, !string.IsNullOrEmpty(CloseButtonText));
 
-        var curFocus = FocusManager.Instance.Current as InputElement;
+        var curFocus = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Control;
         bool setFocus = false;
         if (curFocus.FindAncestorOfType<ContentDialog>() == null)
         {
@@ -349,7 +353,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                
                 if (setFocus)
                 {
-                    FocusManager.Instance.Focus(_primaryButton);
+                    _primaryButton.Focus();
 #if DEBUG
                     Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to PrimaryButton");
 #endif
@@ -367,7 +371,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
                 if (setFocus)
                 {
-                    FocusManager.Instance.Focus(_secondaryButton);
+                    _secondaryButton.Focus();
 #if DEBUG
                     Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to SecondaryButton");
 #endif
@@ -385,7 +389,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
                 if (setFocus)
                 {
-                    FocusManager.Instance.Focus(_closeButton);
+                    _closeButton.Focus();
 #if DEBUG
                     Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to CloseButton");
 #endif
@@ -403,11 +407,11 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                     var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next);
                     if (next != null)
                     {
-                        FocusManager.Instance.Focus(next);
+                        next.Focus();
                     }
                     else
                     {
-                        FocusManager.Instance.Focus(this);
+                        this.Focus();
                     }
 
 #if DEBUG
@@ -446,7 +450,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         if (_lastFocus != null)
         {
-            FocusManager.Instance.Focus(_lastFocus, NavigationMethod.Unspecified);
+            _lastFocus.Focus(NavigationMethod.Unspecified);
             _lastFocus = null;
         }
 
@@ -470,11 +474,11 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             {
                 d.Child = this;
             }
-            else if (_originalHost is IContentControl cc)
+            else if (_originalHost is ContentControl cc)
             {
                 cc.Content = this;
             }
-            else if (_originalHost is IContentPresenter cp)
+            else if (_originalHost is ContentPresenter cp)
             {
                 cp.Content = this;
             }
@@ -562,7 +566,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         if (children.Count == 0)
             return (false, null);
 
-        var current = FocusManager.Instance?.Current;
+        var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
         if (current == null)
             return (false, null);
 

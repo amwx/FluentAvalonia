@@ -50,7 +50,7 @@ public class DrillInNavigationTransitionInfo : NavigationTransitionInfo
             FillMode = FillMode.Forward
         };
 
-        await animation.RunAsync(ctrl, null, cancellationToken);
+        await animation.RunAsync(ctrl, cancellationToken);
 
         (ctrl as Visual).Opacity = 1;
     }

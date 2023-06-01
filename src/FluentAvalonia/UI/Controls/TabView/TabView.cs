@@ -19,7 +19,7 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// A control used to display a set of tabs and their respective content
 /// </summary>
-public partial class TabView : TemplatedControl, IContentPresenterHost
+public partial class TabView : TemplatedControl
 {
     public TabView()
     {
@@ -720,7 +720,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
 
                     if (focusable != null)
                     {
-                        FocusManager.Instance?.Focus(focusable, NavigationMethod.Unspecified);
+                        focusable.Focus(NavigationMethod.Unspecified);
                     }
                 }
             }
@@ -1006,7 +1006,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
         {
             var direction = e.Key == Key.Left ? NavigationDirection.Previous : NavigationDirection.Next;
 
-            var current = FocusManager.Instance?.Current;
+            var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
 
             if (current is Control c && _tabContainerGrid.IsVisualAncestorOf(c))
             {
@@ -1026,12 +1026,12 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
                             var container = _listView.ContainerFromIndex(index);
                             if (container != null)
                             {
-                                FocusManager.Instance?.Focus(container, NavigationMethod.Directional);
+                                container.Focus(NavigationMethod.Directional);
                             }
                         }
                         else if (index == _listView.ItemCount && _addButton != null)
                         {
-                            FocusManager.Instance?.Focus(_addButton, NavigationMethod.Directional);
+                            _addButton.Focus(NavigationMethod.Directional);
                         }
                     }
                     else if (current == _addButton)
@@ -1041,7 +1041,7 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
                             var container = _listView.ContainerFromIndex(_listView.ItemCount - 1);
                             if (container != null)
                             {
-                                FocusManager.Instance?.Focus(container, NavigationMethod.Directional);
+                                container.Focus(NavigationMethod.Directional);
                             }
                         }
                     }
@@ -1051,12 +1051,11 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
             {
                 if (_listView != null && _listView.ItemCount > 0 && direction == NavigationDirection.Next)
                 {
-                    FocusManager.Instance?.Focus(_listView.ContainerFromIndex(0),
-                        NavigationMethod.Directional);
+                    _listView.ContainerFromIndex(0).Focus(NavigationMethod.Directional);
                 }
                 else if (_addButton != null)
                 {
-                    FocusManager.Instance?.Focus(_addButton, NavigationMethod.Directional);
+                    _addButton.Focus(NavigationMethod.Directional);
                 }
             }
         }
@@ -1117,15 +1116,15 @@ public partial class TabView : TemplatedControl, IContentPresenterHost
         _itemsPresenter = null;
     }
 
-    bool IContentPresenterHost.RegisterContentPresenter(IContentPresenter presenter)
-    {
-        if (presenter.Name == s_tpTabContentPresenter)
-            return true;
+    //bool IContentPresenterHost.RegisterContentPresenter(IContentPresenter presenter)
+    //{
+    //    if (presenter.Name == s_tpTabContentPresenter)
+    //        return true;
 
-        return false;
-    }
+    //    return false;
+    //}
 
-    IAvaloniaList<ILogical> IContentPresenterHost.LogicalChildren => LogicalChildren;
+    //IAvaloniaList<ILogical> IContentPresenterHost.LogicalChildren => LogicalChildren;
 
 
     private TabViewCommand _keyboardAcceleratorHandler;

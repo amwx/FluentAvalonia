@@ -9,7 +9,7 @@ namespace FluentAvalonia.UI.Controls;
 [PseudoClasses(SharedPseudoclasses.s_pcIcon, SharedPseudoclasses.s_pcLabel, SharedPseudoclasses.s_pcCompact)]
 [PseudoClasses(SharedPseudoclasses.s_pcFlyout, s_pcSubmenuOpen, SharedPseudoclasses.s_pcOverflow)]
 [PseudoClasses(SharedPseudoclasses.s_pcHotkey)]
-public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
+public partial class CommandBarButton : Button, ICommandBarElement
 {
     /// <summary>
     /// Defines the <see cref="IsInOverflow"/> property

@@ -97,7 +97,7 @@ public partial class SettingsPage : UserControl
         };
 
         _cts = new CancellationTokenSource();
-        await ani.RunAsync(_headerRightContent, null, cancellationToken: _cts.Token);
+        await ani.RunAsync(_headerRightContent, _cts.Token);
         _cts.Dispose();
         _cts = null;
         _headerRightContent.Opacity = 1;

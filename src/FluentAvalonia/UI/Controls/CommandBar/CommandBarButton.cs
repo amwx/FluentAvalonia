@@ -12,14 +12,14 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Represents a button control that can be displayed in a CommandBar
 /// </summary>
-public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
+public partial class CommandBarButton : Button, ICommandBarElement
 {
     public CommandBarButton()
     {
         TemplateSettings = new CommandBarButtonTemplateSettings();
     }
 
-    Type IStyleable.StyleKey => typeof(CommandBarButton);
+    protected override Type StyleKeyOverride => typeof(CommandBarButton);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -119,7 +119,7 @@ public partial class CommandBarButton : Button, ICommandBarElement, IStyleable
         }
     }
 
-    protected override bool RegisterContentPresenter(IContentPresenter presenter)
+    protected override bool RegisterContentPresenter(ContentPresenter presenter)
     {
         if (presenter.Name == "ContentPresenter")
             return true;
