@@ -523,6 +523,7 @@ public partial class AppWindow : Window
         var aniSplash = new Animation
         {
             Duration = TimeSpan.FromMilliseconds(250),
+            FillMode = FillMode.Forward,
             Children =
             {
                 new KeyFrame
