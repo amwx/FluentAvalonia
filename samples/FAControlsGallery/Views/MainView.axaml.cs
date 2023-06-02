@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -158,7 +159,7 @@ public partial class MainView : UserControl
 
                 //ToolTip.SetTip(nvi, pg.NavHeader);
 
-                if (_isDesktop)
+                if (_isDesktop || OperatingSystem.IsBrowser())
                 {
                     nvi.Classes.Add("SampleAppNav");
                 }
@@ -177,14 +178,17 @@ public partial class MainView : UserControl
             NavView.MenuItemsSource = menuItems;
             NavView.FooterMenuItemsSource = footerItems;
 
-            if (!_isDesktop)
+            if (_isDesktop || OperatingSystem.IsBrowser())
+            {
+                NavView.Classes.Add("SampleAppNav");
+            }
+            else
             {
                 NavView.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftMinimal;
-                NavView.Classes.Remove("SampleAppNav");
             }
 
             FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);
-        });        
+        });
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)

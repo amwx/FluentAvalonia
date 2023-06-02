@@ -68,8 +68,7 @@
             </Border>
         </Grid>
 
-        <ui:NavigationView Classes="SampleAppNav"
-                           AlwaysShowHeader="False"
+        <ui:NavigationView AlwaysShowHeader="False"
                            PaneDisplayMode="Left"
                            Grid.RowSpan="2"
                            Name="NavView"
