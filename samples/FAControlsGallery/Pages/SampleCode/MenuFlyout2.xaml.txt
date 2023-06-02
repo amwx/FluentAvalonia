@@ -2,7 +2,7 @@
     <Button.Flyout>
 
         <ui:FAMenuFlyout Placement="Bottom"
-                        Items="{Binding TestMenuItems}">
+                         ItemsSource="{Binding TestMenuItems}">
 
         </ui:FAMenuFlyout>
     </Button.Flyout>
