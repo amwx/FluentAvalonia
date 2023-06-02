@@ -19,7 +19,7 @@ using FluentAvalonia.UI.Navigation;
 
 namespace FAControlsGallery.Pages;
 
-public class ControlsPageBase : UserControl, IStyleable
+public class ControlsPageBase : UserControl
 {
     public ControlsPageBase()
     {        
@@ -139,7 +139,7 @@ public class ControlsPageBase : UserControl, IStyleable
         set => SetValue(ShowToggleThemeButtonProperty, value);
     }
 
-    Type IStyleable.StyleKey => typeof(ControlsPageBase);
+    protected override Type StyleKeyOverride => typeof(ControlsPageBase);
 
     protected ThemeVariantScope ThemeScopeProvider { get; private set; }
 

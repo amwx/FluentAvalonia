@@ -81,7 +81,7 @@ public class ColorTile : TemplatedControl
             }
             else if (val is ISolidColorBrush scb)
             {
-                uint rgb = scb.Color.ToUint32();                
+                uint rgb = scb.Color.ToUInt32();                
                 SetValue(ColorValueProperty, FormattableString.Invariant($"#{rgb:x8}").ToUpper());
             }
         }
