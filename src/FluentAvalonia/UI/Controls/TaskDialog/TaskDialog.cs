@@ -272,7 +272,7 @@ public partial class TaskDialog : ContentControl
         OnClosed();
         _host = null;
 
-        _previousFocus.Focus();
+        _previousFocus?.Focus();
 
         return result ?? TaskDialogStandardResult.None;
     }
