@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:vm="using:FAControlsGallery.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1200"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="1200"
              x:Class="FAControlsGallery.Pages.SettingsPage"
              x:CompileBindings="True"
              x:DataType="vm:SettingsPageViewModel">
@@ -244,63 +244,63 @@
                 
             </ui:SettingsExpander>
 
-            <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
-                       Height="1"
-                       Margin="0 12" />
-            
-            <TextBlock Text="Found a bug? Want a new feature, control, or sample?"
-                               Theme="{StaticResource BaseTextBlockStyle}"/>
-            <ui:HyperlinkButton NavigateUri="http://github.com/amwx/FluentAvalonia/issues"
-                                Content="Github Issues" />
-
-            <TextBlock Text="To clone the source repository (right-click to copy link):"
-                       Theme="{StaticResource BaseTextBlockStyle}"
-                       Margin="0 18 0 0"/>
-            <TextBlock Text="https://github.com/amwx/FluentAvalonia.git">
-                <TextBlock.ContextFlyout>
-                    <ui:TextCommandBarFlyout />
-                </TextBlock.ContextFlyout>
-            </TextBlock>
-
-            <TextBlock Text="Dependencies"
-                       Theme="{StaticResource BaseTextBlockStyle}"
-                       Margin="0 18 0 0"/>
-            <TextBlock TextWrapping="Wrap">
-                <x:String xml:space="preserve">All resources, brushes, and control naming come from the WinUI repository (https://github.com/microsoft/microsoft-ui-xaml) which is licensed under the MIT license. WinUI is not affiliated, and does not endorse FluentAvalonia.
-
-Avalonia is licensed under the MIT license
-                        </x:String>
-            </TextBlock>
-
-            <TextBlock Text="Disclaimer / License"
-                       Theme="{StaticResource BaseTextBlockStyle}"/>
-            <TextBlock TextWrapping="Wrap">
-                <x:String xml:space="preserve">THIS CODE AND INFORMATION IS PROVIDED ‘AS IS’ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-
-Copyright (c) 2022 amwx
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-                        </x:String>
-            </TextBlock>
-
+            <ui:SettingsExpander Header="About"
+                                 IconSource="M2 14C2 20.6274 7.37258 26 14 26C20.6274 26 26 20.6274 26 14C26 7.37258 20.6274 2 14 2C7.37258 2 2 7.37258 2 14ZM15.25 8C15.25 8.69036 14.6904 9.25 14 9.25C13.3096 9.25 12.75 8.69036 12.75 8C12.75 7.30964 13.3096 6.75 14 6.75C14.6904 6.75 15.25 7.30964 15.25 8ZM14 11C14.5523 11 15 11.4477 15 12L15 20C15 20.5523 14.5523 21 14 21C13.4477 21 13 20.5523 13 20L13 12C13 11.4477 13.4477 11 14 11Z">
+                <ui:SettingsExpanderItem Content="Found a bug? Want a new feature, control, or sample?"
+                                         ActionIconSource="Open"
+                                         IsClickEnabled="True"
+                                         Name="LaunchRepoLinkItem"/>
+                <ui:SettingsExpanderItem Content="Clone FluentAvalonia repository">
+                    <ui:SettingsExpanderItem.Footer>
+                        <SelectableTextBlock Text="git clone https://github.com/amwx/FluentAvalonia" />
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>
+                <ui:SettingsExpanderItem>
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Dependencies" />
+                        <TextBlock TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                            <Run>
+                                All resources, brushes, and control naming come from the WinUI repository (https://github.com/microsoft/microsoft-ui-xaml) which is licensed under the MIT license.
+                            </Run>
+                            <LineBreak />
+                            <LineBreak />
+                            <Run>
+                                Avalonia is licensed under the MIT license
+                            </Run>
+                            <LineBreak />
+                            <LineBreak />
+                            <Run>
+                                Both Avalonia and WinUI are not affiliated with and do not endorse FluentAvalonia.
+                            </Run>
+                        </TextBlock>
+                    </StackPanel>
+                </ui:SettingsExpanderItem>
+                <ui:SettingsExpanderItem>
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="License" />
+                        <TextBlock TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                            <Run>
+                                FluentAvalonia is licensed under the MIT license.
+                            </Run>
+                            <LineBreak />
+                            <Run>
+                                FAControlsGallery © amwx 2023
+                            </Run>
+                            <LineBreak />
+                            <LineBreak />
+                            <Run>
+                                THIS CODE AND INFORMATION IS PROVIDED ‘AS IS’ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+                            </Run>
+                            <LineBreak />
+                            <Run>
+                                For full MIT license, please see the license.md file
+                            </Run>
+                        </TextBlock>
+                    </StackPanel>
+                </ui:SettingsExpanderItem>
+            </ui:SettingsExpander>
         </StackPanel>
     </ScrollViewer>
     
