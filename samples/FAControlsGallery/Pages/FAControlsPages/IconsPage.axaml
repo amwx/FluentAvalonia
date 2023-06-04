@@ -21,7 +21,7 @@
                                    x:Key="IconsSource"/>
     </UserControl.Resources>
     
-    <TabControl Name="TabControl1" SelectedIndex="2">
+    <TabControl Name="TabControl1">
         
         <TabItem Header="FAIconElement">
             <StackPanel Spacing="8">
