@@ -18,6 +18,7 @@
 
     <ControlTheme x:Key="NavigationBackButtonNormalStyle" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource NavigationViewBackButtonBackground}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
         <Setter Property="FontSize" Value="16" />
@@ -31,7 +32,7 @@
             <ControlTemplate>
                 <Border Name="Root"
                         Background="{TemplateBinding Background}"
-                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <ui:FontIcon Name="Content"
                                  FontSize="{TemplateBinding FontSize}"
                                  FontFamily="{TemplateBinding FontFamily}"
