@@ -149,97 +149,97 @@
                 </ui:SettingsExpanderItem>
 
                 <ui:SettingsExpanderItem>
-                    <StackPanel>
-                        <CheckBox Content="Use Custom Accent Color?"
-                                  IsChecked="{Binding UseCustomAccent}" 
-                                  HorizontalAlignment="Right" />
+                    <CheckBox Content="Use Custom Accent Color?"
+                                      IsChecked="{Binding UseCustomAccent}"
+                                      HorizontalAlignment="Right" />
+                    <ui:SettingsExpanderItem.Footer>
+                        <StackPanel>
+                            <TextBlock Text="Pre-set Colors"
+                                       Margin="24 24 0 0"
+                                       IsVisible="{Binding UseCustomAccent}" />
 
-                        <TextBlock Text="Pre-set Colors"
-                                   Margin="24 24 0 0"
-                                   IsVisible="{Binding UseCustomAccent}" />
+                            <ListBox ItemsSource="{Binding PredefinedColors}"
+                                     SelectedItem="{Binding ListBoxColor}"
+                                     MaxWidth="441"
+                                     AutoScrollToSelectedItem="False"
+                                     Margin="24 0 24 12"
+                                     HorizontalAlignment="Left"
+                                     IsVisible="{Binding UseCustomAccent}" >
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
 
-                        <ListBox ItemsSource="{Binding PredefinedColors}"
-                                 SelectedItem="{Binding ListBoxColor}"
-                                 MaxWidth="441"
-                                 AutoScrollToSelectedItem="False"
-                                 Margin="24 0 24 12"
-                                 HorizontalAlignment="Left"
-                                 IsVisible="{Binding UseCustomAccent}" >
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
+                                <ListBox.Styles>
+                                    <Style Selector="ListBoxItem">
+                                        <Setter Property="Width" Value="48" />
+                                        <Setter Property="Height" Value="48" />
+                                        <Setter Property="MinWidth" Value="0" />
+                                        <Setter Property="Margin" Value="1 1 0 0" />
+                                        <Setter Property="Template">
+                                            <ControlTemplate>
+                                                <Panel>
+                                                    <Border CornerRadius="{StaticResource ControlCornerRadius}"
+                                                            BorderThickness="2"
+                                                            Name="Root">
+                                                        <Border.Background>
+                                                            <SolidColorBrush Color="{Binding}" />
+                                                        </Border.Background>
+                                                    </Border>
 
-                            <ListBox.Styles>
-                                <Style Selector="ListBoxItem">
-                                    <Setter Property="Width" Value="48" />
-                                    <Setter Property="Height" Value="48" />
-                                    <Setter Property="MinWidth" Value="0" />
-                                    <Setter Property="Margin" Value="1 1 0 0" />
-                                    <Setter Property="Template">
-                                        <ControlTemplate>
-                                            <Panel>
-                                                <Border CornerRadius="{StaticResource ControlCornerRadius}"
-                                                        BorderThickness="2"
-                                                        Name="Root">
-                                                    <Border.Background>
-                                                        <SolidColorBrush Color="{Binding}" />
-                                                    </Border.Background>
-                                                </Border>
+                                                    <Border Name="Check"
+                                                            Background="{DynamicResource FocusStrokeColorOuter}"
+                                                            Width="20" Height="20"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top"
+                                                            Margin="0 2 2 0">
+                                                        <ui:SymbolIcon Symbol="Checkmark"
+                                                                       Foreground="{DynamicResource SystemAccentColor}"
+                                                                       FontSize="18"/>
+                                                    </Border>
+                                                </Panel>
+                                            </ControlTemplate>
+                                        </Setter>
+                                    </Style>
+                                    <Style Selector="ListBoxItem /template/ Border#Check">
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </Style>
+                                    <Style Selector="ListBoxItem:pointerover /template/ Border#Root">
+                                        <Setter Property="BorderBrush" Value="{DynamicResource FocusStrokeColorOuter}" />
+                                    </Style>
 
-                                                <Border Name="Check"
-                                                        Background="{DynamicResource FocusStrokeColorOuter}"
-                                                        Width="20" Height="20"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0 2 2 0">
-                                                    <ui:SymbolIcon Symbol="Checkmark"
-                                                                   Foreground="{DynamicResource SystemAccentColor}"
-                                                                   FontSize="18"/>
-                                                </Border>
-                                            </Panel>
-                                        </ControlTemplate>
-                                    </Setter>
-                                </Style>
-                                <Style Selector="ListBoxItem /template/ Border#Check">
-                                    <Setter Property="IsVisible" Value="False" />
-                                </Style>
-                                <Style Selector="ListBoxItem:pointerover /template/ Border#Root">
-                                    <Setter Property="BorderBrush" Value="{DynamicResource FocusStrokeColorOuter}" />
-                                </Style>
+                                    <Style Selector="ListBoxItem:selected /template/ Border#Root">
+                                        <Setter Property="BorderBrush" Value="{DynamicResource FocusStrokeColorOuter}" />
+                                    </Style>
+                                    <Style Selector="ListBoxItem:selected /template/ Border#Check">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </Style>
+                                </ListBox.Styles>
 
-                                <Style Selector="ListBoxItem:selected /template/ Border#Root">
-                                    <Setter Property="BorderBrush" Value="{DynamicResource FocusStrokeColorOuter}" />
-                                </Style>
-                                <Style Selector="ListBoxItem:selected /template/ Border#Check">
-                                    <Setter Property="IsVisible" Value="True" />
-                                </Style>
-                            </ListBox.Styles>
+                            </ListBox>
 
-                        </ListBox>
+                            <Rectangle Fill="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                                       Height="1"
+                                       IsVisible="{Binding UseCustomAccent}" />
 
-                        <Border Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
-                                Height="1"
-                                Margin="-200 0"
-                                IsVisible="{Binding UseCustomAccent}" />
+                            <DockPanel LastChildFill="False" Margin="24 6 0 0"
+                                       IsVisible="{Binding UseCustomAccent}" >
+                                <TextBlock Text="Custom Color"
+                                           VerticalAlignment="Center"
+                                           DockPanel.Dock="Left" />
 
-                        <DockPanel LastChildFill="False" Margin="24 6 0 0"
-                                   IsVisible="{Binding UseCustomAccent}" >
-                            <TextBlock Text="Custom Color"
-                                       VerticalAlignment="Center"
-                                       DockPanel.Dock="Left" />
-
-                            <ui:ColorPickerButton Color="{Binding CustomAccentColor}"
-                                                  IsMoreButtonVisible="True"
-                                                  UseSpectrum="True"
-                                                  UseColorWheel="False"
-                                                  UseColorTriangle="False"
-                                                  UseColorPalette="False"
-                                                  IsCompact="True" ShowAcceptDismissButtons="True"
-                                                  DockPanel.Dock="Right"/>
-                        </DockPanel>
-                    </StackPanel>
+                                <ui:ColorPickerButton Color="{Binding CustomAccentColor}"
+                                                      IsMoreButtonVisible="True"
+                                                      UseSpectrum="True"
+                                                      UseColorWheel="False"
+                                                      UseColorTriangle="False"
+                                                      UseColorPalette="False"
+                                                      IsCompact="True" ShowAcceptDismissButtons="True"
+                                                      DockPanel.Dock="Right"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </ui:SettingsExpanderItem.Footer>
                 </ui:SettingsExpanderItem>
                 
             </ui:SettingsExpander>

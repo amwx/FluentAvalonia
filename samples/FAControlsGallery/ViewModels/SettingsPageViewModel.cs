@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
@@ -65,41 +66,57 @@ public class SettingsPageViewModel : MainPageViewModelBase
         {
             if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
             {
-                //if (value)
-                //{
-                //    var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-                //    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
-                //    {
-                //        _customAccentColor = (Color)curColor;
-                //        _listBoxColor = _customAccentColor;
+                var faTheme = App.Current.Styles[0] as FluentAvaloniaTheme;
+                if (value)
+                {                    
+                    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
+                    {
+                        _customAccentColor = (Color)curColor;
+                        _listBoxColor = _customAccentColor;
 
-                //        RaisePropertyChanged(nameof(CustomAccentColor));
-                //        RaisePropertyChanged(nameof(ListBoxColor));
-                //    }
-
-                //    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = CustomAccentColor;
-                //}
-                //else
-                //{
-                //    CustomAccentColor = default;
-                //    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = null;
-                //}
+                        RaisePropertyChanged(nameof(CustomAccentColor));
+                        RaisePropertyChanged(nameof(ListBoxColor));
+                    }
+                    else
+                    {
+                        // This should never happen, if it does, something bad has happened
+                        throw new Exception("Unable to retreive SystemAccentColor");
+                    }
+                }
+                else
+                {
+                    // Restore system color
+                    _customAccentColor = default;
+                    _listBoxColor = default;
+                    RaisePropertyChanged(nameof(CustomAccentColor));
+                    RaisePropertyChanged(nameof(ListBoxColor));
+                    UpdateAppAccentColor(null);
+                }
             }
         }
     }
 
-    public Color ListBoxColor
+    // This is bound to the ListBox of predefined colors. It must be nullable or CompiledBindings will get angry
+    // if we set a color here that isn't in the predef colors as SelectingItemsControl will try to bind back
+    // null as the SelectedItem 
+    public Color? ListBoxColor
     {
         get => _listBoxColor;
         set
         {
-            RaiseAndSetIfChanged(ref _listBoxColor, value);
+            RaiseAndSetIfChanged(ref _listBoxColor, (Color)value);
 
-            if (!_ignoreSetListBoxColor)
-                CustomAccentColor = value;
+            if (value != null)
+            {
+                _customAccentColor = value.Value;
+                RaisePropertyChanged(nameof(CustomAccentColor));
+
+                UpdateAppAccentColor(value.Value);
+            }
         }
     }
 
+    // This is the custom accent color as chosen by the ColorPicker and is not one of the predefined colors
     public Color CustomAccentColor
     {
         get => _customAccentColor;
@@ -107,11 +124,9 @@ public class SettingsPageViewModel : MainPageViewModelBase
         {
             if (RaiseAndSetIfChanged(ref _customAccentColor, value))
             {
-                //AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>().CustomAccentColor = value;
-
-                _ignoreSetListBoxColor = true;
-                ListBoxColor = value;
-                _ignoreSetListBoxColor = false;
+                _listBoxColor = value;
+                RaisePropertyChanged(nameof(ListBoxColor));
+                UpdateAppAccentColor(value);
             }
         }
     }
@@ -179,10 +194,15 @@ public class SettingsPageViewModel : MainPageViewModelBase
         };
     }
 
+    private void UpdateAppAccentColor(Color? color)
+    {
+        (App.Current.Styles[0] as FluentAvaloniaTheme).CustomAccentColor = color;
+    }
+
     private bool _useCustomAccentColor;
     private Color _customAccentColor = Colors.SlateBlue;
     private ThemeVariant _currentAppTheme;
     private FlowDirection _currentFlowDirection;
-    private Color _listBoxColor;
+    private Color? _listBoxColor;
     private bool _ignoreSetListBoxColor = false;
 }
