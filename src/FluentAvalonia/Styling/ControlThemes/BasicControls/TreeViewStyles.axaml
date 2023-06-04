@@ -115,8 +115,8 @@
                                        Fill="{DynamicResource TreeViewItemSelectionIndicatorForeground}"/>
 
                             <Grid Name="PART_Header"
-								  ColumnDefinitions="Auto, *"
-								  Margin="{TemplateBinding Level, Mode=OneWay, Converter={StaticResource TreeViewItemLeftMarginConverter}}">
+                                  ColumnDefinitions="Auto, *"
+                                  Margin="{TemplateBinding Level, Mode=OneWay, Converter={StaticResource TreeViewItemLeftMarginConverter}}">
                                 <Panel Name="PART_ExpandCollapseChevronContainer"
                                        Margin="{StaticResource TreeViewItemExpandCollapseChevronMargin}">
                                     <ToggleButton Name="PART_ExpandCollapseChevron"
@@ -220,5 +220,5 @@
                 <Setter Property="Width" Value="{StaticResource TreeViewItemExpandCollapseChevronSize}" />
             </Style>
         </Style>
-    </ControlTheme>    
+    </ControlTheme>
 </ResourceDictionary>

@@ -33,10 +33,10 @@
                             <Setter Property="Theme" Value="{StaticResource NavViewFlyoutStyle}" />
                         </Style>
                     </Grid.Styles>
-                    
+
                     <uip:NavigationViewItemPresenter Name="NVIPresenter"
                                                      IconSource="{TemplateBinding IconSource}"
-													 InfoBadge="{TemplateBinding InfoBadge}"
+                                                     InfoBadge="{TemplateBinding InfoBadge}"
                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
                                                      Padding="{TemplateBinding Padding}"
                                                      Foreground="{TemplateBinding Foreground}"
@@ -80,5 +80,5 @@
             <Setter Property="Theme" Value="{StaticResource NavigationViewItemPresenterWhenOnTopPaneOverflow}" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>

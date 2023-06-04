@@ -522,7 +522,7 @@ public partial class NavigationView : HeaderedContentControl
                     break;
 
                 //Make sure current focus is in the NavPane, we don't want to disturb content
-                //being displayed in the NavView						
+                //being displayed in the NavView
                 if (!VerifyInPane(current, isTopNav ? _topNavGrid : _paneContentGrid))
                     break;
 

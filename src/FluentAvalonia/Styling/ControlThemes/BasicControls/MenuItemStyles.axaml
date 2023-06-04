@@ -50,7 +50,7 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-    
+
     <!-- Resources in BaseResources.axaml -->
 
     <ControlTheme x:Key="{x:Type MenuItem}" TargetType="MenuItem">
@@ -231,5 +231,5 @@
             </ControlTemplate>
         </Setter>
     </ControlTheme>
-    
+
 </ResourceDictionary>

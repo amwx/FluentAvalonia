@@ -25,46 +25,46 @@
     <Thickness x:Key="CommandBarFlyoutAppBarEllipsisButtonInnerBorderMargin">2,2,6,2</Thickness>
 
     <!-- 
-	NOTE: TEMPLATE CHANGED FROM WINUI VERSION
-	WinUI CommandBarFlyoutCommandBar still holds its own Popup for the secondary commands
-	and then aligns them so it looks like only one is present. 
-	That's stupid, but probably something in the legacy, still not opensourced CommandBar,
-	requires that the popup be present.
-	Here, we load everything in and we'll only have one Popup. We'll show/hide the overflow
-	as needed, and everything will still continue to work, we just won't have two Popups	
-	-->
+    NOTE: TEMPLATE CHANGED FROM WINUI VERSION
+    WinUI CommandBarFlyoutCommandBar still holds its own Popup for the secondary commands
+    and then aligns them so it looks like only one is present. 
+    That's stupid, but probably something in the legacy, still not opensourced CommandBar,
+    requires that the popup be present.
+    Here, we load everything in and we'll only have one Popup. We'll show/hide the overflow
+    as needed, and everything will still continue to work, we just won't have two Popups    
+    -->
 
     <ControlTheme x:Key="CBFlyoutEllipsisButton"
                   TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackground}" />
-		<Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForeground}" />
-		<Setter Property="BorderBrush" Value="{DynamicResource CommandBarFlyoutAppBarButtonBorderBrush}" />
-		<Setter Property="Padding" Value="0" />
-		<Setter Property="Width" Value="44" />
-		<Setter Property="Height" Value="40" />
-		<Setter Property="HorizontalContentAlignment" Value="Center" />
-		<Setter Property="HorizontalAlignment" Value="Stretch" />
-		<Setter Property="VerticalContentAlignment" Value="Center" />
-		<Setter Property="VerticalAlignment" Value="Stretch" />
-		<Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
-		<Setter Property="FontWeight" Value="SemiBold" />
-		<Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-		<Setter Property="Template">
-			<ControlTemplate>
-				<ContentPresenter Name="ContentPresenter"
-								  Background="{TemplateBinding Background}"
-								  BorderBrush="{TemplateBinding BorderBrush}"
-								  BorderThickness="{TemplateBinding BorderThickness}"
-								  ContentTemplate="{TemplateBinding ContentTemplate}"
-								  Content="{TemplateBinding Content}"
-								  Margin="{StaticResource CommandBarFlyoutAppBarEllipsisButtonInnerBorderMargin}"
-								  Padding="{TemplateBinding Padding}"
-								  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-								  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-								  CornerRadius="{TemplateBinding CornerRadius}"/>
-			</ControlTemplate>
-		</Setter>
+        <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForeground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CommandBarFlyoutAppBarButtonBorderBrush}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="44" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter Name="ContentPresenter"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Content="{TemplateBinding Content}"
+                                  Margin="{StaticResource CommandBarFlyoutAppBarEllipsisButtonInnerBorderMargin}"
+                                  Padding="{TemplateBinding Padding}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"/>
+            </ControlTemplate>
+        </Setter>
 
         <Style Selector="^:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundPointerOver}" />
@@ -92,18 +92,18 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="LayoutRoot"
-						Background="{TemplateBinding Background}"
-						CornerRadius="{TemplateBinding CornerRadius}">
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <Panel>
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
-								BorderThickness="{TemplateBinding BorderThickness}"
-								CornerRadius="{TemplateBinding CornerRadius}" />
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}" />
 
                         <ScrollViewer Margin="{TemplateBinding BorderThickness}"
-									  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-									  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                             <ItemsPresenter Name="ItemsPresenter"
-											Margin="3" />
+                                            Margin="3" />
                         </ScrollViewer>
                     </Panel>
                 </Border>
@@ -128,14 +128,14 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Name="Root"
-					   MinWidth="{TemplateBinding MinWidth}"
-					   MaxWidth="{TemplateBinding MaxWidth}">
+                       MinWidth="{TemplateBinding MinWidth}"
+                       MaxWidth="{TemplateBinding MaxWidth}">
                     <Border Name="AppBarButtonInnerBorder"
-							Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="{TemplateBinding CornerRadius}"
-							TemplatedControl.IsTemplateFocusTarget="True"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            TemplatedControl.IsTemplateFocusTarget="True"
                             Margin="{DynamicResource CommandBarFlyoutAppBarButtonInnerBorderMargin}">
                         <Border.Transitions>
                             <Transitions>
@@ -151,15 +151,15 @@
                                  Height="20"
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
-											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
-											  Foreground="{TemplateBinding Foreground}" />
+                                              Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 
                         <TextBlock Name="OverflowTextLabel"
-								   Text="{TemplateBinding Label}"
-								   Theme="{StaticResource BodyTextBlockStyle}"
-								   Foreground="{TemplateBinding Foreground}"
-								   FontFamily="{TemplateBinding FontFamily}"
+                                   Text="{TemplateBinding Label}"
+                                   Theme="{StaticResource BodyTextBlockStyle}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontFamily="{TemplateBinding FontFamily}"
                                    TextAlignment="Left"
                                    TextTrimming="CharacterEllipsis"
                                    TextWrapping="Wrap"
@@ -170,9 +170,9 @@
                                    IsVisible="False"/>
 
                         <TextBlock Name="KeyboardAcceleratorTextLabel"
-								   Grid.Column="1"
-								   Text="{TemplateBinding HotKey, Converter={StaticResource KeyGestureConverter}}"
-								   Theme="{StaticResource CaptionTextBlockStyle}"
+                                   Grid.Column="1"
+                                   Text="{TemplateBinding HotKey, Converter={StaticResource KeyGestureConverter}}"
+                                   Theme="{StaticResource CaptionTextBlockStyle}"
                                    Margin="24 0 12 0"
                                    Foreground="{DynamicResource CommandBarFlyoutAppBarButtonKeyboardTextLabelForeground}"
                                    HorizontalAlignment="Right"
@@ -180,7 +180,7 @@
                                    IsVisible="False"/>
 
                         <ui:SymbolIcon Name="SubItemChevron"
-									   Grid.Column="2"
+                                       Grid.Column="2"
                                        Symbol="ChevronRight"
                                        FontSize="12"
                                        Foreground="{DynamicResource CommandBarFlyoutAppBarButtonSubItemChevronForeground}"
@@ -192,7 +192,7 @@
                 </Panel>
             </ControlTemplate>
         </Setter>
-        
+
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
                 <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundPointerOver}" />
@@ -352,7 +352,7 @@
                 <Setter Property="IsVisible" Value="True" />
                 <Setter Property="Margin" Value="76 0 12 0" />
             </Style>
-        </Style>        
+        </Style>
     </ControlTheme>
 
     <!-- CommandBarToggleButton when in CommandBarFlyout -->
@@ -370,28 +370,28 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Name="Root"
-					   MinWidth="{TemplateBinding MinWidth}"
-					   MaxWidth="{TemplateBinding MaxWidth}">
+                       MinWidth="{TemplateBinding MinWidth}"
+                       MaxWidth="{TemplateBinding MaxWidth}">
                     <Border Name="AppBarButtonInnerBorder"
-							Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="{TemplateBinding CornerRadius}"
-							TemplatedControl.IsTemplateFocusTarget="True"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            TemplatedControl.IsTemplateFocusTarget="True"
                             Margin="{DynamicResource CommandBarFlyoutAppBarButtonInnerBorderMargin}">
                         <Border.Transitions>
                             <Transitions>
                                 <BrushTransition Duration="00:00:00.083"
                                                  Property="Background" />
                             </Transitions>
-                        </Border.Transitions>                        
+                        </Border.Transitions>
                     </Border>
 
                     <Grid Name="ContentRoot" ColumnDefinitions="*,Auto"
                           Width="40">
 
                         <ui:SymbolIcon Name="OverflowCheckGlyph"
-									   Symbol="Checkmark"
+                                       Symbol="Checkmark"
                                        Foreground="{DynamicResource CommandBarFlyoutAppBarButtonForeground}"
                                        FontSize="18"
                                        HorizontalAlignment="Left"
@@ -405,15 +405,15 @@
                                  Height="20"
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
-											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
-											  Foreground="{TemplateBinding Foreground}" />
+                                              Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 
                         <TextBlock Name="OverflowTextLabel"
-								   Text="{TemplateBinding Label}"
-								   Theme="{StaticResource BodyTextBlockStyle}"
-								   Foreground="{TemplateBinding Foreground}"
-								   FontFamily="{TemplateBinding FontFamily}"
+                                   Text="{TemplateBinding Label}"
+                                   Theme="{StaticResource BodyTextBlockStyle}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontFamily="{TemplateBinding FontFamily}"
                                    TextAlignment="Left"
                                    TextTrimming="CharacterEllipsis"
                                    TextWrapping="NoWrap"
@@ -424,9 +424,9 @@
                                    IsVisible="False" />
 
                         <TextBlock Name="KeyboardAcceleratorTextLabel"
-								   Grid.Column="1"
-								   Text="{TemplateBinding HotKey, Converter={StaticResource KeyGestureConverter}}"
-								   Theme="{StaticResource CaptionTextBlockStyle}"
+                                   Grid.Column="1"
+                                   Text="{TemplateBinding HotKey, Converter={StaticResource KeyGestureConverter}}"
+                                   Theme="{StaticResource CaptionTextBlockStyle}"
                                    Margin="24 0 12 0"
                                    Foreground="{DynamicResource CommandBarFlyoutAppBarButtonKeyboardTextLabelForeground}"
                                    HorizontalAlignment="Right"
@@ -446,7 +446,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPointerOver}" />
             </Style>
         </Style>
-        
+
         <Style Selector="^:pressed">
             <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
                 <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundPressed}" />
@@ -455,7 +455,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPressed}" />
             </Style>
         </Style>
-        
+
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
                 <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundDisabled}" />
@@ -470,7 +470,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundDisabled}" />
             </Style>
         </Style>
-        
+
         <Style Selector="^:checked">
             <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
                 <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundChecked}" />
@@ -516,7 +516,7 @@
                     <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundDisabled}" />
                 </Style>
             </Style>
-            
+
         </Style>
 
 
@@ -556,7 +556,7 @@
                     <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonKeyboardTextLabelForegroundPointerOver}" />
                 </Style>
             </Style>
-            
+
             <Style Selector="^:pressed">
                 <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
                     <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundPressed}" />
@@ -571,7 +571,7 @@
                     <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonKeyboardTextLabelForegroundPressed}" />
                 </Style>
             </Style>
-            
+
             <Style Selector="^:checked">
                 <Style Selector="^ /template/ ui|SymbolIcon#OverflowCheckGlyph">
                     <Setter Property="Opacity" Value="1" />
@@ -601,7 +601,7 @@
                         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPointerOver}" />
                     </Style>
                 </Style>
-                
+
                 <Style Selector="^:pressed">
                     <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
                         <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackgroundPressed}" />
@@ -626,8 +626,8 @@
                 <Setter Property="IsVisible" Value="True" />
             </Style>
         </Style>
-        
-        
+
+
         <Style Selector="^:toggle">
             <Style Selector="^ /template/ Grid#ContentRoot">
                 <Setter Property="MinHeight" Value="0" />
@@ -687,8 +687,8 @@
             </Style>
         </Style>
     </ControlTheme>
-    
-    
+
+
     <ControlTheme x:Key="{x:Type ui:CommandBarFlyoutCommandBar}"
                   TargetType="ui:CommandBarFlyoutCommandBar">
         <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutBackground}" />
@@ -707,10 +707,10 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="LayoutRoot"
-						Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="1"
-						CornerRadius="{TemplateBinding CornerRadius}">
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <Border.Styles>
                         <Style Selector="ui|CommandBarButton">
                             <Setter Property="Theme" Value="{StaticResource CommandBarFlyoutButtonStyle}" />
@@ -727,9 +727,9 @@
                             </Grid.ColumnDefinitions>
 
                             <ItemsControl Name="PrimaryItemsControl"
-										  Height="40"
-										  Margin="3 3 0 3"
-										  HorizontalAlignment="Left">
+                                          Height="40"
+                                          Margin="3 3 0 3"
+                                          HorizontalAlignment="Left">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal" />
@@ -738,19 +738,19 @@
                             </ItemsControl>
 
                             <Button Name="MoreButton"
-										Foreground="{TemplateBinding Foreground}"
-										Grid.Column="1"
-										Theme="{StaticResource CBFlyoutEllipsisButton}">
+                                        Foreground="{TemplateBinding Foreground}"
+                                        Grid.Column="1"
+                                        Theme="{StaticResource CBFlyoutEllipsisButton}">
                                 <ui:SymbolIcon Symbol="More"
-												FontSize="24"
-												Height="{StaticResource AppBarExpandButtonCircleDiameter}"
-												Name="EllipsisIcon"/>
+                                                FontSize="24"
+                                                Height="{StaticResource AppBarExpandButtonCircleDiameter}"
+                                                Name="EllipsisIcon"/>
                             </Button>
 
                             <Border Name="OpenBorder"
-									Grid.ColumnSpan="2"
-									VerticalAlignment="Stretch"
-									IsHitTestVisible="False"
+                                    Grid.ColumnSpan="2"
+                                    VerticalAlignment="Stretch"
+                                    IsHitTestVisible="False"
                                     CornerRadius="{DynamicResource ControlCornerRadius}"/>
 
                         </Grid>
@@ -760,11 +760,11 @@
                                 IsVisible="False">
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                                 <ui:CommandBarOverflowPresenter Name="SecondaryItemsControl"
-																CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
-																BorderBrush="Transparent"
-																BorderThickness="1 0 1 1"
+                                                                CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
+                                                                BorderBrush="Transparent"
+                                                                BorderThickness="1 0 1 1"
                                                                 Theme="{StaticResource CBFlyoutPresenterStyle}"
-																KeyboardNavigation.TabNavigation="Once"/>
+                                                                KeyboardNavigation.TabNavigation="Once"/>
                             </ScrollViewer>
                         </Border>
                     </StackPanel>
@@ -785,6 +785,6 @@
 
         <Style Selector="^:secondaryOnly /template/ Grid#ContentRoot">
             <Setter Property="IsVisible" Value="False" />
-        </Style>        
-    </ControlTheme>    
+        </Style>
+    </ControlTheme>
 </ResourceDictionary>

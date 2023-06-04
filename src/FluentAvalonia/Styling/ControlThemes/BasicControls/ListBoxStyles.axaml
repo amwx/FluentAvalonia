@@ -49,9 +49,9 @@
 
     <!-- 
     ListBoxItem styles use the WinUI ListViewItem style, however, WinUI is missing a bunch of 
-	necessary parts in their public release... (primarily missing ListViewItemPresenter style)
-	So, this is faked to look like what it should
-	Use the 21h1 Styles!
+    necessary parts in their public release... (primarily missing ListViewItemPresenter style)
+    So, this is faked to look like what it should
+    Use the 21h1 Styles!
     -->
     <ControlTheme TargetType="ListBoxItem" x:Key="{x:Type ListBoxItem}">
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
@@ -76,10 +76,10 @@
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       CornerRadius="{DynamicResource ControlCornerRadius}"
-									  Margin="2"/>
+                                      Margin="2"/>
 
                     <!-- added 1px left margin, otherwise we can get strange artifacts while
-						 animating, I'm guessing from bad invalidation rects? -->
+                         animating, I'm guessing from bad invalidation rects? -->
                     <Rectangle Name="SelectionIndicator"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
@@ -174,6 +174,6 @@
             <Style Selector="^:disabled /template/ Rectangle#SelectionIndicator">
                 <Setter Property="Fill" Value="{DynamicResource ListViewItemSelectionIndicatorDisabledBrush}" />
             </Style>
-        </Style>        
-    </ControlTheme>    
+        </Style>
+    </ControlTheme>
 </ResourceDictionary>

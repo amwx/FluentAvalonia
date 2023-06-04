@@ -295,6 +295,6 @@
                             VerticalAlignment="Stretch" />
                 </Template>
             </Setter>
-        </Style>       
-    </ControlTheme>    
+        </Style>
+    </ControlTheme>
 </ResourceDictionary>

@@ -10,13 +10,13 @@
     </Design.PreviewWith>
 
     <ControlTheme TargetType="TextBox"
-				  x:Key="ComboBoxTextBoxStyle"
-				  BasedOn="{StaticResource {x:Type TextBox}}">
+                  x:Key="ComboBoxTextBoxStyle"
+                  BasedOn="{StaticResource {x:Type TextBox}}">
 
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type ui:FAComboBox}"
-				  TargetType="{x:Type ui:FAComboBox}">
+                  TargetType="{x:Type ui:FAComboBox}">
         <Setter Property="Padding" Value="{DynamicResource ComboBoxPadding}" />
         <Setter Property="MaxDropDownHeight" Value="504" />
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}" />
@@ -42,136 +42,136 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="LayoutRoot"
-					  RowDefinitions="Auto,*,Auto"
-					  ColumnDefinitions="*,38">
+                      RowDefinitions="Auto,*,Auto"
+                      ColumnDefinitions="*,38">
                     <ContentPresenter Name="HeaderContentPresenter"
-									  Grid.Row="0"
-									  Grid.Column="0"
-									  Grid.ColumnSpan="2"
-									  Content="{TemplateBinding Header}"
-									  ContentTemplate="{TemplateBinding HeaderTemplate}"
-									  FlowDirection="{TemplateBinding FlowDirection}"
-									  Foreground="{DynamicResource ComboBoxHeaderForeground}"
-									  FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
-									  LineHeight="20"
-									  Margin="{DynamicResource ComboBoxTopHeaderMargin}"
-									  TextWrapping="Wrap"
-									  VerticalAlignment="Top"
-									  IsVisible="False" />
+                                      Grid.Row="0"
+                                      Grid.Column="0"
+                                      Grid.ColumnSpan="2"
+                                      Content="{TemplateBinding Header}"
+                                      ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                      FlowDirection="{TemplateBinding FlowDirection}"
+                                      Foreground="{DynamicResource ComboBoxHeaderForeground}"
+                                      FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
+                                      LineHeight="20"
+                                      Margin="{DynamicResource ComboBoxTopHeaderMargin}"
+                                      TextWrapping="Wrap"
+                                      VerticalAlignment="Top"
+                                      IsVisible="False" />
 
                     <Border Name="HighlightBackground"
-							Grid.Row="1"
-							Grid.Column="0"
-							Grid.ColumnSpan="2"
-							Margin="-4"
-							Background="{DynamicResource ComboBoxBackgroundFocused}"
-							BorderBrush="{DynamicResource ComboBoxBackgroundBorderBrushFocused}"
-							BorderThickness="{DynamicResource ComboBoxBackgroundBorderThicknessFocused}"
-							CornerRadius="{DynamicResource ComboBoxHighlightBorderCornerRadius}"
-							Opacity="0" />
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Margin="-4"
+                            Background="{DynamicResource ComboBoxBackgroundFocused}"
+                            BorderBrush="{DynamicResource ComboBoxBackgroundBorderBrushFocused}"
+                            BorderThickness="{DynamicResource ComboBoxBackgroundBorderThicknessFocused}"
+                            CornerRadius="{DynamicResource ComboBoxHighlightBorderCornerRadius}"
+                            Opacity="0" />
 
                     <Border Name="Background"
-							Grid.Row="1"
-							Grid.Column="0"
-							Grid.ColumnSpan="2"
-							Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="{TemplateBinding CornerRadius}"
-							TemplatedControl.IsTemplateFocusTarget="True"
-							MinWidth="{DynamicResource ComboBoxThemeMinWidth}" />
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            TemplatedControl.IsTemplateFocusTarget="True"
+                            MinWidth="{DynamicResource ComboBoxThemeMinWidth}" />
 
                     <Rectangle Name="Pill"
-							   Theme="{StaticResource ComboBoxItemPill}"
-							   Margin="1 0 0 0"
-							   Grid.Row="1" Grid.Column="0"
-							   Opacity="0"
-							   RenderTransform="scaleY(1)" />
+                               Theme="{StaticResource ComboBoxItemPill}"
+                               Margin="1 0 0 0"
+                               Grid.Row="1" Grid.Column="0"
+                               Opacity="0"
+                               RenderTransform="scaleY(1)" />
 
                     <ContentPresenter Name="ContentPresenter"
-									  Grid.Row="1"
-									  Grid.Column="0"
-									  Margin="{TemplateBinding Padding}"
-									  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-									  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-									  Content="{TemplateBinding SelectionBoxItem}"
-									  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+                                      Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
                     <!-- WinUI can place this in the ContentPresenter, we can't, so we place it here as if its in the CP -->
                     <TextBlock Name="PlaceholderTextBlock"
-							   Grid.Row="1"
-							   Grid.Column="0"
-							   Margin="{TemplateBinding Padding}"
-							   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-							   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-							   Text="{TemplateBinding PlaceholderText}"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="{TemplateBinding Padding}"
+                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                               Text="{TemplateBinding PlaceholderText}"
                                IsVisible="{TemplateBinding SelectionBoxItem, Converter={x:Static ObjectConverters.IsNull}}" />
 
                     <TextBox Name="EditableText"
-							 Grid.Row="1"
-							 Grid.Column="0"
-							 Grid.ColumnSpan="2"
-							 Theme="{TemplateBinding TextBoxTheme}"
-							 Margin="0,0,0,0"
-							 Padding="{DynamicResource ComboBoxEditableTextPadding}"
-							 BorderBrush="Transparent"
-							 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-							 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-							 Watermark="{TemplateBinding PlaceholderText}"
-							 Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}}"
-							 Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, Mode=TwoWay}"
-							 IsVisible="False"
-							 AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}"
-							 CornerRadius="{TemplateBinding CornerRadius}"  />
+                             Grid.Row="1"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Theme="{TemplateBinding TextBoxTheme}"
+                             Margin="0,0,0,0"
+                             Padding="{DynamicResource ComboBoxEditableTextPadding}"
+                             BorderBrush="Transparent"
+                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                             Watermark="{TemplateBinding PlaceholderText}"
+                             Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}}"
+                             Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, Mode=TwoWay}"
+                             IsVisible="False"
+                             AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}"
+                             CornerRadius="{TemplateBinding CornerRadius}"  />
 
                     <Border Name="DropDownOverlay"
-							Grid.Row="1"
-							Grid.Column="1"
-							Background="Transparent"
-							Margin="4,4,4,4"
-							IsVisible="False"
-							CornerRadius="{StaticResource ComboBoxDropDownButtonBackgroundCornerRadius}"
-							Width="30"
-							HorizontalAlignment="Right" />
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Background="Transparent"
+                            Margin="4,4,4,4"
+                            IsVisible="False"
+                            CornerRadius="{StaticResource ComboBoxDropDownButtonBackgroundCornerRadius}"
+                            Width="30"
+                            HorizontalAlignment="Right" />
 
                     <ui:FontIcon Name="DropDownGlyph"
-								 MinHeight="{DynamicResource ComboBoxMinHeight}"
-								 Grid.Row="1"
-								 Grid.Column="1"
-								 IsHitTestVisible="False"
-								 Margin="0 0 14 0"
-								 Foreground="{DynamicResource ComboBoxDropDownGlyphForeground}"
-								 HorizontalAlignment="Right"
-								 VerticalAlignment="Center"
-								 Width="12" Height="12"
-								 FontSize="12"
-								 FontFamily="{StaticResource SymbolThemeFontFamily}"
-								 Glyph="&#xE70D;" />
+                                 MinHeight="{DynamicResource ComboBoxMinHeight}"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 IsHitTestVisible="False"
+                                 Margin="0 0 14 0"
+                                 Foreground="{DynamicResource ComboBoxDropDownGlyphForeground}"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Center"
+                                 Width="12" Height="12"
+                                 FontSize="12"
+                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                 Glyph="&#xE70D;" />
 
                     <!-- Skipping description property -->
 
                     <Popup Name="Popup"
-						   WindowManagerAddShadowHint="False"
-						   IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
-						   MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
-						   MaxHeight="{TemplateBinding MaxDropDownHeight}"
-						   PlacementTarget="Background"
-						   IsLightDismissEnabled="True"
-						   InheritsTransform="True">
+                           WindowManagerAddShadowHint="False"
+                           IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                           MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                           MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                           PlacementTarget="Background"
+                           IsLightDismissEnabled="True"
+                           InheritsTransform="True">
                         <ui:FABorder Name="PopupBorder"
-									 Background="{DynamicResource ComboBoxDropDownBackground}"
-									 BackgroundSizing="InnerBorderEdge"
-									 BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
-									 BorderThickness="{DynamicResource ComboBoxDropdownBorderThickness}"
-									 Padding="{DynamicResource ComboBoxDropdownBorderPadding}"
-									 HorizontalAlignment="Stretch"
-									 CornerRadius="{DynamicResource OverlayCornerRadius}">
+                                     Background="{DynamicResource ComboBoxDropDownBackground}"
+                                     BackgroundSizing="InnerBorderEdge"
+                                     BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
+                                     BorderThickness="{DynamicResource ComboBoxDropdownBorderThickness}"
+                                     Padding="{DynamicResource ComboBoxDropdownBorderPadding}"
+                                     HorizontalAlignment="Stretch"
+                                     CornerRadius="{DynamicResource OverlayCornerRadius}">
                             <ScrollViewer Name="ScrollViewer"
                                           AutomationProperties.AccessibilityView="Raw"
-										  Foreground="{DynamicResource ComboBoxDropDownForeground}"
-										  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-										  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                          Foreground="{DynamicResource ComboBoxDropDownForeground}"
+                                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                                 <ItemsPresenter Margin="{DynamicResource ComboBoxDropdownContentMargin}"
-												ItemsPanel="{TemplateBinding ItemsPanel}"/>
+                                                ItemsPanel="{TemplateBinding ItemsPanel}"/>
                             </ScrollViewer>
                         </ui:FABorder>
                     </Popup>
@@ -278,10 +278,10 @@
             <Style Selector="^ /template/ TextBox#EditableText">
                 <Setter Property="IsVisible" Value="True" />
                 <!-- 
-				This isn't a hack, this is what WinUI does
-				When not focused, they set the width to 0 to hide the TextBox
-				Its done in code but you can see this in the live visual tree &
-				property explorer of UWP -->
+                This isn't a hack, this is what WinUI does
+                When not focused, they set the width to 0 to hide the TextBox
+                Its done in code but you can see this in the live visual tree &
+                property explorer of UWP -->
                 <Setter Property="Width" Value="0" />
                 <Setter Property="MinWidth" Value="0" />
             </Style>
@@ -290,7 +290,7 @@
             </Style>
 
             <Style Selector="^:focus-within /template/ TextBox#EditableText,
-				             ^:dropdownopen /template/ TextBox#EditableText">
+                             ^:dropdownopen /template/ TextBox#EditableText">
                 <Setter Property="IsVisible" Value="True" />
                 <Setter Property="Width" Value="NaN" />
             </Style>
@@ -301,7 +301,7 @@
             </Style>
 
             <Style Selector="^:dropdownopen /template/ ContentPresenter#ContentPresenter,
-				             ^:focus-within /template/ ContentPresenter#ContentPresenter">
+                             ^:focus-within /template/ ContentPresenter#ContentPresenter">
                 <Setter Property="IsVisible" Value="False" />
             </Style>
 

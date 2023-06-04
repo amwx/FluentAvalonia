@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
-    
+
     <ControlTheme x:Key="{x:Type ui:FAComboBoxItem}"
                  TargetType="ui:FAComboBoxItem">
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxItemForeground}" />
@@ -12,43 +12,43 @@
         <Setter Property="FocusAdorner">
             <FocusAdornerTemplate>
                 <Border BorderThickness="{DynamicResource SystemControlFocusVisualPrimaryThickness}"
-						BorderBrush="Red"
-						Margin="-3">
+                        BorderBrush="Red"
+                        Margin="-3">
                     <Border BorderThickness="{DynamicResource SystemControlFocusVisualSecondaryThickness}"
-							BorderBrush="{DynamicResource SystemControlFocusVisualSecondaryBrush}" />
+                            BorderBrush="{DynamicResource SystemControlFocusVisualSecondaryBrush}" />
                 </Border>
             </FocusAdornerTemplate>
         </Setter>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="LayoutRoot"
-						Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="{TemplateBinding BorderThickness}"
-						Margin="5 2"
-						CornerRadius="{TemplateBinding CornerRadius}"
-						TemplatedControl.IsTemplateFocusTarget="True">
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Margin="5 2"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        TemplatedControl.IsTemplateFocusTarget="True">
                     <Panel>
                         <Rectangle Name="Pill"
-								   Theme="{StaticResource ComboBoxItemPill}"
-								   Opacity="0"
-								   RenderTransform="scaleY(1)">
+                                   Theme="{StaticResource ComboBoxItemPill}"
+                                   Opacity="0"
+                                   RenderTransform="scaleY(1)">
                             <Rectangle.Transitions>
                                 <Transitions>
                                     <TransformOperationsTransition Duration="00:00:00.167"
-																   Property="RenderTransform"
-																   Easing="0,0 0,1" />
+                                                                   Property="RenderTransform"
+                                                                   Easing="0,0 0,1" />
                                 </Transitions>
                             </Rectangle.Transitions>
                         </Rectangle>
 
                         <ContentPresenter Name="ContentPresenter"
-										  Content="{TemplateBinding Content}"
-										  ContentTemplate="{TemplateBinding ContentTemplate}"
-										  Foreground="{TemplateBinding Foreground}"
-										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-										  Margin="{TemplateBinding Padding}" />
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}" />
                     </Panel>
                 </Border>
             </ControlTemplate>

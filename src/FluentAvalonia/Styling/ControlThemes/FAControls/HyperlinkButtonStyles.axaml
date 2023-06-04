@@ -10,7 +10,7 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-    
+
 
     <ControlTheme x:Key="{x:Type ui:HyperlinkButton}" TargetType="ui:HyperlinkButton">
         <Setter Property="Background" Value="{DynamicResource HyperlinkButtonBackground}" />
@@ -62,5 +62,5 @@
             <Setter Property="BorderBrush" Value="{DynamicResource HyperlinkButtonBorderBrushDisabled}" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>

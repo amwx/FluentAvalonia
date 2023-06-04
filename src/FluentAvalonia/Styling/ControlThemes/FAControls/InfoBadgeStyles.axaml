@@ -51,9 +51,9 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="RootGrid"
-						Background="{TemplateBinding Background}"
-						CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.InfoBadgeCornerRadius}"
-						Padding="{TemplateBinding Padding}">
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.InfoBadgeCornerRadius}"
+                        Padding="{TemplateBinding Padding}">
                     <Panel>
                         <TextBlock Name="ValueTextBlock"
                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Mode=OneWay}"
@@ -152,7 +152,7 @@
                 <ui:SymbolIconSource Symbol="Dismiss" />
             </Setter>
         </Style>
-        
+
     </ControlTheme>
-    
+
 </ResourceDictionary>

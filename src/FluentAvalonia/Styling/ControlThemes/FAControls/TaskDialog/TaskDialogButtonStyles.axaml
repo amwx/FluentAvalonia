@@ -94,5 +94,5 @@
             <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForegroundDisabled}" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>

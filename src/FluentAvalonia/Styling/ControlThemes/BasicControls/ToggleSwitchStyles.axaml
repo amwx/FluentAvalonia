@@ -268,6 +268,6 @@
             <Style Selector="^ /template/ ContentPresenter#PART_OnContentPresenter">
                 <Setter Property="Opacity" Value="0"/>
             </Style>
-        </Style>        
+        </Style>
     </ControlTheme>
 </ResourceDictionary>

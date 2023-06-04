@@ -6,7 +6,7 @@
         <Border Padding="50" Width="400">
             <StackPanel>
                 <ui:CommandBar ClosedDisplayMode="Compact" ItemsAlignment="Left"
-							   DefaultLabelPosition="Right">
+                               DefaultLabelPosition="Right">
                     <ui:CommandBar.PrimaryCommands>
                         <ui:CommandBarButton Label="Test" IconSource="Save" IsCompact="False"  />
                     </ui:CommandBar.PrimaryCommands>
@@ -29,12 +29,12 @@
     <x:Double x:Key="AppBarThemeMinimalHeight">24</x:Double>
 
     <!-- 
-	Only ExpandDown is supported, although technically nothing actually "expands"
-	**This is a simplified version**
-	WinUI also handles this mostly with ClipRects and whatnot, which Avalonia is not 
-	robust enough to handle, so we simplify that out...that also eliminates some 
-	headaches for me in trying to make this work :D
-	-->
+    Only ExpandDown is supported, although technically nothing actually "expands"
+    **This is a simplified version**
+    WinUI also handles this mostly with ClipRects and whatnot, which Avalonia is not 
+    robust enough to handle, so we simplify that out...that also eliminates some 
+    headaches for me in trying to make this work :D
+    -->
 
     <ControlTheme x:Key="CBEllipsisButton" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource AppBarButtonBackground}" />
@@ -54,16 +54,16 @@
             <ControlTemplate>
                 <Panel>
                     <ContentPresenter Name="ContentPresenter"
-									Background="{TemplateBinding Background}"
-									BorderBrush="{TemplateBinding BorderBrush}"
-									BorderThickness="{TemplateBinding BorderThickness}"
-									ContentTemplate="{TemplateBinding ContentTemplate}"
-									Content="{TemplateBinding Content}"
-									Margin="{StaticResource AppBarEllipsisButtonInnerBorderMargin}"
-									Padding="0"
-									HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-									VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-									CornerRadius="{TemplateBinding CornerRadius}" />
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    Margin="{StaticResource AppBarEllipsisButtonInnerBorderMargin}"
+                                    Padding="0"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    CornerRadius="{TemplateBinding CornerRadius}" />
                 </Panel>
             </ControlTemplate>
         </Setter>
@@ -100,9 +100,9 @@
             <ControlTemplate>
                 <Panel Name="LayoutRoot">
                     <Border Name="ContentRootBorder"
-							ClipToBounds="True"
-							Height="{TemplateBinding Height}"
-							Background="{TemplateBinding Background}">
+                            ClipToBounds="True"
+                            Height="{TemplateBinding Height}"
+                            Background="{TemplateBinding Background}">
                         <Grid Name="ContentRoot"
                               MinHeight="{DynamicResource AppBarThemeCompactHeight}"
                               VerticalAlignment="Top">
@@ -113,20 +113,20 @@
                             </Grid.ColumnDefinitions>
 
                             <!-- ColumnDefs are locked in "dynamic overflow" b/c
-								 we can't change ColDefs through Styles-->
+                                 we can't change ColDefs through Styles-->
                             <Grid ColumnDefinitions="Auto,*">
 
                                 <ContentControl Name="ContentControl"
-												Margin="{TemplateBinding Padding}"
-												Content="{TemplateBinding Content}"
-												ContentTemplate="{TemplateBinding ContentTemplate}"
-												Foreground="{TemplateBinding Foreground}"
-												HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-												VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                Margin="{TemplateBinding Padding}"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
 
                                 <ItemsControl Name="PrimaryItemsControl"
-											  MinHeight="{DynamicResource AppBarThemeCompactHeight}"
-											  Grid.Column="1">
+                                              MinHeight="{DynamicResource AppBarThemeCompactHeight}"
+                                              Grid.Column="1">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal" />
@@ -144,15 +144,15 @@
                                     MinHeight="{StaticResource AppBarThemeCompactHeight}"
                                     VerticalAlignment="Top">
                                 <ui:SymbolIcon Symbol="More"
-											   FontSize="24"
-											   Height="{StaticResource AppBarExpandButtonCircleDiameter}"
-											   Name="EllipsisIcon"/>
+                                               FontSize="24"
+                                               Height="{StaticResource AppBarExpandButtonCircleDiameter}"
+                                               Name="EllipsisIcon"/>
                             </Button>
 
                             <Border Name="OpenBorder"
-									Grid.ColumnSpan="2"
-									VerticalAlignment="Stretch"
-									CornerRadius="{TemplateBinding CornerRadius}"
+                                    Grid.ColumnSpan="2"
+                                    VerticalAlignment="Stretch"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
                                     BorderThickness="{DynamicResource CommandBarBorderThicknessOpen}"
                                     BorderBrush="{DynamicResource CommandBarBorderBrushOpen}"
                                     IsVisible="False"/>
@@ -160,13 +160,13 @@
                     </Border>
 
                     <Popup Name="OverflowPopup"
-						   WindowManagerAddShadowHint="False"
-						   PlacementTarget="{TemplateBinding}"
-						   PlacementMode="AnchorAndGravity"
-						   PlacementAnchor="BottomRight"
-						   PlacementGravity="BottomLeft"
-						   IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
-						   IsLightDismissEnabled="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=!IsSticky}">
+                           WindowManagerAddShadowHint="False"
+                           PlacementTarget="{TemplateBinding}"
+                           PlacementMode="AnchorAndGravity"
+                           PlacementAnchor="BottomRight"
+                           PlacementGravity="BottomLeft"
+                           IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
+                           IsLightDismissEnabled="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=!IsSticky}">
                         <ui:CommandBarOverflowPresenter Name="SecondaryItemsControl" />
                     </Popup>
 
@@ -190,21 +190,21 @@
         </Style>
 
         <!-- Minimal 
-	    This is where things get weird. Apparently somehow the height of the CommandBar is also
-	    set to AppBarThemeMinimalHeight, but there is no style setter for it, so, it's being set
-	    in one of the two ways...
-	    1. In code, but that should be visible in the VisualTree inspector, most likely, unless
-	       its in MeasureOverride where they're just passing the height of the More Button as the
-	       desired height??
-	    2. All the clips and transforms applied also can affect layout of other elements? Don't think
-	       this is the case though b/c I can't repro that
-	
-	    (1) is probably the most plausible, but wouldn't allow for overriding, so what I'm going to do
-	    is just tell the CommandBar Height to be AppBarThemeMinimalHeight when minimal style is set and
-	    return it to NaN when open
-	    This is probably the #1 control I'm eagerly awaiting becoming open sourced, because so much of 
-	    the templates and how it works are truly a mystery
-	    -->
+        This is where things get weird. Apparently somehow the height of the CommandBar is also
+        set to AppBarThemeMinimalHeight, but there is no style setter for it, so, it's being set
+        in one of the two ways...
+        1. In code, but that should be visible in the VisualTree inspector, most likely, unless
+           its in MeasureOverride where they're just passing the height of the More Button as the
+           desired height??
+        2. All the clips and transforms applied also can affect layout of other elements? Don't think
+           this is the case though b/c I can't repro that
+    
+        (1) is probably the most plausible, but wouldn't allow for overriding, so what I'm going to do
+        is just tell the CommandBar Height to be AppBarThemeMinimalHeight when minimal style is set and
+        return it to NaN when open
+        This is probably the #1 control I'm eagerly awaiting becoming open sourced, because so much of 
+        the templates and how it works are truly a mystery
+        -->
 
         <Style Selector="^:minimal">
             <Setter Property="Height" Value="{DynamicResource AppBarThemeMinimalHeight}" />
@@ -243,7 +243,7 @@
                     <Setter Property="IsEnabled" Value="True" />
                     <Setter Property="Opacity" Value="1" />
                 </Style>
-            </Style>            
+            </Style>
         </Style>
 
         <!-- Compact (closed is default state) -->

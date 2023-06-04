@@ -20,12 +20,12 @@
         </Border>
     </Design.PreviewWith>
 
-    
+
     <!--
     Resources moved to BaseResources.axaml to be shared with TabStrip
-    
+
     This control remains generally unthemed, since MS deprecated, then un-deprecated it
-	but the resources still reference v1 brushes...SIGH
+    but the resources still reference v1 brushes...SIGH
     -->
 
     <ControlTheme TargetType="TabControl" x:Key="{x:Type TabControl}">
@@ -65,8 +65,8 @@
             <Setter Property="Margin" Value="{DynamicResource TabControlTopPlacementItemMargin}" />
         </Style>
     </ControlTheme>
-    
-    
+
+
     <ControlTheme TargetType="TabItem" x:Key="{x:Type TabItem}">
         <Setter Property="FontSize" Value="{DynamicResource TabItemHeaderFontSize}" />
         <Setter Property="FontWeight" Value="{DynamicResource TabItemHeaderThemeFontWeight}" />

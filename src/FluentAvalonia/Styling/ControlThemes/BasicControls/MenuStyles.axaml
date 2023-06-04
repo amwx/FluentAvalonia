@@ -137,8 +137,7 @@
             </Style>
         </Style>
     </ControlTheme>
-    
-    
+
 
     <ControlTheme x:Key="{x:Type Menu}" TargetType="Menu">
         <Setter Property="Background" Value="{DynamicResource MenuBarBackground}"/>

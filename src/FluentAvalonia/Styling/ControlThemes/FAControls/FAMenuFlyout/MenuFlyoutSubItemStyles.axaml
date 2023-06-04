@@ -22,35 +22,35 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <!--<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-		<Setter Property="VerticalContentAlignment" Value="Center" />-->
+        <Setter Property="VerticalContentAlignment" Value="Center" />-->
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="LayoutRoot"
-						Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="{TemplateBinding BorderThickness}"
-						Margin="{StaticResource MenuFlyoutItemMargin}"
-						CornerRadius="{TemplateBinding CornerRadius}">
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Margin="{StaticResource MenuFlyoutItemMargin}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <Grid ColumnDefinitions="*,Auto"
-						  Name="LayoutRootGrid"
+                          Name="LayoutRootGrid"
                           Margin="{DynamicResource MenuFlyoutItemThemePaddingNarrow}">
                         <Viewbox Name="IconRoot"
-								 HorizontalAlignment="Left"
-								 VerticalAlignment="Center"
-								 Width="16" Height="16"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 Width="16" Height="16"
                                  IsVisible="False">
                             <ContentPresenter Name="IconContent"
-											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                              Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Viewbox>
                         <TextBlock Name="TextBlock"
-								   Text="{TemplateBinding Text}"
-								   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
-								   VerticalAlignment="Center"
-								   HorizontalAlignment="Stretch" />
+                                   Text="{TemplateBinding Text}"
+                                   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Stretch" />
 
                         <ui:SymbolIcon Symbol="ChevronRight"
-									   Grid.Column="1"
-									   Name="SubItemChevron"
+                                       Grid.Column="1"
+                                       Name="SubItemChevron"
                                        Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
                                        Foreground="{DynamicResource MenuFlyoutSubItemChevron}"/>
 
@@ -119,7 +119,6 @@
             </Style>
         </Style>
 
-     
 
         <Style Selector="^:toggle">
             <Style Selector="^ /template/ TextBlock#TextBlock">
@@ -145,7 +144,7 @@
                 <Setter Property="Margin" Value="{DynamicResource MenuFlyoutItemPlaceholderThemeThickness}" />
             </Style>
         </Style>
-        
+
     </ControlTheme>
 
 </ResourceDictionary>

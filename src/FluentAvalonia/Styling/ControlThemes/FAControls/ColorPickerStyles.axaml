@@ -13,7 +13,7 @@
                             IsMoreButtonVisible="True"/>
         </Border>
     </Design.PreviewWith>
-    
+
     <conv:ColorShadeBrushConv x:Key="ColorShadeBrushConv" />
     <x:Double x:Key="ColorPickerTabItemHeight">46</x:Double>
     <Thickness x:Key="ColorPickerSpectrumMargin">2 48 2 2</Thickness>
@@ -63,7 +63,7 @@
                             <Border Background="{DynamicResource ColorPickerComponentLabelBackground}"
                                     Width="32"
                                     CornerRadius="{Binding $parent[TextBox].CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
-									Name="Label">
+                                    Name="Label">
                                 <TextBlock Text="{Binding $parent[ui:NumberBox].Header}"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
@@ -135,7 +135,7 @@
                                   Margin="0 4 4 4"
                                   IsVisible="False"/>
                 </Grid>
-                
+
             </ControlTemplate>
         </Setter>
 
@@ -307,7 +307,7 @@
             <Setter Property="Opacity" Value="{DynamicResource ColorPickerTabItemSelectionIndicatorColorPointerOverOpacity}" />
         </Style>
     </ControlTheme>
-    
+
     <ControlTheme x:Key="ColorPickerTabControlStyle" TargetType="TabControl"
                   BasedOn="{StaticResource {x:Type TabControl}}">
         <Setter Property="Padding" Value="0 1 0 0" />
@@ -813,9 +813,5 @@
             </Style>
         </Style>
 
-        
-        
-        
-        
     </ControlTheme>
 </ResourceDictionary>

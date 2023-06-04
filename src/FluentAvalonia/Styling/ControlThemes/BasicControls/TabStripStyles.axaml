@@ -15,12 +15,12 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="{TemplateBinding BorderThickness}"
-						CornerRadius="{TemplateBinding CornerRadius}"
-						Padding="{TemplateBinding Padding}">
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
                     <ItemsPresenter Name="PART_ItemsPresenter"
-									ItemsPanel="{TemplateBinding ItemsPanel}" />
+                                    ItemsPanel="{TemplateBinding ItemsPanel}" />
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -44,20 +44,20 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="PART_LayoutRoot"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="{TemplateBinding BorderThickness}"
-						CornerRadius="{TemplateBinding CornerRadius}"
-						Padding="{TemplateBinding Padding}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
                         Background="{Binding $parent[TabStripItem].Background}">
                     <Panel>
                         <ContentPresenter Name="PART_ContentPresenter"
-										  ContentTemplate="{TemplateBinding ContentTemplate}"
-										  Content="{TemplateBinding Content}"
-										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-										  FontFamily="{TemplateBinding FontFamily}"
-										  FontSize="{TemplateBinding FontSize}"
-										  FontWeight="{TemplateBinding FontWeight}" />
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          FontFamily="{TemplateBinding FontFamily}"
+                                          FontSize="{TemplateBinding FontSize}"
+                                          FontWeight="{TemplateBinding FontWeight}" />
                         <Rectangle Name="PART_SelectedPipe"
                                    Fill="{DynamicResource AccentFillColorDefaultBrush}"
                                    RadiusX="2"
@@ -103,6 +103,6 @@
         <Style Selector="^ /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
-        </Style>        
-    </ControlTheme>    
+        </Style>
+    </ControlTheme>
 </ResourceDictionary>

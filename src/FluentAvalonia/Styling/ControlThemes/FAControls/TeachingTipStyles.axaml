@@ -103,8 +103,8 @@
             <Setter Property="Foreground" Value="{DynamicResource TeachingTipAlternateCloseButtonForegroundDisabled}" />
         </Style>
     </ControlTheme>
-    
-    
+
+
 
     <ControlTheme x:Key="{x:Type ui:TeachingTip}" TargetType="ui:TeachingTip">
         <Setter Property="Background" Value="{DynamicResource TeachingTipBackgroundBrush}"/>
@@ -545,9 +545,8 @@
         <Style Selector="^:showSubTitle /template/ TextBlock#SubtitleTextBlock">
             <Setter Property="IsVisible" Value="True" />
         </Style>
-        
-        
-        
+
+
     </ControlTheme>
-    
+
 </ResourceDictionary>

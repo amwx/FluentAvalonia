@@ -307,10 +307,10 @@
                             </ListBox>
                         </DockPanel>
                     </DockPanel>
-                </Grid>                
+                </Grid>
             </ControlTemplate>
         </Setter>
-        
+
         <Style Selector="^ /template/ ListBox#QuickLinks">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"/>
@@ -380,6 +380,5 @@
             <Setter Property="Margin" Value="4,0,0,0"/>
         </Style>
     </ControlTheme>
-    
-    
+
 </ResourceDictionary>

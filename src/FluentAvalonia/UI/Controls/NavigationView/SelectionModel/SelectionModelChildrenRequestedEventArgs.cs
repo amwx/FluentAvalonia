@@ -22,7 +22,7 @@ internal class SelectionModelChildrenRequestedEventArgs : EventArgs
 
     /// <summary>
     /// Gets the object whose children are being requested.
-    /// </summary>        
+    /// </summary>
     public object Source
     {
         get
@@ -38,7 +38,7 @@ internal class SelectionModelChildrenRequestedEventArgs : EventArgs
 
     /// <summary>
     /// Gets the index of the object whose children are being requested.
-    /// </summary>        
+    /// </summary>
     public IndexPath SourceIndex
     {
         get

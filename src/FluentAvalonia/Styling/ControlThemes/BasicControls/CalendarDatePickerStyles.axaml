@@ -55,36 +55,36 @@
                              Grid.Column="0">
                         <TextBox.InnerRightContent>
                             <Button Name="PART_Button"
-									Grid.Column="1"
-									Width="32"
-									Theme="{StaticResource CalendarDropDownButton}"
-									Foreground="{TemplateBinding Foreground}"
-									Background="Transparent"
-									BorderThickness="0"
-									Margin="2,0,2,0"
-									Padding="0"
-									ClipToBounds="False"
-									Focusable="False"/>
+                                    Grid.Column="1"
+                                    Width="32"
+                                    Theme="{StaticResource CalendarDropDownButton}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Margin="2,0,2,0"
+                                    Padding="0"
+                                    ClipToBounds="False"
+                                    Focusable="False"/>
                         </TextBox.InnerRightContent>
                     </TextBox>
                     
                     <Popup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"
                            PlacementTarget="{TemplateBinding}"
-						   PlacementMode="AnchorAndGravity"
-						   PlacementAnchor="Bottom"
-						   PlacementGravity="Bottom"
+                           PlacementMode="AnchorAndGravity"
+                           PlacementAnchor="Bottom"
+                           PlacementGravity="Bottom"
                            IsLightDismissEnabled="True">
                         <Border Name="DropDownRoot"
                                 Background="{DynamicResource FlyoutPresenterBackground}"
                                 CornerRadius="{DynamicResource OverlayCornerRadius}">
                             <Calendar Name="PART_Calendar"
-									  FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
-									  IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
-									  SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
-									  DisplayDate="{TemplateBinding DisplayDate}"
-									  DisplayDateStart="{TemplateBinding DisplayDateStart}"
-									  DisplayDateEnd="{TemplateBinding DisplayDateEnd}"
+                                      FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
+                                      IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
+                                      SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
+                                      DisplayDate="{TemplateBinding DisplayDate}"
+                                      DisplayDateStart="{TemplateBinding DisplayDateStart}"
+                                      DisplayDateEnd="{TemplateBinding DisplayDateEnd}"
                                       CornerRadius="{DynamicResource OverlayCornerRadius}"/>
                         </Border>
 

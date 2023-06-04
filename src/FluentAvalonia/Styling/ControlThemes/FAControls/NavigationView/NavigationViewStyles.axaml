@@ -351,33 +351,33 @@
                                         Margin="{DynamicResource NavigationViewContentMargin}"
                                         CornerRadius="{DynamicResource NavigationViewContentGridCornerRadius}">
                                     <Grid Name="ContentGrid"
-										  RowDefinitions="Auto,Auto,*"
-										  ColumnDefinitions="Auto,*">
+                                          RowDefinitions="Auto,Auto,*"
+                                          ColumnDefinitions="Auto,*">
 
                                         <Rectangle Name="ContentTopPadding"
-												   Grid.ColumnSpan="2"
-												   Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.TopPadding}"
-												   IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.LeftPaneVisibility}" />
+                                                   Grid.ColumnSpan="2"
+                                                   Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.TopPadding}"
+                                                   IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.LeftPaneVisibility}" />
 
                                         <Rectangle Name="ContentLeftPadding" Grid.Row="1" />
 
                                         <ContentControl Name="HeaderContent"
-														Grid.Row="1"
-														Grid.Column="1"
-														MinHeight="{StaticResource PaneToggleButtonHeight}"
-														KeyboardNavigation.IsTabStop="True"
-														Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header}"
-														ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HeaderTemplate}"
-														VerticalContentAlignment="Stretch"
-														HorizontalContentAlignment="Stretch"
-														Theme="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}" />
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        MinHeight="{StaticResource PaneToggleButtonHeight}"
+                                                        KeyboardNavigation.IsTabStop="True"
+                                                        Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header}"
+                                                        ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HeaderTemplate}"
+                                                        VerticalContentAlignment="Stretch"
+                                                        HorizontalContentAlignment="Stretch"
+                                                        Theme="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}" />
 
                                         <ContentPresenter Grid.Row="2"
-														  Grid.ColumnSpan="2"
-														  Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                                          Grid.ColumnSpan="2"
+                                                          Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                                           ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
-														  Margin="{DynamicResource NavigationViewContentPresenterMargin}"
-														  Name="ContentPresenter" />
+                                                          Margin="{DynamicResource NavigationViewContentPresenterMargin}"
+                                                          Name="ContentPresenter" />
 
                                     </Grid>
                                 </Border>
@@ -514,5 +514,5 @@
             <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>

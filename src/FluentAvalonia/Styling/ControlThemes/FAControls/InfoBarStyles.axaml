@@ -120,13 +120,13 @@
                             <Panel Name="StandardIconArea"
                                    IsVisible="False">
                                 <Ellipse Name="IconBackground"
-										 Width="16" Height="16"
-										 VerticalAlignment="Top"
-										 Margin="{StaticResource InfoBarIconMargin}"/>
+                                         Width="16" Height="16"
+                                         VerticalAlignment="Top"
+                                         Margin="{StaticResource InfoBarIconMargin}"/>
 
                                 <ui:FontIcon VerticalAlignment="Top"
-											 FontFamily="{StaticResource SymbolThemeFontFamily}"
-											 Name="StandardIcon"
+                                             FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                             Name="StandardIcon"
                                              Margin="{DynamicResource InfoBarIconMargin}"/>
                             </Panel>
 

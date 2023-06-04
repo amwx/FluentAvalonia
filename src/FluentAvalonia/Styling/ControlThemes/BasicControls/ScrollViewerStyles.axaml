@@ -64,6 +64,5 @@
             <Setter Property="Opacity" Value="1" />
         </Style>
     </ControlTheme>
-    
-    
+
 </ResourceDictionary>
