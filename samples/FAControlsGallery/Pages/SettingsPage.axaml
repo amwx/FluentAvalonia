@@ -273,6 +273,11 @@
                             <Run>
                                 Both Avalonia and WinUI are not affiliated with and do not endorse FluentAvalonia.
                             </Run>
+                            <LineBreak />
+                            <LineBreak />
+                            <Run>
+                                Main page header image created using https://www.freepik.com/free-vector/paper-style-white-monochrome-background_15628815.htm
+                            </Run>
                         </TextBlock>
                     </StackPanel>
                 </ui:SettingsExpanderItem>
