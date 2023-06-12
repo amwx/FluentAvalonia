@@ -29,7 +29,7 @@ internal class SplashScreenContext
     {
         _splashCTS = new CancellationTokenSource();
         await SplashScreen.RunTasks(_splashCTS.Token);
-        _splashCTS.Dispose();
+        _splashCTS?.Dispose();
         _splashCTS = null;
     }
 
