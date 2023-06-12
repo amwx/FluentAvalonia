@@ -136,14 +136,19 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         if (_textMateInstall != null)
         {
-            if (ActualThemeVariant == ThemeVariant.Dark)
+            try
             {
-                _textMateInstall.SetTheme(SampleCodePresenter.GetDarkTheme());
+                if (ActualThemeVariant == ThemeVariant.Dark)
+                {
+                    _textMateInstall.SetTheme(SampleCodePresenter.GetDarkTheme());
+                    
+                }
+                else
+                {
+                    _textMateInstall.SetTheme(_textMateInstall.RegistryOptions.GetDefaultTheme());
+                }
             }
-            else
-            {
-                _textMateInstall.SetTheme(_textMateInstall.RegistryOptions.GetDefaultTheme());
-            }
+            catch { }
         }        
 
         await ani.RunAsync(this);
