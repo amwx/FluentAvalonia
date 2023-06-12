@@ -17,7 +17,9 @@ public partial class MainWindow : AppWindow
     {
         AvaloniaXamlLoader.Load(this);
 
+#if DEBUG
         this.AttachDevTools();
+#endif
 
         SplashScreen = new MainAppSplashScreen(this);
         TitleBar.ExtendsContentIntoTitleBar = true;
