@@ -9,7 +9,7 @@
                 <ui:SettingsExpander.Footer>
                     <Button Content="FooterButton" />
                 </ui:SettingsExpander.Footer>
-                
+
                 <ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
                 <ui:SettingsExpanderItem Content="Content Here">
                     <ui:SettingsExpanderItem.Footer>
@@ -62,7 +62,7 @@
                         </Viewbox>
 
                         <StackPanel HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"                                    
+                                    VerticalAlignment="Center"
                                     Name="HeaderRegion">
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
