@@ -39,7 +39,7 @@
                             <!-- if this border isn't here, dialog space displays outside of corner radius at top
                                  if we put ClipToBounds=True on BackgroundElement above, it clips the shadow -->
                             <Border ClipToBounds="True"
-									CornerRadius="{TemplateBinding CornerRadius}">
+                                    CornerRadius="{TemplateBinding CornerRadius}">
                                 <Grid Name="DialogSpace" ClipToBounds="True"
                                   RowDefinitions="*,Auto">
                                     <ScrollViewer Name="ContentScrollViewer"
@@ -108,6 +108,8 @@
                                             <Button Name="PrimaryButton"
                                                     Content="{TemplateBinding PrimaryButtonText}"
                                                     IsEnabled="{TemplateBinding IsPrimaryButtonEnabled}"
+                                                    Command="{TemplateBinding PrimaryButtonCommand}"
+                                                    CommandParameter="{TemplateBinding PrimaryButtonCommandParameter}"
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
@@ -117,6 +119,8 @@
                                             <Button Name="SecondaryButton"
                                                     Content="{TemplateBinding SecondaryButtonText}"
                                                     IsEnabled="{TemplateBinding IsSecondaryButtonEnabled}"
+                                                    Command="{TemplateBinding SecondaryButtonCommand}"
+                                                    CommandParameter="{TemplateBinding SecondaryButtonCommandParameter}"
                                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
@@ -124,6 +128,8 @@
 
                                             <Button Name="CloseButton"
                                                     Content="{TemplateBinding CloseButtonText}"
+                                                    Command="{TemplateBinding CloseButtonCommand}"
+                                                    CommandParameter="{TemplateBinding CloseButtonCommandParameter}"
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
