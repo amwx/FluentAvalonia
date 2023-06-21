@@ -39,8 +39,7 @@
                         <ItemsPresenter Name="PART_ItemsPresenter"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                         Margin="{TemplateBinding Padding}"
-                                        AreVerticalSnapPointsRegular="{TemplateBinding AreVerticalSnapPointsRegular}"
-                                        AreHorizontalSnapPointsRegular="{TemplateBinding AreHorizontalSnapPointsRegular}"/>
+                                        />
                     </ScrollViewer>
                 </Border>
             </ControlTemplate>
