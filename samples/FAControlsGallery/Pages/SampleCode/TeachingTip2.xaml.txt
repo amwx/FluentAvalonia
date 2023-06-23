@@ -1,0 +1,9 @@
+﻿<Panel>
+    <Button Name="Button2" Content="Show TeachingTip" />
+
+    <ui:TeachingTip Name="TeachingTip2"
+                    Title="Title"
+                    Subtitle="Your teaching text here. This one is untargeted"
+                    ActionButtonContent="Action Button"
+                    CloseButtonContent="Close"/>
+</Panel>

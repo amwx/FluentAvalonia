@@ -1,0 +1,39 @@
+﻿// Unlike WinUI, we don't have a Page control and so we have no way to have navigation events automatically sent to the loaded/unloaded pages or specify a navigation parameter.
+
+// In FluentAvalonia, this has been solved by 3 direct routed events that correspond to the virtual methods on Page in WinUI
+
+/// <summary>
+/// Indicates to a page that it is being navigated away from. Takes the place of 
+/// Microsoft.UI.Xaml.Controls.Page.OnNavigatingFrom() method
+/// </summary>
+RoutedEvent<NavigatingCancelEventArgs> NavigatingFromEvent;
+
+/// <summary>
+/// Indiates to a page that it has been navigated away from. Takes the place of
+/// Microsoft.UI.Xaml.Controls.Page.OnNavigatedFrom() method
+/// </summary>
+RoutedEvent<NavigationEventArgs> NavigatedFromEvent;
+
+/// <summary>
+/// Indiates to a page that it is being navigated to. Takes the place of
+/// Microsoft.UI.Xaml.Controls.Page.OnNavigatedTo() method
+/// </summary>
+RoutedEvent<NavigationEventArgs> NavigatedToEvent;
+
+// --------------
+
+// To use, in the page class, add a handler to one of these events
+
+public MyPage()
+{
+    // NOTE: Make sure the routing strategy is Direct
+    AddHandler(Frame.NavigatingFromEvent, OnNavigatingFrom, RoutingStrategies.Direct);
+    AddHandler(Frame.NavigatedFromEvent, OnNavigatedFrom, RoutingStrategies.Direct);
+    AddHandler(Frame.NavigatedToEvent, OnNavigatedTo, RoutingStrategies.Direct);
+}
+
+private void OnNavigatingFrom(object sender, NavigatingCancelEventArgs args) { }
+
+private void OnNavigatedFrom(object sender, NavigationEventArgs args) { }
+
+private void OnNavigatedTo(object sender, NavigationEventArgs args) { }

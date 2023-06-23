@@ -1,0 +1,66 @@
+﻿// If your TaskDialog is declared in Xaml, just reference it and call ShowAsync()
+// TaskDialog can launch in either windowed or hosted mode. Windowed mode presents the dialog in a 
+// top level window (using CoreWindow), thus it has a titlebar and an additional property Title
+// Hosted mode uses the OverlayLayer.
+
+this.FindControl<TaskDialog>("TaskDialog1").ShowAsync();
+
+// Declaring a TaskDialog from C#:
+var td = new TaskDialog
+{
+    // Title property only applies on Windowed dialogs
+    Title = "FluentAvalonia",
+    Header = "Header",
+    Subheader = "Subheader",
+    Content = "This is some sample text, but you can put more advanced content here if you like",
+    IconSource = new SymbolIconSource { Symbol = Symbol.Save },
+    FooterVisibility = TaskDialogFooterVisibility.Auto,
+    Footer = new CheckBox { Content = "Never show me this again" },
+    Commands = 
+    {
+        new TaskDialogCommand
+        {
+            Text = "Command Text",
+            Description = "Description",
+            DialogResult = "CommandResult",
+            // ClosesOnInvoked property lets you choose if invoking this command closes the dialog
+            // automatically (default true)
+            ClosesOnInvoked = true,
+            // Can also set IconSource
+            // Can also set IsEnabled
+        }
+    },
+    Buttons = 
+    {
+        // For more advanced scenarios, you can create your own buttons
+        // Custom buttons allow you to attach icons, custom results,
+        // command and click handlers to fully customize your experience
+        // Note: 'null' is not a valid dialog result and is automatically
+        // converted to TaskDialogStandardResult.None when the dialog closes
+        new TaskDialogButton("OK" /* text */, "myResult" /* dialogResult */)
+        
+        
+        // There are some default buttons for simple cases provided
+        // These have predefinded text and results that correspond to
+        // TaskDialogStandardResult enum
+        // Note that built in buttons cannot have Commands, Icons, or 
+        // click handlers attached to them
+        TaskDialogButton.OKButton,
+        TaskDialogButton.CancelButton,
+        TaskDialogButton.YesButton,
+        TaskDialogButton.NoButton,
+        TaskDialogButton.RetryButton,
+        TaskDialogButton.CloseButton
+    }
+};
+
+// Before showing a dialog declared in C#, you MUST set the XamlRoot property
+// Using the VisualRoot is fine, if the VisualRoot is a Window, the dialog automatically launches in
+// Windowed mode, otherwise, it tries to find the OverlayLayer and will launch in hosted mode
+// If your TaskDialog is declared in Xaml, this is automatically handled for you
+td.XamlRoot = this.VisualRoot;
+
+var result = await td.ShowAsync();
+
+// If you want to force hosted mode, ShowAsync accepts a parameter 'showHosted' to force this mode
+var result = await td.ShowAsync(true);

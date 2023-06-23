@@ -1,0 +1,32 @@
+﻿// To start, implement IApplicationSplashScreen
+// There you can customize the display.
+// You have three options for how the splash screen displays (prioritized in this order):
+// 1 - User set custom content (SplashScreenContent) - can be anything you want
+// 2 - Application Icon centered image (AppIcon)
+// 3 - Application Name centered text (AppName)
+
+// The SplashScreen is set to only open the first time the window opens, so you you need to 
+// Show/Hide the main window, it won't show each time
+
+// This is the splash screen used by this sample app
+
+TODO:
+
+public class MainWindow : AppWindow
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+
+        // Set your splash screen and the rest is taken care of when you open the window
+        SplashScreen = new SampleAppSplashScreen();
+    }
+
+    // NOTE: If you override OnOpened for custom logic, be sure to call base.OnOpened() FIRST
+    // as that allows the SplashScreen to run which will hold the loading of window content
+    // until it finishes (unless you must run something first).
+    protected override void OnOpened()
+    {
+        base.OnOpened();
+    }
+}

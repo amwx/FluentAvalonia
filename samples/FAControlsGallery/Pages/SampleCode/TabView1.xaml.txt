@@ -1,0 +1,12 @@
+﻿<ui:TabView AddTabButtonCommand="{Binding AddDocumentCommand}"
+            AddTabButtonCommandParameter="Normal"
+            TabCloseRequested="BindingTabView_TabCloseRequested"
+            TabItems="{Binding Documents}">
+    <ui:TabView.TabItemTemplate>
+        <DataTemplate DataType="vm:DocumentItem">
+            <ui:TabViewItem Header="{Binding Header}"
+                            Content="{Binding Content}"
+                            IconSource="{Binding IconSource}" />
+        </DataTemplate>
+    </ui:TabView.TabItemTemplate>
+</ui:TabView>

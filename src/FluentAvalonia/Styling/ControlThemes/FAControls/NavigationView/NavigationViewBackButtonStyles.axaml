@@ -28,6 +28,8 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Content" Value="&#xE72B;" />
         <Setter Property="Margin"  Value="4,2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="Root"

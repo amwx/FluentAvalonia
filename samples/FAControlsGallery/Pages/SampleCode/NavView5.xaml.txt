@@ -1,0 +1,12 @@
+﻿<ui:NavigationView x:Name="nvSample5" Height="460">
+    <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="Browse" Tag="SamplePage1" IconSource="Library" />
+        <ui:NavigationViewItem Content="Track an Order" Tag="SamplePage2" IconSource="Map" />
+        <ui:NavigationViewItem Content="Order History" Tag="SamplePage3" IconSource="Tag" />
+    </ui:NavigationView.MenuItems>
+    <ui:NavigationView.FooterMenuItems>
+        <ui:NavigationViewItem Content="Account" Tag="SamplePage4" IconSource="Contact" />
+        <ui:NavigationViewItem Content="Your Cart" Tag="SamplePage5" IconSource="Shop" />
+        <ui:NavigationViewItem Content="Help" Tag="SamplePage6" IconSource="Help" />
+    </ui:NavigationView.FooterMenuItems>
+</ui:NavigationView>

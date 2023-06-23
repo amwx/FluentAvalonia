@@ -1,0 +1,8 @@
+﻿XamlUICommand allows the sharing of the UX associated with a command. In this instance we create a simple Custom Command with a label, icon, shortcut, and description. It's defined as a resource and could be used in many controls, like this CommandBarButton. The button (and other controls) automatically get all these UI properties without the need to define the properties again.
+
+Currently supported controls:
+CommandBarButton
+CommandBarToggleButton
+MenuFlyoutItem
+
+NOTE: Using hotkeys can with XamlUICommand can crash. See the StandardUICommand page for more on this, and workaround to prevent the crash.

@@ -1,0 +1,26 @@
+﻿<!-- TaskDialog can be declared in Xaml -->
+<!-- However, it must still be launched in C# -->
+<ui:TaskDialog Name="TaskDialog1"
+                Title="$(title)"
+                Header="$(header)"
+                SubHeader="$(subheader)"
+                Content="$(content)"                                   
+                FooterVisibility="$(footervisibility)"
+                IsFooterExpanded="$(footerexpanded)"
+                ShowProgressBar="$(showProg)">
+    <ui:TaskDialog.Commands>
+        <ui:TaskDialogCommand Text="$(commandText)"
+                                Description="$(commandDesc)"
+                                IsEnabled="$(commandEnabled)"
+                                DialogResult="$(commandResult)"/>
+    </ui:TaskDialog.Commands>
+
+    <ui:TaskDialog.Buttons>
+        <ui:TaskDialogButton Text="OK" DialogResult="OK" />
+        <ui:TaskDialogButton Text="Cancel" DialogResult="Cancel" />
+    </ui:TaskDialog.Buttons>
+
+    <ui:TaskDialog.Footer>
+        <CheckBox Content="Never show me this again" />
+    </ui:TaskDialog.Footer>
+</ui:TaskDialog>

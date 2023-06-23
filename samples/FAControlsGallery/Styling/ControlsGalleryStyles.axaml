@@ -1,0 +1,151 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+        xmlns:aedit="using:AvaloniaEdit"
+        xmlns:aedit2="using:AvaloniaEdit.Editing">
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Styling/ControlThemes.axaml" />
+                <ResourceInclude Source="/Styling/ControlExampleStyles.axaml" />
+                <ResourceInclude Source="/Styling/ControlDefinitionOverlayStyles.axaml" />
+                <ResourceInclude Source="/Styling/ColorTileStyles.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+    <StyleInclude Source="/Styling/ControlsPageBaseStyles.axaml" />
+    
+    <!-- set the selection color for the AvaloniaEdit boxes -->
+    <Style Selector="aedit2|TextArea">
+        <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+        <Setter Property="SelectionForeground" Value="{DynamicResource TextOnAccentFillColorSelectedTextBrush}" />
+    </Style>
+    
+    <!-- 
+         NavView style in MainView for main app navigation
+         While you are free to copy this into your own apps
+         if you want an MS store like NavView, this will NOT
+         be an officially supported thing in the main library
+    -->
+    <Style Selector="ui|NavigationView.SampleAppNav">
+        <Setter Property="IsPaneToggleButtonVisible" Value="False" />
+        <Setter Property="OpenPaneLength" Value="72" />
+        <Setter Property="IsPaneOpen" Value="True" />
+    </Style>
+    <Style Selector="ui|NavigationView.SampleAppNav /template/ Button#NavigationViewBackButton">
+        <Setter Property="Width" Value="{DynamicResource NavigationBackButtonWidth}" />
+    </Style>
+    <Style Selector="ui|NavigationView.SampleAppNav[IsBackButtonVisible=False] SplitView /template/ ContentPresenter#PART_PanePresenter">
+        <Setter Property="Margin" Value="0 40 0 0" />
+    </Style>
+
+    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter">
+        <Setter Property="Width" Value="72" />
+        <Setter Property="MinHeight" Value="60" />
+        <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="LayoutRoot"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Margin="4 2"
+                        TemplatedControl.IsTemplateFocusTarget="True">
+                    <Panel>
+                        <Panel HorizontalAlignment="Left"
+                               VerticalAlignment="Center">
+
+                            <Border Name="SelectionIndicator"
+                                    Background="{DynamicResource NavigationViewSelectionIndicatorForeground}"
+                                    Width="3"
+                                    Opacity="0"
+                                    VerticalAlignment="Center"
+                                    Height="20"
+                                    CornerRadius="{StaticResource ControlCornerRadius}"/>
+                        </Panel>
+
+
+                        <DockPanel>
+                            <ContentPresenter Name="ContentPresenter"
+                                              Grid.Row="1"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Bottom"
+                                              FontSize="10"
+                                              Padding="0 4"
+                                              Margin="0 -15 0 3"
+                                              DockPanel.Dock="Bottom"
+                                              IsVisible="False">
+                                <ContentPresenter.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </ContentPresenter.Styles>
+                            </ContentPresenter>
+
+                            <Viewbox Name="IconBox"
+                                     Height="28"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center">
+                                <ContentPresenter Name="Icon"
+                                                  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Viewbox>
+
+                        </DockPanel>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+    </Style>
+    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#Icon">
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pressed /template/ ContentPresenter#ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+    </Style>
+    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pressed /template/ ContentPresenter#Icon">
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+    </Style>
+
+    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:selected /template/ ContentPresenter#ContentPresenter">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:selected /template/ ContentPresenter#Icon">
+        <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+    </Style>
+
+
+    <!-- AutoCompleteBox Search box in MainView -->
+    <Style Selector="AutoCompleteBox.SampleApp /template/ TextBox#PART_TextBox">
+        <Setter Property="InnerRightContent">
+            <Template>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="&#xE8BB;"
+                               FontFamily="{StaticResource SymbolThemeFontFamily}"
+                               Theme="{StaticResource TransparentButton}"
+                               Command="{Binding $parent[TextBox].Clear}"
+                               IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <Button Content="&#xE721;"
+                               FontFamily="{StaticResource SymbolThemeFontFamily}"
+                               Theme="{StaticResource TransparentButton}"
+                               Command="{Binding $parent[TextBox].Clear}"
+                               IsHitTestVisible="False"/>
+                </StackPanel>
+            </Template>
+        </Setter>
+    </Style>
+
+    <!-- Adjust the ScrollViewer padding in AvaloniaEdit so scrollbar doesn't overlap text -->
+    <Style Selector="aedit|TextEditor /template/ ScrollViewer ScrollContentPresenter">
+        <Setter Property="Padding" Value="0 0 0 20" />
+    </Style>
+</Styles>

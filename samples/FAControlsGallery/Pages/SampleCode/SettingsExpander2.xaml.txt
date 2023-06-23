@@ -1,0 +1,18 @@
+﻿<ui:SettingsExpander Header="Choose a device for speaking or recording"
+                     IconSource="Microphone"
+                     Description="Apps might have their own settings"
+                     Name="SettingsExpander3">
+
+    <ui:SettingsExpanderItem Content="Headset"
+                             Description="Device Name" />
+    <ui:SettingsExpanderItem Content="This one has footer content"
+                             Description="Device Name">
+        <ui:SettingsExpanderItem.Footer>
+            <Button Content="Add new device" />
+        </ui:SettingsExpanderItem.Footer>
+    </ui:SettingsExpanderItem>
+    <ui:SettingsExpanderItem Content="This one is clickable"
+                             ActionIconSource="{StaticResource GoIcon}"
+                             IsClickEnabled="True" />
+
+</ui:SettingsExpander>

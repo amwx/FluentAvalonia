@@ -1,0 +1,245 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:FAControlsGallery.Controls"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    xmlns:aedit="using:AvaloniaEdit">
+
+    <Design.PreviewWith>
+        <Border Padding="20"
+                Width="600"
+                Height="600">
+            <local:ControlDefinitionOverlay TargetType="ui:InfoBar"
+                                            IsVisible="True"/>
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme TargetType="HeaderedContentControl"
+                  x:Key="CDOverlayHCC">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="12">
+                    <Viewbox Height="18"
+                             VerticalAlignment="Center">
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </Viewbox>
+                    
+                    <TextBlock Theme="{StaticResource SubtitleTextBlockStyle}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Text="{TemplateBinding Header}" />
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    
+    <ControlTheme TargetType="local:ControlDefinitionOverlay"
+                  x:Key="{x:Type local:ControlDefinitionOverlay}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}">
+                    <Panel Margin="20">
+                        <ExperimentalAcrylicBorder CornerRadius="8">
+                            <ExperimentalAcrylicBorder.Material>
+                                <ExperimentalAcrylicMaterial TintColor="{DynamicResource SolidBackgroundFillColorBase}"
+                                                             FallbackColor="{DynamicResource SolidBackgroundFillColorBase}"
+                                                             TintOpacity="0.85"
+                                                             BackgroundSource="Digger"
+                                                             MaterialOpacity="1" />
+                            </ExperimentalAcrylicBorder.Material>
+                        </ExperimentalAcrylicBorder>
+
+                        <Panel>
+                            <ScrollViewer Padding="12">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding TargetType.Name, RelativeSource={RelativeSource TemplatedParent}}"
+                                               Theme="{StaticResource TitleTextBlockStyle}"  />
+                                    
+                                    <TextBlock Text="{Binding TargetType, RelativeSource={RelativeSource TemplatedParent}}"
+                                               Theme="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                               FontStyle="Italic"/>
+
+                                    <HeaderedContentControl Header="Inheritance"
+                                                            Theme="{StaticResource CDOverlayHCC}"
+                                                            Margin="0 12 0 6"
+                                                            IsVisible="False"
+                                                            Name="InheritanceHCC">
+                                        <ui:ImageIcon>
+                                            <DrawingImage>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                                                     Geometry="M 3.8730469,6.1757812 C 2.2861389,6.1757812 1,7.4638732 1,9.0507812 1,10.637689 2.2861389,11.923828 3.8730469,11.923828 5.4599549,11.923828 6.7460938,10.637689 6.7460938,9.0507812 6.7460938,7.4638732 5.4599549,6.1757812 3.8730469,6.1757812 Z M 11.925781,7.3261719 11.691406,7.3417969 C 10.849422,7.4560149 10.199219,8.1774712 10.199219,9.0507812 10.199219,10.003464 10.973098,10.777344 11.925781,10.777344 H 45.275391 L 45.509766,10.761719 C 46.351566,10.647501 47,9.9240913 47,9.0507812 47,8.0980982 46.228051,7.3261719 45.275391,7.3261719 Z M 3.8730469,21.126953 C 2.2861389,21.126953 1,22.413 1,24 1,25.587 2.2861389,26.873047 3.8730469,26.873047 5.4599549,26.873047 6.7460938,25.587 6.7460938,24 6.7460938,22.413 5.4599549,21.126953 3.8730469,21.126953 Z M 11.925781,22.277344 11.691406,22.292969 C 10.849422,22.407279 10.199219,23.128643 10.199219,24.001953 10.199219,24.954613 10.973098,25.726562 11.925781,25.726562 H 45.275391 L 45.509766,25.710938 C 46.351566,25.596628 47,24.875263 47,24.001953 47,23.049293 46.228051,22.277344 45.275391,22.277344 Z" />
+                                                    <GeometryDrawing Brush="{DynamicResource AccentFillColorDefaultBrush}"
+                                                                     Geometry="M 13.074219,36.076172 C 11.487311,36.076172 10.199219,37.362219 10.199219,38.949219 10.199219,40.536219 11.487311,41.824219 13.074219,41.824219 14.661127,41.824219 15.947266,40.536219 15.947266,38.949219 15.947266,37.362219 14.661127,36.076172 13.074219,36.076172 Z M 21.125,37.226562 20.890625,37.242188 C 20.048825,37.356498 19.400391,38.077862 19.400391,38.951172 19.400391,39.903832 20.17234,40.675781 21.125,40.675781 H 45.275391 L 45.509766,40.660156 C 46.351566,40.545846 47,39.824482 47,38.951172 47,37.998512 46.228051,37.226562 45.275391,37.226562 Z" />
+                                                </DrawingGroup>
+                                            </DrawingImage>
+                                        </ui:ImageIcon>
+                                    </HeaderedContentControl>
+
+                                    <TextBlock Text="{TemplateBinding Inheritance}"
+                                               Margin="0 4 0 20"
+                                               TextWrapping="Wrap"
+                                               Name="InheritanceDisplay"
+                                               IsVisible="False"/>
+
+                                    <HeaderedContentControl Header="Pseudoclasses"
+                                                            Theme="{StaticResource CDOverlayHCC}"
+                                                            Margin="0 12 0 6"
+                                                            IsVisible="False"
+                                                            Name="PseudoclassesHCC">
+                                        <ui:ImageIcon>
+                                            <DrawingImage>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                                                     Geometry="M 7.7636719,1 C 4.0280122,1 1,4.0280122 1,7.7636719 V 32.115234 C 1,35.850867 4.0280122,38.878906 7.7636719,38.878906 H 21.222656 C 21.520273,37.900829 21.988423,36.98551 22.603516,36.173828 H 7.7636719 C 5.5222653,36.173828 3.7050781,34.356559 3.7050781,32.115234 V 11.818359 H 36.173828 V 22.490234 L 36.449219,22.212891 C 37.169722,21.492523 37.996337,20.944541 38.878906,20.566406 V 7.7636719 C 38.878906,4.0280122 35.850867,1 32.115234,1 Z M 7.7617188,3.703125 H 32.111328 C 34.352924,3.703125 36.169922,5.5183589 36.169922,7.7597656 V 9.1132812 H 3.703125 V 7.7597656 C 3.703125,5.5183589 5.5203391,3.703125 7.7617188,3.703125 Z" />
+                                                    <GeometryDrawing Brush="{DynamicResource AccentFillColorDefaultBrush}"
+                                                                     Geometry="M 38.362279,24.126958 25.295817,37.193421 C 24.533918,37.95532 23.993337,38.909858 23.731976,39.955035 L 22.718996,44.007765 C 22.27828,45.770198 23.874832,47.366506 25.637265,46.926033 L 29.689995,45.912783 C 30.735171,45.651421 31.689709,45.111112 32.451609,44.349212 L 45.518071,31.28275 C 47.493976,29.306574 47.493976,26.102864 45.518071,24.126958 43.542166,22.15081 40.338185,22.15081 38.362279,24.126958 Z" />
+                                                    <GeometryDrawing Brush="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                     Geometry="M 17.230469,14.525391 C 16.884256,14.525391 16.537599,14.65576 16.273438,14.919922 L 9.5097656,21.685547 C 8.9814691,22.213844 8.9814411,23.069251 9.5097656,23.597656 L 16.273438,30.361328 C 16.801734,30.889733 17.659203,30.889733 18.1875,30.361328 18.715797,29.832922 18.715797,28.977625 18.1875,28.449219 L 12.378906,22.640625 18.1875,16.833984 C 18.715797,16.305687 18.715797,15.448219 18.1875,14.919922 17.923351,14.65576 17.576682,14.525391 17.230469,14.525391 Z M 23.998047,14.525391 C 23.651797,14.525391 23.305219,14.657713 23.041016,14.921875 22.512855,15.450172 22.512855,16.305687 23.041016,16.833984 L 28.847656,22.640625 23.041016,28.449219 C 22.512828,28.977625 22.512855,29.833193 23.041016,30.361328 23.569422,30.889733 24.426673,30.889733 24.955078,30.361328 L 31.71875,23.597656 C 32.246885,23.069521 32.246885,22.213844 31.71875,21.685547 L 24.955078,14.921875 C 24.690876,14.657713 24.344297,14.525391 23.998047,14.525391 Z" />
+                                                </DrawingGroup>
+                                            </DrawingImage>
+                                        </ui:ImageIcon>
+                                    </HeaderedContentControl>
+
+                                    <ItemsControl Name="PseudoclassesDisplay"
+                                                  IsVisible="False"
+                                                  Margin="0 0 0 20">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="local:PseudoclassesList">
+                                                <StackPanel>
+                                                    <TextBlock Theme="{StaticResource CaptionTextBlockStyle}"
+                                                               IsVisible="{Binding DisplayType}"
+                                                               FontStyle="Italic"
+                                                               Margin="0 8 0 0">
+                                                        <Run>Inherited From </Run>
+                                                        <Run Text="{Binding DeclaredOnType.Name}"
+                                                             Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                                                    </TextBlock>
+                                                    <ItemsControl ItemsSource="{Binding Pseudoclasses}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding .}"
+                                                                           Width="125" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <HeaderedContentControl Header="Template Parts"
+                                                            Theme="{StaticResource CDOverlayHCC}"
+                                                            Margin="0 12 0 6"
+                                                            IsVisible="False"
+                                                            Name="TemplatePartsHCC">
+                                        <ui:ImageIcon>
+                                            <DrawingImage>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                                                     Geometry="M 37.800781,11.494141 V 27.449219 C 37.800781,30.624829 35.226391,33.199219 32.050781,33.199219 H 6.8945312 C 7.4051773,35.183199 9.2061934,36.650391 11.349609,36.650391 H 32.050781 C 37.131711,36.650391 41.25,32.530149 41.25,27.449219 V 15.949219 C 41.25,13.805803 39.784761,12.004787 37.800781,11.494141 Z M 43.550781,17.244141 V 29.175781 C 43.550781,34.574341 39.173951,38.949219 33.775391,38.949219 H 12.644531 C 13.155177,40.933199 14.956193,42.400391 17.099609,42.400391 H 33.775391 C 41.079271,42.400391 47,36.479661 47,29.175781 V 21.699219 C 47,19.555849 45.534761,17.754787 43.550781,17.244141 Z" />
+                                                    <GeometryDrawing Brush="{DynamicResource AccentFillColorDefaultBrush}"
+                                                                     Geometry="M 5.5996094,5.5996094 C 3.0590984,5.5996094 1,7.6587078 1,10.199219 V 26.300781 C 1,28.841361 3.0590984,30.900391 5.5996094,30.900391 H 30.900391 C 33.440971,30.900391 35.5,28.841361 35.5,26.300781 V 10.199219 C 35.5,7.6587077 33.440971,5.5996094 30.900391,5.5996094 Z M 5.5996094,9.0507812 H 30.900391 C 31.535421,9.0507812 32.050781,9.5640968 32.050781,10.199219 V 26.300781 C 32.050781,26.935811 31.535421,27.449219 30.900391,27.449219 H 5.5996094 C 4.9644874,27.449219 4.4492188,26.935811 4.4492188,26.300781 V 10.199219 C 4.4492187,9.5640968 4.9644874,9.0507812 5.5996094,9.0507812 Z" />
+                                                    <GeometryDrawing Brush="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                     Geometry="M 18.25,9.854954 C 18.903384,9.854954 19.50074,10.224104 19.79284,10.808511 L 21.67999,14.582765 25.3639,15.043271 C 26.04585,15.128486 26.61211,15.610244 26.80531,16.269631 26.99874,16.929018 26.78208,17.640224 26.25423,18.080122 L 23.61199,20.28205 24.53383,24.43079 C 24.68471,25.10929 24.41354,25.81217 23.8459,26.21352 23.27826,26.61487 22.52524,26.63626 21.93575,26.2678 L 18.25,23.96412 14.56425,26.2678 C 13.97476,26.63626 13.22174,26.61487 12.654146,26.21352 12.086529,25.81217 11.81529,25.10929 11.966078,24.43079 L 12.88801,20.28205 10.245678,18.080122 C 9.717805,17.640224 9.501352,16.929018 9.69469,16.269631 9.888005,15.610244 10.454219,15.128486 11.136054,15.043271 L 14.819987,14.582765 16.707114,10.808511 C 16.999329,10.224104 17.596616,9.854954 18.25,9.854954 Z" />
+                                                </DrawingGroup>
+                                            </DrawingImage>
+                                        </ui:ImageIcon>
+                                    </HeaderedContentControl>
+                                    
+                                    <Panel Margin="0 4"
+                                           Name="TemplatePartHeader"
+                                           IsVisible="False">
+                                        <TextBlock Text="Part Name"
+                                                   Theme="{StaticResource BodyTextBlockStyle}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="Type"
+                                                   Theme="{StaticResource BodyTextBlockStyle}"
+                                                   Margin="150 0 0 0"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />                                        
+                                    </Panel>
+
+                                    <ItemsControl Name="TemplatePartsDisplay"
+                                                  IsVisible="False"
+                                                  Margin="0 0 0 20">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="local:TemplatePartItem">
+                                                <Panel>
+                                                    <TextBlock Text="{Binding PartName}"
+                                                               Theme="{StaticResource BodyTextBlockStyle}" />
+                                                    <TextBlock Text="{Binding ControlType}"
+                                                               Theme="{StaticResource BodyTextBlockStyle}"
+                                                               Margin="150 0 0 0" />
+                                                </Panel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+
+                                    <HeaderedContentControl Header="Definition"
+                                                            Theme="{StaticResource CDOverlayHCC}"
+                                                            Margin="0 12 0 6">
+                                        <ui:ImageIcon>
+                                            <DrawingImage>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                                                     Geometry="M 13,13 C 12.577726,13 12.156163,13.160231 11.833984,13.482422 L 2.4824219,22.833984 2.3242188,23.017578 C 1.8449479,23.663499 1.896627,24.580156 2.4824219,25.166016 L 11.833984,34.517578 12.017578,34.675781 C 12.663521,35.155161 13.580222,35.103438 14.166016,34.517578 14.810375,33.873198 14.810375,32.827755 14.166016,32.183594 L 5.984375,24 14.166016,15.816406 14.326172,15.630859 C 14.805443,14.984917 14.751811,14.068194 14.166016,13.482422 13.843837,13.160231 13.422274,13 13,13 Z M 34.884766,13.003906 C 34.501635,13.030534 34.126804,13.189524 33.833984,13.482422 33.189603,14.12678 33.189603,15.172026 33.833984,15.816406 L 42.015625,24 33.833984,32.183594 33.673828,32.369141 C 33.194448,33.015062 33.248123,33.931938 33.833984,34.517578 34.478364,35.161958 35.521636,35.161958 36.166016,34.517578 L 45.517578,25.166016 45.675781,24.982422 C 46.155162,24.336502 46.103439,23.419624 45.517578,22.833984 L 36.166016,13.482422 35.982422,13.324219 C 35.659461,13.084572 35.267896,12.977278 34.884766,13.003906 Z" />
+                                                    <GeometryDrawing Brush="{DynamicResource AccentFillColorDefaultBrush}"
+                                                                     Geometry="M 15.344371,39.275058 29.644335,7.3750199 C 30.017235,6.5434859 30.993375,6.1715759 31.824975,6.5443219 32.587276,6.8860259 32.963256,7.7348519 32.733576,8.5144448 L 32.655696,8.7249188 18.355645,40.624979 C 17.982899,41.45658 17.006604,41.82838 16.17507,41.4557 15.412813,41.114039 15.036789,40.265059 15.266535,39.485599 L 15.344371,39.275058 29.644335,7.3750199 Z" />
+                                                </DrawingGroup>
+                                            </DrawingImage>
+                                        </ui:ImageIcon>
+                                    </HeaderedContentControl>
+                                    
+                                    <aedit:TextEditor Name="TextEditor"
+                                                      Margin="0"
+                                                      Background="Transparent"
+                                                      IsReadOnly="True"/>
+                                </StackPanel>
+                            </ScrollViewer>
+
+
+                            <Button Name="CloseButton"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Top"
+                                       Theme="{StaticResource TransparentButton}"
+                                       Margin="12">
+                                <ui:SymbolIcon Symbol="Dismiss" FontSize="18" />
+                            </Button>
+                        </Panel>
+
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:hasInheritance">
+            <Style Selector="^ /template/ HeaderedContentControl#InheritanceHCC,
+                             ^ /template/ TextBlock#InheritanceDisplay">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:hasPC">
+            <Style Selector="^ /template/ HeaderedContentControl#PseudoclassesHCC,
+                             ^ /template/ ItemsControl#PseudoclassesDisplay">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:hasTP">
+            <Style Selector="^ /template/ HeaderedContentControl#TemplatePartsHCC,
+                             ^ /template/ Panel#TemplatePartsHeader,
+                             ^ /template/ ItemsControl#TemplatePartsDisplay">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+    </ControlTheme>
+    
+</ResourceDictionary>

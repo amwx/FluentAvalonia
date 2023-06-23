@@ -1,0 +1,254 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="5450"
+             x:Class="FAControlsGallery.Pages.DesignPages.FillColorsPage">
+    <StackPanel Spacing="12">
+        <ctrls:DesignColorSection Header="Control Fill"
+                                  Description="Fill used for standard controls">
+            <Button HorizontalAlignment="Center"
+                    Content="Text" />
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control / Default"
+                                 Description="Rest"
+                                 ColorBrushName="ControlFillColorDefaultBrush"
+                                 Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control / Secondary"
+                                 Description="Hover"
+                                 ColorBrushName="ControlFillColorSecondaryBrush"
+                                 Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control / Tertiary"
+                                 Description="Pressed"
+                                 ColorBrushName="ControlFillColorTertiaryBrush"
+                                 Background="{DynamicResource ControlFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control / Quarternary"
+                                 Description="Rest (Pill Button control)"
+                                 ColorBrushName="ControlFillColorQuarternaryBrush"
+                                 Background="{DynamicResource ControlFillColorQuarternaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush might not (yet) exist"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control / Disabled"
+                                 Description="Disabled"
+                                 ColorBrushName="ControlFillColorDisabledBrush"
+                                 Background="{DynamicResource ControlFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control / Transparent"
+                                 Description="Rest"
+                                 ColorBrushName="ControlFillColorTransparentBrush"
+                                 Background="{DynamicResource ControlFillColorTransparentBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Control / Input Active"
+                                 Description="Active/focused text input fields"
+                                 ColorBrushName="ControlFillColorInputActiveBrush"
+                                 Background="{DynamicResource ControlFillColorInputActiveBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Control Alt Fill"
+                                 Description="Fill used for the 'off' states of toggle controls">
+            
+            <ToggleSwitch HorizontalAlignment="Center"
+                          OffContent="" OnContent=""/>
+                        
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control Alt / Transparent"
+                                 ColorBrushName="ControlAltFillColorTransparentBrush"
+                                 Background="{DynamicResource ControlAltFillColorTransparentBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <ctrls:ColorTile ColorName="Control Alt / Secondary"
+                                 Description="Rest"
+                                 ColorBrushName="ControlAltFillColorSecondaryBrush"
+                                 Background="{DynamicResource ControlAltFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Control Alt / Tertiary"
+                                 Description="Hover"
+                                 ColorBrushName="ControlAltFillColorTertiaryBrush"
+                                 Background="{DynamicResource ControlAltFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <ctrls:ColorTile ColorName="Control Alt / Quarternary"
+                                 Description="Pressed"
+                                 ColorBrushName="ControlAltFillColorQuarternaryBrush"
+                                 Background="{DynamicResource ControlAltFillColorQuarternaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control Alt / Disabled"
+                                 Description="Disabled"
+                                 ColorBrushName="ControlAltFillColorDisabledBrush"
+                                 Background="{DynamicResource ControlAltFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Control Solid"
+                                 Description="Fills used for Sliders thumb control to cover the track beneath it">
+
+            <Slider HorizontalAlignment="Center"
+                    Value="50" Width="150"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control Solid / Default"
+                                 Description="Rest"
+                                 ColorBrushName="ControlStrongFillColorDefaultBrush"
+                                 Background="{DynamicResource ControlStrongFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimary}"
+                                 Classes="single"/>
+            </ctrls:DesignColorSection.Tiles>
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Control Strong Fill"
+                                 Description="Fill used for standard controls">
+
+            <ScrollBar HorizontalAlignment="Center"
+                       Orientation="Horizontal"
+                       Width="150"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control Strong / Default"
+                                 Description="Rest or hover"
+                                 ColorBrushName="ControlStrongFillColorDefaultBrush"
+                                 Background="{DynamicResource ControlStrongFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimary}" />
+                <ctrls:ColorTile ColorName="Control Strong / Disabled"
+                                 Description="Disabled only (not accessible)"
+                                 ColorBrushName="ControlStrongFillColorDisabledBrush"
+                                 Background="{DynamicResource ControlStrongFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextOnAccentFillColorPrimary}" />
+            </ctrls:DesignColorSection.Tiles>
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Subtle Fill"
+                                 Description="Used for list items and fills that are transparent at rest and appear upon interaction">
+
+            <StackPanel HorizontalAlignment="Center"
+                        IsHitTestVisible="False">
+                <ListBoxItem Content="Rest" />
+                <ListBoxItem Content="Hover"
+                             Background="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+            </StackPanel>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Subtle / Transparent "
+                                 Description="Rest"
+                                 ColorBrushName="SubtleFillColorTransparentBrush"
+                                 Background="{DynamicResource SubtleFillColorTransparentBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Subtle / Secondary"
+                                 Description="Hover"
+                                 ColorBrushName="SubtleFillColorSecondaryBrush"
+                                 Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Subtle / Tertiary "
+                                 Description="Pressed"
+                                 ColorBrushName="SubtleFillColorTertiaryBrush"
+                                 Background="{DynamicResource SubtleFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Subtle / Disabled"
+                                 Description="Disabled only (not accessible)"
+                                 ColorBrushName="SubtleFillColorDisabledBrush"
+                                 Background="{DynamicResource SubtleFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Control On Image Fill"
+                                 Description="Used for controls living on top of imagery">
+
+            <Panel HorizontalAlignment="Center"
+                   VerticalAlignment="Center" Background="Red">
+                <Image Source="/Assets/rainier.jpg"
+                       Stretch="Fill"
+                       Width="250" />
+
+                <Border Width="20" Height="20"
+                        Margin="8"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="{DynamicResource ControlOnImageFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource ControlStrongStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{StaticResource ControlCornerRadius}" />
+            </Panel>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Control On Image Fill Default"
+                                 Description="Rest"
+                                 ColorBrushName="ControlOnImageFillColorDefaultBrush"
+                                 Background="{DynamicResource ControlOnImageFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control On Image Fill Secondary"
+                                 Description="Hover"
+                                 ColorBrushName="ControlOnImageFillColorSecondaryBrush"
+                                 Background="{DynamicResource ControlOnImageFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control On Image Fill Tertiary"
+                                 Description="Pressed"
+                                 ColorBrushName="ControlOnImageFillColorTertiaryBrush"
+                                 Background="{DynamicResource ControlOnImageFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Control On Image Fill Disabled"
+                                 Description="Disabled only (not accessible)"
+                                 ColorBrushName="ControlOnImageFillColorDisabledBrush"
+                                 Background="{DynamicResource ControlOnImageFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+            </ctrls:DesignColorSection.Tiles>
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Accent Fill"
+                                 Description="Used for accent fills on controls">
+
+            <Button Content="Text"
+                    HorizontalAlignment="Center"
+                    Classes="accent" />
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Accent / Default"
+                                 Description="Rest"
+                                 ColorBrushName="AccentFillColorDefaultBrush"
+                                 Background="{DynamicResource AccentFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Accent / Secondary"
+                                 Description="Hover"
+                                 ColorBrushName="AccentFillColorSecondaryBrush"
+                                 Background="{DynamicResource AccentFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Accent / Tertiary"
+                                 Description="Pressed"
+                                 ColorBrushName="AccentFillColorTertiaryBrush"
+                                 Background="{DynamicResource AccentFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Accent / Disabled"
+                                 Description="Disabled only (not accessible)"
+                                 ColorBrushName="AccentFillColorDisabledBrush"
+                                 Background="{DynamicResource AccentFillColorDisabledBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Margin="0 0 0 20"
+                                 Classes="last"/>
+
+                <ctrls:ColorTile ColorName="Accent / Selected Text Background"
+                                 Description="Disabled"
+                                 ColorBrushName="AccentFillColorSelectedTextBackgroundBrush"
+                                 Background="{DynamicResource AccentFillColorSelectedTextBackgroundBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="single" />
+            </ctrls:DesignColorSection.Tiles>
+        </ctrls:DesignColorSection>
+    </StackPanel>
+</UserControl>

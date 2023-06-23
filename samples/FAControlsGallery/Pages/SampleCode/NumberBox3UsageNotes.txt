@@ -1,0 +1,5 @@
+﻿.NET doesn't have all of the culture aware formatters in the way WinRT does, thus the NumberFormatter property has been altered to a Func<double, string> to allow custom formatting. If a function is provided, you'll receive the new Value and you return the formatted string to be displayed.
+The example above rounds the number to the nearest 0.25 displayed to 2 decimal places.
+
+NOTE: NumberFormatter is NOT an AvaloniaProperty and therefore does not support Binding.
+NOTE: Returned string must still be numeric in value. No special formatting (e.g., %) is allowed.

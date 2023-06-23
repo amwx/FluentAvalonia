@@ -1,0 +1,300 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="4550"
+             x:Class="FAControlsGallery.Pages.DesignPages.BackgroundColorsPage">
+    <StackPanel Spacing="12">
+        <ctrls:DesignColorSection Header="Card Background"
+                                  Description="Used to create 'cards' - content blocks that live on page and layer backgrounds">
+
+            <ui:FABorder HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Width="75"
+                         Height="32"
+                         CornerRadius="{StaticResource ControlCornerRadius}"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                         Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>       
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Card Background / Default"
+                                 Description="Default card color"
+                                 ColorBrushName="CardBackgroundFillColorDefaultBrush"
+                                 Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Card Background / Secondary"
+                                 Description="Alternate card color: slightly darker"
+                                 ColorBrushName="CardBackgroundFillColorSecondaryBrush"
+                                 Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Card Background / Tertiary"
+                                 Description="Default card hover and pressed color"
+                                 ColorBrushName="CardBackgroundTertiaryBrush"
+                                 Background="{DynamicResource CardBackgroundTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" 
+                                 Warning="This brush might not (yet) exist" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Smoke Background"
+                                  Description="Used over windows and desktop to block them out as inaccessible">
+ 
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Smoke / Default"
+                                 Description="Dims backgrounds behinds dialogs"
+                                 ColorBrushName="SmokeFillColorDefaultBrush"
+                                 Background="{DynamicResource SmokeFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="single"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Layer"
+                                  Description="Used on background colors of any material to create layering">
+
+            <ui:FABorder HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Width="120"
+                         Height="40"
+                         CornerRadius="{StaticResource ControlCornerRadius}"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                         Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}">
+                <Border Width="90"
+                        CornerRadius="0 4 4 0"
+                        HorizontalAlignment="Right"
+                        Background="{DynamicResource LayerFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1,0,0,0" />
+            </ui:FABorder>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Layer / Default"
+                                 Description="Content layer color"
+                                 ColorBrushName="LayerFillColorDefaultBrush"
+                                 Background="{DynamicResource LayerFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" 
+                                 ShowSeparator="True" /> 
+                <ctrls:ColorTile ColorName="Layer / Alt"
+                                 Description="Alternate content layer color"
+                                 ColorBrushName="LayerFillColorAltBrush"
+                                 Background="{DynamicResource LayerFillColorAltBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Layer on Acrylic"
+                                  Description="Used on background colors of any material to create layering">
+
+            <ui:FABorder HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Width="120"
+                         Height="40"
+                         CornerRadius="{StaticResource ControlCornerRadius}"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                         Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}">
+                <Border Width="90"
+                        CornerRadius="0 4 4 0"
+                        HorizontalAlignment="Right"
+                        Background="{DynamicResource LayerFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1,0,0,0" />
+            </ui:FABorder>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Layer On Acrylic / Default"
+                                 Description="Content layer color on acrylic surfaces"
+                                 ColorBrushName="LayerOnAcrylicFillColorDefaultBrush"
+                                 Background="{DynamicResource LayerOnAcrylicFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Classes="single" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Layer on Mica Base Alt"
+                                  Description="Used for fills on Tab control">
+
+            <ui:TabViewItem Width="150"
+                            Height="30"
+                            BorderBrush="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                            BorderThickness="1"
+                            Header="Text" />
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Layer On Mica Base Alt / Default"
+                                 Description="Active Tab Rest, Content layer"
+                                 ColorBrushName="LayerOnMicaBaseAltFillColorDefaultBrush"
+                                 Background="{DynamicResource LayerOnMicaBaseAltFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 ShowSeparator="True" />
+                <ctrls:ColorTile ColorName="Layer On Mica Base Alt / Tertiary"
+                                 Description="Active Tab Drag"
+                                 ColorBrushName="LayerOnMicaBaseAltFillColorTertiaryBrush"
+                                 Background="{DynamicResource LayerOnMicaBaseAltFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Layer On Mica Base Alt / Transparent"
+                                 Description="Inactive Tab Rest"
+                                 ColorBrushName="LayerOnMicaBaseAltFillColorTransparentBrush"
+                                 Background="{DynamicResource LayerOnMicaBaseAltFillColorTransparentBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Layer On Mica Base Alt / Secondary"
+                                 Description="Inactive Tab Hover"
+                                 ColorBrushName="LayerOnMicaBaseAltFillColorSecondaryBrush"
+                                 Background="{DynamicResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Solid Background"
+                                  Description="Solid background colors to place layers, cards, or controls on">
+
+            <ui:FABorder HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Width="75"
+                         Height="32"
+                         CornerRadius="{StaticResource ControlCornerRadius}"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                         Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Solid Background / Base"
+                               Description="Used for the bottom most layer of an experience."
+                               ColorBrushName="SolidBackgroundFillColorBaseBrush"
+                               Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Solid Background / Base Alt"
+                                 Description="Used for the bottom most layer of an experience."
+                                 ColorBrushName="SolidBackgroundFillColorBaseAltBrush"
+                                 Background="{DynamicResource SolidBackgroundFillColorBaseAltBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Solid Background / Secondary"
+                                 Description="Alternate base color for those who need a darker background color."
+                                 ColorBrushName="SolidBackgroundFillColorSecondaryBrush"
+                                 Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Solid Background / Tertiary"
+                                 Description="Content layer color"
+                                 ColorBrushName="SolidBackgroundFillColorTertiaryBrush"
+                                 Background="{DynamicResource SolidBackgroundFillColorTertiaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <ctrls:ColorTile ColorName="Solid Background / Quarternary"
+                                 Description="Alt content layer color."
+                                 ColorBrushName="SolidBackgroundFillColorQuarternaryBrush"
+                                 Background="{DynamicResource SolidBackgroundFillColorQuarternaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <!-- The following don't exist yet, so WinUI is binding them to Quarternary for Background -->
+                <ctrls:ColorTile ColorName="Solid Background / Quinary"
+                                 Description="Used for solid default card colors"
+                                 ColorBrushName="SolidBackgroundFillColorQuinaryBrush"
+                                 Background="{DynamicResource SolidBackgroundFillColorQuarternaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush might not (yet) exist" />
+                <ctrls:ColorTile ColorName="Solid Background / Senary"
+                                 Description="Used for solid default card color"
+                                 ColorBrushName="SolidBackgroundFillColorSenaryBrush"
+                                 Background="{DynamicResource SolidBackgroundFillColorQuarternaryBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush might not (yet) exist"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+        
+        <ctrls:DesignColorSection Header="Mica Background"
+                                  Description="Used for the bottom most layer of an experience">
+
+            <ui:FABorder HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Width="75"
+                         Height="32"
+                         CornerRadius="{StaticResource ControlCornerRadius}"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                         Background="{DynamicResource MicaBackgroundFillColorBaseBrush}"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Mica Background / Base"
+                                 Description="Used for the bottom most layer of an experience."
+                                 ColorBrushName="MicaBackgroundFillColorBaseBrush"
+                                 Background="{DynamicResource MicaBackgroundFillColorBaseBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush might not (yet) exist"
+                                 ShowSeparator="True"/>
+                <ctrls:ColorTile ColorName="Mica Background / Base Alt"
+                                 Description="Default tab band background color."
+                                 ColorBrushName="MicaBackgroundFillColorBaseAltBrush"
+                                 Background="{DynamicResource MicaBackgroundFillColorBaseAltBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush might not (yet) exist"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Acrylic Background"
+                                  Description="Acrylic background colors to place layers, cards, or controls on">
+
+            <ui:FABorder HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Width="75"
+                         Height="32"
+                         CornerRadius="{StaticResource ControlCornerRadius}"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                         Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Acrylic Background / Base"
+                                 Description="Used for the bottom most layer of an acrylic surface only when the surface will use layers."
+                                 ColorBrushName="AcrylicBackgroundFillColorBaseBrush"
+                                 Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush uses the acrylic fallback color as acrylic material isn't available in Avalonia" />
+                <ctrls:ColorTile ColorName="Acrylic Background / Default"
+                                 Description="Default acrylic recipe used for control flyouts and surfaces that live with in the context of an app."
+                                 ColorBrushName="AcrylicBackgroundFillColorDefaultBrush"
+                                 Background="{DynamicResource AcrylicBackgroundFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush uses the acrylic fallback color as acrylic material isn't available in Avalonia"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+
+        <ctrls:DesignColorSection Header="Accent Acrylic Background"
+                                  Description="Acrylic background colors to place layers, cards, or controls on">
+
+            <ui:FABorder HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Width="75"
+                         Height="32"
+                         CornerRadius="{StaticResource ControlCornerRadius}"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                         Background="{DynamicResource AccentAcrylicBackgroundFillColorBaseBrush}"/>
+
+            <ctrls:DesignColorSection.Tiles>
+                <ctrls:ColorTile ColorName="Accent Acrylic Background / Base"
+                                 Description="Used for the bottom most layer of an acrylic surface only when the surface will use layers."
+                                 ColorBrushName="AccentAcrylicBackgroundFillColorBaseBrush"
+                                 Background="{DynamicResource AccentAcrylicBackgroundFillColorBaseBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush uses the acrylic fallback color as acrylic material isn't available in Avalonia" />
+                <ctrls:ColorTile ColorName="Accent Acrylic Background / Default"
+                                 Description="Default acrylic recipe used for control flyouts and surfaces that live with in the context of an app."
+                                 ColorBrushName="AccentAcrylicBackgroundFillColorDefaultBrush"
+                                 Background="{DynamicResource AccentAcrylicBackgroundFillColorDefaultBrush}"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Warning="This brush uses the acrylic fallback color as acrylic material isn't available in Avalonia"/>
+            </ctrls:DesignColorSection.Tiles>
+
+        </ctrls:DesignColorSection>
+    </StackPanel>
+</UserControl>

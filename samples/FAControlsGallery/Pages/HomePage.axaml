@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:local="using:FAControlsGallery.Controls"
+             xmlns:conv="using:FAControlsGallery.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+             x:Class="FAControlsGallery.Pages.HomePage"
+             x:DataType="vm:HomePageViewModel"
+             x:CompileBindings="True">
+    <UserControl.Resources>
+        <ControlTheme x:Key="NavButtonStyle"
+                      TargetType="Button"
+                      BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="170" />
+            <Setter Property="Height" Value="160" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="6" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="ClipToBounds" Value="True" />
+            </Style>
+        </ControlTheme>
+
+        <conv:StringToBitmapConverter x:Key="StringBmpConv" />
+    </UserControl.Resources>
+    
+    <ScrollViewer>
+        <StackPanel Spacing="-75">
+            <local:PageHeaderControl />
+            
+            <ItemsControl ItemsSource="{Binding Pages}"
+                          Name="TileItemsControl"
+                          ClipToBounds="False"
+                          Margin="{StaticResource SampleAppPageMargin}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="vm:HomeNavPageViewModel">
+                        <Button Theme="{StaticResource NavButtonStyle}">
+                            <Grid RowDefinitions="3*,*">
+                                <Border CornerRadius="4 4 0 0"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalAlignment="Stretch"
+                                        RenderOptions.BitmapInterpolationMode="HighQuality">
+                                    <Border.Background>
+                                        <ImageBrush Source="{Binding ImageUri, Converter={StaticResource StringBmpConv}}"
+                                                    Stretch="Fill" />
+                                    </Border.Background>
+                                </Border>
+                                <TextBlock Text="{Binding Title}"
+                                           FontWeight="SemiBold"
+                                           Margin="12"
+                                           Grid.Row="1" />
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

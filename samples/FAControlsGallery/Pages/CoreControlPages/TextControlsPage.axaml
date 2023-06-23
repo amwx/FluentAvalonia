@@ -1,0 +1,89 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
+             x:Class="FAControlsGallery.Pages.TextControlsPage"
+             x:DataType="vm:TextControlsPageViewModel"
+             x:CompileBindings="True">
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="TextBox"
+                              TargetType="TextBox"
+                              EnableShowDocsLink="True"
+                              EnableShowDefinitionLink="True">
+            <StackPanel>
+                <TextBox Name="TargetTextBox" HorizontalAlignment="Left" MinWidth="250" Text="astsd"
+                         PasswordChar="{Binding PasswordChar}"
+                         Classes.revealPasswordButton="{Binding #TogglePwordButton.IsChecked}"
+                         Classes.clearButton="{Binding #ToggleClearButton.IsChecked}"
+                         TextWrapping="{Binding TextBoxTextWrapping}"/>
+            </StackPanel>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel MaxWidth="250">
+                    <CheckBox Content="AcceptsReturn" MinWidth="0" IsChecked="{Binding AcceptsReturn, ElementName=TargetTextBox, Mode=TwoWay}" />
+                    <CheckBox Content="AcceptsTab" MinWidth="0" IsChecked="{Binding AcceptsTab, ElementName=TargetTextBox, Mode=TwoWay}" />
+                    <CheckBox Content="IsReadOnly" MinWidth="0" IsChecked="{Binding IsReadOnly, ElementName=TargetTextBox, Mode=TwoWay}" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="PasswordChar" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding PasswordCharTextValue, Mode=TwoWay}"
+                                 HorizontalAlignment="Stretch" MaxLength="1" MaxWidth="150"/>
+                    </StackPanel>
+                    <CheckBox Content="Reveal Password Button" Name="TogglePwordButton" />
+                    <CheckBox Content="Clear Button" Name="ToggleClearButton" />
+                    <CheckBox Content="WrapText" IsChecked="{Binding WrapTextBoxText}" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="Watermark" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding Watermark, ElementName=TargetTextBox}"
+                                 HorizontalAlignment="Stretch" MinWidth="90" MaxLength="1"/>
+                    </StackPanel>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="TextBlock"
+                              TargetType="TextBlock"
+                              EnableShowDocsLink="True"
+                              EnableShowDefinitionLink="True">
+            <StackPanel Spacing="4">
+                <TextBlock Text="To use, use Theme property to the name below" Margin="0 0 0 15" />
+                <TextBlock Text="BaseTextBlockStyle" Theme="{StaticResource BaseTextBlockStyle}" />
+                <TextBlock Text="CaptionTextBlockStyle" Theme="{StaticResource CaptionTextBlockStyle}" />
+                <TextBlock Text="BodyTextBlockStyle" Theme="{StaticResource BodyTextBlockStyle}" />
+                <TextBlock Text="BodyStrongTextBlockStyle" Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                <TextBlock Text="SubtitleTextBlockStyle" Theme="{StaticResource SubtitleTextBlockStyle}" />
+                <TextBlock Text="TitleTextBlockStyle" Theme="{StaticResource TitleTextBlockStyle}" />
+                <TextBlock Text="DisplayTextBlockStyle" Theme="{StaticResource DisplayTextBlockStyle}" />
+            </StackPanel>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="AutoCompleteBox"
+                              TargetType="AutoCompleteBox">
+
+            <StackPanel Spacing="8">
+                <TextBlock Text="Test the AutoCompleteBox populated with a list of United States states"
+                           TextWrapping="Wrap"/>
+                <AutoCompleteBox HorizontalAlignment="Left"
+                                 MinWidth="250"
+                                 ItemsSource="{Binding States}"
+                                 ValueMemberBinding="{Binding Name, DataType=vm:StateData}"
+                                 Name="TargetAutoCompleteBox" />
+            </StackPanel>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4" MaxWidth="250">
+                    <TextBlock Text="MinimumPrefixLength" />
+                    <ui:NumberBox Minimum="1" Maximum="5"
+                                  Value="{Binding #TargetAutoCompleteBox.MinimumPrefixLength}"
+                                  SpinButtonPlacementMode="Inline"
+                                  HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+        </ctrls:ControlExample>
+
+    </StackPanel>
+</UserControl>
