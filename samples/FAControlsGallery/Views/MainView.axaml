@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"             
+             xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:local="using:FAControlsGallery.Controls"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             x:Class="FAControlsGallery.Views.MainView"
+             x:DataType="vm:MainViewViewModel"
+             x:CompileBindings="True">
+   
+
+    <Grid RowDefinitions="Auto,*">
+        <Grid Name="TitleBarHost"
+              ColumnDefinitions="Auto,Auto,*,Auto" 
+              Background="Transparent">
+            <Image Margin="12 4"
+                   IsHitTestVisible="False"
+                   Source="/Assets/FAIcon.ico"
+                   Width="18" Height="18"
+                   DockPanel.Dock="Left"
+                   Name="WindowIcon"
+                   RenderOptions.BitmapInterpolationMode="HighQuality">
+                <Image.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows" Content="True" />
+                    </OnPlatform>
+                </Image.IsVisible>
+            </Image>
+
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                       FontSize="12"
+                       IsHitTestVisible="False"
+                       VerticalAlignment="Center"
+                       Grid.Column="1">
+                <TextBlock.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows" Content="True" />
+                    </OnPlatform>
+                </TextBlock.IsVisible>
+            </TextBlock>
+            
+            <Border Grid.Column="2" Padding="6">
+                <AutoCompleteBox Name="SearchBox"
+                                 MaxWidth="500"
+                                 Watermark="Search"
+                                 Classes="SampleApp"
+                                 ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"
+                                 ItemsSource="{Binding SearchTerms}">
+                    <!--wnd:AppWindow.AllowInteractionInTitleBar="True"-->
+                    <AutoCompleteBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MainAppSearchItem">
+                            <Panel>
+                                <StackPanel HorizontalAlignment="Left"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Header}" />
+                                    <TextBlock Text="{Binding Namespace}"
+                                               Theme="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                               FontStyle="Italic"/>
+                                </StackPanel>
+                            </Panel>
+                        </DataTemplate>
+                    </AutoCompleteBox.ItemTemplate>
+                </AutoCompleteBox>
+            </Border>
+        </Grid>
+
+        <ui:NavigationView AlwaysShowHeader="False"
+                           PaneDisplayMode="Left"
+                           Grid.RowSpan="2"
+                           Name="NavView"
+                           IsSettingsVisible="False"
+                           IsBackEnabled="{Binding #FrameView.CanGoBack}">
+            <ui:Frame Name="FrameView" />
+        </ui:NavigationView>
+
+        <Panel Name="OverlayHost"
+               Grid.Row="1">
+            <local:ControlDefinitionOverlay Name="CtrlDefOverlay" />
+        </Panel>
+    </Grid>
+    
+</UserControl>

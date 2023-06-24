@@ -1,0 +1,150 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrls="using:FAControlsGallery.Controls"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls">
+    
+    <ControlTheme TargetType="ctrls:ColorTile"
+                      x:Key="{x:Type ctrls:ColorTile}">
+        <Setter Property="MinHeight" Value="110" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1 0 1 0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ui:FABorder Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             CornerRadius="{TemplateBinding CornerRadius}"
+                             Padding="12"
+                             Name="LayoutRoot">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto"
+                          ColumnDefinitions="*,Auto">
+                        <TextBlock Text="{TemplateBinding ColorName}"
+                                   Theme="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <TextBlock Text="{TemplateBinding Description}"
+                                   Grid.Row="1"
+                                   Theme="{StaticResource CaptionTextBlockStyle}"/>
+
+                        <SelectableTextBlock Text="{TemplateBinding ColorBrushName}"
+                                             Grid.Row="2"
+                                             VerticalAlignment="Bottom"
+                                             Theme="{StaticResource CaptionTextBlockStyle}"/>
+
+                        <SelectableTextBlock Text="{TemplateBinding ColorValue}"
+                                             Grid.Row="3"
+                                             VerticalAlignment="Bottom"
+                                             Theme="{StaticResource CaptionTextBlockStyle}"/>
+
+
+                        <Button Grid.RowSpan="2"
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Theme="{StaticResource TransparentButton}"
+                                Foreground="{TemplateBinding Foreground}"
+                                Name="CopyButton"
+                                Opacity="0"
+                                ToolTip.Tip="Copy brush name">
+                            <ui:SymbolIcon Symbol="Copy"
+                                           FontSize="20"/>
+                        </Button>
+
+                        <Panel Grid.Row="2"
+                               Grid.RowSpan="2"
+                               Grid.Column="1"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Bottom"
+                               ToolTip.Tip="{TemplateBinding Warning}"
+                               IsVisible="False"
+                               Name="WarningHost">
+                            <ui:FontIcon Glyph="&#xE7BA;"
+                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="20"
+                                         Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
+                        </Panel>
+                        
+                        <Rectangle Grid.Row="3"
+                                   Grid.ColumnSpan="2"
+                                   Height="1"
+                                   Fill="{DynamicResource CardStrokeColorDefaultBrush}"
+                                   IsVisible="{TemplateBinding ShowSeparator}"
+                                   VerticalAlignment="Bottom"
+                                   Margin="-12 0 -12 -12"/>
+                    </Grid>
+                </ui:FABorder>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Button#CopyButton">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+
+        <Style Selector="^:warning /template/ Panel#WarningHost">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:nth-child(1) /template/ ui|FABorder">
+            <Setter Property="CornerRadius" Value="4 4 0 0" />
+            <Setter Property="BorderThickness" Value="1 1 1 0" />
+        </Style>
+        <Style Selector="^:nth-last-child(1) /template/ ui|FABorder">
+            <Setter Property="CornerRadius" Value="0 0 4 4" />
+            <Setter Property="BorderThickness" Value="1 0 1 1" />
+        </Style>
+
+        <Style Selector="^.first /template/ ui|FABorder">
+            <Setter Property="CornerRadius" Value="4 4 0 0" />
+            <Setter Property="BorderThickness" Value="1 1 1 0" />
+        </Style>
+        <Style Selector="^.last /template/ ui|FABorder">
+            <Setter Property="CornerRadius" Value="0 0 4 4" />
+            <Setter Property="BorderThickness" Value="1 0 1 1" />
+        </Style>
+        <Style Selector="^.single /template/ ui|FABorder">
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type ctrls:DesignColorSection}"
+                      TargetType="ctrls:DesignColorSection">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ThemeVariantScope Name="ThemeScopeProvider">
+                    <Grid RowDefinitions="Auto,Auto,*">
+                        <ContentPresenter Name="HeaderPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          FontSize="24"
+                                          FontWeight="SemiBold"
+                                          Padding="12 8"
+                                          HorizontalContentAlignment="Left"
+                                          VerticalContentAlignment="Center" />
+
+                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="12"
+                                CornerRadius="{StaticResource ControlCornerRadius}"
+                                MinHeight="95"
+                                Grid.Row="1">
+                            <Grid RowDefinitions="Auto, *">
+                                <TextBlock Text="{TemplateBinding Description}"
+                                           TextWrapping="Wrap"
+                                           Theme="{StaticResource CaptionTextBlockStyle}" />
+
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="1"
+                                                  Content="{TemplateBinding Content}"/>
+                            </Grid>
+                        </Border>
+
+                        <ItemsControl ItemsSource="{TemplateBinding Tiles}"
+                                      Grid.Row="2"
+                                      Margin="0 12 0 0" />
+                    </Grid>
+                </ThemeVariantScope>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    
+</ResourceDictionary>

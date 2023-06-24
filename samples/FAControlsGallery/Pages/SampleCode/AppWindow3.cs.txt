@@ -1,0 +1,34 @@
+﻿// To set the Window Border color (Windows 11 only)
+
+public class MainWindow : AppWindow
+{
+    private void SetBorderColor(Color color)
+    {
+        PlatformFeatures.SetWindowBorderColor(color);
+    }
+}
+
+
+// Using the Windows ProgressBarTaskBar
+
+public class MainWindow : AppWindow
+{
+    private void SetTaskBarProgressBar()
+    {
+        // Set the state:
+        TaskBarProgressBarState state;
+        // Can be:
+        // TaskBarProgressBarState.None
+        // TaskBarProgressBarState.Normal
+        // TaskBarProgressBarState.Paused
+        // TaskBarProgressBarState.Error
+        // TaskBarProgressBarState.Indeterminate
+        PlatformFeatures.SetTaskBarProgressBarState(state);
+
+        // To set a progress value:
+        PlatformFeatures.SetTaskBarProgressBarValue(50 /* currentValue */, 100 /* totalValue */);
+
+        // NOTE: Per Microsoft docs, calling SetProgressValue will clear the Indeterminate flag if it is
+        //       currently set and change it to `Normal`.
+    }
+}

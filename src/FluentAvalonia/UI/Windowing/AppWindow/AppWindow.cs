@@ -516,11 +516,14 @@ public partial class AppWindow : Window
 
         cp.IsVisible = true;
 
-        using var disp = cp.SetValue(OpacityProperty, 0d, Avalonia.Data.BindingPriority.Animation);
+        // Taking this out, it's causing flickering of the content after the splash fade animation
+        // Another regression in the animation system for 11.0...
+        //using var disp = cp.SetValue(OpacityProperty, 0d, Avalonia.Data.BindingPriority.Animation);
 
         var aniSplash = new Animation
         {
             Duration = TimeSpan.FromMilliseconds(250),
+            FillMode = FillMode.Forward,
             Children =
             {
                 new KeyFrame

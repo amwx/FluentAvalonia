@@ -1,0 +1,9 @@
+﻿<Panel>
+    <Button Name="Button1" Content="Show TeachingTip" />
+
+    <ui:TeachingTip Name="TeachingTip1"
+                    Target="{Binding #Button1}"
+                    Title="Title"
+                    Subtitle="Your teaching text here"
+                    IconSource="Refresh" />
+</Panel>

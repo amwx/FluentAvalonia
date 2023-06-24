@@ -1,0 +1,144 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:FAControlsGallery.Controls"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    xmlns:sty="using:FluentAvalonia.Styling">
+
+    <Design.PreviewWith>
+        <!---->
+        <ThemeVariantScope RequestedThemeVariant="Light">
+            <StackPanel Spacing="10" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                    Margin="50" Width="500">
+                <local:PageHeaderControl Classes="smaller" />
+            </StackPanel>
+        </ThemeVariantScope>
+    </Design.PreviewWith>
+
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="0%,100%"
+                                 x:Key="HeaderOpacityMaskBrush">
+                <GradientStop Color="#FF000000" Offset="0" />
+                <GradientStop Color="#FF000000" Offset="0.8" />
+                <GradientStop Color="#EE000000" Offset="0.83" />
+                <GradientStop Color="#DD000000" Offset="0.86" />
+                <GradientStop Color="#BB000000" Offset="0.89" />
+                <GradientStop Color="#85000000" Offset="0.92" />
+                <GradientStop Color="#00000000" Offset="1" />
+            </LinearGradientBrush>
+
+            <ImageBrush x:Key="PageHeaderBackgroundBrush"
+               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground_Dark.png"
+               AlignmentY="Center"
+               Stretch="UniformToFill">
+                <!--<RenderOptions.BitmapInterpolationMode>
+                    <OnPlatform Default="HighQuality">
+                        <On Options="iOS,Android,Browser" Content="MediumQuality" />
+                    </OnPlatform>
+                </RenderOptions.BitmapInterpolationMode>-->
+            </ImageBrush>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="0%,100%"
+                                 x:Key="HeaderOpacityMaskBrush">
+                <GradientStop Color="#FF000000" Offset="0" />
+                <GradientStop Color="#FF000000" Offset="0.8" />
+                <GradientStop Color="#EE000000" Offset="0.83" />
+                <GradientStop Color="#DD000000" Offset="0.86" />
+                <GradientStop Color="#BB000000" Offset="0.89" />
+                <GradientStop Color="#85000000" Offset="0.92" />
+                <GradientStop Color="#00000000" Offset="1" />                
+            </LinearGradientBrush>
+
+            <ImageBrush x:Key="PageHeaderBackgroundBrush"
+               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground.png"
+               AlignmentY="Center"
+               Stretch="UniformToFill">
+                <!--<RenderOptions.BitmapInterpolationMode>
+                    <OnPlatform Default="HighQuality">
+                        <On Options="iOS,Android,Browser" Content="MediumQuality" />
+                    </OnPlatform>
+                </RenderOptions.BitmapInterpolationMode>-->
+            </ImageBrush>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="0%,100%"
+                                 x:Key="HeaderOpacityMaskBrush">
+                <GradientStop Color="#00000000" />
+                <GradientStop Color="#33000000" Offset="1" />
+            </LinearGradientBrush>
+
+            <ImageBrush x:Key="PageHeaderBackgroundBrush"
+               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground.png"
+               AlignmentY="Center"
+               Stretch="UniformToFill">
+                <!--<RenderOptions.BitmapInterpolationMode>
+                    <OnPlatform Default="HighQuality">
+                        <On Options="iOS,Android,Browser" Content="MediumQuality" />
+                    </OnPlatform>
+                </RenderOptions.BitmapInterpolationMode>-->
+            </ImageBrush>
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+   
+    <ControlTheme TargetType="local:PageHeaderControl"
+                  x:Key="{x:Type local:PageHeaderControl}">
+        <Setter Property="Height" Value="296" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>                    
+                    <Border CornerRadius="8 0 0 0"
+                            ClipToBounds="True"
+                            Background="{DynamicResource PageHeaderBackgroundBrush}"
+                            RenderOptions.BitmapInterpolationMode="HighQuality"
+                            OpacityMask="{DynamicResource HeaderOpacityMaskBrush}" />
+                    
+                    <Panel>
+                        <Image Name="TitleTextImageHost"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"
+                               MaxWidth="400"
+                               Margin="30 50 0 0"
+                               MinWidth="150"
+                               IsVisible="True"
+                               RenderOptions.BitmapInterpolationMode="HighQuality">
+                            <Image.Transitions>
+                                <Transitions>
+                                    <ThicknessTransition Duration="00:00:00.25"
+                                                         Property="Margin"
+                                                         Easing="0,0 0,1" />
+                                </Transitions>
+                            </Image.Transitions>
+                        </Image>
+                    </Panel>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Height"
+                                  Duration="00:00:00.25"
+                                  Easing="0,0 0,1" />
+            </Transitions>
+        </Setter>
+
+        <Style Selector="^.smaller">
+            <Setter Property="Height" Value="200" />
+            <Style Selector="^ /template/ Image#TitleTextImageHost">
+                <Setter Property="Margin" Value="30 25 0 0" />
+            </Style>
+        </Style>
+        <Style Selector="^:small">
+            <Setter Property="Height" Value="150" />
+
+            <Style Selector="^ /template/ Image#TitleTextImageHost">
+                <Setter Property="Margin" Value="30 25 0 25" />
+            </Style>
+        </Style>
+    </ControlTheme>
+
+</ResourceDictionary>

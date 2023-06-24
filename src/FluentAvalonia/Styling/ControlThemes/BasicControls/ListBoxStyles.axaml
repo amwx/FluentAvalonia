@@ -39,8 +39,7 @@
                         <ItemsPresenter Name="PART_ItemsPresenter"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                         Margin="{TemplateBinding Padding}"
-                                        AreVerticalSnapPointsRegular="{TemplateBinding AreVerticalSnapPointsRegular}"
-                                        AreHorizontalSnapPointsRegular="{TemplateBinding AreHorizontalSnapPointsRegular}"/>
+                                        />
                     </ScrollViewer>
                 </Border>
             </ControlTemplate>
@@ -57,6 +56,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="Background" Value="{DynamicResource ListViewItemBackground}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Foreground" Value="{DynamicResource ListViewItemForeground}" />
         <Setter Property="Padding" Value="16,0,12,0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -75,7 +75,7 @@
                                       Padding="{TemplateBinding Padding}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      CornerRadius="{DynamicResource ControlCornerRadius}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
                                       Margin="2"/>
 
                     <!-- added 1px left margin, otherwise we can get strange artifacts while

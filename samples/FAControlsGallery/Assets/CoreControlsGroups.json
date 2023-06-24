@@ -1,0 +1,116 @@
+﻿[
+  {
+    "Header": "Basic Input Controls",
+    "Description": "Button, ToggleButton, RepeatButton, RadioButton, CheckBox, ToggleSwitch, SplitButton, DropDownButton",
+    "IconResourceKey": "BasicInputPageIcon",
+    "PageKey": "BasicInput",
+    "SearchKeywords": [
+      "Button",
+      "ToggleButton",
+      "RepeatButton",
+      "RadioButton",
+      "CheckBox",
+      "ToggleSwitch",
+      "SplitButton",
+      "ToggleSplitButton",
+      "DropDownButton"
+    ]
+  },
+  {
+    "Header": "Text Controls",
+    "Description": "TextBox, TextBlock, AutoCompleteBox",
+    "IconResourceKey": "TextPageIcon",
+    "PageKey": "Text",
+    "SearchKeywords": [
+      "TextBox",
+      "TextBlock",
+      "AutoCompleteBox"
+    ]
+  },
+  {
+    "Header": "List Controls",
+    "Description": "ComboBox, ListBox, TreeView",
+    "IconResourceKey": "ListPageIcon",
+    "PageKey": "List",
+    "SearchKeywords": [
+      "ComboBox",
+      "ComboBoxItem",
+      "ListBox",
+      "ListBoxItem",
+      "TreeView",
+      "TreeViewItem"
+    ]
+  },
+  {
+    "Header": "Date/Time Controls",
+    "Description": "Calendar, CalendarDatePicker, DatePicker, TimePicker",
+    "IconResourceKey": "DatePageIcon",
+    "PageKey": "DateTime",
+    "SearchKeywords": [
+      "Calendar",
+      "CalendarDatePicker",
+      "DatePicker",
+      "TimePicker"
+    ]
+  },
+  {
+    "Header": "Range Controls",
+    "Description": "ButtonSpinner, NumericUpDown, Slider, ProgressBar",
+    "IconResourceKey": "RangePageIcon",
+    "PageKey": "Range",
+    "SearchKeywords": [
+      "ButtonSpinner",
+      "NumericUpDown",
+      "Slider",
+      "ProgressBar"
+    ]
+  },
+  {
+    "Header": "Menu Controls",
+    "Description": "Menu, MenuItem, MenuFlyout",
+    "IconResourceKey": "MenusPageIcon",
+    "PageKey": "Menu",
+    "SearchKeywords": [
+      "Menu",
+      "MenuItem",
+      "MenuFlyout"
+    ]
+  },
+  {
+    "Header": "View Controls",
+    "Description": "TabControl, TabStrip, TabStripItem, Expander, SplitView",
+    "IconResourceKey": "ViewPageIcon",
+    "PageKey": "View",
+    "SearchKeywords": [
+      "TabControl",
+      "TabItem",
+      "TabStrip",
+      "TabStripItem",
+      "Expander",
+      "SplitView"
+    ]
+  },
+  {
+    "Header": "Data Controls",
+    "Description": "DataGrid",
+    "IconResourceKey": "DataPageIcon",
+    "PageKey": "Data",
+    "SearchKeywords": [
+      "DataGrid"
+    ]
+  },
+  {
+    "Header": "Miscellaneous Controls",
+    "Description": "Flyout, GridSplitter, ScrollViewer, ScrollBar, ToolTip, ColorPicker",
+    "IconResourceKey": "MiscPageIcon",
+    "PageKey": "Misc",
+    "SearchKeywords": [
+      "Flyout",
+      "GridSplitter",
+      "ScrollBar",
+      "ScrollViewer",
+      "ToolTip",
+      "ColorPicker"
+    ]
+  }
+]

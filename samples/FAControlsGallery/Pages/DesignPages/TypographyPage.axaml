@@ -1,0 +1,114 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels.DesignPages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1450"
+             x:Class="FAControlsGallery.Pages.DesignPages.TypographyPage">
+
+    <UserControl.Styles>
+        <Style Selector="ItemsControl ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
+        </Style>
+        <Style Selector="ItemsControl ContentPresenter:nth-child(2n)">
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+        </Style>
+        <Style Selector="ItemsControl ContentPresenter Button">
+            <Setter Property="Opacity" Value="0" />
+        </Style>
+        <Style Selector="ItemsControl ContentPresenter:pointerover Button">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Spacing="8">
+        <ui:InfoBar Title="Cross Platform"
+                    IsOpen="True" IsClosable="False"
+                    Severity="Informational"
+                    IconSource="ImportantFilled"
+                    Name="CrossPlatformNotice" />
+
+        <ctrls:ControlExample Header="Built-in Type Ramp">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled">
+                <ItemsControl Name="TypeRampListBox">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:TypographyItemViewModel">
+                            <Border CornerRadius="{StaticResource ControlCornerRadius}"
+                                    MinHeight="68"
+                                    Padding="12">
+                                <Grid RowDefinitions="*,Auto,Auto"
+                                      ColumnDefinitions="Auto,*">
+
+                                    <Button Command="{Binding CopyCommand}"
+                                            ToolTip.Tip="Copy style"
+                                            Theme="{StaticResource TransparentButton}"
+                                            Padding="10"
+                                            Margin="0 0 12 0">
+                                        <ui:SymbolIcon Symbol="Copy" />
+                                    </Button>
+                                    
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding StyleName}"
+                                               Theme="{Binding TextTheme}"
+                                               Margin="0 0 0 12"
+                                               Grid.Column="1" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding VariableFont, StringFormat='{}Variable Font: {0}'}"
+                                               Grid.Row="1"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Grid.Column="1" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding SizeLineHeight, StringFormat='{}Size / Line Height: {0}'}"
+                                               Grid.Row="2"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Grid.Column="1" />
+
+                                    
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Cross Platform">
+            <TextBlock TextWrapping="Wrap">
+                <Run>
+                    <x:String xml:space="preserve">On non-Windows systems where the Segoe UI font family isn't available, some control styles may look off as Fluent design is written around the Segoe UI font.
+</x:String>
+                </Run>
+                <LineBreak />
+                <Run>
+                    <x:String xml:space="preserve">FluentAvaloniaTheme provides a way to help correct controls that align text with margins instead of Horizontal/Vertical Alignment in order to align the first line of text with the control's visual, like a CheckBox or RadioButton.
+
+Use the 'TextVerticalAlignemntOverrideBehavior' property to adjust, which has 3 values
+</x:String>
+                </Run>
+                <LineBreak />
+                <Run Text="Disabled:"
+                     FontWeight="SemiBold"
+                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                <Run Text="No corrections, use styles as-is. Best for Windows only apps" />
+                <LineBreak />
+                <Run Text="EnabledNonWindows:"
+                     FontWeight="SemiBold"
+                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                <Run Text="Only use the corrections if not on Windows (default)" />
+                <LineBreak />
+                <Run Text="AlwaysEnabled:"
+                     FontWeight="SemiBold"
+                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                <Run Text="Always use the corrections" />
+                <LineBreak />
+                <LineBreak />
+                <Run Text="NOTE: this value is only respected on app start" />
+            </TextBlock>
+        </ctrls:ControlExample>
+    </StackPanel>
+    
+</UserControl>

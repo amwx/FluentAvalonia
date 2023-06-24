@@ -35,8 +35,7 @@
                                Margin="{DynamicResource NavigationViewButtonHolderGridMargin}" Grid.Row="1">
 
                             <Button Name="NavigationViewBackButton"
-                                    Theme="{StaticResource NavigationBackButtonNormalStyle}"
-                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerPaneToggleButtonWidth}"
+                                    Theme="{StaticResource NavigationBackButtonNormalStyle}"                                    
                                     VerticalAlignment="Top"
                                     IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.BackButtonVisibility}"
                                     IsEnabled="{TemplateBinding IsBackEnabled}"
@@ -405,6 +404,9 @@
             </ControlTemplate>
         </Setter>
 
+        <Style Selector="^ /template/ Button#NavigationViewBackButton">
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerPaneToggleButtonWidth}" />
+        </Style>
 
         <Style Selector="^:minimal">
             <Style Selector="^ /template/ SplitView ContentControl#HeaderContent">

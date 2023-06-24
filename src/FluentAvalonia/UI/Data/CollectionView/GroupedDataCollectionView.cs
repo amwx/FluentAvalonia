@@ -212,10 +212,10 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
         IList<SortDescription> sortDescriptions)
     {
         using var defer = DeferRefresh();
-
-        _filterProperties.Clear();
+                
         if (filterProperties != null)
         {
+            _filterProperties.Clear();
             foreach (var prop in filterProperties)
             {
                 AddFilterProperty(prop);

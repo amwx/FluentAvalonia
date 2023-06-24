@@ -1,0 +1,56 @@
+﻿public class TabViewPageViewModel
+{
+    public ObservableCollection<DocumentItem> KeyBindingDocuments { get; }
+
+    public FACommand AddDocumentCommand { get; }
+
+    public FACommand KeyBindingCommand { get; }
+
+    private void AddDocumentExecute(object obj)
+    {
+        if (obj.Equals("Keyboard"))
+        {
+            KeyBindingDocuments.Add(AddDocument(KeyBindingDocuments.Count));
+        }
+        else if (obj.Equals("Normal"))
+        {
+            Documents.Add(AddDocument(Documents.Count));
+        }
+    }
+
+    private void KeyBindingInvoked(object obj)
+    {
+        var str = obj.ToString();
+        if (int.TryParse(str, out var result))
+        {
+            if (KeyBindingDocuments.Count == 0)
+                return;
+
+            if (result == 9)
+            {
+                KeyBindingSelectedDocument = KeyBindingDocuments[^1];
+            }
+            else if (KeyBindingDocuments.Count >= result)
+            {
+                KeyBindingSelectedDocument = KeyBindingDocuments[result - 1];
+            }
+        }
+        else if (str.Equals("Add"))
+        {
+            KeyBindingDocuments.Add(AddDocument(KeyBindingDocuments.Count));
+        }
+        else if (str.Equals("Close"))
+        {
+            KeyBindingDocuments.Remove(KeyBindingSelectedDocument);
+        }
+    }
+}
+
+public class DocumentItem
+{
+    public string Header { get; set; }
+
+    public IconSource IconSource { get; set; }
+
+    public string Content { get; set; }
+}

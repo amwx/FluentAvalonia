@@ -1,0 +1,41 @@
+﻿<ui:TabView AddTabButtonCommand="{Binding AddDocumentCommand}"
+            AddTabButtonCommandParameter="Keyboard"
+            TabCloseRequested="TabView_TabCloseRequested"
+            TabItems="{Binding KeyBindingDocuments}"
+            MinHeight="350"
+            SelectedItem="{Binding KeyBindingSelectedDocument}">
+
+    <ui:TabView.KeyBindings>
+        <KeyBinding Gesture="Ctrl+T" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="Add" />
+        <KeyBinding Gesture="Ctrl+W" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="Close" />
+
+        <KeyBinding Gesture="Ctrl+D1" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="1" />
+        <KeyBinding Gesture="Ctrl+D2" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="2" />
+        <KeyBinding Gesture="Ctrl+D3" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="3" />
+        <KeyBinding Gesture="Ctrl+D4" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="4" />
+        <KeyBinding Gesture="Ctrl+D5" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="5" />
+        <KeyBinding Gesture="Ctrl+D6" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="6" />
+        <KeyBinding Gesture="Ctrl+D7" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="7" />
+        <KeyBinding Gesture="Ctrl+D8" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="8" />
+        <KeyBinding Gesture="Ctrl+D9" Command="{Binding KeyBindingCommand}"
+                    CommandParameter="9" />
+    </ui:TabView.KeyBindings>
+
+    <ui:TabView.TabItemTemplate>
+        <DataTemplate x:DataType="vm:DocumentItem">
+            <ui:TabViewItem Header="{Binding Header}"
+                            Content="{Binding Content}"
+                            IconSource="{Binding IconSource}" />
+        </DataTemplate>
+    </ui:TabView.TabItemTemplate>
+</ui:TabView>

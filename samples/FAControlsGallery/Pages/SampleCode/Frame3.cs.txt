@@ -1,0 +1,57 @@
+﻿// Implement INavigationPageFactory (2 methods)
+
+class NavigationFactory : INavigationPageFactory
+{
+    // Create a page based on a Type, but you can create it however you want
+    public Control GetPage(Type srcType)
+    {
+        // Return null here because we won't use this method at all
+        return null;
+    }
+
+    // Create a page based on an object, such as a view model
+    public Control GetPageFromObject(object target) 
+    {
+        if (target is MyViewModel1)
+            return new MyView1();
+        else if (target is MyViewModel2)
+            return new MyView2();
+
+        // Don't return null
+        throw new Exception();
+    }
+}
+
+// ----------
+
+public class MainView()
+{
+    public MainView()
+    {
+        // Assign the NavigationFactory to the Frame
+        // You can also bind this in via Xaml if you don't mind having it in your ViewModel
+        MyFrame.NavigationFactory = new NavigationFactory();
+    }
+
+    public void GoToPage1()
+    {
+        // To navigate by passing a data context use the NavigateFromObject method
+        // Note: NavigateFromObject does not allow passing in parameters, as the viewmodel should
+        // contain all the information you need, unlike the default logic that uses a Type
+        // and Activator.CreateInstance
+
+        // This is for demo purposes, but to ensure Frame's caching logic works correctly, be sure
+        // to store a reference to this view model and pass that instance everytime you want to 
+        // navigate to that page
+        var viewModel = new MyViewModel1();
+        MyFrame.NavigateFromObject(viewModel);
+    }
+
+    public void GoToPageViaType()
+    {
+        // If you still want to navigate via a Type, be sure that GetPage(Type) in your navigation
+        // factory is implemented and use the regular methods, such as Navigate(). A custom 
+        // INavigationFactory takes precedence over the default logic.
+        MyFrame.Navigate(typeof(SettingsPage));
+    }
+}

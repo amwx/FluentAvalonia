@@ -1,0 +1,32 @@
+﻿<Button Content="Click me for flyout!">
+    <Button.Flyout>
+
+        <ui:FAMenuFlyout Placement="Bottom"
+                         ItemsSource="{Binding TestMenuItems}">
+
+        </ui:FAMenuFlyout>
+    </Button.Flyout>
+</Button>
+
+<!-- Define the DataTemplates for the items -->
+<UserControl.DataTemplates>
+    <DataTemplate DataType="{x:Type vm:TempMenuItem}">
+        <ui:MenuFlyoutItem Text="{Binding Text}" IconSource="{Binding Icon}" />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:TempMenuSeparator}">
+        <ui:MenuFlyoutSeparator />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:TempToggleMenuItem}">
+        <ui:ToggleMenuFlyoutItem IsChecked="{Binding IsChecked, Mode=TwoWay}"
+									Text="{Binding Text}" />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:TempRadioMenuItem}">
+        <ui:RadioMenuFlyoutItem IsChecked="{Binding IsChecked, Mode=TwoWay}"
+									Text="{Binding Text}" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:TempSubItem}">
+            <ui:MenuFlyoutSubItem Items="{Binding SubItems}"
+                                  Text="{Binding Text}" />
+    </DataTemplate>
+</UserControl.DataTemplates>

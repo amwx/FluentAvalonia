@@ -73,11 +73,11 @@
         </Style>
 
         <Style Selector="^:topnav /template/ uip|NavigationViewItemPresenter">
-            <Setter Property="Theme" Value="{StaticResource NavigationViewItemPresenterWhenOnTopPane}" />
+            <Setter Property="Theme" Value="{DynamicResource NavigationViewItemPresenterWhenOnTopPane}" />
         </Style>
 
         <Style Selector="^:topoverflow /template/ uip|NavigationViewItemPresenter">
-            <Setter Property="Theme" Value="{StaticResource NavigationViewItemPresenterWhenOnTopPaneOverflow}" />
+            <Setter Property="Theme" Value="{DynamicResource NavigationViewItemPresenterWhenOnTopPaneOverflow}" />
         </Style>
     </ControlTheme>
 

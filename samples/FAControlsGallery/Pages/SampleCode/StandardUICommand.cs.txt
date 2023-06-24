@@ -1,0 +1,13 @@
+﻿// In this case, we bind the StandardUICommand to a method in our ViewModel. You can also handle in code behind, if you wish.
+
+// List of items populating the ListBox
+public AvaloniaList<string> TempItems { get; set; }
+
+// This is our method command
+public void DeleteItem(object param)
+{
+    if (param != null)
+    {
+        TempItems.Remove(param.ToString());
+    }
+}

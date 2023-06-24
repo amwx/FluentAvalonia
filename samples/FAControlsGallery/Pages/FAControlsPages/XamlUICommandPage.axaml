@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:input="using:FluentAvalonia.UI.Input"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             x:Class="FAControlsGallery.Pages.XamlUICommandPage"
+             x:DataType="vm:StandardUICommandPageViewModel">
+    <UserControl.Resources>
+        <input:XamlUICommand x:Key="CustomXamlUICommand"
+                             ExecuteRequested="CustomXamlUICommand_ExecuteRequested"
+                             Description="This is a custom command" Label="Custom Command"
+                             HotKey="Ctrl+D">
+            <input:XamlUICommand.IconSource>
+                <ui:SymbolIconSource Symbol="Star" />
+            </input:XamlUICommand.IconSource>
+        </input:XamlUICommand>
+
+        <input:StandardUICommand x:Key="DeleteCommand" Kind="Delete" Command="{Binding DeleteItem}" />
+    </UserControl.Resources>
+
+    <TabControl>
+        <TabItem Header="XamlUICommand">
+            <StackPanel Spacing="8">
+                <ctrls:ControlExample Header="Creating a Reusable Command with XamlUICommand"
+                                      XamlSource="avares://FAControlsGallery/Pages/SampleCode/XamlUICommand.xaml.txt"
+                                      CSharpSource="avares://FAControlsGallery/Pages/SampleCode/XamlUICommand.cs.txt"
+                                      UsageNotes="avares://FAControlsGallery/Pages/SampleCode/XamlUICommandUsageNotes.txt">
+                    <DockPanel>
+                        <ui:CommandBarButton Name="CustomButton"
+                                             Command="{DynamicResource CustomXamlUICommand}"/>
+                        
+                        <TextBlock Name="XamlUICommandOutput"
+                                   Margin="8,0,0,0"
+                                   DockPanel.Dock="Right" />
+                    </DockPanel>
+                </ctrls:ControlExample>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="StandardUICommand">
+            <StackPanel Spacing="8">
+                <Expander Header="Defined StandardUICommands">
+                    <ScrollViewer MaxHeight="400">
+                        <ItemsControl ItemsSource="{Binding StandardCommands}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <ui:CommandBarButton DockPanel.Dock="Right"
+                                                                Command="{Binding Command}" />
+                                        <TextBlock Text="{Binding Name}"
+                                                    VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Expander>
+
+                <ctrls:ControlExample Header="Creating a Reusable Command with XamlUICommand"
+                                      XamlSource="avares://FAControlsGallery/Pages/SampleCode/StandardUICommand.xaml.txt"
+                                      CSharpSource="avares://FAControlsGallery/Pages/SampleCode/StandardUICommand.cs.txt"
+                                      UsageNotes="avares://FAControlsGallery/Pages/SampleCode/StandardUICommandUsageNotes.txt">
+                    <StackPanel>
+                        <ui:CommandBar DefaultLabelPosition="Right">
+                            <ui:CommandBar.PrimaryCommands>
+                                <ui:CommandBarButton Label="Add" Command="{Binding AddItem}" />
+                            </ui:CommandBar.PrimaryCommands>
+                            <ui:CommandBar.SecondaryCommands>
+                                <ui:CommandBarButton Command="{StaticResource DeleteCommand}"
+                                                     CommandParameter="{Binding #ListBox1.SelectedItem}"/>
+                            </ui:CommandBar.SecondaryCommands>
+                        </ui:CommandBar>
+                        <ListBox ItemsSource="{Binding TempItems}" Name="ListBox1">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="Transparent">
+                                        <Panel>
+                                            <TextBlock Text="{Binding}"
+                                                       VerticalAlignment="Center" />
+
+                                            <ui:CommandBarButton HorizontalAlignment="Right"
+                                                                 Command="{StaticResource DeleteCommand}"
+                                                                 CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
+                                                                 HotKey="{x:Null}" />
+                                        </Panel>
+
+                                        <Border.ContextFlyout>
+                                            <ui:FAMenuFlyout>
+                                                <ui:MenuFlyoutItem Command="{StaticResource DeleteCommand}"
+                                                                   CommandParameter="{Binding #ListBox1.SelectedItem}" />
+                                            </ui:FAMenuFlyout>
+                                        </Border.ContextFlyout>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </ctrls:ControlExample>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</UserControl>

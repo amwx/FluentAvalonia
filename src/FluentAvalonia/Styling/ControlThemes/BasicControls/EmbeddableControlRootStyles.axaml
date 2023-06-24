@@ -4,6 +4,8 @@
     <ControlTheme x:Key="{x:Type EmbeddableControlRoot}" TargetType="EmbeddableControlRoot">
         <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBaseBrush}"/>
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>

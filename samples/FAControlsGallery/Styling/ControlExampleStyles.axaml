@@ -1,0 +1,325 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:FAControlsGallery.Controls"
+                    xmlns:ui="using:FluentAvalonia.UI.Controls"
+                    xmlns:aedit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit">
+    <Design.PreviewWith>
+        <Border Padding="20" Width="800" Height="450">
+            <Grid ColumnDefinitions="*,Auto,0.01*">
+                <local:ControlExample Header="Sample Control"
+                                      CSharpSource="asdg"
+                                      XamlSource="xaml source"
+                                      UsageNotes="usage notes">
+                    <!--<Button Content="Sample"
+                           Classes.accent="{Binding #Accent.IsChecked}"/>-->
+                    <ListBox>
+                        <ListBoxItem Content="Hello" IsSelected="True"/>
+                    </ListBox>
+
+                    <local:ControlExample.Options>
+                        <StackPanel>
+                            <CheckBox Name="Accent" Content="Accent" />
+                        </StackPanel>
+                    </local:ControlExample.Options>
+
+                </local:ControlExample>
+                
+                <GridSplitter Grid.Column="1" />
+            </Grid>
+        </Border>
+    </Design.PreviewWith>
+
+    
+    <ControlTheme x:Key="{x:Type local:SampleCodePresenter}"
+                  TargetType="local:SampleCodePresenter">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid RowDefinitions="Auto,*">
+                    <ContentPresenter Name="HeaderPresenter"
+                                      Content="{TemplateBinding Header}"
+                                      FontWeight="SemiBold"
+                                      VerticalAlignment="Top"/>
+
+                    <Button Name="CopyCodeButton"
+                            Padding="4"
+                            HorizontalAlignment="Right"
+                            AutomationProperties.Name="Copy sample code"
+                            ToolTip.Tip="Copy sample code">
+                        <ui:SymbolIcon Symbol="ClipboardCode" FontSize="20" />
+                    </Button>
+                    
+                    <!--<ui:TeachingTip Name="ConfirmCopyTeachingTip"
+                                    IsLightDismissEnabled="True"
+                                    Subtitle="Copied!"
+                                    Target="{Binding #CopyCodeButton}"
+                                    IsVisible="False" />-->
+
+                    <!-- AvaloniaEdit text box here -->
+                    <aedit:TextEditor Name="TextHost"
+                                      IsReadOnly="True"
+                                      Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    
+
+    <ControlTheme TargetType="local:ControlExample"
+                  x:Key="{x:Type local:ControlExample}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel>
+
+                    <!-- Header -->
+                    <Panel>
+                        <Button Theme="{StaticResource TransparentButton}"
+                                Margin="8"
+                                HorizontalAlignment="Right"
+                                Name="MoreButton">
+                            <ui:SymbolIcon Symbol="More" FontSize="18" />
+                        </Button>
+
+                        <ContentPresenter Name="HeaderPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          FontSize="16"
+                                          FontWeight="SemiBold"
+                                          Padding="12 8"
+                                          HorizontalContentAlignment="Left"
+                                          VerticalContentAlignment="Center" />
+                    </Panel>
+
+                    <!-- Example Area -->
+                    <ThemeVariantScope Name="ThemeScopeProvider">
+                        <ui:FABorder Name="ControlPreviewAreaHost"
+                                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                                TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                CornerRadius="{DynamicResource ControlCornerRadius}">
+                            <Grid ColumnDefinitions="*,Auto"
+                                  RowDefinitions="Auto,*,Auto">
+
+                                <Rectangle Name="TopRowPlaceholder"
+                                           IsHitTestVisible="False"
+                                           IsVisible="False"
+                                           MinHeight="32" />
+                                
+                                <ContentPresenter Name="ExamplePresenter"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="12 12 0 12"
+                                                  Grid.ColumnSpan="1"
+                                                  Grid.Row="1"
+                                                  Padding="12">
+                                    <ContentPresenter.Transitions>
+                                        <Transitions>
+                                            <ThicknessTransition Duration="00:00:00.167" Property="Padding" />
+                                        </Transitions>
+                                    </ContentPresenter.Transitions>
+                                </ContentPresenter>
+
+                                <ui:FABorder Name="OptionsHost"
+                                        Margin="12"
+                                        Padding="8"
+                                        CornerRadius="{DynamicResource OverlayCornerRadius}"
+                                        Grid.Column="1"
+                                        Grid.Row="1"
+                                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        Opacity="1"
+                                        IsVisible="False">
+                                    <ui:FABorder.Transitions>
+                                        <Transitions>
+                                            <DoubleTransition Property="Opacity" Duration="00:00:00.167" />
+                                        </Transitions>
+                                    </ui:FABorder.Transitions>
+                                    <StackPanel>
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="Options"
+                                                       DockPanel.Dock="Left"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="SemiBold"
+                                                       Margin="0 3" />
+
+                                            <Button Name="ShowHideOptionsButton"
+                                                    Theme="{StaticResource TransparentButton}"
+                                                    DockPanel.Dock="Right"
+                                                    Margin="6 0 0 0"
+                                                    IsVisible="False">
+                                                <ui:SymbolIcon Name="OptionsChevron"
+                                                               Symbol="ChevronDown" />
+                                            </Button>
+                                        </DockPanel>
+                                        <ContentPresenter Name="OptionPresenter"
+                                                          Content="{TemplateBinding Options}"
+                                                          HorizontalContentAlignment="Stretch"
+                                                          VerticalContentAlignment="Stretch"
+                                                          IsVisible="{TemplateBinding IsOptionsExpanded}"/>
+                                    </StackPanel>
+                                </ui:FABorder>
+                                
+                            </Grid>
+                        </ui:FABorder>
+                    </ThemeVariantScope>
+
+
+                    <!-- Code Preview -->
+                    <Expander CornerRadius="0 0 8 8"
+                              Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+                              Name="SourcePreviewArea"
+                              IsVisible="False">
+
+                        <Expander.Header>
+                            <Panel>
+                                <!--<ui:IconSourceElement IconSource="{StaticResource SourceCodeIcon}"
+                                                      Width="20" Height="20"/>-->
+                                <Viewbox Width="20" Height="20" 
+                                         Stretch="Uniform"
+                                         HorizontalAlignment="Left">
+                                    <ui:ImageIcon>
+                                        <DrawingImage>
+                                            <DrawingGroup>
+                                                <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                                                 Geometry="M 13,13 C 12.577726,13 12.156163,13.160231 11.833984,13.482422 L 2.4824219,22.833984 2.3242188,23.017578 C 1.8449479,23.663499 1.896627,24.580156 2.4824219,25.166016 L 11.833984,34.517578 12.017578,34.675781 C 12.663521,35.155161 13.580222,35.103438 14.166016,34.517578 14.810375,33.873198 14.810375,32.827755 14.166016,32.183594 L 5.984375,24 14.166016,15.816406 14.326172,15.630859 C 14.805443,14.984917 14.751811,14.068194 14.166016,13.482422 13.843837,13.160231 13.422274,13 13,13 Z M 34.884766,13.003906 C 34.501635,13.030534 34.126804,13.189524 33.833984,13.482422 33.189603,14.12678 33.189603,15.172026 33.833984,15.816406 L 42.015625,24 33.833984,32.183594 33.673828,32.369141 C 33.194448,33.015062 33.248123,33.931938 33.833984,34.517578 34.478364,35.161958 35.521636,35.161958 36.166016,34.517578 L 45.517578,25.166016 45.675781,24.982422 C 46.155162,24.336502 46.103439,23.419624 45.517578,22.833984 L 36.166016,13.482422 35.982422,13.324219 C 35.659461,13.084572 35.267896,12.977278 34.884766,13.003906 Z" />
+                                                <GeometryDrawing Brush="{DynamicResource AccentFillColorDefaultBrush}"
+                                                                 Geometry="M 15.344371,39.275058 29.644335,7.3750199 C 30.017235,6.5434859 30.993375,6.1715759 31.824975,6.5443219 32.587276,6.8860259 32.963256,7.7348519 32.733576,8.5144448 L 32.655696,8.7249188 18.355645,40.624979 C 17.982899,41.45658 17.006604,41.82838 16.17507,41.4557 15.412813,41.114039 15.036789,40.265059 15.266535,39.485599 L 15.344371,39.275058 29.644335,7.3750199 Z" />
+                                            </DrawingGroup>
+                                        </DrawingImage>
+                                    </ui:ImageIcon>
+                                </Viewbox>
+                                <TextBlock Text="Example source code" 
+                                           Margin="32 0 0 0" />
+                            </Panel>
+                        </Expander.Header>
+
+                        <StackPanel>
+
+                            <!-- Xaml source first -->
+                           <local:SampleCodePresenter Header="XAML"
+                                                      Code="{TemplateBinding XamlSource}"
+                                                      Substitutions="{TemplateBinding Substitutions}"
+                                                      SampleType="XAML"
+                                                      Name="XamlPresenter"
+                                                      IsVisible="False"/>
+                            
+                            <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
+                                       Height="1"
+                                       IsVisible="{Binding #XamlPresenter.IsVisible}"
+                                       Margin="0 0 0 8" />
+
+                             <local:SampleCodePresenter Header="C#"
+                                                        Code="{TemplateBinding CSharpSource}"
+                                                        Substitutions="{TemplateBinding Substitutions}"
+                                                        SampleType="CSharp"
+                                                        Name="CSharpPresenter"
+                                                        IsVisible="False"/>
+
+                            <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
+                                       Height="1" 
+                                       IsVisible="{Binding #CSharpPresenter.IsVisible}"
+                                       Margin="0 0 0 8" />
+ 
+                            <local:SampleCodePresenter Header="Additional Notes"
+                                                       Code="{TemplateBinding UsageNotes}"
+                                                       Substitutions="{TemplateBinding Substitutions}"
+                                                       SampleType="Text"
+                                                       Name="NotesPresenter"
+                                                       IsVisible="False"/>
+                            
+                        </StackPanel>                        
+                    </Expander>                    
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/ ui|FABorder#ControlPreviewAreaHost">
+            <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
+        </Style>
+
+        <Style Selector="^:codepreview">
+            <Style Selector="^ /template/ Expander#SourcePreviewArea">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ ui|FABorder#ControlPreviewAreaHost">
+                <Setter Property="CornerRadius" Value="4 4 0 0" />
+                <Setter Property="BorderThickness" Value="1 1 1 0" />
+            </Style>
+
+            <Style Selector="^:xamlsource /template/ local|SampleCodePresenter#XamlPresenter">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^:csharpsource /template/ local|SampleCodePresenter#CSharpPresenter">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^:usagenotes /template/ local|SampleCodePresenter#NotesPresenter">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:options /template/ ui|FABorder#OptionsHost">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:mediumWidth">
+            <Style Selector="^ /template/ ContentPresenter#ExamplePresenter">
+                <Setter Property="Grid.ColumnSpan" Value="2" />
+                <Setter Property="Padding" Value="12 24 12 12" />
+            </Style>
+
+            <Style Selector="^ /template/ ui|FABorder#OptionsHost">
+                <Setter Property="Grid.Column" Value="0" />
+                <Setter Property="Grid.Row" Value="0" />
+                <Setter Property="Grid.RowSpan" Value="2" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#TopRowPlaceholder">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ Button#ShowHideOptionsButton">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+
+            <Style Selector="^ /template/ ui|FABorder#OptionsHost:pointerover">
+                <Setter Property="Opacity" Value="1" />
+            </Style>
+
+            <!-- Small width applies on top of medium width -->
+            <Style Selector="^:smallWidth">
+                <Style Selector="^ /template/ Button#ShowHideOptionsButton">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
+
+                <Style Selector="^ /template/ ui|FABorder#OptionsHost">
+                    <Setter Property="Grid.Column" Value="0" />
+                    <Setter Property="Grid.ColumnSpan" Value="2" />
+                    <Setter Property="Grid.Row" Value="2" />
+                    <Setter Property="Grid.RowSpan" Value="1" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Top" />
+                    <Setter Property="Opacity" Value="1" />
+                    <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+                </Style>
+                <Style Selector="^ /template/ Rectangle#TopRowPlaceholder">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
+            </Style>            
+        </Style>
+
+        <Style Selector="^:optionsfull /template/ ui|SymbolIcon#OptionsChevron">
+            <Setter Property="Symbol" Value="ChevronUp" />
+        </Style>
+        
+    </ControlTheme>
+    
+    
+</ResourceDictionary>

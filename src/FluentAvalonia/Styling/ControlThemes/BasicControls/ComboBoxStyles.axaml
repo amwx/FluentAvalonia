@@ -257,6 +257,7 @@
     </ControlTheme>
 
     <ControlTheme TargetType="ComboBoxItem" x:Key="{x:Type ComboBoxItem}">
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxItemForeground}" />
         <Setter Property="Background" Value="{DynamicResource ComboBoxItemBackground}" />
         <Setter Property="Padding" Value="{DynamicResource ComboBoxItemThemePadding}" />
@@ -278,7 +279,7 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Margin="5,2,5,2"
-                        CornerRadius="{DynamicResource ControlCornerRadius}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
                         TemplatedControl.IsTemplateFocusTarget="True">
                     <Panel>
                         <Rectangle Name="Pill"
@@ -294,6 +295,7 @@
                                           Margin="{TemplateBinding Padding}"
                                           Background="{x:Null}"
                                           BorderBrush="{x:Null}"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
                                           BorderThickness="0"/>
                     </Panel>
 

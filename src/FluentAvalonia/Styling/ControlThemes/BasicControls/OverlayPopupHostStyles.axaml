@@ -4,6 +4,8 @@
     <ControlTheme x:Key="{x:Type OverlayPopupHost}" TargetType="OverlayPopupHost">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <LayoutTransformControl LayoutTransform="{TemplateBinding Transform}">

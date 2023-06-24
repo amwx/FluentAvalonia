@@ -470,6 +470,10 @@ public partial class NavigationView : HeaderedContentControl
             OnIsPaneOpenChanged();
             UpdateVisualStateForDisplayModeGroup(_displayMode);
         }
+        else if (change.Property == OpenPaneLengthProperty)
+        {
+            UpdateOpenPaneWidth(Bounds.Width);
+        }
     }
 
     //WinUI also uses PreviewKeyDown to reset m_TabKeyPrecedesFocusChange

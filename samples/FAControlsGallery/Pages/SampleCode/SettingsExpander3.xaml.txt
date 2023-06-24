@@ -1,0 +1,37 @@
+﻿<ui:SettingsExpander Header="Personalize your background"
+                     IconSource="Image"
+                     ItemsSource="{Binding Items}" />
+
+<!-- SettingsExpander supports creating items from DataTemplate -->
+<UserControl.DataTemplates>
+    <DataTemplate DataType="vm:RecentImagesSettingsItem">
+        <ui:SettingsExpanderItem>
+            <StackPanel Spacing="4">
+                <TextBlock Text="{Binding Header}" />
+                <ItemsControl ItemsSource="{Binding Images}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="4" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="sys:String">
+                            <Border Width="75" Height="75">
+                                <ui:IconSourceElement IconSource="{Binding , Converter={StaticResource ResKeyIconConv}}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ui:SettingsExpanderItem>
+    </DataTemplate>
+        
+    <DataTemplate DataType="vm:FooterButtonSettingsItem">
+        <ui:SettingsExpanderItem>
+            <ui:SettingsExpanderItem.Footer>
+                <Button Content="{Binding Footer}" />
+            </ui:SettingsExpanderItem.Footer>
+        </ui:SettingsExpanderItem>
+    </DataTemplate>
+</UserControl.DataTemplates>

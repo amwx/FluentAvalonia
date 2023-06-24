@@ -1,29 +1,28 @@
-# FluentAvalonia
+# ![FAIcon64](https://github.com/amwx/FluentAvalonia/assets/40413319/8bf25961-9bbd-42f0-8fde-e8173b5910c1) FluentAvalonia
 
-Bringing more of Fluent design and WinUI controls into Avalonia.
+Modern, fluent design and WinUI-inspired toolkit for Avalonia apps
 
-[![Nuget](https://img.shields.io/nuget/v/FluentAvaloniaUI?color=%236A5ACD&label=FluentAvaloniaUI%20%28nuget%29)](https://www.nuget.org/packages/FluentAvaloniaUI/)
+[![Nuget](https://img.shields.io/nuget/vpre/FluentAvaloniaUI?color=%236A5ACD&label=FluentAvaloniaUI%20%28nuget%29)](https://www.nuget.org/packages/FluentAvaloniaUI/)
 ![GitHub repo size](https://img.shields.io/github/repo-size/amwx/FluentAvalonia?color=%234682B4)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/amwx/FluentAvalonia?color=%23483D8B)
 
-NOTE: Master branch is now focused on v2, which is Avalonia 11.0-preview Compatible.
-The current stable version is 1.4.5 (see accompanying stable branch for package)
-Stable package currently targets: Avalonia 0.10.18 & multitargets netstandard2.0;netstandard2.1;net6.0
+NOTE: The 1.x version of FluentAvalonia (0.10.x Avalonia) is now deprecated. Please consider upgrading to Avalonia 11.0/FluentAvalonia 2.0 for the latest and greatest!
 
-Be aware, there may be bugs/issues with the Sample App during the preview phases of v2/11.0
+Note: Windows 7, 8/8.1 are not supported by FluentAvalonia. It may still be possible to run on these versions of Windows, but no support for issues will be given.
 
-Note: Windows 7, 8/8.1 are not supported by FluentAvalonia.
+## Documentation & Sample App
 
-Check out the sample app for a demo, with code examples, for more!
+Documentation and how to get started using FluentAvalonia is available [here](https://amwx.github.io/FluentAvaloniaDocs). Please note, these doc pages are still under development.
 
-or 
+You can also check out the sample app (FAControlsGallery) for a demo of FluentAvalonia with more code samples.
 
-## **NEW!** (currently still in development)
-[FluentAvalonia Documentation](https://amwx.github.io/FluentAvaloniaDocs)
+<!-- TODO: Add image here of new app -->
 
-The docs have all the info on how to get started using FluentAvalonia.
+## Contributing
+Please see the [Contribution Guidelines](.github/CONTRIBUTING.md) for guidelines on contributing to FluentAvalonia.
 
-![image](https://user-images.githubusercontent.com/40413319/152464696-65a4de6f-1a06-4cca-9f80-c545ad0585ce.png)
+<hr />
+
 
 Avalonia : https://github.com/AvaloniaUI/Avalonia  
 WinUI : https://github.com/microsoft/microsoft-ui-xaml/  

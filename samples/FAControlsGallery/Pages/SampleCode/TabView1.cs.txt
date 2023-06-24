@@ -1,0 +1,20 @@
+﻿public class TabViewPageViewModel
+{
+    public ObservableCollection<DocumentItem> Documents { get; }
+
+    public FACommand AddDocumentCommand { get; }
+
+    private void AddDocumentExecute(object obj)
+    {
+        Documents.Add(AddDocument(Documents.Count));
+    }
+}
+
+public class DocumentItem
+{
+    public string Header { get; set; }
+
+    public IconSource IconSource { get; set; }
+
+    public string Content { get; set; }
+}

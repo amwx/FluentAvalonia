@@ -1,0 +1,2 @@
+﻿The ContentDialog shows in the OverlayLayer of the window, and does not use it's own HWND/Top Level window. This makes it compatible with non-desktop Application lifetimes. However, a TopLevel with a OverlayLayer must be present so ContentDialog cannot be launched on its own.
+Unlike WinUI, there is no constraint on the number of ContentDialogs a given TopLevel/Window can display at once. If this may happen, they will overlay each other and it is up to you to manage that state
