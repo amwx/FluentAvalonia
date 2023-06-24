@@ -31,7 +31,7 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Background="Transparent"
                         CornerRadius="{TemplateBinding CornerRadius}">
-                    <ui:SymbolIcon Foreground="{StaticResource TextControlButtonForeground}"
+                    <ui:SymbolIcon Foreground="{DynamicResource TextControlButtonForeground}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    FontSize="{StaticResource TextBoxIconFontSize}"
