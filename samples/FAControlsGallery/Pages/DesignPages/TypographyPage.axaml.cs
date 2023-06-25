@@ -15,7 +15,7 @@ public partial class TypographyPage : ControlsPageBase
         PreviewImage = (IconSource)App.Current.FindResource("TextPageIcon");
 
         Description = "Type helps provide structure and hierarchy to the UI. The default font is Segoe UI " +
-            "on Windows 10 and Segoe UI Variable on Windows 11. Best practice is to use Regular weight for" +
+            "on Windows 10 and Segoe UI Variable on Windows 11. Best practice is to use Regular weight for " +
             "most text and use Semibold for titles. The minimum values should be 12px Regular and 14px Semibold. " +
             "This page was adapted from the WinUI 3 Gallery.";
 
