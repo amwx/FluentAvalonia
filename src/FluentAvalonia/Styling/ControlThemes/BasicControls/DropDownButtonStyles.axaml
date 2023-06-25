@@ -57,21 +57,21 @@
         </Setter>
 
         <!--  PointerOver State  -->
-        <Style Selector="^:pointerover /template/ Border#RootBorder">
+        <Style Selector="^:pointerover /template/ ui|FABorder#RootBorder">
             <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
         </Style>
 
         <!--  Pressed State  -->
-        <Style Selector="^:pressed /template/ Border#RootBorder">
+        <Style Selector="^:pressed /template/ ui|FABorder#RootBorder">
             <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPressed}" />
         </Style>
 
         <!--  Disabled State  -->
-        <Style Selector="^:disabled /template/ Border#RootBorder">
+        <Style Selector="^:disabled /template/ ui|FABorder#RootBorder">
             <Setter Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
