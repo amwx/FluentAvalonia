@@ -6,6 +6,23 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1800"
              x:Class="FAControlsGallery.Pages.BasicInputControlsPage">
+
+    <UserControl.Resources>
+
+        <MenuFlyout x:Key="SharedMenuFlyout"
+                    Placement="Bottom">
+            <MenuItem Header="Item 1">
+                <MenuItem Header="Subitem 1" />
+                <MenuItem Header="Subitem 2" />
+                <MenuItem Header="Subitem 3" />
+            </MenuItem>
+            <MenuItem Header="Item 2"
+                      InputGesture="Ctrl+A" />
+            <MenuItem Header="Item 3" />
+        </MenuFlyout>
+
+    </UserControl.Resources>
+
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="Button"
                               TargetType="Button"
@@ -54,7 +71,7 @@
             <StackPanel Spacing="5">
 
                 <WrapPanel>
-                    <DropDownButton Content="Regular DropDownButton" Margin="4" />
+                    <DropDownButton Content="Regular DropDownButton" Margin="4" Flyout="{StaticResource SharedMenuFlyout}" />
                     <DropDownButton Content="Disabled DropDownButton" Margin="4" IsEnabled="False" />
                 </WrapPanel>
 
@@ -69,7 +86,7 @@
             <StackPanel Spacing="5">
 
                 <WrapPanel>
-                    <SplitButton Content="Regular SplitButton" Margin="4" />
+                    <SplitButton Content="Regular SplitButton" Margin="4" Flyout="{StaticResource SharedMenuFlyout}" />
                     <SplitButton Content="Disabled SplitButton" Margin="4" IsEnabled="False" />
                 </WrapPanel>
 
@@ -84,7 +101,7 @@
             <StackPanel Spacing="5">
 
                 <WrapPanel>
-                    <ToggleSplitButton Content="Regular ToggleSplitButton" Margin="4" />
+                    <ToggleSplitButton Content="Regular ToggleSplitButton" Margin="4" Flyout="{StaticResource SharedMenuFlyout}" />
                     <ToggleSplitButton Content="Disabled ToggleSplitButton" Margin="4" IsEnabled="False" />
                 </WrapPanel>
 
