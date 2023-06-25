@@ -25,5 +25,13 @@
     <PackageVersion Include="AvaloniaEdit.TextMate" Version="11.0-rc1.1" />
     
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+
+    <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageVersion Include="Moq" Version="4.16.1" />
+    <PackageVersion Include="xunit" Version="2.4.1" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" />
+    <PackageVersion Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 </Project>
