@@ -88,5 +88,5 @@
                   BasedOn="{StaticResource NavigationBackButtonNormalStyle}">
         <Setter Property="Margin" Value="4,2,0,2" />
     </ControlTheme>
-    
+
 </ResourceDictionary>

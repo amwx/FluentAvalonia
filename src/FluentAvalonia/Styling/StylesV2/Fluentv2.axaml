@@ -440,7 +440,7 @@
             <!--<StaticResource x:Key="ComboBoxDropDownGlyphForegroundFocusedPressed" ResourceKey="SystemControlHighlightAltBaseMediumHighBrush" />-->
             <StaticResource x:Key="ComboBoxDropDownForeground" ResourceKey="TextFillColorPrimaryBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="ComboBoxDropDownBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
             <StaticResource x:Key="ComboBoxDropDownBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
             <StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <!--<StaticResource x:Key="ComboBoxLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
@@ -614,7 +614,7 @@
             <StaticResource x:Key="DatePickerButtonForegroundFocused" ResourceKey="TextFillColorPrimaryBrush" />
 
             <!--<contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
-		<contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
             <StaticResource x:Key="DatePickerFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
             <StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <StaticResource x:Key="DatePickerFlyoutPresenterSpacerFill" ResourceKey="DividerStrokeColorDefaultBrush" />
@@ -686,7 +686,7 @@
             <StaticResource x:Key="TimePickerFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
             <StaticResource x:Key="TimePickerFlyoutPresenterSpacerFill" ResourceKey="DividerStrokeColorDefaultBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterHighlightFill" ResourceKey="AccentFillColorDefaultBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterHighlightForegroundColor" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
@@ -961,7 +961,7 @@
 
             <!-- AUTO COMPLETE BOX -->
             <!--<contract7NotPresent:StaticResource x:Key="AutoSuggestBoxSuggestionsListBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="AutoSuggestBoxSuggestionsListBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="AutoSuggestBoxSuggestionsListBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
             <StaticResource x:Key="AutoSuggestBoxSuggestionsListBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
             <StaticResource x:Key="AutoSuggestBoxSuggestionsListBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <!--<StaticResource x:Key="AutoSuggestBoxLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
@@ -1150,7 +1150,7 @@
             <StaticResource x:Key="CommandBarHighContrastBorder" ResourceKey="ControlFillColorTransparentBrush" />
             <StaticResource x:Key="CommandBarEllipsisIconForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
             <StaticResource x:Key="CommandBarOverflowPresenterBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
             <StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <!--<StaticResource x:Key="CommandBarLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
@@ -1650,9 +1650,9 @@
             <StaticResource x:Key="CalendarViewNavigationButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
 
             <!--
-		StaticResources won't evaluate outside of the current Dictionary...SIGH...
-		<StaticResource x:Key="CalendarViewDayItemFontSize" ResourceKey="ControlContentThemeFontSize" />
-		<StaticResource x:Key="CalendarViewMonthYearItemFontSize" ResourceKey="ControlContentThemeFontSize" />-->
+        StaticResources won't evaluate outside of the current Dictionary...SIGH...
+        <StaticResource x:Key="CalendarViewDayItemFontSize" ResourceKey="ControlContentThemeFontSize" />
+        <StaticResource x:Key="CalendarViewMonthYearItemFontSize" ResourceKey="ControlContentThemeFontSize" />-->
 
             <x:Boolean x:Key="CalendarViewBaseItemRoundedChromeEnabled">True</x:Boolean>
             <x:Double x:Key="CalendarViewFirstOfMonthLabelFontSize">8</x:Double>
@@ -2562,7 +2562,7 @@
             <StaticResource x:Key="DatePickerButtonForegroundFocused" ResourceKey="TextFillColorPrimaryBrush" />
 
             <!--<contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
-		<contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
             <StaticResource x:Key="DatePickerFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
             <StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <StaticResource x:Key="DatePickerFlyoutPresenterSpacerFill" ResourceKey="DividerStrokeColorDefaultBrush" />
@@ -2593,7 +2593,7 @@
 
             <!-- NOTE: In order to NOT port the MonochromaticOverlayPresenter, LoopingSelectorItemForegroundSelected
              has been modified to use TextOnAccentFillColorPrimaryBrush, see note in DatePicker.xaml for more...
-        -->
+            -->
             <StaticResource x:Key="LoopingSelectorItemForeground" ResourceKey="TextFillColorPrimaryBrush" />
             <StaticResource x:Key="LoopingSelectorItemForegroundSelected" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
             <StaticResource x:Key="LoopingSelectorItemForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
@@ -2634,7 +2634,7 @@
             <StaticResource x:Key="TimePickerFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
             <StaticResource x:Key="TimePickerFlyoutPresenterSpacerFill" ResourceKey="DividerStrokeColorDefaultBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterHighlightFill" ResourceKey="AccentFillColorDefaultBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterHighlightForegroundColor" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
@@ -2912,7 +2912,7 @@
 
             <!-- AUTO COMPLETE BOX -->
             <!--<contract7NotPresent:StaticResource x:Key="AutoSuggestBoxSuggestionsListBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="AutoSuggestBoxSuggestionsListBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="AutoSuggestBoxSuggestionsListBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />-->
             <StaticResource x:Key="AutoSuggestBoxSuggestionsListBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
             <StaticResource x:Key="AutoSuggestBoxSuggestionsListBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <!--<StaticResource x:Key="AutoSuggestBoxLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
@@ -3099,7 +3099,7 @@
             <StaticResource x:Key="CommandBarHighContrastBorder" ResourceKey="ControlFillColorTransparentBrush" />
             <StaticResource x:Key="CommandBarEllipsisIconForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
             <StaticResource x:Key="CommandBarOverflowPresenterBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
             <StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
             <!--<StaticResource x:Key="CommandBarLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />-->
@@ -3606,9 +3606,9 @@
             <StaticResource x:Key="CalendarViewNavigationButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
 
             <!--
-		StaticResources won't evaluate outside of the current Dictionary...SIGH...
-		<StaticResource x:Key="CalendarViewDayItemFontSize" ResourceKey="ControlContentThemeFontSize" />
-		<StaticResource x:Key="CalendarViewMonthYearItemFontSize" ResourceKey="ControlContentThemeFontSize" />-->
+            StaticResources won't evaluate outside of the current Dictionary...SIGH...
+            <StaticResource x:Key="CalendarViewDayItemFontSize" ResourceKey="ControlContentThemeFontSize" />
+            <StaticResource x:Key="CalendarViewMonthYearItemFontSize" ResourceKey="ControlContentThemeFontSize" />-->
 
             <x:Boolean x:Key="CalendarViewBaseItemRoundedChromeEnabled">True</x:Boolean>
             <x:Double x:Key="CalendarViewFirstOfMonthLabelFontSize">8</x:Double>
@@ -4155,8 +4155,8 @@
 
 
             <!-- Things get even more fun here. Apparently the HighContrast theme still mostly uses the old v1 Styles naming
-			 because Microsoft...
-		-->
+             because Microsoft...
+        -->
             <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="{DynamicResource SystemColorHighlightColor}" />
             <SolidColorBrush x:Key="SystemControlForegroundAccentBrush" Color="{DynamicResource SystemColorButtonTextColor}" />
             <SolidColorBrush x:Key="SystemControlBackgroundBaseMediumLowBrush" Color="{DynamicResource SystemColorButtonFaceColor}" />
@@ -4401,7 +4401,7 @@
             <StaticResource x:Key="ComboBoxDropDownGlyphForegroundFocusedPressed" ResourceKey="SystemControlForegroundBaseHighBrush" />
             <StaticResource x:Key="ComboBoxDropDownForeground" ResourceKey="SystemControlForegroundBaseHighBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="ComboBoxDropDownBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
             <StaticResource x:Key="ComboBoxDropDownBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
             <StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />
             <StaticResource x:Key="ComboBoxLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />
@@ -4606,7 +4606,7 @@
             <StaticResource x:Key="DatePickerButtonForegroundFocused" ResourceKey="SystemColorHighlightColorBrush" />
 
             <!--<contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
             <StaticResource x:Key="DatePickerFlyoutPresenterBackground" ResourceKey="SystemColorWindowColorBrush" />
             <StaticResource x:Key="DatePickerFlyoutPresenterBorderBrush" ResourceKey="SystemColorWindowTextColorBrush" />
             <StaticResource x:Key="DatePickerFlyoutPresenterSpacerFill" ResourceKey="SystemColorWindowTextColorBrush" />
@@ -4678,7 +4678,7 @@
             <StaticResource x:Key="TimePickerFlyoutPresenterBackground" ResourceKey="SystemColorWindowColorBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SystemColorWindowTextColorBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="TimePickerFlyoutPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
             <StaticResource x:Key="TimePickerFlyoutPresenterSpacerFill" ResourceKey="SystemColorWindowTextColorBrush" />
             <StaticResource x:Key="TimePickerFlyoutPresenterHighlightFill" ResourceKey="SystemColorHighlightColorBrush" />
             <Color x:Key="TimePickerFlyoutPresenterHighlightForegroundColor">Transparent</Color>
@@ -5098,7 +5098,7 @@
             <StaticResource x:Key="CommandBarHighContrastBorder" ResourceKey="SystemControlForegroundTransparentBrush" />
             <StaticResource x:Key="CommandBarEllipsisIconForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
             <!--<contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
-		<contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
+            <contract7NotPresent:StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SystemControlForegroundChromeHighBrush" />-->
             <StaticResource x:Key="CommandBarOverflowPresenterBackground" ResourceKey="SystemControlBackgroundChromeMediumLowBrush" />
             <StaticResource x:Key="CommandBarOverflowPresenterBorderBrush" ResourceKey="SystemControlTransientBorderBrush" />
             <StaticResource x:Key="CommandBarLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />
@@ -5553,9 +5553,9 @@
             <StaticResource x:Key="CalendarViewNavigationButtonBorderBrush" ResourceKey="SystemControlTransparentBrush" />
 
             <!--
-		StaticResources won't evaluate outside of the current Dictionary...SIGH...
-		<StaticResource x:Key="CalendarViewDayItemFontSize" ResourceKey="ControlContentThemeFontSize" />
-		<StaticResource x:Key="CalendarViewMonthYearItemFontSize" ResourceKey="ControlContentThemeFontSize" />-->
+        StaticResources won't evaluate outside of the current Dictionary...SIGH...
+        <StaticResource x:Key="CalendarViewDayItemFontSize" ResourceKey="ControlContentThemeFontSize" />
+        <StaticResource x:Key="CalendarViewMonthYearItemFontSize" ResourceKey="ControlContentThemeFontSize" />-->
 
             <x:Boolean x:Key="CalendarViewBaseItemRoundedChromeEnabled">True</x:Boolean>
             <x:Double x:Key="CalendarViewFirstOfMonthLabelFontSize">8</x:Double>
@@ -5860,9 +5860,9 @@
 
     <!-- New FluentUI Icons from Microsoft, embedded in assembly - see v1.1.5 PR for details
          NOTE: Changing this font, will break design of most FluentAvalonia controls
-		 This font has been adapted, thanks to robloo to use the FluentSystemIcons font, but
-		 match the same unicode code points from WinUI Segoe Fluent
-	-->
+         This font has been adapted, thanks to robloo to use the FluentSystemIcons font, but
+         match the same unicode code points from WinUI Segoe Fluent
+    -->
     <!--<FontFamily x:Key="SymbolThemeFontFamily">avares://FluentAvalonia/Fonts#Symbols</FontFamily>
     <FontFamily x:Key="ContentControlThemeFontFamily">Default</FontFamily>-->
 
@@ -5929,7 +5929,7 @@
     <!-- PathIcon  -->
     <x:Double x:Key="IconElementThemeHeight">20</x:Double>
     <x:Double x:Key="IconElementThemeWidth">20</x:Double>
-    
+
     <!--
         Preserving for reference:
         <x:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</x:String>
@@ -5937,5 +5937,5 @@
         <x:String x:Key="ControlFastAnimationDuration">00:00:00.167</x:String>
         <x:String x:Key="ControlFastAnimationAfterDuration">00:00:00.168</x:String>
         <x:String x:Key="ControlFasterAnimationDuration">00:00:00.083</x:String>-->
-    
+
 </ResourceDictionary>

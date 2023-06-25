@@ -18,7 +18,7 @@
     <x:Double x:Key="TitleTextBlockFontSize">28</x:Double>
     <x:Double x:Key="TitleLargeTextBlockFontSize">40</x:Double>
     <x:Double x:Key="DisplayTextBlockFontSize">68</x:Double>
-    
+
     <ControlTheme TargetType="TextBlock" x:Key="BaseTextBlockStyle">
         <Setter Property="FontFamily" Value="XamlAutoFontFamily" />
         <Setter Property="FontSize" Value="{StaticResource BodyTextBlockFontSize}" />

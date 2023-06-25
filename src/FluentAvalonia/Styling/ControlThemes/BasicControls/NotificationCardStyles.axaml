@@ -23,10 +23,10 @@
                 <LayoutTransformControl Name="PART_LayoutTransformControl" UseRenderTransform="True">
                     <Border CornerRadius="{TemplateBinding CornerRadius}" BoxShadow="0 6 8 0 #4F000000" Margin="5 5 5 10">
                         <Border Background="{TemplateBinding Background}"
-								BorderBrush="{TemplateBinding BorderBrush}"
-								BorderThickness="{TemplateBinding BorderThickness}"
-								CornerRadius="{TemplateBinding CornerRadius}"
-								ClipToBounds="True">
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                ClipToBounds="True">
                             <DockPanel>
                                 <Panel x:Name="PART_HeaderBar" 
                                        Height="4" 

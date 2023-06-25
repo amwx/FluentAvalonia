@@ -44,7 +44,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// case of KDE) name to contain "dark". On GNOME or Xfce, it requires 'color-scheme'
     /// to be set to either 'prefer-light', 'prefer-dark', or 'gtk-theme' to contain 'dark'.
     /// Also note, that high contrast theme will only resolve here on Windows.
-    /// </remarks>    
+    /// </remarks>
     public bool PreferSystemTheme
     {
         get => _preferSystemTheme;

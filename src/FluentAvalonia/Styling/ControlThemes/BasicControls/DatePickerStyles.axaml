@@ -81,7 +81,7 @@
             <Style Selector="^ /template/ ContentPresenter">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Foreground" Value="{DynamicResource LoopingSelectorItemForegroundSelected}"/>
-            </Style>            
+            </Style>
         </Style>
 
         <Style Selector="^.MonthItem">
@@ -91,7 +91,7 @@
         </Style>
     </ControlTheme>
 
-    
+
     <!-- This is the accept/dismiss buttons in the flyout -->
     <ControlTheme x:Key="DateTimeFlyoutButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource DateTimePickerFlyoutButtonBackground}" />
@@ -339,7 +339,7 @@
         <Style Selector="^:error /template/ Button#PART_FlyoutButton">
             <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
         </Style>
-        
+
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type DatePickerPresenter}" TargetType="DatePickerPresenter">

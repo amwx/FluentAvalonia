@@ -39,7 +39,7 @@
                             <!-- if this border isn't here, dialog space displays outside of corner radius at top
                                  if we put ClipToBounds=True on BackgroundElement above, it clips the shadow -->
                             <Border ClipToBounds="True"
-									CornerRadius="{TemplateBinding CornerRadius}">
+                                    CornerRadius="{TemplateBinding CornerRadius}">
                                 <Grid Name="DialogSpace" ClipToBounds="True"
                                   RowDefinitions="*,Auto">
                                     <ScrollViewer Name="ContentScrollViewer"
@@ -343,5 +343,5 @@
             <Setter Property="Margin" Value="4 0 0 0" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>

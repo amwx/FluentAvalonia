@@ -61,7 +61,7 @@
         </Setter>
 
         <!-- Width & Height are forced here instead of MinWidth/MinHeight b/c bad things
-	         happen if Min[] is used and I'm done dealing with this -->
+             happen if Min[] is used and I'm done dealing with this -->
         <Style Selector="^:horizontal">
             <Setter Property="MinWidth" Value="200" />
             <Setter Property="Height" Value="{DynamicResource ProgressBarMinHeight}" />
@@ -177,10 +177,10 @@
             </Style>
 
             <!-- 
-	            HACK
-	            DO NOT REMOVE THIS CODE
-	            For some unexplainable reason, removing this code will break the indeterminate and every other RenderTransform animation.
-	        -->
+                HACK
+                DO NOT REMOVE THIS CODE
+                For some unexplainable reason, removing this code will break the indeterminate and every other RenderTransform animation.
+            -->
             <Style Selector="^ /template/ LayoutTransformControl#PART_LayoutTransformControl">
                 <Setter Property="LayoutTransform">
                     <Setter.Value>

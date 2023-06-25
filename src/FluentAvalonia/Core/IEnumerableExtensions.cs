@@ -77,7 +77,7 @@ public static class IEnumerableExtensions
     /// <summary>
     /// Checks of the IEnumerable contains the given item
     /// </summary>
-	public static bool Contains(this IEnumerable items, object item)
+    public static bool Contains(this IEnumerable items, object item)
     {
         if (items is IList list)
         {

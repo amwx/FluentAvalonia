@@ -13,8 +13,8 @@
         </Border>
     </Design.PreviewWith>
 
-   
-    <x:Double x:Key="ScrollBarThumbOffset">2</x:Double>    
+
+    <x:Double x:Key="ScrollBarThumbOffset">2</x:Double>
     <x:Double x:Key="ScrollBarSize">12</x:Double>
     <Thickness x:Key="ScrollBarMargin">1</Thickness>
     <x:Double x:Key="ScrollBarVerticalThumbMinHeight">30</x:Double>
@@ -51,7 +51,7 @@
         <x:String x:Key="ScrollBarColorChangeDuration">00:00:00.083</x:String>
         <x:String x:Key="ScrollBarContractDuration">00:00:00.167</x:String>
      -->
-    
+
     <ControlTheme x:Key="ScrollBarThumb" TargetType="Thumb">
         <Setter Property="Background" Value="{DynamicResource ScrollBarPanningThumbBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ScrollBarThumbBorderBrush}" />
@@ -138,7 +138,7 @@
         </Style>
         <Style Selector="^:disabled /template/ ui|FontIcon">
             <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForegroundDisabled}" />
-        </Style>      
+        </Style>
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type ScrollBar}" TargetType="ScrollBar">
@@ -349,5 +349,5 @@
         <Style Selector="^:disabled /template/ Grid#Root">
             <Setter Property="Opacity" Value="0.5" />
         </Style>
-    </ControlTheme>    
+    </ControlTheme>
 </ResourceDictionary>

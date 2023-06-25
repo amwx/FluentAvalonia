@@ -335,6 +335,6 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </ControlTheme>
-    
-    
+
+
 </ResourceDictionary>

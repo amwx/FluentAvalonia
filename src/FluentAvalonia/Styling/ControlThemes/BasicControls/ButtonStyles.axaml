@@ -45,7 +45,7 @@
                                       RecognizesAccessKey="True"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                </ui:FABorder>                
+                </ui:FABorder>
             </ControlTemplate>
         </Setter>
 
@@ -60,7 +60,7 @@
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />                
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
@@ -169,7 +169,7 @@
                 </Transitions>
             </Setter>
         </Style>
-        
+
         <Style Selector="^:pointerover /template/ ui|FABorder#Root">
             <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
         </Style>
@@ -183,7 +183,7 @@
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        
+
         <Style Selector="^:disabled /template/ ui|FABorder#Root">
             <Setter Property="Background" Value="{DynamicResource SubtleFillColorDisabledBrush}" />
         </Style>

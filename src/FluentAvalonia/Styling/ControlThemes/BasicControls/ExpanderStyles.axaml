@@ -63,7 +63,7 @@
                              HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                              Padding="{TemplateBinding Padding}"
                              BorderThickness="{TemplateBinding BorderThickness}"
-						     CornerRadius="{TemplateBinding CornerRadius}">
+                             CornerRadius="{TemplateBinding CornerRadius}">
 
                     <Grid ColumnDefinitions="*,Auto">
 
@@ -103,7 +103,7 @@
                 </ui:FABorder>
             </ControlTemplate>
         </Setter>
-        
+
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ ui|FABorder#Root">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderPointerOverBrush}" />
@@ -217,7 +217,7 @@
                     <Setter Property="Foreground" Value="{DynamicResource ExpanderDisabledForeground}" />
                     <Setter Property="RenderTransform" Value="rotate(180deg)" />
                 </Style>
-            </Style>  
+            </Style>
         </Style>
     </ControlTheme>
 
@@ -420,5 +420,5 @@
             <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>

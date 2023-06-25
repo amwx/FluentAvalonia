@@ -10,7 +10,7 @@
             </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
-    
+
     <ui:PathIconSource x:Key="RadioMenuFlyoutItemCheckedIcon" Data="M0,2a2,2 0 1,0 4,0a2,2 0 1,0 -4,0" />
 
     <!-- All resources are in BaseResources.axaml -->
@@ -24,24 +24,24 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <!--<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-		<Setter Property="VerticalContentAlignment" Value="Center" />-->
+        <Setter Property="VerticalContentAlignment" Value="Center" />-->
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="LayoutRoot"
-						Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="{TemplateBinding BorderThickness}"
-						Margin="{StaticResource MenuFlyoutItemMargin}"
-						CornerRadius="{TemplateBinding CornerRadius}">
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Margin="{StaticResource MenuFlyoutItemMargin}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <Grid ColumnDefinitions="Auto,*,Auto"
-						  Name="LayoutRootGrid"
+                          Name="LayoutRootGrid"
                           Margin="{DynamicResource MenuFlyoutItemThemePaddingNarrow}">
 
                         <!-- 
-						Offset by 6 on left to fix icon placement 
-						Also FluentIcons doesn't have a comparable icon to the WinUI one from Segoe MDL2 Assets
-						so we just use a path icon that draws a small circle and it basically looks the same
-						-->
+                        Offset by 6 on left to fix icon placement 
+                        Also FluentIcons doesn't have a comparable icon to the WinUI one from Segoe MDL2 Assets
+                        so we just use a path icon that draws a small circle and it basically looks the same
+                        -->
                         <ui:IconSourceElement IconSource="{StaticResource RadioMenuFlyoutItemCheckedIcon}"
                                               Margin="6 0 16 0"
                                               Name="CheckGlyph"
@@ -51,33 +51,33 @@
                                               Foreground="{DynamicResource MenuFlyoutSubItemChevron}" />
 
                         <Viewbox Name="IconRoot"
-								 Grid.Column="1"
-								 HorizontalAlignment="Left"
-								 VerticalAlignment="Center"
-								 Width="16" Height="16"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 Width="16" Height="16"
                                  IsVisible="False">
                             <ContentPresenter Name="IconContent"
-											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                              Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Viewbox>
                         <TextBlock Name="TextBlock"
-								   Grid.Column="1"
-								   Text="{TemplateBinding Text}"
-								   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
-								   VerticalAlignment="Center"
-								   HorizontalAlignment="Stretch" />
+                                   Grid.Column="1"
+                                   Text="{TemplateBinding Text}"
+                                   TextTrimming="{DynamicResource MenuFlyoutItemTextTrimming}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Stretch" />
 
                         <!-- 
-						TODO:
-						MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KeyboardAcceleratorTextMinWidth}"						
-						Also changed margin top from 4 to 0 b/c text wasn't aligned w/ main text
-						-->
+                        TODO:
+                        MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KeyboardAcceleratorTextMinWidth}"                        
+                        Also changed margin top from 4 to 0 b/c text wasn't aligned w/ main text
+                        -->
                         <TextBlock Name="KeyboardAcceleratorTextBlock"
                                    Grid.Column="2"
                                    Theme="{StaticResource CaptionTextBlockStyle}"
                                    Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                    Margin="24,0,0,0"
                                    HorizontalAlignment="Right"
-								   VerticalAlignment="Center"
+                                   VerticalAlignment="Center"
                                    IsVisible="False"
                                    Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                     </Grid>

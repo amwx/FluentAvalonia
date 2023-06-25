@@ -10,7 +10,7 @@
         <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridRowHeaderStyles.axaml" />
         <ResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridRowStyles.axaml" />
     </ResourceDictionary.MergedDictionaries>
-   
+
 
     <ControlTheme x:Key="{x:Type DataGrid}" TargetType="DataGrid">
         <Setter Property="RowBackground" Value="Transparent" />

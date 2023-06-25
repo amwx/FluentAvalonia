@@ -17,7 +17,7 @@
                 </Panel>
             </ControlTemplate>
         </Setter>
-        
+
         <Style Selector="^:horizontalcompact /template/ Rectangle#SeparatorLine">
             <Setter Property="Margin" Value="{DynamicResource NavigationViewCompactItemSeparatorMargin}" />
         </Style>
@@ -29,7 +29,7 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Fill" Value="{DynamicResource TopNavigationViewItemSeparatorForeground}" />
         </Style>
-        
+
     </ControlTheme>
-    
+
 </ResourceDictionary>

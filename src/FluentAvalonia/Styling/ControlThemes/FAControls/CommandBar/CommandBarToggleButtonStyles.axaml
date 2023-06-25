@@ -14,7 +14,7 @@
                     </ui:CommandBarOverflowPresenter>
 
                     <ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False"
-							   DefaultLabelPosition="Right">
+                               DefaultLabelPosition="Right">
                         <ui:CommandBar.PrimaryCommands>
                             <ui:CommandBarToggleButton Label="Test" IconSource="Save" IsCompact="False" />
                         </ui:CommandBar.PrimaryCommands>
@@ -47,16 +47,16 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Name="Root"
-					   Background="Transparent"
-					   MinWidth="{TemplateBinding MinWidth}"
-					   MaxWidth="{TemplateBinding MaxWidth}">
+                       Background="Transparent"
+                       MinWidth="{TemplateBinding MinWidth}"
+                       MaxWidth="{TemplateBinding MaxWidth}">
 
                     <Border Name="AppBarButtonInnerBorder"
-							Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="{TemplateBinding CornerRadius}"
-							TemplatedControl.IsTemplateFocusTarget="True"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            TemplatedControl.IsTemplateFocusTarget="True"
                             Margin="{DynamicResource AppBarButtonInnerBorderMargin}">
                         <Border.Transitions>
                             <Transitions>
@@ -66,12 +66,12 @@
                     </Border>
 
                     <Grid Name="ContentRoot"
-						  ColumnDefinitions="*,Auto"
-						  RowDefinitions="Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          RowDefinitions="Auto,Auto"
                           MinHeight="{DynamicResource AppBarThemeMinHeight}">
 
                         <ui:SymbolIcon Name="OverflowCheckGlyph"
-									   Symbol="Checkmark"
+                                       Symbol="Checkmark"
                                        Foreground="{DynamicResource AppBarToggleButtonCheckGlyphForeground}"
                                        FontSize="18"
                                        HorizontalAlignment="Left"
@@ -87,14 +87,14 @@
                                  Margin="{DynamicResource AppBarButtonContentViewboxCollapsedMargin}"
                                  HorizontalAlignment="Stretch">
                             <ContentPresenter Name="Content"
-											  Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
-											  Foreground="{TemplateBinding Foreground}" />
+                                              Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Foreground="{TemplateBinding Foreground}" />
                         </Viewbox>
 
                         <TextBlock Name="TextLabel"
-								   Foreground="{TemplateBinding Foreground}"
-								   FontFamily="{TemplateBinding FontFamily}"
-								   Text="{TemplateBinding Label}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   Text="{TemplateBinding Label}"
                                    Grid.Row="1"
                                    FontSize="12"
                                    TextAlignment="Center"
@@ -102,9 +102,9 @@
                                    Margin="{DynamicResource AppBarToggleButtonTextLabelMargin}"/>
 
                         <TextBlock Name="OverflowTextLabel"
-								   Text="{TemplateBinding Label}"
-								   Foreground="{TemplateBinding Foreground}"
-								   FontFamily="{TemplateBinding FontFamily}" 
+                                   Text="{TemplateBinding Label}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontFamily="{TemplateBinding FontFamily}" 
                                    FontSize="{DynamicResource ControlContentThemeFontSize}"
                                    TextAlignment="Left"
                                    TextTrimming="CharacterEllipsis"
@@ -116,11 +116,11 @@
                                    IsVisible="False" />
 
                         <TextBlock Name="KeyboardAcceleratorTextLabel"
-								   Grid.Column="1"
-								   Theme="{StaticResource CaptionTextBlockStyle}"
-								   Text="{TemplateBinding HotKey, Converter={StaticResource KeyGestureConverter}}"
-								   HorizontalAlignment="Right"
-								   VerticalAlignment="Center"
+                                   Grid.Column="1"
+                                   Theme="{StaticResource CaptionTextBlockStyle}"
+                                   Text="{TemplateBinding HotKey, Converter={StaticResource KeyGestureConverter}}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
                                    Margin="24 0 12 0"
                                    Foreground="{DynamicResource AppBarToggleButtonKeyboardAcceleratorTextForeground}"
                                    IsVisible="False"/>
@@ -297,7 +297,7 @@
                 <Setter Property="Margin" Value="{DynamicResource AppBarButtonInnerBorderOverflowMargin}" />
             </Style>
             <Style Selector="^ /template/ Viewbox#ContentViewbox,
-					         ^ /template/ TextBlock#TextLabel">
+                             ^ /template/ TextBlock#TextLabel">
                 <Setter Property="IsVisible" Value="False" />
             </Style>
             <Style Selector="^ /template/ TextBlock#OverflowTextLabel">
@@ -351,8 +351,7 @@
                     <Setter Property="Foreground" Value="{DynamicResource AppBarToggleButtonKeyboardAcceleratorTextForegroundPressed}" />
                 </Style>
             </Style>
-            
-            
+
             <Style Selector="^:checked">
                 <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
                     <Setter Property="Background" Value="Transparent" />
@@ -415,23 +414,22 @@
                     </Style>
                 </Style>
             </Style>
-            
-            
+
             <!-- Has Hotkey (KeyboardAccelerator) -->
             <Style Selector="^:overflow:hotkey /template/ TextBlock#KeyboardAcceleratorTextLabel">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
 
         </Style>
-        
+
 
         <!-- 
-	    Label position, driven by CommandBar (bottom is default)
-	    More tricky stuff, for compact mode, AppBarButton remains large (minheight = 64)
-	    And whatever black magic MS uses to make it all work allows everything to shrink
-	    Since we can't do that, we'll make these adjustments
-	    IsCompact only works if the label is on the bottom, however (as in WinUI)
-	    -->
+        Label position, driven by CommandBar (bottom is default)
+        More tricky stuff, for compact mode, AppBarButton remains large (minheight = 64)
+        And whatever black magic MS uses to make it all work allows everything to shrink
+        Since we can't do that, we'll make these adjustments
+        IsCompact only works if the label is on the bottom, however (as in WinUI)
+        -->
 
         <Style Selector="^:labelBottom">
             <Style Selector="^:compact">
@@ -487,7 +485,7 @@
             </Style>
         </Style>
 
-        
+
         <!-- Special states driven by CommandBarOverflowPresenter -->
 
         <Style Selector="^:toggle">
@@ -557,6 +555,6 @@
                 <Setter Property="IsVisible" Value="True" />
                 <Setter Property="Margin" Value="76 0 12 0" />
             </Style>
-        </Style>        
+        </Style>
     </ControlTheme>
 </ResourceDictionary>

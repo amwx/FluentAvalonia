@@ -176,7 +176,7 @@ public partial class NavigationViewItem
 
     internal NavigationViewItemPresenter NVIPresenter => _presenter;
 
-    private bool HasChildren =>       
+    private bool HasChildren =>
         (MenuItems != null && MenuItems.Count() > 0) ||
         (MenuItemsSource != null && _repeater != null &&
         _repeater.ItemsSourceView != null &&

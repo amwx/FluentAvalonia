@@ -352,11 +352,11 @@
         </Style>-->
         <Style Selector="^:disabled /template/ Ellipse#Background">
             <Setter Property="Fill" Value="{DynamicResource CalendarViewCalendarItemDisabledBackground}"/>
-        </Style>        
+        </Style>
     </ControlTheme>
 
 
-    <ControlTheme TargetType="CalendarItem" x:Key="{x:Type CalendarItem}" x:DataType="CalendarItem">        
+    <ControlTheme TargetType="CalendarItem" x:Key="{x:Type CalendarItem}" x:DataType="CalendarItem">
         <Setter Property="DayTitleTemplate">
             <Template>
                 <TextBlock Text="{Binding}"

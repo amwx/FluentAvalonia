@@ -381,6 +381,6 @@
             </Style>
 
             <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
-        </Style>        
+        </Style>
     </ControlTheme>
 </ResourceDictionary>

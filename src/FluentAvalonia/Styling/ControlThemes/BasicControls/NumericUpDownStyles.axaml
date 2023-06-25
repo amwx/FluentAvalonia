@@ -4,7 +4,7 @@
                     x:CompileBindings="True">
 
     <conv:NUDSpinLocationConverter x:Key="NUDSpinLocationConverter" />
-    
+
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel Spacing="20">

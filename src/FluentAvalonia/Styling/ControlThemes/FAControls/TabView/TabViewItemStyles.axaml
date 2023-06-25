@@ -290,8 +290,8 @@
         <Style Selector="^:icon /template/ Viewbox#IconBox">
             <Setter Property="IsVisible" Value="True" />
         </Style>
-        
-        
+
+
         <Style Selector="^:compact">
             <Style Selector="^ /template/ Viewbox#IconBox">
                 <Setter Property="Margin" Value="0" />
@@ -333,5 +333,5 @@
                 <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
             </Style>
         </Style>
-    </ControlTheme>    
+    </ControlTheme>
 </ResourceDictionary>

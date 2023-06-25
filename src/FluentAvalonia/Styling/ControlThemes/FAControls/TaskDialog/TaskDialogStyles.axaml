@@ -216,7 +216,7 @@
                 <Setter Property="Margin" Value="{DynamicResource TaskDialogHeaderPaddingNoIcon}" />
             </Style>
         </Style>
-        
+
         <Style Selector="^:subheader /template/ TextBlock#SubHeaderText">
             <Setter Property="IsVisible" Value="True" />
         </Style>
@@ -231,7 +231,7 @@
             </Style>
             <Style Selector="^ /template/ Panel#HeaderHost">
                 <Setter Property="IsVisible" Value="True" />
-            </Style>            
+            </Style>
         </Style>
 
         <Style Selector="^:footerAuto">
@@ -252,7 +252,7 @@
                 <Setter Property="IsVisible" Value="True" />
             </Style>
         </Style>
-        
+
         <Style Selector="^:progress /template/ ProgressBar#ProgressBar">
             <Setter Property="IsVisible" Value="True" />
         </Style>
@@ -274,8 +274,8 @@
         <Style Selector="^:iconForeground /template/ ui|IconSourceElement#IconElement">
             <Setter Property="Foreground" Value="{Binding $parent[ui:TaskDialog].IconForeground}" />
         </Style>
-        
-        
+
+
         <Style Selector="^:hosted">
             <Style Selector="^ /template/ Panel#LayoutRoot">
                 <Setter Property="Background" Value="{DynamicResource TaskDialogSmokeFill}" />
@@ -357,9 +357,9 @@
                     </Animation>
                 </Style.Animations>
             </Style>
-            
+
         </Style>
-        
+
     </ControlTheme>
-    
+
 </ResourceDictionary>

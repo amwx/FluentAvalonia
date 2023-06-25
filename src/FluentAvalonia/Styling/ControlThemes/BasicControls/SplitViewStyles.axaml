@@ -15,7 +15,7 @@
             </SplitView>
         </Border>
     </Design.PreviewWith>
-    
+
     <!-- Not used here (directly) since they're strings, but preserving for reference-->
         <sys:TimeSpan x:Key="SplitViewPaneAnimationOpenDuration">00:00:00.2</sys:TimeSpan>
         <sys:TimeSpan x:Key="SplitViewPaneAnimationOpenPreDuration">00:00:00.19999</sys:TimeSpan>
@@ -249,5 +249,5 @@
             <Setter Property="IsVisible" Value="True"/>
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>

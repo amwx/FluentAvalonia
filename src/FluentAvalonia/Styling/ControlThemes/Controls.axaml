@@ -138,10 +138,10 @@
     </Style>
 
     <!-- We'll also attach this here too, so that the labels are hidden when the CommandBar is closed,
-	 and shown when it's opened. Again, this is only for when labels are on the bottom.
-	 This will eliminate the need to iterate over the elements when opening/closing and adjusting on the
-	 ICommandBarElements themselves - we let the styling system do it for us
-	 -->
+     and shown when it's opened. Again, this is only for when labels are on the bottom.
+     This will eliminate the need to iterate over the elements when opening/closing and adjusting on the
+     ICommandBarElements themselves - we let the styling system do it for us
+     -->
     <Style Selector="ui|CommandBar:labelbottom:not(:open) ui|CommandBarButton:not(:overflow) /template/ TextBlock#TextLabel,
                      ui|CommandBar:labelbottom:not(:open) ui|CommandBarToggleButton:not(:overflow) /template/ TextBlock#TextLabel">
         <Setter Property="IsVisible" Value="False" />

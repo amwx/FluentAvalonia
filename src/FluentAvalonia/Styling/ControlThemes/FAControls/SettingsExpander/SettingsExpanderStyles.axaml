@@ -76,7 +76,7 @@
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
             </Style>
         </Style>
-        
+
         <Style Selector="^:disabled /template/ ui|FABorder#Root">
             <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
@@ -154,7 +154,7 @@
             <ControlTemplate>
                 <Expander Name="Expander"
                           Theme="{StaticResource SettingsExpanderExpanderStyle}"
-                          IsExpanded="{TemplateBinding IsExpanded, Mode=TwoWay}">                    
+                          IsExpanded="{TemplateBinding IsExpanded, Mode=TwoWay}">
                     <Expander.Header>
                         <ui:SettingsExpanderItem Content="{TemplateBinding Header}"
                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
@@ -170,7 +170,7 @@
                     </Expander.Header>
                     
                     <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />
-                </Expander>                
+                </Expander>
             </ControlTemplate>
         </Setter>
 

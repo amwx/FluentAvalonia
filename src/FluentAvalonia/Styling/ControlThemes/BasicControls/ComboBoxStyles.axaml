@@ -69,7 +69,7 @@
         <Setter Property="RadiusX" Value="{DynamicResource ComboBoxItemPillCornerRadius}" />
         <Setter Property="RadiusY" Value="{DynamicResource ComboBoxItemPillCornerRadius}" />
     </ControlTheme>
-    
+
     <ControlTheme TargetType="ComboBox" x:Key="{x:Type ComboBox}">
         <Setter Property="Padding" Value="{DynamicResource ComboBoxPadding}" />
         <Setter Property="MaxDropDownHeight" Value="504" />
@@ -220,7 +220,6 @@
             </Style>
         </Style>
 
-
         <Style Selector="^:disabled">
             <Style Selector="^ /template/ TextBlock#PlaceholderTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxHeaderForegroundDisabled}" />
@@ -236,7 +235,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundDisabled}" />
             </Style>
         </Style>
-        
+
         <Style Selector="^:focus-visible">
             <Style Selector="^ /template/ Border#Pill">
                 <Setter Property="Opacity" Value="1" />
@@ -254,7 +253,7 @@
 
         <Style Selector="^:error /template/ Border#Background">
             <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
-        </Style>        
+        </Style>
     </ControlTheme>
 
     <ControlTheme TargetType="ComboBoxItem" x:Key="{x:Type ComboBoxItem}">

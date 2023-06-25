@@ -12,7 +12,7 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-    
+
     <Thickness x:Key="CheckBoxBorderThickness">1</Thickness>
     <x:Double x:Key="CheckBoxSize">20</x:Double>
     <x:Double x:Key="CheckBoxGlyphSize">12</x:Double>
@@ -241,7 +241,7 @@
                 <Setter Property="Glyph" Value="{StaticResource CheckBoxIndeterminateGlyph}" />
             </Style>
 
-            
+
             <Style Selector="^:pressed /template/ ContentPresenter#ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminatePressed}" />
             </Style>
@@ -259,7 +259,7 @@
                 <Setter Property="Glyph" Value="{StaticResource CheckBoxIndeterminateGlyph}" />
             </Style>
 
-            
+
             <Style Selector="^:disabled /template/ ContentPresenter#ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource CheckBoxForegroundIndeterminateDisabled}" />
             </Style>

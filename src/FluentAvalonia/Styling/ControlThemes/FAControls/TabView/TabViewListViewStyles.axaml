@@ -14,7 +14,7 @@
             </uip:TabViewListView>
         </Border>
     </Design.PreviewWith>
-    
+
     <!-- Resources in TabViewStyles.axaml -->
     <conv:ScrollViewerVisibilityToBoolConverter x:Key="SVVTBC" />
 
@@ -175,5 +175,5 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-    </ControlTheme>    
+    </ControlTheme>
 </ResourceDictionary>

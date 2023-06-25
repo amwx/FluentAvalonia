@@ -36,7 +36,7 @@
             </Border>
         </Grid>
     </Design.PreviewWith>
-    
+
     <Thickness x:Key="ToolTipBorderPadding">9,6,9,8</Thickness>
     <x:Double x:Key="ToolTipMaxWidth">320</x:Double>
     <Thickness x:Key="ToolTipBorderThemeThickness">1</Thickness>
