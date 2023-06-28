@@ -147,7 +147,7 @@ public class NavigationFactory : INavigationPageFactory
             var pg = (ControlsPageBase)func();
             var dc = (FAControlsPageItem)pbvm;
             const string faPageGithub =
-               "https://github.com/amwx/FluentAvalonia/tree/master/samples/FAControlsGallery/Pages/FAControlPages";
+               "https://github.com/amwx/FluentAvalonia/tree/master/samples/FAControlsGallery/Pages/FAControlsPages";
 
             pg.GithubPrefixString = faPageGithub;
             pg.PreviewImage = Application.Current.FindResource(dc.IconResourceKey) as IconSource;
