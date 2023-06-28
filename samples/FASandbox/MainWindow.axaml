@@ -11,7 +11,4 @@
         x:Class="FASandbox.MainWindow"
         Title="FASandbox">
 
-   <ui:NavigationView PaneDisplayMode="LeftMinimal"
-                      IsBackButtonVisible="True"/>
-    
 </Window>

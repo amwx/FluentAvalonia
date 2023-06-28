@@ -1,10 +1,11 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace FASandbox;
 
-public class MainWindowViewModel
+public class MainWindowViewModel : INotifyPropertyChanged
 {
     public MainWindowViewModel()
     {
@@ -13,9 +14,24 @@ public class MainWindowViewModel
 
     public Command Commands { get; } = new Command();
 
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
     public void Test(object param)
     {
         Debug.WriteLine("FIRED");
+    }
+
+    private bool RaiseAndSetIfChanged<T>(ref T field, T value, [CallerMemberName]string propName = "")
+    {
+        if (!EqualityComparer<T>.Default.Equals(field, value))
+        {
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            return true;
+        }
+
+        return false;
     }
 }
 
