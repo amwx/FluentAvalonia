@@ -396,7 +396,10 @@ public partial class NumberBox : TemplatedControl
         finally
         {
             _textUpdating = false;
-            MoveCaretToTextEnd(); // Add this
+
+            // GH 389: only move caret if we're focused, otherwise it triggers a bring into view event
+            if (IsKeyboardFocusWithin)
+                MoveCaretToTextEnd(); // Add this
         }
     }
 

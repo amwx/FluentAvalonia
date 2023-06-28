@@ -69,41 +69,43 @@ public partial class BitmapIcon : FAIconElement
         var wid = (int)dst.Width;
         var hei = (int)dst.Height;
 
-        using (var bmp = new RenderTargetBitmap(new PixelSize(wid, hei)))
-        using (var ctx = bmp.CreateDrawingContext())
+        using (var bmp = new WriteableBitmap(new PixelSize(wid, hei), new Vector(96, 96),
+            PixelFormats.Bgra8888, AlphaFormat.Premul))
         {
-            //var feat = ctx.GetFeature<ISkiaSharpApiLeaseFeature>();
-            //if (feat == null)
-            //    throw new Exception("BitmapIcon requires SkiaSharp to be rendering backend");
-            //using var lease = feat.Lease();
-            //var skDC = lease.SkCanvas;
+            using var buffer = bmp.Lock();
 
-            //skDC.Clear(new SKColor(0, 0, 0, 0));
+            var skSfc = SKSurface.Create(new SKImageInfo(wid, hei), buffer.Address);
+            if (skSfc == null)
+                return;
 
-            //var finalBmp = _bitmap.Resize(new SKImageInfo(wid, hei), SKFilterQuality.High);
+            var skDC = skSfc.Canvas;
 
-            //if (ShowAsMonochrome)
-            //{
-            //    var avColor = Foreground is ISolidColorBrush sc ? sc.Color : Colors.White;
+            skDC.Clear(new SKColor(0, 0, 0, 0));
 
-            //    var color = new SKColor(avColor.R, avColor.G, avColor.B, avColor.A);
-            //    SKPaint paint = new SKPaint();
-            //    paint.ColorFilter = SKColorFilter.CreateBlendMode(color, SKBlendMode.SrcATop);
+            var finalBmp = _bitmap.Resize(new SKImageInfo(wid, hei), SKFilterQuality.High);
 
-            //    skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei), paint);
-            //    paint.Dispose();
-            //}
-            //else
-            //{
-            //    skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei));
-            //}
+            if (ShowAsMonochrome)
+            {
+                var avColor = Foreground is ISolidColorBrush sc ? sc.Color : Colors.White;
 
-            //finalBmp.Dispose();
+                var color = new SKColor(avColor.R, avColor.G, avColor.B, avColor.A);
+                SKPaint paint = new SKPaint();
+                paint.ColorFilter = SKColorFilter.CreateBlendMode(color, SKBlendMode.SrcATop);
 
-            //using (context.PushClip(dst))
-            //{
-            //    context.DrawImage(bmp, new Rect(bmp.Size), dst);
-            //}
+                skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei), paint);
+                paint.Dispose();
+            }
+            else
+            {
+                skDC.DrawBitmap(finalBmp, new SKRect(0, 0, (float)wid, (float)hei));
+            }
+
+            finalBmp.Dispose();
+
+            using (context.PushClip(dst))
+            {
+                context.DrawImage(bmp, new Rect(bmp.Size), dst);
+            }
         }
     }
 

@@ -14,7 +14,6 @@ public partial class MainWindow : Window
         this.AttachDevTools();
 #endif
         DataContext = new MainWindowViewModel();
-        var b = new Button();
     }
 
     private void InitializeComponent()

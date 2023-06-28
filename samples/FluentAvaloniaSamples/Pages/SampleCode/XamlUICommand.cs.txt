@@ -1,4 +1,0 @@
-﻿public void CustomXamlUICommand_ExecuteRequested(XamlUICommand command, ExecuteRequestedEventArgs args)
-{
-    // handle event
-}
