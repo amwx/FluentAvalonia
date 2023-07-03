@@ -18,9 +18,9 @@ public partial class SettingsPage : UserControl
         LaunchRepoLinkItem.Click += LaunchRepoLinkItemClick;
     }
 
-    protected override void OnLoaded()
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        base.OnLoaded();
+        base.OnLoaded(e);
 
         var dc = DataContext as SettingsPageViewModel;
         dc.CurrentAppTheme = Application.Current.ActualThemeVariant;

@@ -1,6 +1,7 @@
 using System.Numerics;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Rendering.Composition;
 using Avalonia.Rendering.Composition.Animations;
 using Avalonia.Threading;
@@ -13,9 +14,9 @@ public partial class MainAppSplashContent : UserControl
         InitializeComponent();
     }
 
-    protected override void OnLoaded()
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        base.OnLoaded();
+        base.OnLoaded(e);
 
         if (!Design.IsDesignMode)
         {
@@ -39,16 +40,16 @@ public partial class MainAppSplashContent : UserControl
         grad4.Opacity = 0;
 
         // GRADIENT BAR ANIMATION
-        grad1.CenterPoint = new Vector3(grad1.Size.X / 2f, grad1.Size.Y / 2f, grad1.CenterPoint.Z);
+        grad1.CenterPoint = new Vector3((float) (grad1.Size.X / 2f), (float) (grad1.Size.Y / 2f), (float) grad1.CenterPoint.Z);
         grad1.StartAnimationGroup(GetGradientBarAnimation(comp, 1));
 
-        grad2.CenterPoint = new Vector3(grad2.Size.X / 2f, grad2.Size.Y / 2f, grad2.CenterPoint.Z);
+        grad2.CenterPoint = new Vector3((float) grad2.Size.X / 2f, (float) grad2.Size.Y / 2f, (float) grad2.CenterPoint.Z);
         grad2.StartAnimationGroup(GetGradientBarAnimation(comp, 2));
 
-        grad3.CenterPoint = new Vector3(grad3.Size.X / 2f, grad3.Size.Y / 2f, grad3.CenterPoint.Z);
+        grad3.CenterPoint = new Vector3((float) grad3.Size.X / 2f, (float) grad3.Size.Y / 2f, (float) grad3.CenterPoint.Z);
         grad3.StartAnimationGroup(GetGradientBarAnimation(comp, 3));
 
-        grad4.CenterPoint = new Vector3(grad4.Size.X / 2f, grad4.Size.Y / 2f, grad4.CenterPoint.Z);
+        grad4.CenterPoint = new Vector3((float) grad4.Size.X / 2f, (float) grad4.Size.Y / 2f, (float) grad4.CenterPoint.Z);
         grad4.StartAnimationGroup(GetGradientBarAnimation(comp, 4));
 
         // BLOCKS
@@ -70,7 +71,7 @@ public partial class MainAppSplashContent : UserControl
         // FA
         var fa = ElementComposition.GetElementVisual(FA);
         fa.Opacity = 0;
-        fa.CenterPoint = new Vector3(fa.Size.X / 2f, fa.Size.Y / 2f - (fa.Size.Y * 0.1f), fa.CenterPoint.Z);
+        fa.CenterPoint = new Vector3((float) fa.Size.X / 2f,(float)  (fa.Size.Y / 2f - (fa.Size.Y * 0.1f)), (float) fa.CenterPoint.Z);
         fa.StartAnimationGroup(GetFAAnimation(comp));
     }
 

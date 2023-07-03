@@ -224,16 +224,16 @@ public class ControlsPageBase : UserControl
         }
     }
 
-    protected override void OnLoaded()
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        base.OnLoaded();
+        base.OnLoaded(e);
         _hasLoaded = true;
         SetDetailsAnimation();
     }
 
-    protected override void OnUnloaded()
+    protected override void OnUnloaded(RoutedEventArgs e)
     {
-        base.OnUnloaded();
+        base.OnUnloaded(e);
         _hasLoaded = false;
     }
 

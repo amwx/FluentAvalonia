@@ -131,7 +131,7 @@ public partial class TabView : TemplatedControl
 
         UpdateListViewItemContainerTransitions();
 
-        OnLoaded();
+        OnLoaded(e);
     }
 
     protected override Size MeasureOverride(Size availableSize)

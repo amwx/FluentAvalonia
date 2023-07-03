@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using FAControlsGallery.Pages.DesignPages;
 using FAControlsGallery.ViewModels.DesignPages;
 using FluentAvalonia.UI.Media.Animation;
@@ -14,9 +15,9 @@ public partial class DesignPage : UserControl
         TabStrip1.SelectionChanged += TabStrip1SelectionChanged;
     }
 
-    protected override void OnLoaded()
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        base.OnLoaded();
+        base.OnLoaded(e);
 
         TabStrip1SelectionChanged(null, null);
     }
