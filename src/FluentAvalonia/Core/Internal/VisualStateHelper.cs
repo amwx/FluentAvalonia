@@ -1,10 +1,12 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Utilities;
 
 namespace FluentAvalonia.Core;
 
+/// <summary>
+/// Visual State Helper
+/// </summary>
 public class VisualStateHelper
 {
     static VisualStateHelper()
@@ -12,12 +14,25 @@ public class VisualStateHelper
         ForcedClassesProperty.Changed.Subscribe(OnForcedClassesPropertyChanged);
     }
 
+    /// <summary>
+    /// Forced Classes 
+    /// </summary>
     public static readonly AttachedProperty<string> ForcedClassesProperty =
         AvaloniaProperty.RegisterAttached<VisualStateHelper, StyledElement, string>("ForcedClasses");
 
+    /// <summary>
+    /// Get value of <see cref="ForcedClassesProperty"/> property.
+    /// </summary>
+    /// <param name="element"></param>
+    /// <returns></returns>
     public static string GetForcedClassesProperty(StyledElement element) =>
         element.GetValue(ForcedClassesProperty);
 
+    /// <summary>
+    /// Set value of <see cref="ForcedClassesProperty"/> property.
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="classes"></param>
     public static void SetForcedClassesProperty(StyledElement element, string classes) =>
         element.SetValue(ForcedClassesProperty, classes);
 
@@ -50,8 +65,6 @@ public class VisualStateHelper
             {
                 ((IPseudoClasses)element.Classes).Set(@class.ToString(), set);
             }
-
-
 
             if (!cr.End)
                 cr.Skip(1);

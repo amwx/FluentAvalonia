@@ -18,22 +18,28 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class NavigationViewItem : NavigationViewItemBase
 {
+    /// <summary>
+    /// Create instance of <see cref="NavigationViewItem"/>.
+    /// </summary>
     public NavigationViewItem()
     {
         MenuItems = new AvaloniaList<object>();
     }
 
+    /// <inheritdoc />
     protected override void OnNavigationViewItemBaseDepthChanged()
     {
         UpdateItemIndentation();
         PropagateDepthToChildren(Depth + 1);
     }
 
+    /// <inheritdoc />
     protected override void OnNavigationViewItemBaseIsSelectedChanged()
     {
         UpdateVisualState();
     }
 
+    /// <inheritdoc />
     protected override void OnNavigationViewItemBasePositionChanged()
     {
         UpdateVisualState();
@@ -54,6 +60,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
         }
     }
 
+    /// <inheritdoc />
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _appliedTemplate = false;
@@ -130,6 +137,7 @@ public partial class NavigationViewItem : NavigationViewItemBase
         }
     }
 
+    /// <inheritdoc />
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);

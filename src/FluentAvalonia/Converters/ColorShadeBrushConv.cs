@@ -12,6 +12,8 @@ namespace FluentAvalonia.Converters;
 /// </summary>
 public class ColorShadeBrushConv : IValueConverter
 {
+
+    /// <inheritdoc />
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         var color = (Color2)value;
@@ -24,6 +26,7 @@ public class ColorShadeBrushConv : IValueConverter
         return new SolidColorBrush(color.LightenPercent(amount));
     }
 
+    /// <inheritdoc />
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         return BindingOperations.DoNothing;

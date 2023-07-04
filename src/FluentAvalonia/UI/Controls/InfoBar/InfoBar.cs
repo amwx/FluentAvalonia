@@ -10,6 +10,7 @@ namespace FluentAvalonia.UI.Controls;
 
 public partial class InfoBar : ContentControl
 {    
+    /// <inheritdoc />
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _appliedTemplate = false;

@@ -13,6 +13,9 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class CommandBar : ContentControl
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandBar"/> class.
+    /// </summary>
     public CommandBar()
     {
         PrimaryCommands = new AvaloniaList<ICommandBarElement>();
@@ -28,6 +31,7 @@ public partial class CommandBar : ContentControl
         PseudoClasses.Add(s_pcLabelBottom);
     }
 
+    /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _appliedTemplate = false;
@@ -55,6 +59,7 @@ public partial class CommandBar : ContentControl
         AttachItems();
     }
 
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -84,6 +89,7 @@ public partial class CommandBar : ContentControl
         }
     }
 
+    /// <inheritdoc/>
     protected override Size MeasureOverride(Size availableSize)
     {
         bool isDynamic = IsDynamicOverflowEnabled;
@@ -189,16 +195,25 @@ public partial class CommandBar : ContentControl
         return base.MeasureOverride(availableSize);
     }
 
+    /// <summary>
+    /// Invoked when the <see cref="CommandBar"/> starts to change from hidden to visible, or starts to be first displayed.
+    /// </summary>
     protected virtual void OnOpening()
     {
         Opening?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Invoked when the <see cref="CommandBar"/> starts to change from visible to hidden.
+    /// </summary>
     protected virtual void OnClosing()
     {
         Closing?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Invoked when the <see cref="CommandBar"/> changes from hidden to visible, or is first displayed.
+    /// </summary>
     protected virtual void OnOpened()
     {
         if (_overflowItems != null)
@@ -213,6 +228,9 @@ public partial class CommandBar : ContentControl
         Opened?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Invoked when the <see cref="CommandBar"/> changes from visible to hidden.
+    /// </summary>
     protected virtual void OnClosed()
     {
         Closed?.Invoke(this, EventArgs.Empty);

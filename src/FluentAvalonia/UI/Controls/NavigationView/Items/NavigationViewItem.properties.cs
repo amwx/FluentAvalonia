@@ -33,7 +33,7 @@ public partial class NavigationViewItem
             x => x.HasUnrealizedChildren, (x, v) => x.HasUnrealizedChildren = v);
 
     /// <summary>
-    /// Defines the <see cref="Icon"/> property
+    /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
         SettingsExpander.IconSourceProperty.AddOwner<NavigationViewItem>();

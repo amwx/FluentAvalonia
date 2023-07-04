@@ -567,7 +567,7 @@ public struct Color2 : IEquatable<Color2>
     /// </summary>
     /// <param name="h">Hue, [0,360)</param>
     /// <param name="s">Saturation, [0,100]</param>
-    /// <param name="v">Lightness, [0,100]</param>
+    /// <param name="l">Lightness, [0,100]</param>
     /// <param name="a">Alpha, [0,255]</param>
     public void GetHSL(out int h, out int s, out int l, out int a)
     {
@@ -900,7 +900,7 @@ public struct Color2 : IEquatable<Color2>
     }
 
     /// <summary>
-    /// Attempts to parse a string as a ReadOnlySpan<char> into a color
+    /// Attempts to parse a string as a <see cref="ReadOnlySpan{T}"/> of <see cref="char"/>  into a color
     /// </summary>
     /// <param name="value">Value to parse</param>
     /// <param name="ec">The color, if successful</param>

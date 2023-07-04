@@ -14,11 +14,15 @@ namespace FluentAvalonia.UI.Controls;
 /// </summary>
 public partial class MenuFlyoutItem : MenuFlyoutItemBase, ICommandSource
 {
+    /// <summary>
+    /// Create instance of <see cref="MenuFlyoutItem"/>.
+    /// </summary>
     public MenuFlyoutItem()
     {
         TemplateSettings = new MenuFlyoutItemTemplateSettings();
     }
 
+    /// <inheritdoc />
     protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
     {
         if (_hotkey != null)
@@ -35,6 +39,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, ICommandSource
         }
     }
 
+    /// <inheritdoc />
     protected override void OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs e)
     {
         if (HotKey != null)
@@ -51,6 +56,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, ICommandSource
         }
     }
 
+    /// <inheritdoc />
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -129,6 +135,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, ICommandSource
         }
     }
 
+    /// <inheritdoc />
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         base.OnPointerPressed(e);
@@ -138,6 +145,7 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, ICommandSource
         }
     }
 
+    /// <inheritdoc />
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         base.OnPointerReleased(e);
@@ -147,6 +155,9 @@ public partial class MenuFlyoutItem : MenuFlyoutItemBase, ICommandSource
         }
     }
 
+    /// <summary>
+    /// Raise <see cref="MenuItem.ClickEvent"/> and invke <see cref="Command"/> if ti is set.
+    /// </summary>
     protected virtual void OnClick()
     {
         RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent, this));

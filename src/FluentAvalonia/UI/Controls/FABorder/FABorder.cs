@@ -47,7 +47,7 @@ public class FABorder : Decorator
 
 
     /// <summary>
-    /// Defines the <see cref="BackgroundSizing" property
+    /// Defines the <see cref="BackgroundSizing"/> property
     /// </summary>
     public static readonly StyledProperty<BackgroundSizing> BackgroundSizingProperty =
         AvaloniaProperty.Register<FABorder, BackgroundSizing>(nameof(BackgroundSizing));

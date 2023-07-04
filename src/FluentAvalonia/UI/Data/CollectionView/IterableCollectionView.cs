@@ -268,6 +268,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
         ((IList)_source).RemoveAt(index);
     }
 
+    /// <inheritdoc/>
     public void Refresh()
     {
         HandleSourceChanged();
