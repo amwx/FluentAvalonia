@@ -10,13 +10,16 @@ namespace FAControlsGallery.ViewModels;
 
 public class SettingsPageViewModel : MainPageViewModelBase
 {
+    readonly FluentAvaloniaTheme faTheme;
+
     public SettingsPageViewModel()
     {
         GetPredefColors();
+        faTheme = App.Current.Styles[0] as FluentAvaloniaTheme;
     }
 
     public ThemeVariant[] AppThemes { get; } =
-        new[] { ThemeVariant.Light, ThemeVariant.Dark/*, FluentAvaloniaTheme.HighContrastTheme*/ };
+        new[] { ThemeVariant.Default, ThemeVariant.Light, ThemeVariant.Dark/*, FluentAvaloniaTheme.HighContrastTheme*/ };
 
     public FlowDirection[] AppFlowDirections { get; } =
         new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft };
@@ -26,10 +29,17 @@ public class SettingsPageViewModel : MainPageViewModelBase
         get => _currentAppTheme;
         set
         {
-            if (RaiseAndSetIfChanged(ref _currentAppTheme, value) &&
-                Application.Current.ActualThemeVariant != value)
+            if (RaiseAndSetIfChanged(ref _currentAppTheme, value))
             {
-                Application.Current.RequestedThemeVariant = value;
+                Application.Current.RequestedThemeVariant = value;                
+                if (value != ThemeVariant.Default)
+                {                    
+                    faTheme.PreferSystemTheme = false;
+                }
+                else
+                {
+                    faTheme.PreferSystemTheme = true;
+                }
             }
         }
     }
@@ -66,7 +76,6 @@ public class SettingsPageViewModel : MainPageViewModelBase
         {
             if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
             {
-                var faTheme = App.Current.Styles[0] as FluentAvaloniaTheme;
                 if (value)
                 {                    
                     if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
@@ -196,12 +205,12 @@ public class SettingsPageViewModel : MainPageViewModelBase
 
     private void UpdateAppAccentColor(Color? color)
     {
-        (App.Current.Styles[0] as FluentAvaloniaTheme).CustomAccentColor = color;
+        faTheme.CustomAccentColor = color;
     }
 
     private bool _useCustomAccentColor;
     private Color _customAccentColor = Colors.SlateBlue;
-    private ThemeVariant _currentAppTheme;
+    private ThemeVariant _currentAppTheme = ThemeVariant.Default;
     private FlowDirection _currentFlowDirection;
     private Color? _listBoxColor;
     private bool _ignoreSetListBoxColor = false;
