@@ -117,9 +117,9 @@ public class ControlExample : HeaderedContentControl
         PseudoClasses.Set(":usagenotes", hasNotes);
     }
 
-    protected override void OnLoaded()
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        base.OnLoaded();
+        base.OnLoaded(e);
 
         // Do this here rather than OnApplyTemplate, otherwise this will animate
         // on load and that isn't desired
