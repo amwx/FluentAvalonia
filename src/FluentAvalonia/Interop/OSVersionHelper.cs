@@ -1,11 +1,17 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace FluentAvalonia.Interop;
 
+/// <summary>
+/// Helper alowed to detect OS
+/// </summary>
 public static class OSVersionHelper
 {
+    /// <summary>
+    /// Return if current OS is Windows
+    /// </summary>
+    /// <returns><see cref="bool"/></returns>
     public static bool IsWindows()
     {
 #if NET5_0_OR_GREATER
@@ -15,6 +21,10 @@ public static class OSVersionHelper
 #endif
     }
 
+    /// <summary>
+    /// Return if current OS is MacOS
+    /// </summary>
+    /// <returns><see cref="bool"/></returns>
     public static bool IsMacOS()
     {
 #if NET5_0_OR_GREATER
@@ -24,6 +34,10 @@ public static class OSVersionHelper
 #endif
     }
 
+    /// <summary>
+    /// Return if current OS is Linux
+    /// </summary>
+    /// <returns><see cref="bool"/></returns>
     public static bool IsLinux()
     {
 #if NET5_0_OR_GREATER
@@ -33,6 +47,10 @@ public static class OSVersionHelper
 #endif
     }
 
+    /// <summary>
+    /// Return if current OS is Windows 11
+    /// </summary>
+    /// <returns><see cref="bool"/></returns>
     public static bool IsWindows11()
     {
 #if NET5_0_OR_GREATER
@@ -47,6 +65,14 @@ public static class OSVersionHelper
 #endif
     }
 
+
+    /// <summary>
+    /// Return if current OS is specified Windows Version
+    /// </summary>
+    /// <param name="major">major Window Version</param>
+    /// <param name="minor">minor Window Version</param>
+    /// <param name="build">build Window</param>
+    /// <returns></returns>
     public static bool IsWindowsAtLeast(int major, int minor, int build)
     {
 #if NET5_0_OR_GREATER

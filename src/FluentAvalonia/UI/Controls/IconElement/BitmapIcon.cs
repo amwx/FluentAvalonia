@@ -23,6 +23,7 @@ public partial class BitmapIcon : FAIconElement
         UnlinkFromBitmapIconSource();
     }
 
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -43,6 +44,7 @@ public partial class BitmapIcon : FAIconElement
         }
     }
 
+    /// <inheritdoc/>
     protected override Size MeasureOverride(Size availableSize)
     {
         if (_bis != null)
@@ -54,6 +56,7 @@ public partial class BitmapIcon : FAIconElement
         return _originalSize;
     }
 
+    /// <inheritdoc/>
     public override void Render(DrawingContext context)
     {
         if (_bitmap == null && _bis == null)
@@ -130,6 +133,7 @@ public partial class BitmapIcon : FAIconElement
         _originalSize = new Size(_bitmap.Width, _bitmap.Height);
     }
 
+    /// <inheritdoc/>
     protected void Dispose()
     {
         _bitmap?.Dispose();

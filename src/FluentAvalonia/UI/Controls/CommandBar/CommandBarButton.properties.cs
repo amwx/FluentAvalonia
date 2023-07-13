@@ -6,6 +6,9 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Represents a templated button control to be displayed in an <see cref="CommandBar"/>
+/// </summary>
 [PseudoClasses(SharedPseudoclasses.s_pcIcon, SharedPseudoclasses.s_pcLabel, SharedPseudoclasses.s_pcCompact)]
 [PseudoClasses(SharedPseudoclasses.s_pcFlyout, s_pcSubmenuOpen, SharedPseudoclasses.s_pcOverflow)]
 [PseudoClasses(SharedPseudoclasses.s_pcHotkey)]
@@ -19,7 +22,7 @@ public partial class CommandBarButton : Button, ICommandBarElement
             x => x.IsInOverflow);
 
     /// <summary>
-    /// Defines the <see cref="Icon"/> property
+    /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
         SettingsExpander.IconSourceProperty.AddOwner<CommandBarButton>();
@@ -49,12 +52,18 @@ public partial class CommandBarButton : Button, ICommandBarElement
     public static readonly StyledProperty<CommandBarButtonTemplateSettings> TemplateSettingsProperty =
         AvaloniaProperty.Register<CommandBarButton, CommandBarButtonTemplateSettings>(nameof(TemplateSettings));
 
+    /// <summary>
+    /// Gets or sets a value that indicates whether the button is shown with no label and reduced padding.
+    /// </summary>
     public bool IsCompact
     {
         get => GetValue(IsCompactProperty);
         set => SetValue(IsCompactProperty, value);
     }
 
+    /// <summary>
+    /// Gets a value that indicates whether this item is in the overflow menu.
+    /// </summary>
     public bool IsInOverflow
     {
         get => _isInOverflow;
@@ -85,6 +94,7 @@ public partial class CommandBarButton : Button, ICommandBarElement
         set => SetValue(LabelProperty, value);
     }
 
+    /// <inheritdoc/>
     public int DynamicOverflowOrder
     {
         get => _dynamicOverflowOrder;

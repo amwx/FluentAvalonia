@@ -48,6 +48,7 @@ public class AppSplashScreen : TemplatedControl
 {
     public IApplicationSplashScreen SplashScreen { get; set; }
 
+    /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);

@@ -11,6 +11,7 @@ namespace FluentAvalonia.Converters;
 /// </summary>
 public class ColorToBrushConv : IValueConverter
 {
+    /// <inheritdoc />
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is Color c)
@@ -22,6 +23,7 @@ public class ColorToBrushConv : IValueConverter
         return BindingOperations.DoNothing;
     }
 
+    /// <inheritdoc />
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is ISolidColorBrush sc)

@@ -18,7 +18,7 @@ public partial class MenuFlyoutSubItem : MenuFlyoutItemBase
         MenuFlyoutItem.TextProperty.AddOwner<MenuFlyoutSubItem>();
 
     /// <summary>
-    /// Defines the <see cref="Icon"/> property
+    /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
         SettingsExpander.IconSourceProperty.AddOwner<MenuFlyoutSubItem>();

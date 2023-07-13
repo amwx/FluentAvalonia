@@ -9,7 +9,7 @@ namespace FluentAvalonia.UI.Controls;
 public interface INavigationPageFactory
 {
     /// <summary>
-    /// Returns a user specified page based on the given type passed to <see cref="Frame.Navigate"/>
+    /// Returns a user specified page based on the given type passed to <see cref="Frame.Navigate(Type)"/>
     /// </summary>
     /// <param name="srcType">The type of object used for creating the page</param>
     /// <returns>An IControl for the new page or <c>null</c> to use the default behavior</returns>

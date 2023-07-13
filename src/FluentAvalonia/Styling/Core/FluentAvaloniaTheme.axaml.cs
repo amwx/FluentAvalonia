@@ -18,11 +18,17 @@ namespace FluentAvalonia.Styling;
 /// </summary>
 public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 {
+    /// <summary>
+    /// Create new instance of <see cref="FluentAvaloniaTheme"/>.
+    /// </summary>
     public FluentAvaloniaTheme()
     {
         Init();
     }
 
+    /// <summary>
+    /// High Contrast Theme
+    /// </summary>
     public static readonly ThemeVariant HighContrastTheme = new ThemeVariant(HighContrastModeString,
         ThemeVariant.Light);
 
@@ -75,7 +81,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
 
     /// <summary>
     /// Gets or sets a <see cref="Color"/> to use as the SystemAccentColor for the app. Note this takes precedence over the
-    /// <see cref="UseUserAccentColorOnWindows"/> property and must be set to null to restore the system color, if desired
+    /// <see cref="PreferUserAccentColor"/> property and must be set to null to restore the system color, if desired
     /// </summary>
     /// <remarks>
     /// The 6 variants (3 light/3 dark) are pregenerated from the given color. FluentAvalonia makes no checks to ensure the legibility and
@@ -114,6 +120,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
       
     bool IResourceNode.HasResources => true;
 
+    /// <inheritdoc />
     public new bool TryGetResource(object key, ThemeVariant theme, out object value)
     {
         // Github build failing with this not being set, even tho it passes locally

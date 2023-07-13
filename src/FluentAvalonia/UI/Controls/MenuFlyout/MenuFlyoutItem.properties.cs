@@ -19,7 +19,7 @@ public partial class MenuFlyoutItem
         AvaloniaProperty.Register<MenuFlyoutItem, string>(nameof(Text));
 
     /// <summary>
-    /// Defines the <see cref="Icon"/> property
+    /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<IconSource> IconSourceProperty =
         SettingsExpander.IconSourceProperty.AddOwner<MenuFlyoutItem>();

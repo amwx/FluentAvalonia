@@ -1,8 +1,10 @@
 ﻿using System.Collections;
-using System.Linq;
 
 namespace FluentAvalonia.Core;
 
+/// <summary>
+/// <see cref="IEnumerable"/> extensions methods
+/// </summary>
 public static class IEnumerableExtensions
 {
     /// <summary>
