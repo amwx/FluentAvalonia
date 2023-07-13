@@ -227,7 +227,7 @@
                                         <!--x:Name="PaneContentGridToggleButtonRow"
                                              Removed & set only in TogglePaneButtonVisible VisualState...TODO
                                              MinHeight="{StaticResource NavigationViewPaneHeaderRowMinHeight}"-->
-                                        <RowDefinition Height="Auto"  />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="0" />
@@ -281,6 +281,12 @@
                                                     VerticalContentAlignment="Stretch"
                                                     HorizontalContentAlignment="Stretch"
                                                     Grid.Row="4" />
+                                    
+                                    <Rectangle IsHitTestVisible="False"
+                                               Height="{DynamicResource NavigationViewPaneHeaderRowMinHeight}"
+                                               Grid.Row="2"
+                                               Name="PaneContentGridToggleButtonRowHack"
+                                               IsVisible="{Binding #TogglePaneButton.IsVisible}"/>
 
                                     <!--"Non header" content-->
                                     <Grid Name="ItemsContainerGrid" Grid.Row="6"
