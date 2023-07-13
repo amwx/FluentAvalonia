@@ -101,7 +101,7 @@
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         </Style>
 
-        <Style Selector="^ /template/ Border#PART_LayoutRoot">
+        <Style Selector="^:disabled /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
         </Style>
