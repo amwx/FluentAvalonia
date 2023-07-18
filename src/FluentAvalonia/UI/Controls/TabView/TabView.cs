@@ -9,6 +9,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Logging;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
@@ -588,8 +589,16 @@ public partial class TabView : TemplatedControl
             }
             else
             {
-                UpdateTabWidths();
-                SetTabSeparatorOpacity(numItems - 1);
+                // GH#424, Adding a tab item wouldn't set the size correctly until pointer exit,
+                // as when this is called following a collection change, the items haven't been
+                // materialized yet in the panel so UpdateTabWidths using the old previous item
+                // Posting to Dispatcher so delay calling this until after next layout pass
+                // when items are all realized and ContainerFromIndex works
+                Dispatcher.UIThread.Post(() =>
+                {
+                    UpdateTabWidths();
+                    SetTabSeparatorOpacity(numItems - 1);
+                }, DispatcherPriority.Render);                
             }
         }
         else
