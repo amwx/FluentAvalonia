@@ -8,6 +8,7 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,15 @@
     </AndroidResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <AndroidEnvironment Condition="'$(IsEmulator)'=='True'" Include="environment.emulator.txt" />
+    <AndroidEnvironment Condition="'$(IsEmulator)'!='True'" Include="environment.device.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" />
     <ProjectReference Include="..\FAControlsGallery\FAControlsGallery.csproj" />
