@@ -1,4 +1,4 @@
-﻿#nullable enable
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
@@ -9,8 +9,6 @@ using Avalonia.Logging;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using Avalonia;
-using HarfBuzzSharp;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -124,7 +122,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     /// <remarks>
     /// Note that the placement parameter is not implemented and only accepts <see cref="ContentDialogPlacement.Popup"/>
     /// </remarks>
-    private async Task<ContentDialogResult> ShowAsyncCore(Window? window, ContentDialogPlacement placement = ContentDialogPlacement.Popup)
+    private async Task<ContentDialogResult> ShowAsyncCore(Window window, ContentDialogPlacement placement = ContentDialogPlacement.Popup)
     {
         if (placement == ContentDialogPlacement.InPlace)
             throw new NotImplementedException("InPlace not implemented yet");
@@ -157,7 +155,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         _host.Content = this;
 
-        OverlayLayer? ol = null;
+        OverlayLayer ol = null;
         var topLevel = GetTopLevel(window);
 
         ol = OverlayLayer.GetOverlayLayer(topLevel!);
@@ -342,7 +340,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             // since this is called after
             setFocus = true;
         }
-        IInputElement? inputElement = null;
+        IInputElement inputElement = null;
         var p = Presenter;
         switch (DefaultButton)
         {
@@ -447,7 +445,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         // to make sure we don't error out
         IsHitTestVisible = false;
         _keyEventFilter?.Dispose();
-
+        _keyEventFilter = null;
         // For a better experience when animating closed, we need to make sure the
         // focus adorner is not showing (if using keyboard) otherwise that will hang
         // around and not fade out and it just looks weird. So focus this to force the
@@ -469,15 +467,15 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             _lastFocus = null;
         }
 
-        var ol = OverlayLayer.GetOverlayLayer(_host!);
+        var ol = OverlayLayer.GetOverlayLayer(_host);
         // If OverlayLayer isn't found here, this may be a reentrant call (hit ESC multiple times quickly, etc)
         // Don't fail, and return. If this isn't reentrant, there's bigger issues...
         if (ol == null)
             return;
 
-        ol.Children.Remove(_host!);
+        ol.Children.Remove(_host);
 
-        _host!.Content = null;
+        _host.Content = null;
 
         if (_originalHost != null)
         {
@@ -502,7 +500,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         _tcs!.TrySetResult(_result);
     }
 
-    private void OnButtonClick(object? sender, RoutedEventArgs? e)
+    private void OnButtonClick(object sender, RoutedEventArgs e)
     {
         // v2 - No longer disabling the dialog during a deferral so we need to make sure that if
         //      multiple requests to close come in, we don't handle them
@@ -572,7 +570,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         PseudoClasses.Set(s_pcFullSize, newVal);
     }
 
-    public (bool handled, IInputElement? next) GetNext(IInputElement? element, NavigationDirection direction)
+    public (bool handled, IInputElement next) GetNext(IInputElement element, NavigationDirection direction)
     {
         var children = this.GetVisualDescendants().OfType<IInputElement>()
             .Where(x => KeyboardNavigation.GetIsTabStop((InputElement)x) && x.Focusable &&
@@ -625,15 +623,15 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
     // Store the last element focused before showing the dialog, so we can
     // restore it when it closes
-    private IInputElement? _lastFocus;
-    private Control? _originalHost;
+    private IInputElement _lastFocus;
+    private Control _originalHost;
     private int _originalHostIndex;
-    private DialogHost? _host;
+    private DialogHost _host;
     private ContentDialogResult _result;
-    private TaskCompletionSource<ContentDialogResult>? _tcs;
-    private Button? _primaryButton;
-    private Button? _secondaryButton;
-    private Button? _closeButton;
+    private TaskCompletionSource<ContentDialogResult> _tcs;
+    private Button _primaryButton;
+    private Button _secondaryButton;
+    private Button _closeButton;
     private bool _hasDeferralActive;
-    private IDisposable? _keyEventFilter;
+    private IDisposable _keyEventFilter;
 }
