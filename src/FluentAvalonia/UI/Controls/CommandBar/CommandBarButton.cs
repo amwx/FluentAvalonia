@@ -10,10 +10,13 @@ using FluentAvalonia.UI.Input;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Represents a button control that can be displayed in a CommandBar
+/// Represents a templated button control to be displayed in an <see cref="CommandBar"/>.
 /// </summary>
 public partial class CommandBarButton : Button, ICommandBarElement
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandBarButton"/> class.
+    /// </summary>
     public CommandBarButton()
     {
         TemplateSettings = new CommandBarButtonTemplateSettings();
@@ -21,6 +24,7 @@ public partial class CommandBarButton : Button, ICommandBarElement
 
     protected override Type StyleKeyOverride => typeof(CommandBarButton);
 
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);

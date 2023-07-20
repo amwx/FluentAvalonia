@@ -65,9 +65,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <ItemsPresenter Name="PART_ItemsPresenter"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
-                                        Margin="{TemplateBinding Padding}"
-                                        AreVerticalSnapPointsRegular="{TemplateBinding AreVerticalSnapPointsRegular}"
-                                        AreHorizontalSnapPointsRegular="{TemplateBinding AreHorizontalSnapPointsRegular}"/>
+                                        Margin="{TemplateBinding Padding}"/>
                     </Border>
                 </ControlTemplate>
             </Setter>

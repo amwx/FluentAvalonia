@@ -110,9 +110,10 @@ public class ConnectedAnimation
         var offsetAnim = comp.CreateVector3KeyFrameAnimation();
         offsetAnim.Target = "Offset";
         offsetAnim.Duration = duration;
-
-        offsetAnim.SetVector3Parameter("StartValue", destVis.Offset + delta);
-        offsetAnim.SetVector3Parameter("FinalValue", destVis.Offset);
+        
+        var offset = new Vector3((float)destVis.Offset.X, (float)destVis.Offset.Y, (float)destVis.Offset.Z);
+        offsetAnim.SetVector3Parameter("StartValue", offset + delta);
+        offsetAnim.SetVector3Parameter("FinalValue", offset);
         offsetAnim.InsertExpressionKeyFrame(0, "StartValue");
 
         if (Configuration is GravityConnectedAnimationConfiguration)
@@ -188,10 +189,12 @@ public class ConnectedAnimation
         group.Add(opacAnim);
 
         var offsetAnim = comp.CreateVector3KeyFrameAnimation();
+        var offset = new Vector3((float)destVis.Offset.X, (float)destVis.Offset.Y, (float)destVis.Offset.Z);
+        
         offsetAnim.Target = "Offset";
         offsetAnim.Duration = duration;
-        offsetAnim.SetVector3Parameter("StartValue", destVis.Offset + delta);
-        offsetAnim.SetVector3Parameter("FinalValue", destVis.Offset);
+        offsetAnim.SetVector3Parameter("StartValue", offset + delta);
+        offsetAnim.SetVector3Parameter("FinalValue", offset);
         offsetAnim.InsertExpressionKeyFrame(0, "StartValue");
         offsetAnim.InsertExpressionKeyFrame(1, "FinalValue", easing);
         group.Add(offsetAnim);

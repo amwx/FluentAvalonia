@@ -21,7 +21,7 @@ public class CollectionViewSource : AvaloniaObject, ISupportInitialize
             x => x.IsSourceGrouped, (x, v) => x.IsSourceGrouped = v);
 
     /// <summary>
-    /// Defines the <see cref="ItemsPath"/> property
+    /// Defines the <see cref="ItemsBinding"/> property
     /// </summary>
     public static readonly DirectProperty<CollectionViewSource, IBinding> ItemsBindingProperty =
      AvaloniaProperty.RegisterDirect<CollectionViewSource, IBinding>(nameof(ItemsBinding),

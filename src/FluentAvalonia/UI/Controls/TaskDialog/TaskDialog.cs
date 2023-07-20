@@ -101,9 +101,9 @@ public partial class TaskDialog : ContentControl
         return base.RegisterContentPresenter(presenter);
     }
 
-    protected override void OnLoaded()
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        base.OnLoaded();
+        base.OnLoaded(e);
 
         SetButtons();
         SetCommands();

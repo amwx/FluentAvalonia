@@ -9,7 +9,6 @@ using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Logging;
-using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
@@ -130,8 +129,6 @@ public partial class TabView : TemplatedControl
         // Ignore ThemeShadow
 
         UpdateListViewItemContainerTransitions();
-
-        OnLoaded();
     }
 
     protected override Size MeasureOverride(Size availableSize)

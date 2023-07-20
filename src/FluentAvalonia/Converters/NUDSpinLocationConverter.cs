@@ -11,6 +11,7 @@ namespace FluentAvalonia.Converters;
 /// </summary>
 public class NUDSpinLocationConverter : IValueConverter
 {
+    /// <inheritdoc />
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is null)
@@ -20,6 +21,7 @@ public class NUDSpinLocationConverter : IValueConverter
         return loc == Location.Right;
     }
 
+    /// <inheritdoc />
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
