@@ -357,15 +357,6 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         PseudoClasses.Set(s_pcSecondary, !string.IsNullOrEmpty(SecondaryButtonText));
         PseudoClasses.Set(s_pcClose, !string.IsNullOrEmpty(CloseButtonText));
 
-        //var curFocus = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Control;
-        bool setFocus = true;
-        //if (curFocus.FindAncestorOfType<ContentDialog>() == null)
-        //{
-        //    // Only set the focus if user didn't handle doing that in Opened handler,
-        //    // since this is called after
-        //    setFocus = true;
-        //}
-
         var p = Presenter;
         switch (DefaultButton)
         {
@@ -382,14 +373,12 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 _primaryButton.Classes.Add(SharedPseudoclasses.s_cAccent);
                 _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _closeButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
-               
-                if (setFocus)
-                {
-                    _primaryButton.Focus();
+
+                _primaryButton.Focus();
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to PrimaryButton");
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to PrimaryButton");
 #endif
-                }
+
 
                 break;
 
@@ -407,13 +396,10 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _closeButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
-                if (setFocus)
-                {
-                    _secondaryButton.Focus();
+                _secondaryButton.Focus();
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to SecondaryButton");
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to SecondaryButton");
 #endif
-                }
 
                 break;
 
@@ -431,13 +417,10 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
-                if (setFocus)
-                {
-                    _closeButton.Focus();
+                _closeButton.Focus();
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to CloseButton");
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to CloseButton");
 #endif
-                }
 
                 break;
 
@@ -446,20 +429,16 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
-                if (setFocus)
-                {
-                    // If no default button is set, try to find a suitable first focus item. If none exist, focus the
-                    // ContentDialog itself to pull focus away from the main visual tree so weird things don't happen
-                    // The latter shouldn't happen in 99% of cases as either something in the user content will be able
-                    // to take focus OR there should always be at least one button which can take focus
-                    var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next) ?? this;
-                    next.Focus();
+                // If no default button is set, try to find a suitable first focus item. If none exist, focus the
+                // ContentDialog itself to pull focus away from the main visual tree so weird things don't happen
+                // The latter shouldn't happen in 99% of cases as either something in the user content will be able
+                // to take focus OR there should always be at least one button which can take focus
+                var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next) ?? this;
+                next.Focus();
 
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to {next}", next);
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to {next}", next);
 #endif
-                }
-
                 break;
         }
     }
