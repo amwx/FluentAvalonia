@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
@@ -93,7 +94,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void ContentDialogInCodeShows()
+    public async Task ContentDialogInCodeShows()
     {
         var dlg = new ContentDialog();
         _window.Content = dlg;
@@ -113,7 +114,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void AlreadyParentedContentDialogShows()
+    public async Task AlreadyParentedContentDialogShows()
     {
         var dlg = new ContentDialog();
         _window.Content = dlg;
@@ -131,7 +132,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void ContentDialogShowsAtCorrectWindow()
+    public async Task ContentDialogShowsAtCorrectWindow()
     {
         var dlg = new ContentDialog();
         _window.Content = dlg;
@@ -151,7 +152,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void PrimaryButtonInvokesEventAndCommand()
+    public async Task PrimaryButtonInvokesEventAndCommand()
     {
         var window = new Window();
         var dlg = new ContentDialog();
@@ -194,7 +195,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void SecondaryButtonInvokesEventAndCommand()
+    public async Task SecondaryButtonInvokesEventAndCommand()
     {
         var window = new Window();
         var dlg = new ContentDialog();
@@ -237,7 +238,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void CloseButtonInvokesEventAndCommand()
+    public async Task CloseButtonInvokesEventAndCommand()
     {
         var window = new Window();
         var dlg = new ContentDialog();
@@ -280,7 +281,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void FocusIsMovedIntoContentDialogUponOpening()
+    public async Task FocusIsMovedIntoContentDialogUponOpening()
     {
         var dlg = new ContentDialog
         {
@@ -304,7 +305,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void OldFocusIsPreservedThroughContentDialog()
+    public async Task OldFocusIsPreservedThroughContentDialog()
     {
         var dlg = new ContentDialog
         {
@@ -341,7 +342,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void PrimaryDefaultButtonGetsInitialFocus()
+    public async Task PrimaryDefaultButtonGetsInitialFocus()
     {
         var dlg = new ContentDialog
         {
@@ -366,7 +367,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void SecondaryDefaultButtonGetsInitialFocus()
+    public async Task SecondaryDefaultButtonGetsInitialFocus()
     {
         var dlg = new ContentDialog
         {
@@ -391,7 +392,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void CloseDefaultButtonGetsInitialFocus()
+    public async Task CloseDefaultButtonGetsInitialFocus()
     {
         var dlg = new ContentDialog
         {
@@ -416,7 +417,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void UserCanOverrideInitialFocus()
+    public async Task UserCanOverrideInitialFocus()
     {
         var tb = new TextBox();
         var dlg = new ContentDialog
@@ -447,7 +448,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void EnterKeyInvokesDefaultButtonIfSet()
+    public async Task EnterKeyInvokesDefaultButtonIfSet()
     {
         var dlg = new ContentDialog
         {
@@ -469,7 +470,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void EscapeKeyClosesDialogWithNoResult()
+    public async Task EscapeKeyClosesDialogWithNoResult()
     {
         var dlg = new ContentDialog
         {
@@ -491,7 +492,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void UnhandledEnterKeyInUserContentInvokesDefaultButton()
+    public async Task UnhandledEnterKeyInUserContentInvokesDefaultButton()
     {
         var tb = new TextBox();
         var dlg = new ContentDialog
@@ -517,7 +518,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void HandledEnterKeyInUserContentDoesNotInvokesDefaultButton()
+    public async Task HandledEnterKeyInUserContentDoesNotInvokesDefaultButton()
     {
         var tb = new TextBox();
         var dlg = new ContentDialog
@@ -589,7 +590,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void CancellingClosingInButtonClickCancelsDialogClosing()
+    public async Task CancellingClosingInButtonClickCancelsDialogClosing()
     {
         var window = new Window();
         var dlg = new ContentDialog();
@@ -624,7 +625,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void ButtonDeferralWorks()
+    public async Task ButtonDeferralWorks()
     {
         var window = new Window();
         var dlg = new ContentDialog();
@@ -663,7 +664,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void CanCancelWithButtonDeferral()
+    public async Task CanCancelWithButtonDeferral()
     {
         var window = new Window();
         var dlg = new ContentDialog();
@@ -711,7 +712,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void ClosingDeferralWorks()
+    public async Task ClosingDeferralWorks()
     {
         var window = new Window();
         var dlg = new ContentDialog();
@@ -741,7 +742,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public async void CanCancelWithClosingDeferral()
+    public async Task CanCancelWithClosingDeferral()
     {
         var window = new Window();
         var dlg = new ContentDialog();
