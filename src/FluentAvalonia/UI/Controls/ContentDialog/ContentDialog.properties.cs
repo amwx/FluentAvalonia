@@ -110,14 +110,8 @@ public partial class ContentDialog
     /// </summary>
     public ICommand CloseButtonCommand
     {
-        get
-        {
-            return GetValue(CloseButtonCommandProperty);
-        }
-        set
-        {
-            SetValue(CloseButtonCommandProperty, value);
-        }
+        get => GetValue(CloseButtonCommandProperty);
+        set => SetValue(CloseButtonCommandProperty, value);
     }
 
     /// <summary>
@@ -125,14 +119,8 @@ public partial class ContentDialog
     /// </summary>
     public object CloseButtonCommandParameter
     {
-        get
-        {
-            return GetValue(CloseButtonCommandParameterProperty);
-        }
-        set
-        {
-            SetValue(CloseButtonCommandParameterProperty, value);
-        }
+        get => GetValue(CloseButtonCommandParameterProperty);
+        set => SetValue(CloseButtonCommandParameterProperty, value);
     }
 
     /// <summary>
@@ -140,14 +128,8 @@ public partial class ContentDialog
     /// </summary>
     public string CloseButtonText
     {
-        get
-        {
-            return GetValue(CloseButtonTextProperty);
-        }
-        set
-        {
-            SetValue(CloseButtonTextProperty, value);
-        }
+        get => GetValue(CloseButtonTextProperty);
+        set => SetValue(CloseButtonTextProperty, value);
     }
 
     /// <summary>
@@ -155,14 +137,8 @@ public partial class ContentDialog
     /// </summary>
     public ContentDialogButton DefaultButton
     {
-        get
-        {
-            return GetValue(DefaultButtonProperty);
-        }
-        set
-        {
-            SetValue(DefaultButtonProperty, value);
-        }
+        get => GetValue(DefaultButtonProperty);
+        set => SetValue(DefaultButtonProperty, value);
     }
 
     /// <summary>
@@ -170,14 +146,8 @@ public partial class ContentDialog
     /// </summary>
     public bool IsPrimaryButtonEnabled
     {
-        get
-        {
-            return GetValue(IsPrimaryButtonEnabledProperty);
-        }
-        set
-        {
-            SetValue(IsPrimaryButtonEnabledProperty, value);
-        }
+        get => GetValue(IsPrimaryButtonEnabledProperty);
+        set => SetValue(IsPrimaryButtonEnabledProperty, value);
     }
 
     /// <summary>
@@ -185,14 +155,8 @@ public partial class ContentDialog
     /// </summary>
     public bool IsSecondaryButtonEnabled
     {
-        get
-        {
-            return GetValue(IsSecondaryButtonEnabledProperty);
-        }
-        set
-        {
-            SetValue(IsSecondaryButtonEnabledProperty, value);
-        }
+        get => GetValue(IsSecondaryButtonEnabledProperty);
+        set => SetValue(IsSecondaryButtonEnabledProperty, value);
     }
 
     /// <summary>
@@ -200,14 +164,8 @@ public partial class ContentDialog
     /// </summary>
     public ICommand PrimaryButtonCommand
     {
-        get
-        {
-            return GetValue(PrimaryButtonCommandProperty);
-        }
-        set
-        {
-            SetValue(PrimaryButtonCommandProperty, value);
-        }
+        get => GetValue(PrimaryButtonCommandProperty);
+        set => SetValue(PrimaryButtonCommandProperty, value);
     }
 
     /// <summary>
@@ -215,14 +173,8 @@ public partial class ContentDialog
     /// </summary>
     public object PrimaryButtonCommandParameter
     {
-        get
-        {
-            return GetValue(PrimaryButtonCommandParameterProperty);
-        }
-        set
-        {
-            SetValue(PrimaryButtonCommandParameterProperty, value);
-        }
+        get => GetValue(PrimaryButtonCommandParameterProperty);
+        set => SetValue(PrimaryButtonCommandParameterProperty, value);
     }
 
     /// <summary>
@@ -230,14 +182,8 @@ public partial class ContentDialog
     /// </summary>
     public string PrimaryButtonText
     {
-        get
-        {
-            return GetValue(PrimaryButtonTextProperty);
-        }
-        set
-        {
-            SetValue(PrimaryButtonTextProperty, value);
-        }
+        get => GetValue(PrimaryButtonTextProperty);
+        set => SetValue(PrimaryButtonTextProperty, value);
     }
 
     /// <summary>
@@ -245,14 +191,8 @@ public partial class ContentDialog
     /// </summary>
     public ICommand SecondaryButtonCommand
     {
-        get
-        {
-            return GetValue(SecondaryButtonCommandProperty);
-        }
-        set
-        {
-            SetValue(SecondaryButtonCommandProperty, value);
-        }
+        get => GetValue(SecondaryButtonCommandProperty);
+        set => SetValue(SecondaryButtonCommandProperty, value);
     }
 
     /// <summary>
@@ -260,14 +200,8 @@ public partial class ContentDialog
     /// </summary>
     public object SecondaryButtonCommandParameter
     {
-        get
-        {
-            return GetValue(SecondaryButtonCommandParameterProperty);
-        }
-        set
-        {
-            SetValue(SecondaryButtonCommandParameterProperty, value);
-        }
+        get => GetValue(SecondaryButtonCommandParameterProperty);
+        set => SetValue(SecondaryButtonCommandParameterProperty, value);
     }
 
     /// <summary>
@@ -275,14 +209,8 @@ public partial class ContentDialog
     /// </summary>
     public string SecondaryButtonText
     {
-        get
-        {
-            return GetValue(SecondaryButtonTextProperty);
-        }
-        set
-        {
-            SetValue(SecondaryButtonTextProperty, value);
-        }
+        get => GetValue(SecondaryButtonTextProperty);
+        set => SetValue(SecondaryButtonTextProperty, value);
     }
 
     /// <summary>
@@ -290,14 +218,8 @@ public partial class ContentDialog
     /// </summary>
     public object Title
     {
-        get
-        {
-            return GetValue(TitleProperty);
-        }
-        set
-        {
-            SetValue(TitleProperty, value);
-        }
+        get => GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
     }
 
     /// <summary>
@@ -305,14 +227,8 @@ public partial class ContentDialog
     /// </summary>
     public IDataTemplate TitleTemplate
     {
-        get
-        {
-            return GetValue(TitleTemplateProperty);
-        }
-        set
-        {
-            SetValue(TitleTemplateProperty, value);
-        }
+        get => GetValue(TitleTemplateProperty);
+        set => SetValue(TitleTemplateProperty, value);
     }
 
     /// <summary>
