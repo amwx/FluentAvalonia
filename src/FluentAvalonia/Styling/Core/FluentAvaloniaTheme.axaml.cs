@@ -56,8 +56,16 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         get => _preferSystemTheme;
         set
         {
-            _preferSystemTheme = value;
-            ResolveThemeAndInitializeSystemResources();
+            if (_preferSystemTheme != value)
+            {
+                _preferSystemTheme = value;
+
+                // Only call this if PreferSystemTheme is true to invalidate the current theme.
+                if (value)
+                {
+                    ResolveThemeAndInitializeSystemResources();
+                }
+            }
         }
     }
 
@@ -73,9 +81,15 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     {
         get => _preferUserAccentColor;
         set
-        {
-            _preferUserAccentColor = value;
-            LoadCustomAccentColor();
+        { 
+            if(_preferUserAccentColor != value)
+            {
+                _preferUserAccentColor = value;
+
+                // Unlike PreferSystemTheme, we call this everytime as LoadCustomAccentColor handles
+                // switching between a system and custom color (and back)
+                LoadCustomAccentColor();
+            }            
         }
     }
 
@@ -168,30 +182,33 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     {
         ThemeVariant theme = null;
 
-        var ps = Application.Current.PlatformSettings;
-
-        ps.ColorValuesChanged += OnPlatformColorValuesChanged;
-                
+        // PlatformSettings on the Application should be immutable so we can store them here
+        if (_platformSettings == null)
+        {
+            _platformSettings = Application.Current.PlatformSettings;
+            _platformSettings.ColorValuesChanged += OnPlatformColorValuesChanged;
+        }
+                        
         if (OSVersionHelper.IsWindows())
         {
-            theme = ResolveWindowsSystemSettings(ps);
+            theme = ResolveWindowsSystemSettings(_platformSettings);
         }
         else if (OSVersionHelper.IsLinux())
         {
-            theme = ResolveLinuxSystemSettings(ps);
+            theme = ResolveLinuxSystemSettings(_platformSettings);
         }
         else if (OSVersionHelper.IsMacOS())
         {
-            theme = ResolveMacOSSystemSettings(ps);
+            theme = ResolveMacOSSystemSettings(_platformSettings);
         }
         else
         {
             // WASM & Mobile
 
-            theme = GetThemeFromIPlatformSettings(ps);
+            theme = GetThemeFromIPlatformSettings(_platformSettings);
             // MacOS logic is also used for WASM/Mobile since it just pulls from 
             // IPlatformSettings Color Values
-            TryLoadMacOSAccentColor(ps);
+            TryLoadMacOSAccentColor(_platformSettings);
 
             AddOrUpdateSystemResource("ContentControlThemeFontFamily", FontFamily.Default);
         }
@@ -234,7 +251,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
             }
             else if (OSVersionHelper.IsMacOS())
             {
-                TryLoadMacOSAccentColor(Application.Current.PlatformSettings);
+                TryLoadMacOSAccentColor(_platformSettings);
             }
             else if (OSVersionHelper.IsLinux())
             {
@@ -389,7 +406,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
                 }
                 else // Mac & WASM/Mobile
                 {
-                    TryLoadMacOSAccentColor(Application.Current.PlatformSettings);
+                    TryLoadMacOSAccentColor(_platformSettings);
                 }
             }
             else
@@ -508,6 +525,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     private bool _preferSystemTheme;
     private bool _preferUserAccentColor;
     private ResourceDictionary _accentColorsDictionary;
+    private IPlatformSettings _platformSettings;
 
     public const string LightModeString = "Light";
     public const string DarkModeString = "Dark";
