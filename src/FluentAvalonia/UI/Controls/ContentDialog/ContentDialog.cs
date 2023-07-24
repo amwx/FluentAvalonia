@@ -39,9 +39,6 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         _secondaryButton.Click += OnButtonClick;
         _closeButton = e.NameScope.Get<Button>(s_tpCloseButton);
         _closeButton.Click += OnButtonClick;
-
-        // v2- Removed this as I don't think its necessary anymore (called from ShowAsync)
-        //SetupDialog();
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -62,9 +59,31 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         return base.RegisterContentPresenter(presenter);
     }
 
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+
+        // See OnKeyUp for reasoning
+        if (!e.Handled && e.Key == Key.Enter)
+        {
+            _enterKeyDownVisual = e.Source as Visual;
+        }
+    }
+
     protected override void OnKeyUp(KeyEventArgs e)
     {
         if (e.Handled)
+        {
+            base.OnKeyUp(e);
+            return;
+        }
+
+        // HACK: If a default button is set, and the content dialog is opened by enter key press on a button
+        // the KeyUp event is raised on the focused item within the dialog, instead of the original button
+        // (Avalonia related issue #9626) and will immediately close the dialog
+        // We store the source of the key down and if it doesn't match, or hasn't been set yet, we ignore
+        // this key up event so we don't inadvertantly close the dialog
+        if (e.Key == Key.Enter && (_enterKeyDownVisual == null || _enterKeyDownVisual != (Visual)e.Source))
         {
             base.OnKeyUp(e);
             return;
@@ -110,12 +129,20 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     /// <summary>
     /// Begins an asynchronous operation to show the dialog.
     /// </summary>
-    public async Task<ContentDialogResult> ShowAsync() => await ShowAsyncCore(null);
+    public Task<ContentDialogResult> ShowAsync() => ShowAsyncCoreForTopLevel(null);
 
     /// <summary>
     /// Begins an asynchronous operation to show the dialog using the specified window
     /// </summary>
-    public async Task<ContentDialogResult> ShowAsync(Window w) => await ShowAsyncCore(w);
+    public Task<ContentDialogResult> ShowAsync(Window w) => ShowAsyncCoreForTopLevel(w);
+
+    /// <summary>
+    /// Begins an asynchronous operation to show the dialog using the specified top level
+    /// </summary>
+    /// <remarks>
+    /// Use this when an ApplicationLifetime is unavailable (such as in headless unit tests)
+    /// </remarks>
+    public Task<ContentDialogResult> ShowAsync(TopLevel tl) => ShowAsyncCoreForTopLevel(tl);
 
     /// <summary>
     /// Shows the content dialog on the specified window asynchronously.
@@ -123,10 +150,11 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     /// <remarks>
     /// Note that the placement parameter is not implemented and only accepts <see cref="ContentDialogPlacement.Popup"/>
     /// </remarks>
-    private async Task<ContentDialogResult> ShowAsyncCore(Window window, ContentDialogPlacement placement = ContentDialogPlacement.Popup)
+    private Task<ContentDialogResult> ShowAsyncCore(Window window, ContentDialogPlacement placement = ContentDialogPlacement.Popup) =>
+        ShowAsyncCoreForTopLevel((TopLevel)window);
+
+    private async Task<ContentDialogResult> ShowAsyncCoreForTopLevel(TopLevel topLevel)
     {
-        if (placement == ContentDialogPlacement.InPlace)
-            throw new NotImplementedException("InPlace not implemented yet");
         _tcs = new TaskCompletionSource<ContentDialogResult>();
 
         OnOpening();
@@ -158,55 +186,62 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
 
         OverlayLayer ol = null;
 
-        if (window != null)
+        if (topLevel != null)
         {
-            ol = OverlayLayer.GetOverlayLayer(window);
-            _lastFocus = window.FocusManager.GetFocusedElement();
+            ol = OverlayLayer.GetOverlayLayer(topLevel);
         }
         else
         {
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime al)
             {
-                foreach (var item in al.Windows)
+                var windows = al.Windows;
+                for (int i = 0; i < windows.Count; i++)
                 {
-                    if (item.IsActive)
+                    if (windows[i].IsActive)
                     {
-                        window = item;
+                        topLevel = windows[i];
                         break;
                     }
                 }
 
-                //Fallback, just in case
-                window ??= al.MainWindow;
+                if (topLevel == null)
+                {
+                    if (al.MainWindow == null)
+                        throw new NotSupportedException("No TopLevel root found to parent ContentDialog");
 
-                _lastFocus = window.FocusManager.GetFocusedElement();
-                ol = OverlayLayer.GetOverlayLayer(window);
+                    topLevel = al.MainWindow;
+                }
+
+                ol = OverlayLayer.GetOverlayLayer(topLevel);
             }
             else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
             {
-                _lastFocus = TopLevel.GetTopLevel(sl.MainView).FocusManager.GetFocusedElement();
                 ol = OverlayLayer.GetOverlayLayer(sl.MainView);
+            }
+            else
+            {
+                throw new InvalidOperationException("No TopLevel found for ContentDialog and no ApplicationLifetime is set. " +
+                    "Please either supply a valid ApplicationLifetime or TopLevel to ShowAsync()");
             }
         }
 
-        
-
         if (ol == null)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Unable to find OverlayLayer from given TopLevel");
+
+        _lastFocus = topLevel.FocusManager.GetFocusedElement();
 
         ol.Children.Add(_host);
 
-        // v2 - Added this so dialog materializes in the Visual Tree now since for some reason
-        //      items in the OverlayLayer materialize at the absolute last moment making init
-        //      a very difficult task to do
-        // v2-preview6: This doesn't appear necessary anymore...will preserve this for now
-        // but has to be removed to solve GH#315
-        //(ol.GetVisualRoot() as ILayoutRoot).LayoutManager.ExecuteInitialLayoutPass();
-
+        // Make the dialog visible
         IsVisible = true;
-        ol.UpdateLayout();
-        ShowCore();
-        SetupDialog();
+        PseudoClasses.Set(SharedPseudoclasses.s_pcHidden, false);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, true);
+
+        // Delay futher initializing until after the dialog has loaded. We sub here and unsbu in DialogLoaded
+        // because ContentDialog can be declared in Xaml prior to showing, and we don't want Loaded to trigger
+        // initialization if we're not actually showing the dialog
+        Loaded += DialogLoaded;
+
         return await _tcs.Task;
     }
 
@@ -282,15 +317,6 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         Closed?.Invoke(this, args);
     }
 
-    private void ShowCore()
-    {
-        IsVisible = true;
-        PseudoClasses.Set(SharedPseudoclasses.s_pcHidden, false);
-        PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, true);
-
-        OnOpened();
-    }
-
     private void HideCore()
     {
         // v2 - No longer disabling the dialog during a deferral so we need to make sure that if
@@ -325,75 +351,76 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     internal void SetupDialog()
     {
         if (_primaryButton == null)
-            ApplyTemplate();
+            throw new InvalidOperationException("Attempted to setup ContentDialog but the template has not been applied yet.");
 
         PseudoClasses.Set(s_pcPrimary, !string.IsNullOrEmpty(PrimaryButtonText));
         PseudoClasses.Set(s_pcSecondary, !string.IsNullOrEmpty(SecondaryButtonText));
         PseudoClasses.Set(s_pcClose, !string.IsNullOrEmpty(CloseButtonText));
-
-        var curFocus = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Control;
-        bool setFocus = false;
-        if (curFocus.FindAncestorOfType<ContentDialog>() == null)
-        {
-            // Only set the focus if user didn't handle doing that in Opened handler,
-            // since this is called after
-            setFocus = true;
-        }
 
         var p = Presenter;
         switch (DefaultButton)
         {
             case ContentDialogButton.Primary:
                 if (!_primaryButton.IsVisible)
+                {
+#if DEBUG
+                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", 
+                        "DefaultButton was set to Primary, but PrimaryButton is not enabled");
+#endif
                     break;
+                }
 
                 _primaryButton.Classes.Add(SharedPseudoclasses.s_cAccent);
                 _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _closeButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
-               
-                if (setFocus)
-                {
-                    _primaryButton.Focus();
+
+                _primaryButton.Focus();
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to PrimaryButton");
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to PrimaryButton");
 #endif
-                }
+
 
                 break;
 
             case ContentDialogButton.Secondary:
                 if (!_secondaryButton.IsVisible)
+                {
+#if DEBUG
+                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog",
+                        "DefaultButton was set to Secondary, but SecondaryButton is not enabled");
+#endif
                     break;
+                }
 
                 _secondaryButton.Classes.Add(SharedPseudoclasses.s_cAccent);
                 _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _closeButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
-                if (setFocus)
-                {
-                    _secondaryButton.Focus();
+                _secondaryButton.Focus();
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to SecondaryButton");
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to SecondaryButton");
 #endif
-                }
 
                 break;
 
             case ContentDialogButton.Close:
                 if (!_closeButton.IsVisible)
+                {
+#if DEBUG
+                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog",
+                        "DefaultButton was set to Close, but CloseButton is not enabled");
+#endif
                     break;
+                }
 
                 _closeButton.Classes.Add(SharedPseudoclasses.s_cAccent);
                 _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
-                if (setFocus)
-                {
-                    _closeButton.Focus();
+                _closeButton.Focus();
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to CloseButton");
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to CloseButton");
 #endif
-                }
 
                 break;
 
@@ -402,23 +429,16 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 _primaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
                 _secondaryButton.Classes.Remove(SharedPseudoclasses.s_cAccent);
 
-                if (setFocus)
-                {
-                    var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next);
-                    if (next != null)
-                    {
-                        next.Focus();
-                    }
-                    else
-                    {
-                        this.Focus();
-                    }
+                // If no default button is set, try to find a suitable first focus item. If none exist, focus the
+                // ContentDialog itself to pull focus away from the main visual tree so weird things don't happen
+                // The latter shouldn't happen in 99% of cases as either something in the user content will be able
+                // to take focus OR there should always be at least one button which can take focus
+                var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next) ?? this;
+                next.Focus();
 
 #if DEBUG
-                    Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to {next}", next);
+                Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to {next}", next);
 #endif
-                }
-
                 break;
         }
     }
@@ -483,6 +503,8 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
                 cp.Content = this;
             }
         }
+
+        _enterKeyDownVisual = null;
 
         _tcs.TrySetResult(_result);
     }
@@ -608,6 +630,19 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         return (false, null);
     }
 
+    private void DialogLoaded(object sender, RoutedEventArgs args)
+    {
+        Loaded -= DialogLoaded;
+
+        // Run setup, this will set up the buttons and attempt to set initial focus into the dialog
+        SetupDialog();
+
+        // Now force a new layout pass so everything in SetupDialog takes effect
+        UpdateLayout();
+
+        // Now that we've fully initialized here, raise the Opened event
+        OnOpened();
+    }
 
     // Store the last element focused before showing the dialog, so we can
     // restore it when it closes
@@ -621,4 +656,5 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private Button _secondaryButton;
     private Button _closeButton;
     private bool _hasDeferralActive;
+    private Visual _enterKeyDownVisual;
 }
