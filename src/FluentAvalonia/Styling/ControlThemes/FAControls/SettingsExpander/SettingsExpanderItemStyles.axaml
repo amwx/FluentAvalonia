@@ -16,6 +16,8 @@
                         <Button Content="FooterButton" />
                     </ui:SettingsExpanderItem.Footer>
                 </ui:SettingsExpanderItem>
+                <ui:SettingsExpanderItem Content="Right Content Here" 
+                                         HorizontalContentAlignment="Right"/>
             </ui:SettingsExpander>
         </Border>
     </Design.PreviewWith>
@@ -61,7 +63,7 @@
                                               Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Viewbox>
 
-                        <StackPanel HorizontalAlignment="Left"
+                        <StackPanel HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="Center"
                                     Name="HeaderRegion">
                             <ContentPresenter Content="{TemplateBinding Content}"
