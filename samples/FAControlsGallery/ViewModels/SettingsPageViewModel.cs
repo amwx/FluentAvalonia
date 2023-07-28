@@ -10,12 +10,12 @@ namespace FAControlsGallery.ViewModels;
 
 public class SettingsPageViewModel : MainPageViewModelBase
 {
-    readonly FluentAvaloniaTheme faTheme;
+
 
     public SettingsPageViewModel()
     {
         GetPredefColors();
-        faTheme = App.Current.Styles[0] as FluentAvaloniaTheme;
+        _faTheme = App.Current.Styles[0] as FluentAvaloniaTheme;
     }
 
     public string[] AppThemes { get; } =
@@ -38,11 +38,11 @@ public class SettingsPageViewModel : MainPageViewModelBase
                 }
                 if (value != _system)
                 {                    
-                    faTheme.PreferSystemTheme = false;
+                    _faTheme.PreferSystemTheme = false;
                 }
                 else
                 {
-                    faTheme.PreferSystemTheme = true;
+                    _faTheme.PreferSystemTheme = true;
                 }
             }
         }
@@ -96,7 +96,7 @@ public class SettingsPageViewModel : MainPageViewModelBase
             {
                 if (value)
                 {                    
-                    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
+                    if (_faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
                     {
                         _customAccentColor = (Color)curColor;
                         _listBoxColor = _customAccentColor;
@@ -223,7 +223,7 @@ public class SettingsPageViewModel : MainPageViewModelBase
 
     private void UpdateAppAccentColor(Color? color)
     {
-        faTheme.CustomAccentColor = color;
+        _faTheme.CustomAccentColor = color;
     }
 
     private bool _useCustomAccentColor;
@@ -236,4 +236,5 @@ public class SettingsPageViewModel : MainPageViewModelBase
     private const string _system = "System";
     private const string _dark = "Dark";
     private const string _light = "Light";
+    private readonly FluentAvaloniaTheme _faTheme;
 }
