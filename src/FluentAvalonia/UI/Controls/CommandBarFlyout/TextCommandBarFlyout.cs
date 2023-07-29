@@ -121,7 +121,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
     {
         TextControlButtons toAdd = TextControlButtons.None;
 
-        var selLength = textBox.SelectionEnd - textBox.SelectionStart;
+        var selLength = Math.Abs(textBox.SelectionEnd - textBox.SelectionStart);
         if (!textBox.IsReadOnly)
         {
             if (selLength > 0)
