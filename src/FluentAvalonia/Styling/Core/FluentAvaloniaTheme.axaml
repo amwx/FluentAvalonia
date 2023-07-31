@@ -7,6 +7,7 @@
         <ResourceDictionary>
             <FontFamily x:Key="SymbolThemeFontFamily">/Fonts/#Symbols</FontFamily>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Styling/StylesV2/Fluentv2Colors.axaml" />
                 <ResourceInclude Source="/Styling/StylesV2/Fluentv2.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
