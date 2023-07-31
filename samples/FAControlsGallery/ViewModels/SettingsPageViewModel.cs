@@ -10,27 +10,55 @@ namespace FAControlsGallery.ViewModels;
 
 public class SettingsPageViewModel : MainPageViewModelBase
 {
+
+
     public SettingsPageViewModel()
     {
         GetPredefColors();
+        _faTheme = App.Current.Styles[0] as FluentAvaloniaTheme;
     }
 
-    public ThemeVariant[] AppThemes { get; } =
-        new[] { ThemeVariant.Light, ThemeVariant.Dark/*, FluentAvaloniaTheme.HighContrastTheme*/ };
+    public string[] AppThemes { get; } =
+        new[] { _system, _light , _dark /*, FluentAvaloniaTheme.HighContrastTheme*/ };
 
     public FlowDirection[] AppFlowDirections { get; } =
         new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft };
 
-    public ThemeVariant CurrentAppTheme
+    public string CurrentAppTheme
     {
         get => _currentAppTheme;
         set
         {
-            if (RaiseAndSetIfChanged(ref _currentAppTheme, value) &&
-                Application.Current.ActualThemeVariant != value)
+            if (RaiseAndSetIfChanged(ref _currentAppTheme, value))
             {
-                Application.Current.RequestedThemeVariant = value;
+                var newTheme = GetThemeVariant(value);
+                if (newTheme != null)
+                {
+                    Application.Current.RequestedThemeVariant = newTheme;
+                }
+                if (value != _system)
+                {                    
+                    _faTheme.PreferSystemTheme = false;
+                }
+                else
+                {
+                    _faTheme.PreferSystemTheme = true;
+                }
             }
+        }
+    }
+
+    private ThemeVariant GetThemeVariant(string value)
+    {
+        switch (value)
+        {
+            case _light:
+                return ThemeVariant.Light;
+            case _dark:
+                return ThemeVariant.Dark;
+            case _system:
+            default:
+                return null;
         }
     }
 
@@ -66,10 +94,9 @@ public class SettingsPageViewModel : MainPageViewModelBase
         {
             if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
             {
-                var faTheme = App.Current.Styles[0] as FluentAvaloniaTheme;
                 if (value)
                 {                    
-                    if (faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
+                    if (_faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
                     {
                         _customAccentColor = (Color)curColor;
                         _listBoxColor = _customAccentColor;
@@ -196,13 +223,18 @@ public class SettingsPageViewModel : MainPageViewModelBase
 
     private void UpdateAppAccentColor(Color? color)
     {
-        (App.Current.Styles[0] as FluentAvaloniaTheme).CustomAccentColor = color;
+        _faTheme.CustomAccentColor = color;
     }
 
     private bool _useCustomAccentColor;
     private Color _customAccentColor = Colors.SlateBlue;
-    private ThemeVariant _currentAppTheme;
+    private string _currentAppTheme = _system;
     private FlowDirection _currentFlowDirection;
     private Color? _listBoxColor;
     private bool _ignoreSetListBoxColor = false;
+
+    private const string _system = "System";
+    private const string _dark = "Dark";
+    private const string _light = "Light";
+    private readonly FluentAvaloniaTheme _faTheme;
 }

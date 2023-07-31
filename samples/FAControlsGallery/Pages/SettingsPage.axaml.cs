@@ -23,7 +23,6 @@ public partial class SettingsPage : UserControl
         base.OnLoaded(e);
 
         var dc = DataContext as SettingsPageViewModel;
-        dc.CurrentAppTheme = Application.Current.ActualThemeVariant;
 
         if (TryGetResource("SystemAccentColor", null, out var value))
         {
