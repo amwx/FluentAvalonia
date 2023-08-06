@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
@@ -7,6 +8,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Media;
+using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -23,6 +25,8 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// </summary>
     public FluentAvaloniaTheme()
     {
+        MergedDictionaries = new AvaloniaList<IResourceDictionary>();
+        MergedDictionaries.CollectionChanged += MergedDictionariesCollectionChanged;
         Init();
     }
 
@@ -131,6 +135,8 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// </remarks>
     public TextVerticalAlignmentOverride TextVerticalAlignmentOverrideBehavior { get; set; } =
         TextVerticalAlignmentOverride.EnabledNonWindows;
+
+    public AvaloniaList<IResourceDictionary> MergedDictionaries { get; }
       
     bool IResourceNode.HasResources => true;
 
@@ -518,6 +524,25 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         };
 
         Resources.MergedDictionaries.Add(_accentColorsDictionary);
+    }
+
+    private void MergedDictionariesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.OldItems != null)
+        {
+            foreach (IResourceDictionary item in e.OldItems)
+            {
+                Resources.MergedDictionaries.Remove(item);
+            }
+        }
+
+        if (e.NewItems != null)
+        {
+            foreach (IResourceDictionary item in e.NewItems)
+            {
+                Resources.MergedDictionaries.Add(item);
+            }
+        }
     }
 
     private bool _hasLoaded;
