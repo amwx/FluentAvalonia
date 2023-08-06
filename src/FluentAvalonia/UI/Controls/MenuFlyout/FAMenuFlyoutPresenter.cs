@@ -152,7 +152,6 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
     protected override void OnKeyDown(KeyEventArgs args)
     {
-        base.OnKeyDown(args);
         if (args.Handled)
             return;
 
@@ -284,6 +283,8 @@ public class FAMenuFlyoutPresenter : ItemsControl
                 }
                 break;
         }
+
+        base.OnKeyDown(args);
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs args)
