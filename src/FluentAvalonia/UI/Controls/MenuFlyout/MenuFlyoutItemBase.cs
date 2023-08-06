@@ -34,7 +34,9 @@ public class MenuFlyoutItemBase : TemplatedControl
     {
         base.OnPointerCaptureLost(e);
 
-        InternalParent.PointerExitedItem(this);
+        // Don't do this, for some reason this is getting called on a simple click of the menu item
+        // and if its done on a subitem during the open timer, it prevents the item from opening
+        //InternalParent.PointerExitedItem(this);
     }
 }
 
