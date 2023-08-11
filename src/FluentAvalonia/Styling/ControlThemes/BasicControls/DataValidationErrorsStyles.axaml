@@ -49,7 +49,7 @@
         <Setter Property="ErrorTemplate">
             <DataTemplate>
                 <ItemsControl x:DataType="DataValidationErrors"
-                              Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}"
+                              Foreground="{DynamicResource SystemFillColorCriticalBrush}"
                               ItemsSource="{Binding}">
                     <ItemsControl.Styles>
                         <Style Selector="TextBlock">
@@ -91,7 +91,7 @@
                             <Setter Property="Margin" Value="8,0" />
                         </Style>
                         <Style Selector="Panel#PART_InlineErrorTemplatePanel ToolTip">
-                            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlErrorTextForegroundBrush}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}" />
                         </Style>
                         <Style Selector="Panel#PART_InlineErrorTemplatePanel ToolTip TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -103,7 +103,7 @@
                     <Path Width="14"
                           Height="14"
                           Data="M14,7 A7,7 0 0,0 0,7 M0,7 A7,7 0 1,0 14,7 M7,3l0,5 M7,9l0,2"
-                          Stroke="{DynamicResource SystemControlErrorTextForegroundBrush}"
+                          Stroke="{DynamicResource SystemFillColorCriticalBrush}"
                           StrokeThickness="2" />
                 </Panel>
             </DataTemplate>
