@@ -155,6 +155,12 @@ public class FAMenuFlyout : PopupFlyoutBase
         _presenter.MenuOpened();
     }
 
+    protected override void OnClosed()
+    {
+        base.OnClosed();
+        _presenter.MenuClosed();
+    }
+
     private static void SetPresenterClasses(Control presenter, Classes classes)
     {
         //Remove any classes no longer in use, ignoring pseudoclasses
