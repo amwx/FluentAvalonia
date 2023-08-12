@@ -216,6 +216,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             }
             else if (Application.Current.ApplicationLifetime is ISingleViewApplicationLifetime sl)
             {
+                topLevel = TopLevel.GetTopLevel(sl.MainView);
                 ol = OverlayLayer.GetOverlayLayer(sl.MainView);
             }
             else
