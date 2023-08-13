@@ -1,10 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
-using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
@@ -19,8 +17,6 @@ public class FAMenuFlyoutPresenter : ItemsControl
     public FAMenuFlyoutPresenter()
     {
         KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Cycle);
-
-        //AddHandler(AccessKeyHandler.AccessKeyPressedEvent, AccessKeyPressed);
     }
 
     internal AvaloniaObject InternalParent { get; set; }
@@ -319,6 +315,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
             }
 
             _openingItem = mfsi;
+
             DispatcherTimer.RunOnce(() =>
             {
                 if (_openingItem == mfsi)
@@ -350,22 +347,6 @@ public class FAMenuFlyoutPresenter : ItemsControl
         }
     }
 
-    private void AccessKeyPressed(object sender, RoutedEventArgs args)
-    {
-        var src = GetMenuItem(args.Source);
-
-        if (src is MenuFlyoutSubItem mfsi)
-        {
-            mfsi.Open(true);
-        }
-        else
-        {
-            (src as MenuFlyoutItem)?.RaiseClick();
-        }
-
-        args.Handled = true;
-    }
-
     internal void MenuOpened(bool fromKeyboard = false)
     {
         // Overlay popups continue to be a pain, since they get added very late 
@@ -382,6 +363,12 @@ public class FAMenuFlyoutPresenter : ItemsControl
                 item.Focus(fromKeyboard ? NavigationMethod.Directional : NavigationMethod.Unspecified);
             }
         }, DispatcherPriority.Render);        
+    }
+
+    internal void MenuClosed()
+    {
+        _openedItem = null;
+        _openingItem = null;
     }
 
     private MenuFlyoutItemBase GetMenuItem(object src)
