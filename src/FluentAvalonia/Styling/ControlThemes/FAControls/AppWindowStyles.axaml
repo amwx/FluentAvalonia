@@ -22,8 +22,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}">
-                    <Viewbox Width="14"
-                             Height="14">
+                    <Viewbox Width="{TemplateBinding FontSize}" Height="{TemplateBinding FontSize}">
                         <ui:FontIcon Name="ButtonIcon"
                                      FontFamily="{StaticResource SymbolThemeFontFamily}"
                                      Glyph="{TemplateBinding Content}" />
@@ -85,13 +84,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Name="MinimizeButton"
                             Theme="{StaticResource FA_SystemCaptionButton}"
-                            Content="&#xE921;"/>
+                            Content="&#xE738;"/>
                     <Button Name="MaxRestoreButton"
                             Theme="{StaticResource FA_SystemCaptionButton}"
-                            Content="&#xE922;" />
+                            Content="&#xE739;" />
                     <Button Name="CloseButton"
                             Theme="{StaticResource FA_SystemCaptionButton}"
-                            Content="&#xE8BB;"
+                            Content="&#xE711;"
+                            FontSize="16"
                             Classes="Close"  />
                 </StackPanel>
             </ControlTemplate>
@@ -99,6 +99,7 @@
 
         <Style Selector="^:maximized /template/ Button#MaxRestoreButton">
             <Setter Property="Content" Value="&#xE923;" />
+            <Setter Property="FontSize" Value="16" />
         </Style>
     </ControlTheme>
 
