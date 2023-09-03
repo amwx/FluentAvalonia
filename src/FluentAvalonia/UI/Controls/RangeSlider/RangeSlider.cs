@@ -107,6 +107,27 @@ public partial class RangeSlider : TemplatedControl
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
+        if (_minThumb != null)
+        {
+            _minThumb.DragCompleted -= HandleThumbDragCompleted;
+            _minThumb.DragDelta -= MinThumbDragDelta;
+            _minThumb.DragStarted -= MinThumbDragStarted;
+            _minThumb.KeyDown -= MinThumbKeyDown;
+            _minThumb.KeyUp -= ThumbKeyUp;
+
+            _maxThumb.DragCompleted -= HandleThumbDragCompleted;
+            _maxThumb.DragDelta -= MaxThumbDragDelta;
+            _maxThumb.DragStarted -= MaxThumbDragStarted;
+            _maxThumb.KeyDown -= MaxThumbKeyDown;
+            _maxThumb.KeyUp -= ThumbKeyUp;
+
+            _containerCanvas.SizeChanged -= ContainerCanvasSizeChanged;
+            _containerCanvas.PointerPressed -= ContainerCanvasPointerPressed;
+            _containerCanvas.PointerMoved -= ContainerCanvasPointerMoved;
+            _containerCanvas.PointerReleased -= ContainerCanvasPointerReleased;
+            _containerCanvas.PointerExited -= ContainerCanvasPointerExited;
+        }
+
         base.OnApplyTemplate(e);
 
         VerifyValues();
@@ -131,7 +152,7 @@ public partial class RangeSlider : TemplatedControl
         _minThumb.KeyDown += MinThumbKeyDown;
         _minThumb.KeyUp += ThumbKeyUp;
 
-        _maxThumb.DragCompleted += ThumbDragCompleted;
+        _maxThumb.DragCompleted += HandleThumbDragCompleted;
         _maxThumb.DragDelta += MaxThumbDragDelta;
         _maxThumb.DragStarted += MaxThumbDragStarted;
         _maxThumb.KeyDown += MaxThumbKeyDown;
@@ -211,6 +232,7 @@ public partial class RangeSlider : TemplatedControl
             ToolTip.SetIsOpen(sender as Control, false);
             UnParentToolTip(_toolTip);
             ToolTip.SetTip(sender as Control, null);
+            Debug.WriteLine("ToolTip detached");
         }
     }
 
@@ -343,6 +365,18 @@ public partial class RangeSlider : TemplatedControl
         var position = e.GetCurrentPoint(_containerCanvas).Position.X;
         var normalizedPosition = ((position / DragWidth) * (Maximum - Minimum)) + Minimum;
 
+        if (_toolTip != null)
+        {
+            var thumb = _pointerManipulatingMax ? _maxThumb : _pointerManipulatingMin ? _minThumb : null;
+            if (thumb == null)
+                return; // Should never happen, but just incase
+
+            ToolTip.SetIsOpen(thumb, false);
+            UnParentToolTip(_toolTip);
+            ToolTip.SetTip(thumb, null);
+            Debug.WriteLine("ToolTip detached");
+        }
+
         if (_pointerManipulatingMin)
         {
             _pointerManipulatingMin = false;
@@ -403,7 +437,8 @@ public partial class RangeSlider : TemplatedControl
     {
         if (_toolTipText != null)
         {
-            _toolTipText.Text = newValue.ToString("0.##");
+            var format = ToolTipStringFormat ?? "0.##";
+            _toolTipText.Text = newValue.ToString(format);
         }
     }
 
