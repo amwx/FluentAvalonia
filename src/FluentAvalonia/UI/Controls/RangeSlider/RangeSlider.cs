@@ -1,9 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Concurrent;
 using Avalonia;
+using Avalonia.Automation;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 
@@ -232,7 +235,6 @@ public partial class RangeSlider : TemplatedControl
             ToolTip.SetIsOpen(sender as Control, false);
             UnParentToolTip(_toolTip);
             ToolTip.SetTip(sender as Control, null);
-            Debug.WriteLine("ToolTip detached");
         }
     }
 
@@ -263,6 +265,8 @@ public partial class RangeSlider : TemplatedControl
                 UnParentToolTip(_toolTip);
                 ToolTip.SetTip(thumb, _toolTip);
                 ToolTip.SetIsOpen(thumb, true);
+                ToolTip.SetPlacement(thumb, PlacementMode.Top);
+                ToolTip.SetVerticalOffset(thumb, -_containerCanvas.Bounds.Height);
             }
 
             UpdateToolTipText(useMin ? RangeStart : RangeEnd);
@@ -271,74 +275,101 @@ public partial class RangeSlider : TemplatedControl
 
     private void MinThumbKeyDown(object sender, KeyEventArgs e)
     {
-        //switch (e.Key)
-        //{
-        //    case VirtualKey.Left:
-        //        RangeStart -= StepFrequency;
-        //        SyncThumbs(fromMinKeyDown: true);
-        //        if (_toolTip != null)
-        //        {
-        //            _toolTip.Visibility = Visibility.Visible;
-        //        }
+        switch (e.Key)
+        {
+            case Key.Left:
+                RangeStart -= StepFrequency;
+                SyncThumbs(fromMinKeyDown: true);
 
-        //        e.Handled = true;
-        //        break;
-        //    case VirtualKey.Right:
-        //        RangeStart += StepFrequency;
-        //        SyncThumbs(fromMinKeyDown: true);
-        //        if (_toolTip != null)
-        //        {
-        //            _toolTip.Visibility = Visibility.Visible;
-        //        }
+                if (!ToolTip.GetIsOpen(_minThumb))
+                {
+                    UnParentToolTip(_toolTip);
+                    ToolTip.SetTip(_minThumb, _toolTip);
+                    ToolTip.SetIsOpen(_minThumb, true);
+                    ToolTip.SetPlacement(_minThumb, PlacementMode.Top);
+                    ToolTip.SetVerticalOffset(_minThumb, -_containerCanvas.Bounds.Height);
+                }
 
-        //        e.Handled = true;
-        //        break;
-        //}
+                e.Handled = true;
+                break;
+
+            case Key.Right:
+                RangeStart += StepFrequency;
+                SyncThumbs(fromMinKeyDown: true);
+
+                if (!ToolTip.GetIsOpen(_minThumb))
+                {
+                    UnParentToolTip(_toolTip);
+                    ToolTip.SetTip(_minThumb, _toolTip);
+                    ToolTip.SetIsOpen(_minThumb, true);
+                    ToolTip.SetPlacement(_minThumb, PlacementMode.Top);
+                    ToolTip.SetVerticalOffset(_minThumb, -_containerCanvas.Bounds.Height);
+                }
+
+                e.Handled = true;
+                break;
+        }
     }
 
     private void MaxThumbKeyDown(object sender, KeyEventArgs e)
     {
-        //switch (e.Key)
-        //{
-        //    case VirtualKey.Left:
-        //        RangeEnd -= StepFrequency;
-        //        SyncThumbs(fromMaxKeyDown: true);
-        //        if (_toolTip != null)
-        //        {
-        //            _toolTip.Visibility = Visibility.Visible;
-        //        }
+        switch (e.Key)
+        {
+            case Key.Left:
+                RangeEnd -= StepFrequency;
+                SyncThumbs(fromMaxKeyDown: true);
 
-        //        e.Handled = true;
-        //        break;
-        //    case VirtualKey.Right:
-        //        RangeEnd += StepFrequency;
-        //        SyncThumbs(fromMaxKeyDown: true);
-        //        if (_toolTip != null)
-        //        {
-        //            _toolTip.Visibility = Visibility.Visible;
-        //        }
+                if (!ToolTip.GetIsOpen(_maxThumb))
+                {
+                    UnParentToolTip(_toolTip);
+                    ToolTip.SetTip(_maxThumb, _toolTip);
+                    ToolTip.SetIsOpen(_maxThumb, true);
+                    ToolTip.SetPlacement(_maxThumb, PlacementMode.Top);
+                    ToolTip.SetVerticalOffset(_maxThumb, -_containerCanvas.Bounds.Height);
+                }
 
-        //        e.Handled = true;
-        //        break;
-        //}
+                e.Handled = true;
+                break;
+            case Key.Right:
+                RangeEnd += StepFrequency;
+                SyncThumbs(fromMaxKeyDown: true);
+
+                if (!ToolTip.GetIsOpen(_maxThumb))
+                {
+                    UnParentToolTip(_toolTip);
+                    ToolTip.SetTip(_maxThumb, _toolTip);
+                    ToolTip.SetIsOpen(_maxThumb, true);
+                    ToolTip.SetPlacement(_maxThumb, PlacementMode.Top);
+                    ToolTip.SetVerticalOffset(_maxThumb, -_containerCanvas.Bounds.Height);
+                }
+
+                e.Handled = true;
+                break;
+        }
     }
 
     private void ThumbKeyUp(object sender, KeyEventArgs e)
     {
-        //switch (e.Key)
-        //{
-        //    case VirtualKey.Left:
-        //    case VirtualKey.Right:
-        //        if (_toolTip != null)
-        //        {
-        //            keyDebounceTimer.Debounce(
-        //                () => _toolTip.Visibility = Visibility.Collapsed,
-        //                TimeToHideToolTipOnKeyUp);
-        //        }
+        switch (e.Key)
+        {
+            case Key.Left:
+            case Key.Right:
+                if (_toolTip != null)
+                {
+                    _keyTimer.Debounce(() =>
+                    {
+                        ToolTip.SetIsOpen(_minThumb, false);
+                        ToolTip.SetIsOpen(_maxThumb, false);
+                        ToolTip.SetTip(_minThumb, null);
+                        ToolTip.SetTip(_maxThumb, null);
+                        UnParentToolTip(_toolTip);
 
-        //        e.Handled = true;
-        //        break;
-        //}
+                    }, TimeSpan.FromSeconds(1));
+                }
+
+                e.Handled = true;
+                break;
+        }
     }
 
     private void ContainerCanvasPointerExited(object sender, PointerEventArgs e)
@@ -369,12 +400,11 @@ public partial class RangeSlider : TemplatedControl
         {
             var thumb = _pointerManipulatingMax ? _maxThumb : _pointerManipulatingMin ? _minThumb : null;
             if (thumb == null)
-                return; // Should never happen, but just incase
+                return; // Should never happen, but just in case
 
             ToolTip.SetIsOpen(thumb, false);
             UnParentToolTip(_toolTip);
             ToolTip.SetTip(thumb, null);
-            Debug.WriteLine("ToolTip detached");
         }
 
         if (_pointerManipulatingMin)
@@ -601,4 +631,62 @@ public partial class RangeSlider : TemplatedControl
     private TextBlock _toolTipText;
     private const double Epsilon = 0.01;
     private bool _isDragging;
+    private readonly DispatcherTimer _keyTimer = new DispatcherTimer();
+}
+
+// Copied from WinUI Community Toolkit - only for RangeSlider at this time
+// Extension classes can't be nested so its out here as an internal class =(
+internal static class DispatcherTimerExtensions
+{
+    public static void Debounce(this DispatcherTimer timer, Action action, TimeSpan interval, bool immediate = false)
+    {
+        // Check and stop any existing timer
+        var timeout = timer.IsEnabled;
+        if (timeout)
+        {
+            timer.Stop();
+        }
+
+        // Reset timer parameters
+        timer.Tick -= TimerTick;
+        timer.Interval = interval;
+
+        if (immediate)
+        {
+            // If we're in immediate mode then we only execute if the timer wasn't running beforehand
+            if (!timeout)
+            {
+                action.Invoke();
+            }
+        }
+        else
+        {
+            // If we're not in immediate mode, then we'll execute when the current timer expires.
+            timer.Tick += TimerTick;
+
+            // Store/Update function
+            _debounceInstances.AddOrUpdate(timer, action, (k, v) => action);
+        }
+
+        // Start the timer to keep track of the last call here.
+        timer.Start();
+    }
+
+    private static void TimerTick(object sender, object e)
+    {
+        // This event is only registered/run if we weren't in immediate mode above
+        if (sender is DispatcherTimer timer)
+        {
+            timer.Tick -= TimerTick;
+            timer.Stop();
+
+            if (_debounceInstances.TryRemove(timer, out Action action))
+            {
+                action?.Invoke();
+            }
+        }
+    }
+
+    private static ConcurrentDictionary<DispatcherTimer, Action> _debounceInstances = new ConcurrentDictionary<DispatcherTimer, Action>();
+
 }
