@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Data;
 using Avalonia.Input;
 
 namespace FluentAvalonia.UI.Controls;
 
+[TemplatePart(s_tpActiveRectangle, typeof(Rectangle))]
+[TemplatePart(s_tpMinThumb, typeof(Thumb))]
+[TemplatePart(s_tpMaxThumb, typeof(Thumb))]
+[TemplatePart(s_tpContainerCanvas, typeof(Canvas))]
+[TemplatePart(s_tpToolTipText, typeof(TextBlock))]
 public partial class RangeSlider
 {
     /// <summary>
@@ -102,7 +110,8 @@ public partial class RangeSlider
         set => SetValue(ToolTipStringFormatProperty, value);
     }
 
-    private double DragWidth => _containerCanvas.Bounds.Width - _maxThumb.Bounds.Width;
+    // Internal for UnitTests
+    internal double DragWidth => _containerCanvas.Bounds.Width - _maxThumb.Bounds.Width;
 
     /// <summary>
     /// Fired when a thumb drag begins
@@ -118,5 +127,11 @@ public partial class RangeSlider
     /// Fired when either RangeStart or RangeEnd is changed
     /// </summary>
     public event EventHandler<RangeChangedEventArgs> ValueChanged;
+
+    private const string s_tpActiveRectangle = "ActiveRectangle";
+    private const string s_tpMinThumb = "MinThumb";
+    private const string s_tpMaxThumb = "MaxThumb";
+    private const string s_tpContainerCanvas = "ContainerCanvas";
+    private const string s_tpToolTipText = "ToolTipText";
 }
 
