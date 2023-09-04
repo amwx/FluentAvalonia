@@ -136,12 +136,12 @@ public partial class RangeSlider : TemplatedControl
         VerifyValues();
         _valuesAssigned = true;
 
-        _activeRectangle = e.NameScope.Get<Rectangle>("ActiveRectangle");
-        _minThumb = e.NameScope.Get<Thumb>("MinThumb");
-        _maxThumb = e.NameScope.Get<Thumb>("MaxThumb");
-        _containerCanvas = e.NameScope.Get<Canvas>("ContainerCanvas");
+        _activeRectangle = e.NameScope.Get<Rectangle>(s_tpActiveRectangle);
+        _minThumb = e.NameScope.Get<Thumb>(s_tpMinThumb);
+        _maxThumb = e.NameScope.Get<Thumb>(s_tpMaxThumb);
+        _containerCanvas = e.NameScope.Get<Canvas>(s_tpContainerCanvas);
         _toolTip = e.NameScope.Find<Control>("ToolTip");
-        _toolTipText = e.NameScope.Find<TextBlock>("ToolTipText");
+        _toolTipText = e.NameScope.Find<TextBlock>(s_tpToolTipText);
 
         if (_toolTip != null)
         {
