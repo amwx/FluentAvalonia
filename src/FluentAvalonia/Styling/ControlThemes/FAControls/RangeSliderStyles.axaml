@@ -11,6 +11,12 @@
     <x:Double x:Key="RangeSliderTrackCornerRadius">2</x:Double>
     <Thickness x:Key="RangeSliderToolTipPadding">4</Thickness>
     <x:Double x:Key="RangeSliderToolTipFontSize">14</x:Double>
+
+    <ControlTheme TargetType="Thumb"
+                  x:Key="RangeSliderThumbStyle"
+                  BasedOn="{StaticResource SliderThumbStyle}">
+        <Setter Property="Focusable" Value="True" />
+    </ControlTheme>
     
     <ControlTheme TargetType="ui:RangeSlider"
                   x:Key="{x:Type ui:RangeSlider}">
@@ -43,8 +49,12 @@
                                    Fill="{TemplateBinding Foreground}" />
 
                         <!-- 
-                        ToolTip container, this is removed in OnApplyTemplate and placed inside the ToolTip 
-                        Providing this in template allows some customization via Styles
+                        ToolTip container, this is removed in OnApplyTemplate and placed inside the ToolTip  
+                        You won't be able to target these in Styles as a result, but you can retemplate this
+                        control if you want to customize the appearance
+                        'ToolTip' can be any type of Control
+                        'ToolTipText' should still be present as a TextBlock so the control can set the value
+                        within the ToolTip
                         -->
                         <Border Name="ToolTip">
                             <TextBlock Name="ToolTipText"
@@ -55,14 +65,14 @@
                         <Thumb Name="MinThumb"
                                AutomationProperties.Name="Min thumb"
                                IsTabStop="True"
-                               Theme="{StaticResource SliderThumbStyle}"
+                               Theme="{StaticResource RangeSliderThumbStyle}"
                                TabIndex="0" VerticalAlignment="Center"
                                Height="{DynamicResource SliderHorizontalThumbHeight}"
                                                    Width="{DynamicResource SliderHorizontalThumbWidth}"/>
                         <Thumb Name="MaxThumb"
                                AutomationProperties.Name="Max thumb"
                                IsTabStop="True"
-                               Theme="{StaticResource SliderThumbStyle}"
+                               Theme="{StaticResource RangeSliderThumbStyle}"
                                TabIndex="1" VerticalAlignment="Center"
                                Height="{DynamicResource SliderHorizontalThumbHeight}"
                                Width="{DynamicResource SliderHorizontalThumbWidth}"/>
