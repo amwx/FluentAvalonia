@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
@@ -7,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Threading;
+using Avalonia.Utilities;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
 
@@ -393,6 +395,7 @@ public partial class RangeSlider : TemplatedControl
 
     private void ContainerCanvasPointerReleased(object sender, PointerReleasedEventArgs e)
     {
+        _pointerManipulatingBoth = false;
         var position = e.GetCurrentPoint(_containerCanvas).Position.X;
         var normalizedPosition = ((position / DragWidth) * (Maximum - Minimum)) + Minimum;
 
@@ -426,8 +429,44 @@ public partial class RangeSlider : TemplatedControl
     private void ContainerCanvasPointerMoved(object sender, PointerEventArgs e)
     {
         var position = e.GetCurrentPoint(_containerCanvas).Position.X;
-        var normalizedPosition = ((position / DragWidth) * (Maximum - Minimum)) + Minimum;
+        if (_pointerManipulatingBoth)
+        {
+            var max = Maximum;
+            var min = Minimum;
+            var dragDelta = position - _absolutePosition;
+            var delta = ((dragDelta / DragWidth) * (max - min));
+            if (Math.Abs(delta) < StepFrequency)
+                return;
+            var rs = RangeStart;
+            var re = RangeEnd;
+            
+            if (delta > 0)
+            {
+                if (MathUtilities.AreClose(re, max))
+                    return;
 
+                // Drag delta is too large, constrain it back
+                if (re + delta > max)
+                    delta = max - re;
+            }
+            else if (delta < 0)
+            {
+                if (MathUtilities.AreClose(rs, min))
+                    return;
+
+                if (rs + delta < min)
+                    delta = min - rs;
+            }
+
+            
+            RangeStart += delta;
+            RangeEnd += delta;
+            _absolutePosition = position;
+            return;
+        }
+                
+        var normalizedPosition = ((position / DragWidth) * (Maximum - Minimum)) + Minimum;
+         
         if (_pointerManipulatingMin && normalizedPosition < RangeEnd)
         {
             RangeStart = DragThumb(_minThumb, 0, Canvas.GetLeft(_maxThumb), position);
@@ -443,6 +482,16 @@ public partial class RangeSlider : TemplatedControl
     private void ContainerCanvasPointerPressed(object sender, PointerPressedEventArgs e)
     {
         var position = e.GetCurrentPoint(_containerCanvas).Position.X;
+
+        var mods = TopLevel.GetTopLevel(this).PlatformSettings.HotkeyConfiguration.CommandModifiers;
+
+        if ((e.KeyModifiers & mods) == mods)
+        {
+            _pointerManipulatingBoth = true;
+            _absolutePosition = position;
+            return;
+        }
+
         var normalizedPosition = position * Math.Abs(Maximum - Minimum) / DragWidth;
         double upperValueDiff = Math.Abs(RangeEnd - normalizedPosition);
         double lowerValueDiff = Math.Abs(RangeStart - normalizedPosition);
@@ -626,6 +675,7 @@ public partial class RangeSlider : TemplatedControl
     private bool _maxSet;
     private bool _pointerManipulatingMin;
     private bool _pointerManipulatingMax;
+    private bool _pointerManipulatingBoth;
     private double _absolutePosition;
     private Control _toolTip;
     private TextBlock _toolTipText;

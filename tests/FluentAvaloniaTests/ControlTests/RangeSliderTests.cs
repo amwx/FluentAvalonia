@@ -292,6 +292,31 @@ public class RangeSliderTests : IDisposable
         Assert.False(ToolTip.GetIsOpen(minThumb));
     }
 
+    [AvaloniaFact]
+    public void CanDragRange()
+    {
+        var rs = new RangeSlider()
+        {
+            RangeStart = 25,
+            RangeEnd = 75
+        };
+        _window.Content = rs;
+        _window.UpdateLayout();
+
+        var downPoint = TransformToHost(rs);
+        var delta = new Point(15, 0);
+        _window.MouseDown(downPoint, Avalonia.Input.MouseButton.Left, RawInputModifiers.Control);
+        _window.MouseMove(downPoint + delta, RawInputModifiers.Control);
+        _window.MouseUp(downPoint + delta, Avalonia.Input.MouseButton.Left, RawInputModifiers.Control);
+
+        var pxPerStep = rs.DragWidth / 100; // 100 = Maximum - Minimum = 100 - 0
+        var expectedNewStart = 25 + Math.Round(delta.X /*dragAmount*/ / pxPerStep);
+        var expectedNewEnd = 75 + Math.Round(delta.X /*dragAmount*/ / pxPerStep);
+
+        Assert.Equal(expectedNewStart, rs.RangeStart);
+        Assert.Equal(expectedNewEnd, rs.RangeEnd);
+    }
+
     private Point TransformToHost(Control c)
     {
         var x = c.Bounds.Width * 0.5;
