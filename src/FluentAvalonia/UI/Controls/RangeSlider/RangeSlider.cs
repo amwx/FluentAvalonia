@@ -484,6 +484,8 @@ public partial class RangeSlider : TemplatedControl
         var position = e.GetCurrentPoint(_containerCanvas).Position.X;
 
         var mods = TopLevel.GetTopLevel(this).PlatformSettings.HotkeyConfiguration.CommandModifiers;
+        if (mods == KeyModifiers.None)
+            mods = KeyModifiers.Control;
 
         if ((e.KeyModifiers & mods) == mods)
         {
