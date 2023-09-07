@@ -56,6 +56,19 @@
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.combobox",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/combo-box"
+      },
+      {
+        "Header": "RangeSlider",
+        "Description": "An slider that features two thumbs for selecting a range instead of a single value",
+        "IconResourceKey": "RangeSliderIcon",
+        "PageKey": "RangeSlider",
+        "SearchKeywords": [
+          "RangeSlider"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls.RangeSlider",
+        "WinUINamespace": null,
+        "WinUIDocsLink": null,
+        "WinUIGuidelinesLink": null
       }
     ]
   },
