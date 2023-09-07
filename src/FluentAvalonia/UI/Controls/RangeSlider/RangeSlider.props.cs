@@ -53,6 +53,9 @@ public partial class RangeSlider
         AvaloniaProperty.Register<RangeSlider, double>(nameof(StepFrequency), 
             defaultValue: 1);
 
+    /// <summary>
+    /// Defines the <see cref="ToolTipStringFormat"/> property
+    /// </summary>
     public static readonly StyledProperty<string> ToolTipStringFormatProperty =
         AvaloniaProperty.Register<RangeSlider, string>(nameof(ToolTipStringFormat));
 
@@ -62,6 +65,14 @@ public partial class RangeSlider
     public static readonly StyledProperty<double> MinimumRangeProperty = 
         AvaloniaProperty.Register<RangeSlider, double>(nameof(MinimumRange), defaultValue: 0d);
     
+
+    /// <summary>
+    /// Defines the <see cref="ShowValueToolTip"/> property
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowValueToolTipProperty = 
+        AvaloniaProperty.Register<RangeSlider, bool>(nameof(ShowValueToolTip), defaultValue: true);
+
+    /// <summary>
     /// Gets or sets the minimum allowed value for the RangeSlider
     /// </summary>
     public double Minimum
@@ -130,6 +141,17 @@ public partial class RangeSlider
         get => GetValue(MinimumRangeProperty);
         set => SetValue(MinimumRangeProperty, value);
     }
+
+    /// <summary>
+    /// Gets or sets whether the Value ToolTip is shown when dragging a thumb
+    /// </summary>
+    public bool ShowValueToolTip
+    {
+        get => GetValue(ShowValueToolTipProperty);
+        set => SetValue(ShowValueToolTipProperty, value);
+    }
+
+
     // Internal for UnitTests
     internal double DragWidth => _containerCanvas.Bounds.Width - _maxThumb.Bounds.Width;
 

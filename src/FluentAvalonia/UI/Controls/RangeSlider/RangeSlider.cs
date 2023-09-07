@@ -260,9 +260,7 @@ public partial class RangeSlider : TemplatedControl
 
         if (_toolTip != null)
         {
-            ToolTip.SetIsOpen(sender as Control, false);
-            UnParentToolTip(_toolTip);
-            ToolTip.SetTip(sender as Control, null);
+            SetToolTipAt(sender as Thumb, false);
         }
     }
 
@@ -288,14 +286,7 @@ public partial class RangeSlider : TemplatedControl
 
         if (_toolTipText != null && _toolTip != null)
         {
-            if (!ToolTip.GetIsOpen(thumb))
-            {
-                UnParentToolTip(_toolTip);
-                ToolTip.SetTip(thumb, _toolTip);
-                ToolTip.SetIsOpen(thumb, true);
-                ToolTip.SetPlacement(thumb, PlacementMode.Top);
-                ToolTip.SetVerticalOffset(thumb, -_containerCanvas.Bounds.Height);
-            }
+            SetToolTipAt(thumb, true);
 
             UpdateToolTipText(useMin ? RangeStart : RangeEnd);
         }
@@ -309,14 +300,7 @@ public partial class RangeSlider : TemplatedControl
                 RangeStart -= StepFrequency;
                 SyncThumbs(fromMinKeyDown: true);
 
-                if (!ToolTip.GetIsOpen(_minThumb))
-                {
-                    UnParentToolTip(_toolTip);
-                    ToolTip.SetTip(_minThumb, _toolTip);
-                    ToolTip.SetIsOpen(_minThumb, true);
-                    ToolTip.SetPlacement(_minThumb, PlacementMode.Top);
-                    ToolTip.SetVerticalOffset(_minThumb, -_containerCanvas.Bounds.Height);
-                }
+                SetToolTipAt(_minThumb, true);
 
                 e.Handled = true;
                 break;
@@ -325,14 +309,7 @@ public partial class RangeSlider : TemplatedControl
                 RangeStart += StepFrequency;
                 SyncThumbs(fromMinKeyDown: true);
 
-                if (!ToolTip.GetIsOpen(_minThumb))
-                {
-                    UnParentToolTip(_toolTip);
-                    ToolTip.SetTip(_minThumb, _toolTip);
-                    ToolTip.SetIsOpen(_minThumb, true);
-                    ToolTip.SetPlacement(_minThumb, PlacementMode.Top);
-                    ToolTip.SetVerticalOffset(_minThumb, -_containerCanvas.Bounds.Height);
-                }
+                SetToolTipAt(_minThumb, true);
 
                 e.Handled = true;
                 break;
@@ -386,11 +363,8 @@ public partial class RangeSlider : TemplatedControl
                 {
                     _keyTimer.Debounce(() =>
                     {
-                        ToolTip.SetIsOpen(_minThumb, false);
-                        ToolTip.SetIsOpen(_maxThumb, false);
-                        ToolTip.SetTip(_minThumb, null);
-                        ToolTip.SetTip(_maxThumb, null);
-                        UnParentToolTip(_toolTip);
+                        SetToolTipAt(_minThumb, false);
+                        SetToolTipAt(_maxThumb, false);
 
                     }, TimeSpan.FromSeconds(1));
                 }
@@ -683,6 +657,27 @@ public partial class RangeSlider : TemplatedControl
     private void ContainerCanvasSizeChanged(object sender, SizeChangedEventArgs e)
     {
         SyncThumbs();
+    }
+
+    private void SetToolTipAt(Thumb thumb, bool open)
+    {
+        if (!ShowValueToolTip)
+            return;
+
+        if (open && !ToolTip.GetIsOpen(thumb))
+        {
+            UnParentToolTip(_toolTip);
+            ToolTip.SetTip(thumb, _toolTip);
+            ToolTip.SetIsOpen(thumb, true);
+            ToolTip.SetPlacement(thumb, PlacementMode.Top);
+            ToolTip.SetVerticalOffset(thumb, -_containerCanvas.Bounds.Height);
+        }
+        else if (!open)
+        {
+            ToolTip.SetIsOpen(thumb, false);
+            UnParentToolTip(_toolTip);
+            ToolTip.SetTip(thumb, null);
+        }
     }
 
     private static void UnParentToolTip(Control c)
