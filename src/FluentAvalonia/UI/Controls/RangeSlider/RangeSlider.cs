@@ -189,7 +189,20 @@ public partial class RangeSlider : TemplatedControl
     {
         _absolutePosition += e.Vector.X;
 
-        RangeStart = DragThumb(_minThumb, 0, Canvas.GetLeft(_maxThumb), _absolutePosition);
+        var oldStart = RangeStart;
+        var newStart = DragThumb(_minThumb, 0, DragWidth, _absolutePosition);
+
+        var limit = RangeEnd - MinimumRange;
+        if (newStart > limit)
+        {
+            RangeEnd += newStart - oldStart;
+            newStart -= newStart - limit;
+            RangeStart = newStart;
+        }
+        else
+        {
+            RangeStart = newStart;
+        }
 
         if (_toolTipText != null)
         {
@@ -201,7 +214,20 @@ public partial class RangeSlider : TemplatedControl
     {
         _absolutePosition += e.Vector.X;
 
-        RangeEnd = DragThumb(_maxThumb, Canvas.GetLeft(_minThumb), DragWidth, _absolutePosition);
+        var oldEnd = RangeEnd;
+        var newEnd = DragThumb(_maxThumb, 0, DragWidth, _absolutePosition);
+
+        var limit = RangeStart + MinimumRange;
+        if (newEnd < limit)
+        {
+            RangeStart -= oldEnd - newEnd;
+            newEnd -= newEnd - limit;
+            RangeEnd = newEnd;
+        }
+        else
+        {
+            RangeEnd = newEnd;
+        }
 
         if (_toolTipText != null)
         {
@@ -211,21 +237,21 @@ public partial class RangeSlider : TemplatedControl
 
     private void MinThumbDragStarted(object sender, VectorEventArgs e)
     {
-        _isDragging = true;
+        _isDraggingStart = true;
         OnThumbDragStarted(e);
         HandleThumbDragStarted(_minThumb);
     }
 
     private void MaxThumbDragStarted(object sender, VectorEventArgs e)
     {
-        _isDragging = true;
+        _isDraggingEnd = true;
         OnThumbDragStarted(e);
         HandleThumbDragStarted(_maxThumb);
     }
 
     private void HandleThumbDragCompleted(object sender, VectorEventArgs e)
     {
-        _isDragging = false;
+        _isDraggingStart = _isDraggingEnd = false;
         OnThumbDragCompleted(e);
         OnValueChanged(sender.Equals(_minThumb) ? 
             new RangeChangedEventArgs(_oldValue, RangeStart, RangeSelectorProperty.RangeStartValue) : 
@@ -602,7 +628,7 @@ public partial class RangeSlider : TemplatedControl
 
     private void SyncThumbs(bool fromMinKeyDown = false, bool fromMaxKeyDown = false)
     {
-        if (_containerCanvas == null || _isDragging)
+        if (_containerCanvas == null)
         {
             return;
         }
@@ -612,6 +638,15 @@ public partial class RangeSlider : TemplatedControl
 
         Canvas.SetLeft(_minThumb, relativeLeft);
         Canvas.SetLeft(_maxThumb, relativeRight);
+
+        if (_isDraggingStart)
+        {
+            _absolutePosition += (relativeLeft - _absolutePosition);
+        }
+        else if (_isDraggingEnd)
+        {
+            _absolutePosition += (relativeRight - _absolutePosition);
+        }
 
         var y = _containerCanvas.Bounds.Height / 2 - _minThumb.Bounds.Height / 2;
         Canvas.SetTop(_minThumb, y);
@@ -682,7 +717,8 @@ public partial class RangeSlider : TemplatedControl
     private Control _toolTip;
     private TextBlock _toolTipText;
     private const double Epsilon = 0.01;
-    private bool _isDragging;
+    private bool _isDraggingStart;
+    private bool _isDraggingEnd;
     private readonly DispatcherTimer _keyTimer = new DispatcherTimer();
 }
 

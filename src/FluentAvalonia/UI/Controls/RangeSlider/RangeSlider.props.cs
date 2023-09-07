@@ -57,6 +57,11 @@ public partial class RangeSlider
         AvaloniaProperty.Register<RangeSlider, string>(nameof(ToolTipStringFormat));
 
     /// <summary>
+    /// Defines the <see cref="MinimumRange"/> property
+    /// </summary>
+    public static readonly StyledProperty<double> MinimumRangeProperty = 
+        AvaloniaProperty.Register<RangeSlider, double>(nameof(MinimumRange), defaultValue: 0d);
+    
     /// Gets or sets the minimum allowed value for the RangeSlider
     /// </summary>
     public double Minimum
@@ -110,6 +115,21 @@ public partial class RangeSlider
         set => SetValue(ToolTipStringFormatProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the smallest acceptable range between <see cref="RangeStart"/> and <see cref="RangeEnd"/>
+    /// when dragging the thumb
+    /// </summary>
+    /// <remarks>
+    /// Use this property to set a minimum distance (in data units) the slider thumbs can get during a drag operation
+    /// to prevent them from overlapping. NOTE: This property does NOT have any effect if the RangeStart or RangeEnd
+    /// is set programmatically, i.e., Start = 30, End = 50, MinimumRange=15, you cannot drag the RangeStart thumb to 40,
+    /// but you can still programmatically set RangeStart to 40.
+    /// </remarks>
+    public double MinimumRange
+    {
+        get => GetValue(MinimumRangeProperty);
+        set => SetValue(MinimumRangeProperty, value);
+    }
     // Internal for UnitTests
     internal double DragWidth => _containerCanvas.Bounds.Width - _maxThumb.Bounds.Width;
 
