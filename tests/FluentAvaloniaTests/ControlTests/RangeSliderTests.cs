@@ -7,6 +7,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
+using Avalonia.Metadata;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using Xunit;
@@ -315,6 +316,69 @@ public class RangeSliderTests : IDisposable
 
         Assert.Equal(expectedNewStart, rs.RangeStart);
         Assert.Equal(expectedNewEnd, rs.RangeEnd);
+    }
+
+    [AvaloniaFact]
+    public void CanHideToolTip()
+    {
+        var rs = new RangeSlider()
+        {
+            ShowValueToolTip = false
+        };
+        _window.Content = rs;
+        _window.UpdateLayout();
+        var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();
+
+        var downPoint = TransformToHost(minThumb);
+        var delta = new Point(10, 0);
+        _window.MouseDown(downPoint, MouseButton.Left);
+
+        Assert.False(ToolTip.GetIsOpen(minThumb));
+    }
+
+    [AvaloniaFact]
+    public void ValueChangedOnlyFiresOnceWhenDragging()
+    {
+        var rs = new RangeSlider();
+        _window.Content = rs;
+        _window.UpdateLayout();
+        var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();
+
+        int count = 0;
+        rs.ValueChanged += (s, e) =>
+        {
+            count++;
+        };
+
+        var downPoint = TransformToHost(minThumb);
+        var delta = new Point(50, 0);
+        _window.MouseDown(downPoint, MouseButton.Left);
+        _window.MouseMove(downPoint + delta);
+        _window.MouseUp(downPoint + delta, MouseButton.Left);
+
+        Assert.Equal(1, count);
+    }
+
+    [AvaloniaFact]
+    public void ValueChangedFiresWhenProgrammaticallySet()
+    {
+        var rs = new RangeSlider();
+        _window.Content = rs;
+        _window.UpdateLayout();
+        var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();
+
+        int count = 0;
+        rs.ValueChanged += (s, e) =>
+        {
+            count++;
+        };
+
+        rs.RangeStart = 20;
+        Assert.Equal(1, count);
+
+        count = 0;
+        rs.RangeEnd = 70;
+        Assert.Equal(1, count);
     }
 
     private Point TransformToHost(Control c)
