@@ -44,6 +44,11 @@ public partial class RangeSlider : TemplatedControl
             }
 
             SyncThumbs();
+
+            if (!_isDraggingEnd && !_isDraggingStart)
+            {
+                OnValueChanged(new RangeChangedEventArgs(change.GetOldValue<double>(), newV, RangeSelectorProperty.RangeStartValue));
+            }
         }
         else if (change.Property == RangeEndProperty)
         {
@@ -69,6 +74,11 @@ public partial class RangeSlider : TemplatedControl
             }
 
             SyncThumbs();
+
+            if (!_isDraggingEnd && !_isDraggingStart)
+            {
+                OnValueChanged(new RangeChangedEventArgs(change.GetOldValue<double>(), newV, RangeSelectorProperty.RangeEndValue));
+            }
         }
         else if (change.Property == MinimumProperty)
         {
