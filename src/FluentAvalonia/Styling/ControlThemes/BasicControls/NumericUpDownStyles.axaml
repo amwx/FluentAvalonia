@@ -7,20 +7,37 @@
 
     <Design.PreviewWith>
         <Border Padding="20">
-            <StackPanel Spacing="20">
+            <StackPanel Spacing="20" Width="400">
                 <NumericUpDown Minimum="0"
                                Value="28393255555555"
                                Maximum="1454350"
                                ShowButtonSpinner="True"
                                Increment="0.5"
-                               Width="150"
                                Watermark="Enter text" />
                 <NumericUpDown Minimum="0"
                                Value="28393255555555"
                                Maximum="10"
                                Increment="0.5"
-                               Width="150"
                                ButtonSpinnerLocation="Left"
+                               TextAlignment="Right"
+                               Watermark="Enter text" />
+                <NumericUpDown Minimum="0"
+                               Value="28393255555555"
+                               Maximum="1454350"
+                               ShowButtonSpinner="True"
+                               Increment="0.5"
+                               TextAlignment="Right"
+                               Watermark="Enter text" />
+                <NumericUpDown Minimum="0"
+                               Maximum="1454350"
+                               ShowButtonSpinner="True"
+                               Increment="0.5"
+                               Watermark="Enter text" />
+                <NumericUpDown Minimum="0"
+                               Maximum="1454350"
+                               ShowButtonSpinner="True"
+                               Increment="0.5"
+                               TextAlignment="Right"
                                Watermark="Enter text" />
             </StackPanel>
         </Border>
@@ -140,7 +157,7 @@
                                                           SelectionBrush="{TemplateBinding SelectionBrush}"
                                                           SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
                                                           CaretBrush="{TemplateBinding CaretBrush}"
-                                                          HorizontalAlignment="Left"
+                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                         </Panel>
                                     </ScrollViewer>
@@ -203,6 +220,7 @@
                              AcceptsReturn="False"
                              TextWrapping="NoWrap"
                              Theme="{StaticResource NumericUpDownTextBoxTheme}"
+                             TextAlignment="{TemplateBinding TextAlignment}"
                              Classes.spinRight="{TemplateBinding ButtonSpinnerLocation, Converter={StaticResource NUDSpinLocationConverter}}"
                              Classes.noSpin="{Binding !$parent[NumericUpDown].ShowButtonSpinner}" />
                 </ButtonSpinner>
