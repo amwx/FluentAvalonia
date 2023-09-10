@@ -207,7 +207,8 @@ public class NavigationFactory : INavigationPageFactory
         { "ColorPickerButton", () => new ColorPickerButtonPage() },
         { "InfoBar", () => new InfoBarPage() },
         { "InfoBadge", () => new InfoBadgePage() },
-        { "SettingsExpander", () => new SettingsExpanderPage() }
+        { "SettingsExpander", () => new SettingsExpanderPage() },
+        { "RangeSlider", () => new RangeSliderPage() }
     };
 }
 

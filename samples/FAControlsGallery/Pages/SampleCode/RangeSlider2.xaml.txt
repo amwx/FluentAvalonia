@@ -1,0 +1,1 @@
+﻿<ui:RangeSlider MinimumValue="$(MinimumRange)" StepFrequency="$(StepFreq)" />

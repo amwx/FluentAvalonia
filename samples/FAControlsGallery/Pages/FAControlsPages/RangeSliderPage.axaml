@@ -1,0 +1,104 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1550"
+             x:Class="FAControlsGallery.Pages.RangeSliderPage">
+
+    <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
+        <StackPanel Spacing="8">
+            
+            <ctrls:ControlExample Header="A simple RangeSlider"
+                                  XamlSource="avares://FAControlsGallery/Pages/SampleCode/RangeSlider1.xaml.txt">
+                <StackPanel Spacing="8">
+                    <ui:RangeSlider Name="RangeSlider1" />
+
+                    <TextBlock Text="{Binding #RangeSlider1.RangeStart, StringFormat='RangeStart: {0}'}" />
+                    <TextBlock Text="{Binding #RangeSlider1.RangeEnd, StringFormat='RangeEnd: {0}'}" />
+                </StackPanel>
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Minimum" />
+                        <ui:NumberBox Minimum="-1000" Maximum="1000"
+                                      Value="{Binding #RangeSlider1.Minimum}"
+                                      SpinButtonPlacementMode="Inline"/>
+
+                        <TextBlock Text="Maximum" />
+                        <ui:NumberBox Minimum="-1000" Maximum="1000"
+                                      Value="{Binding #RangeSlider1.Maximum}"
+                                      SpinButtonPlacementMode="Inline"/>
+
+                        <TextBlock Text="Step Frequency" />
+                        <ui:NumberBox Minimum="1" Maximum="10"
+                                      Value="{Binding #RangeSlider1.StepFrequency}"
+                                      SpinButtonPlacementMode="Inline"/>
+                        
+                        <CheckBox IsChecked="{Binding #RangeSlider1.ShowValueToolTip}"
+                                  Content="Show Value ToolTip" />
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+
+                <ctrls:ControlExample.Substitutions>
+                    <ctrls:ControlExampleSubstitution Key="Minimum" Value="{Binding #RangeSlider1.Minimum}" />
+                    <ctrls:ControlExampleSubstitution Key="Maximum" Value="{Binding #RangeSlider1.Maximum}" />
+                    <ctrls:ControlExampleSubstitution Key="StepFreq" Value="{Binding #RangeSlider1.StepFrequency}" />
+                    <ctrls:ControlExampleSubstitution Key="ShowToolTip" Value="{Binding #RangeSlider1.ShowValueToolTip}" />
+                </ctrls:ControlExample.Substitutions>
+            </ctrls:ControlExample>
+            
+            <ui:InfoBar IsOpen="True"
+                        Title="NOTE"
+                        Severity="Warning"
+                        IsClosable="False"
+                        Message="Ensure your StepFrequency makes sense for the given Minimum to Maximum Range. A StepFrequency that is too small or large may prevent the control from working as intended." />
+
+            <ctrls:ControlExample Header="RangeSlider with a MinimumRange"                                  
+                                  XamlSource="avares://FAControlsGallery/Pages/SampleCode/RangeSlider2.xaml.txt"
+                                  UsageNotes="NOTE: MinimumRange only applies to dragging. This is not enforced when RangeStart or RangeEnd is programmatically set.">
+                <DockPanel>
+                    <TextBlock Text="Use the MinimumRange property to restrict dragging the thumbs too close"
+                               DockPanel.Dock="Top"
+                               TextWrapping="Wrap"
+                               Margin="0 10"/>
+                    <ui:RangeSlider Name="RangeSlider2" />
+                </DockPanel>
+
+                <ctrls:ControlExample.Options>
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="MinimumRange" />
+                        <ui:NumberBox Minimum="0" Maximum="30"
+                                      Value="{Binding #RangeSlider2.MinimumRange}"
+                                      SpinButtonPlacementMode="Inline"/>
+
+                        <TextBlock Text="Step Frequency" />
+                        <ui:NumberBox Minimum="1" Maximum="10"
+                                      Value="{Binding #RangeSlider2.StepFrequency}"
+                                      SpinButtonPlacementMode="Inline"/>
+                    </StackPanel>
+                </ctrls:ControlExample.Options>
+
+                <ctrls:ControlExample.Substitutions>
+                    <ctrls:ControlExampleSubstitution Key="MinimumRange" Value="{Binding #RangeSlider2.MinimumRange}" />
+                    <ctrls:ControlExampleSubstitution Key="StepFreq" Value="{Binding #RangeSlider2.StepFrequency}" />
+                </ctrls:ControlExample.Substitutions>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="RangeSlider custom ToolTip string format">
+                <ui:RangeSlider Minimum="0"
+                                Maximum="1"
+                                StepFrequency="0.01"
+                                ToolTipStringFormat="P0"/>
+
+                <ctrls:ControlExample.XamlSource>
+                    <x:String xml:space="preserve">&lt;ui:RangeSlider Minimum="0" Maximimum="1" StepFrequency="0.01" ToolTipStringFormat="P0" /></x:String>
+                </ctrls:ControlExample.XamlSource>                
+            </ctrls:ControlExample>
+
+        </StackPanel>
+    </ScrollViewer>
+    
+</UserControl>
