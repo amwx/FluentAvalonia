@@ -82,7 +82,7 @@ public class CommandBarFlyoutCommandBar : CommandBar
 
         Closing += (_, __) =>
         {
-            if (_owningFlyout != null)
+            if (_owningFlyout != null && _owningFlyout.IsOpen)
             {
                 if (_owningFlyout.AlwaysExpanded)
                 {
