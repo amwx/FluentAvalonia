@@ -25,6 +25,13 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="KnobTransitions">
+            <Transitions>
+                <DoubleTransition Easing="0,0,0,1"
+                                  Property="Canvas.Left"
+                                  Duration="0:0:0.2" />
+            </Transitions>
+        </Setter>
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Background="{TemplateBinding Background}"
@@ -145,14 +152,6 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-
-        <Style Selector="^:not(:dragging) /template/ Grid#MovingKnobs">
-            <Setter Property="Transitions">
-                <Transitions>
-                    <DoubleTransition Property="Canvas.Left" Duration="0:0:0.2" Easing="CubicEaseOut"/>
-                </Transitions>
-            </Setter>
-        </Style>
 
 
         <Style Selector="^:pointerover">
