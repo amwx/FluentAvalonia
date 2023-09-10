@@ -756,7 +756,7 @@ public partial class NavigationView : HeaderedContentControl
     private static readonly string SR_SettingsButtonName = "SettingsButtonName";
     private static readonly string SR_NavigationOverflowButtonToolTip = "NavigationOverflowButtonToolTip";
     private static readonly string SR_NavigationViewSearchButtonName = "NavigationViewSearchButtonName";
-    private static readonly string SR_NavigationBackButtonToolTip = "NavigationViewBackButtonToolTip";
+    private static readonly string SR_NavigationBackButtonToolTip = "NavigationBackButtonToolTip";
     private static readonly string SR_NavigationButtonOpenName = "NavigationButtonOpenName";
     private static readonly string SR_NavigationButtonClosedName = "NavigationButtonClosedName";
 }
