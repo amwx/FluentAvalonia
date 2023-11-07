@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Avalonia;
 using Avalonia.Platform;
 
 namespace FAControlsGallery.ViewModels.DesignPages;
@@ -41,7 +40,7 @@ public class DesignIconsPageViewModel : ViewModelBase
         return await Task.Run(() =>
         {
             using var s = AssetLoader.Open(new Uri("avares://FAControlsGallery/Assets/FASymbolFontList.json"));
-            var icons = JsonSerializer.Deserialize<List<FontIconInfo>>(s);
+            var icons = JsonSerializer.Deserialize(s, FAControlsJsonSerializerContext.Default.ListFontIconInfo);
 
             return icons;
         });
