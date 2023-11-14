@@ -16,9 +16,6 @@
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.AvaloniaEdit" />
     <PackageReference Include="AvaloniaEdit.TextMate" />
-    <!-- Workaround for AvaloniaEdit AOT -->
-    <PackageReference Include="TextMateSharp" />
-    <PackageReference Include="TextMateSharp.Grammars" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
   </ItemGroup>
   <ItemGroup>    
