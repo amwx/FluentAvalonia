@@ -57,6 +57,7 @@
                                            Text="{TemplateBinding PaneTitle}"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
+                                           FontFamily="{DynamicResource ContentControlThemeFontFamily}"
                                            Theme="{StaticResource NavigationViewItemHeaderTextStyle}" />
                             </Button>
                             <Panel Name="PaneTitleHolder" IsVisible="False" Height="40">
