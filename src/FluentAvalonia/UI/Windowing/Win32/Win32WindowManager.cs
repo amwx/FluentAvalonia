@@ -140,6 +140,12 @@ internal unsafe class Win32WindowManager
                     return DefWindowProcW((HWND)hWnd, msg, (WPARAM)wParam, lParam);
                 }
                 break;
+
+#if NET5_0_OR_GREATER
+            case WM_DESTROY:
+                _appWindowRegistry.Remove(hWnd);
+                break;
+#endif
         }
 
         return CallWindowProcW(_oldWndProc, hWnd, msg, wParam, lParam);

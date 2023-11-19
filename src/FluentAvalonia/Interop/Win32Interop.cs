@@ -204,6 +204,7 @@ internal static unsafe partial class Win32Interop
     public const int WM_RBUTTONUP = 0x0205;
     public const int WM_SETTINGCHANGE = 0x001A; // Also WM_WININICHANGE
     public const int WM_SYSCOLORCHANGE = 0x0015;
+    public const int WM_DESTROY = 0x0002;
 
     //SC
     public const int SC_CLOSE = 0xF060;
