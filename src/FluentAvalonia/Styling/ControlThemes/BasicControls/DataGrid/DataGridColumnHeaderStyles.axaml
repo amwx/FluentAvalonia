@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
 
+    <x:Double x:Key="DataGridSortIconMinWidth">32</x:Double>
+    
     <ControlTheme x:Key="{x:Type DataGridColumnHeader}" TargetType="DataGridColumnHeader">
         <Setter Property="Foreground" Value="{DynamicResource DataGridColumnHeaderForegroundBrush}" />
         <Setter Property="Background" Value="{DynamicResource DataGridColumnHeaderBackgroundBrush}" />
@@ -27,7 +29,7 @@
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" MinWidth="32" />
+                                <ColumnDefinition Width="Auto" MinWidth="{DynamicResource DataGridSortIconMinWidth}" />
                             </Grid.ColumnDefinitions>
 
                             <ContentPresenter Content="{TemplateBinding Content}"
