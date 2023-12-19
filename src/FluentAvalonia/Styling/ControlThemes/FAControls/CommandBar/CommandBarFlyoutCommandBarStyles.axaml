@@ -779,7 +779,7 @@
                 <Setter Property="IsVisible" Value="True" />
             </Style>
             <Style Selector="^ /template/ Border#OpenBorder">
-                <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource TopCornerRadiusFilterConverter}}}" />
+                <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource TopCornerRadiusFilterConverter}}" />
             </Style>
         </Style>
 

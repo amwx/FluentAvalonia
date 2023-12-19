@@ -289,10 +289,10 @@
                 <Setter Property="BoxShadow" Value="0 8 32 0 #66000000" />
             </Style>
             <Style Selector="^ /template/ Border#HeaderRoot">
-                <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}}" />
+                <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}" />
             </Style>
             <Style Selector="^ /template/ Border#ButtonBorder">
-                <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}}" />
+                <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
             </Style>
 
 
