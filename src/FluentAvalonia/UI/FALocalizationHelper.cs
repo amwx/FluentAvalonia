@@ -1,10 +1,21 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Platform;
 
 namespace FluentAvalonia.UI;
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(LocalizationEntry))]
+[JsonSerializable(typeof(LocalizationMap))]
+internal partial class SourceGenerationContext : JsonSerializerContext;
+
+internal sealed class LocalizationEntry() : Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+
+internal sealed class LocalizationMap()
+    : Dictionary<string, LocalizationEntry>(StringComparer.InvariantCultureIgnoreCase);
 
 /// <summary>
 /// Helper class for storing localized string for FluentAvalonia/WinUI controls
@@ -21,7 +32,7 @@ public class FALocalizationHelper
 
         KeepType<LocalizationMap>();
         KeepType<LocalizationEntry>();
-        _mappings = JsonSerializer.Deserialize<LocalizationMap>(al);
+        _mappings = JsonSerializer.Deserialize<LocalizationMap>(al,SourceGenerationContext.Default.LocalizationMap);
 
         static void KeepType<
 #if NET5_0_OR_GREATER
@@ -74,25 +85,25 @@ public class FALocalizationHelper
     private readonly LocalizationMap _mappings;
     private static readonly string s_enUS = "en-US";
 
-    /// <summary>
-    /// Dictionary of language entries for a resource name. &lt;language, value&gt; where
-    /// language is the abbreviated name, e.g., en-US
-    /// </summary>
-    public class LocalizationEntry : Dictionary<string, string>
-    {
-        public LocalizationEntry()
-            : base(StringComparer.InvariantCultureIgnoreCase)
-        {
-
-        }
-    }
-
-    private class LocalizationMap : Dictionary<string, LocalizationEntry>
-    {
-        public LocalizationMap()
-            : base(StringComparer.InvariantCultureIgnoreCase)
-        {
-
-        }
-    }
+    // /// <summary>
+    // /// Dictionary of language entries for a resource name. &lt;language, value&gt; where
+    // /// language is the abbreviated name, e.g., en-US
+    // /// </summary>
+    // public class LocalizationEntry : Dictionary<string, string>
+    // {
+    //     public LocalizationEntry()
+    //         : base(StringComparer.InvariantCultureIgnoreCase)
+    //     {
+    //
+    //     }
+    // }
+    //
+    // private class LocalizationMap : Dictionary<string, LocalizationEntry>
+    // {
+    //     public LocalizationMap()
+    //         : base(StringComparer.InvariantCultureIgnoreCase)
+    //     {
+    //
+    //     }
+    // }
 }
