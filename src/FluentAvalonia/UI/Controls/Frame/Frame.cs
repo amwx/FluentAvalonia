@@ -99,6 +99,7 @@ public partial class Frame : ContentControl
         }
     }
 
+    public IServiceProvider Services { get; set; }
     /// <summary>
     /// Navigates to the most recent item in back navigation history, if a Frame manages its own navigation history.
     /// </summary>
@@ -229,6 +230,28 @@ public partial class Frame : ContentControl
         {
             Instance = existing,
             Context = target
+        };
+
+        return NavigateCore(entry, NavigationMode.New, navOptions);
+    }
+    /// <summary>
+    /// Causes the frame to load content represented by the instance of a Control with the
+    /// specified navigation options
+    /// </summary>
+    /// <remarks>
+    /// You must specify a <see cref="NavigationPageFactory"/> for this method to succeed
+    /// </remarks>
+    /// <param name="control">An instance of a Control</param>
+    /// <param name="navOptions">Options for the navigation, including whether it is recorded in the navigation stack 
+    /// and what transition animation is used.</param>
+    /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true or
+    /// if <see cref="NavigationPageFactory" /> is not specified; otherwise, <c>true</c>.</returns>
+    public bool NavigateFromInstance(Control control, FrameNavigationOptions navOptions = null)
+    {
+       
+        var entry = new PageStackEntry(control.GetType(), null, navOptions?.TransitionInfoOverride)
+        {
+            Instance = control
         };
 
         return NavigateCore(entry, NavigationMode.New, navOptions);
@@ -580,8 +603,13 @@ public partial class Frame : ContentControl
     {
         if (CacheSize == 0)
         {
+            if (Services is null)
+            {
+                return NavigationPageFactory?.GetPage(srcPageType) ??
+                       Activator.CreateInstance(srcPageType) as Control;
+            }
             return NavigationPageFactory?.GetPage(srcPageType) ??
-                Activator.CreateInstance(srcPageType) as Control;
+                   Services.GetService(srcPageType) as Control;
         }
 
         // This is triggered via Navigate(Type) - we only need to check the page type here
@@ -593,8 +621,8 @@ public partial class Frame : ContentControl
             }
         }
 
-        var newPage = NavigationPageFactory?.GetPage(srcPageType) ??
-            Activator.CreateInstance(srcPageType) as Control;
+        var newPage = NavigationPageFactory?.GetPage(srcPageType) ?? 
+                      (Services is null ? Activator.CreateInstance(srcPageType) as Control :Services.GetService(srcPageType) as Control);
 
         _pageCache.Add(new NavigationCacheItem(srcPageType, null, newPage));
 
