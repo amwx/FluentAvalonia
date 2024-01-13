@@ -211,7 +211,10 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         {
             // WASM & Mobile
 
-            theme = GetThemeFromIPlatformSettings(_platformSettings);
+            // Don't read from PlatformSettings if PreferSystemTheme = false, Issue #497
+            if (PreferSystemTheme)
+                theme = GetThemeFromIPlatformSettings(_platformSettings);
+
             // MacOS logic is also used for WASM/Mobile since it just pulls from 
             // IPlatformSettings Color Values
             TryLoadMacOSAccentColor(_platformSettings);
