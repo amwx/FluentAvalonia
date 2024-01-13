@@ -4,8 +4,8 @@
     <Description>Control library focused on fluent design and bringing more WinUI controls into Avalonia </Description>
     <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>2.0.4</Version>
-    <AssemblyVersion>2.0.4.0</AssemblyVersion>
+    <Version>2.0.5</Version>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
   </PropertyGroup>
 
   <!-- Add Package Icon -->
