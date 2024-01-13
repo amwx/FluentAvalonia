@@ -11,7 +11,7 @@ NOTE: The 1.x version of FluentAvalonia (0.10.x Avalonia) is now deprecated. Ple
 Note: Windows 7, 8/8.1 are not supported by FluentAvalonia. It may still be possible to run on these versions of Windows, but no support for issues will be given.
 
 ## Avalonia minimum requirements
-(current) v2.0.4 - Avalonia 11.0.4
+(current) v2.0.5 - Avalonia 11.0.4
 All previous - Avalonia 11.0
 
 ## Documentation & Sample App
