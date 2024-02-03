@@ -179,7 +179,13 @@ public partial class CommandBar : ContentControl
             }
 
             if (_overflowSeparator != null)
+            { 
                 _overflowSeparator.IsVisible = _numInOverflow > 0 && SecondaryCommands.Count > 0;
+
+                var idx = _numInOverflow;
+                var curIdx = _overflowItems.IndexOf(_overflowSeparator);
+                _overflowItems.Move(curIdx, idx);
+            }
         }
 
         var overflowVis = OverflowButtonVisibility;
@@ -393,11 +399,8 @@ SetState:
         PseudoClasses.Set(s_pcPrimaryOnly, _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
         PseudoClasses.Set(s_pcSecondaryOnly, _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
 
-        if (_primaryItems == null || _primaryItems.Count == 0)
-        {
-            InvalidateMeasure();
-            //_moreButton.IsVisible = true;
-        }
+        // Rerun measure to ensure the MoreButton has the correct visibility
+        InvalidateMeasure();
     }
 
     private void AttachItems()
@@ -425,7 +428,10 @@ SetState:
 
         if (_secondaryCommands.Count > 0 || IsDynamicOverflowEnabled)
         {
-            _overflowSeparator = new CommandBarSeparator();
+            _overflowSeparator = new CommandBarSeparator
+            {
+                IsVisible = false
+            };
 
             _overflowItems = new AvaloniaList<ICommandBarElement>();
             _overflowItems.Add(_overflowSeparator);
