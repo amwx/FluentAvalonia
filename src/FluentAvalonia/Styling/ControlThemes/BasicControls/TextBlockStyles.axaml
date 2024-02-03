@@ -20,7 +20,6 @@
     <x:Double x:Key="DisplayTextBlockFontSize">68</x:Double>
 
     <ControlTheme TargetType="TextBlock" x:Key="BaseTextBlockStyle">
-        <Setter Property="FontFamily" Value="XamlAutoFontFamily" />
         <Setter Property="FontSize" Value="{StaticResource BodyTextBlockFontSize}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
