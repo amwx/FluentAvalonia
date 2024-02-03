@@ -6,7 +6,7 @@
         <Border Padding="50">
             <StackPanel Spacing="10">
                 <ToggleButton Content="Toggle" />
-                <ToggleButton Content="Toggle" IsEnabled="Tr" IsChecked="False"
+                <ToggleButton Content="Toggle" IsChecked="False"
                               Theme="{DynamicResource TransparentToggleButton}"/>
             </StackPanel>
         </Border>
@@ -20,9 +20,6 @@
         <Setter Property="Padding" Value="{StaticResource ButtonPadding}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
@@ -173,9 +170,6 @@
         <Setter Property="Padding" Value="{StaticResource ButtonPadding}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />

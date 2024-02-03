@@ -171,8 +171,6 @@
         <Setter Property="Width" Value="242" />
         <Setter Property="MinWidth" Value="242" />
         <Setter Property="MaxHeight" Value="398" />
-        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
-        <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Background" Value="{DynamicResource TimePickerFlyoutPresenterBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TimePickerFlyoutPresenterBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource DateTimeFlyoutBorderThickness}" />

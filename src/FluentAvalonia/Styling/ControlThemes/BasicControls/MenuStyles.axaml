@@ -59,7 +59,6 @@
         <Setter Property="Background" Value="{DynamicResource MenuBarItemBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource MenuBarItemBorderBrush}"/>
         <Setter Property="BorderThickness" Value="{DynamicResource MenuBarItemBorderThickness}"/>
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <!-- Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
         <!--<Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />-->

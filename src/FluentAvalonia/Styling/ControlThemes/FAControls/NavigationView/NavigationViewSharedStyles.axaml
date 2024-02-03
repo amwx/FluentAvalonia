@@ -310,7 +310,6 @@
                   BasedOn="{StaticResource {x:Type ContentControl}}">
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="28" />
-        <Setter Property="FontFamily" Value="XamlAutoFontFamily" />
         <Setter Property="Margin" Value="{DynamicResource NavigationViewHeaderMargin}"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
     </ControlTheme>

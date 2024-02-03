@@ -179,7 +179,13 @@ public partial class CommandBar : ContentControl
             }
 
             if (_overflowSeparator != null)
+            { 
                 _overflowSeparator.IsVisible = _numInOverflow > 0 && SecondaryCommands.Count > 0;
+
+                var idx = _numInOverflow;
+                var curIdx = _overflowItems.IndexOf(_overflowSeparator);
+                _overflowItems.Move(curIdx, idx);
+            }
         }
 
         var overflowVis = OverflowButtonVisibility;
@@ -264,6 +270,12 @@ public partial class CommandBar : ContentControl
         if (!_appliedTemplate)
             return;
 
+        if (_primaryItems == null)
+        { 
+            AttachItems();
+            goto SetState;
+        }
+
         if (IsDynamicOverflowEnabled)
         {
             // While not the most performant or best solution, we return all Overflowed items back
@@ -331,6 +343,7 @@ public partial class CommandBar : ContentControl
                 break;
         }
 
+SetState:
         PseudoClasses.Set(s_pcPrimaryOnly, _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
         PseudoClasses.Set(s_pcSecondaryOnly, _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
         InvalidateMeasure();
@@ -340,6 +353,12 @@ public partial class CommandBar : ContentControl
     {
         if (!_appliedTemplate)
             return;
+
+        if (_overflowItems == null)
+        {
+            AttachItems();
+            goto SetState;
+        }
 
         // TODO: Test that this works...
         int startIndex = _numInOverflow == 0 ? 0 : _numInOverflow + 1;
@@ -376,8 +395,12 @@ public partial class CommandBar : ContentControl
                 break;
         }
 
+SetState:
         PseudoClasses.Set(s_pcPrimaryOnly, _primaryCommands.Count > 0 && _secondaryCommands.Count == 0);
         PseudoClasses.Set(s_pcSecondaryOnly, _primaryCommands.Count == 0 && _secondaryCommands.Count > 0);
+
+        // Rerun measure to ensure the MoreButton has the correct visibility
+        InvalidateMeasure();
     }
 
     private void AttachItems()
@@ -405,7 +428,10 @@ public partial class CommandBar : ContentControl
 
         if (_secondaryCommands.Count > 0 || IsDynamicOverflowEnabled)
         {
-            _overflowSeparator = new CommandBarSeparator();
+            _overflowSeparator = new CommandBarSeparator
+            {
+                IsVisible = false
+            };
 
             _overflowItems = new AvaloniaList<ICommandBarElement>();
             _overflowItems.Add(_overflowSeparator);
