@@ -77,7 +77,6 @@
         <Setter Property="Background" Value="{DynamicResource SliderTrackFill}" />
         <Setter Property="BorderThickness" Value="{DynamicResource SliderBorderThemeThickness}" />
         <Setter Property="Foreground" Value="{DynamicResource SliderTrackValueFill}" />
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="ClipToBounds" Value="False" />
 
         <Style Selector="^:horizontal">

@@ -51,7 +51,6 @@
         <Setter Property="Padding" Value="{DynamicResource ToolTipBorderPadding}" />
         <Setter Property="MaxWidth" Value="{DynamicResource ToolTipMaxWidth}" />
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
-        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="Transitions">
             <Transitions>
                 <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
