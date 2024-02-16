@@ -21,17 +21,21 @@
     <ui:TextCommandBarFlyout x:Key="DefaultTextBoxContextFlyout" />
 
     <ControlTheme TargetType="Button" x:Key="TextBoxDeleteButtonStyle">
+        <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextControlButtonBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <!-- Note: TextControlButtonBackground isn't defined anywhere so
                            replaced Background with Transparent -->
                 <Border Name="ButtonLayoutGrid"
                         Margin="{DynamicResource TextBoxInnerButtonMargin}"
-                        BorderBrush="{DynamicResource TextControlButtonBorderBrush}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Background="Transparent"
                         CornerRadius="{TemplateBinding CornerRadius}">
-                    <ui:SymbolIcon Foreground="{DynamicResource TextControlButtonForeground}"
+                    <ui:SymbolIcon Foreground="{TemplateBinding Foreground}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    FontSize="{StaticResource TextBoxIconFontSize}"
@@ -69,18 +73,21 @@
     </ControlTheme>
 
     <ControlTheme TargetType="ToggleButton" x:Key="TextBoxPasswordButtonStyle">
+        <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextControlButtonBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <!-- Note: TextControlButtonBackground isn't defined anywhere so
                            replaced Background with Transparent -->
                 <Border Name="ButtonLayoutGrid"
                         Margin="{DynamicResource TextBoxInnerButtonMargin}"
-                        BorderBrush="{DynamicResource TextControlButtonBorderBrush}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        Background="Transparent"
+                        Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}">
-                    <ui:FontIcon Foreground="{StaticResource TextControlButtonForeground}"
-                                 VerticalAlignment="Center"
+                    <ui:FontIcon VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
                                  FontSize="{StaticResource TextBoxIconFontSize}"
                                  FontFamily="{StaticResource SymbolThemeFontFamily}"
