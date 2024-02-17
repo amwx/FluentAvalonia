@@ -39,7 +39,7 @@
     <PackageReference Include="Avalonia.Skia" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
     <PackageReference Include="Avalonia.Controls.DataGrid" />
-    <PackageReference Include="MicroCom.CodeGenerator.MSBuild" />
+    <PackageReference Include="MicroCom.CodeGenerator.MSBuild" PrivateAssets="All" />
     <PackageReference Include="MicroCom.Runtime" />
     <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />
     <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
