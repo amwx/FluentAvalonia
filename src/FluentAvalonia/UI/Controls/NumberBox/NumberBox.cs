@@ -198,7 +198,7 @@ public partial class NumberBox : TemplatedControl
             {
                 _valueUpdating = true;
 
-                if (!double.IsNaN(newValue) && !double.IsNaN(oldValue))
+                if (newValue != oldValue && !(double.IsNaN(newValue) && double.IsNaN(oldValue)))
                 {
                     // Fire ValueChanged event
                     var ea = new NumberBoxValueChangedEventArgs(oldValue, newValue);
