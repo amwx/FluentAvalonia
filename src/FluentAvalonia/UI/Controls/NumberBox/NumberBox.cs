@@ -1,4 +1,6 @@
 ﻿using Avalonia;
+using Avalonia.Automation.Peers;
+using Avalonia.Automation.Provider;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
@@ -177,6 +179,11 @@ public partial class NumberBox : TemplatedControl
         }
     }
 
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new NumberBoxAutomationPeer(this);
+    }
+
     private void OnPointerPressedPreview(object sender, PointerPressedEventArgs args)
     {
         // Hack: B/c we make popup lightdismissable, we need to ensure we can reopen the popup if focus
@@ -204,6 +211,9 @@ public partial class NumberBox : TemplatedControl
                     var ea = new NumberBoxValueChangedEventArgs(oldValue, newValue);
 
                     ValueChanged?.Invoke(this, ea);
+
+                    var peer = ControlAutomationPeer.FromElement(this) as NumberBoxAutomationPeer;
+                    peer?.RaiseValueChangedEvent(oldValue, newValue);
                 }
 
                 UpdateTextToValue();
