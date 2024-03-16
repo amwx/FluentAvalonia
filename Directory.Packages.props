@@ -18,8 +18,7 @@
     
     <PackageVersion Include="MicroCom.CodeGenerator.MSBuild" Version="0.11.0" />
     <PackageVersion Include="MicroCom.Runtime" Version="0.11.0" />
-    <PackageVersion Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-    <PackageVersion Include="System.Text.Json" Version="6.0.5" Condition="'$(TargetFramework)' == 'netstandard2.1'" />
+    <PackageVersion Include="System.Text.Json" Version="7.0.3" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.0" />
     <PackageVersion Include="AvaloniaEdit.TextMate" Version="11.0" />

@@ -1,7 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
-using Avalonia;
+using System.Text.Json.Serialization;
 using Avalonia.Platform;
 
 namespace FluentAvalonia.UI;
@@ -13,21 +12,12 @@ namespace FluentAvalonia.UI;
 /// The string resources are taken from the WinUI repo. Not all resources in WinUI
 /// may be available here, only those that are known to be used in a control
 /// </remarks>
-public class FALocalizationHelper
+public partial class FALocalizationHelper
 {
     private FALocalizationHelper()
     {
         using var al = AssetLoader.Open(new Uri("avares://FluentAvalonia/Assets/ControlStrings.json"));
-
-        KeepType<LocalizationMap>();
-        KeepType<LocalizationEntry>();
-        _mappings = JsonSerializer.Deserialize<LocalizationMap>(al);
-
-        static void KeepType<
-#if NET5_0_OR_GREATER
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-            T>() { }
+        _mappings = JsonSerializer.Deserialize(al, FALocalizationJsonSerializerContext.Default.LocalizationMap);
     }
 
     static FALocalizationHelper()
@@ -94,5 +84,10 @@ public class FALocalizationHelper
         {
 
         }
+    }
+
+    [JsonSerializable(typeof(LocalizationMap))]
+    private partial class FALocalizationJsonSerializerContext : JsonSerializerContext
+    {
     }
 }

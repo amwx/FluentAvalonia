@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using FAControlsGallery.Services;
 
 namespace FAControlsGallery.ViewModels;
 
@@ -10,7 +9,7 @@ public class CoreControlsPageViewModel : MainPageViewModelBase
         NoteText = "Fluent v2 styling on Avalonia controls. Only controls that have styling changes " +
             "are shown here for demo purposes, though all controls (except ContextMenu) are supported.";
 
-        CoreControlGroups = JsonSerializer.Deserialize<List<PageBaseViewModel>>(coreControlsJson);
+        CoreControlGroups = JsonSerializer.Deserialize(coreControlsJson, FAControlsJsonSerializerContext.Default.ListPageBaseViewModel);
 
         for (int i = 0, ct = CoreControlGroups.Count; i < ct; i++)
         {
