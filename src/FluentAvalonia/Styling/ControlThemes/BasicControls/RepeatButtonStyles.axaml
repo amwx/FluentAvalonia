@@ -22,6 +22,7 @@
         <Setter Property="Foreground" Value="{DynamicResource RepeatButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource RepeatButtonBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThemeThickness}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Padding" Value="{StaticResource ButtonPadding}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -31,19 +32,18 @@
         <Setter Property="RenderTransform" Value="none" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="Root"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                      Content="{TemplateBinding Content}"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      Padding="{TemplateBinding Padding}"
-                                      RecognizesAccessKey="True"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                </ui:FABorder>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Padding="{TemplateBinding Padding}"
+                                  RecognizesAccessKey="True"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
             </ControlTemplate>
         </Setter>
 
@@ -56,31 +56,25 @@
         </Style>
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource RepeatButtonBackgroundPointerOver}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource RepeatButtonBorderBrushPointerOver}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource RepeatButtonForegroundPointerOver}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource RepeatButtonBackgroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource RepeatButtonBorderBrushPressed}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource RepeatButtonForegroundPressed}" />
             </Style>
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource RepeatButtonBackgroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource RepeatButtonBorderBrushDisabled}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource RepeatButtonForegroundDisabled}" />
             </Style>
         </Style>
@@ -91,6 +85,7 @@
         <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThemeThickness}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Padding" Value="{StaticResource ButtonPadding}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -102,19 +97,18 @@
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="Root"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                      Content="{TemplateBinding Content}"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      Padding="{TemplateBinding Padding}"
-                                      RecognizesAccessKey="True"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                </ui:FABorder>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Content="{TemplateBinding Content}"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Padding="{TemplateBinding Padding}"
+                                  RecognizesAccessKey="True"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
             </ControlTemplate>
         </Setter>
 
@@ -127,28 +121,22 @@
         </Style>
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ui|FABorder#Root">
-                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
-            </Style>
             <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ui|FABorder#Root">
-                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
-            </Style>
             <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
             </Style>
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FABorder#Root">
-                <Setter Property="Background" Value="{DynamicResource SubtleFillColorDisabledBrush}" />
-            </Style>
             <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource SubtleFillColorDisabledBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
             </Style>
         </Style>

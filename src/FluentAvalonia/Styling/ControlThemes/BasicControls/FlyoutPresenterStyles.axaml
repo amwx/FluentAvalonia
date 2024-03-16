@@ -21,13 +21,15 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}"
-                             Padding="{DynamicResource FlyoutBorderThemePadding}">
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{DynamicResource FlyoutBorderThemePadding}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}">
                     <ScrollViewer Name="ScrollViewer"
                                   HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
@@ -37,7 +39,7 @@
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </ScrollViewer>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
     </ControlTheme>
@@ -55,14 +57,16 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="LayoutRoot"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             Padding="{DynamicResource FlyoutBorderThemePadding}"
-                             CornerRadius="{TemplateBinding CornerRadius}">
+                <Border Name="LayoutRoot"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                        Padding="{DynamicResource FlyoutBorderThemePadding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
                                   Margin="{TemplateBinding Padding}">
@@ -71,7 +75,7 @@
                                         KeyboardNavigation.TabNavigation="Continue"
                                         Grid.IsSharedSizeScope="True" />
                     </ScrollViewer>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

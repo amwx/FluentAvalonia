@@ -15,12 +15,13 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="LayoutRoot"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             Padding="{DynamicResource FlyoutBorderThemePadding}"
-                             CornerRadius="{TemplateBinding CornerRadius}">
+                <Border Name="LayoutRoot"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="InnerBorderEdge"
+                        Padding="{DynamicResource FlyoutBorderThemePadding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
                                   Margin="{TemplateBinding Padding}">
@@ -29,7 +30,7 @@
                                         KeyboardNavigation.TabNavigation="Continue"
                                         Grid.IsSharedSizeScope="True" />
                     </ScrollViewer>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

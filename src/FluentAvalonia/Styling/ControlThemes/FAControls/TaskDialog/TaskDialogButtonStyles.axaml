@@ -12,18 +12,20 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Background="{TemplateBinding Background}"
+                <Border Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        Name="Root">
-                    <ui:FABorder.Transitions>
+                        Name="Root"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}">
+                    <Border.Transitions>
                         <Transitions>
                             <BrushTransition Duration="00:00:00.083" Property="Background" />
                         </Transitions>
-                    </ui:FABorder.Transitions>
+                    </Border.Transitions>
                     <StackPanel Spacing="12" 
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center"
@@ -40,7 +42,7 @@
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           CornerRadius="{TemplateBinding CornerRadius}" />
                     </StackPanel>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 
@@ -49,7 +51,7 @@
         </Style>
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
@@ -57,7 +59,7 @@
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPressed}" />
@@ -65,7 +67,7 @@
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
@@ -73,22 +75,22 @@
         </Style>
 
         <!--Accent Button-->
-        <Style Selector="^.accent /template/ ui|FABorder#Root">
+        <Style Selector="^.accent /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
             <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForeground}" />
         </Style>
-        <Style Selector="^.accent:pointerover /template/ ui|FABorder#Root">
+        <Style Selector="^.accent:pointerover /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}" />
             <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPointerOver}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForegroundPointerOver}" />
         </Style>
-        <Style Selector="^.accent:pressed /template/ ui|FABorder#Root">
+        <Style Selector="^.accent:pressed /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPressed}" />
             <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPressed}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForegroundPressed}" />
         </Style>
-        <Style Selector="^.accent:disabled /template/ ui|FABorder#Root">
+        <Style Selector="^.accent:disabled /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundDisabled}" />
             <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushDisabled}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForegroundDisabled}" />

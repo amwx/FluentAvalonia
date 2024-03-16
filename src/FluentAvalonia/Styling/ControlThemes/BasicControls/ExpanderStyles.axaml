@@ -51,19 +51,21 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="Root"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             MinHeight="{TemplateBinding MinHeight}"
-                             MinWidth="{TemplateBinding MinWidth}"
-                             MaxWidth="{TemplateBinding MaxWidth}"
-                             Width="{TemplateBinding Width}"
-                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                             Padding="{TemplateBinding Padding}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}">
+                <Border Name="Root"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        MinHeight="{TemplateBinding MinHeight}"
+                        MinWidth="{TemplateBinding MinWidth}"
+                        MaxWidth="{TemplateBinding MaxWidth}"
+                        Width="{TemplateBinding Width}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        Padding="{TemplateBinding Padding}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}">
 
                     <Grid ColumnDefinitions="*,Auto">
 
@@ -100,12 +102,12 @@
                             </TextBlock>
                         </Border>
                     </Grid>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderPointerOverBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
@@ -121,7 +123,7 @@
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderBorderPressedBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
@@ -137,7 +139,7 @@
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderDisabledBorderBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
@@ -153,7 +155,7 @@
         </Style>
 
         <Style Selector="^:checked">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
@@ -169,7 +171,7 @@
             </Style>
 
             <Style Selector="^:pointerover">
-                <Style Selector="^ /template/ ui|FABorder#Root">
+                <Style Selector="^ /template/ Border#Root">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderPointerOverBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
@@ -186,7 +188,7 @@
             </Style>
 
             <Style Selector="^:pressed">
-                <Style Selector="^ /template/ ui|FABorder#Root">
+                <Style Selector="^ /template/ Border#Root">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderPressedBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
@@ -203,7 +205,7 @@
             </Style>
 
             <Style Selector="^:disabled">
-                <Style Selector="^ /template/ ui|FABorder#Root">
+                <Style Selector="^ /template/ Border#Root">
                     <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderDisabledBorderBrush}" />
                 </Style>
                 <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
@@ -235,15 +237,16 @@
                               Tag="{StaticResource ExpanderChevronDownGlyph}"
                               CornerRadius="{TemplateBinding CornerRadius}"/>
 
-                <ui:FABorder Name="ExpanderContent"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
-                             MinHeight="{TemplateBinding MinHeight}"
-                             MinWidth="{TemplateBinding MinWidth}"
-                             Grid.Row="1"
-                             IsVisible="False">
+                <Border Name="ExpanderContent"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="InnerBorderEdge"
+                        CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
+                        MinHeight="{TemplateBinding MinHeight}"
+                        MinWidth="{TemplateBinding MinWidth}"
+                        Grid.Row="1"
+                        IsVisible="False">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Margin="{TemplateBinding Padding}"
                                       IsVisible="{TemplateBinding IsExpanded}"
@@ -251,7 +254,7 @@
                                       Content="{TemplateBinding Content}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                </ui:FABorder>
+                </Border>
             </Grid>
         </Border>
     </ControlTemplate>
@@ -270,15 +273,16 @@
                               Tag="{StaticResource ExpanderChevronUpGlyph}"
                               CornerRadius="{TemplateBinding CornerRadius}"/>
 
-                <ui:FABorder Name="ExpanderContent"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource TopCornerRadiusFilterConverter}}"
-                             MinHeight="{TemplateBinding MinHeight}"
-                             MinWidth="{TemplateBinding MinWidth}"
-                             Grid.Row="0"
-                             IsVisible="False">
+                <Border Name="ExpanderContent"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="InnerBorderEdge"
+                        CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource TopCornerRadiusFilterConverter}}"
+                        MinHeight="{TemplateBinding MinHeight}"
+                        MinWidth="{TemplateBinding MinWidth}"
+                        Grid.Row="0"
+                        IsVisible="False">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Margin="0"
                                       IsVisible="{TemplateBinding IsExpanded}"
@@ -287,7 +291,7 @@
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Padding="{TemplateBinding Padding}" />
-                </ui:FABorder>
+                </Border>
             </Grid>
         </Border>
     </ControlTemplate>
@@ -306,15 +310,16 @@
                               Theme="{StaticResource ExpanderToggleButton}"
                               Tag="{StaticResource ExpanderChevronLeftGlyph}" />
 
-                <ui:FABorder Name="ExpanderContent"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
-                             MinHeight="{TemplateBinding MinHeight}"
-                             MinWidth="{TemplateBinding MinWidth}"
-                             Grid.Column="0"
-                             IsVisible="False">
+                <Border Name="ExpanderContent"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="InnerBorderEdge"
+                        CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
+                        MinHeight="{TemplateBinding MinHeight}"
+                        MinWidth="{TemplateBinding MinWidth}"
+                        Grid.Column="0"
+                        IsVisible="False">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Margin="0"
                                       IsVisible="{TemplateBinding IsExpanded}"
@@ -323,7 +328,7 @@
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Padding="{TemplateBinding Padding}" />
-                </ui:FABorder>
+                </Border>
             </Grid>
         </Border>
     </ControlTemplate>
@@ -342,15 +347,16 @@
                               Theme="{StaticResource ExpanderToggleButton}"
                               Tag="{StaticResource ExpanderChevronRightGlyph}" />
 
-                <ui:FABorder Name="ExpanderContent"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource RightCornerRadiusFilterConverter}}"
-                             MinHeight="{TemplateBinding MinHeight}"
-                             MinWidth="{TemplateBinding MinWidth}"
-                             Grid.Column="1"
-                             IsVisible="False">
+                <Border Name="ExpanderContent"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="InnerBorderEdge"
+                        CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource RightCornerRadiusFilterConverter}}"
+                        MinHeight="{TemplateBinding MinHeight}"
+                        MinWidth="{TemplateBinding MinWidth}"
+                        Grid.Column="1"
+                        IsVisible="False">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Margin="0"
                                       IsVisible="{TemplateBinding IsExpanded}"
@@ -359,7 +365,7 @@
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Padding="{TemplateBinding Padding}" />
-                </ui:FABorder>
+                </Border>
             </Grid>
         </Border>
     </ControlTemplate>
@@ -416,7 +422,7 @@
             </Style>
         </Style>
 
-        <Style Selector="^:expanded /template/ ui|FABorder#ExpanderContent">
+        <Style Selector="^:expanded /template/ Border#ExpanderContent">
             <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>
