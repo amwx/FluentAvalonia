@@ -57,10 +57,11 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/RefreshControlStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PathIcon.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/HyperlinkButtonStyles.axaml" />
+                
                 
                 <!-- FluentAvalonia Controls -->
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/HyperlinkButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/ContentDialogStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/PickerFlyoutPresenterStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/InfoBadgeStyles.axaml" />

@@ -11,15 +11,15 @@ public class PageBaseViewModel : ViewModelBase
 
     public MainPageViewModelBase Parent { get; set; }
 
-    public string Header { get; init; }
+    public string Header { get; set; }
 
-    public string Description { get; init; }
+    public string Description { get; set; }
 
-    public string IconResourceKey { get; init; }
+    public string IconResourceKey { get; set; }
 
-    public string PageKey { get; init; }
+    public string PageKey { get; set; }
 
-    public string[] SearchKeywords { get; init; }
+    public string[] SearchKeywords { get; set; }
 
     public FACommand InvokeCommand { get; }
 
