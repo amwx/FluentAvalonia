@@ -218,6 +218,8 @@
             <Color x:Key="SystemColorHighlightTextColor">#FF000000</Color>
             <!-- This didn't return on Windows 10, so pulled from #4584 on WinUI repo -->
             <Color x:Key="SystemColorHotlightColor">#FFFE55</Color>
+            
+            
 
             <!-- Colors copied from Default theme to match list of keys. Should not
                  be using these keys. These are set to Red to notify that.-->
