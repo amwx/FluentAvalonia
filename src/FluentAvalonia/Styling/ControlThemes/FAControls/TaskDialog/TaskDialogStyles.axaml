@@ -76,18 +76,20 @@
 
     <ControlTheme x:Key="{x:Type ui:TaskDialog}" TargetType="ui:TaskDialog">
         <Setter Property="Background" Value="{DynamicResource ContentDialogBackground}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Name="LayoutRoot"
                        Background="{x:Null}">
-                    <ui:FABorder Background="{TemplateBinding Background}"
+                    <Border Background="{TemplateBinding Background}"
                             MinWidth="{DynamicResource TaskDialogMinWidth}"
                             MaxWidth="{DynamicResource TaskDialogMaxWidth}"
                             MinHeight="{DynamicResource TaskDialogMinHeight}"
                             MaxHeight="{DynamicResource TaskDialogMaxHeight}"
                             Name="ContentRoot"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch">
+                            VerticalAlignment="Stretch"
+                            BackgroundSizing="{TemplateBinding BackgroundSizing}">
                         <Grid RowDefinitions="Auto,Auto,*,Auto">
                             <Panel Grid.Row="0"
                                    Name="HeaderHost"
@@ -193,7 +195,7 @@
                                 </ItemsControl>
                             </Border>
                         </Grid>
-                    </ui:FABorder>
+                    </Border>
                 </Panel>
             </ControlTemplate>
         </Setter>
@@ -280,7 +282,7 @@
             <Style Selector="^ /template/ Panel#LayoutRoot">
                 <Setter Property="Background" Value="{DynamicResource TaskDialogSmokeFill}" />
             </Style>
-            <Style Selector="^ /template/ ui|FABorder#ContentRoot">
+            <Style Selector="^ /template/ Border#ContentRoot">
                 <Setter Property="BorderBrush" Value="{DynamicResource TaskDialogBorderBrush}" />
                 <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
                 <Setter Property="BorderThickness" Value="{DynamicResource TaskDialogBorderWidth}" />
@@ -309,7 +311,7 @@
                     </Animation>
                 </Style.Animations>
             </Style>
-            <Style Selector="^:hidden /template/ ui|FABorder#ContentRoot">
+            <Style Selector="^:hidden /template/ Border#ContentRoot">
                 <Style.Animations>
                     <Animation Duration="00:00:00.167" FillMode="Forward">
                         <KeyFrame Cue="0%">
@@ -343,7 +345,7 @@
                     </Animation>
                 </Style.Animations>
             </Style>
-            <Style Selector="^:open /template/ ui|FABorder#ContentRoot">
+            <Style Selector="^:open /template/ Border#ContentRoot">
                 <Style.Animations>
                     <Animation Duration="00:00:00.250" FillMode="Forward">
                         <KeyFrame Cue="0%">

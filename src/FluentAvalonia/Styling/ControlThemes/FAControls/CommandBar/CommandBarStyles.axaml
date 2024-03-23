@@ -162,7 +162,7 @@
                     <Popup Name="OverflowPopup"
                            WindowManagerAddShadowHint="False"
                            PlacementTarget="{TemplateBinding}"
-                           PlacementMode="AnchorAndGravity"
+                           Placement="AnchorAndGravity"
                            PlacementAnchor="BottomRight"
                            PlacementGravity="BottomLeft"
                            IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"

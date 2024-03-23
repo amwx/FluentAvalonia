@@ -17,12 +17,13 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ContentDialogBorderBrush}"/>
         <Setter Property="BorderThickness" Value="{DynamicResource ContentDialogBorderWidth}" />
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="Container">
                     <Panel Name="LayoutRoot"
                            Background="{DynamicResource ContentDialogSmokeFill}">
-                        <ui:FABorder Name="BackgroundElement"
+                        <Border Name="BackgroundElement"
                                 Background="{TemplateBinding Background}"
                                 BorderThickness="{StaticResource ContentDialogBorderWidth}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -33,7 +34,8 @@
                                 MaxHeight="{DynamicResource ContentDialogMaxHeight}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                BoxShadow="0 8 32 0 #66000000" >
+                                BoxShadow="0 8 32 0 #66000000"
+                                BackgroundSizing="{TemplateBinding BackgroundSizing}">
                             <!-- Even in WinUI, shadow is always black regardless of light/dark mode -->
 
                             <!-- if this border isn't here, dialog space displays outside of corner radius at top
@@ -133,7 +135,7 @@
                                     </Border>
                                 </Grid>
                             </Border>
-                        </ui:FABorder>
+                        </Border>
                     </Panel>
                 </Border>
             </ControlTemplate>
@@ -208,7 +210,7 @@
         </Style>
 
         <!--Handle FullDialogSizing-->
-        <Style Selector="^:fullsize /template/ ui|FABorder#BackgroundElement">
+        <Style Selector="^:fullsize /template/ Border#BackgroundElement">
             <Setter Property="VerticalAlignment" Value="Stretch"/>
         </Style>
 

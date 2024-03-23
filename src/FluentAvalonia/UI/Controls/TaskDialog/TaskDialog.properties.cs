@@ -12,8 +12,8 @@ namespace FluentAvalonia.UI.Controls;
 [PseudoClasses(SharedPseudoclasses.s_pcHeader, s_pcSubheader, SharedPseudoclasses.s_pcIcon, s_pcFooter, s_pcFooterAuto, s_pcExpanded)]
 [PseudoClasses(s_pcProgress, s_pcProgressError, s_pcProgressSuspend)]
 [PseudoClasses(s_pcHeaderForeground, s_pcIconForeground)]
-[TemplatePart(s_tpButtonsHost, typeof(ItemsPresenter))]
-[TemplatePart(s_tpCommandsHost, typeof(ItemsPresenter))]
+[TemplatePart(s_tpButtonsHost, typeof(ItemsControl))]
+[TemplatePart(s_tpCommandsHost, typeof(ItemsControl))]
 [TemplatePart(s_tpMoreDetailsButton, typeof(Button))]
 [TemplatePart(s_tpProgressBar, typeof(ProgressBar))]
 public partial class TaskDialog

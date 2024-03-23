@@ -90,20 +90,21 @@
                                IsLightDismissEnabled="True"
                                IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
                                OverlayInputPassThroughElement="{Binding $parent[Menu]}">
-                            <ui:FABorder Background="{DynamicResource MenuFlyoutPresenterBackground}"
-                                         BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
-                                         BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
-                                         MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-                                         MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
-                                         HorizontalAlignment="Stretch"
-                                         CornerRadius="{DynamicResource OverlayCornerRadius}">
+                            <Border Background="{DynamicResource MenuFlyoutPresenterBackground}"
+                                    BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
+                                    BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
+                                    MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+                                    MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+                                    HorizontalAlignment="Stretch"
+                                    CornerRadius="{DynamicResource OverlayCornerRadius}"
+                                    BackgroundSizing="InnerBorderEdge">
                                 <ScrollViewer>
                                     <ItemsPresenter Name="PART_ItemsPresenter"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"
                                                     Margin="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                                     Grid.IsSharedSizeScope="True" />
                                 </ScrollViewer>
-                            </ui:FABorder>
+                            </Border>
                         </Popup>
                     </Panel>
                 </Border>

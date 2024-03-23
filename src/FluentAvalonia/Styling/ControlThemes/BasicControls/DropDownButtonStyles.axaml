@@ -17,14 +17,16 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder x:Name="RootBorder"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}"
-                             ClipToBounds="True">
+                <Border x:Name="RootBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                        ClipToBounds="True">
                     <Grid x:Name="InnerGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -52,26 +54,26 @@
                                      HorizontalAlignment="Right"
                                      VerticalAlignment="Center" />
                     </Grid>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 
         <!--  PointerOver State  -->
-        <Style Selector="^:pointerover /template/ ui|FABorder#RootBorder">
+        <Style Selector="^:pointerover /template/ Border#RootBorder">
             <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPointerOver}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPointerOver}" />
         </Style>
 
         <!--  Pressed State  -->
-        <Style Selector="^:pressed /template/ ui|FABorder#RootBorder">
+        <Style Selector="^:pressed /template/ Border#RootBorder">
             <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundPressed}" />
         </Style>
 
         <!--  Disabled State  -->
-        <Style Selector="^:disabled /template/ ui|FABorder#RootBorder">
+        <Style Selector="^:disabled /template/ Border#RootBorder">
             <Setter Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />

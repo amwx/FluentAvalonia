@@ -231,7 +231,6 @@ public class SettingsPageViewModel : MainPageViewModelBase
     private string _currentAppTheme = _system;
     private FlowDirection _currentFlowDirection;
     private Color? _listBoxColor;
-    private bool _ignoreSetListBoxColor = false;
 
     private const string _system = "System";
     private const string _dark = "Dark";

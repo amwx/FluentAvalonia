@@ -121,17 +121,18 @@
                     </Border>
                     <Popup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"
-                           PlacementMode="RightEdgeAlignedTop"
+                           Placement="RightEdgeAlignedTop"
                            HorizontalOffset="{DynamicResource MenuFlyoutSubItemPopupHorizontalOffset}"
                            IsLightDismissEnabled="False"
                            IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                        <ui:FABorder Background="{DynamicResource MenuFlyoutPresenterBackground}"
-                                     BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
-                                     BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
-                                     MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-                                     MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
-                                     HorizontalAlignment="Stretch"
-                                     CornerRadius="{DynamicResource OverlayCornerRadius}">
+                        <Border Background="{DynamicResource MenuFlyoutPresenterBackground}"
+                                BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
+                                BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
+                                MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+                                MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+                                HorizontalAlignment="Stretch"
+                                CornerRadius="{DynamicResource OverlayCornerRadius}"
+                                BackgroundSizing="InnerBorderEdge">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Auto">
                                 <ItemsPresenter Name="PART_ItemsPresenter"
@@ -139,7 +140,7 @@
                                                 Margin="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                                 Grid.IsSharedSizeScope="True" />
                             </ScrollViewer>
-                        </ui:FABorder>
+                        </Border>
                     </Popup>
                 </Panel>
             </ControlTemplate>

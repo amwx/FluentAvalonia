@@ -219,31 +219,25 @@
         <Setter Property="Padding" Value="0" />
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundPointerOver}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPointerOver}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundPointerOver}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushPressed}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundPressed}" />
             </Style>
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource DatePickerButtonBackgroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource DatePickerButtonBorderBrushDisabled}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource DatePickerButtonForegroundDisabled}" />
             </Style>
         </Style>
@@ -307,7 +301,7 @@
 
                         <Popup Name="PART_Popup" WindowManagerAddShadowHint="False"
                                IsLightDismissEnabled="True" PlacementTarget="{TemplateBinding}"
-                               PlacementMode="Bottom">
+                               Placement="Bottom">
                             <DatePickerPresenter Name="PART_PickerPresenter" />
                         </Popup>
 
@@ -355,12 +349,14 @@
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="Background" Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             Padding="{DynamicResource DateTimeFlyoutBorderPadding}"
-                             MaxHeight="398"
-                             CornerRadius="{TemplateBinding CornerRadius}">
+                <Border Name="Background" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="InnerBorderEdge"
+                        Padding="{DynamicResource DateTimeFlyoutBorderPadding}"
+                        MaxHeight="398"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     <Grid Name="ContentRoot" RowDefinitions="*,Auto">
                         <Grid Name="PART_PickerContainer">
                             <Grid.Styles>
@@ -452,7 +448,7 @@
                             </Button>
                         </Grid>
                     </Grid>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 

@@ -18,20 +18,6 @@
     "Header": "Basic Input Controls",
     "Controls": [
       {
-        "Header": "HyperlinkButton",
-        "Description": "A button that appears as a hyperlink, and can navigate to a URI or handle a click event.",
-        "IconResourceKey": "HyperlinkButtonIcon",
-        "PageKey": "HyperlinkButton",
-        "SearchKeywords": [
-          "Hyperlink",
-          "Button"
-        ],
-        "Namespace": "FluentAvalonia.UI.Controls.HyperlinkButton",
-        "WinUINamespace": "Microsoft.UI.Xaml.Controls.HyperlinkButton",
-        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.hyperlinkbutton",
-        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/hyperlinks"
-      },
-      {
         "Header": "NumberBox",
         "Description": "A text control used for numeric input and evaluation of algebraic equations.",
         "IconResourceKey": "NumberBoxIcon",

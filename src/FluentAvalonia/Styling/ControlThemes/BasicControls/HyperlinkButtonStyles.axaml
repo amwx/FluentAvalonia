@@ -5,14 +5,14 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="10">
-                <ui:HyperlinkButton Content="Hello" />
-                <ui:HyperlinkButton Content="Disabled" IsEnabled="False" />
+                <HyperlinkButton Content="Hello" />
+                <HyperlinkButton Content="Disabled" IsEnabled="False" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
 
-    <ControlTheme x:Key="{x:Type ui:HyperlinkButton}" TargetType="ui:HyperlinkButton">
+    <ControlTheme x:Key="{x:Type HyperlinkButton}" TargetType="HyperlinkButton">
         <Setter Property="Background" Value="{DynamicResource HyperlinkButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource HyperlinkButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource HyperlinkButtonBorderBrush}" />

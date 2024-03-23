@@ -157,14 +157,14 @@
                            PlacementTarget="Background"
                            IsLightDismissEnabled="True"
                            InheritsTransform="True">
-                        <ui:FABorder Name="PopupBorder"
-                                     Background="{DynamicResource ComboBoxDropDownBackground}"
-                                     BackgroundSizing="InnerBorderEdge"
-                                     BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
-                                     BorderThickness="{DynamicResource ComboBoxDropdownBorderThickness}"
-                                     Padding="{DynamicResource ComboBoxDropdownBorderPadding}"
-                                     HorizontalAlignment="Stretch"
-                                     CornerRadius="{DynamicResource OverlayCornerRadius}">
+                        <Border Name="PopupBorder"
+                                Background="{DynamicResource ComboBoxDropDownBackground}"
+                                BackgroundSizing="InnerBorderEdge"
+                                BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
+                                BorderThickness="{DynamicResource ComboBoxDropdownBorderThickness}"
+                                Padding="{DynamicResource ComboBoxDropdownBorderPadding}"
+                                HorizontalAlignment="Stretch"
+                                CornerRadius="{DynamicResource OverlayCornerRadius}">
                             <ScrollViewer Name="ScrollViewer"
                                           AutomationProperties.AccessibilityView="Raw"
                                           Foreground="{DynamicResource ComboBoxDropDownForeground}"
@@ -173,7 +173,7 @@
                                 <ItemsPresenter Margin="{DynamicResource ComboBoxDropdownContentMargin}"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"/>
                             </ScrollViewer>
-                        </ui:FABorder>
+                        </Border>
                     </Popup>
 
                 </Grid>
@@ -325,7 +325,7 @@
                 <Style Selector="^ /template/ TextBox#EditableText">
                     <Setter Property="CornerRadius" Value="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}" />
                 </Style>
-                <Style Selector="^ /template/ ui|FABorder#PopupBorder">
+                <Style Selector="^ /template/ Border#PopupBorder">
                     <Setter Property="CornerRadius" Value="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
                 </Style>
 
@@ -336,7 +336,7 @@
                     <Style Selector="^ /template/ TextBox#EditableText">
                         <Setter Property="CornerRadius" Value="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
                     </Style>
-                    <Style Selector="^ /template/ ui|FABorder#PopupBorder">
+                    <Style Selector="^ /template/ Border#PopupBorder">
                         <Setter Property="CornerRadius" Value="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}" />
                     </Style>
                 </Style>

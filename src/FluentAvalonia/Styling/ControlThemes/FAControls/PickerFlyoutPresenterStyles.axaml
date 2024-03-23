@@ -56,11 +56,12 @@
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}"
-                             Padding="{DynamicResource FlyoutBorderThemePadding}">
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{DynamicResource FlyoutBorderThemePadding}"
+                        BackgroundSizing="InnerBorderEdge">
                     <DockPanel>
                         <Panel Name="AcceptDismissContainer"
                                DockPanel.Dock="Bottom"
@@ -98,7 +99,7 @@
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </ScrollViewer>
                     </DockPanel>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 

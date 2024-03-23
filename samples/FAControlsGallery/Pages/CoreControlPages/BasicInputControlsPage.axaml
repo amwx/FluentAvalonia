@@ -130,6 +130,29 @@
             </StackPanel>
         </ctrls:ControlExample>
 
+        <ctrls:ControlExample Header="Hyperlink Button">
+            <HyperlinkButton NavigateUri="http://github.com/amwx/FluentAvalonia"            
+                                Content="FluentAvalonia Github repo" 
+                                Name="TargetHyperlinkButton"/>
+
+            <ctrls:ControlExample.Options>
+                <CheckBox IsChecked="{Binding #TargetHyperlinkButton.IsEnabled}"
+                          Content="IsEnabled"/>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String>
+                    &lt;HyperlinkButton Content="FluentAvalonia Github repo" NavigateUri="http://github.com/amwx/FluentAvalonia" $(IsEnabled) /&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="IsEnabled" 
+                                                  IsEnabled="{Binding !#TargetHyperlinkButton.IsEnabled}"
+                                                  Value="IsEnabled=&quot;False&quot;" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
         <ctrls:ControlExample Header="RadioButton"
                               TargetType="RepeatButton"
                               EnableShowDocsLink="True"
