@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-
+    <NoWarn>$(NoWarn);NU1507</NoWarn>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

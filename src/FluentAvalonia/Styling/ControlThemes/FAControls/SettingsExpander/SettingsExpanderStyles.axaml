@@ -33,22 +33,24 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="Root"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}"
-                             Padding="{TemplateBinding Padding}">
-                    <ui:FABorder.Transitions>
+                <Border Name="Root"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}">
+                    <Border.Transitions>
                         <Transitions>
                             <BrushTransition Duration="00:00:00.083"
                                              Property="Background" />
                             <BrushTransition Duration="00:00:00.083"
                                              Property="BorderBrush" />
                         </Transitions>
-                    </ui:FABorder.Transitions>
+                    </Border.Transitions>
                     <Grid ColumnDefinitions="*,Auto">
                         <ContentPresenter Content="{TemplateBinding Content}" />
 
@@ -61,23 +63,23 @@
                                        Grid.Column="1"
                                        IsVisible="False"/>
                     </Grid>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 
         <Style Selector="^:allowClick">
-            <Style Selector="^:pointerover /template/ ui|FABorder#Root">
+            <Style Selector="^:pointerover /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
             </Style>
-            <Style Selector="^:pressed /template/ ui|FABorder#Root">
+            <Style Selector="^:pressed /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
             </Style>
         </Style>
 
-        <Style Selector="^:disabled /template/ ui|FABorder#Root">
+        <Style Selector="^:disabled /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
@@ -87,7 +89,7 @@
             <Style Selector="^ /template/ ui|SymbolIcon#ExpandCollapseChevron">
                 <Setter Property="RenderTransform" Value="rotate(180deg)" />
             </Style>
-            <Style Selector="^:not(:empty) /template/ ui|FABorder#Root">
+            <Style Selector="^:not(:empty) /template/ Border#Root">
                 <Setter Property="CornerRadius" Value="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}" />
             </Style>
         </Style>
@@ -115,12 +117,13 @@
                                   Content="{TemplateBinding Header}"
                                   Theme="{StaticResource SettingsExpanderToggleButtonStyle}"/>
                     
-                    <ui:FABorder Name="ExpanderContent"
-                                 Background="{TemplateBinding Background}"
-                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                 CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
-                                 IsVisible="False">
+                    <Border Name="ExpanderContent"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
+                            IsVisible="False"
+                            BackgroundSizing="InnerBorderEdge">
                         <ContentPresenter Name="PART_ContentPresenter"
                                           Margin="{TemplateBinding Padding}"
                                           IsVisible="{TemplateBinding IsExpanded}"
@@ -128,12 +131,12 @@
                                           Content="{TemplateBinding Content}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                    </ui:FABorder>
+                    </Border>
                 </StackPanel>
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^:expanded /template/ ui|FABorder#ExpanderContent">
+        <Style Selector="^:expanded /template/ Border#ExpanderContent">
             <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>

@@ -105,9 +105,15 @@ public partial class TaskDialog : ContentControl
     {
         base.OnLoaded(e);
 
-        SetButtons();
-        SetCommands();
-        TrySetInitialFocus();
+        // GH #539
+        // If TaskDialog is declared in Xaml, OnLoaded will get called when the Xaml is loaded, which is not 
+        // desirable (particularly the focus part). Only run this code and set focus if we're opening
+        if (_isOpening)
+        {
+            SetButtons();
+            SetCommands();
+            TrySetInitialFocus();
+        }       
     }
 
     private void OnKeyDownPreview(object sender, KeyEventArgs e)
@@ -154,6 +160,9 @@ public partial class TaskDialog : ContentControl
         {
             throw new InvalidOperationException("XamlRoot not set on TaskDialog. This should be set to the TopLevel that should own or host the dialog.");
         }
+
+        // See OnLoaded
+        _isOpening = true;
 
         OnOpening();
         
@@ -269,6 +278,7 @@ public partial class TaskDialog : ContentControl
             result = await host.ShowDialog<object>(owner as Window);
         }
 
+        _isOpening = false;
         OnClosed();
         _host = null;
 
@@ -633,5 +643,6 @@ public partial class TaskDialog : ContentControl
     internal bool _hasDeferralActive = false;
 
     private IInputElement _previousFocus;
-    private bool _ignoreWindowClosingEvent;    
+    private bool _ignoreWindowClosingEvent;
+    private bool _isOpening;
 }

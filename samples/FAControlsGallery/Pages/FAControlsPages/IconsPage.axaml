@@ -303,13 +303,12 @@ In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource
                 </TextBox>
 
                 <ScrollViewer Grid.Row="2">
-                    <ItemsRepeater ItemsSource="{Binding Path=View, Source={StaticResource IconsSource}}">
-                        <ItemsRepeater.Layout>
-                            <WrapLayout HorizontalSpacing="4"
-                                        VerticalSpacing="4"/>
-                        </ItemsRepeater.Layout>
+                    <ui:ItemsRepeater ItemsSource="{Binding Path=View, Source={StaticResource IconsSource}}">
+                        <ui:ItemsRepeater.Layout>
+                            <ui:FlowLayout MinColumnSpacing="4" MinRowSpacing="4" />
+                        </ui:ItemsRepeater.Layout>
 
-                        <ItemsRepeater.ItemTemplate>
+                        <ui:ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="vm:SymbolItem">
                                 <ui:FABorder Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                                              BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
@@ -339,8 +338,8 @@ In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource
                                     </Panel>
                                 </ui:FABorder>
                             </DataTemplate>
-                        </ItemsRepeater.ItemTemplate>
-                    </ItemsRepeater>
+                        </ui:ItemsRepeater.ItemTemplate>
+                    </ui:ItemsRepeater>
                 </ScrollViewer>
             </Grid>
         </TabItem>

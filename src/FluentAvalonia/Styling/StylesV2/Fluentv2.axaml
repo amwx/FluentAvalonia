@@ -1850,6 +1850,9 @@
             <!-- Refresh Visualizer -->
             <StaticResource x:Key="RefreshVisualizerForeground" ResourceKey="TextFillColorPrimaryBrush" />
             <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+
+            <!-- TabControl / TabStrip -->
+            <StaticResource x:Key="PivotHeaderItemSelectedPipeFill" ResourceKey="AccentFillColorDefaultBrush" />
             
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
@@ -3708,6 +3711,9 @@
             <StaticResource x:Key="RefreshVisualizerForeground" ResourceKey="TextFillColorPrimaryBrush" />
             <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
             
+            <!-- TabControl / TabStrip -->
+            <StaticResource x:Key="PivotHeaderItemSelectedPipeFill" ResourceKey="AccentFillColorDefaultBrush" />
+            
         </ResourceDictionary>
         <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
             <SolidColorBrush x:Key="TextFillColorPrimaryBrush" Color="{DynamicResource SystemColorWindowTextColor}" />
@@ -5561,6 +5567,9 @@
             <StaticResource x:Key="RefreshVisualizerForeground" ResourceKey="TextFillColorPrimaryBrush" />
             <StaticResource x:Key="RefreshVisualizerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
 
+            <!-- TabControl / TabStrip -->
+            <SolidColorBrush x:Key="PivotHeaderItemSelectedPipeFill" Color="{DynamicResource SystemColorHotlightColor}" />
+            
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 

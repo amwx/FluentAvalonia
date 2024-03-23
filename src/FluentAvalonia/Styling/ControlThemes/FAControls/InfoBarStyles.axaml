@@ -96,13 +96,15 @@
     <ControlTheme x:Key="{x:Type ui:InfoBar}" TargetType="ui:InfoBar">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="ContentRoot"
-                             VerticalAlignment="Top"
-                             BorderBrush="{DynamicResource InfoBarBorderBrush}"
-                             BorderThickness="{DynamicResource InfoBarBorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}">
+                <Border Name="ContentRoot"
+                        VerticalAlignment="Top"
+                        BorderBrush="{DynamicResource InfoBarBorderBrush}"
+                        BorderThickness="{DynamicResource InfoBarBorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}">
 
                     <!-- Background is used here so that it overrides the severity status color if set. 
                     Padding="{StaticResource InfoBarContentRootPadding}" applied as margin on grid b/c no Padding
@@ -196,12 +198,12 @@
                             </Button>
                         </Grid>
                     </Panel>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 
         <Style Selector="^:informational">
-            <Style Selector="^ /template/ ui|FABorder#ContentRoot">
+            <Style Selector="^ /template/ Border#ContentRoot">
                 <Setter Property="Background" Value="{DynamicResource InfoBarInformationalSeverityBackgroundBrush}" />
             </Style>
             <Style Selector="^ /template/ Ellipse#IconBackground">
@@ -215,7 +217,7 @@
         </Style>
 
         <Style Selector="^:error">
-            <Style Selector="^ /template/ ui|FABorder#ContentRoot">
+            <Style Selector="^ /template/ Border#ContentRoot">
                 <Setter Property="Background" Value="{DynamicResource InfoBarErrorSeverityBackgroundBrush}" />
             </Style>
             <Style Selector="^ /template/ Ellipse#IconBackground">
@@ -230,7 +232,7 @@
         </Style>
 
         <Style Selector="^:warning">
-            <Style Selector="^ /template/ ui|FABorder#ContentRoot">
+            <Style Selector="^ /template/ Border#ContentRoot">
                 <Setter Property="Background" Value="{DynamicResource InfoBarWarningSeverityBackgroundBrush}" />
             </Style>
             <Style Selector="^ /template/ Ellipse#IconBackground">
@@ -244,7 +246,7 @@
         </Style>
 
         <Style Selector="^:success">
-            <Style Selector="^ /template/ ui|FABorder#ContentRoot">
+            <Style Selector="^ /template/ Border#ContentRoot">
                 <Setter Property="Background" Value="{DynamicResource InfoBarSuccessSeverityBackgroundBrush}" />
             </Style>
             <Style Selector="^ /template/ Ellipse#IconBackground">
@@ -283,7 +285,7 @@
         </Style>
 
         <!-- Visible -->
-        <Style Selector="^:hidden /template/ ui|FABorder#ContentRoot">
+        <Style Selector="^:hidden /template/ Border#ContentRoot">
             <Setter Property="IsVisible" Value="False" />
         </Style>
 

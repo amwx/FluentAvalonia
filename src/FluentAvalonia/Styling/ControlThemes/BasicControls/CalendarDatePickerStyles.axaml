@@ -71,7 +71,7 @@
                     <Popup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"
                            PlacementTarget="{TemplateBinding}"
-                           PlacementMode="AnchorAndGravity"
+                           Placement="AnchorAndGravity"
                            PlacementAnchor="Bottom"
                            PlacementGravity="Bottom"
                            IsLightDismissEnabled="True">
