@@ -5,6 +5,8 @@
 
     <ControlTheme TargetType="SelectableTextBlock"
                   x:Key="{x:Type SelectableTextBlock}">
+        <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+
         <Style Selector="^[IsEnabled=true]">
             <Setter Property="Cursor" Value="IBeam" />
             <!-- Defined in TextBoxStyles -->

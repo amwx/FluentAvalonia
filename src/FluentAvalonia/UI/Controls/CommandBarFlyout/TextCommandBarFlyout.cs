@@ -167,12 +167,21 @@ public class TextCommandBarFlyout : CommandBarFlyout
         // TextBlocks aren't as robust as WinUI, but we should still be able 
         // to make Copy work. SelectAll won't though
 
-        var buttonsToAdd = TextControlButtons.Copy;
+        var buttonsToAdd = TextControlButtons.None;
 
         if (tb is SelectableTextBlock stb)
         {
+            var selLength = Math.Abs(stb.SelectionEnd - stb.SelectionStart);
+            if (selLength > 0)
+            {
+                buttonsToAdd |= TextControlButtons.Copy;
+            }
             if (!string.IsNullOrEmpty(stb.Text) && stb.Text.Length > 0)
                 buttonsToAdd |= TextControlButtons.SelectAll;
+        }
+        else
+        {
+            buttonsToAdd |= TextControlButtons.Copy;
         }
         
         return buttonsToAdd;
@@ -233,6 +242,10 @@ public class TextCommandBarFlyout : CommandBarFlyout
             if (target is TextBox tb)
             {
                 tb.Copy();
+            }
+            else if (target is SelectableTextBlock stb)
+            {
+                stb.Copy();
             }
             else if (target is TextBlock txtB)
             {
