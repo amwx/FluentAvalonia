@@ -16,6 +16,25 @@
     <Setter Property="Height" Value="32" />
     <Setter Property="Width" Value="64" />
     <Setter Property="MinWidth" Value="64" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    <Setter Property="Content">
+      <Template>
+        <!-- Preview color -->
+        <Panel>
+          <Border Background="{StaticResource ColorControlCheckeredBackgroundBrush}"
+                  CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Margin="1,1,0,1" />
+          <Border Background="{TemplateBinding HsvColor, Converter={StaticResource ToBrushConverter}}"
+                  CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Margin="1,1,0,1" />
+        </Panel>
+      </Template>
+    </Setter>
     <Setter Property="Palette">
       <controls:FluentColorPalette />
     </Setter>
@@ -24,8 +43,10 @@
         <DropDownButton CornerRadius="{TemplateBinding CornerRadius}"
                         Height="{TemplateBinding Height}"
                         Width="{TemplateBinding Width}"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
+                        Content="{TemplateBinding Content}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
                         Padding="0,0,10,0"
                         UseLayoutRounding="False">
           <DropDownButton.Styles>
@@ -33,21 +54,6 @@
               <Setter Property="Padding" Value="0" />
             </Style>
           </DropDownButton.Styles>
-          <DropDownButton.Content>
-            <!-- Preview color -->
-            <Panel>
-              <Border Background="{StaticResource ColorControlCheckeredBackgroundBrush}"
-                      CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
-                      Margin="1,1,0,1" />
-              <Border Background="{TemplateBinding HsvColor, Converter={StaticResource ToBrushConverter}}"
-                      CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
-                      Margin="1,1,0,1" />
-            </Panel>
-          </DropDownButton.Content>
           <DropDownButton.Flyout>
             <Flyout FlyoutPresenterClasses="nopadding"
                     Placement="Top">
