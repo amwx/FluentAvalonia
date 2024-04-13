@@ -8,6 +8,8 @@
                     xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                     x:CompileBindings="True">
 
+  <PlacementMode x:Key="ColorPickerFlyoutPlacement">Top</PlacementMode>
+
   <ControlTheme x:Key="{x:Type ColorPicker}"
                 TargetType="ColorPicker">
     <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
@@ -56,7 +58,7 @@
           </DropDownButton.Styles>
           <DropDownButton.Flyout>
             <Flyout FlyoutPresenterClasses="nopadding"
-                    Placement="Top">
+                    Placement="{DynamicResource ColorPickerFlyoutPlacement}">
 
               <!-- The following is copy-pasted from the ColorView's control template.
                    It MUST always be kept in sync with the ColorView (which is master).
