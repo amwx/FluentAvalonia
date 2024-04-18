@@ -2170,7 +2170,6 @@ public partial class NavigationView : HeaderedContentControl
             if (_itemsContainerRow != null)
             {
                 double itemsContMargin = _itemsContainer?.Margin.Vertical() ?? 0d;
-                var availHgt = _itemsContainerRow.ActualHeight - itemsContMargin;
 
                 return _itemsContainerRow.ActualHeight - itemsContMargin;                
             }
@@ -2194,15 +2193,39 @@ public partial class NavigationView : HeaderedContentControl
                         // We know the actual height of footer items, so use that to determine how to split pane.
                         if (_leftNavRepeater != null)
                         {
-                            double footerActualHeight =
-                                _leftNavFooterMenuRepeater.Bounds.Height + (_leftNavFooterMenuRepeater.IsVisible ?
-                                _leftNavFooterMenuRepeater.Margin.Vertical() : 0);
+                            double footerDesiredHeight = 0;
+                            {
+                                double footerItemsRepeaterTopBottomMargin = 0;
+                                if (_leftNavFooterMenuRepeater.IsVisible)
+                                    footerItemsRepeaterTopBottomMargin = _leftNavFooterMenuRepeater.Margin.Vertical();
 
-                            double paneFooterActualHeight =
-                                _leftNavFooterContentBorder != null ?
-                                (_leftNavFooterContentBorder.Bounds.Height +
-                                        (_leftNavFooterContentBorder.IsVisible ? _leftNavFooterContentBorder.Margin.Vertical() : 0)) :
-                                0.0;
+                                footerDesiredHeight = footerItemsRepeaterTopBottomMargin +
+                                    LayoutHelper.MeasureChild(_leftNavFooterMenuRepeater, Size.Infinity, default).Height;
+                            }
+
+                            double paneFooterActualHeight = 0;
+                            {
+                                if (_leftNavFooterContentBorder != null)
+                                {
+                                    double paneFooterTopBottomMargin = 0;
+                                    if (_leftNavFooterContentBorder.IsVisible)
+                                        paneFooterTopBottomMargin = _leftNavFooterContentBorder.Margin.Vertical();
+
+                                    paneFooterActualHeight = _leftNavFooterContentBorder.Bounds.Height +
+                                        paneFooterTopBottomMargin;
+                                }
+                            }
+
+
+                            //double footerActualHeight =
+                            //    _leftNavFooterMenuRepeater.Bounds.Height + (_leftNavFooterMenuRepeater.IsVisible ?
+                            //    _leftNavFooterMenuRepeater.Margin.Vertical() : 0);
+
+                            //double paneFooterActualHeight =
+                            //    _leftNavFooterContentBorder != null ?
+                            //    (_leftNavFooterContentBorder.Bounds.Height +
+                            //            (_leftNavFooterContentBorder.IsVisible ? _leftNavFooterContentBorder.Margin.Vertical() : 0)) :
+                            //    0.0;
 
 
                             // This is the value computed during the measure pass of the layout process. This will be the value used to determine
@@ -2216,7 +2239,7 @@ public partial class NavigationView : HeaderedContentControl
                                     _leftNavRepeater.Margin.Vertical() : 0);
 
                             // Footer and PaneFooter are included in the footerGroup to calculate available height for menu items.
-                            var footerGroupActualHeight = footerActualHeight + paneFooterActualHeight;
+                            var footerGroupDesiredHeight = footerDesiredHeight + paneFooterActualHeight;
 
                             if (_footerItemsSource.Count == 0 && !IsSettingsVisible)
                             {
@@ -2229,31 +2252,31 @@ public partial class NavigationView : HeaderedContentControl
                                 PseudoClasses.Set(s_pcSeparator, false);
                                 return 0d;
                             }
-                            else if (totalHeight >= menuItemsDesiredHeight + footerGroupActualHeight)
+                            else if (totalHeight >= menuItemsDesiredHeight + footerGroupDesiredHeight)
                             {
                                 // We have enough space for two so let everyone get as much as they need
-                                _footerItemsScrollViewer.MaxHeight = footerActualHeight;
+                                _footerItemsScrollViewer.MaxHeight = footerDesiredHeight;
                                 PseudoClasses.Set(s_pcSeparator, false);
-                                return totalHeight - footerGroupActualHeight;
+                                return totalHeight - footerDesiredHeight;
                             }
-                            else if (menuItemsDesiredHeight < totalHeightHalf)
+                            else if (menuItemsDesiredHeight <= totalHeightHalf)
                             {
                                 // Footer items exceed over the half, so let's limit them.
                                 _footerItemsScrollViewer.MaxHeight = (totalHeight - menuItemsActualHeight);
                                 PseudoClasses.Set(s_pcSeparator, true);
                                 return menuItemsActualHeight;
                             }
-                            else if (footerGroupActualHeight <= totalHeightHalf)
+                            else if (footerDesiredHeight <= totalHeightHalf)
                             {
                                 // Menu items exceed over the half, so let's limit them.
-                                _footerItemsScrollViewer.MaxHeight = footerActualHeight;
+                                _footerItemsScrollViewer.MaxHeight = footerDesiredHeight;
                                 PseudoClasses.Set(s_pcSeparator, true);
-                                return totalHeight - footerGroupActualHeight;
+                                return totalHeight - footerDesiredHeight;
                             }
                             else
                             {
                                 // Both are more than half the height, so split evenly.
-                                _footerItemsScrollViewer.MaxHeight = (totalHeightHalf);
+                                _footerItemsScrollViewer.MaxHeight = totalHeightHalf;
                                 PseudoClasses.Set(s_pcSeparator, true);
                                 return totalHeightHalf;
                             }
