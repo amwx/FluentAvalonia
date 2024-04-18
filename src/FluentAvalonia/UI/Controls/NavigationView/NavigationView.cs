@@ -2217,17 +2217,6 @@ public partial class NavigationView : HeaderedContentControl
                             }
 
 
-                            //double footerActualHeight =
-                            //    _leftNavFooterMenuRepeater.Bounds.Height + (_leftNavFooterMenuRepeater.IsVisible ?
-                            //    _leftNavFooterMenuRepeater.Margin.Vertical() : 0);
-
-                            //double paneFooterActualHeight =
-                            //    _leftNavFooterContentBorder != null ?
-                            //    (_leftNavFooterContentBorder.Bounds.Height +
-                            //            (_leftNavFooterContentBorder.IsVisible ? _leftNavFooterContentBorder.Margin.Vertical() : 0)) :
-                            //    0.0;
-
-
                             // This is the value computed during the measure pass of the layout process. This will be the value used to determine
                             // the partition logic between menuItems and footerGroup, since the ActualHeight may be taller if there's more space.
                             var menuItemsDesiredHeight = _leftNavRepeater.DesiredSize.Height;
