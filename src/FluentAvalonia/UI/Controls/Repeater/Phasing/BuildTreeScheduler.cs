@@ -2,7 +2,7 @@
 
 namespace FluentAvalonia.UI.Controls;
 
-public static class BuildTreeScheduler
+internal static class BuildTreeScheduler
 {
     public static void RegisterWork(int priority, Action workFunc)
     {

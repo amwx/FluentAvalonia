@@ -11,6 +11,8 @@ public class UniformGridLayout : VirtualizingLayout, IOrientationBasedMeasures, 
     public UniformGridLayout()
     {
         LayoutId = "UniformGridLayout";
+
+        UpdateIndexBasedLayoutOrientation(Orientation.Horizontal);
     }
 
     public static readonly StyledProperty<Orientation> OrientationProperty =
@@ -135,6 +137,8 @@ public class UniformGridLayout : VirtualizingLayout, IOrientationBasedMeasures, 
             //i.e. the properties are the inverse of each other.
             ScrollOrientation = orientation == Orientation.Horizontal ? ScrollOrientation.Vertical :
                 ScrollOrientation.Horizontal;
+
+            UpdateIndexBasedLayoutOrientation(orientation);
         }
         else if (property == MinColumnSpacingProperty)
         {
@@ -193,6 +197,8 @@ public class UniformGridLayout : VirtualizingLayout, IOrientationBasedMeasures, 
             finalSize, context, true /*isWrapping*/,
             (FlowLayoutAlgorithm.LineAlignment)_itemsJustification,
             LayoutId);
+
+        GetAsGridState(context.LayoutState).InvalidateElementSize();
 
         return value;
     }
@@ -389,6 +395,11 @@ public class UniformGridLayout : VirtualizingLayout, IOrientationBasedMeasures, 
 
     private void InvalidateLayout() => InvalidateMeasure();
 
+    private void UpdateIndexBasedLayoutOrientation(Orientation orientation)
+    {
+        IndexBasedLayoutOrientation = orientation == Orientation.Horizontal ?
+            IndexBasedLayoutOrientation.LeftToRight : IndexBasedLayoutOrientation.TopToBottom;
+    }
    
 
     private double _minItemWidth = double.NaN;

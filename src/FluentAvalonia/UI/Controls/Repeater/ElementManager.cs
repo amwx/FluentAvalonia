@@ -13,6 +13,11 @@ public enum ScrollOrientation
 
 internal class ElementManager
 {
+    public ElementManager(bool useLayoutBounds = true)
+    {
+        _useLayoutBounds = useLayoutBounds;
+    }
+
     public int FirstRealizedIndex => _firstRealizedDataIndex;
 
     public int LastRealizedIndex =>
@@ -94,7 +99,11 @@ internal class ElementManager
             _firstRealizedDataIndex = dataIndex;
 
         _realizedElements.Add(element);
-        _realizedElementLayoutBounds.Add(default);
+
+        if (_useLayoutBounds)
+        {
+            _realizedElementLayoutBounds.Add(default);
+        }
     }
 
     public void Insert(int realizedIndex, int dataIndex, Control element)
@@ -106,7 +115,11 @@ internal class ElementManager
         }
 
         _realizedElements.Insert(realizedIndex, element);
-        _realizedElementLayoutBounds.Insert(realizedIndex, new Rect(-1,-1,-1,-1));
+
+        if (_useLayoutBounds)
+        {
+            _realizedElementLayoutBounds.Insert(realizedIndex, new Rect(-1, -1, -1, -1));
+        }
     }
 
     public void ClearRealizedRange(int realizedIndex, int count)
@@ -126,7 +139,12 @@ internal class ElementManager
 
         int endIndex = realizedIndex + count;
         _realizedElements.RemoveRange(realizedIndex, endIndex - realizedIndex);
-        _realizedElementLayoutBounds.RemoveRange(realizedIndex, endIndex - realizedIndex);
+
+        if (_useLayoutBounds)
+        {
+            _realizedElementLayoutBounds.RemoveRange(realizedIndex, endIndex - realizedIndex);
+        }
+
 
         if (realizedIndex == 0)
         {
@@ -234,6 +252,8 @@ internal class ElementManager
         bool scrollOrientationSameAsFlow)
     {
         Debug.Assert(IsVirtualizingContext());
+        Debug.Assert(_useLayoutBounds);
+
         bool intersects = false;
         if (_realizedElementLayoutBounds.Count > 0)
         {
@@ -347,6 +367,7 @@ internal class ElementManager
     public void DiscardElementsOutsideWindow(Rect window, ScrollOrientation orientation)
     {
         Debug.Assert(IsVirtualizingContext());
+        Debug.Assert(_useLayoutBounds);
         Debug.Assert(_realizedElements.Count == _realizedElementLayoutBounds.Count);
 
         // The following illustration explains the cutoff indices.
@@ -470,6 +491,7 @@ internal class ElementManager
         return false;
     }
 
+    private bool _useLayoutBounds;
     private List<Control> _realizedElements = new List<Control>();
     private List<Rect> _realizedElementLayoutBounds = new List<Rect>();
     private int _firstRealizedDataIndex = -1;

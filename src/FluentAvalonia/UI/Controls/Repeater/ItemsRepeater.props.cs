@@ -22,8 +22,11 @@ public partial class ItemsRepeater : Panel
     public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
         AvaloniaProperty.Register<ItemsRepeater, IDataTemplate>(nameof(ItemTemplate));
 
-    public static readonly StyledProperty<ElementAnimator> AnimatorProperty =
-        AvaloniaProperty.Register<ItemsRepeater, ElementAnimator>(nameof(Animator));
+    //public static readonly StyledProperty<ElementAnimator> AnimatorProperty =
+    //    AvaloniaProperty.Register<ItemsRepeater, ElementAnimator>(nameof(Animator));
+
+    public static readonly StyledProperty<ItemCollectionTransitionProvider> ItemTransitionProviderProperty =
+        AvaloniaProperty.Register<ItemsRepeater, ItemCollectionTransitionProvider>(nameof(ItemTransitionProvider));
 
     public double VerticalCacheLength
     {
@@ -55,11 +58,18 @@ public partial class ItemsRepeater : Panel
         set => SetValue(ItemTemplateProperty, value);
     }
 
-    public ElementAnimator Animator
+    //public ElementAnimator Animator
+    //{
+    //    get => GetValue(AnimatorProperty);
+    //    set => SetValue(AnimatorProperty, value);
+    //}
+
+    public ItemCollectionTransitionProvider ItemTransitionProvider
     {
-        get => GetValue(AnimatorProperty);
-        set => SetValue(AnimatorProperty, value);
+        get => GetValue(ItemTransitionProviderProperty);
+        set => SetValue(ItemTransitionProviderProperty, value);
     }
+
 
     public FAItemsSourceView ItemsSourceView => _itemsSourceView;
 
@@ -70,6 +80,8 @@ public partial class ItemsRepeater : Panel
         get => _layoutState;
         set => _layoutState = value;
     }
+
+    internal TransitionManager TransitionManager { get; }
 
     internal Rect VisibleWindow => _viewportManager.GetLayoutVisibleWindow();
 
@@ -84,8 +96,6 @@ public partial class ItemsRepeater : Panel
     }
 
     internal IElementFactory ItemTemplateShim => _itemTemplateWrapper;
-
-    internal AnimationManager AnimationManager => _animationManager;
 
     internal ViewManager ViewManager => _viewManager;
 
@@ -136,46 +146,4 @@ public partial class ItemsRepeater : Panel
     }
 
     private ContainerContentChangingEventArgs _containerContentChangingArgs;
-}
-
-public class ContainerContentChangingEventArgs : EventArgs
-{
-    internal ContainerContentChangingEventArgs(int index, object item,
-        Control container, VirtualizationInfo virtInfo)
-    {
-        ItemIndex = index;
-        Item = item;
-        ItemContainer = container;
-        _virtInfo = virtInfo;
-    }
-
-    internal ContainerContentChangingEventArgs(int index, object item,
-        Control container, VirtualizationInfo virtInfo, int phase)
-    {
-        ItemIndex = index;
-        Item = item;
-        ItemContainer = container;
-        _virtInfo = virtInfo;
-        Phase = phase;
-    }
-
-    //public bool Handled { get; set; }
-
-    //public bool InRecycleQueue { get; internal set; }
-
-    public object Item { get; internal set; }
-
-    public Control ItemContainer { get; internal set; }
-
-    public int ItemIndex { get; internal set; }
-
-    public int Phase { get; private set; }
-
-    public void RegisterUpdateCallback(
-        TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> callback)
-    {
-        _virtInfo.UpdatePhasingInfo(Phase + 1, Item, callback);
-    }
-
-    private VirtualizationInfo _virtInfo;
 }

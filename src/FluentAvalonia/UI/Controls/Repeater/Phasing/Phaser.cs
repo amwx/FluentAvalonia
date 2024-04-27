@@ -222,7 +222,7 @@ internal class Phaser
         });
     }
 
-    private ItemsRepeater _owner;
+    private readonly ItemsRepeater _owner;
     private List<ElementInfo> _pendingElements;
     private bool _registeredForCallbacks;
 

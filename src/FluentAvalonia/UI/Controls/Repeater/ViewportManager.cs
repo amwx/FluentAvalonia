@@ -3,11 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
 
-// VERIFIED SOURCE
+// Note: this source should come from ViewportManagerWithPlatformFeatures.cpp
+
 internal class ViewportManager
 {
     public ViewportManager(ItemsRepeater owner)
@@ -47,7 +47,7 @@ internal class ViewportManager
 
             if (suggestedAnchor == null)
             {
-                var anchorElement = _scroller != null ? _scroller.CurrentAnchor : null;
+                var anchorElement = _scroller?.CurrentAnchor;
 
                 if (anchorElement != null)
                 {
@@ -343,7 +343,7 @@ internal class ViewportManager
         if (!_renderingToken)
         {
             _renderingToken = true;
-            Dispatcher.UIThread.Post(() => OnCompositionTargetRendering(null, null), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(OnCompositionTargetRendering, DispatcherPriority.Render);
             //CompositionTarget.Rendering += OnCompositionTargetRendering;
         }
 
@@ -373,7 +373,7 @@ internal class ViewportManager
         return targetChild;
     }
 
-    private void OnCompositionTargetRendering(object _, EventArgs __)
+    private void OnCompositionTargetRendering()
     {
         _renderingToken = false;
         //CompositionTarget.Rendering -= OnCompositionTargetRendering;
@@ -395,8 +395,6 @@ internal class ViewportManager
                 info.CanBeScrollAnchor = true;
             }
         }
-
-        //TryInvalidateMeasure();
     }
 
     internal void ResetScrollers()

@@ -50,6 +50,11 @@ internal class RepeaterLayoutContext : VirtualizingLayoutContext
         owner?.ClearElementImpl(element);
     }
 
+    protected override Rect VisibleRectCore()
+    {
+        return GetOwner()?.VisibleWindow ?? default;
+    }
+
     protected override Rect RealizationRectCore()
     {
         return GetOwner()?.RealizationWindow ?? default;

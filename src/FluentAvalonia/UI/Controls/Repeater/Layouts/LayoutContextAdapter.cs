@@ -1,11 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using FluentAvalonia.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -69,7 +64,6 @@ internal class LayoutContextAdapter : VirtualizingLayoutContext
             throw new ArgumentException("LayoutOrigin must be at (0,0) when RealizationRect is infinite sized.");
         }
     }
-
 
     private NonVirtualizingLayoutContext _nonVirtualizingContext;
 }

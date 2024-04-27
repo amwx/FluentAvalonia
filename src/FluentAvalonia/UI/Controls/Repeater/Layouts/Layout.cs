@@ -4,9 +4,18 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+public enum IndexBasedLayoutOrientation
+{
+    None = 0,
+    TopToBottom = 1,
+    LeftToRight = 2
+}
+
 public abstract class Layout : AvaloniaObject
 {
     public string LayoutId { get; set; }
+
+    protected internal IndexBasedLayoutOrientation IndexBasedLayoutOrientation { get; set; }
 
     public event TypedEventHandler<Layout, EventArgs> MeasureInvalidated;
     public event TypedEventHandler<Layout, EventArgs> ArrangeInvalidated;
@@ -122,4 +131,6 @@ public abstract class Layout : AvaloniaObject
 
     protected void InvalidateArrange() =>
         ArrangeInvalidated?.Invoke(this, EventArgs.Empty);
+
+    protected internal virtual ItemCollectionTransitionProvider CreateDefaultItemTransitionProvider() => null;
 }

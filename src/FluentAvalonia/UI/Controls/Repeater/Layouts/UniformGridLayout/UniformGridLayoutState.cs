@@ -40,6 +40,7 @@ internal class UniformGridLayoutState
             // If the first element is realized we don't need to get it from the context
             if (_flowAlgorithm.GetElementIfRealized(0) is Control realizedElement)
             {
+                // This is relatively cheap, when item 0 is realized, always use it to find the size. 
                 realizedElement.Measure(CalculateAvailableSize(
                     availableSize, orientation, stretch, maxItemsPerLine,
                     layoutItemWidth, layoutItemHeight, minRowSpacing, minColumnSpacing));
@@ -48,34 +49,43 @@ internal class UniformGridLayoutState
             }
             else
             {
-                // Not realized by flowlayout, so do this now!
-                if (context.GetOrCreateElementAt(0, ElementRealizationOptions.ForceCreate | ElementRealizationOptions.SuppressAutoRecycle) is Control firstElement)
+                // Not realized by flowlayout, so do this now but just once per layout pass since this is expensive and
+                // has the potential to repeatedly invalidate layout due to recycling causing layout cycles.
+                if (!_isEffectiveSizeValid)
                 {
-                    firstElement.Measure(CalculateAvailableSize(availableSize, orientation,
-                        stretch, maxItemsPerLine, layoutItemWidth, layoutItemHeight,
-                        minRowSpacing, minColumnSpacing));
-                    SetSize(firstElement.DesiredSize, layoutItemWidth, layoutItemHeight,
-                        availableSize, stretch, orientation, minRowSpacing, minColumnSpacing,
-                        maxItemsPerLine);
-                    // BUG: WinUI recycles the element here, but that is causing a hang when the Repeater is loaded
-                    // What seems to be happening is recycle element is called which unrealizes the first item in the
-                    // viewport that is used here to estimate size
-                    // For some reason, MeasureOverride gets called infinitely, and EffectiveViewportChanged is never
-                    // fired from the ScrollViewer so we always have an invalid viewport, and because the item was
-                    // unrealized here, this path is always called and we never progress past the first item
-                    // Take out the recycling here and all seems to work ok
-                    //context.RecycleElement(firstElement);
+                    if (context.GetOrCreateElementAt(0, ElementRealizationOptions.ForceCreate) is Control firstElement)
+                    {
+                        firstElement.Measure(CalculateAvailableSize(availableSize, orientation,
+                            stretch, maxItemsPerLine, layoutItemWidth, layoutItemHeight,
+                            minRowSpacing, minColumnSpacing));
+                        SetSize(firstElement.DesiredSize, layoutItemWidth, layoutItemHeight,
+                            availableSize, stretch, orientation, minRowSpacing, minColumnSpacing,
+                            maxItemsPerLine);
+                        context.RecycleElement(firstElement);
 
-                    // HACK: Add SuppressAutoRecycle above in GetOrCreateElementAt, and force add the item which
-                    // moves ownership to the ElementManager, and this works. This path still gets called twice
-                    // as the first time an invalid anchor index (-1) is found which clears the realized range
-                    // and thus we get another call on this path, which then succeeds. The downside there is 
-                    // that we get an extra element realized that is never removed from the Panel, but at least
-                    // this works again, and that extra element is treated like an unrealized element arranged
-                    // offscreen so its not that big of a deal. Hopefully, MS will have an actual fix for this...
-                    _flowAlgorithm.TryAddElement0(firstElement);
+                        // BUG: WinUI recycles the element here, but that is causing a hang when the Repeater is loaded
+                        // What seems to be happening is recycle element is called which unrealizes the first item in the
+                        // viewport that is used here to estimate size
+                        // For some reason, MeasureOverride gets called infinitely, and EffectiveViewportChanged is never
+                        // fired from the ScrollViewer so we always have an invalid viewport, and because the item was
+                        // unrealized here, this path is always called and we never progress past the first item
+                        // Take out the recycling here and all seems to work ok
+                        //context.RecycleElement(firstElement);
+
+                        // HACK: Add SuppressAutoRecycle above in GetOrCreateElementAt, and force add the item which
+                        // moves ownership to the ElementManager, and this works. This path still gets called twice
+                        // as the first time an invalid anchor index (-1) is found which clears the realized range
+                        // and thus we get another call on this path, which then succeeds. The downside there is 
+                        // that we get an extra element realized that is never removed from the Panel, but at least
+                        // this works again, and that extra element is treated like an unrealized element arranged
+                        // offscreen so its not that big of a deal. Hopefully, MS will have an actual fix for this...
+                        // | ElementRealizationOptions.SuppressAutoRecycle
+                        //_flowAlgorithm.TryAddElement0(firstElement);
+                    }
                 }
             }
+
+            _isEffectiveSizeValid = true;
         }
     }
 
@@ -188,7 +198,13 @@ internal class UniformGridLayoutState
         }
     }
 
+    internal void InvalidateElementSize()
+    {
+        _isEffectiveSizeValid = false;
+    }
+
     private FlowLayoutAlgorithm _flowAlgorithm;
     private double _effectiveItemWidth;
     private double _effectiveItemHeight;
+    private bool _isEffectiveSizeValid;
 }

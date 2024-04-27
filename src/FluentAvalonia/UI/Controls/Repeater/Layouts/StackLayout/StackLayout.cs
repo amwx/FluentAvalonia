@@ -11,6 +11,8 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
     public StackLayout()
     {
         LayoutId = "StackLayout";
+
+        UpdateIndexBasedLayoutOrientation(Orientation.Vertical);
     }
 
     public static readonly StyledProperty<double> SpacingProperty =
@@ -71,6 +73,9 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
 
     protected internal override Size MeasureOverride(VirtualizingLayoutContext context, Size availableSize)
     {
+        if (context.LayoutState == null)
+            return default;
+
         GetAsStackState(context.LayoutState).OnMeasureStart();
 
         var desiredSize = GetFlowAlgorithm(context).Measure(
@@ -83,6 +88,9 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
 
     protected internal override Size ArrangeOverride(VirtualizingLayoutContext context, Size finalSize)
     {
+        if (context.LayoutState == null)
+            return default;
+
         var value = GetFlowAlgorithm(context).Arrange(
             finalSize, context, false /*isWrapping*/,
             FlowLayoutAlgorithm.LineAlignment.Start, LayoutId);
@@ -92,8 +100,12 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
 
     protected internal override void OnItemsChangedCore(VirtualizingLayoutContext context, object source, NotifyCollectionChangedEventArgs args)
     {
-        GetFlowAlgorithm(context).OnItemsSourceChanged(source, args, context);
-        // Always invalidate layout to keep the view accurate.
+        if (context.LayoutState != null)
+        {
+            var flow = GetAsStackState(context.LayoutState).FlowAlgorithm;
+            flow.OnItemsSourceChanged(source, args, context);
+        }
+
         InvalidateLayout();
     }
 
@@ -254,6 +266,8 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
             var orientation = change.GetNewValue<Orientation>();
             ScrollOrientation = orientation == Orientation.Horizontal ? ScrollOrientation.Horizontal :
                 ScrollOrientation.Vertical;
+
+            UpdateIndexBasedLayoutOrientation(orientation);
         }
         else if (change.Property == SpacingProperty)
         {
@@ -282,6 +296,12 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
         }
 
         return averageElementSize;
+    }
+
+    private void UpdateIndexBasedLayoutOrientation(Orientation orientation)
+    {
+        IndexBasedLayoutOrientation = orientation == Orientation.Horizontal ?
+            IndexBasedLayoutOrientation.LeftToRight : IndexBasedLayoutOrientation.TopToBottom;
     }
 
     private void InvalidateLayout() => InvalidateMeasure();

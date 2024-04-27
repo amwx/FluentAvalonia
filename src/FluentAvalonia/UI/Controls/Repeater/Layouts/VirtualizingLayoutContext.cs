@@ -35,6 +35,8 @@ public abstract class VirtualizingLayoutContext : LayoutContext
 
     protected abstract void RecycleElementCore(Control element);
 
+    protected abstract Rect VisibleRectCore();
+
     protected abstract Rect RealizationRectCore();
 
     protected abstract int RecommendedAnchorIndexCore();

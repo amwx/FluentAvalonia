@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using System.Collections.Specialized;
@@ -25,6 +26,7 @@ internal class ViewManager
 
     public Control GetElement(int index, bool forceCreate, bool suppressAutoRecycle)
     {
+        bool elementIsAnchor = false;
         var element = forceCreate ? null : GetElementIfAlreadyHeldByLayout(index);
         if (element == null)
         {
@@ -36,13 +38,28 @@ internal class ViewManager
                 if (virtInfo.Index == index)
                 {
                     element = c;
+                    elementIsAnchor = true;
                 }
             }
         }
+
         if (element == null)
             element = GetElementFromUniqueIdResetPool(index);
-        if (element == null)
-            element = GetElementFromPinnedElements(index);
+
+        if (element == null || elementIsAnchor)
+        { 
+            var elementFromPool = GetElementFromPinnedElements(index);
+
+            // When elementIsAnchor is True and 'element' is already set, it still needs to be removed from
+            // the pinned pool if it happens to be in there, for example because it has keyboard focus.
+            Debug.Assert(elementFromPool == null || element == null || elementFromPool == element);
+
+            if (element == null && elementFromPool != null)
+            {
+                element = elementFromPool;
+            }
+        }
+
         if (element == null)
             element = GetElementFromElementFactory(index);
 
@@ -652,16 +669,7 @@ internal class ViewManager
             {
                 if (providedElementFactory == null)
                 {
-                    var factory = new FuncDataTemplate<object>((x, ns) =>
-                    {
-                        var tb = new TextBlock
-                        {
-                            Text = "CREATE ME"
-                            //[!TextBlock.TextProperty] = new Binding()
-                        };
-                        return tb;
-                    });
-                    _owner.ItemTemplate = FuncDataTemplate.Default;// factory;
+                    _owner.ItemTemplate = FuncDataTemplate.Default;
                     return _owner.ItemTemplateShim;
                 }
 
@@ -771,7 +779,7 @@ internal class ViewManager
             children.Add(element);
         }
 
-        repeater.AnimationManager.OnElementPrepared(element);
+        repeater.TransitionManager.OnElementPrepared(element);
 
         repeater.OnElementPrepared(element, index, virtInfo);
 
@@ -800,7 +808,7 @@ internal class ViewManager
 
     private bool ClearElementToAnimator(Control element, VirtualizationInfo virtInfo)
     {
-        bool cleared = _owner.AnimationManager.ClearElement(element);
+        bool cleared = _owner.TransitionManager.ClearElement(element);
         if (cleared)
         {
             var clearedIndex = virtInfo.Index;
@@ -839,14 +847,14 @@ internal class ViewManager
 
     private void UpdateFocusedElement()
     {
-        Control focusedElement = null;
+        var owner = _owner;
+        var focusedElement = (InputElement)TopLevel.GetTopLevel(owner).FocusManager.GetFocusedElement();
 
         var child = focusedElement;
         if (child != null)
         {
             var parent = child.GetVisualParent();
-            var owner = _owner;
-
+           
             // Find out if the focused element belongs to one of our direct
             // children.
             while (parent != null)
@@ -878,10 +886,10 @@ internal class ViewManager
 
             if (focusedElement != null)
             {
-                UpdatePin(focusedElement, true /* addPin */);
+                UpdatePin((Control)focusedElement, true /* addPin */);
             }
 
-            _lastFocusedElement = focusedElement;
+            _lastFocusedElement = (Control)focusedElement;
         }
     }
 

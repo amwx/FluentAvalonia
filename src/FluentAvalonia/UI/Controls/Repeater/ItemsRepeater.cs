@@ -1,6 +1,4 @@
-﻿#define REPEATER_TRACE
-
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
@@ -21,22 +19,25 @@ public partial class ItemsRepeater : Panel
     {
         _viewportManager = new ViewportManager(this);
         _viewManager = new ViewManager(this);
-        _animationManager = new AnimationManager(this);
+        TransitionManager = new TransitionManager(this);
 
         AutomationProperties.SetAccessibilityView(this, AccessibilityView.Raw);
         SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.Once);
+        XYFocus.SetNavigationModes(this, XYFocusNavigationModes.Enabled);
 
         Loaded += OnRepeaterLoaded;
         Unloaded += OnRepeaterUnloaded;
         LayoutUpdated += OnLayoutUpdated;
 
-        var layout = Layout as VirtualizingLayout;
-        OnLayoutChanged(null, layout);
+        // TODO: Why is this here...
+        //var layout = Layout as VirtualizingLayout;
+        //OnLayoutChanged(null, layout);
         AddHandler(RequestBringIntoViewEvent, OnBringIntoViewRequested);
     }
 
     protected override AutomationPeer OnCreateAutomationPeer()
     {
+        // TODO
         return base.OnCreateAutomationPeer(); // new RepeaterAutomationPeer(this);
     }
 
@@ -48,7 +49,7 @@ public partial class ItemsRepeater : Panel
         if (IsProcessingCollectionChange)
             throw new Exception("Cannot run layout in the middle of a collection change");
 
-        var layout = Layout;
+        var layout = GetEffectiveLayout();
 
         if (layout != null)
         {
@@ -142,7 +143,7 @@ public partial class ItemsRepeater : Panel
             _isLayoutInProgress = true;
             Size arrangeSize = default;
 
-            if (Layout is Layout layout)
+            if (GetEffectiveLayout() is Layout layout)
             {
                 arrangeSize = layout.Arrange(GetLayoutContext(), finalSize);
             }
@@ -182,7 +183,7 @@ public partial class ItemsRepeater : Panel
             }
 
             _viewportManager.OnOwnerArranged();
-            _animationManager.OnOwnerArranged();
+            TransitionManager.OnOwnerArranged();
 
             return arrangeSize;
         }
@@ -220,9 +221,10 @@ public partial class ItemsRepeater : Panel
         {
             OnLayoutChanged(args.GetOldValue<Layout>(), args.GetNewValue<Layout>());
         }
-        else if (property == AnimatorProperty)
+        else if (property == ItemTransitionProviderProperty)
         {
-            OnAnimatorChanged(args.GetOldValue<ElementAnimator>(), args.GetNewValue<ElementAnimator>());
+            OnTransitionProviderChanged(args.GetOldValue<ItemCollectionTransitionProvider>(), 
+                args.GetNewValue<ItemCollectionTransitionProvider>());
         }
         else if (property == HorizontalCacheLengthProperty)
         {
@@ -372,7 +374,7 @@ public partial class ItemsRepeater : Panel
 
         if (isAnchorOutsideRealizedRange)
         {
-            if (Layout == null)
+            if (GetEffectiveLayout() == null)
                 throw new Exception("Cannot make an anchor when there is no attached layout");
 
             element = GetLayoutContext().GetOrCreateElementAt(index);
@@ -427,6 +429,8 @@ public partial class ItemsRepeater : Panel
     { 
         // Now that the layout has settled, reset the measure counter to detect the next potential StackLayout layout cycle.
         _stackLayoutMeasureCounter = 0;
+
+        EnsureDefaultLayoutState();
     }
 
     private void OnDataSourcePropertyChanged(FAItemsSourceView oldValue, FAItemsSourceView newValue)
@@ -434,17 +438,17 @@ public partial class ItemsRepeater : Panel
         if (_isLayoutInProgress)
             throw new Exception();
 
+        EnsureDefaultLayoutState();
+
         if (_itemsSourceView != null)
             _itemsSourceView.CollectionChanged -= OnItemsSourceViewChanged;
 
         _itemsSourceView = newValue;
 
         if (newValue != null)
-        {
             _itemsSourceView.CollectionChanged += OnItemsSourceViewChanged;
-        }
 
-        if (Layout is Layout l)
+        if (GetEffectiveLayout() is Layout l)
         {
             var args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
             try
@@ -482,13 +486,15 @@ public partial class ItemsRepeater : Panel
     private void OnItemTemplateChanged(IDataTemplate oldValue, IDataTemplate newValue)
     {
         if (_isLayoutInProgress && oldValue != null)
-            throw new Exception();
+            throw new InvalidOperationException("ItemTemplate cannot be changed during layout.");
+
+        EnsureDefaultLayoutState();
 
         // Since the ItemTemplate has changed, we need to re-evaluate all the items that
         // have already been created and are now in the tree. The easiest way to do that
         // would be to do a reset.. Note that this has to be done before we change the template
         // so that the cleared elements go back into the old template.
-        if (Layout is Layout layout)
+        if (GetEffectiveLayout() is Layout layout)
         {
             var args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
             try
@@ -540,11 +546,24 @@ public partial class ItemsRepeater : Panel
 
     private void OnLayoutChanged(Layout oldValue, Layout newValue)
     {
+        bool isInitialSetup = !_wasLayoutChangedCalled;
+        _wasLayoutChangedCalled = true;
+
         if (_isLayoutInProgress)
-            throw new Exception();
+            throw new InvalidOperationException("Layout cannot be changed during layout.");
 
         _viewManager.OnLayoutChanging();
-        _animationManager.OnLayoutChanging();
+        TransitionManager.OnLayoutChanging();
+
+        if (oldValue == null & !isInitialSetup)
+        {
+            oldValue = GetDefaultLayout();
+        }
+        if (newValue == null)
+        {
+            newValue = GetDefaultLayout();
+        }    
+
 
         if (oldValue != null)
         {
@@ -572,6 +591,11 @@ public partial class ItemsRepeater : Panel
             newValue.InitializeForContext(GetLayoutContext());
             newValue.MeasureInvalidated += InvalidateMeasureForLayout;
             newValue.ArrangeInvalidated += InvalidateArrangeForLayout;
+
+            if (_ownsTransitionProvider)
+            {
+                TransitionManager.OnTransitionProviderChanged(newValue.CreateDefaultItemTransitionProvider());
+            }
         }
 
         bool isVirtualizingLayout = newValue != null && newValue is VirtualizingLayout;
@@ -579,27 +603,28 @@ public partial class ItemsRepeater : Panel
         InvalidateMeasure();
     }
 
-    private void OnAnimatorChanged(ElementAnimator _, ElementAnimator newValue)
+    private void OnTransitionProviderChanged(ItemCollectionTransitionProvider _, ItemCollectionTransitionProvider newValue)
     {
-        _animationManager.OnAnimatorChanged(newValue);
+        _ownsTransitionProvider = false;
+        TransitionManager.OnTransitionProviderChanged(newValue);
     }
 
     private void OnItemsSourceViewChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
         if (_isLayoutInProgress)
-            throw new Exception();
+            throw new InvalidOperationException("Changes in data source are not allowed during layout.");
 
         if (IsProcessingCollectionChange)
-            throw new Exception();
+            throw new InvalidOperationException("Changes in the data source are not allowed during another change in the data source.");
 
         try
         {
             _processingItemsSourceChange = args;
 
-            _animationManager.OnItemsSourceChanged(sender, args);
+            TransitionManager.OnItemsSourceChanged(sender, args);
             _viewManager.OnItemsSourceChanged(sender, args);
 
-            if (Layout is Layout layout)
+            if (GetEffectiveLayout() is Layout layout)
             {
                 if (layout is VirtualizingLayout vl)
                 {
@@ -627,10 +652,21 @@ public partial class ItemsRepeater : Panel
         InvalidateArrange();
     }
 
+    private void EnsureDefaultLayoutState()
+    {
+        if (!_wasLayoutChangedCalled)
+        {
+            // Initialize the cached layout to the default value
+            // OnLayoutChanged has not been called yet for this ItemsRepeater.
+            // This is the first call for the default VirtualizingLayout layout after the control's creation.
+            var layout = GetEffectiveLayout() as VirtualizingLayout;
+            OnLayoutChanged(null, layout);
+        }
+    }
+
     private VirtualizingLayoutContext GetLayoutContext()
     {
-        if (_layoutContext == null)
-            _layoutContext = new RepeaterLayoutContext(this);
+        _layoutContext ??= new RepeaterLayoutContext(this);
 
         return _layoutContext;
     }
@@ -645,13 +681,36 @@ public partial class ItemsRepeater : Panel
         return null;
     }
 
-    
+    private Layout GetEffectiveLayout()
+    {
+        var l = Layout;
+        if (l != null)
+            return l;
 
+        return GetDefaultLayout();
+    }
+
+    private Layout GetDefaultLayout()
+    {
+        // Default to StackLayout if the Layout property was not set.
+        // We use thread_local here to get a unique instance per thread, since Layout objects
+        // are not sharable across different xaml threads.
+        //static thread_local winrt::Layout defaultLayout = winrt::StackLayout();
+        //return defaultLayout;
+
+        return new StackLayout();
+    }
+
+
+    // StackLayout measurements are shortcut when m_stackLayoutMeasureCounter reaches this value
+    // to prevent a layout cycle exception.
+    // The XAML Framework's iteration limit is 250, but that limit has been reached in practice
+    // with this value as small as 61. It was never reached with 60. 
     internal const short _maxStackLayoutIterations = 60;
     internal static Point ClearedElementsArrangePosition = new Point(-10000, -10000);
     internal static Rect InvalidRect = new Rect(-1,-1,-1,-1);
 
-    private readonly AnimationManager _animationManager;
+    private readonly TransitionManager _animationManager;
     private readonly ViewManager _viewManager;
     private readonly ViewportManager _viewportManager;
 
@@ -686,12 +745,20 @@ public partial class ItemsRepeater : Panel
     // UIAffinityQueue cleanup. To avoid that bug, take a strong ref
     private IElementFactory _itemTemplate;
     private Layout _layout;
-    private ElementAnimator _animator = null;
 
     // Bug where DataTemplate with no content causes a crash.
     // See: https://github.com/microsoft/microsoft-ui-xaml/issues/776
     // Solution: Have flag that is only true when DataTemplate exists but it is empty.
     private bool _isItemTemplateEmpty = false;
+
+    // If no ItemCollectionTransitionProvider is explicitly provided, we'll retrieve a default one
+    // from the Layout object. In that case, we'll want to know that we own that object and can
+    // overwrite it if the Layout object changes.
+    private bool _ownsTransitionProvider = true;
+
+    // Tracks whether OnLayoutChanged has already been called or not so that
+    // EnsureDefaultLayoutState does not trigger a second call after the control's creation.
+    private bool _wasLayoutChangedCalled;
 }
 
 // I think this is something special for WinRT/C++, we'll just use

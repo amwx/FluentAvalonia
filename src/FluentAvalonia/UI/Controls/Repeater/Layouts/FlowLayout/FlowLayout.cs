@@ -348,6 +348,12 @@ public class FlowLayout : VirtualizingLayout, IOrientationBasedMeasures, IFlowLa
         return avgLineSize;
     }
 
+    //internal void UpdateIndexBasedLayoutOrientation(Orientation orientation)
+    //{
+    //    SetIndexBasedLayoutOrientation(orientation == Orientation.Horizontal ?
+    //        IndexBasedLayoutOrientation.LeftToRight : IndexBasedLayoutOrientation.TopToBottom);
+    //}
+
     private FlowLayoutAlgorithm.LineAlignment _lineAlignment = FlowLayoutAlgorithm.LineAlignment.Start;
     private double _minColumnSpacing = 0.0;
     private double _minRowSpacing = 0.0;
