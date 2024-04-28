@@ -31,8 +31,6 @@ public class VirtualizationInfo
 
     public ElementOwner Owner => _owner;
 
-    public int Phase { get; set; }
-
     public bool KeepAlive { get; set; }
 
     public Rect ArrangeBounds { get; set; }
@@ -41,28 +39,10 @@ public class VirtualizationInfo
 
     public object Data => _data == null ? null :
         _data.TryGetTarget(out var target) ? target : null;
-
-    //public object DataTemplateComponent
-    //{
-    //    get
-    //    {
-    //        if (_dataTemplateComponent != null)
-    //        {
-    //            return _dataTemplateComponent.TryGetTarget(out var target) ? target : null;
-    //        }
-
-    //        return null;
-    //    }
-    //}
-
-    internal TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> ContainerChangingCallback;
-
-    internal void UpdatePhasingInfo(int phase, object data,
-        TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> args = null)
+ 
+    internal void UpdatePhasingInfo(object data)
     {
-        Phase = phase;
         _data = new WeakReference<object>(data);
-        ContainerChangingCallback = args;
     }
 
     internal void MoveOwnershipToLayoutFromElementFactory(int index, string uniqueId)
@@ -144,8 +124,8 @@ public class VirtualizationInfo
 
     private WeakReference<object> _data;
     private WeakReference<object> _dataTemplateComponent;
+    
 
-    internal const int PhaseNotSpecified = int.MinValue;
     internal const int PhaseReachedEnd = -1;
 
     public enum ElementOwner

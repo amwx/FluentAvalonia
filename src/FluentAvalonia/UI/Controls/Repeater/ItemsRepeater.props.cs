@@ -81,7 +81,7 @@ public partial class ItemsRepeater : Panel
         set => _layoutState = value;
     }
 
-    internal TransitionManager TransitionManager { get; }
+    internal TransitionManager TransitionManager => _transitionManager;
 
     internal Rect VisibleWindow => _viewportManager.GetLayoutVisibleWindow();
 
@@ -100,6 +100,8 @@ public partial class ItemsRepeater : Panel
     internal ViewManager ViewManager => _viewManager;
 
     private bool IsProcessingCollectionChange => _processingItemsSourceChange != null;
+
+    internal bool ShouldPhase => ContainerContentChanging != null;
 
     public event TypedEventHandler<ItemsRepeater, ItemsRepeaterElementPreparedEventArgs> ElementPrepared;
     public event TypedEventHandler<ItemsRepeater, ItemsRepeaterElementClearingEventArgs> ElementClearing;
@@ -132,17 +134,9 @@ public partial class ItemsRepeater : Panel
         return result;
     }
 
-
-    internal void RaiseContainerContentChanging(int index, object item, Control container,
-        VirtualizationInfo virtInfo)
+    internal void RaiseContainerContentChanging(ContainerContentChangingEventArgs args)
     {
-        if (ContainerContentChanging != null)
-        {
-            var args = new ContainerContentChangingEventArgs(index, item,
-                container, virtInfo);
-
-            ContainerContentChanging?.Invoke(this, args);
-        }
+        ContainerContentChanging?.Invoke(this, args);
     }
 
     private ContainerContentChangingEventArgs _containerContentChangingArgs;
