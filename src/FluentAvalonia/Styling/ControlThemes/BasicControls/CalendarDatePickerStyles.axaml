@@ -92,10 +92,8 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^">
-            <Style Selector="^ /template/ Button#PART_Button">
-                <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerCalendarGlyphForeground}" />
-            </Style>
+        <Style Selector="^ /template/ Button#PART_Button">
+            <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerCalendarGlyphForeground}" />
         </Style>
 
         <Style Selector="^:pointerover">
