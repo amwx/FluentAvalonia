@@ -29,22 +29,19 @@ internal class Phaser
     {
         // We need to remove the element from the pending elements list. We cannot just change the phase to -1
         // since it will get updated when the element gets recycled.
-        if (virtInfo.ContainerChangingCallback != null)
+        for (int i = _pendingElements.Count - 1; i >= 0; i--)
         {
-            for (int i = _pendingElements.Count - 1; i >= 0; i--)
+            if (_pendingElements[i].Element == element)
             {
-                if (_pendingElements[i].Element == element)
-                {
-                    _pendingElements.RemoveAt(i);
-                    // Because of the way we do this compared to WinUI, its possible to have multiple entries in 
-                    // _pendingElements with the same control - so we can't break here, we must search
-                    //break;
-                }
+                _pendingElements.RemoveAt(i);
+                // Because of the way we do this compared to WinUI, its possible to have multiple entries in 
+                // _pendingElements with the same control - so we can't break here, we must search
+                //break;
             }
         }
 
         // We no longer store the phase information on VirtualizationInfo because we handle it differently
-        //virtInfo.UpdatePhasingInfo(VirtualizationInfo.PhaseNotSpecified, null /*data*/, null /*dataTemplateComponent*/);
+        virtInfo.UpdatePhasingInfo(null /*data*/);
     }
 
     public void DoPhasedWorkCallback()
