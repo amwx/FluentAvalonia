@@ -20,7 +20,8 @@ public class ProgressRing : RangeBase
     /// Defines the <see cref="IsIndeterminate"/> property
     /// </summary>
     public static readonly StyledProperty<bool> IsIndeterminateProperty =
-        ProgressBar.IsIndeterminateProperty.AddOwner<ProgressRing>();
+        ProgressBar.IsIndeterminateProperty.AddOwner<ProgressRing>(
+            new StyledPropertyMetadata<bool>(defaultValue: true));
 
     /// <summary>
     /// Gets or sets a value that indicates whether the ProgressRing is showing progress
