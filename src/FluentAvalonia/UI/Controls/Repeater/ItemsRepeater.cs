@@ -19,7 +19,7 @@ public partial class ItemsRepeater : Panel
     {
         _viewportManager = new ViewportManager(this);
         _viewManager = new ViewManager(this);
-        TransitionManager = new TransitionManager(this);
+        _transitionManager = new TransitionManager(this);
 
         AutomationProperties.SetAccessibilityView(this, AccessibilityView.Raw);
         SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.Once);
@@ -175,7 +175,7 @@ public partial class ItemsRepeater : Panel
                     if (vi.ArrangeBounds != ItemsRepeater.InvalidRect &&
                         newBounds != vi.ArrangeBounds)
                     {
-                        _animationManager.OnElementBoundsChanged(element, vi.ArrangeBounds, newBounds);
+                        _transitionManager.OnElementBoundsChanged(element, vi.ArrangeBounds, newBounds);
                     }
 
                     vi.ArrangeBounds = newBounds;
@@ -183,7 +183,7 @@ public partial class ItemsRepeater : Panel
             }
 
             _viewportManager.OnOwnerArranged();
-            TransitionManager.OnOwnerArranged();
+            _transitionManager.OnOwnerArranged();
 
             return arrangeSize;
         }
@@ -553,7 +553,7 @@ public partial class ItemsRepeater : Panel
             throw new InvalidOperationException("Layout cannot be changed during layout.");
 
         _viewManager.OnLayoutChanging();
-        TransitionManager.OnLayoutChanging();
+        _transitionManager.OnLayoutChanging();
 
         if (oldValue == null & !isInitialSetup)
         {
@@ -594,7 +594,7 @@ public partial class ItemsRepeater : Panel
 
             if (_ownsTransitionProvider)
             {
-                TransitionManager.OnTransitionProviderChanged(newValue.CreateDefaultItemTransitionProvider());
+                _transitionManager.OnTransitionProviderChanged(newValue.CreateDefaultItemTransitionProvider());
             }
         }
 
@@ -606,7 +606,7 @@ public partial class ItemsRepeater : Panel
     private void OnTransitionProviderChanged(ItemCollectionTransitionProvider _, ItemCollectionTransitionProvider newValue)
     {
         _ownsTransitionProvider = false;
-        TransitionManager.OnTransitionProviderChanged(newValue);
+        _transitionManager.OnTransitionProviderChanged(newValue);
     }
 
     private void OnItemsSourceViewChanged(object sender, NotifyCollectionChangedEventArgs args)
@@ -621,7 +621,7 @@ public partial class ItemsRepeater : Panel
         {
             _processingItemsSourceChange = args;
 
-            TransitionManager.OnItemsSourceChanged(sender, args);
+            _transitionManager.OnItemsSourceChanged(sender, args);
             _viewManager.OnItemsSourceChanged(sender, args);
 
             if (GetEffectiveLayout() is Layout layout)
@@ -710,7 +710,7 @@ public partial class ItemsRepeater : Panel
     internal static Point ClearedElementsArrangePosition = new Point(-10000, -10000);
     internal static Rect InvalidRect = new Rect(-1,-1,-1,-1);
 
-    private readonly TransitionManager _animationManager;
+    private readonly TransitionManager _transitionManager;
     private readonly ViewManager _viewManager;
     private readonly ViewportManager _viewportManager;
 
