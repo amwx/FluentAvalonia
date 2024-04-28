@@ -78,12 +78,26 @@ public sealed class ProgressRingAnimatedVisual : Control
 
     internal void SetBackground(IBrush brush)
     {
-        _sfc?.SendHandlerMessage(new HandlerMessage(HandlerMessageType.Background, brush));
+        if (brush is ISolidColorBrush scb)
+        {
+            _sfc?.SendHandlerMessage(new HandlerMessage(HandlerMessageType.Background, scb.Color.ToSKColor()));
+        }
+        else
+        {
+            _sfc?.SendHandlerMessage(new HandlerMessage(HandlerMessageType.Background, null));
+        }
     }
 
     internal void SetForeground(IBrush brush)
     {
-        _sfc?.SendHandlerMessage(new HandlerMessage(HandlerMessageType.Foreground, brush));
+        if (brush is ISolidColorBrush scb)
+        {
+            _sfc?.SendHandlerMessage(new HandlerMessage(HandlerMessageType.Foreground, scb.Color.ToSKColor()));
+        }
+        else
+        {
+            _sfc?.SendHandlerMessage(new HandlerMessage(HandlerMessageType.Foreground, SKColors.Transparent));
+        }
     }
 
     private CustomCompHandler _handler;
@@ -319,9 +333,9 @@ public sealed class ProgressRingAnimatedVisual : Control
 
                     case HandlerMessageType.Background:
                         {
-                            if (hm.Data is ISolidColorBrush b)
+                            if (hm.Data is SKColor c)
                             {
-                                _background = b.Color.ToSKColor();
+                                _background = c;
                             }
                             else
                             {
@@ -332,9 +346,9 @@ public sealed class ProgressRingAnimatedVisual : Control
 
                     case HandlerMessageType.Foreground:
                         {
-                            if (hm.Data is ISolidColorBrush b)
+                            if (hm.Data is SKColor c)
                             {
-                                _foreground = b.Color.ToSKColor();
+                                _foreground = c;
                             }
                             else
                             {
