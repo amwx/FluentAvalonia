@@ -58,11 +58,11 @@ public class ProgressRing : RangeBase
         }
         else if (change.Property == MinimumProperty)
         {
-            _animatedVisualSource.SetMinimum(change.GetNewValue<double>());
+            _animatedVisualSource?.SetMinimum(change.GetNewValue<double>());
         }
         else if (change.Property == MaximumProperty)
         {
-            _animatedVisualSource.SetMaximum(change.GetNewValue<double>());
+            _animatedVisualSource?.SetMaximum(change.GetNewValue<double>());
         }
         else if (change.Property == IsIndeterminateProperty)
         {
