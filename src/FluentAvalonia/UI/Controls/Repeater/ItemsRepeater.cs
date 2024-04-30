@@ -6,10 +6,8 @@ using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
-using FluentAvalonia.UI.Controls;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -37,8 +35,7 @@ public partial class ItemsRepeater : Panel
 
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-        // TODO
-        return base.OnCreateAutomationPeer(); // new RepeaterAutomationPeer(this);
+        return new ItemsRepeaterAutomationPeer(this);
     }
 
     protected override Size MeasureOverride(Size availableSize)
