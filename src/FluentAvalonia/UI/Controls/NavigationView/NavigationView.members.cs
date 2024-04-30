@@ -642,8 +642,8 @@ public partial class NavigationView : HeaderedContentControl
     private Control _itemsContainer;
 
     //Indicator animations
-    //private Control _prevIndicator;
-    //private Control _nextIndicator;
+    private Control _prevIndicator;
+    private Control _nextIndicator;
     private Control _activeIndicator;
     private object _lastSelectedItemPendingAnimationInTopNav;
 
@@ -751,6 +751,11 @@ public partial class NavigationView : HeaderedContentControl
     private const int _itemNotFound = -1;
 
     private double _openPaneWidth = 320; //WinUI #5800
+
+    // Added in WinUI1.5
+    private bool _isSelectionChangedPending;
+    private object _pendingSelectionChangedItem;
+    private NavigationRecommendedTransitionDirection _pendingSelectionChangedDirection;
 
     // Localization String Resources
     private static readonly string SR_SettingsButtonName = "SettingsButtonName";
