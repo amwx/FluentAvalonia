@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
 
-public enum ScrollOrientation
+internal enum ScrollOrientation
 {
     Horizontal,
     Vertical

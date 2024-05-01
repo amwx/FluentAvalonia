@@ -1,4 +1,7 @@
-﻿using Avalonia.Controls;
+﻿#pragma warning disable
+// Note this class has no documentation yet from Microsoft - disabling the warnings around
+// public APIs with no documentation
+using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 

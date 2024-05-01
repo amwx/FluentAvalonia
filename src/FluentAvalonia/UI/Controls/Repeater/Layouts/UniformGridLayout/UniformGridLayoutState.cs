@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 
 namespace FluentAvalonia.UI.Controls;
-//VERIFIED SOURCE
+
 internal class UniformGridLayoutState
 {
     public FlowLayoutAlgorithm FlowAlgorithm => _flowAlgorithm;

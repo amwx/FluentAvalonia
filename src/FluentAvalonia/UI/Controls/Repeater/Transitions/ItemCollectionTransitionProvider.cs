@@ -1,4 +1,5 @@
-﻿using Avalonia.Threading;
+﻿#pragma warning disable
+using Avalonia.Threading;
 using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;

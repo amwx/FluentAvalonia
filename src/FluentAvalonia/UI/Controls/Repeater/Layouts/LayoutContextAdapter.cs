@@ -50,6 +50,9 @@ internal class LayoutContextAdapter : VirtualizingLayoutContext
         return idx;
     }
 
+    protected override Rect VisibleRectCore() =>
+        new Rect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
+
     protected override Rect RealizationRectCore() =>
         new Rect(0, 0, double.PositiveInfinity, double.PositiveInfinity);
 

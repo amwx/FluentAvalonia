@@ -71,11 +71,6 @@ internal class Phaser
 
                     int nextPhase = VirtualizationInfo.PhaseReachedEnd;
                     
-                    if (args.GetCallbackInfo(out var updateInfo))
-                    {
-                        nextPhase = updateInfo.NextPhase;
-                    }
-
                     ValidatePhaseOrdering(currentPhase, nextPhase);
 
                     var previousAvailableSize = LayoutInformation.GetPreviousMeasureConstraint(element);

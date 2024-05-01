@@ -6,6 +6,10 @@ using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Represents an <i>attached layout</i> that arranges child elements into a single line that can be
+/// oriented horizontally or vertically
+/// </summary>
 public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IOrientationBasedMeasures
 {
     public StackLayout()
@@ -15,20 +19,33 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
         UpdateIndexBasedLayoutOrientation(Orientation.Vertical);
     }
 
+    /// <summary>
+    /// Defines the <see cref="Spacing"/> property
+    /// </summary>
     public static readonly StyledProperty<double> SpacingProperty =
         StackPanel.SpacingProperty.AddOwner<StackLayout>();
 
+    /// <summary>
+    /// Defines the <see cref="Orientation"/> property
+    /// </summary>
     public static readonly StyledProperty<Orientation> OrientationProperty = 
         StackPanel.OrientationProperty.AddOwner<StackLayout>(
             new StyledPropertyMetadata<Orientation>(
                 defaultValue: Orientation.Vertical));
 
+    /// <summary>
+    /// Gets or sets a uniform distance (in pixels) between stacked items. It is applied
+    /// in the direction of the StackLayout's Orientation
+    /// </summary>
     public double Spacing
     {
         get => GetValue(SpacingProperty);
         set => SetValue(SpacingProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the dimension by which child elements are stacked
+    /// </summary>
     public Orientation Orientation
     {
         get => GetValue(OrientationProperty);

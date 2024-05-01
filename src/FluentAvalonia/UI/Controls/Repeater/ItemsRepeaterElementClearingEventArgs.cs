@@ -2,6 +2,9 @@
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Provides data for the <see cref="ItemsRepeater.ElementClearing"/> event
+/// </summary>
 public class ItemsRepeaterElementClearingEventArgs : EventArgs
 {
     internal ItemsRepeaterElementClearingEventArgs(Control element) => Element = element;

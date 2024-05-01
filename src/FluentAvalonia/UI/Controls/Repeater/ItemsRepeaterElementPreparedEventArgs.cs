@@ -2,6 +2,9 @@
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Provides data for the <see cref="ItemsRepeater.ElementPrepared"/> event
+/// </summary>
 public class ItemsRepeaterElementPreparedEventArgs : EventArgs
 {
     internal ItemsRepeaterElementPreparedEventArgs(Control element, int index)

@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿#pragma warning disable
+using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 

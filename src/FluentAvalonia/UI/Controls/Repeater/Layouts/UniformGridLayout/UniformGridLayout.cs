@@ -6,6 +6,9 @@ using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Positions elements sequentially from left to right or top to bottom in a wrapping layout.
+/// </summary>
 public class UniformGridLayout : VirtualizingLayout, IOrientationBasedMeasures, IFlowLayoutAlgorithmDelegates
 {
     public UniformGridLayout()
@@ -15,74 +18,122 @@ public class UniformGridLayout : VirtualizingLayout, IOrientationBasedMeasures, 
         UpdateIndexBasedLayoutOrientation(Orientation.Horizontal);
     }
 
+    /// <summary>
+    /// Defines the <see cref="Orientation"/> property
+    /// </summary>
     public static readonly StyledProperty<Orientation> OrientationProperty =
         StackPanel.OrientationProperty.AddOwner<UniformGridLayout>(
             new StyledPropertyMetadata<Orientation>(
                 defaultValue: Orientation.Horizontal));
 
+    /// <summary>
+    /// Defines the <see cref="MinItemWidth"/> property
+    /// </summary>
     public static readonly StyledProperty<double> MinItemWidthProperty = 
         AvaloniaProperty.Register<UniformGridLayout, double>(nameof(MinItemWidth));
 
+    /// <summary>
+    /// Defines the <see cref="MinItemHeight"/> property
+    /// </summary>
     public static readonly StyledProperty<double> MinItemHeightProperty = 
         AvaloniaProperty.Register<UniformGridLayout, double>(nameof(MinItemHeight));
 
+    /// <summary>
+    /// Defines the <see cref="MinRowSpacing"/> property
+    /// </summary>
     public static readonly StyledProperty<double> MinRowSpacingProperty = 
         AvaloniaProperty.Register<UniformGridLayout, double>(nameof(MinRowSpacing));
 
+    /// <summary>
+    /// Defines the <see cref="MinColumnSpacing"/> property
+    /// </summary>
     public static readonly StyledProperty<double> MinColumnSpacingProperty = 
         AvaloniaProperty.Register<UniformGridLayout, double>(nameof(MinColumnSpacing));
 
+    /// <summary>
+    /// Defines the <see cref="ItemsJustification"/> property
+    /// </summary>
     public static readonly StyledProperty<UniformGridLayoutItemsJustification> ItemsJustificationProperty = 
         AvaloniaProperty.Register<UniformGridLayout, UniformGridLayoutItemsJustification>(nameof(ItemsJustification));
 
+    /// <summary>
+    /// Defines the <see cref="ItemsStretch"/> property
+    /// </summary>
     public static readonly StyledProperty<UniformGridLayoutItemsStretch> ItemsStretchProperty = 
         AvaloniaProperty.Register<UniformGridLayout, UniformGridLayoutItemsStretch>(nameof(ItemsStretch));
 
+    /// <summary>
+    /// Defines the <see cref="MaximumRowsOrColumns"/> property
+    /// </summary>
     public static readonly StyledProperty<int> MaximumRowsOrColumnsProperty = 
         AvaloniaProperty.Register<UniformGridLayout, int>(nameof(MaximumRowsOrColumns), defaultValue: -1);
 
+    /// <summary>
+    /// Gets or sets the axis along which items are laid out.
+    /// </summary>
     public Orientation Orientation
     {
         get => GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the minimum width of each item.
+    /// </summary>
     public double MinItemWidth
     {
         get => GetValue(MinItemWidthProperty);
         set => SetValue(MinItemWidthProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the minimum height of each item.
+    /// </summary>
     public double MinItemHeight
     {
         get => GetValue(MinItemHeightProperty);
         set => SetValue(MinItemHeightProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the minimum space between items on the vertical axis.
+    /// </summary>
     public double MinRowSpacing
     {
         get => GetValue(MinRowSpacingProperty);
         set => SetValue(MinRowSpacingProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the minimum space between items on the horizontal axis.
+    /// </summary>
     public double MinColumnSpacing
     {
         get => GetValue(MinColumnSpacingProperty);
         set => SetValue(MinColumnSpacingProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets a value that indicates how items are aligned on the non-scrolling or non-virtualizing axis.
+    /// </summary>
     public UniformGridLayoutItemsJustification ItemsJustification
     {
         get => GetValue(ItemsJustificationProperty);
         set => SetValue(ItemsJustificationProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets a value that indicates how items are sized to fill the available space.
+    /// </summary>
     public UniformGridLayoutItemsStretch ItemsStretch
     {
         get => GetValue(ItemsStretchProperty);
         set => SetValue(ItemsStretchProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the maximum number of items rendered per row or column, based on the orientation of the UniformGridLayout.
+    /// </summary>
     public int MaximumRowsOrColumns
     {
         get => GetValue(MaximumRowsOrColumnsProperty);

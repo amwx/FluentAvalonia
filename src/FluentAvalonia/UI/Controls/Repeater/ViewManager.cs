@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
@@ -893,8 +892,9 @@ internal class ViewManager
 
     private void EnsureEventSubscriptions()
     {
-        if (!_hasEvents)
+        if (!_gotFocus)
         {
+            _gotFocus = true;
             _owner.GotFocus += OnFocusChanged;
             _owner.LostFocus += OnFocusChanged;
         }
@@ -939,7 +939,7 @@ internal class ViewManager
     private const int FirstRealizedElementIndexDefault = int.MaxValue;
     private const int LastRealizedElementIndexDefault = int.MinValue;
 
-    private bool _hasEvents;
+    private bool _gotFocus;
 
     private struct PinnedElementInfo
     {

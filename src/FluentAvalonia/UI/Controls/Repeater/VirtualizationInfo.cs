@@ -1,9 +1,8 @@
 ﻿using Avalonia;
-using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
-public class VirtualizationInfo
+internal class VirtualizationInfo
 {
     public VirtualizationInfo()
     {
@@ -122,9 +121,7 @@ public class VirtualizationInfo
     private string _uniqueId;
     private ElementOwner _owner;
 
-    private WeakReference<object> _data;
-    private WeakReference<object> _dataTemplateComponent;
-    
+    private WeakReference<object> _data;    
 
     internal const int PhaseReachedEnd = -1;
 

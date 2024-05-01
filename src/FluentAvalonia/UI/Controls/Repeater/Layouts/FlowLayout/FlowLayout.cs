@@ -1,4 +1,7 @@
-﻿using Avalonia;
+﻿#pragma warning disable
+// Note this class has no documentation yet from Microsoft - disabling the warnings around
+// public APIs with no documentation
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using FluentAvalonia.Core;
@@ -24,7 +27,7 @@ public class FlowLayout : VirtualizingLayout, IOrientationBasedMeasures, IFlowLa
 {
     public FlowLayout()
     {
-        LayoutId = "FlowLayout";
+
     }
 
     public static readonly StyledProperty<FlowLayoutLineAlignment> LineAlignmentProperty = 

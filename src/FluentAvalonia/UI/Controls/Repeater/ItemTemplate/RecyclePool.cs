@@ -1,4 +1,7 @@
-﻿using Avalonia;
+﻿#pragma warning disable
+// Note this class has no documentation yet from Microsoft - disabling the warnings around
+// public APIs with no documentation
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 

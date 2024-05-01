@@ -2,6 +2,9 @@
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Provides data for the <see cref="ItemsRepeater.ElementIndexChanged"/> event
+/// </summary>
 public class ItemsRepeaterElementIndexChangedEventArgs : EventArgs
 {
     internal ItemsRepeaterElementIndexChangedEventArgs(Control element, int oldIndex, int newIndex)

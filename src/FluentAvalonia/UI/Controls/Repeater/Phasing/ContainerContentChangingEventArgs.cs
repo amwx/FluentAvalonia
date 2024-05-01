@@ -3,6 +3,9 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Provides data for the <see cref="ItemsRepeater.ContainerContentChanging"/> event.
+/// </summary>
 public class ContainerContentChangingEventArgs : EventArgs
 {
     internal ContainerContentChangingEventArgs(int index, object item,
@@ -29,53 +32,37 @@ public class ContainerContentChangingEventArgs : EventArgs
 
     //public bool InRecycleQueue { get; internal set; }
 
+    /// <summary>
+    /// Gets the data item associated with this container.
+    /// </summary>
     public object Item { get; internal set; }
 
+    /// <summary>
+    /// Gets the UI container used to display the current data item.
+    /// </summary>
     public Control ItemContainer { get; internal set; }
 
+    /// <summary>
+    /// Gets the index in the ItemsSource of the data item associated with this container.
+    /// </summary>
     public int ItemIndex { get; internal set; }
 
+    // TODO: Remove this, we no longer use it
+    /// <summary>
+    /// 
+    /// </summary>
     public int Phase { get; private set; }
 
     public void RegisterUpdateCallback(
         TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> callback)
     {
-        //_virtInfo.UpdatePhasingInfo(Phase + 1, Item, callback);
-        //_callbackInfo = new UpdateCallbackInfo(callback, Phase + 1);
-        //nextPhase = Phase + 1;
-        //this.callback = callback;
-
         _phaser.PhaseElement(ItemContainer, _virtInfo, new ContainerContentChangingEventArgs(
             ItemIndex, Item, ItemContainer, _virtInfo, Phase + 1, _phaser)
         { callback = callback });
-
-        //BuildTreeScheduler.RegisterWork(Phase + 1, () => callback.Invoke(null, 
-        //    new ContainerContentChangingEventArgs(ItemIndex, Item, ItemContainer, _virtInfo, Phase + 1)));
     }
-    private int nextPhase;
-    public TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> callback;
 
-    internal bool GetCallbackInfo(out UpdateCallbackInfo info)
-    {
-        info = _callbackInfo;
-
-        return info.NextPhase != Phase;
-    }
+    internal TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> callback;
 
     private VirtualizationInfo _virtInfo;
-    private UpdateCallbackInfo _callbackInfo;
     private readonly Phaser _phaser;
-
-    internal readonly struct UpdateCallbackInfo
-    {
-        public UpdateCallbackInfo(TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> callback, int phase)
-        {
-            NextCallback = callback;
-            NextPhase = phase;
-        }
-
-        public TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> NextCallback { get; }
-
-        public int NextPhase { get; }
-    }
 }
