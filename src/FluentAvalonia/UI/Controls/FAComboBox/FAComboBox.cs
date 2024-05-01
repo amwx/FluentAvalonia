@@ -994,6 +994,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
             // For consistency, we'll raise the event, but both Removed & AddedItems will be null
             RaiseEvent(new SelectionChangedEventArgs(SelectionChangedEvent, null, null));
+            UpdateSelectionBoxItem(Text);
         }
 
         _hasUnsubmittedText = false;
