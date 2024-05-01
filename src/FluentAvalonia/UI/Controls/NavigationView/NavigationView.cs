@@ -3227,6 +3227,16 @@ public partial class NavigationView : HeaderedContentControl
         var prevIndicator = _activeIndicator;
         var nextIndicator = FindSelectionIndicator(nextItem);
 
+        // It seems we can sometimes have this called before an NVI is fully loaded and the
+        // SelectionIndicator isn't available - so add callback to try to get it in the future
+        // Can be seen in SampleApp where selection indicator won't load first time
+        // This is probably an issue somewhere else and this control needs a review for WinUI 1.5
+        // so this is a temporary fix until I get around to comparing the code
+        if (_activeIndicator == null && nextItem != null && nextIndicator == null)
+        {
+            Dispatcher.UIThread.Post(() => AnimateSelectionChanged(nextItem));
+        }
+
         bool haveValidAnimation = false;
         // It's possible that AnimateSelectionChanged is called multiple times before the first animation is complete.
         // To have better user experience, if the selected target is the same, keep the first animation
