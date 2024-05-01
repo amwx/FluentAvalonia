@@ -50,7 +50,7 @@
                                                      Content="{TemplateBinding Content}"
                                                      TemplatedControl.IsTemplateFocusTarget="True" />
 
-                    <ItemsRepeater Grid.Row="1"
+                    <ui:ItemsRepeater Grid.Row="1"
                                    IsVisible="False"
                                    Name="NVIMenuItemsHost"
                                    KeyboardNavigation.TabNavigation="Continue" />

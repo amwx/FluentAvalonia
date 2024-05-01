@@ -12,21 +12,23 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="LayoutRoot"
+                <Border Name="LayoutRoot"
                         Background="{TemplateBinding Background}"
                         Padding="{TemplateBinding Padding}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{DynamicResource CommandBarOverflowPresenterBorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}">
                     <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                         <ItemsPresenter Name="ItemsPresenter"
                                         Margin="{DynamicResource CommandBarOverflowPresenterMargin}"
                                         KeyboardNavigation.TabNavigation="Cycle" />
                     </ScrollViewer>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

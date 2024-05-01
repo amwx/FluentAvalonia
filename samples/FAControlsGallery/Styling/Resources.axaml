@@ -50,7 +50,7 @@
                     <GeometryDrawing Geometry="M 250,-26.523438 C 245.91009,-26.523438 241.81944,-24.958116 238.68555,-21.824219 L 170,46.861328 V 113.13867 L 216.86133,160 H 283.13867 L 351.82422,91.314453 C 358.09201,85.046659 358.09201,74.953341 351.82422,68.685547 L 261.31445,-21.824219 C 258.18056,-24.958116 254.08991,-26.523437 250,-26.523438 Z">
                         <GeometryDrawing.Brush>
                             <RadialGradientBrush Center="135%,40%" GradientOrigin="135%,40%"
-                                                 Radius="0.5">
+                                                 RadiusX="50%" RadiusY="50%">
                                 <GradientStop Color="#8376D5" Offset="0" />
                                 <GradientStop Color="#3A2C91" Offset="1" />
                             </RadialGradientBrush>

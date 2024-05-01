@@ -36,7 +36,7 @@
             <Path.Fill>
                 <RadialGradientBrush Center="250.01512,78.881859" 
                                      GradientOrigin="250.01512,78.881859"
-                                     Radius="0.47">
+                                     RadiusX="47%" RadiusY="47%">
                     <RadialGradientBrush.Transform>
                         <MatrixTransform Matrix="1.0619287,0,0,1.0619195,66.697902,40.166617" />
                     </RadialGradientBrush.Transform>

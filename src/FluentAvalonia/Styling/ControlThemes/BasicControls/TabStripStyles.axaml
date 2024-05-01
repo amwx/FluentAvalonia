@@ -4,11 +4,21 @@
                     x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="20">
-            <TabStrip>
-                <TabStripItem>Item 1</TabStripItem>
-                <TabStripItem>Item 2</TabStripItem>
-                <TabStripItem IsEnabled="False">Disabled</TabStripItem>
-            </TabStrip>
+            <StackPanel Spacing="20">
+                <TabStrip>
+                    <TabStripItem>Item 1</TabStripItem>
+                    <TabStripItem>Item 2</TabStripItem>
+                    <TabStripItem IsEnabled="False">Disabled</TabStripItem>
+                </TabStrip>
+
+                <TabStrip Theme="{DynamicResource AlternateTabStripTheme}"
+                          ItemContainerTheme="{DynamicResource AlternateTabStripItemTheme}"
+                          MinWidth="150">
+                    <TabStripItem>Item 1</TabStripItem>
+                    <TabStripItem>Item 2</TabStripItem>
+                    <TabStripItem IsEnabled="False">Disabled</TabStripItem>
+                </TabStrip>
+            </StackPanel>
         </Border>
     </Design.PreviewWith>
 
@@ -60,7 +70,7 @@
                                           FontSize="{TemplateBinding FontSize}"
                                           FontWeight="{TemplateBinding FontWeight}" />
                         <Rectangle Name="PART_SelectedPipe"
-                                   Fill="{DynamicResource AccentFillColorDefaultBrush}"
+                                   Fill="{DynamicResource PivotHeaderItemSelectedPipeFill}"
                                    RadiusX="2"
                                    RadiusY="2"
                                    VerticalAlignment="Bottom"
@@ -127,6 +137,7 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
         <Setter Property="Padding" Value="-1" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
                 <WrapPanel />
@@ -139,7 +150,8 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}">
                     <ItemsPresenter Margin="{TemplateBinding Padding}"
                                     VerticalAlignment="Stretch"
                                     ItemsPanel="{TemplateBinding ItemsPanel}"/>
@@ -161,28 +173,30 @@
         <Setter Property="MinWidth" Value="60" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="Root"
-                             VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="1"
-                             TemplatedControl.IsTemplateFocusTarget="True"
-                             CornerRadius="{TemplateBinding CornerRadius}">
-                    <ui:FABorder.Transitions>
+                <Border Name="Root"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                        BorderThickness="1"
+                        TemplatedControl.IsTemplateFocusTarget="True"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Border.Transitions>
                         <Transitions>
                             <BrushTransition Duration="00:00:00.083"
                                              Property="Background" />
                         </Transitions>
-                    </ui:FABorder.Transitions>
+                    </Border.Transitions>
 
                     <Panel>
-                        <ui:FABorder Name="Hover"
+                        <Border Name="Hover"
                                      Margin="3"
                                      Background="Transparent"
                                      CornerRadius="{TemplateBinding CornerRadius}">
-                            <ui:FABorder.Transitions>
+                            <Border.Transitions>
                                 <Transitions>
                                     <BrushTransition Duration="00:00:00.083"
                                                      Property="Background" />
@@ -190,8 +204,8 @@
                                                                    Duration="00:00:00.167"
                                                                    Easing="0,0 0,1" />
                                 </Transitions>
-                            </ui:FABorder.Transitions>
-                        </ui:FABorder>
+                            </Border.Transitions>
+                        </Border>
 
                         <ContentPresenter Name="PART_ContentPresenter"
                                           VerticalAlignment="Center"
@@ -208,7 +222,7 @@
                                    Height="3"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Bottom"
-                                   Fill="{DynamicResource AccentFillColorDefaultBrush}"
+                                   Fill="{DynamicResource PivotHeaderItemSelectedPipeFill}"
                                    RadiusX="0.5"
                                    RadiusY="1"
                                    Opacity="0"
@@ -223,19 +237,19 @@
                         </Rectangle>
 
                     </Panel>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ui|FABorder#Hover">
+            <Style Selector="^ /template/ Border#Hover">
                 <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ui|FABorder#Hover">
+            <Style Selector="^ /template/ Border#Hover">
                 <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
                 <Setter Property="RenderTransform" Value="scale(0.96)" />
             </Style>
@@ -245,10 +259,10 @@
         </Style>
 
         <Style Selector="^:selected">
-            <Style Selector="^ /template/ ui|FABorder#Hover">
+            <Style Selector="^ /template/ Border#Hover">
                 <Setter Property="IsVisible" Value="False" />
             </Style>
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
             </Style>
@@ -265,10 +279,10 @@
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FABorder#Hover">
+            <Style Selector="^ /template/ Border#Hover">
                 <Setter Property="IsVisible" Value="False" />
             </Style>
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlAltFillColorSecondaryBrush}" />
             </Style>

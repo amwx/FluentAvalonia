@@ -185,7 +185,7 @@
                         <Popup Name="UpDownPopup" Focusable="False"
                                WindowManagerAddShadowHint="False"
                                IsLightDismissEnabled="True"
-                               PlacementMode="AnchorAndGravity"
+                               Placement="AnchorAndGravity"
                                PlacementAnchor="Right"
                                PlacementGravity="Bottom"
                                Grid.Row="1"

@@ -188,7 +188,6 @@ public class NavigationFactory : INavigationPageFactory
     private readonly Dictionary<string, Func<Control>> FAPages = new Dictionary<string, Func<Control>>
     {
         { "AppWindow", () => new AppWindowPage() },
-        { "HyperlinkButton", () => new HyperlinkButtonPage() },
         { "NumberBox", () => new NumberBoxPage() },
         { "FAComboBox", () => new FAComboBoxPage() },
         { "TaskDialog", () => new TaskDialogPage() },

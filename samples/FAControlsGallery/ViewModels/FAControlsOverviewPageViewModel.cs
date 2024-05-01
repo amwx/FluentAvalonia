@@ -24,16 +24,16 @@ public class FAControlsGroupItem
 {
     public string Header { get; set; }
 
-    public List<FAControlsPageItem> Controls { get; init; }
+    public List<FAControlsPageItem> Controls { get; set; }
 }
 
 public class FAControlsPageItem : PageBaseViewModel
 {
-    public string Namespace { get; init; }
+    public string Namespace { get; set; }
 
-    public string WinUINamespace { get; init; }
+    public string WinUINamespace { get; set; }
 
-    public string WinUIDocsLink { get; init; }
+    public string WinUIDocsLink { get; set; }
 
-    public string WinUIGuidelinesLink { get; init; }
+    public string WinUIGuidelinesLink { get; set; }
 }

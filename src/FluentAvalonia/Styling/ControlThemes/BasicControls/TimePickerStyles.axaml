@@ -30,31 +30,25 @@
         <Setter Property="Padding" Value="0" />
 
         <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPointerOver}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPointerOver}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPointerOver}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPressed}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundPressed}" />
             </Style>
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FABorder#Root">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackgroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushDisabled}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundDisabled}" />
             </Style>
         </Style>
@@ -134,7 +128,7 @@
 
                         <Popup Name="PART_Popup" WindowManagerAddShadowHint="False"
                                IsLightDismissEnabled="True" PlacementTarget="{TemplateBinding}"
-                               PlacementMode="Bottom">
+                               Placement="Bottom">
                             <TimePickerPresenter Name="PART_PickerPresenter" />
                         </Popup>
 
@@ -175,15 +169,17 @@
         <Setter Property="BorderBrush" Value="{DynamicResource TimePickerFlyoutPresenterBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource DateTimeFlyoutBorderThickness}" />
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ui:FABorder Name="Background"
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="{TemplateBinding CornerRadius}"
-                             Padding="{DynamicResource DateTimeFlyoutBorderPadding}"
-                             MaxHeight="398">
+                <Border Name="Background"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{DynamicResource DateTimeFlyoutBorderPadding}"
+                        MaxHeight="398">
                     <Grid Name="ContentPanel" RowDefinitions="*,Auto">
                         <Grid.Styles>
                             <Style Selector="DateTimePickerPanel > ListBoxItem">
@@ -297,7 +293,7 @@
                         </Grid>
 
                     </Grid>
-                </ui:FABorder>
+                </Border>
             </ControlTemplate>
         </Setter>
 
