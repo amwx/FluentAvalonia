@@ -85,7 +85,7 @@ public class StackLayout : VirtualizingLayout, IFlowLayoutAlgorithmDelegates, IO
     protected internal override void UninitializeForContextCore(VirtualizingLayoutContext context)
     {
         var stackState = GetAsStackState(context.LayoutState);
-        stackState.UninitializeForContext(context);
+        stackState?.UninitializeForContext(context);
     }
 
     protected internal override Size MeasureOverride(VirtualizingLayoutContext context, Size availableSize)
