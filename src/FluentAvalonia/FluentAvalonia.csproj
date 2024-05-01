@@ -35,7 +35,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Controls.ColorPicker" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" />
+    <!--<PackageReference Include="Avalonia.Controls.ItemsRepeater" />-->
     <PackageReference Include="Avalonia.Skia" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
     <PackageReference Include="Avalonia.Controls.DataGrid" />
