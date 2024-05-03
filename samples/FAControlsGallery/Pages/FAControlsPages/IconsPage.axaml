@@ -305,7 +305,8 @@ In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource
                 <ScrollViewer Grid.Row="2">
                     <ui:ItemsRepeater ItemsSource="{Binding Path=View, Source={StaticResource IconsSource}}">
                         <ui:ItemsRepeater.Layout>
-                            <ui:FlowLayout MinColumnSpacing="4" MinRowSpacing="4" />
+                            <ui:FlowLayout MinColumnSpacing="4" MinRowSpacing="4"
+                                           Orientation="Horizontal"/>
                         </ui:ItemsRepeater.Layout>
 
                         <ui:ItemsRepeater.ItemTemplate>
