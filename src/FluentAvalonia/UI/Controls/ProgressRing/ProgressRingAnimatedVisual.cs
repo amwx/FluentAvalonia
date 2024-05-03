@@ -21,7 +21,7 @@ public sealed class ProgressRingAnimatedVisual : Control
     {
         base.OnAttachedToVisualTree(e);
 
-        var parent = e.Parent.FindAncestorOfType<ProgressRing>(true);
+        var parent = this.FindAncestorOfType<ProgressRing>();
 
         bool indeterminate = parent.IsIndeterminate;
         _handler = new CustomCompHandler(parent.Minimum, parent.Maximum, parent.Value,
