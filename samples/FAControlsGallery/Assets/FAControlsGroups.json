@@ -62,8 +62,7 @@
         "IconResourceKey": "ProgressRingIcon",
         "PageKey": "ProgressRing",
         "SearchKeywords": [
-          "ProgressRing",
-          "Progress"
+          "ProgressRing"
         ],
         "Namespace": "FluentAvalonia.UI.Controls.ProgressRing",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.ProgressRing",
