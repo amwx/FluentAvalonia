@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Animation.Easings;
+using Avalonia.Automation;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -238,7 +239,7 @@ public partial class NavigationView : HeaderedContentControl
                 _paneSearchButton.Click += OnPaneSearchButtonClick;
 
                 var searchButtonName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationViewSearchButtonName);
-                // TODO: Automation
+                AutomationProperties.SetName(_paneSearchButton, searchButtonName);
                 ToolTip.SetTip(_paneSearchButton, searchButtonName);
             }
 
@@ -246,10 +247,9 @@ public partial class NavigationView : HeaderedContentControl
             if (_backButton != null)
             {
                 _backButton.Click += OnBackButtonClicked;
-
-                // TODO: Automation
-
-                ToolTip.SetTip(_backButton, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationBackButtonToolTip));
+                var navigationName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationBackButtonToolTip);
+                ToolTip.SetTip(_backButton, navigationName);
+                AutomationProperties.SetName(_backButton, navigationName);
             }
 
             //titlebar
@@ -3538,12 +3538,17 @@ public partial class NavigationView : HeaderedContentControl
             var cont = NavigationViewItemOrSettingsContentFromData(item);
             if (cont != null)
             {
-                return cont.SelectionIndicator;
-            }
-            else
-            {
-                cont.UpdateLayout();
-                return cont.SelectionIndicator;                
+                var indicator = cont.SelectionIndicator;
+                if (indicator != null)
+                {
+                    return indicator;
+                }
+                else
+                {
+                    cont.UpdateLayout();
+                    //cont.ApplyTemplate();
+                    return cont.SelectionIndicator;
+                }
             }
         }
 
