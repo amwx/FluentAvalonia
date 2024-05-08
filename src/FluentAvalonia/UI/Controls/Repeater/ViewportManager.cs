@@ -209,7 +209,7 @@ internal class ViewportManager
         // If we have an anchor element, we do not want the
         // scroll anchor provider to start anchoring some other element.
         vInfo.CanBeScrollAnchor = true;
-        _scroller.RegisterAnchorCandidate(element);
+        _scroller?.RegisterAnchorCandidate(element);
     }
 
     public void OnElementCleared(Control element)
@@ -218,7 +218,7 @@ internal class ViewportManager
         // as the caller of this (ItemsRepeater.ClearElementImpl) doesn't have a ref
         // and that method has multiple refs which don't have a the virt info either
         ItemsRepeater.GetVirtualizationInfo(element).CanBeScrollAnchor = false;
-        _scroller.UnregisterAnchorCandidate(element);
+        _scroller?.UnregisterAnchorCandidate(element);
     }
 
     public void OnOwnerMeasuring()
@@ -333,7 +333,7 @@ internal class ViewportManager
             {
                 // In WinUI, CanBeScrollAnchor is used to automatically set the scroll
                 // anchor on the IScrollAnchorProvider - here we have to do that manually
-                _scroller.UnregisterAnchorCandidate(child);
+                _scroller?.UnregisterAnchorCandidate(child);
                 vInfo.CanBeScrollAnchor = false;
             }
         }
@@ -391,7 +391,7 @@ internal class ViewportManager
             var info = ItemsRepeater.GetVirtualizationInfo(child);
             if (!info.CanBeScrollAnchor && info.IsRealized && info.IsHeldByLayout)
             {
-                _scroller.RegisterAnchorCandidate(child);
+                _scroller?.RegisterAnchorCandidate(child);
                 info.CanBeScrollAnchor = true;
             }
         }
