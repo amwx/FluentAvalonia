@@ -156,7 +156,7 @@ public class FAItemsSourceView
         int index = -1;
         if (_vector is IList list)
         {
-            index = list.IndexOf(index);
+            index = list.IndexOf(value);
         }
         else
         {
