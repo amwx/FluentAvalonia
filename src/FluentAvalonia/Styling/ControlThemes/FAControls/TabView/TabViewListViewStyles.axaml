@@ -23,7 +23,7 @@
         <Setter Property="Background" Value="{DynamicResource TabViewScrollButtonBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource TabViewScrollButtonForeground}"/>
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
-        <Setter Property="FontSize" Value="{DynamicResource TabViewItemScrollButonFontSize}"/>
+        <Setter Property="FontSize" Value="{DynamicResource TabViewItemScrollButtonFontSize}"/>
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
         <Setter Property="Width" Value="{DynamicResource TabViewItemScrollButtonWidth}"/>
         <Setter Property="Height" Value="{DynamicResource TabViewItemScrollButtonHeight}"/>
