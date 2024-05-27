@@ -58,7 +58,7 @@ public partial class RangeSlider
     /// Defines the <see cref="IsSnapToStepFrequencyEnabled"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsSnapToStepFrequencyEnabledProperty =
-        AvaloniaProperty.Register<Slider, bool>(nameof(IsSnapToStepFrequencyEnabled), true);
+        AvaloniaProperty.Register<RangeSlider, bool>(nameof(IsSnapToStepFrequencyEnabled), true);
 
 
     /// <summary>
@@ -154,7 +154,7 @@ public partial class RangeSlider
     }
     
     /// <summary>
-    /// Gets or sets a value that indicates whether the <see cref="Slider"/> automatically moves the <see cref="Thumb"/> to the closest step frequency.
+    /// Gets or sets a value that indicates whether the <see cref="RangeSlider"/> automatically moves the <see cref="Thumb"/> to the closest step frequency.
     /// </summary>
     public bool IsSnapToStepFrequencyEnabled
     {
