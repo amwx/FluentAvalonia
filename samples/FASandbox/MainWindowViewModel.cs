@@ -7,6 +7,9 @@ namespace FASandbox;
 
 public class MainWindowViewModel : INotifyPropertyChanged
 {
+    private double _min;
+    private double _max;
+
     public MainWindowViewModel()
     {
         
@@ -32,6 +35,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
 
         return false;
+    }
+
+    public double Min
+    {
+        get => _min;
+        set => RaiseAndSetIfChanged(ref _min, value);
+    }public double Max
+    {
+        get => _max;
+        set => RaiseAndSetIfChanged(ref _max, value);
     }
 }
 
