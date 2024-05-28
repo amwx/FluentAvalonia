@@ -17,9 +17,9 @@ public partial class RangeSlider : TemplatedControl
         
         if (change.Property == RangeStartProperty)
         {
-            var direction = change.GetNewValue<double>() - change.GetOldValue<double>(); 
             CoerceValue(RangeStartProperty);
-
+            CoerceValue(RangeEndProperty);
+            
             SyncThumbs();
 
             if (!_isDraggingEnd && !_isDraggingStart)
@@ -29,8 +29,8 @@ public partial class RangeSlider : TemplatedControl
         }
         else if (change.Property == RangeEndProperty)
         {
-            var direction = change.GetNewValue<double>() - change.GetOldValue<double>();
             CoerceValue(RangeEndProperty);
+            CoerceValue(RangeStartProperty);
 
             SyncThumbs();
 
@@ -416,12 +416,12 @@ public partial class RangeSlider : TemplatedControl
          
         if (_pointerManipulatingMin && normalizedPosition < RangeEnd)
         {
-            RangeStart = DragThumb(_minThumb, 0, Canvas.GetLeft(_maxThumb), position);
+            RangeMinToStepFrequency(DragThumb(_minThumb, 0, Canvas.GetLeft(_maxThumb), position) - RangeStart);
             UpdateToolTipText(RangeStart);
         }
         else if (_pointerManipulatingMax && normalizedPosition > RangeStart)
         {
-            RangeEnd = DragThumb(_maxThumb, Canvas.GetLeft(_minThumb), DragWidth, position);
+            RangeMaxToStepFrequency(DragThumb(_maxThumb, Canvas.GetLeft(_minThumb), DragWidth, position)-  RangeEnd);
             UpdateToolTipText(RangeEnd);
         }
     }
@@ -447,13 +447,13 @@ public partial class RangeSlider : TemplatedControl
 
         if (upperValueDiff < lowerValueDiff)
         {
-            RangeEnd = normalizedPosition;
+            RangeMaxToStepFrequency(normalizedPosition - RangeEnd);
             _pointerManipulatingMax = true;
             HandleThumbDragStarted(_maxThumb);
         }
         else
         {
-            RangeStart = normalizedPosition;
+            RangeMinToStepFrequency(normalizedPosition - RangeStart);
             _pointerManipulatingMin = true;
             HandleThumbDragStarted(_minThumb);
         }
@@ -472,28 +472,12 @@ public partial class RangeSlider : TemplatedControl
     
     private void RangeMinToStepFrequency(double direction)
     {
-        if (_isProgramaticChange)
-        {
-            return;
-        }
-
-        _isProgramaticChange = true;
         SetCurrentValue(RangeStartProperty, MoveToStepFrequency(RangeStart, direction));
-        _isProgramaticChange = false;
     }
 
     private void RangeMaxToStepFrequency(double direction)
     {
-        var newValue = MoveToStepFrequency(RangeEnd, direction); 
-        
-        if (_isProgramaticChange || Math.Abs(RangeEnd - newValue) < Epsilon)
-        {
-            return;
-        }
-
-        _isProgramaticChange = true;
-        SetCurrentValue(RangeEndProperty, newValue);
-        _isProgramaticChange = false;
+        SetCurrentValue(RangeEndProperty, MoveToStepFrequency(RangeEnd, direction));
     }
 
     private double MoveToStepFrequency(double rangeValue, double direction)
@@ -617,7 +601,6 @@ public partial class RangeSlider : TemplatedControl
         }
     }
 
-
     private Rectangle _activeRectangle;
     private Thumb _minThumb;
     private Thumb _maxThumb;
@@ -632,7 +615,6 @@ public partial class RangeSlider : TemplatedControl
     private const double Epsilon = 0.01;
     private bool _isDraggingStart;
     private bool _isDraggingEnd;
-    private bool _isProgramaticChange;
     private readonly DispatcherTimer _keyTimer = new DispatcherTimer();
 }
 

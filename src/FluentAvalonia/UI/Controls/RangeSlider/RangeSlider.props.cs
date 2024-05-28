@@ -140,7 +140,9 @@ public partial class RangeSlider
     private static double CoerceRangeEnd(AvaloniaObject sender, double value)
     {
         return ValidateDouble(value) 
-            ? MathUtilities.Clamp(value, Math.Max(sender.GetValue(MinimumProperty), sender.GetValue(RangeStartProperty)), sender.GetValue(MaximumProperty)) // TODO: How to deal with MinRange here?
+            ? MathUtilities.Clamp(value, 
+                Math.Min(Math.Max(sender.GetValue(MinimumProperty), sender.GetValue(RangeStartProperty)), sender.GetValue(MaximumProperty)), 
+                sender.GetValue(MaximumProperty)) // TODO: How to deal with MinRange here?
             : sender.GetValue(RangeEndProperty);
     }
     
