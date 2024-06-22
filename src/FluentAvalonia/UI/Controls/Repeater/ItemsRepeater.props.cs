@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Metadata;
 using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
@@ -86,6 +87,7 @@ public partial class ItemsRepeater : Panel
     /// <summary>
     /// Gets or sets the template used to display each item.
     /// </summary>
+    [InheritDataTypeFromItems(nameof(ItemsSource))]
     public IDataTemplate ItemTemplate
     {
         get => GetValue(ItemTemplateProperty);
