@@ -365,10 +365,17 @@ internal class ViewportManager
             parent = (Control)parent.GetVisualParent();
         }
 
+        // This is what WinUI does, but this can be hit in Avalonia...
+        // My repro: ItemsRepeater -> Control w/ Popup -> ListBox in Popup
+        // Select item in the ListBox, we hit this
+        // Looking at Avalonia's port of ItemsRepeater, they just return
+        // null if parent is null, so that's what I'll do
+        //if (parent == null)
+        //{
+        //    throw new InvalidOperationException("OnBringIntoViewRequested called with args.target element not under the ItemsRepeater that recieved the call");
+        //}
         if (parent == null)
-        {
-            throw new InvalidOperationException("OnBringIntoViewRequested called with args.target element not under the ItemsRepeater that recieved the call");
-        }
+            return null;
 
         return targetChild;
     }
