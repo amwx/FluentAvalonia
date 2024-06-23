@@ -18,56 +18,56 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Panel>
-                        <ui:FABorder BackgroundSizing="InnerBorderEdge" 
-                                     Background="{TemplateBinding Background}"
-                                     BorderBrush="{TemplateBinding BorderBrush}"
-                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                     Name="LayoutRoot">
-                            <ui:FABorder.Transitions>
+                        <Border BackgroundSizing="InnerBorderEdge" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Name="LayoutRoot">
+                            <Border.Transitions>
                                 <Transitions>
                                     <BrushTransition Property="Background"
                                                      Duration="00:00:00.25"
                                                      Easing="0,0 0,1"/>
                                 </Transitions>
-                            </ui:FABorder.Transitions>
+                            </Border.Transitions>
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Padding="{TemplateBinding Padding}"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center" />
-                        </ui:FABorder>
+                        </Border>
                     </Panel>
                 </ControlTemplate>
             </Setter>
 
-            <Style Selector="^.left /template/ ui|FABorder#LayoutRoot">
+            <Style Selector="^.left /template/ Border#LayoutRoot">
                 <Setter Property="CornerRadius" Value="4 0 0 4" />
                 <Setter Property="BorderThickness" Value="1 1 0 1" />
             </Style>
-            <Style Selector="^.right /template/ ui|FABorder#LayoutRoot">
+            <Style Selector="^.right /template/ Border#LayoutRoot">
                 <Setter Property="CornerRadius" Value="0 4 4 0" />
                 <Setter Property="BorderThickness" Value="0 1 1 1" />
             </Style>
 
-            <Style Selector="^:pointerover /template/ ui|FABorder#LayoutRoot">
+            <Style Selector="^:pointerover /template/ Border#LayoutRoot">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
             </Style>
-            <Style Selector="^:pressed /template/ ui|FABorder#LayoutRoot">
+            <Style Selector="^:pressed /template/ Border#LayoutRoot">
                 <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
             </Style>
 
             <Style Selector="^:selected">
-                <Style Selector="^ /template/ ui|FABorder#LayoutRoot">
+                <Style Selector="^ /template/ Border#LayoutRoot">
                     <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorOnAccentDefaultBrush}" />
                     <Setter Property="TextElement.Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
                 </Style>
 
-                <Style Selector="^:pointerover /template/ ui|FABorder#LayoutRoot">
+                <Style Selector="^:pointerover /template/ Border#LayoutRoot">
                     <Setter Property="Background" Value="{DynamicResource AccentFillColorSecondaryBrush}" />
                 </Style>
-                <Style Selector="^:pressed /template/ ui|FABorder#LayoutRoot">
+                <Style Selector="^:pressed /template/ Border#LayoutRoot">
                     <Setter Property="Background" Value="{DynamicResource AccentFillColorTertiaryBrush}" />
                     <Setter Property="TextElement.Foreground" Value="{DynamicResource TextOnAccentFillColorSecondaryBrush}" />
                 </Style>

@@ -54,6 +54,22 @@
                 <Expander Header="Expand me right!" ExpandDirection="Right">
                     <TextBlock Text="Content" />
                 </Expander>
+                <Expander Name="CollapsingDisabledExpander"
+                          Header="Collapsing Disabled"
+                          IsExpanded="True"
+                          ExpandDirection="Down">
+                    <StackPanel>
+                        <TextBlock>Expanded content</TextBlock>
+                    </StackPanel>
+                </Expander>
+                <Expander Name="ExpandingDisabledExpander"
+                          Header="Expanding Disabled"
+                          IsExpanded="False"
+                          ExpandDirection="Down">
+                    <StackPanel>
+                        <TextBlock>Expanded content</TextBlock>
+                    </StackPanel>
+                </Expander>
             </StackPanel>
 
         </ctrls:ControlExample>

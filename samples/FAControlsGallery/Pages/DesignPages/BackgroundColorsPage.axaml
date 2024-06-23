@@ -10,14 +10,15 @@
         <ctrls:DesignColorSection Header="Card Background"
                                   Description="Used to create 'cards' - content blocks that live on page and layer backgrounds">
 
-            <ui:FABorder HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Width="75"
-                         Height="32"
-                         CornerRadius="{StaticResource ControlCornerRadius}"
-                         BorderThickness="1"
-                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                         Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>       
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="75"
+                    Height="32"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    BackgroundSizing="InnerBorderEdge"/>       
 
             <ctrls:DesignColorSection.Tiles>
                 <ctrls:ColorTile ColorName="Card Background / Default"
@@ -57,21 +58,22 @@
         <ctrls:DesignColorSection Header="Layer"
                                   Description="Used on background colors of any material to create layering">
 
-            <ui:FABorder HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Width="120"
-                         Height="40"
-                         CornerRadius="{StaticResource ControlCornerRadius}"
-                         BorderThickness="1"
-                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                         Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}">
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="120"
+                    Height="40"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"
+                    BackgroundSizing="InnerBorderEdge">
                 <Border Width="90"
                         CornerRadius="0 4 4 0"
                         HorizontalAlignment="Right"
                         Background="{DynamicResource LayerFillColorDefaultBrush}"
                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1,0,0,0" />
-            </ui:FABorder>
+            </Border>
 
             <ctrls:DesignColorSection.Tiles>
                 <ctrls:ColorTile ColorName="Layer / Default"
@@ -92,21 +94,22 @@
         <ctrls:DesignColorSection Header="Layer on Acrylic"
                                   Description="Used on background colors of any material to create layering">
 
-            <ui:FABorder HorizontalAlignment="Center"
+            <Border HorizontalAlignment="Center"
                          VerticalAlignment="Center"
                          Width="120"
                          Height="40"
                          CornerRadius="{StaticResource ControlCornerRadius}"
                          BorderThickness="1"
                          BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                         Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}">
+                         Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"
+                         BackgroundSizing="InnerBorderEdge">
                 <Border Width="90"
                         CornerRadius="0 4 4 0"
                         HorizontalAlignment="Right"
                         Background="{DynamicResource LayerFillColorDefaultBrush}"
                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1,0,0,0" />
-            </ui:FABorder>
+            </Border>
 
             <ctrls:DesignColorSection.Tiles>
                 <ctrls:ColorTile ColorName="Layer On Acrylic / Default"
@@ -157,14 +160,15 @@
         <ctrls:DesignColorSection Header="Solid Background"
                                   Description="Solid background colors to place layers, cards, or controls on">
 
-            <ui:FABorder HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Width="75"
-                         Height="32"
-                         CornerRadius="{StaticResource ControlCornerRadius}"
-                         BorderThickness="1"
-                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                         Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"/>
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="75"
+                    Height="32"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                    BackgroundSizing="InnerBorderEdge"/>
 
             <ctrls:DesignColorSection.Tiles>
                 <ctrls:ColorTile ColorName="Solid Background / Base"
@@ -212,14 +216,15 @@
         <ctrls:DesignColorSection Header="Mica Background"
                                   Description="Used for the bottom most layer of an experience">
 
-            <ui:FABorder HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Width="75"
-                         Height="32"
-                         CornerRadius="{StaticResource ControlCornerRadius}"
-                         BorderThickness="1"
-                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                         Background="{DynamicResource MicaBackgroundFillColorBaseBrush}"/>
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="75"
+                    Height="32"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource MicaBackgroundFillColorBaseBrush}"
+                    BackgroundSizing="InnerBorderEdge"/>
 
             <ctrls:DesignColorSection.Tiles>
                 <ctrls:ColorTile ColorName="Mica Background / Base"
@@ -242,14 +247,15 @@
         <ctrls:DesignColorSection Header="Acrylic Background"
                                   Description="Acrylic background colors to place layers, cards, or controls on">
 
-            <ui:FABorder HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Width="75"
-                         Height="32"
-                         CornerRadius="{StaticResource ControlCornerRadius}"
-                         BorderThickness="1"
-                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                         Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"/>
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="75"
+                    Height="32"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource AcrylicBackgroundFillColorBaseBrush}"
+                    BackgroundSizing="InnerBorderEdge"/>
 
             <ctrls:DesignColorSection.Tiles>
                 <ctrls:ColorTile ColorName="Acrylic Background / Base"
@@ -271,14 +277,15 @@
         <ctrls:DesignColorSection Header="Accent Acrylic Background"
                                   Description="Acrylic background colors to place layers, cards, or controls on">
 
-            <ui:FABorder HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Width="75"
-                         Height="32"
-                         CornerRadius="{StaticResource ControlCornerRadius}"
-                         BorderThickness="1"
-                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                         Background="{DynamicResource AccentAcrylicBackgroundFillColorBaseBrush}"/>
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="75"
+                    Height="32"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource AccentAcrylicBackgroundFillColorBaseBrush}"
+                    BackgroundSizing="InnerBorderEdge" />
 
             <ctrls:DesignColorSection.Tiles>
                 <ctrls:ColorTile ColorName="Accent Acrylic Background / Base"

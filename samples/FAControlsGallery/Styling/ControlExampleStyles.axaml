@@ -91,12 +91,13 @@
 
                     <!-- Example Area -->
                     <ThemeVariantScope Name="ThemeScopeProvider">
-                        <ui:FABorder Name="ControlPreviewAreaHost"
+                        <Border Name="ControlPreviewAreaHost"
                                 BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
                                 BorderThickness="1"
                                 Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
                                 TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                CornerRadius="{DynamicResource ControlCornerRadius}">
+                                CornerRadius="{DynamicResource ControlCornerRadius}"
+                                BackgroundSizing="InnerBorderEdge">
                             <Grid ColumnDefinitions="*,Auto"
                                   RowDefinitions="Auto,*,Auto">
 
@@ -123,7 +124,7 @@
                                     </ContentPresenter.Transitions>
                                 </ContentPresenter>
 
-                                <ui:FABorder Name="OptionsHost"
+                                <Border Name="OptionsHost"
                                         Margin="12"
                                         Padding="8"
                                         CornerRadius="{DynamicResource OverlayCornerRadius}"
@@ -131,14 +132,15 @@
                                         Grid.Row="1"
                                         Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                                         BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                        BackgroundSizing="InnerBorderEdge"
                                         BorderThickness="1"
                                         Opacity="1"
                                         IsVisible="False">
-                                    <ui:FABorder.Transitions>
+                                    <Border.Transitions>
                                         <Transitions>
                                             <DoubleTransition Property="Opacity" Duration="00:00:00.167" />
                                         </Transitions>
-                                    </ui:FABorder.Transitions>
+                                    </Border.Transitions>
                                     <StackPanel>
                                         <DockPanel LastChildFill="False">
                                             <TextBlock Text="Options"
@@ -163,10 +165,10 @@
                                                           VerticalContentAlignment="Stretch"
                                                           IsVisible="{TemplateBinding IsOptionsExpanded}"/>
                                     </StackPanel>
-                                </ui:FABorder>
+                                </Border>
                                 
                             </Grid>
-                        </ui:FABorder>
+                        </Border>
                     </ThemeVariantScope>
 
 
@@ -239,7 +241,7 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^ /template/ ui|FABorder#ControlPreviewAreaHost">
+        <Style Selector="^ /template/ Border#ControlPreviewAreaHost">
             <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
         </Style>
 
@@ -247,7 +249,7 @@
             <Style Selector="^ /template/ Expander#SourcePreviewArea">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
-            <Style Selector="^ /template/ ui|FABorder#ControlPreviewAreaHost">
+            <Style Selector="^ /template/ Border#ControlPreviewAreaHost">
                 <Setter Property="CornerRadius" Value="4 4 0 0" />
                 <Setter Property="BorderThickness" Value="1 1 1 0" />
             </Style>
@@ -263,7 +265,7 @@
             </Style>
         </Style>
 
-        <Style Selector="^:options /template/ ui|FABorder#OptionsHost">
+        <Style Selector="^:options /template/ Border#OptionsHost">
             <Setter Property="IsVisible" Value="True" />
         </Style>
 
@@ -273,7 +275,7 @@
                 <Setter Property="Padding" Value="12 24 12 12" />
             </Style>
 
-            <Style Selector="^ /template/ ui|FABorder#OptionsHost">
+            <Style Selector="^ /template/ Border#OptionsHost">
                 <Setter Property="Grid.Column" Value="0" />
                 <Setter Property="Grid.Row" Value="0" />
                 <Setter Property="Grid.RowSpan" Value="2" />
@@ -289,7 +291,7 @@
                 <Setter Property="IsVisible" Value="True" />
             </Style>
 
-            <Style Selector="^ /template/ ui|FABorder#OptionsHost:pointerover">
+            <Style Selector="^ /template/ Border#OptionsHost:pointerover">
                 <Setter Property="Opacity" Value="1" />
             </Style>
 
@@ -299,7 +301,7 @@
                     <Setter Property="IsVisible" Value="False" />
                 </Style>
 
-                <Style Selector="^ /template/ ui|FABorder#OptionsHost">
+                <Style Selector="^ /template/ Border#OptionsHost">
                     <Setter Property="Grid.Column" Value="0" />
                     <Setter Property="Grid.ColumnSpan" Value="2" />
                     <Setter Property="Grid.Row" Value="2" />

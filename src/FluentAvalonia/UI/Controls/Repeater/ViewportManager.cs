@@ -209,7 +209,7 @@ internal class ViewportManager
         // If we have an anchor element, we do not want the
         // scroll anchor provider to start anchoring some other element.
         vInfo.CanBeScrollAnchor = true;
-        _scroller.RegisterAnchorCandidate(element);
+        _scroller?.RegisterAnchorCandidate(element);
     }
 
     public void OnElementCleared(Control element)
@@ -218,7 +218,7 @@ internal class ViewportManager
         // as the caller of this (ItemsRepeater.ClearElementImpl) doesn't have a ref
         // and that method has multiple refs which don't have a the virt info either
         ItemsRepeater.GetVirtualizationInfo(element).CanBeScrollAnchor = false;
-        _scroller.UnregisterAnchorCandidate(element);
+        _scroller?.UnregisterAnchorCandidate(element);
     }
 
     public void OnOwnerMeasuring()
@@ -333,7 +333,7 @@ internal class ViewportManager
             {
                 // In WinUI, CanBeScrollAnchor is used to automatically set the scroll
                 // anchor on the IScrollAnchorProvider - here we have to do that manually
-                _scroller.UnregisterAnchorCandidate(child);
+                _scroller?.UnregisterAnchorCandidate(child);
                 vInfo.CanBeScrollAnchor = false;
             }
         }
@@ -343,16 +343,14 @@ internal class ViewportManager
         if (!_renderingToken)
         {
             _renderingToken = true;
-            Dispatcher.UIThread.Post(OnCompositionTargetRendering, DispatcherPriority.Render);
+            // Note from Avalonia implementation
+            // Register action to go back to how things were before where any child can be the anchor. Here,
+            // WinUI uses CompositionTarget.Rendering but we don't currently have that, so post an action to
+            // run *after* rendering has completed (priority needs to be lower than Render as Transformed
+            // bounds must have been set in order for OnEffectiveViewportChanged to trigger).
+            Dispatcher.UIThread.Post(OnCompositionTargetRendering, DispatcherPriority.Loaded);
             //CompositionTarget.Rendering += OnCompositionTargetRendering;
         }
-
-        // HACK: we need to force a complete layout pass here in order to get the scrollviewer
-        // to actually shift the viewport. This is probably a bug in Avalonia's ScrollViewer
-        // and bring into view logic. Without this, EffectiveViewportChanged or LayoutUpdated
-        // never fires and the Scroll offset is therefore never set so the items are arranged
-        // where they're supposed to be, but the viewport doesn't change
-        (_owner.GetVisualRoot() as Control).UpdateLayout();
     }
 
     private Control GetImmediateChildOfRepeater(Control descendant)
@@ -365,10 +363,17 @@ internal class ViewportManager
             parent = (Control)parent.GetVisualParent();
         }
 
+        // This is what WinUI does, but this can be hit in Avalonia...
+        // My repro: ItemsRepeater -> Control w/ Popup -> ListBox in Popup
+        // Select item in the ListBox, we hit this
+        // Looking at Avalonia's port of ItemsRepeater, they just return
+        // null if parent is null, so that's what I'll do
+        //if (parent == null)
+        //{
+        //    throw new InvalidOperationException("OnBringIntoViewRequested called with args.target element not under the ItemsRepeater that recieved the call");
+        //}
         if (parent == null)
-        {
-            throw new InvalidOperationException("OnBringIntoViewRequested called with args.target element not under the ItemsRepeater that recieved the call");
-        }
+            return null;
 
         return targetChild;
     }
@@ -391,7 +396,7 @@ internal class ViewportManager
             var info = ItemsRepeater.GetVirtualizationInfo(child);
             if (!info.CanBeScrollAnchor && info.IsRealized && info.IsHeldByLayout)
             {
-                _scroller.RegisterAnchorCandidate(child);
+                _scroller?.RegisterAnchorCandidate(child);
                 info.CanBeScrollAnchor = true;
             }
         }

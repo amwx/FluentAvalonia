@@ -4,6 +4,17 @@
                     xmlns:uip="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia"
                     x:CompileBindings="True">
 
+    <Design.PreviewWith>
+        <Border Width="800" Height="500">
+            <ui:TabView>
+                <ui:TabView.TabItems>
+                    <ui:TabViewItem Header="Item1" />
+                    <ui:TabViewItem Header="Item1" />
+                </ui:TabView.TabItems>
+            </ui:TabView>
+        </Border>
+    </Design.PreviewWith>
+
     <!-- Change from WinUI:
         Must setting H padding here so ItemsPresenter sits slightly offset so the curve on the 
         bottom left of the first tab (if selected) shows, and the separator on the last item
@@ -98,16 +109,16 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Border Name="LeftBottomBorderLine"
-                                BorderBrush="{DynamicResource TabViewBorderBrush}"
-                                BorderThickness="1" Height="1"
-                                VerticalAlignment="Bottom"/>
+                        <Rectangle Name="LeftBottomBorderLine"
+                                   Fill="{DynamicResource TabViewBorderBrush}"
+                                   Height="1"
+                                   VerticalAlignment="Bottom"/>
 
-                        <Border Name="RightBottomBorderLine"
-                                BorderBrush="{DynamicResource TabViewBorderBrush}"
-                                BorderThickness="1" Height="1"
-                                Grid.Column="2" Grid.ColumnSpan="2"
-                                VerticalAlignment="Bottom"/>
+                        <Rectangle Name="RightBottomBorderLine"
+                                   Fill="{DynamicResource TabViewBorderBrush}"
+                                   Height="1"
+                                   Grid.Column="2" Grid.ColumnSpan="2"
+                                   VerticalAlignment="Bottom"/>
 
                         <ContentPresenter Grid.Column="0"
                                           Name="LeftContentPresenter"

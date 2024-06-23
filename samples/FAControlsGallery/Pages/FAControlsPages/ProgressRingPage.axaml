@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:pg="using:FAControlsGallery.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="650"
+             x:Class="FAControlsGallery.Pages.ProgressRingPage">
+    <StackPanel Spacing="8">
+        
+        <ctrls:ControlExample Header="An indeterminate progress ring">
+
+            <!-- This is set to False so it doesn't run in designer. Changed to true in code-->
+            <ui:ProgressRing Width="80" Height="80"
+                             Name="IndetRing"
+                             IsIndeterminate="True" />
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="8">
+                    <TextBlock Text="BackgroundColor" />
+                    <ColorPicker Color="Transparent"
+                                 Name="CPIndet"
+                                 ColorChanged="ColorPicker_ColorChanged"/>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:ProgressRing /&gt;
+                </x:String>                
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="An determinate progress ring">
+
+            <ui:ProgressRing Width="80" Height="80"
+                             Value="25"
+                             Name="DetRing"
+                             IsIndeterminate="False" />
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="8">
+                    <ui:NumberBox Width="150" Name="Slider"
+                                  Minimum="0" Maximum="100"
+                                  SpinButtonPlacementMode="Inline"
+                                  Value="{Binding #DetRing.Value, Mode=TwoWay}"
+                                  Header="Value"/>
+                    <TextBlock Text="BackgroundColor" />
+                    <ColorPicker Color="Transparent" 
+                                 Name="CP1"
+                                 ColorChanged="ColorPicker_ColorChanged"/>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:ProgressRing IsIndeterminate="False"/&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+        </ctrls:ControlExample>
+    </StackPanel>
+</UserControl>

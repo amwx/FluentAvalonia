@@ -22,7 +22,6 @@
     <!--<x:Double x:Key="AutoSuggestBoxLeftButtonMargin">3</x:Double>
         <x:Double x:Key="AutoSuggestBoxRightButtonMargin">4</x:Double>-->
 
-
     <ControlTheme TargetType="AutoCompleteBox" x:Key="{x:Type AutoCompleteBox}">
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
@@ -43,13 +42,18 @@
                              Background="{TemplateBinding Background}"
                              BorderBrush="{TemplateBinding BorderBrush}"
                              BorderThickness="{TemplateBinding BorderThickness}"
+                             CornerRadius="{TemplateBinding CornerRadius}"
+                             CaretIndex="{TemplateBinding CaretIndex, Mode=TwoWay}"
                              FontSize="{TemplateBinding FontSize}"
                              FontFamily="{TemplateBinding FontFamily}"
                              FontWeight="{TemplateBinding FontWeight}"
                              Padding="{TemplateBinding Padding}"
                              Margin="0"
                              DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}"
-                             CornerRadius="{TemplateBinding CornerRadius}"/>
+                             MaxLength="{TemplateBinding MaxLength}"
+                             InnerLeftContent="{TemplateBinding InnerLeftContent}"
+                             InnerRightContent="{TemplateBinding InnerRightContent}"
+                             />
 
                     <Popup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"

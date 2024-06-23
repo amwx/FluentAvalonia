@@ -107,6 +107,7 @@
     <ui:ImageIconSource x:Key="InfoBadgeIcon" Source="avares://FAControlsGallery/Assets/Icons/InfoBadgeIcon.png" />
     <ui:ImageIconSource x:Key="SettingsExpanderIcon" Source="avares://FAControlsGallery/Assets/Icons/SettingsExpanderIcon.png" />
     <ui:ImageIconSource x:Key="RangeSliderIcon" Source="avares://FAControlsGallery/Assets/Icons/RangeSliderIcon.png" />
+    <ui:ImageIconSource x:Key="ProgressRingIcon" Source="avares://FAControlsGallery/Assets/Icons/ProgressRingIcon.png" />
 
     <ui:ImageIconSource x:Key="SourceCodeIcon">
         <ui:ImageIconSource.Source>

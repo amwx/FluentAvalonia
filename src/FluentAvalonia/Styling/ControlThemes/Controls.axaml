@@ -114,6 +114,8 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/AppWindowStyles.axaml" />
 
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/RangeSliderStyles.axaml" />
+
+                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/ProgressRingStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>

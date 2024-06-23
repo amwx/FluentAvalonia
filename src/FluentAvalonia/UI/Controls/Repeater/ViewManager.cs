@@ -840,9 +840,16 @@ internal class ViewManager
     private void UpdateFocusedElement()
     {
         var owner = _owner;
-        var focusedElement = (InputElement)TopLevel.GetTopLevel(owner).FocusManager.GetFocusedElement();
 
-        var child = focusedElement;
+        var xamlRoot = TopLevel.GetTopLevel(owner);
+        Control child = null;
+        Control focusedElement = null;
+
+        if (xamlRoot != null)
+        {
+            child = xamlRoot.FocusManager.GetFocusedElement() as Control;
+        }
+
         if (child != null)
         {
             var parent = child.GetVisualParent();
@@ -878,10 +885,10 @@ internal class ViewManager
 
             if (focusedElement != null)
             {
-                UpdatePin((Control)focusedElement, true /* addPin */);
+                UpdatePin(focusedElement, true /* addPin */);
             }
 
-            _lastFocusedElement = (Control)focusedElement;
+            _lastFocusedElement = focusedElement;
         }
     }
 

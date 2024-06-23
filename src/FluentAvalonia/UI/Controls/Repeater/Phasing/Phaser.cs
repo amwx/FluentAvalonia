@@ -27,6 +27,9 @@ internal class Phaser
 
     public void StopPhasing(Control element, VirtualizationInfo virtInfo)
     {
+        if (_pendingElements == null)
+            return;
+
         // We need to remove the element from the pending elements list. We cannot just change the phase to -1
         // since it will get updated when the element gets recycled.
         for (int i = _pendingElements.Count - 1; i >= 0; i--)

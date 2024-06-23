@@ -305,17 +305,19 @@ In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource
                 <ScrollViewer Grid.Row="2">
                     <ui:ItemsRepeater ItemsSource="{Binding Path=View, Source={StaticResource IconsSource}}">
                         <ui:ItemsRepeater.Layout>
-                            <ui:FlowLayout MinColumnSpacing="4" MinRowSpacing="4" />
+                            <ui:FlowLayout MinColumnSpacing="4" MinRowSpacing="4"
+                                           Orientation="Horizontal"/>
                         </ui:ItemsRepeater.Layout>
 
                         <ui:ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="vm:SymbolItem">
-                                <ui:FABorder Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                             BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                                             BorderThickness="1" Padding="8"
-                                             Width="150" Height="100"
-                                             CornerRadius="{StaticResource ControlCornerRadius}"
-                                             ToolTip.Tip="{Binding Symbol}">
+                                <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1" Padding="8"
+                                        Width="150" Height="100"
+                                        CornerRadius="{StaticResource ControlCornerRadius}"
+                                        ToolTip.Tip="{Binding Symbol}"
+                                        BackgroundSizing="InnerBorderEdge">
                                     <Panel>
                                         <TextBlock Text="{CompiledBinding Symbol}"
                                                    Theme="{StaticResource BodyStrongTextBlockStyle}"
@@ -336,7 +338,7 @@ In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource
                                                    TextTrimming="CharacterEllipsis"
                                                    DockPanel.Dock="Top"/>
                                     </Panel>
-                                </ui:FABorder>
+                                </Border>
                             </DataTemplate>
                         </ui:ItemsRepeater.ItemTemplate>
                     </ui:ItemsRepeater>

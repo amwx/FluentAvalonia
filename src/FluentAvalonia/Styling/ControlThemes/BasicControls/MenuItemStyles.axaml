@@ -53,6 +53,22 @@
 
     <!-- Resources in BaseResources.axaml -->
 
+    <ControlTheme x:Key="FluentMenuItemIconTheme"
+                  TargetType="ContentControl">
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Viewbox StretchDirection="DownOnly"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center">
+                    <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" />
+                </Viewbox>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+
     <ControlTheme x:Key="{x:Type MenuItem}" TargetType="MenuItem">
         <Setter Property="Background" Value="{DynamicResource MenuBarItemBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource MenuBarItemBorderBrush}"/>
@@ -73,6 +89,8 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="ToggleIcon" />
+                                <ColumnDefinition Width="Auto"
                                                   SharedSizeGroup="MenuItemIcon" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"
@@ -80,14 +98,22 @@
                                 <ColumnDefinition Width="Auto"
                                                   SharedSizeGroup="MenuItemChevron" />
                             </Grid.ColumnDefinitions>
-                            
+
+                            <ContentControl Grid.Column="0"
+                                            x:Name="PART_ToggleIconPresenter"
+                                            IsVisible="False"
+                                            Theme="{StaticResource FluentMenuItemIconTheme}"
+                                            Margin="{DynamicResource MenuIconPresenterMargin}" />
+
                             <Viewbox Name="PART_IconPresenter"
                                      Margin="{DynamicResource MenuIconPresenterMargin}"
+                                     Theme="{StaticResource FluentMenuItemIconTheme}"
                                      StretchDirection="DownOnly"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"
                                      IsVisible="False"
-                                     Width="16" Height="16">
+                                     Width="16" Height="16"
+                                     Grid.Column="1">
                                 <ContentPresenter Content="{TemplateBinding Icon}"/>
                             </Viewbox>
 
@@ -95,30 +121,28 @@
                                               Content="{TemplateBinding Header}"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Stretch"
-                                              Grid.Column="1">
-                                <ContentPresenter.DataTemplates>
-                                    <DataTemplate DataType="sys:String">
-                                        <AccessText Text="{Binding}" />
-                                    </DataTemplate>
-                                </ContentPresenter.DataTemplates>
-                            </ContentPresenter>
-                            <TextBlock x:Name="PART_InputGestureText"
-                                       Grid.Column="2"
+                                              Grid.Column="2"
+                                              RecognizesAccessKey="True" />
+                            
+                            <TextBlock Name="PART_InputGestureText"
+                                       Grid.Column="3"
                                        Classes="CaptionTextBlockStyle"
                                        Margin="{DynamicResource MenuInputGestureTextMargin}"
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center" />
+                            
                             <ui:SymbolIcon Name="PART_ChevronPath"
                                            Height="16"
                                            Symbol="ChevronRight"
                                            Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
                                            VerticalAlignment="Center"
-                                           Grid.Column="3"
+                                           Grid.Column="4"
                                            FontSize="18"
                                            Foreground="{DynamicResource MenuFlyoutSubItemChevron}"/>
                         </Grid>
                     </Border>
+                    
                     <Popup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"
                            Placement="RightEdgeAlignedTop"
@@ -210,6 +234,25 @@
                 </ControlTemplate>
             </Setter>
         </Style>
+
+        <Style Selector="^:checked:toggle /template/ ContentControl#PART_ToggleIconPresenter">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Content">
+                <Template>
+                    <ui:SymbolIcon Symbol="Checkmark" />
+                </Template>
+            </Setter>
+        </Style>
+        
+        <Style Selector="^:checked:radio /template/ ContentControl#PART_ToggleIconPresenter">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Content">
+                <Template>
+                    <Ellipse Fill="{Binding $parent[MenuItem].Foreground}"
+                             Margin="4" Width="4" Height="4" />
+                </Template>
+            </Setter>
+        </Style>
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type Separator}"
@@ -230,6 +273,6 @@
                         Background="{TemplateBinding Background}"/>
             </ControlTemplate>
         </Setter>
-    </ControlTheme>
+    </ControlTheme>  
 
 </ResourceDictionary>

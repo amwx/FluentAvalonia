@@ -21,7 +21,4 @@
   <ItemGroup>    
     <ProjectReference Include="..\..\src\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\FAControlsPages\RangeSliderPage.axaml" />
-  </ItemGroup>
 </Project>

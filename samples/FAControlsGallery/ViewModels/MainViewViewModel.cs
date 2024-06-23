@@ -207,7 +207,8 @@ public class NavigationFactory : INavigationPageFactory
         { "InfoBar", () => new InfoBarPage() },
         { "InfoBadge", () => new InfoBadgePage() },
         { "SettingsExpander", () => new SettingsExpanderPage() },
-        { "RangeSlider", () => new RangeSliderPage() }
+        { "RangeSlider", () => new RangeSliderPage() },
+        { "ProgressRing", () => new ProgressRingPage() }
     };
 }
 
