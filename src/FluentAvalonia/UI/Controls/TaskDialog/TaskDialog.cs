@@ -374,12 +374,10 @@ public partial class TaskDialog : ContentControl
         }
 
         if (_host is Window w)
-        {
-            // Hide the window, but don't close it while we shut down
-            // Mainly so we can take out the dialog and put it back
-            // if it was declared in Xaml and this doesn't show
-            // on screen
-            w.Hide();
+        {            
+            _ignoreWindowClosingEvent = true;
+
+            w.Close(result);
             IsVisible = false;
 
             w.Content = null;
@@ -388,9 +386,6 @@ public partial class TaskDialog : ContentControl
             PseudoClasses.Set(SharedPseudoclasses.s_pcOpen, false);
             PseudoClasses.Set(s_pcHidden, true);
 
-            // Fully close the dialog sending the result back
-            _ignoreWindowClosingEvent = true;
-            w.Close(result);
             _ignoreWindowClosingEvent = false;
         }
         else if (_host is DialogHost dh)
