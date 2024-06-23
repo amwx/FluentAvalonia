@@ -343,16 +343,14 @@ internal class ViewportManager
         if (!_renderingToken)
         {
             _renderingToken = true;
-            Dispatcher.UIThread.Post(OnCompositionTargetRendering, DispatcherPriority.Render);
+            // Note from Avalonia implementation
+            // Register action to go back to how things were before where any child can be the anchor. Here,
+            // WinUI uses CompositionTarget.Rendering but we don't currently have that, so post an action to
+            // run *after* rendering has completed (priority needs to be lower than Render as Transformed
+            // bounds must have been set in order for OnEffectiveViewportChanged to trigger).
+            Dispatcher.UIThread.Post(OnCompositionTargetRendering, DispatcherPriority.Loaded);
             //CompositionTarget.Rendering += OnCompositionTargetRendering;
         }
-
-        // HACK: we need to force a complete layout pass here in order to get the scrollviewer
-        // to actually shift the viewport. This is probably a bug in Avalonia's ScrollViewer
-        // and bring into view logic. Without this, EffectiveViewportChanged or LayoutUpdated
-        // never fires and the Scroll offset is therefore never set so the items are arranged
-        // where they're supposed to be, but the viewport doesn't change
-        (_owner.GetVisualRoot() as Control).UpdateLayout();
     }
 
     private Control GetImmediateChildOfRepeater(Control descendant)
