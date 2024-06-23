@@ -362,7 +362,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
         bool HasImplicitFocus()
         {
-            var c = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Control;
+            var c = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement() as Control;
             // FAComboBoxItem is the only container we allow, so if it has focus
             // we know we're in this ComboBox's dropdown and have implicit focus
             if (c is FAComboBoxItem)
