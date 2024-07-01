@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Utilities;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -23,28 +24,28 @@ public partial class RangeSlider
     /// </summary>
     public static readonly StyledProperty<double> MinimumProperty = 
         RangeBase.MinimumProperty.AddOwner<RangeSlider>(
-            new StyledPropertyMetadata<double>(0d));
+            new StyledPropertyMetadata<double>(0d, coerce: CoerceMinimum));
 
     /// <summary>
     /// Defines the <see cref="Maximum"/> property
     /// </summary>
     public static readonly StyledProperty<double> MaximumProperty = 
         RangeBase.MaximumProperty.AddOwner<RangeSlider>(
-            new StyledPropertyMetadata<double>(100d));
+            new StyledPropertyMetadata<double>(100d, coerce: CoerceMaximum));
 
     /// <summary>
     /// Defines the <see cref="RangeStart"/> property
     /// </summary>
     public static readonly StyledProperty<double> RangeStartProperty = 
         AvaloniaProperty.Register<RangeSlider, double>(nameof(RangeStart),
-            defaultValue: 0, defaultBindingMode: BindingMode.TwoWay);
+            defaultValue: 0, defaultBindingMode: BindingMode.TwoWay, coerce: CoerceRangeStart);
 
     /// <summary>
     /// Defines the <see cref="RangeEnd"/> property
     /// </summary>
     public static readonly StyledProperty<double> RangeEndProperty = 
         AvaloniaProperty.Register<RangeSlider, double>(nameof(RangeEnd), 
-            defaultValue: 100, defaultBindingMode: BindingMode.TwoWay);
+            defaultValue: 100, defaultBindingMode: BindingMode.TwoWay, coerce: CoerceRangeEnd);
 
     /// <summary>
     /// Defines the <see cref="StepFrequency"/> property
@@ -52,6 +53,13 @@ public partial class RangeSlider
     public static readonly StyledProperty<double> StepFrequencyProperty = 
         AvaloniaProperty.Register<RangeSlider, double>(nameof(StepFrequency), 
             defaultValue: 1);
+    
+    /// <summary>
+    /// Defines the <see cref="IsSnapToStepFrequencyEnabled"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsSnapToStepFrequencyEnabledProperty =
+        AvaloniaProperty.Register<RangeSlider, bool>(nameof(IsSnapToStepFrequencyEnabled), true);
+
 
     /// <summary>
     /// Defines the <see cref="ToolTipStringFormat"/> property
@@ -80,7 +88,13 @@ public partial class RangeSlider
         get => GetValue(MinimumProperty);
         set => SetValue(MinimumProperty, value);
     }
+    
+    private static double CoerceMinimum(AvaloniaObject sender, double value)
+    {
+        return ValidateDouble(value) ? value : sender.GetValue(MinimumProperty);
+    }
 
+    
     /// <summary>
     /// Gets or sets the maximum allowed value for the RangeSlider
     /// </summary>
@@ -89,6 +103,14 @@ public partial class RangeSlider
         get => GetValue(MaximumProperty);
         set => SetValue(MaximumProperty, value);
     }
+    
+    private static double CoerceMaximum(AvaloniaObject sender, double value)
+    {
+        return ValidateDouble(value)
+            ? Math.Max(value, sender.GetValue(MinimumProperty))
+            : sender.GetValue(MaximumProperty);
+    }
+
 
     /// <summary>
     /// Gets or sets the start of the selected range
@@ -97,6 +119,13 @@ public partial class RangeSlider
     {
         get => GetValue(RangeStartProperty);
         set => SetValue(RangeStartProperty, value);
+    }
+    
+    private static double CoerceRangeStart(AvaloniaObject sender, double value)
+    {
+        return ValidateDouble(value) 
+            ? MathUtilities.Clamp(value, sender.GetValue(MinimumProperty), Math.Min(sender.GetValue(RangeEndProperty), sender.GetValue(MaximumProperty))) // TODO: How to deal with MinRange here?
+            : sender.GetValue(RangeStartProperty);
     }
 
     /// <summary>
@@ -108,6 +137,15 @@ public partial class RangeSlider
         set => SetValue(RangeEndProperty, value);
     }
 
+    private static double CoerceRangeEnd(AvaloniaObject sender, double value)
+    {
+        return ValidateDouble(value) 
+            ? MathUtilities.Clamp(value, 
+                Math.Min(Math.Max(sender.GetValue(MinimumProperty), sender.GetValue(RangeStartProperty)), sender.GetValue(MaximumProperty)), 
+                sender.GetValue(MaximumProperty)) // TODO: How to deal with MinRange here?
+            : sender.GetValue(RangeEndProperty);
+    }
+    
     /// <summary>
     /// Gets or sets the frequency of ticks when dragging the slider
     /// </summary>
@@ -115,6 +153,15 @@ public partial class RangeSlider
     {
         get => GetValue(StepFrequencyProperty);
         set => SetValue(StepFrequencyProperty, value);
+    }
+    
+    /// <summary>
+    /// Gets or sets a value that indicates whether the <see cref="RangeSlider"/> automatically moves the <see cref="Thumb"/> to the closest step frequency.
+    /// </summary>
+    public bool IsSnapToStepFrequencyEnabled
+    {
+        get => GetValue(IsSnapToStepFrequencyEnabledProperty);
+        set => SetValue(IsSnapToStepFrequencyEnabledProperty, value);
     }
 
     /// <summary>
@@ -175,5 +222,14 @@ public partial class RangeSlider
     private const string s_tpMaxThumb = "MaxThumb";
     private const string s_tpContainerCanvas = "ContainerCanvas";
     private const string s_tpToolTipText = "ToolTipText";
+    
+    /// <summary>
+    /// Checks if the double value is not infinity nor NaN.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    private static bool ValidateDouble(double value)
+    {
+        return !double.IsInfinity(value) && !double.IsNaN(value);
+    }
 }
 
