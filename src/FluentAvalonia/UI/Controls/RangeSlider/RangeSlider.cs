@@ -1,16 +1,11 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using Avalonia;
-using Avalonia.Automation;
-using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.Utilities;
-using Avalonia.VisualTree;
-using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -19,103 +14,51 @@ public partial class RangeSlider : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-
+        
         if (change.Property == RangeStartProperty)
         {
-            _minSet = true;
-
-            if (!_valuesAssigned)
-                return;
-
-            var newV = change.GetNewValue<double>();
-            RangeMinToStepFrequency();
-
-            if (_valuesAssigned)
-            {
-                if (newV < Minimum)
-                    RangeStart = Minimum;
-                else if (newV > Maximum)
-                    RangeStart = Maximum;
-
-                SyncActiveRectangle();
-
-                if (newV > RangeEnd)
-                    RangeEnd = newV;
-            }
-
+            CoerceValue(RangeStartProperty);
+            CoerceValue(RangeEndProperty);
+            
             SyncThumbs();
 
             if (!_isDraggingEnd && !_isDraggingStart)
             {
-                OnValueChanged(new RangeChangedEventArgs(change.GetOldValue<double>(), newV, RangeSelectorProperty.RangeStartValue));
+                OnValueChanged(new RangeChangedEventArgs(change.GetOldValue<double>(), RangeStart, RangeSelectorProperty.RangeStartValue));
             }
         }
         else if (change.Property == RangeEndProperty)
         {
-            _maxSet = true;
-
-            if (!_valuesAssigned)
-                return;
-
-            var newV = change.GetNewValue<double>();
-            RangeMaxToStepFrequency();
-
-            if (_valuesAssigned)
-            {
-                if (newV < Minimum)
-                    RangeEnd = Minimum;
-                else if (newV > Maximum)
-                    RangeEnd = Maximum;
-
-                SyncActiveRectangle();
-
-                if (newV < RangeStart)
-                    RangeStart = newV;
-            }
+            CoerceValue(RangeEndProperty);
+            CoerceValue(RangeStartProperty);
 
             SyncThumbs();
 
             if (!_isDraggingEnd && !_isDraggingStart)
             {
-                OnValueChanged(new RangeChangedEventArgs(change.GetOldValue<double>(), newV, RangeSelectorProperty.RangeEndValue));
+                OnValueChanged(new RangeChangedEventArgs(change.GetOldValue<double>(), RangeEnd, RangeSelectorProperty.RangeEndValue));
             }
         }
         else if (change.Property == MinimumProperty)
         {
-            if (!_valuesAssigned)
-                return;
-
             var (oldV, newV) = change.GetOldAndNewValue<double>();
 
-            if (Maximum < newV)
-                Maximum = newV + Epsilon;
+            CoerceValue(MaximumProperty);
+            CoerceValue(RangeStartProperty);
+            CoerceValue(RangeEndProperty);
 
-            if (RangeStart < newV)
-                RangeStart = newV;
-
-            if (RangeEnd < newV)
-                RangeEnd = newV;
-
-            if (newV != oldV)
+            if (Math.Abs(newV - oldV) > Epsilon)
                 SyncThumbs();
         }
         else if (change.Property == MaximumProperty)
         {
-            if (!_valuesAssigned)
-                return;
-
             var (oldV, newV) = change.GetOldAndNewValue<double>();
+            
+            CoerceValue(MinimumProperty);
+            CoerceValue(RangeEndProperty);
+            CoerceValue(RangeStartProperty);
 
-            if (Minimum > newV)
-                Maximum = newV + Epsilon;
-
-            if (RangeEnd > newV)
-                RangeEnd = newV;
-
-            if (RangeStart > newV)
-                RangeStart = newV;
-
-            if (newV != oldV)
+            if (Math.Abs(newV - oldV) > Epsilon)
                 SyncThumbs();
         }
     }
@@ -144,9 +87,6 @@ public partial class RangeSlider : TemplatedControl
         }
 
         base.OnApplyTemplate(e);
-
-        VerifyValues();
-        _valuesAssigned = true;
 
         _activeRectangle = e.NameScope.Get<Rectangle>(s_tpActiveRectangle);
         _minThumb = e.NameScope.Get<Thumb>(s_tpMinThumb);
@@ -205,13 +145,12 @@ public partial class RangeSlider : TemplatedControl
         var limit = RangeEnd - MinimumRange;
         if (newStart > limit)
         {
-            RangeEnd += newStart - oldStart;
-            newStart -= newStart - limit;
-            RangeStart = newStart;
+            RangeMaxToStepFrequency(newStart - oldStart);
+            RangeMinToStepFrequency(limit - newStart);
         }
         else
         {
-            RangeStart = newStart;
+            RangeMinToStepFrequency(newStart - oldStart);
         }
 
         if (_toolTipText != null)
@@ -230,13 +169,12 @@ public partial class RangeSlider : TemplatedControl
         var limit = RangeStart + MinimumRange;
         if (newEnd < limit)
         {
-            RangeStart -= oldEnd - newEnd;
-            newEnd -= newEnd - limit;
-            RangeEnd = newEnd;
+            RangeMinToStepFrequency(newEnd - oldEnd);
+            RangeMaxToStepFrequency(limit - newEnd);
         }
         else
         {
-            RangeEnd = newEnd;
+            RangeMaxToStepFrequency(newEnd - oldEnd);
         }
 
         if (_toolTipText != null)
@@ -307,7 +245,7 @@ public partial class RangeSlider : TemplatedControl
         switch (e.Key)
         {
             case Key.Left:
-                RangeStart -= StepFrequency;
+                RangeMinToStepFrequency(-StepFrequency);
                 SyncThumbs(fromMinKeyDown: true);
 
                 SetToolTipAt(_minThumb, true);
@@ -316,7 +254,7 @@ public partial class RangeSlider : TemplatedControl
                 break;
 
             case Key.Right:
-                RangeStart += StepFrequency;
+                RangeMinToStepFrequency(+StepFrequency);
                 SyncThumbs(fromMinKeyDown: true);
 
                 SetToolTipAt(_minThumb, true);
@@ -331,7 +269,7 @@ public partial class RangeSlider : TemplatedControl
         switch (e.Key)
         {
             case Key.Left:
-                RangeEnd -= StepFrequency;
+                RangeMaxToStepFrequency(-StepFrequency);
                 SyncThumbs(fromMaxKeyDown: true);
 
                 if (!ToolTip.GetIsOpen(_maxThumb))
@@ -346,7 +284,7 @@ public partial class RangeSlider : TemplatedControl
                 e.Handled = true;
                 break;
             case Key.Right:
-                RangeEnd += StepFrequency;
+                RangeMaxToStepFrequency(+StepFrequency);
                 SyncThumbs(fromMaxKeyDown: true);
 
                 if (!ToolTip.GetIsOpen(_maxThumb))
@@ -467,10 +405,9 @@ public partial class RangeSlider : TemplatedControl
                 if (rs + delta < min)
                     delta = min - rs;
             }
-
             
-            RangeStart += delta;
-            RangeEnd += delta;
+            RangeMinToStepFrequency(delta);
+            RangeMaxToStepFrequency(delta);
             _absolutePosition = position;
             return;
         }
@@ -479,12 +416,12 @@ public partial class RangeSlider : TemplatedControl
          
         if (_pointerManipulatingMin && normalizedPosition < RangeEnd)
         {
-            RangeStart = DragThumb(_minThumb, 0, Canvas.GetLeft(_maxThumb), position);
+            RangeMinToStepFrequency(DragThumb(_minThumb, 0, Canvas.GetLeft(_maxThumb), position) - RangeStart);
             UpdateToolTipText(RangeStart);
         }
         else if (_pointerManipulatingMax && normalizedPosition > RangeStart)
         {
-            RangeEnd = DragThumb(_maxThumb, Canvas.GetLeft(_minThumb), DragWidth, position);
+            RangeMaxToStepFrequency(DragThumb(_maxThumb, Canvas.GetLeft(_minThumb), DragWidth, position)-  RangeEnd);
             UpdateToolTipText(RangeEnd);
         }
     }
@@ -510,13 +447,13 @@ public partial class RangeSlider : TemplatedControl
 
         if (upperValueDiff < lowerValueDiff)
         {
-            RangeEnd = normalizedPosition;
+            RangeMaxToStepFrequency(normalizedPosition - RangeEnd);
             _pointerManipulatingMax = true;
             HandleThumbDragStarted(_maxThumb);
         }
         else
         {
-            RangeStart = normalizedPosition;
+            RangeMinToStepFrequency(normalizedPosition - RangeStart);
             _pointerManipulatingMin = true;
             HandleThumbDragStarted(_minThumb);
         }
@@ -532,69 +469,27 @@ public partial class RangeSlider : TemplatedControl
             _toolTipText.Text = newValue.ToString(format);
         }
     }
-
-    private void VerifyValues()
+    
+    private void RangeMinToStepFrequency(double direction)
     {
-        if (Minimum > Maximum)
-        {
-            Minimum = Maximum;
-            Maximum = Maximum;
-        }
-
-        if (Minimum == Maximum)
-        {
-            Maximum += Epsilon;
-        }
-
-        if (!_maxSet)
-        {
-            RangeEnd = Maximum;
-        }
-
-        if (!_minSet)
-        {
-            RangeStart = Minimum;
-        }
-
-        if (RangeStart < Minimum)
-        {
-            RangeStart = Minimum;
-        }
-
-        if (RangeEnd < Minimum)
-        {
-            RangeEnd = Minimum;
-        }
-
-        if (RangeStart > Maximum)
-        {
-            RangeStart = Maximum;
-        }
-
-        if (RangeEnd > Maximum)
-        {
-            RangeEnd = Maximum;
-        }
-
-        if (RangeEnd < RangeStart)
-        {
-            RangeStart = RangeEnd;
-        }
+        SetCurrentValue(RangeStartProperty, MoveToStepFrequency(RangeStart, direction));
     }
 
-    private void RangeMinToStepFrequency()
+    private void RangeMaxToStepFrequency(double direction)
     {
-        RangeStart = MoveToStepFrequency(RangeStart);
+        SetCurrentValue(RangeEndProperty, MoveToStepFrequency(RangeEnd, direction));
     }
 
-    private void RangeMaxToStepFrequency()
+    private double MoveToStepFrequency(double rangeValue, double direction)
     {
-        RangeEnd = MoveToStepFrequency(RangeEnd);
-    }
-
-    private double MoveToStepFrequency(double rangeValue)
-    {
-        double newValue = Minimum + (((int)Math.Round((rangeValue - Minimum) / StepFrequency)) * StepFrequency);
+        if (!IsSnapToStepFrequencyEnabled)
+        {
+            return rangeValue + direction;
+        }
+        
+        double newValue = direction > 0
+            ? Minimum + (((int)Math.Floor((rangeValue + direction - Minimum) / StepFrequency)) * StepFrequency)
+            : Minimum + (((int)Math.Ceiling((rangeValue +direction - Minimum) / StepFrequency)) * StepFrequency);
 
         if (newValue < Minimum)
         {
@@ -706,15 +601,11 @@ public partial class RangeSlider : TemplatedControl
         }
     }
 
-
     private Rectangle _activeRectangle;
     private Thumb _minThumb;
     private Thumb _maxThumb;
     private Canvas _containerCanvas;
     private double _oldValue;
-    private bool _valuesAssigned;
-    private bool _minSet;
-    private bool _maxSet;
     private bool _pointerManipulatingMin;
     private bool _pointerManipulatingMax;
     private bool _pointerManipulatingBoth;

@@ -1,16 +1,10 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="using:FluentAvalonia.UI.Controls"
-        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
-        xmlns:core="using:FluentAvalonia.Core"
-        xmlns:sys="using:System"
-        xmlns:local="using:FASandbox"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="FASandbox.MainWindow"
-        Title="FASandbox">
+<Window x:Class="FASandbox.MainWindow" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:core="using:FluentAvalonia.Core" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="using:FASandbox" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sys="using:System" xmlns:ui="using:FluentAvalonia.UI.Controls" xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives" Title="FASandbox" d:DesignHeight="450" d:DesignWidth="800" x:DataType="local:MainWindowViewModel" mc:Ignorable="d">
 
-    <ToggleSwitch IsChecked="True"/>
-    
+    <StackPanel>
+        <ui:NumberBox Value="{Binding Min}" />
+        <ui:NumberBox Value="{Binding Max}" />
+
+        <ui:RangeSlider RangeEnd="{Binding Max}" RangeStart="{Binding Min}" />
+    </StackPanel>
+
 </Window>
