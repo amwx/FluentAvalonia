@@ -64,9 +64,9 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         base.OnKeyDown(e);
 
         // See OnKeyUp for reasoning
-        if (!e.Handled && e.Key == Key.Enter)
+        if (!e.Handled && (e.Key == Key.Enter || e.Key == Key.Escape))
         {
-            _enterKeyDownVisual = e.Source as Visual;
+            _hotkeyDownVisual = e.Source as Visual;
         }
     }
 
@@ -78,12 +78,12 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             return;
         }
 
-        // HACK: If a default button is set, and the content dialog is opened by enter key press on a button
+        // HACK: If a default button is set, and the content dialog is opened by enter or escape key press on a button
         // the KeyUp event is raised on the focused item within the dialog, instead of the original button
         // (Avalonia related issue #9626) and will immediately close the dialog
         // We store the source of the key down and if it doesn't match, or hasn't been set yet, we ignore
         // this key up event so we don't inadvertantly close the dialog
-        if (e.Key == Key.Enter && (_enterKeyDownVisual == null || _enterKeyDownVisual != (Visual)e.Source))
+        if ((e.Key == Key.Enter || e.Key == Key.Escape) && (_hotkeyDownVisual == null || _hotkeyDownVisual != (Visual)e.Source))
         {
             base.OnKeyUp(e);
             return;
@@ -505,7 +505,7 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
             }
         }
 
-        _enterKeyDownVisual = null;
+        _hotkeyDownVisual = null;
 
         _tcs.TrySetResult(_result);
     }
@@ -657,5 +657,5 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
     private Button _secondaryButton;
     private Button _closeButton;
     private bool _hasDeferralActive;
-    private Visual _enterKeyDownVisual;
+    private Visual _hotkeyDownVisual;
 }
