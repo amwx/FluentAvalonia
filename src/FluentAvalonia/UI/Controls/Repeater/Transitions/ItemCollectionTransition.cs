@@ -39,11 +39,11 @@ public class ItemCollectionTransition
 
     public Control Element => _element;
 
-    internal bool HasStarted => _progress != null;
+    public bool HasStarted => _progress != null;
 
-    internal ItemCollectionTransitionOperation Operation => _operation;
+    public ItemCollectionTransitionOperation Operation => _operation;
 
-    internal ItemCollectionTransitionTriggers Triggers => _triggers;
+    public ItemCollectionTransitionTriggers Triggers => _triggers;
 
     public ItemCollectionTransitionProgress Start()
     {
