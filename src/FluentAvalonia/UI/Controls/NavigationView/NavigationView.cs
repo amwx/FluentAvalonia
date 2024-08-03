@@ -1773,7 +1773,7 @@ public partial class NavigationView : HeaderedContentControl
 
         if (parentIR.ItemsSourceView != null)
         {
-            var itemIndex = parentIR.ItemsSourceView.IndexOf(nvi);
+            var itemIndex = parentIR.GetElementIndex(nvi);
 
             // Check that index is NOT -1, meaning it is actually realized
             if (itemIndex != -1)
@@ -1783,7 +1783,6 @@ public partial class NavigationView : HeaderedContentControl
             }
         }
 
-        //TODO
         var recDir = NavigationRecommendedTransitionDirection.Default;
         if (IsTopNavigationView && nvi.SelectsOnInvoked)
         {
