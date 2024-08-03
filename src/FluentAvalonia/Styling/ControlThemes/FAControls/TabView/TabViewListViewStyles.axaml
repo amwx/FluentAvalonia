@@ -6,12 +6,13 @@
                     x:CompileBindings="True">
 
     <Design.PreviewWith>
-        <Border Padding="20" >
-            <uip:TabViewListView >
-                <ui:TabViewItem Header="Hello" IsSelected="True" />
-                <ui:TabViewItem Header="Hello" />
-                <ui:TabViewItem Header="Hello" />
-            </uip:TabViewListView>
+        <Border Padding="20" Width="800" >
+            <ui:TabView>
+                <ui:TabView.TabItems>
+                    <ui:TabViewItem Header="Item1" />
+                    <ui:TabViewItem Header="Item1" />
+                </ui:TabView.TabItems>
+            </ui:TabView>
         </Border>
     </Design.PreviewWith>
 
@@ -69,18 +70,16 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Border Name="LeftBottomBorderLine"
-                                BorderBrush="{DynamicResource TabViewBorderBrush}"
-                                BorderThickness="1"
-                                Height="1"
-                                VerticalAlignment="Bottom"/>
+                        <Rectangle Name="LeftBottomBorderLine"
+                                   Fill="{DynamicResource TabViewBorderBrush}"
+                                   Height="1"
+                                   VerticalAlignment="Bottom"/>
 
-                        <Border Name="RightBottomBorderLine"
-                                BorderBrush="{DynamicResource TabViewBorderBrush}"
-                                BorderThickness="1"
-                                Height="1"
-                                Grid.Column="2"
-                                VerticalAlignment="Bottom"/>
+                        <Rectangle Name="RightBottomBorderLine"
+                                   Fill="{DynamicResource TabViewBorderBrush}"
+                                   Height="1"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Bottom"/>
 
                         <Border Name="ScrollDecreaseButtonContainer"
                                 IsVisible="{Binding HorizontalScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource SVVTBC}}"
@@ -127,8 +126,8 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^:noborder /template/ Border#LeftBottomBorderLine,
-                         ^:noborder /template/ Border#RightBottomBorderLine">
+        <Style Selector="^:noborder /template/ Rectangle#LeftBottomBorderLine,
+                         ^:noborder /template/ Rectangle#RightBottomBorderLine">
             <Setter Property="IsVisible" Value="False" />
         </Style>
     </ControlTheme>
@@ -163,13 +162,35 @@
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
                                   Theme="{StaticResource TabScrollViewerStyle}"
                                   Name="ScrollViewer">
-                        <!-- 
-                        We don't have Header and footer properties, will ignore for now
-                        Also ignore visual states since they are for these
-                        -->
-                        <ItemsPresenter Name="TabItemsPresenter"
-                                        Margin="{TemplateBinding Padding}"
-                                        ItemsPanel="{TemplateBinding ItemsPanel}" />
+
+                        <DockPanel>
+                            <!-- 
+                            Avalonia ItemsPresenter doesn't have Header for Footer properties
+                            Which is required here to get the solid border beneath the tab items
+                            So we have to fake it and hope putting the ItemsPresenter within the
+                            StackPanel doesn't mess with anything and all still works...
+                            -->
+                            
+                            <Rectangle Name="LeftBottomBorderLine"
+                                       Margin="-1,0,0,0"
+                                       Fill="{DynamicResource TabViewBorderBrush}"
+                                       Width="4" Height="1"
+                                       VerticalAlignment="Bottom"
+                                       HorizontalAlignment="Left"
+                                       DockPanel.Dock="Left"/>
+                            <Rectangle Name="RightBottomBorderLine"
+                                       Fill="{DynamicResource TabViewBorderBrush}"
+                                       Margin="-1,0,0,0"
+                                       Width="4" Height="1"
+                                       VerticalAlignment="Bottom"
+                                       HorizontalAlignment="Right"
+                                       DockPanel.Dock="Right"/>
+                            <ItemsPresenter Name="TabItemsPresenter"
+                                            Margin="{TemplateBinding Padding}"
+                                            ItemsPanel="{TemplateBinding ItemsPanel}" />
+                        </DockPanel>
+
+
                     </ScrollViewer>
 
                 </Border>

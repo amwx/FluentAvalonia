@@ -28,12 +28,13 @@
             <Setter Property="Padding" Value="8" />
             <Setter Property="Template">
                 <ControlTemplate>
-                    <ui:FABorder Background="{TemplateBinding Background}"
-                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                 Padding="{TemplateBinding Padding}"
-                                 CornerRadius="{TemplateBinding CornerRadius}"
-                                 ToolTip.Tip="{Binding Name}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            ToolTip.Tip="{Binding Name}"
+                            BackgroundSizing="InnerBorderEdge">
                         <Panel x:DataType="vm:FontIconInfo">
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          Glyph="{Binding Glyph}"
@@ -49,11 +50,11 @@
                                        TextWrapping="NoWrap"
                                        TextTrimming="CharacterEllipsis"/>
                         </Panel>
-                    </ui:FABorder>
+                    </Border>
                 </ControlTemplate>
             </Setter>
 
-            <Style Selector="^:selected /template/ ui|FABorder">
+            <Style Selector="^:selected /template/ Border">
                 <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
             </Style>
         </ControlTheme>
@@ -93,7 +94,7 @@
                            ItemsSource="{Binding Source={StaticResource IconsSource}, Path=View}"
                            Name="IconPreview">
                 <ui:ItemsRepeater.Layout>
-                    <ui:FlowLayout />
+                    <ui:FlowLayout Orientation="Horizontal" />
                 </ui:ItemsRepeater.Layout>
                 <ui:ItemsRepeater.ItemTemplate>
                     <DataTemplate DataType="vm:FontIconInfo">

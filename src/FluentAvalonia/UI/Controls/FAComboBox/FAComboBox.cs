@@ -362,7 +362,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
         bool HasImplicitFocus()
         {
-            var c = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Control;
+            var c = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement() as Control;
             // FAComboBoxItem is the only container we allow, so if it has focus
             // we know we're in this ComboBox's dropdown and have implicit focus
             if (c is FAComboBoxItem)
@@ -994,6 +994,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
             // For consistency, we'll raise the event, but both Removed & AddedItems will be null
             RaiseEvent(new SelectionChangedEventArgs(SelectionChangedEvent, null, null));
+            UpdateSelectionBoxItem(Text);
         }
 
         _hasUnsubmittedText = false;

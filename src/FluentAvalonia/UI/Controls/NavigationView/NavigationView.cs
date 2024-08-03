@@ -1,4 +1,6 @@
 ﻿using Avalonia;
+using Avalonia.Animation.Easings;
+using Avalonia.Automation;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -7,6 +9,8 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Rendering.Composition;
+using Avalonia.Threading;
 using FluentAvalonia.Core;
 using System.Collections;
 using System.Collections.Specialized;
@@ -41,7 +45,7 @@ public partial class NavigationView : HeaderedContentControl
 
         MenuItems = new AvaloniaList<object>();
         FooterMenuItems = new AvaloniaList<object>();
-                
+
         _topDataProvider.OnRawDataChanged((args) => OnTopNavDataSourceChanged(args));
 
         Loaded += OnNavViewLoaded;
@@ -235,7 +239,7 @@ public partial class NavigationView : HeaderedContentControl
                 _paneSearchButton.Click += OnPaneSearchButtonClick;
 
                 var searchButtonName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationViewSearchButtonName);
-                // TODO: Automation
+                AutomationProperties.SetName(_paneSearchButton, searchButtonName);
                 ToolTip.SetTip(_paneSearchButton, searchButtonName);
             }
 
@@ -243,10 +247,9 @@ public partial class NavigationView : HeaderedContentControl
             if (_backButton != null)
             {
                 _backButton.Click += OnBackButtonClicked;
-
-                // TODO: Automation
-
-                ToolTip.SetTip(_backButton, FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationBackButtonToolTip));
+                var navigationName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationBackButtonToolTip);
+                ToolTip.SetTip(_backButton, navigationName);
+                AutomationProperties.SetName(_backButton, navigationName);
             }
 
             //titlebar
@@ -1133,7 +1136,7 @@ public partial class NavigationView : HeaderedContentControl
             if (children != null)
             {
                 e.Children = children;
-            }           
+            }
         }
     }
 
@@ -1243,11 +1246,24 @@ public partial class NavigationView : HeaderedContentControl
 
     private void RaiseSelectionChangedEvent(object nextItem, bool isSettings, NavigationRecommendedTransitionDirection recDir)
     {
+        NavigationViewItemBase container = null;
+        if (nextItem != null)
+        {
+            if (NavigationViewItemBaseOrSettingsContentFromData(nextItem) is NavigationViewItemBase b)
+            {
+                container = b;
+            }
+            else if (GetContainerForIndexPath(_selectionModel.SelectedIndex, false, true /* forceRealize */) is NavigationViewItemBase b2)
+            {
+                container = b2;
+            }
+        }
+
         var ea = new NavigationViewSelectionChangedEventArgs()
         {
             SelectedItem = nextItem,
             IsSettingsSelected = isSettings,
-            SelectedItemContainer = NavigationViewItemBaseOrSettingsContentFromData(nextItem),
+            SelectedItemContainer = container,
             RecommendedNavigationTransitionInfo = CreateNavigationTransitionInfo(recDir)
         };
 
@@ -1305,15 +1321,79 @@ public partial class NavigationView : HeaderedContentControl
 
             UnselectPrevItem(prevItem, nextItem);
             ChangeSelectStatusForItem(nextItem, true /* isSelected */);
+            UpdateSelectionModelSelectionForSelectedItem(nextItem);
 
+            // UIA stuff
 
-            RaiseSelectionChangedEvent(nextItem, isSettings, recDir);
-            AnimateSelectionChanged(nextItem);
 
             var nvi = NavigationViewItemOrSettingsContentFromData(nextItem);
             if (nvi != null)
             {
+                AnimateSelectionChanged(nextItem);
+                RaiseSelectionChangedEvent(nextItem, isSettings, recDir);
                 ClosePaneIfNecessaryAfterItemIsClicked(nvi);
+            }
+            else
+            {
+                // Otherwise, we'll wait until a container gets realized for this item and raise it then.
+                _isSelectionChangedPending = true;
+                _pendingSelectionChangedItem = nextItem;
+                _pendingSelectionChangedDirection = recDir;
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    CompletePendingSelectionChange();
+                });
+            }
+        }
+    }
+
+    private void CompletePendingSelectionChange()
+    {
+        // It may be the case that this item is in a collapsed repeater, in which case
+        // no container will be realized for it.  We'll assume that this this is the case
+        // if the UI thread has fallen idle without any SelectionChanged being raised.
+        // In this case, we'll raise the SelectionChanged at that time, as otherwise it'll never be raised.
+        if (_isSelectionChangedPending)
+        {
+            AnimateSelectionChanged(FindLowestLevelContainerToDisplaySelectionIndicator());
+            _isSelectionChangedPending = false;
+
+            var item = _pendingSelectionChangedItem;
+            var direction = _pendingSelectionChangedDirection;
+
+            _pendingSelectionChangedItem = null;
+            _pendingSelectionChangedDirection = default;
+
+            RaiseSelectionChangedEvent(item, IsSettingsItem(item), direction);
+        }
+    }
+
+    private void UpdateSelectionModelSelectionForSelectedItem(object selectedItem)
+    {
+        IndexPath indexPath = IndexPath.Unselected;
+
+        if (NavigationViewItemBaseOrSettingsContentFromData(selectedItem) is NavigationViewItemBase c)
+        {
+            indexPath = GetIndexPathForContainer(c);
+        }
+        else
+        {
+            indexPath = GetIndexPathOfItem(selectedItem);
+        }
+
+        if (indexPath != IndexPath.Unselected && indexPath.GetSize() > 0)
+        {
+            // The SelectedItem property has already been updated. So we want to block any logic from executing
+            // in the SelectionModel selection changed callback.
+            try
+            {
+                _shouldIgnoreNextSelectionChange = true;
+                UpdateSelectionModelSelection(indexPath);
+            }
+            finally
+            {
+                _shouldIgnoreNextSelectionChange = false;
             }
         }
     }
@@ -1693,7 +1773,7 @@ public partial class NavigationView : HeaderedContentControl
 
         if (parentIR.ItemsSourceView != null)
         {
-            var itemIndex = parentIR.ItemsSourceView.IndexOf(nvi);
+            var itemIndex = parentIR.GetElementIndex(nvi);
 
             // Check that index is NOT -1, meaning it is actually realized
             if (itemIndex != -1)
@@ -1703,7 +1783,6 @@ public partial class NavigationView : HeaderedContentControl
             }
         }
 
-        //TODO
         var recDir = NavigationRecommendedTransitionDirection.Default;
         if (IsTopNavigationView && nvi.SelectsOnInvoked)
         {
@@ -2170,9 +2249,8 @@ public partial class NavigationView : HeaderedContentControl
             if (_itemsContainerRow != null)
             {
                 double itemsContMargin = _itemsContainer?.Margin.Vertical() ?? 0d;
-                var availHgt = _itemsContainerRow.ActualHeight - itemsContMargin;
 
-                return _itemsContainerRow.ActualHeight - itemsContMargin;                
+                return _itemsContainerRow.ActualHeight - itemsContMargin;
             }
             return 0;
         }
@@ -2194,15 +2272,28 @@ public partial class NavigationView : HeaderedContentControl
                         // We know the actual height of footer items, so use that to determine how to split pane.
                         if (_leftNavRepeater != null)
                         {
-                            double footerActualHeight =
-                                _leftNavFooterMenuRepeater.Bounds.Height + (_leftNavFooterMenuRepeater.IsVisible ?
-                                _leftNavFooterMenuRepeater.Margin.Vertical() : 0);
+                            double footerDesiredHeight = 0;
+                            {
+                                double footerItemsRepeaterTopBottomMargin = 0;
+                                if (_leftNavFooterMenuRepeater.IsVisible)
+                                    footerItemsRepeaterTopBottomMargin = _leftNavFooterMenuRepeater.Margin.Vertical();
 
-                            double paneFooterActualHeight =
-                                _leftNavFooterContentBorder != null ?
-                                (_leftNavFooterContentBorder.Bounds.Height +
-                                        (_leftNavFooterContentBorder.IsVisible ? _leftNavFooterContentBorder.Margin.Vertical() : 0)) :
-                                0.0;
+                                footerDesiredHeight = footerItemsRepeaterTopBottomMargin +
+                                    LayoutHelper.MeasureChild(_leftNavFooterMenuRepeater, Size.Infinity, default).Height;
+                            }
+
+                            double paneFooterActualHeight = 0;
+                            {
+                                if (_leftNavFooterContentBorder != null)
+                                {
+                                    double paneFooterTopBottomMargin = 0;
+                                    if (_leftNavFooterContentBorder.IsVisible)
+                                        paneFooterTopBottomMargin = _leftNavFooterContentBorder.Margin.Vertical();
+
+                                    paneFooterActualHeight = _leftNavFooterContentBorder.Bounds.Height +
+                                        paneFooterTopBottomMargin;
+                                }
+                            }
 
 
                             // This is the value computed during the measure pass of the layout process. This will be the value used to determine
@@ -2216,7 +2307,7 @@ public partial class NavigationView : HeaderedContentControl
                                     _leftNavRepeater.Margin.Vertical() : 0);
 
                             // Footer and PaneFooter are included in the footerGroup to calculate available height for menu items.
-                            var footerGroupActualHeight = footerActualHeight + paneFooterActualHeight;
+                            var footerGroupDesiredHeight = footerDesiredHeight + paneFooterActualHeight;
 
                             if (_footerItemsSource.Count == 0 && !IsSettingsVisible)
                             {
@@ -2229,31 +2320,31 @@ public partial class NavigationView : HeaderedContentControl
                                 PseudoClasses.Set(s_pcSeparator, false);
                                 return 0d;
                             }
-                            else if (totalHeight >= menuItemsDesiredHeight + footerGroupActualHeight)
+                            else if (totalHeight >= menuItemsDesiredHeight + footerGroupDesiredHeight)
                             {
                                 // We have enough space for two so let everyone get as much as they need
-                                _footerItemsScrollViewer.MaxHeight = footerActualHeight;
+                                _footerItemsScrollViewer.MaxHeight = footerDesiredHeight;
                                 PseudoClasses.Set(s_pcSeparator, false);
-                                return totalHeight - footerGroupActualHeight;
+                                return totalHeight - footerDesiredHeight;
                             }
-                            else if (menuItemsDesiredHeight < totalHeightHalf)
+                            else if (menuItemsDesiredHeight <= totalHeightHalf)
                             {
                                 // Footer items exceed over the half, so let's limit them.
                                 _footerItemsScrollViewer.MaxHeight = (totalHeight - menuItemsActualHeight);
                                 PseudoClasses.Set(s_pcSeparator, true);
                                 return menuItemsActualHeight;
                             }
-                            else if (footerGroupActualHeight <= totalHeightHalf)
+                            else if (footerDesiredHeight <= totalHeightHalf)
                             {
                                 // Menu items exceed over the half, so let's limit them.
-                                _footerItemsScrollViewer.MaxHeight = footerActualHeight;
+                                _footerItemsScrollViewer.MaxHeight = footerDesiredHeight;
                                 PseudoClasses.Set(s_pcSeparator, true);
-                                return totalHeight - footerGroupActualHeight;
+                                return totalHeight - footerDesiredHeight;
                             }
                             else
                             {
                                 // Both are more than half the height, so split evenly.
-                                _footerItemsScrollViewer.MaxHeight = (totalHeightHalf);
+                                _footerItemsScrollViewer.MaxHeight = totalHeightHalf;
                                 PseudoClasses.Set(s_pcSeparator, true);
                                 return totalHeightHalf;
                             }
@@ -3127,24 +3218,318 @@ public partial class NavigationView : HeaderedContentControl
     // when the layout is invalidated as it's called in OnLayoutUpdated.
     private void AnimateSelectionChanged(object nextItem)
     {
-        // If we are delaying animation due to item movement in top nav overflow, dont do anything
-        if (_lastSelectedItemPendingAnimationInTopNav != null)
+        // If we are delaying animation due to item movement in top nav overflow or
+        // the template is not applied, dont do anything
+        if (_lastSelectedItemPendingAnimationInTopNav != null || !_appliedTemplate)
             return;
 
         var prevIndicator = _activeIndicator;
         var nextIndicator = FindSelectionIndicator(nextItem);
 
-        if (prevIndicator == nextIndicator)
-            return;
+        // It seems we can sometimes have this called before an NVI is fully loaded and the
+        // SelectionIndicator isn't available - so add callback to try to get it in the future
+        // Can be seen in SampleApp where selection indicator won't load first time
+        // This is probably an issue somewhere else and this control needs a review for WinUI 1.5
+        // so this is a temporary fix until I get around to comparing the code
+        if (_activeIndicator == null && nextItem != null && nextIndicator == null)
+        {
+            Dispatcher.UIThread.Post(() => AnimateSelectionChanged(nextItem));
+        }
 
-        if (prevIndicator != null)
-            prevIndicator.Opacity = 0;
-        if (nextIndicator != null)
-            nextIndicator.Opacity = 1;
+        bool haveValidAnimation = false;
+        // It's possible that AnimateSelectionChanged is called multiple times before the first animation is complete.
+        // To have better user experience, if the selected target is the same, keep the first animation
+        // If the selected target is not the same, abort the first animation and launch another animation.
+        if (_prevIndicator != null || _nextIndicator != null)
+        {
+            if (nextIndicator != null && _nextIndicator == nextIndicator)
+            {
+                if (prevIndicator != null && _prevIndicator == null)
+                {
+                    ResetElementAnimationProperties(prevIndicator, 0f);
+                }
+                haveValidAnimation = true;
+            }
+            else
+            {
+                // If the last animation is still playing, force it to complete.
+                OnAnimationComplete();
+            }
+        }
 
-        _activeIndicator = nextIndicator;
+        if (!haveValidAnimation)
+        {
+            var paneContentGrid = _paneContentGrid;
+
+            if ((prevIndicator != nextIndicator) && paneContentGrid != null && prevIndicator != null && 
+                nextIndicator != null && FAUISettings.AreAnimationsEnabled())
+            {
+                // Make sure both indicators are visible and in their original locations
+                ResetElementAnimationProperties(prevIndicator, 1f);
+                ResetElementAnimationProperties(nextIndicator, 1f);
+
+                // get the item positions in the pane
+                Point point = default;
+                double prevPos, nextPos;
+
+                var t1 = prevIndicator.TransformToVisual(_paneContentGrid) ?? Matrix.Identity;
+                var t2 = nextIndicator.TransformToVisual(_paneContentGrid) ?? Matrix.Identity;
+                Point prevPosPoint = t1.Transform(point);
+                Point nextPosPoint = t2.Transform(point);
+                Size prevSize = prevIndicator.Bounds.Size;
+                Size nextSize = nextIndicator.Bounds.Size;
+
+                bool areElementsAtSameDepth = false;
+                if (IsTopNavigationView)
+                {
+                    prevPos = prevPosPoint.X;
+                    nextPos = nextPosPoint.X;
+                    areElementsAtSameDepth = prevPosPoint.Y == nextPosPoint.Y;
+                }
+                else
+                {
+                    prevPos = prevPosPoint.Y;
+                    nextPos = nextPosPoint.Y;
+                    areElementsAtSameDepth = prevPosPoint.X == nextPosPoint.X;
+                }
+
+                var visual = ElementComposition.GetElementVisual(this);
+                // CreateScopedBatch
+
+                if (!areElementsAtSameDepth)
+                {
+                    bool isNextBelow = prevPosPoint.Y < nextPosPoint.Y;
+                    if (prevIndicator.Bounds.Height > prevIndicator.Bounds.Width)
+                    {
+                        PlayIndicatorNonSameLevelAnimations(prevIndicator, true, isNextBelow ? false : true);
+                    }
+                    else
+                    {
+                        PlayIndicatorNonSameLevelTopPrimaryAnimation(prevIndicator, true);
+                    }
+
+                    if (nextIndicator.Bounds.Height > nextIndicator.Bounds.Width)
+                    {
+                        PlayIndicatorNonSameLevelAnimations(nextIndicator, false, isNextBelow ? true : false);
+                    }
+                    else
+                    {
+                        PlayIndicatorNonSameLevelTopPrimaryAnimation(nextIndicator, false);
+                    }
+                }
+                else
+                {
+                    double outgoingEndPosition = nextPos - prevPos;
+                    double incomingStartPosition = prevPos - nextPos;
+
+                    // Play the animation on both the previous and next indicators
+                    PlayIndicatorAnimations(prevIndicator, 0, outgoingEndPosition, prevSize, nextSize, true);
+                    PlayIndicatorAnimations(nextIndicator, incomingStartPosition, 0, prevSize, nextSize, false);
+                }
+
+                // End Scoped Batch
+                _prevIndicator = prevIndicator;
+                _nextIndicator = nextIndicator;
+
+                // On ScopedBatch Completed:
+                // OnAnimationComplete();
+                // The animation is 600ms, we'll set our callback to just above that
+                DispatcherTimer.RunOnce(OnAnimationComplete, TimeSpan.FromMilliseconds(700), DispatcherPriority.Render);
+            }
+            else if (prevIndicator != nextIndicator)
+            {
+                // if all else fails, or if animations are turned off, attempt to correctly set the positions and opacities of the indicators.
+                ResetElementAnimationProperties(prevIndicator, 0f);
+                ResetElementAnimationProperties(nextIndicator, 1f);
+            }
+
+            _activeIndicator = nextIndicator;
+        }
     }
 
+    private void PlayIndicatorNonSameLevelAnimations(Control indicator, bool isOutgoing, bool fromTop)
+    {
+        var visual = ElementComposition.GetElementVisual(indicator);
+        if (visual == null)
+            return;
+        var comp = visual.Compositor;
+
+        // Determine scaling of indicator (whether it is appearing or dissapearing)
+        double beginScale = isOutgoing ? 1 : 0;
+        double endScale = isOutgoing ? 0 : 1;
+
+        var scaleAnim = comp.CreateVector3DKeyFrameAnimation();
+        scaleAnim.InsertKeyFrame(0f, new Vector3D(1, beginScale, 1));
+        scaleAnim.InsertKeyFrame(1f, new Vector3D(1, endScale, 1));
+        scaleAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+        // Determine where the indicator is animating from/to
+        var size = indicator.Bounds.Size;
+        var dimension = IsTopNavigationView ? size.Width : size.Height;
+        var newCenter = fromTop ? 0 : dimension;
+        var indicatorCenterPoint = visual.CenterPoint;
+
+        indicatorCenterPoint = new Vector3D(indicatorCenterPoint.X, newCenter, indicatorCenterPoint.Z);
+        visual.CenterPoint = indicatorCenterPoint;
+
+        visual.StartAnimation("Scale", scaleAnim);
+
+        // HACK: Note we don't need this opacity animation, but if we leave it off the scale animation
+        // may not trigger the first time if
+        // - Open parent item without selecting it
+        // - Select child item
+        // - Close parent
+        // - Reopen Parent
+        // After the first time, it runs fine. Having another animation kicks everything and makes it 
+        // work...so...yeah... there's issues with the composition animation system...will they get fixed
+        // who knows. Maybe one day, if we're lucky...
+        if (isOutgoing)
+        {
+            var opacityAnim = comp.CreateScalarKeyFrameAnimation();
+            opacityAnim.InsertKeyFrame(0.0f, 1.0f);
+            opacityAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+            visual.StartAnimation("Opacity", opacityAnim);
+        }
+    }
+
+    private void PlayIndicatorNonSameLevelTopPrimaryAnimation(Control indicator, bool isOutgoing)
+    {
+        var visual = ElementComposition.GetElementVisual(indicator);
+        if (visual == null)
+            return;
+        var comp = visual.Compositor;
+
+        // Determine scaling of indicator (whether it is appearing or dissapearing)
+        double beginScale = isOutgoing ? 1 : 0;
+        double endScale = isOutgoing ? 0 : 1;
+
+        var scaleAnim = comp.CreateVector3DKeyFrameAnimation();
+        scaleAnim.InsertKeyFrame(0, new Vector3D(beginScale, visual.Scale.Y, visual.Scale.Z));
+        scaleAnim.InsertKeyFrame(1, new Vector3D(endScale, visual.Scale.Y, visual.Scale.Z));
+        scaleAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+        var size = indicator.Bounds.Size;
+        var newCenter = size.Width / 2;
+        var indicatorCenterPoint = visual.CenterPoint;
+        indicatorCenterPoint = new Vector3D(indicatorCenterPoint.X, newCenter, indicatorCenterPoint.Z);
+        visual.CenterPoint = indicatorCenterPoint;
+
+        visual.StartAnimation("Scale", scaleAnim);
+    }
+
+    private void PlayIndicatorAnimations(Control indicator, double from, double to, Size beginSize, Size endSize, bool isOutgoing)
+    {
+        var visual = ElementComposition.GetElementVisual(indicator);
+        if (visual == null)
+            return;
+        var comp = visual.Compositor;
+
+        Size size = indicator.Bounds.Size;
+        double dimension = IsTopNavigationView ? size.Width : size.Height;
+
+        double beginScale = 1f;
+        double endScale = 1f;
+        if (IsTopNavigationView && Math.Abs(size.Width) > 0.001)
+        {
+            beginScale = beginSize.Width / size.Width;
+            endScale = endSize.Width / size.Width;
+        }
+
+        // StepEasingFunction
+
+        //winrt::float2 c_frame1point1 = winrt::float2(0.9f, 0.1f);
+        //winrt::float2 c_frame1point2 = winrt::float2(1.0f, 0.2f);
+        //winrt::float2 c_frame2point1 = winrt::float2(0.1f, 0.9f);
+        //winrt::float2 c_frame2point2 = winrt::float2(0.2f, 1.0f);
+        var easing1 = new SplineEasing(0.9, 0.1, 1, 0.2);
+        var easing2 = new SplineEasing(0.1, 0.9, 0.2, 1.0);
+        var step = new StepEasingFunction { Steps = 5 };
+        if (isOutgoing)
+        {
+            // fade the outgoing indicator so it looks nice when animating over the scroll area
+            var opacityAnim = comp.CreateScalarKeyFrameAnimation();
+            opacityAnim.InsertKeyFrame(0.0f, 1.0f);
+            opacityAnim.InsertKeyFrame(0.333f, 1.0f, step);
+            opacityAnim.InsertKeyFrame(1.0f, 0.0f, easing2);
+            opacityAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+            visual.StartAnimation("Opacity", opacityAnim);
+        }
+
+        // TODO: If Avalonia ever supports Animation targets like "Offset.X" "Scale.Y", then this can be consolidated
+        // and more closely match WinUI. For now though, we need to duplicate code...
+        if (!IsTopNavigationView)
+        {
+            var posAnim = comp.CreateVector3DKeyFrameAnimation();
+            posAnim.InsertKeyFrame(0.0f, new Vector3D(visual.Offset.X, from < to ? from : (from + (dimension * (beginScale - 1))), visual.Offset.Z));
+            posAnim.InsertKeyFrame(0.333f, new Vector3D(visual.Offset.X, from < to ? (to + (dimension * (endScale - 1))) : to, visual.Offset.Z), step);
+            posAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+            var scaleAnim = comp.CreateVector3DKeyFrameAnimation();
+            scaleAnim.InsertKeyFrame(0.0f, new Vector3D(1, beginScale, 1));
+            scaleAnim.InsertKeyFrame(0.333f, new Vector3D(1, Math.Abs(to - from) / dimension + (from < to ? endScale : beginScale), 1), easing1);
+            scaleAnim.InsertKeyFrame(1.0f, new Vector3D(1, endScale, endScale), easing2);
+            scaleAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+            var centerAnim = comp.CreateVector3DKeyFrameAnimation();
+            centerAnim.InsertKeyFrame(0.0f, new Vector3D(visual.CenterPoint.X, from < to ? 0.0f : dimension, visual.CenterPoint.Z));
+            centerAnim.InsertKeyFrame(1.0f, new Vector3D(visual.CenterPoint.X, from < to ? dimension : 0.0f, visual.CenterPoint.Z), step);
+            centerAnim.Duration = TimeSpan.FromMilliseconds(200);
+
+            visual.StartAnimation("Offset", posAnim);
+            visual.StartAnimation("Scale", scaleAnim);
+            visual.StartAnimation("CenterPoint", centerAnim);
+        }
+        else
+        {
+            var posAnim = comp.CreateVector3DKeyFrameAnimation();
+            posAnim.InsertKeyFrame(0.0f, new Vector3D(from < to ? from : (from + (dimension * (beginScale - 1))), visual.Offset.Y, visual.Offset.Z));
+            posAnim.InsertKeyFrame(0.333f, new Vector3D(from < to ? (to + (dimension * (endScale - 1))) : to, visual.Offset.Y, visual.Offset.Z), step);
+            posAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+            var scaleAnim = comp.CreateVector3DKeyFrameAnimation();
+            scaleAnim.InsertKeyFrame(0.0f, new Vector3D(beginScale, 1, 1));
+            scaleAnim.InsertKeyFrame(0.333f, new Vector3D(Math.Abs(to - from) / dimension + (from < to ? endScale : beginScale), 1, 1), easing1);
+            scaleAnim.InsertKeyFrame(1.0f, new Vector3D(1, endScale, endScale), easing2);
+            scaleAnim.Duration = TimeSpan.FromMilliseconds(600);
+
+            var centerAnim = comp.CreateVector3DKeyFrameAnimation();
+            centerAnim.InsertKeyFrame(0.0f, new Vector3D(from < to ? 0.0f : dimension, visual.CenterPoint.Y, visual.CenterPoint.Z));
+            centerAnim.InsertKeyFrame(1.0f, new Vector3D(from < to ? dimension : 0.0f, visual.CenterPoint.Y, visual.CenterPoint.Z), step);
+            centerAnim.Duration = TimeSpan.FromMilliseconds(200);
+
+            visual.StartAnimation("Offset", posAnim);
+            visual.StartAnimation("Scale", scaleAnim);
+            visual.StartAnimation("CenterPoint", centerAnim);
+        }
+    }
+
+    private void OnAnimationComplete()
+    {
+        var indicator = _prevIndicator;
+        ResetElementAnimationProperties(indicator, 0f);
+        _prevIndicator = null;
+
+        indicator = _nextIndicator;
+        ResetElementAnimationProperties(indicator, 1);
+        _nextIndicator = null;
+    }
+
+    private void ResetElementAnimationProperties(Control element, double desiredOpacity)
+    {
+        if (element != null)
+        {
+            element.Opacity = desiredOpacity;
+            if (ElementComposition.GetElementVisual(element) is CompositionVisual cv)
+            {
+                cv.Offset = new Vector3D(0, 0, 0);
+                cv.Scale = new Vector3D(1, 1, 1);
+                cv.Opacity = (float)desiredOpacity;
+            }
+        }
+    }
+        
     private Control FindSelectionIndicator(object item)
     {
         if (item != null)
@@ -3152,16 +3537,17 @@ public partial class NavigationView : HeaderedContentControl
             var cont = NavigationViewItemOrSettingsContentFromData(item);
             if (cont != null)
             {
-                return cont.SelectionIndicator;
-            }
-            else
-            {
-                //We don't have UpdateLayout(), so just return null
-
-                //// Indicator was not found, so maybe the layout hasn't updated yet.
-                //// So let's do that now.
-                //container.UpdateLayout();
-                //return winrt::get_self<NavigationViewItem>(container)->GetSelectionIndicator();                    
+                var indicator = cont.SelectionIndicator;
+                if (indicator != null)
+                {
+                    return indicator;
+                }
+                else
+                {
+                    cont.UpdateLayout();
+                    //cont.ApplyTemplate();
+                    return cont.SelectionIndicator;
+                }
             }
         }
 
@@ -3796,7 +4182,7 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private NavigationViewItemBase GetContainerForIndexPath(IndexPath ip, bool lastVisible = false)
+    private NavigationViewItemBase GetContainerForIndexPath(IndexPath ip, bool lastVisible = false, bool forceRealize = false)
     {
         if (ip != IndexPath.Unselected && ip.GetSize() > 0)
         {
@@ -3819,14 +4205,14 @@ public partial class NavigationView : HeaderedContentControl
                 // This will return nullptr if requesting children containers of
                 // items in the primary list, or unrealized items in the overflow popup.
                 // However this should not happen.
-                return GetContainerForIndexPath(cont, ip, lastVisible);
+                return GetContainerForIndexPath(cont, ip, lastVisible, forceRealize);
             }
         }
 
         return null;
     }
 
-    private NavigationViewItemBase GetContainerForIndexPath(Control first, IndexPath ip, bool lastVisible)
+    private NavigationViewItemBase GetContainerForIndexPath(Control first, IndexPath ip, bool lastVisible, bool forceRealize)
     {
         var cont = first;
         if (ip.GetSize() > 2)
@@ -3844,7 +4230,9 @@ public partial class NavigationView : HeaderedContentControl
                     var nviRepeater = nvi.GetRepeater;
                     if (nviRepeater != null)
                     {
-                        var nextCont = nviRepeater.TryGetElement(ip.GetAt(i));
+                        var index = ip.GetAt(i);
+
+                        var nextCont = forceRealize ? nviRepeater.GetOrCreateElement(index) : nviRepeater.TryGetElement(index);
                         if (nextCont != null)
                         {
                             cont = nextCont;
@@ -3974,6 +4362,17 @@ public partial class NavigationView : HeaderedContentControl
         if (_paneToggleButton != null)
         {
             ToolTip.SetTip(_paneToggleButton, navigationName);
+        }
+    }
+
+    private class StepEasingFunction : IEasing
+    {
+        // TODO: What is the default step count for WinUI's StepEasingFunction
+        public int Steps { get; set; }
+
+        public double Ease(double progress)
+        {
+            return Math.Round(progress * Steps) * (1 / Steps);
         }
     }
 }

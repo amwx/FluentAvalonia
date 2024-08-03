@@ -55,6 +55,19 @@
         "WinUINamespace": null,
         "WinUIDocsLink": null,
         "WinUIGuidelinesLink": null
+      },
+      {
+        "Header": "ProgressRing",
+        "Description": "Shows the app's progress on a task, or that the app is performing ongoing work that does block user interaction",
+        "IconResourceKey": "ProgressRingIcon",
+        "PageKey": "ProgressRing",
+        "SearchKeywords": [
+          "ProgressRing"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls.ProgressRing",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ProgressRing",
+        "WinUIDocsLink": null,
+        "WinUIGuidelinesLink": null
       }
     ]
   },

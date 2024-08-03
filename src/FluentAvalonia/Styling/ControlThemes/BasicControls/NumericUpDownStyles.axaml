@@ -119,6 +119,9 @@
 
                         <Border Margin="{TemplateBinding BorderThickness}">
                             <Grid ColumnDefinitions="Auto,*,Auto" >
+                                <ContentPresenter Grid.Column="0"
+                                                  Grid.ColumnSpan="1"
+                                                  Content="{TemplateBinding InnerLeftContent}"/>
                                 <DockPanel x:Name="PART_InnerDockPanel"
                                            Grid.Column="1"
                                            Grid.ColumnSpan="1"
@@ -161,6 +164,9 @@
                                         </Panel>
                                     </ScrollViewer>
                                 </DockPanel>
+                                <ContentPresenter Grid.Column="2"
+                                                  Grid.ColumnSpan="1"
+                                                  Content="{TemplateBinding InnerRightContent}"/>
                             </Grid>
                         </Border>
                     </Panel>
@@ -220,6 +226,8 @@
                              TextWrapping="NoWrap"
                              Theme="{StaticResource NumericUpDownTextBoxTheme}"
                              TextAlignment="{TemplateBinding TextAlignment}"
+                             InnerLeftContent="{TemplateBinding InnerLeftContent}"
+                             InnerRightContent="{TemplateBinding InnerRightContent}"
                              Classes.spinRight="{TemplateBinding ButtonSpinnerLocation, Converter={StaticResource NUDSpinLocationConverter}}"
                              Classes.noSpin="{Binding !$parent[NumericUpDown].ShowButtonSpinner}" />
                 </ButtonSpinner>

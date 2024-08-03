@@ -58,7 +58,6 @@
                                     Grid.Column="1"
                                     Width="32"
                                     Theme="{StaticResource CalendarDropDownButton}"
-                                    Foreground="{TemplateBinding Foreground}"
                                     Background="Transparent"
                                     BorderThickness="0"
                                     Margin="2,0,2,0"
@@ -92,5 +91,43 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
+
+        <Style Selector="^ /template/ Button#PART_Button">
+            <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerCalendarGlyphForeground}" />
+        </Style>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ TextBox#PART_TextBox">
+                <Setter Property="Background" Value="{DynamicResource CalendarDatePickerBackgroundPointerOver}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource CalendarDatePickerBorderBrushPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerTextForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ Button#PART_Button">
+                <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerCalendarGlyphForegroundPointerOver}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ TextBox#PART_TextBox">
+                <Setter Property="Background" Value="{DynamicResource CalendarDatePickerBackgroundPressed}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource CalendarDatePickerBorderBrushPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerTextForegroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ Button#PART_Button">
+                <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerCalendarGlyphForegroundPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:disabled">
+            <Style Selector="^ /template/ TextBox#PART_TextBox">
+                <Setter Property="Background" Value="{DynamicResource CalendarDatePickerBackgroundDisabled}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource CalendarDatePickerBorderBrushDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerTextForegroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ Button#PART_Button">
+                <Setter Property="Foreground" Value="{DynamicResource CalendarDatePickerCalendarGlyphForegroundDisabled}" />
+            </Style>
+        </Style>
+
     </ControlTheme>
 </ResourceDictionary>
