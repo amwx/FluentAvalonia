@@ -237,8 +237,7 @@ public partial class AppWindow : Window
 
             // What we know is that the default title bar will always be [0,0,WindowWidth,TitleBar.Height]
             // Therefore, we only need to do check the Y coordinate
-            var hgt = _titleBar.Height * RenderScaling;
-            if (p.Y < hgt)
+            if (p.Y < _titleBar.Height)
             {
                 if (TitleBar.TitleBarHitTestType == TitleBarHitTestType.Complex &&
                     !ComplexHitTest(p))
