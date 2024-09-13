@@ -6,12 +6,16 @@ Modern, fluent design and WinUI-inspired toolkit for Avalonia apps
 ![GitHub repo size](https://img.shields.io/github/repo-size/amwx/FluentAvalonia?color=%234682B4)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/amwx/FluentAvalonia?color=%23483D8B)
 
-NOTE: The 1.x version of FluentAvalonia (0.10.x Avalonia) is now deprecated. Please consider upgrading to Avalonia 11.0/FluentAvalonia 2.0 for the latest and greatest!
+Things to note!
+- Due to my limited time, the Android, iOS, and browser versions of the Control gallery will not be maintained. They should, theoretically, still work though.
+- The 1.x version of FluentAvalonia (0.10.x Avalonia) is now deprecated. Please consider upgrading to Avalonia 11.0/FluentAvalonia 2.0 for the latest and greatest!
 
-Note: Windows 7, 8/8.1 are not supported by FluentAvalonia. It may still be possible to run on these versions of Windows, but no support for issues will be given.
+- Windows 7, 8/8.1 are not supported by FluentAvalonia. It may still be possible to run on these versions of Windows, but no support for issues will be given.
+
 
 ## Avalonia minimum requirements
-(current) v2.0.5 - Avalonia 11.0.4
+(current) v2.1.0 - Avalonia 11.1.0
+v2.0.5 - Avalonia 11.0.4
 All previous - Avalonia 11.0
 
 ## Documentation & Sample App
