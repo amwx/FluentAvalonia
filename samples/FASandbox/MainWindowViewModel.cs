@@ -12,16 +12,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         
     }
 
-    public Command Commands { get; } = new Command();
-
-
     public event PropertyChangedEventHandler PropertyChanged;
-
-    public void Test(object param)
-    {
-        Debug.WriteLine("FIRED");
-    }
-
+        
     private bool RaiseAndSetIfChanged<T>(ref T field, T value, [CallerMemberName]string propName = "")
     {
         if (!EqualityComparer<T>.Default.Equals(field, value))

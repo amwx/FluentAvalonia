@@ -11,6 +11,5 @@
         x:Class="FASandbox.MainWindow"
         Title="FASandbox">
 
-    <ToggleSwitch IsChecked="True"/>
     
 </Window>
