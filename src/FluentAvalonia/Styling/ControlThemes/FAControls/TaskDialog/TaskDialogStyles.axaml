@@ -288,7 +288,7 @@
                 <Setter Property="BorderThickness" Value="{DynamicResource TaskDialogBorderWidth}" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="BoxShadow" Value="0 8 32 0 #66000000" />
+                <Setter Property="Effect" Value="drop-shadow(0 8 32 #66000000)" />
             </Style>
             <Style Selector="^ /template/ Border#HeaderRoot">
                 <Setter Property="CornerRadius" Value="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource TopCornerRadiusFilterConverter}}}" />
