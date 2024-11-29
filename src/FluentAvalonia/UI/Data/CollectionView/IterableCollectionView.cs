@@ -527,6 +527,10 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
 
     private void HandleFilterChanged()
     {
+        // If user doesn't specify Filter in the constructor _view is still null
+        // here, so let's initialize it now
+        _view ??= new List<object>();
+
         if (_filter != null)
         {
             for (int i = 0; i < _view.Count; i++)
