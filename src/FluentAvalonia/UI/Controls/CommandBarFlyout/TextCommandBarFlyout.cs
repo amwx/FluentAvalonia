@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input.Platform;
+﻿using Avalonia.Controls;
 using FluentAvalonia.UI.Input;
 
 namespace FluentAvalonia.UI.Controls;
@@ -19,6 +17,8 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
         Opened += (_, __) =>
         {
+            _targetLocal = new WeakReference<Control>(Target);
+
             // If there aren't any primary commands and we aren't opening expanded,
             // or if there are just no commands at all, then we'll have literally no UI to show. 
             // We'll just close the flyout in that case - nothing should be opening us
@@ -214,84 +214,90 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
     private void ExecuteCutCommand()
     {
-        var target = Target;
-        try
+        if (_targetLocal.TryGetTarget(out var target))
         {
-            if (target is TextBox tb)
+            try
             {
-                tb.Cut();
+                if (target is TextBox tb)
+                {
+                    tb.Cut();
+                }
             }
-        }
-        catch
-        {
-            // TODO: probably should log the error if one is thrown, but don't fail b/c of it
-            // Clipboard errors do happen
-        }
+            catch
+            {
+                // TODO: probably should log the error if one is thrown, but don't fail b/c of it
+                // Clipboard errors do happen
+            }
 
-        if (IsButtonInPrimaryCommands(TextControlButtons.Cut))
-        {
-            UpdateButtons();
-        }
+            if (IsButtonInPrimaryCommands(TextControlButtons.Cut))
+            {
+                UpdateButtons();
+            }
+        }        
     }
 
     private async void ExecuteCopyCommand()
     {
-        var target = Target;
-        try
+        if (_targetLocal.TryGetTarget(out var target))
         {
-            if (target is TextBox tb)
+            try
             {
-                tb.Copy();
+                if (target is TextBox tb)
+                {
+                    tb.Copy();
+                }
+                else if (target is SelectableTextBlock stb)
+                {
+                    stb.Copy();
+                }
+                else if (target is TextBlock txtB)
+                {
+                    await TopLevel.GetTopLevel(Target).Clipboard.SetTextAsync(txtB.Text);
+                }
             }
-            else if (target is SelectableTextBlock stb)
+            catch
             {
-                stb.Copy();
+                // TODO: probably should log the error if one is thrown, but don't fail b/c of it
+                // Clipboard errors do happen
             }
-            else if (target is TextBlock txtB)
-            {
-                await TopLevel.GetTopLevel(Target).Clipboard.SetTextAsync(txtB.Text);
-            }
-        }
-        catch
-        {
-            // TODO: probably should log the error if one is thrown, but don't fail b/c of it
-            // Clipboard errors do happen
-        }
 
-        if (IsButtonInPrimaryCommands(TextControlButtons.Copy))
-        {
-            UpdateButtons();
-        }
+            if (IsButtonInPrimaryCommands(TextControlButtons.Copy))
+            {
+                UpdateButtons();
+            }
+        }        
     }
 
     private async void ExecutePasteCommand()
     {
-        var target = Target;
-        try
+        if (_targetLocal.TryGetTarget(out var target))
         {
-            if (target is TextBox tb)
+            try
             {
-                tb.Paste();
-            }
-            else if (target is TextBlock txtB)
-            {
-                var txt = await TopLevel.GetTopLevel(target).Clipboard.GetTextAsync();
-                if (txt != null)
+                if (target is TextBox tb)
                 {
-                    txtB.Text = txt;
+                    tb.Paste();
+                }
+                else if (target is TextBlock txtB)
+                {
+                    var txt = await TopLevel.GetTopLevel(target).Clipboard.GetTextAsync();
+                    if (txt != null)
+                    {
+                        txtB.Text = txt;
+                    }
                 }
             }
-        }
-        catch
-        {
-            // TODO: probably should log the error if one is thrown, but don't fail b/c of it
-            // Clipboard errors do happen
-        }
+            catch
+            {
+                // TODO: probably should log the error if one is thrown, but don't fail b/c of it
+                // Clipboard errors do happen
+            }
 
-        if (IsButtonInPrimaryCommands(TextControlButtons.Paste))
-        {
-            UpdateButtons();
-        }
+            if (IsButtonInPrimaryCommands(TextControlButtons.Paste))
+            {
+                UpdateButtons();
+            }
+        }           
     }
 
     private void ExecuteBoldCommand()
@@ -305,7 +311,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
     private void ExecuteUndoCommand()
     {
-        if (Target is TextBox tb)
+        if (_targetLocal.TryGetTarget(out var target) && target is TextBox tb)
         {
             tb.Undo();
         }
@@ -318,7 +324,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
     private void ExecuteRedoCommand()
     {
-        if (Target is TextBox tb)
+        if (_targetLocal.TryGetTarget(out var target) && target is TextBox tb)
         {
             tb.Redo();
         }
@@ -331,9 +337,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
 
     private void ExecuteSelectAllCommand()
     {
-        var target = Target;
-
-        if (target is TextBox tb)
+        if (_targetLocal.TryGetTarget(out var target) && target is TextBox tb)
         {
             tb.SelectAll();
         }
@@ -423,4 +427,5 @@ public class TextCommandBarFlyout : CommandBarFlyout
     }
 
     private Dictionary<TextControlButtons, ICommandBarElement> _buttons;
+    private WeakReference<Control> _targetLocal;
 }
