@@ -90,13 +90,13 @@ public class CommandBarFlyout : PopupFlyoutBase
                     {
                         if (e.OldItems[i] is CommandBarButton b)
                         {
-                            b.Click += OnCommandBarButtonInSecondaryCommandsClick;
+                            b.Click -= OnCommandBarButtonInSecondaryCommandsClick;
                         }
                         else if (e.OldItems[i] is CommandBarToggleButton tb)
                         {
                             // Fortunately Click is fired even on ToggleButton so we
                             // don't need to hook Checked/Unchecked
-                            tb.Click += OnCommandBarButtonInSecondaryCommandsClick;
+                            tb.Click -= OnCommandBarButtonInSecondaryCommandsClick;
                         }
                     }
                     break;
@@ -115,13 +115,13 @@ public class CommandBarFlyout : PopupFlyoutBase
                         {
                             if (e.OldItems[i] is CommandBarButton b)
                             {
-                                b.Click += OnCommandBarButtonInSecondaryCommandsClick;
+                                b.Click -= OnCommandBarButtonInSecondaryCommandsClick;
                             }
                             else if (e.OldItems[i] is CommandBarToggleButton tb)
                             {
                                 // Fortunately Click is fired even on ToggleButton so we
                                 // don't need to hook Checked/Unchecked
-                                tb.Click += OnCommandBarButtonInSecondaryCommandsClick;
+                                tb.Click -= OnCommandBarButtonInSecondaryCommandsClick;
                             }
                         }
                     }
