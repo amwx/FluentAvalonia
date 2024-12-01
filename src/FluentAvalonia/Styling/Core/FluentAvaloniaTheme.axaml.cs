@@ -1,14 +1,17 @@
 ﻿using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Media;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -133,8 +136,20 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     /// to get a consistent experience, at the (small) expense of breaking Fluent design principles. If your controls
     /// never use multi-line text, you'll never see the effect of this property.
     /// </remarks>
-    public TextVerticalAlignmentOverride TextVerticalAlignmentOverrideBehavior { get; set; } =
-        TextVerticalAlignmentOverride.EnabledNonWindows;
+    public TextVerticalAlignmentOverride TextVerticalAlignmentOverrideBehavior
+    {
+        get => _textAlignmentOverride;
+        set
+        {
+            if (_textAlignmentOverride != value)
+            {
+                // NOTE: Attempting to downgrade this after startup will not 
+                // remove the styles - this still requires an app restart
+                _textAlignmentOverride = value;
+                SetTextAlignmentOverrides();
+            }
+        }
+    }
 
     public AvaloniaList<IResourceDictionary> MergedDictionaries { get; }
       
@@ -393,7 +408,7 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
         // may get messed up b/c of the centered alignment
         var s3 = new Style(x =>
         {
-            return x.OfType<ComboBox>().Template().OfType<ContentControl>().Child().OfType<TextBlock>();
+            return x.OfType<ComboBox>().Template().OfType<ContentPresenter>().Child().OfType<TextBlock>();
         });
         s3.Setters.Add(new Setter(Layoutable.VerticalAlignmentProperty, VerticalAlignment.Center));
         Add(s3);
@@ -554,6 +569,9 @@ public partial class FluentAvaloniaTheme : Styles, IResourceProvider
     private bool _preferUserAccentColor;
     private ResourceDictionary _accentColorsDictionary;
     private IPlatformSettings _platformSettings;
+
+    private TextVerticalAlignmentOverride _textAlignmentOverride =
+        TextVerticalAlignmentOverride.EnabledNonWindows;
 
     public const string LightModeString = "Light";
     public const string DarkModeString = "Dark";
