@@ -58,7 +58,8 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/RefreshControlStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PathIcon.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/HyperlinkButtonStyles.axaml" />
-                
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/FocusAdornerStyles.axaml" />
+
                 
                 <!-- FluentAvalonia Controls -->
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
@@ -120,7 +121,6 @@
         </ResourceDictionary>
     </Styles.Resources>
 
-    <StyleInclude Source="/Styling/ControlThemes/BasicControls/FocusAdornerStyles.axaml" />
     <StyleInclude Source="/Styling/ControlThemes/BasicControls/UserControlStyles.axaml" />
 
 

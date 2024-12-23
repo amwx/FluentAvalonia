@@ -1,16 +1,12 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             x:CompileBindings="True">
-    <Styles.Resources>
-        <Thickness x:Key="SystemControlFocusVisualMargin">0</Thickness>
-        <Thickness x:Key="SystemControlFocusVisualPrimaryThickness">2</Thickness>
-        <Thickness x:Key="SystemControlFocusVisualSecondaryThickness">1</Thickness>
-    </Styles.Resources>
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
+    <Thickness x:Key="SystemControlFocusVisualMargin">0</Thickness>
+    <Thickness x:Key="SystemControlFocusVisualPrimaryThickness">2</Thickness>
+    <Thickness x:Key="SystemControlFocusVisualSecondaryThickness">1</Thickness>
 
-    <Style Selector=":is(Control)">
-        <Setter Property="FocusAdorner">
+    <ControlTheme x:Key="{x:Type AdornerLayer}" TargetType="AdornerLayer">
+        <Setter Property="DefaultFocusAdorner">
             <FocusAdornerTemplate>
                 <Border BorderThickness="{DynamicResource SystemControlFocusVisualPrimaryThickness}"
                         BorderBrush="{DynamicResource FocusStrokeColorOuterBrush}"
@@ -22,5 +18,5 @@
                 </Border>
             </FocusAdornerTemplate>
         </Setter>
-    </Style>
-</Styles>
+    </ControlTheme>
+</ResourceDictionary>
