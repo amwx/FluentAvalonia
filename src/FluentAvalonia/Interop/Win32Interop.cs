@@ -68,29 +68,19 @@ internal static unsafe partial class Win32Interop
 
     public static int GetSystemMetricsWithFallback(int nIndex, uint dpi)
     {
-        try
-        {
+        if (OSVersionHelper.IsWindowsAtLeast(10, 0, 14393)) // 1607
             return GetSystemMetricsForDpi(nIndex, dpi);
-        }
-        catch (EntryPointNotFoundException)
-        {
-            // Older Windows
-            return GetSystemMetrics(nIndex);
-        }
+        return GetSystemMetrics(nIndex);
     }
     
     public static void AdjustWindowRectExWithFallback(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi)
     {
-        try
+        if (OSVersionHelper.IsWindowsAtLeast(10, 0, 14393)) // 1607
         {
-            // >= Windows 10 1607
             AdjustWindowRectExForDpi(lpRect, dwStyle, bMenu, dwExStyle, dpi);
+            return;
         }
-        catch (EntryPointNotFoundException)
-        {
-            // Older Windows
-            AdjustWindowRectEx(lpRect, dwStyle, bMenu, dwExStyle);
-        }
+        AdjustWindowRectEx(lpRect, dwStyle, bMenu, dwExStyle);
     }
     
     public static nint GetWindowLongPtrW(HWND hWnd, int nIndex)
