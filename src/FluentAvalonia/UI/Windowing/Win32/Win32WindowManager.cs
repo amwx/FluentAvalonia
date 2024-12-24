@@ -156,8 +156,8 @@ internal unsafe class Win32WindowManager
         _window.RenderScaling;
 
     private int GetResizeHandleHeight() =>
-        GetSystemMetricsForDpi(SM_CXPADDEDBORDER, (uint)(96 * GetScaling())) +
-        GetSystemMetricsForDpi(SM_CYSIZEFRAME, (uint)(96 * GetScaling()));
+        GetSystemMetricsWithFallback(SM_CXPADDEDBORDER, (uint)(96 * GetScaling())) +
+        GetSystemMetricsWithFallback(SM_CYSIZEFRAME, (uint)(96 * GetScaling()));
 
     private int GetTopBorderHeight()
     {
@@ -178,7 +178,7 @@ internal unsafe class Win32WindowManager
         var exStyle = (int)GetWindowLongPtr((HWND)Hwnd, -20);
 
         RECT frame;
-        AdjustWindowRectExForDpi(&frame, style, false, exStyle, (int)(GetScaling() * 96));
+        AdjustWindowRectExWithFallback(&frame, style, false, exStyle, (int)(GetScaling() * 96));
 
         marg.topHeight = -frame.top;
 
@@ -229,7 +229,7 @@ internal unsafe class Win32WindowManager
             var exStyle = (int)GetWindowLongPtr((HWND)Hwnd, -20);
 
             RECT frame;
-            AdjustWindowRectExForDpi(&frame, style, false, exStyle, (int)(GetScaling() * 96));
+            AdjustWindowRectExWithFallback(&frame, style, false, exStyle, (int)(GetScaling() * 96));
 
             newSize.left -= frame.left; // left frame is negative, subtract to add it back
             newSize.right -= frame.right; // right frame is positive, subtract to pull it back

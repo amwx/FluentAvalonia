@@ -64,8 +64,8 @@ public class FAUISettings
 
     private static void GetWin32DragSize(double scaling, out double cxDrag, out double cyDrag)
     {
-        cxDrag = Win32Interop.GetSystemMetricsForDpi(68, (uint)Math.Round(96 * scaling));
-        cyDrag = Win32Interop.GetSystemMetricsForDpi(69, (uint)Math.Round(96 * scaling));
+        cxDrag = Win32Interop.GetSystemMetricsWithFallback(68, (uint)Math.Round(96 * scaling));
+        cyDrag = Win32Interop.GetSystemMetricsWithFallback(69, (uint)Math.Round(96 * scaling));
     }
 
     private static readonly FAUISettings s_Instance;

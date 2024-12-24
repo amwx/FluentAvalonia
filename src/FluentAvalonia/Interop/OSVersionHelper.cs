@@ -115,7 +115,8 @@ public static class OSVersionHelper
             if (build != osInfo.BuildNumber)
             {
                 return osInfo.BuildNumber > build;
-            }           
+            }
+            return true;
         }
 
         return false;
