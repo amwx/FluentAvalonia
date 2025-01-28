@@ -6,6 +6,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using System.Collections;
 using System.Collections.Specialized;
 
@@ -31,6 +32,9 @@ public partial class ItemsRepeater : Panel
         //var layout = Layout as VirtualizingLayout;
         //OnLayoutChanged(null, layout);
         AddHandler(RequestBringIntoViewEvent, OnBringIntoViewRequested);
+
+        _weakMeasureInvalidatedHandler = new WeakTypedEventHandler<Layout, EventArgs>(InvalidateMeasureForLayout);
+        _weakArrangeInvalidatedHandler = new WeakTypedEventHandler<Layout, EventArgs>(InvalidateArrangeForLayout);
     }
 
     protected override AutomationPeer OnCreateAutomationPeer()
@@ -360,7 +364,7 @@ public partial class ItemsRepeater : Panel
         if (ItemsSourceView == null)
             throw new Exception("ItemsSource doesn't have a value");
 
-        if (index >= 0 && index >= ItemsSourceView.Count)
+        if (index < 0 || index >= ItemsSourceView.Count)
             throw new ArgumentOutOfRangeException(nameof(index));
 
         if (_isLayoutInProgress)
@@ -433,7 +437,7 @@ public partial class ItemsRepeater : Panel
     private void OnDataSourcePropertyChanged(FAItemsSourceView oldValue, FAItemsSourceView newValue)
     {
         if (_isLayoutInProgress)
-            throw new Exception();
+            throw new Exception("DataSource property cannot be changed during layout.");
 
         EnsureDefaultLayoutState();
 
@@ -552,21 +556,20 @@ public partial class ItemsRepeater : Panel
         _viewManager.OnLayoutChanging();
         _transitionManager.OnLayoutChanging();
 
-        if (oldValue == null & !isInitialSetup)
+        if (oldValue == null && !isInitialSetup)
         {
             oldValue = GetDefaultLayout();
         }
         if (newValue == null)
         {
             newValue = GetDefaultLayout();
-        }    
-
+        }
 
         if (oldValue != null)
         {
             oldValue.UninitializeForContext(GetLayoutContext());
-            newValue.MeasureInvalidated -= InvalidateMeasureForLayout;
-            newValue.ArrangeInvalidated -= InvalidateArrangeForLayout;
+            oldValue.MeasureInvalidated -= _weakMeasureInvalidatedHandler;
+            oldValue.ArrangeInvalidated -= _weakArrangeInvalidatedHandler;
             _stackLayoutMeasureCounter = 0;
 
             // Walk through all the elements and make sure they are cleared
@@ -586,8 +589,8 @@ public partial class ItemsRepeater : Panel
         if (newValue != null)
         {
             newValue.InitializeForContext(GetLayoutContext());
-            newValue.MeasureInvalidated += InvalidateMeasureForLayout;
-            newValue.ArrangeInvalidated += InvalidateArrangeForLayout;
+            newValue.MeasureInvalidated += _weakMeasureInvalidatedHandler;
+            newValue.ArrangeInvalidated += _weakArrangeInvalidatedHandler;
 
             if (_ownsTransitionProvider)
             {
@@ -755,6 +758,10 @@ public partial class ItemsRepeater : Panel
     // Tracks whether OnLayoutChanged has already been called or not so that
     // EnsureDefaultLayoutState does not trigger a second call after the control's creation.
     private bool _wasLayoutChangedCalled;
+
+    // Weak event handlers for layout invalidation. These are used to avoid memory leaks.
+    private readonly WeakTypedEventHandler<Layout, EventArgs> _weakMeasureInvalidatedHandler;
+    private readonly WeakTypedEventHandler<Layout, EventArgs> _weakArrangeInvalidatedHandler;
 }
 
 // I think this is something special for WinRT/C++, we'll just use
