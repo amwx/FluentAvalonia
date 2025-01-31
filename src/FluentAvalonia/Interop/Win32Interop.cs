@@ -20,17 +20,20 @@ internal static unsafe partial class Win32Interop
     public static extern BOOL AdjustWindowRectEx(RECT* lpRect, uint dwStyle, BOOL bMenu, uint dwExStyle);
 
     [DllImport(s_user32, SetLastError = true)]
-    public static extern int GetSystemMetrics(int smIndex);
+    private static extern int GetSystemMetrics(int smIndex);
 
     [DllImport(s_user32, SetLastError = true)]
-    public static extern int GetSystemMetricsForDpi(int nIndex, uint dpi);
+    private static extern int GetSystemMetricsForDpi(int nIndex, uint dpi);
 
     [DllImport(s_user32, SetLastError = true)]
     public static extern BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 
     [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL AdjustWindowRectExForDpi(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi);
-
+    private static extern BOOL AdjustWindowRectExForDpi(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi);
+    
+    [DllImport(s_user32, SetLastError = true)]
+    private static extern bool AdjustWindowRectEx(RECT* lpRect, int dwStyle, bool bMenu, int dwExStyle);
+    
     [DllImport(s_user32, SetLastError = true)]
     public static extern LRESULT DefWindowProcW(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
@@ -63,6 +66,23 @@ internal static unsafe partial class Win32Interop
     // Below is adapted from TerraFX.Interop.Windows, MIT License
     public static delegate*<HWND, int, nint> GetWindowLongPtr => &GetWindowLongPtrW;
 
+    public static int GetSystemMetricsWithFallback(int nIndex, uint dpi)
+    {
+        if (OSVersionHelper.IsWindowsAtLeast(10, 0, 14393)) // 1607
+            return GetSystemMetricsForDpi(nIndex, dpi);
+        return GetSystemMetrics(nIndex);
+    }
+    
+    public static void AdjustWindowRectExWithFallback(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi)
+    {
+        if (OSVersionHelper.IsWindowsAtLeast(10, 0, 14393)) // 1607
+        {
+            AdjustWindowRectExForDpi(lpRect, dwStyle, bMenu, dwExStyle, dpi);
+            return;
+        }
+        AdjustWindowRectEx(lpRect, dwStyle, bMenu, dwExStyle);
+    }
+    
     public static nint GetWindowLongPtrW(HWND hWnd, int nIndex)
     {
         if (sizeof(nint) == 4)
