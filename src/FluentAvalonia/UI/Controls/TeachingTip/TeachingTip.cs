@@ -236,7 +236,12 @@ public partial class TeachingTip : ContentControl
         var popup = new Popup
         {
             // A Popup needs contents to open, so set a child that doesn't do anything.
-            Child = new Panel(),
+            // See GH#634, Linux & mac have issue with empty popups, also Avalonia GH#17843
+            Child = new Panel
+            {
+                Width = 0,
+                Height = 0,
+            },
             WindowManagerAddShadowHint = false,
             IsLightDismissEnabled = true,
             PlacementTarget = (Control)VisualRoot
