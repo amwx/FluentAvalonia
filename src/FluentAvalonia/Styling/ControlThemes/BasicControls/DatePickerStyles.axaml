@@ -40,6 +40,10 @@
 
     <Thickness x:Key="DateTimeFlyoutBorderThickness">1</Thickness>
 
+    <x:String x:Key="DatePickerMonthTextPlaceholder">month</x:String>
+    <x:String x:Key="DatePickerDayTextPlaceholder">day</x:String>
+    <x:String x:Key="DatePickerYearTextPlaceholder">year</x:String>
+
     <ControlTheme x:Key="DateTimePickerItem" TargetType="ListBoxItem">
         <Setter Property="Foreground" Value="{DynamicResource LoopingSelectorItemForeground}" />
         <Setter Property="Padding" Value="{DynamicResource DatePickerFlyoutPresenterItemPadding}"/>
@@ -271,17 +275,23 @@
                                 VerticalContentAlignment="Stretch"
                                 TemplatedControl.IsTemplateFocusTarget="True">
                             <Grid Name="PART_ButtonContentGrid" ColumnDefinitions="78*,Auto,132*,Auto,78*">
-                                <TextBlock Name="PART_DayTextBlock" Text="day" HorizontalAlignment="Center"
+                                <TextBlock Name="PART_DayTextBlock" 
+                                           Text="{DynamicResource DatePickerDayTextPlaceholder}" 
+                                           HorizontalAlignment="Center"
                                            Padding="{DynamicResource DatePickerHostPadding}"
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontWeight="{TemplateBinding FontWeight}"
                                            FontSize="{TemplateBinding FontSize}"/>
-                                <TextBlock Name="PART_MonthTextBlock" Text="month" TextAlignment="Left"
+                                <TextBlock Name="PART_MonthTextBlock" 
+                                           Text="{DynamicResource DatePickerMonthTextPlaceholder}" 
+                                           TextAlignment="Left"
                                            Padding="{DynamicResource DatePickerHostMonthPadding}"
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontWeight="{TemplateBinding FontWeight}"
                                            FontSize="{TemplateBinding FontSize}"/>
-                                <TextBlock Name="PART_YearTextBlock" Text="year" HorizontalAlignment="Center"
+                                <TextBlock Name="PART_YearTextBlock"
+                                           Text="{DynamicResource DatePickerYearTextPlaceholder}" 
+                                           HorizontalAlignment="Center"
                                            Padding="{DynamicResource DatePickerHostPadding}"
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontWeight="{TemplateBinding FontWeight}"
