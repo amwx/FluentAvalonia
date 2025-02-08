@@ -4365,12 +4365,12 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private class StepEasingFunction : IEasing
+    private class StepEasingFunction : Easing
     {
         // TODO: What is the default step count for WinUI's StepEasingFunction
         public int Steps { get; set; }
 
-        public double Ease(double progress)
+        public override double Ease(double progress)
         {
             return Math.Round(progress * Steps) * (1 / Steps);
         }
