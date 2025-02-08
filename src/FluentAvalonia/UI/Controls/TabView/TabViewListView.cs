@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
@@ -402,7 +403,13 @@ public class TabViewListView : ListBox
 
         if (!_isInDrag && _initialPoint.HasValue)
         {
-            _dragReorderPopup.Host?.ConfigurePosition(this, PlacementMode.Pointer, _popupOffset);
+            _dragReorderPopup.CustomPopupPlacementCallback = new CustomPopupPlacementCallback(x =>
+            {
+                x.Offset = _popupOffset;
+            });
+            //var req = PopupPositionRequest.
+            //_dragReorderPopup.Host?
+            //    .ConfigurePosition(this, PlacementMode.Pointer, _popupOffset);
         }
     }
 
