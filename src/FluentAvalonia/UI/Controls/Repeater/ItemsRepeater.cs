@@ -15,11 +15,11 @@ public partial class ItemsRepeater : Panel
 {
     public ItemsRepeater()
     {
-        SetCurrentValue(LayoutProperty, new StackLayout());
-
         _viewportManager = new ViewportManager(this);
         _viewManager = new ViewManager(this);
         _transitionManager = new TransitionManager(this);
+
+        SetCurrentValue(LayoutProperty, new StackLayout());
 
         AutomationProperties.SetAccessibilityView(this, AccessibilityView.Raw);
         SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.Once);
