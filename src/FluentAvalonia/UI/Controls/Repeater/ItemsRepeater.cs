@@ -15,6 +15,8 @@ public partial class ItemsRepeater : Panel
 {
     public ItemsRepeater()
     {
+        SetCurrentValue(LayoutProperty, new StackLayout());
+
         _viewportManager = new ViewportManager(this);
         _viewManager = new ViewManager(this);
         _transitionManager = new TransitionManager(this);
