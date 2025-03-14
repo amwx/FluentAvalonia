@@ -3519,7 +3519,7 @@
             <StaticResource x:Key="DataGridRowHoveredBackgroundColor" ResourceKey="SubtleFillColorSecondaryBrush" />
             <SolidColorBrush x:Key="DataGridDropLocationIndicatorBackground" Color="#3F4346" />
             <StaticResource x:Key="DataGridScrollBarsSeparatorBackground" ResourceKey="ControlFillColorTertiaryBrush" />
-            <SolidColorBrush x:Key="DataGridDisabledVisualElementBackground" Color="#8CFFFFFF" />
+            <SolidColorBrush x:Key="DataGridDisabledVisualElementBackground" Color="#8C000000" />
             <StaticResource x:Key="DataGridRowBackgroundBrush" ResourceKey="SubtleFillColorTransparentBrush" />
 
 
