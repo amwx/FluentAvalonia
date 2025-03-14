@@ -14,8 +14,12 @@ Things to note!
 
 
 ## Avalonia minimum requirements
-(current) v2.1.0 - Avalonia 11.1.0
+(current) v2.3.0 - Avalonia 11.2.5
+
+v2.1.0 - Avalonia 11.1.0
+
 v2.0.5 - Avalonia 11.0.4
+
 All previous - Avalonia 11.0
 
 ## Documentation & Sample App
