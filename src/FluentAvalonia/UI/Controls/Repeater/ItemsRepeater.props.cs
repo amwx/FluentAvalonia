@@ -28,7 +28,7 @@ public partial class ItemsRepeater : Panel
     /// Defines the <see cref="Layout"/> property
     /// </summary>
     public static readonly StyledProperty<Layout> LayoutProperty =
-        AvaloniaProperty.Register<ItemsRepeater, Layout>(nameof(Layout), defaultValue: new StackLayout());
+        AvaloniaProperty.Register<ItemsRepeater, Layout>(nameof(Layout));
 
     /// <summary>
     /// Defines the <see cref="ItemsSource"/> property

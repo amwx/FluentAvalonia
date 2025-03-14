@@ -4,13 +4,16 @@
 
     <Design.PreviewWith>
         <Border MinWidth="200" MinHeight="100" Background="#202020">
-            <ui:RangeSlider VerticalAlignment="Center" Margin="20"/>
+            <ui:RangeSlider VerticalAlignment="Center" Margin="20"
+                            RangeStart="20" RangeEnd="80"
+                            IsEnabled="False"/>
         </Border>
     </Design.PreviewWith>
 
     <x:Double x:Key="RangeSliderTrackCornerRadius">2</x:Double>
     <Thickness x:Key="RangeSliderToolTipPadding">4</Thickness>
     <x:Double x:Key="RangeSliderToolTipFontSize">14</x:Double>
+    <x:Double x:Key="RangeSliderTrackThemeHeight">4</x:Double>
 
     <ControlTheme TargetType="Thumb"
                   x:Key="RangeSliderThumbStyle"
@@ -32,7 +35,7 @@
                     <Border Name="OutOfRangeContentContainer" 
                             Background="Transparent"
                             Margin="2 0">
-                        <Rectangle Name="BackgroundElement" Height="2"
+                        <Rectangle Name="BackgroundElement" Height="{DynamicResource RangeSliderTrackThemeHeight}"
                                    Fill="{TemplateBinding Background}"
                                    RadiusX="{DynamicResource RangeSliderTrackCornerRadius}"
                                    RadiusY="{DynamicResource RangeSliderTrackCornerRadius}" />
@@ -43,7 +46,7 @@
                             Background="Transparent"
                             ClipToBounds="False">
                         <Rectangle Name="ActiveRectangle"
-                                   Height="2"
+                                   Height="{DynamicResource RangeSliderTrackThemeHeight}"
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Center"
                                    Fill="{TemplateBinding Foreground}" />
@@ -80,6 +83,18 @@
                 </Panel>
             </ControlTemplate>
         </Setter>
+
+        <Style Selector="^:disabled /template/ Rectangle#BackgroundElement">
+            <Setter Property="Fill" Value="{DynamicResource SliderTrackFillDisabled}" />
+        </Style>
+
+        <Style Selector="^:disabled /template/ Rectangle#ActiveRectangle">
+            <Setter Property="Fill" Value="{DynamicResource SliderTrackValueFillDisabled}" />
+        </Style>
+
+        <Style Selector="^ /template/ Thumb">
+            <Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDisabled}" />
+        </Style>
     </ControlTheme>
     
     

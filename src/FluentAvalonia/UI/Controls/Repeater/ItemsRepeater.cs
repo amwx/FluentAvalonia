@@ -19,6 +19,8 @@ public partial class ItemsRepeater : Panel
         _viewManager = new ViewManager(this);
         _transitionManager = new TransitionManager(this);
 
+        SetCurrentValue(LayoutProperty, new StackLayout());
+
         AutomationProperties.SetAccessibilityView(this, AccessibilityView.Raw);
         SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.Once);
         XYFocus.SetNavigationModes(this, XYFocusNavigationModes.Enabled);

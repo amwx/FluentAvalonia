@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls.Documents;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 
@@ -48,8 +49,8 @@ public partial class FontIcon : FAIconElement
         var dstRect = new Rect(Bounds.Size);
         using (context.PushClip(dstRect))
         {
-            var pt = new Point(dstRect.Center.X - _textLayout.Width / 2,
-                               dstRect.Center.Y - _textLayout.Height / 2);
+            var pt = new Point(dstRect.Center.X - _textLayout.Width * 0.5,
+                               dstRect.Center.Y - _textLayout.Height * 0.5);
             _textLayout.Draw(context, pt);
         }
     }
