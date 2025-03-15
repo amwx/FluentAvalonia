@@ -117,6 +117,9 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/RangeSliderStyles.axaml" />
 
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/ProgressRingStyles.axaml" />
+
+                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/BreadcrumbBar/BreadcrumbBarStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/BreadcrumbBar/BreadcrumbBarItemStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
