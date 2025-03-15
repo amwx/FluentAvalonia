@@ -2,14 +2,26 @@
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using FluentAvalonia.Collections;
 using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+//https://github.com/microsoft/microsoft-ui-xaml/issues/7213
+
+[TemplatePart(Name = "PART_LayoutRoot", Type = typeof(Grid))] // Required for Inline
+[TemplatePart(Name = s_itemEllipsisFlyoutPartName, Type = typeof(Flyout))] // Required for Inline
+[TemplatePart(Name = s_itemButtonPartName, Type = typeof(Button))] // Required for Inline
+[TemplatePart(Name = "PART_LastItemContentPresenter", Type = typeof(ContentPresenter), IsRequired = false)]
+[TemplatePart(Name = "PART_ChevronTextBlock", Type = typeof(TextBlock), IsRequired = false)]
+[TemplatePart(Name = "PART_EllipsisDropDownItemContentPresenter", Type = typeof(ContentPresenter), IsRequired = false)]
+[PseudoClasses(SharedPseudoclasses.s_pcPressed, s_pcInline, s_pcEllipsis, s_pcInline, s_pcEllipsisDropDown)]
 public class BreadcrumbBarItem : ContentControl
 {
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -26,9 +38,11 @@ public class BreadcrumbBarItem : ContentControl
                 throw new InvalidOperationException("PART_LayoutRoot on BreadcrumbBarItem is missing Flyout in resources");
         }
 
-        _button = e.NameScope.Get<Button>(s_itemButtonPartName);
-
-        _button.Loaded += OnButtonLoadedEvent;
+        _button = e.NameScope.Find<Button>(s_itemButtonPartName);
+        if (_button != null)
+        {
+            _button.Loaded += OnButtonLoadedEvent;
+        }
 
         UpdateButtonCommonVisualState();
         UpdateInlineItemTypeVisualState();
@@ -334,8 +348,8 @@ public class BreadcrumbBarItem : ContentControl
     private void UpdateItemTypeVisualState()
     {
         // Change the style based on whether the item is inline or in the dropdown
-        PseudoClasses.Set(":inline", !_isEllipsisDropDownItem);
-        PseudoClasses.Set(":ellipsisDropDown", _isEllipsisDropDownItem);
+        PseudoClasses.Set(s_pcInline, !_isEllipsisDropDownItem);
+        PseudoClasses.Set(s_pcEllipsisDropDown, _isEllipsisDropDownItem);
         //winrt::VisualStateManager::GoToState(*this, m_isEllipsisDropDownItem ? s_ellipsisDropDownStateName : s_inlineStateName, false /*useTransitions*/);
     }
 
@@ -348,8 +362,8 @@ public class BreadcrumbBarItem : ContentControl
 
     private void UpdateInlineItemTypeVisualState()
     {
-        PseudoClasses.Set(":ellipsis", _isEllipsisItem);
-        PseudoClasses.Set(":lastItem", _isLastItem);
+        PseudoClasses.Set(s_pcEllipsis, _isEllipsisItem);
+        PseudoClasses.Set(s_pcLastItem, _isLastItem);
     }
 
     private void UpdateButtonCommonVisualState()
@@ -358,14 +372,17 @@ public class BreadcrumbBarItem : ContentControl
             return;
 
         var pc = _button.Classes as IPseudoClasses;
-        pc.Set(":lastItem", _isLastItem);
+        pc.Set(s_pcLastItem, _isLastItem);
     }
 
     private void OnEllipsisItemClick(object sender, RoutedEventArgs e)
     {
         if (_parentBreadcrumb.TryGetTarget(out var target))
         {
-            var hiddenElements = CloneEllipsisItemSource(target.HiddenElements());
+            var targetHidden = target.HiddenElements();
+            var hiddenElements = CloneEllipsisItemSource(targetHidden);
+            if (targetHidden is PooledList<object> pl)
+                pl.Dispose();
 
             if (_ellipsisDropDownItemDataTemplate != null)
             {
@@ -589,4 +606,9 @@ public class BreadcrumbBarItem : ContentControl
 
     //private const string s_ellipsisFlyoutAutomationName = "EllisisFlyout";
     private const string s_ellipsisItemsRepeaterAutomationName = "EllipsisItemsRepeater";
+
+    private const string s_pcInline = ":inline";
+    private const string s_pcEllipsis = ":ellipsis";
+    private const string s_pcLastItem = ":lastItem";
+    private const string s_pcEllipsisDropDown = ":ellipsisDropDown";
 }

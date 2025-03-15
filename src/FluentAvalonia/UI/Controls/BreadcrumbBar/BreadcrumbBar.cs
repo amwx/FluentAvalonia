@@ -4,14 +4,18 @@ using Avalonia;
 using Avalonia.Automation;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using FluentAvalonia.Collections;
 using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+[TemplatePart(Name = s_tpItemsRepeater, Type=typeof(ItemsRepeater))]
 public class BreadcrumbBar : TemplatedControl
 {
     public BreadcrumbBar()
@@ -19,7 +23,7 @@ public class BreadcrumbBar : TemplatedControl
         _itemsRepeaterElementFactory = new BreadcrumbElementFactory();
         _itemsRepeaterLayout = new BreadcrumbLayout(this);
         _itemsIterable = new BreadcrumbIterable(null);
-
+        
         AddHandler(KeyDownEvent, OnChildPreviewKeyDown, RoutingStrategies.Tunnel);
         //AccessKeyInvoked
         GotFocus += OnGettingFocus;
@@ -251,7 +255,7 @@ public class BreadcrumbBar : TemplatedControl
 
     internal IEnumerable<object> GetHiddenElementsList(int firstShownElement)
     {
-        var l = new List<object>();
+        var l = new PooledList<object>();
         if (_breadcrumbItemsSourceView != null)
         {
             for (int i = 0; i < firstShownElement - 1; i++)
@@ -271,7 +275,6 @@ public class BreadcrumbBar : TemplatedControl
         }
 
         return null;
-        //yield break;
     }
 
     internal void ReIndexVisibleElementsForAccessibility()
@@ -323,21 +326,78 @@ public class BreadcrumbBar : TemplatedControl
 
     private bool MoveFocus(int indexIncrement)
     {
-        //
+        var ir = _itemsRepeater;
+        if (ir != null)
+        {
+            var focusedElem = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
+            if (focusedElem is Control element)
+            {
+                var index = ir.GetElementIndex(element);
+
+                if (index >= 0 && indexIncrement != 0)
+                {
+                    index += indexIncrement;
+                    var itemCount = ir.ItemsSourceView.Count;
+                    while (index >= 0 && index < itemCount)
+                    {
+                        var item = ir.TryGetElement(index);
+                        if (item != null)
+                        {
+                            if (item.Focus())
+                            {
+                                FocusElementAt(index);
+                                return true;
+                            }
+                        }
+                        index += indexIncrement;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
     private bool MoveFocusPrevious()
     {
         var movementPrevious = -1;
-        //
+
+        // If the focus is in the first visible item, then move to the ellipsis
+        var ir = _itemsRepeater;
+        if (ir != null)
+        {
+            var layout = ir.Layout as BreadcrumbLayout;
+            if (layout != null)
+            {
+                if (_focusedIndex == 1)
+                {
+                    movementPrevious = 0;
+                }
+                else if (layout.EllipsisIsRendered &&
+                    _focusedIndex == layout.FirstRenderedItemIndexAfterEllipsis)
+                {
+                    movementPrevious = -_focusedIndex;
+                }
+            }
+        }
+
         return MoveFocus(movementPrevious);
     }
 
     private bool MoveFocusNext()
     {
         int movementNext = 1;
-        //
+        
+        if (_focusedIndex == 0)
+        {
+            var ir = _itemsRepeater;
+            if (ir != null)
+            {
+                var layout = ir.Layout as BreadcrumbLayout;
+                movementNext = layout.FirstRenderedItemIndexAfterEllipsis;
+            }
+        }
+
         return MoveFocus(movementNext);
     }
 
@@ -345,7 +405,29 @@ public class BreadcrumbBar : TemplatedControl
 
     private void OnChildPreviewKeyDown(object sender, KeyEventArgs args)
     {
-        //
+        bool flowDirectionIsLtr = FlowDirection == FlowDirection.LeftToRight;
+        bool keyIsLeft = args.Key == Key.Left;
+        bool keyIsRight = args.Key == Key.Right;
+
+        // Moving to the next element
+        if ((flowDirectionIsLtr && keyIsRight) || (!flowDirectionIsLtr && keyIsLeft))
+        {
+            if (MoveFocusNext())
+            {
+                args.Handled = true;
+                return;
+            }
+            // Gamepad
+        }
+        else if ((flowDirectionIsLtr && keyIsLeft) || (!flowDirectionIsLtr && keyIsRight))
+        {
+            if (MoveFocusPrevious())
+            {
+                args.Handled = true;
+                return;
+            }
+            // Gamepad
+        }
     }
 
     // AccessKeyInvoked
