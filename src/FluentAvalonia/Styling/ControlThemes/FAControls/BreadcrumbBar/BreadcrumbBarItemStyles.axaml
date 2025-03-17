@@ -257,14 +257,14 @@
             </Style>
 
             <Style Selector="^:lastItem">
-                <Style Selector="^ /template/ Button#PART_ItemButton">
+                <Style Selector="^:not(:allowClick) /template/ Button#PART_ItemButton">
                     <Setter Property="IsVisible" Value="False" />
                     <Setter Property="TemplatedControl.IsTemplateFocusTarget" Value="False" />
                 </Style>
                 <Style Selector="^ /template/ TextBlock#PART_ChevronTextBlock">
                     <Setter Property="IsVisible" Value="False" />
                 </Style>
-                <Style Selector="^ /template/ ContentPresenter#PART_LastItemContentPresenter">
+                <Style Selector="^:not(:allowClick) /template/ ContentPresenter#PART_LastItemContentPresenter">
                     <Setter Property="IsVisible" Value="True" />
                     <Setter Property="TemplatedControl.IsTemplateFocusTarget" Value="True" />
                 </Style>

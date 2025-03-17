@@ -36,6 +36,9 @@ public class BreadcrumbBar : TemplatedControl
     public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
         ItemsControl.ItemTemplateProperty.AddOwner<BreadcrumbBar>();
 
+    public static readonly StyledProperty<bool> IsLastItemClickEnabledProperty =
+        AvaloniaProperty.Register<BreadcrumbBar, bool>(nameof(IsLastItemClickEnabled));
+
     public IEnumerable ItemsSource
     {
         get => GetValue(ItemsSourceProperty);
@@ -46,6 +49,12 @@ public class BreadcrumbBar : TemplatedControl
     {
         get => GetValue(ItemTemplateProperty);
         set => SetValue(ItemTemplateProperty, value);
+    }
+
+    public bool IsLastItemClickEnabled
+    {
+        get => GetValue(IsLastItemClickEnabledProperty);
+        set => SetValue(IsLastItemClickEnabledProperty, value);
     }
 
     public event TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs> ItemClicked;
@@ -83,6 +92,10 @@ public class BreadcrumbBar : TemplatedControl
         {
             UpdateItemTemplate();
             UpdateEllipsisBreadcrumbBarItemDropDownItemTemplate();
+        }
+        else if (change.Property == IsLastItemClickEnabledProperty)
+        {
+            ForceUpdateLastElement();
         }
     }
 

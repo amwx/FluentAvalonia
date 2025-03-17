@@ -17,6 +17,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
 using Xunit;
 
@@ -384,6 +385,296 @@ public class BreadcrumbBarTests : IDisposable
         Assert.NotNull(node3);
     }
 
+    [AvaloniaFact]
+    public void InlineItemsHaveCorrectPseudoclasses()
+    {
+        var bcb = new BreadcrumbBar();
+        _window.Content = bcb;
+        bcb.ItemsSource = new List<MockClass>()
+        {
+            new MockClass { MockProperty = "Node 1" },
+            new MockClass { MockProperty = "Node 2" },
+            new MockClass { MockProperty = "Node 3" },
+        };
+
+        _window.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        var ir = GetRepeater(bcb);
+
+        Assert.NotNull(ir);
+        Assert.IsType<ItemsRepeater>(ir);
+
+        var ellNode = ir.TryGetElement(0) as BreadcrumbBarItem;
+        Assert.NotNull(ellNode);
+
+        Assert.Contains(":ellipsis", ellNode.Classes);
+
+        for (int i = 1; i < 4; i++)
+        {
+            var node = ir.TryGetElement(i);
+            Assert.Contains(":inline", node.Classes);
+        }
+    }
+
+    [AvaloniaFact]
+    public void EllipsisDropDownItemsHaveCorrectPseudoclasses()
+    {
+        var bcb = new BreadcrumbBar();
+        
+        bcb.ItemsSource = new List<MockClass>()
+        {
+            new MockClass { MockProperty = "Node 1" },
+            new MockClass { MockProperty = "Node 2" },
+            new MockClass { MockProperty = "Node 3" },
+        };
+
+        _window.Content = new StackPanel
+        {
+            Width = 60,
+            Children =
+            {
+                bcb
+            }
+        };
+
+        _window.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        var ir = GetRepeater(bcb);
+
+        Assert.NotNull(ir);
+        Assert.IsType<ItemsRepeater>(ir);
+
+        var n1 = ir.TryGetElement(0) as BreadcrumbBarItem;
+        Assert.NotNull(n1);
+
+        var eb = n1.GetTemplateChildren().Where(x => x.Name == "PART_ItemButton")
+            .FirstOrDefault() as Button;
+        Assert.NotNull(eb);
+
+        var peer = new ButtonAutomationPeer(eb);
+        var inv = peer as IInvokeProvider;
+        inv.Invoke();
+        Dispatcher.UIThread.RunJobs();
+
+        var rootGrid = n1.GetTemplateChildren()
+            .Where(x => x is Grid g && g.Resources.Count > 0)
+            .FirstOrDefault();
+        Assert.NotNull(rootGrid);
+        var flyout = rootGrid.Resources["PART_EllipsisFlyout"] as Flyout;
+        Assert.NotNull(flyout);
+
+        var ir2 = flyout.Content as ItemsRepeater;
+        Assert.NotNull(ir2);
+
+        Assert.True(ir2.ItemsSourceView.Count > 0);
+
+        for (int i = 0; i < ir2.ItemsSourceView.Count; i++)
+        {
+            var item = ir2.TryGetElement(i) as BreadcrumbBarItem;
+            Assert.NotNull(item);
+            Assert.DoesNotContain(":inline", item.Classes);
+            Assert.Contains(":ellipsisDropDown", item.Classes);
+        }
+    }
+
+    [AvaloniaFact]
+    public void ClickingInlineItemRaisesItemClickedEvent()
+    {
+        var bcb = new BreadcrumbBar();
+        _window.Content = bcb;
+        bcb.ItemsSource = new List<string>()
+        {
+            "Node 1",
+            "Node 2",
+            "Node 3",
+        };
+
+        _window.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        var ir = GetRepeater(bcb);
+
+        Assert.NotNull(ir);
+        Assert.IsType<ItemsRepeater>(ir);
+
+        var node = ir.TryGetElement(1) as BreadcrumbBarItem;
+        Assert.NotNull(node);
+
+        int index = -1;
+        object item = null;
+        bcb.ItemClicked += (_, e) =>
+        {
+            index = e.Index;
+            item = e.Item;
+        };
+
+        ClickControl(node);
+
+        Assert.Equal(0, index);
+        Assert.Equal(bcb.ItemsSource.ElementAt(0), item);
+    }
+
+    [AvaloniaFact]
+    public void ClickingEllipsisDropDownItemRaisesItemClickedEvent()
+    {
+        var bcb = new BreadcrumbBar();
+        
+        bcb.ItemsSource = new List<string>()
+        {
+            "Node 1",
+            "Node 2",
+            "Node 3",
+        };
+
+        _window.Content = new StackPanel
+        {
+            Width = 60,
+            Children =
+            {
+                bcb 
+            }
+        };
+
+        _window.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        var ir = GetRepeater(bcb);
+
+        Assert.NotNull(ir);
+        Assert.IsType<ItemsRepeater>(ir);
+
+        var n1 = ir.TryGetElement(0) as BreadcrumbBarItem;
+        Assert.NotNull(n1);
+
+        var eb = n1.GetTemplateChildren().Where(x => x.Name == "PART_ItemButton")
+            .FirstOrDefault() as Button;
+        Assert.NotNull(eb);
+
+        var peer = new ButtonAutomationPeer(eb);
+        var inv = peer as IInvokeProvider;
+        inv.Invoke();
+        Dispatcher.UIThread.RunJobs();
+
+        var rootGrid = n1.GetTemplateChildren()
+            .Where(x => x is Grid g && g.Resources.Count > 0)
+            .FirstOrDefault();
+        Assert.NotNull(rootGrid);
+        var flyout = rootGrid.Resources["PART_EllipsisFlyout"] as Flyout;
+        Assert.NotNull(flyout);
+
+        var ir2 = flyout.Content as ItemsRepeater;
+        Assert.NotNull(ir2);
+
+        var count = ir2.ItemsSourceView.Count;
+
+        // The last item is the first in the ItemsSource list since they're added backwards
+        var node = ir2.TryGetElement(count - 1) as BreadcrumbBarItem;
+        Assert.NotNull(node);
+
+        int index = -1;
+        object item = null;
+        bcb.ItemClicked += (_, e) =>
+        {
+            index = e.Index;
+            item = e.Item;
+        };
+
+        ClickControl(node);
+
+        Assert.Equal(0, index);
+        Assert.Equal(bcb.ItemsSource.ElementAt(0), item);
+    }
+
+    [AvaloniaFact]
+    public void LastInlineItemIsNotInteractiveByDefault()
+    {
+        var bcb = new BreadcrumbBar();
+        _window.Content = bcb;
+        bcb.ItemsSource = new List<string>()
+        {
+            "Node 1",
+            "Node 2",
+            "Node 3",
+        };
+
+        _window.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        var ir = GetRepeater(bcb);
+
+        Assert.NotNull(ir);
+        Assert.IsType<ItemsRepeater>(ir);
+
+        var node = ir.TryGetElement(3) as BreadcrumbBarItem;
+        Assert.NotNull(node);
+
+        Assert.Contains(":lastItem", node.Classes);
+
+        int index = -1;
+        bcb.ItemClicked += (_, e) =>
+        {
+            index = e.Index;
+        };
+
+        ClickControl(node);
+
+        Assert.Equal(-1, index);
+
+        // Also ensure the chevron is hidden
+        var chevron = node.GetVisualDescendants()
+            .Where(x => x is TextBlock && x.Name == "PART_ChevronTextBlock")
+            .FirstOrDefault();
+
+        Assert.False(chevron.IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void SettingIsLastItemClickEnabledMakesLastInlineItemInteractive()
+    {
+        var bcb = new BreadcrumbBar();
+        _window.Content = bcb;
+        bcb.ItemsSource = new List<string>()
+        {
+            "Node 1",
+            "Node 2",
+            "Node 3",
+        };
+        bcb.IsLastItemClickEnabled = true;
+
+        _window.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        var ir = GetRepeater(bcb);
+
+        Assert.NotNull(ir);
+        Assert.IsType<ItemsRepeater>(ir);
+
+        var node = ir.TryGetElement(3) as BreadcrumbBarItem;
+        Assert.NotNull(node);
+
+        Assert.Contains(":lastItem", node.Classes);
+        Assert.Contains(":allowClick", node.Classes);
+
+        int index = -1;
+        bcb.ItemClicked += (_, e) =>
+        {
+            index = e.Index;
+        };
+
+        ClickControl(node);
+
+        Assert.Equal(2, index);
+
+        // Also ensure the chevron is still hidden
+        var chevron = node.GetVisualDescendants()
+            .Where(x => x is TextBlock && x.Name == "PART_ChevronTextBlock")
+            .FirstOrDefault();
+
+        Assert.False(chevron.IsVisible);
+    }
+
     public void Dispose()
     {
         _window.Close();
@@ -395,7 +686,7 @@ public class BreadcrumbBarTests : IDisposable
             .FirstOrDefault() as ItemsRepeater;
     }
 
-    private static bool ClickButton(Window w, Button b)
+    private static bool ClickControl(Control b)
     {
         var top = TopLevel.GetTopLevel(b);
         var trans = b.TransformToVisual(top);
@@ -404,8 +695,8 @@ public class BreadcrumbBarTests : IDisposable
 
         var rc = new Rect(b.Bounds.Size);
         var pt = rc.Center.Transform(trans.Value);
-        w.MouseDown(pt, MouseButton.Left, RawInputModifiers.None);
-        w.MouseUp(pt, MouseButton.Left, RawInputModifiers.None);
+        top.MouseDown(pt, MouseButton.Left, RawInputModifiers.None);
+        top.MouseUp(pt, MouseButton.Left, RawInputModifiers.None);
         return true;
     }
 

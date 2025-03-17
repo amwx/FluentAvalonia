@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
@@ -364,6 +365,8 @@ public class BreadcrumbBarItem : ContentControl
     {
         PseudoClasses.Set(s_pcEllipsis, _isEllipsisItem);
         PseudoClasses.Set(s_pcLastItem, _isLastItem);
+
+        PseudoClasses.Set(":allowClick", _allowClickOnLastItem);
     }
 
     private void UpdateButtonCommonVisualState()
@@ -372,7 +375,7 @@ public class BreadcrumbBarItem : ContentControl
             return;
 
         var pc = _button.Classes as IPseudoClasses;
-        pc.Set(s_pcLastItem, _isLastItem);
+        pc.Set(s_pcLastItem, _isLastItem && !_allowClickOnLastItem);
     }
 
     private void OnEllipsisItemClick(object sender, RoutedEventArgs e)
@@ -402,6 +405,11 @@ public class BreadcrumbBarItem : ContentControl
     {
         _isEllipsisItem = false;
         _isLastItem = true;
+
+        if (_parentBreadcrumb.TryGetTarget(out var target))
+        {
+            _allowClickOnLastItem = target.IsLastItemClickEnabled;
+        }
 
         UpdateButtonCommonVisualState();
         UpdateInlineItemTypeVisualState();
@@ -585,6 +593,7 @@ public class BreadcrumbBarItem : ContentControl
     private bool _isEllipsisDropDownItem;
     private bool _isEllipsisItem;
     private bool _isLastItem;
+    private bool _allowClickOnLastItem;
     private Flyout _ellipsisFlyout;
     private Button _button;
 
