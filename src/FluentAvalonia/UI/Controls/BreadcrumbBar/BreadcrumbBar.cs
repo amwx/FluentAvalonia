@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Automation;
@@ -15,6 +16,9 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// The BreadcrumbBar control provides the direct path of pages or folders to the current location.
+/// </summary>
 [TemplatePart(Name = s_tpItemsRepeater, Type=typeof(ItemsRepeater))]
 public class BreadcrumbBar : TemplatedControl
 {
@@ -30,33 +34,54 @@ public class BreadcrumbBar : TemplatedControl
         // Ignore FlowDirection
     }
 
+    /// <summary>
+    /// Defines the <see cref="ItemsSource"/> property
+    /// </summary>
     public static readonly StyledProperty<IEnumerable> ItemsSourceProperty =
         ItemsControl.ItemsSourceProperty.AddOwner<BreadcrumbBar>();
 
+    /// <summary>
+    /// Defines the <see cref="ItemTemplate"/> property
+    /// </summary>
     public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
         ItemsControl.ItemTemplateProperty.AddOwner<BreadcrumbBar>();
 
+    /// <summary>
+    /// Defines the <see cref="IsLastItemClickEnabled"/> property
+    /// </summary>
     public static readonly StyledProperty<bool> IsLastItemClickEnabledProperty =
         AvaloniaProperty.Register<BreadcrumbBar, bool>(nameof(IsLastItemClickEnabled));
 
+    /// <summary>
+    /// Gets or sets an object source used to generate the content of the BreadcrumbBar.
+    /// </summary>
     public IEnumerable ItemsSource
     {
         get => GetValue(ItemsSourceProperty);
         set => SetValue(ItemsSourceProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the data template for the BreadcrumbBarItem.
+    /// </summary>
     public IDataTemplate ItemTemplate
     {
         get => GetValue(ItemTemplateProperty);
         set => SetValue(ItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets whether the last item can be clicked
+    /// </summary>
     public bool IsLastItemClickEnabled
     {
         get => GetValue(IsLastItemClickEnabledProperty);
         set => SetValue(IsLastItemClickEnabledProperty, value);
     }
 
+    /// <summary>
+    /// Occurs when an item is clicked in the BreadcrumbBar.
+    /// </summary>
     public event TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs> ItemClicked;
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -214,7 +239,9 @@ public class BreadcrumbBar : TemplatedControl
                 _ellipsisBreadcrumBarItem = item;
                 UpdateEllipsisBreadcrumbBarItemDropDownItemTemplate();
 
-                //winrt::AutomationProperties::SetName(item, ResourceAccessor::GetLocalizedStringResource(SR_AutomationNameEllipsisBreadcrumbBarItem));
+                var str = FALocalizationHelper.Instance
+                    .GetLocalizedStringResource("AutomationNameEllipsisBreadcrumbBarItem");
+                AutomationProperties.SetName(item, str);
             }
             else
             {

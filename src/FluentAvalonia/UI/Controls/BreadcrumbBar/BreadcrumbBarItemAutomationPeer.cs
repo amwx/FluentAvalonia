@@ -4,6 +4,9 @@ using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
+/// <summary>
+/// Defines the automation peer for a <see cref="BreadcrumbBarItem"/>
+/// </summary>
 public class BreadcrumbBarItemAutomationPeer : ControlAutomationPeer, IInvokeProvider
 {
     public BreadcrumbBarItemAutomationPeer(Control owner) 
@@ -13,8 +16,8 @@ public class BreadcrumbBarItemAutomationPeer : ControlAutomationPeer, IInvokePro
 
     protected override string GetLocalizedControlTypeCore()
     {
-        // TODO:  return ResourceAccessor::GetLocalizedStringResource(SR_BreadcrumbBarItemLocalizedControlType);
-        return base.GetLocalizedControlTypeCore();
+        return FALocalizationHelper.Instance
+            .GetLocalizedStringResource("BreadcrumbBarItemLocalizedControlType");
     }
 
     protected override string GetClassNameCore()
