@@ -179,6 +179,19 @@
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.TabView",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.tabview",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/tab-view"
+      },
+      {
+        "Header": "BreadcrumbBar",
+        "Description": "Shows the trail of navigation taken to the current location",
+        "PageKey": "BreadcrumbBar",
+        "IconResourceKey": "BreadcrumbBarIcon",
+        "SearchKeywords": [
+          "BreadcrumbBar"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls.BreadcrumbBar",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.BreadcrumbBar",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.breadcrumbbar?view=winui-2.8",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/breadcrumbbar"
       }
     ]
   },

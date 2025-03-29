@@ -208,7 +208,8 @@ public class NavigationFactory : INavigationPageFactory
         { "InfoBadge", () => new InfoBadgePage() },
         { "SettingsExpander", () => new SettingsExpanderPage() },
         { "RangeSlider", () => new RangeSliderPage() },
-        { "ProgressRing", () => new ProgressRingPage() }
+        { "ProgressRing", () => new ProgressRingPage() },
+        { "BreadcrumbBar", () => new BreadcrumbBarPage() }
     };
 }
 
