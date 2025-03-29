@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:pg="using:FAControlsGallery.Pages"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="1200"
+             x:Class="FAControlsGallery.Pages.BreadcrumbBarPage"
+             x:DataType="pg:BreadcrumbBarPage">
+
+    <UserControl.Resources>
+        <ui:SymbolIconSource x:Key="FolderIcon" Symbol="FolderFilled" />
+    </UserControl.Resources>
+
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample TargetType="ui:BreadcrumbBar"
+                              Header="A Simple BreadcrumbBar">
+
+            <ui:BreadcrumbBar Name="BreadcrumbBar1" />
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;BreadcrumbBar x:Name="BreadcrumbBar1"/&gt;
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
+
+            <ctrls:ControlExample.CSharpSource>
+                <x:String xml:space="preserve">
+BreadcrumbBar1.ItemsSource = new string[] { "Home", "Documents", "Design", "Northwind", "Images", "Folder1", "Folder2", "Folder3" };
+                </x:String>
+            </ctrls:ControlExample.CSharpSource>
+
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="BreadcrumbBar With Custom DataTemplate"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/Breadcrumb2.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/Breadcrumb2.cs.txt">
+            <ui:BreadcrumbBar Name="BreadcrumbBar2">
+                <ui:BreadcrumbBar.ItemTemplate>
+                    <DataTemplate DataType="pg:BreadcrumbFolder">
+                        <ui:BreadcrumbBarItem Content="{Binding}"
+                                              AutomationProperties.Name="{Binding Name}">
+                            <ui:BreadcrumbBarItem.ContentTemplate>
+                                <DataTemplate DataType="pg:BreadcrumbFolder">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <ui:IconSourceElement IconSource="{StaticResource FolderIcon}" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ui:BreadcrumbBarItem.ContentTemplate>
+                        </ui:BreadcrumbBarItem>
+                    </DataTemplate>
+                </ui:BreadcrumbBar.ItemTemplate>
+            </ui:BreadcrumbBar>
+
+            <ctrls:ControlExample.Options>
+                <Button Content="Reset Sample"
+                        Name="ResetSampleButton" />
+            </ctrls:ControlExample.Options>
+        </ctrls:ControlExample>
+       
+    </StackPanel>
+    
+</UserControl>

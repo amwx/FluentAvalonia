@@ -1,0 +1,17 @@
+﻿<ui:BreadcrumbBar Name="BreadcrumbBar2">
+    <ui:BreadcrumbBar.ItemTemplate>
+        <DataTemplate DataType="pg:BreadcrumbFolder">
+            <ui:BreadcrumbBarItem Content="{Binding}"
+                                  AutomationProperties.Name="{Binding Name}">
+                <ui:BreadcrumbBarItem.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <ui:IconSourceElement IconSource="{StaticResource FolderIcon}" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ui:BreadcrumbBarItem.ContentTemplate>
+            </ui:BreadcrumbBarItem>
+        </DataTemplate>
+    </ui:BreadcrumbBar.ItemTemplate>
+</ui:BreadcrumbBar>
