@@ -5,7 +5,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class ItemTemplateWrapper : IElementFactory
+public class ItemTemplateWrapper : IElementFactory
 {
     public ItemTemplateWrapper(IDataTemplate template)
     {

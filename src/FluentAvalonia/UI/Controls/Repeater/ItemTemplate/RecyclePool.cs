@@ -9,10 +9,10 @@ namespace FluentAvalonia.UI.Controls;
 
 public class RecyclePool
 {
-    internal static readonly AttachedProperty<IDataTemplate> OriginTemplateProperty =
+    public static readonly AttachedProperty<IDataTemplate> OriginTemplateProperty =
         AvaloniaProperty.RegisterAttached<RecyclePool, Control, IDataTemplate>("OriginTemplate");
 
-    internal static readonly AttachedProperty<string> ReuseKeyProperty =
+    public static readonly AttachedProperty<string> ReuseKeyProperty =
         AvaloniaProperty.RegisterAttached<RecyclePool, Control, string>("ReuseKey");
 
     public static string GetReuseKey(Control element) =>
