@@ -242,6 +242,14 @@ public partial class NumberBox : TemplatedControl
         if (_textBox == null)
             return;
 
+        // Validate the text of the inner textbox
+        if (_textBox.Text == null)
+        {
+            // Override text to current value
+            UpdateTextToValue();
+            return;
+        }
+
         var text = _textBox.Text.Trim();
 
         // Handles empty TextBox case, set text ot current value
