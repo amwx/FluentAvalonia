@@ -242,7 +242,7 @@ public partial class NumberBox : TemplatedControl
         if (_textBox == null)
             return;
 
-        var text = _textBox.Text.Trim();
+        var text = _textBox.Text?.Trim();
 
         // Handles empty TextBox case, set text ot current value
         if (string.IsNullOrEmpty(text))
