@@ -52,7 +52,7 @@
         <Setter Property="BorderThickness" Value="{DynamicResource ExpanderHeaderBorderThickness}" />
         <Setter Property="Foreground" Value="{DynamicResource ExpanderHeaderForeground}" />
         <Setter Property="Padding" Value="{DynamicResource ExpanderHeaderPadding}" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
