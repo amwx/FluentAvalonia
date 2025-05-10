@@ -92,8 +92,11 @@ public partial class ContentDialog : ContentControl, ICustomKeyboardNavigation
         switch (e.Key)
         {
             case Key.Escape:
-                HideCore();
-                e.Handled = true;
+                if (CloseOnEsc)
+                {
+                    HideCore();
+                    e.Handled = true;
+                }
                 break;
 
             case Key.Enter:

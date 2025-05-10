@@ -103,6 +103,12 @@ public partial class TaskDialog
     /// </summary>
     public static readonly StyledProperty<IBrush> IconForegroundProperty =
         AvaloniaProperty.Register<TaskDialog, IBrush>(nameof(IconForeground));
+    
+    /// <summary>
+    /// Defines the <see cref="CloseOnEsc"/> property
+    /// </summary>
+    public static readonly StyledProperty<bool> CloseOnEscProperty =
+        AvaloniaProperty.Register<TaskDialog, bool>(nameof(CloseOnEsc), true);
 
     /// <summary>
     /// Gets or sets the title of the dialog
@@ -233,6 +239,16 @@ public partial class TaskDialog
         get => GetValue(IconForegroundProperty);
         set => SetValue(IconForegroundProperty, value);
     }
+    
+    /// <summary>
+    /// Gets or sets whether the TaskDialog can be closed by pressing the Escape key.
+    /// </summary>
+    public bool CloseOnEsc
+    {
+        get => GetValue(CloseOnEscProperty);
+        set => SetValue(CloseOnEscProperty, value);
+    }
+
 
     /// <summary>
     /// Gets or sets the root visual that should host this dialog
