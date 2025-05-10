@@ -118,7 +118,7 @@ public partial class TaskDialog : ContentControl
 
     private void OnKeyDownPreview(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Escape)
+        if (e.Key == Key.Escape && CloseOnEsc)
         {
             Hide();
             e.Handled = true;

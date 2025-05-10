@@ -68,6 +68,9 @@
                     <CheckBox Content="Show Windowed"
                               IsChecked="True"
                               Name="ShowWindowedCheck" />
+                    <CheckBox Content="Close On Esc"
+                              IsChecked="True"
+                              Name="CloseOnEscCheck" />
                     <Expander Header="Headers">
                         <StackPanel Spacing="4">
                             <TextBlock Text="Title (Windowed mode only)"/>

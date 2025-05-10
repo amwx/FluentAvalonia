@@ -104,6 +104,12 @@ public partial class ContentDialog
     /// </summary>
     public static readonly StyledProperty<bool> FullSizeDesiredProperty =
         AvaloniaProperty.Register<ContentDialog, bool>(nameof(FullSizeDesired));
+    
+    /// <summary>
+    /// Defines the <see cref="CloseOnEsc"/> property
+    /// </summary>
+    public static readonly StyledProperty<bool> CloseOnEscProperty =
+        AvaloniaProperty.Register<ContentDialog, bool>(nameof(CloseOnEsc), true);
 
     /// <summary>
     /// Gets or sets the command to invoke when the close button is tapped.
@@ -240,6 +246,15 @@ public partial class ContentDialog
     {
         get => GetValue(FullSizeDesiredProperty);
         set => SetValue(FullSizeDesiredProperty, value);
+    }
+    
+    /// <summary>
+    /// Gets or sets whether the Dialog can be closed by pressing the Escape key.
+    /// </summary>
+    public bool CloseOnEsc
+    {
+        get => GetValue(CloseOnEscProperty);
+        set => SetValue(CloseOnEscProperty, value);
     }
 
     /// <summary>
