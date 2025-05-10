@@ -49,7 +49,8 @@ public partial class TaskDialogPage : ControlsPageBase
         {
             td.Buttons.Add(_apiInActionTD.Buttons[i]);
         }
-
+        
+        td.CloseOnEsc = this.FindControl<CheckBox>("CloseOnEscCheck").IsChecked == true;
         td.XamlRoot = VisualRoot as Visual;
         var result = await td.ShowAsync(this.FindControl<CheckBox>("ShowWindowedCheck").IsChecked == false);
 

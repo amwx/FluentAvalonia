@@ -45,6 +45,12 @@ public class ContentDialogPageViewModel : ViewModelBase
         get => _fullSize;
         set => RaiseAndSetIfChanged(ref _fullSize, value);
     }
+    
+    public bool CloseOnEsc
+    {
+        get => _closeOnEsc;
+        set => RaiseAndSetIfChanged(ref _closeOnEsc, value);
+    }
 
     public ContentDialogButton[] ContentDialogButtons { get; } = Enum.GetValues<ContentDialogButton>();
 
@@ -82,7 +88,8 @@ public class ContentDialogPageViewModel : ViewModelBase
             IsPrimaryButtonEnabled = IsPrimaryButtonEnabled,
             IsSecondaryButtonEnabled = IsSecondaryButtonEnabled,
             DefaultButton = ContentDialogDefaultButton,
-            FullSizeDesired = FullSizeDesired
+            FullSizeDesired = FullSizeDesired,
+            CloseOnEsc = CloseOnEsc,
         };
 
         if (hasDeferral)
@@ -129,6 +136,7 @@ public class ContentDialogPageViewModel : ViewModelBase
     private string _secondaryText = "Secondary Button";
     private string _closeText = "Close Button";
     private bool _fullSize;
+    private bool _closeOnEsc = true;
     private ContentDialogButton _defaultButton;
     private bool _primaryEnabled = true;
     private bool _secondaryEnabled = true;
