@@ -101,9 +101,6 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogCommandStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/TaskDialog/TaskDialogButtonStyles.axaml" />
 
-                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/ColorPickerStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/ColorPickerButtonStyles.axaml" />
-
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/TeachingTipStyles.axaml" />
 
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/SettingsExpander/SettingsExpanderStyles.axaml" />

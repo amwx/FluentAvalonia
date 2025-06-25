@@ -135,8 +135,8 @@ public class MainWindow : AppWindow
                             </OnPlatform>
                         </StackPanel.IsVisible>
                         <TextBlock Text="Window Border Color" />
-                        <ui:ColorPickerButton Color="{DynamicResource SystemAccentColor}" 
-                                              Name="ColorPickerButton1" />
+                        <ColorPicker Color="{DynamicResource SystemAccentColor}"
+                                     Name="ColorPicker1" />
 
                         <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
                                    Height="1" 
