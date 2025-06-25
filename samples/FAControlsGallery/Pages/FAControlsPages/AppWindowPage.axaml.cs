@@ -5,7 +5,6 @@ using Avalonia.Interactivity;
 using FluentAvalonia.UI.Windowing;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Pages;
 
@@ -26,7 +25,7 @@ public partial class AppWindowPage : ControlsPageBase
         SplashButton2.Click += ShowSplashClick;
         SplashButton3.Click += ShowSplashClick;
 
-        ColorPickerButton1.FlyoutConfirmed += ColorPickerButton1_FlyoutConfirmed;
+        ColorPicker1.ColorChanged += HandleColorPicker1ColorChanged;
         SetTaskBarProgressBar.Click += SetTaskBarProgressBar_Click;
     }
 
@@ -69,13 +68,12 @@ public partial class AppWindowPage : ControlsPageBase
         }
     }
 
-    private void ColorPickerButton1_FlyoutConfirmed(ColorPickerButton sender, ColorButtonColorChangedEventArgs args)
+    private void HandleColorPicker1ColorChanged(object sender, ColorChangedEventArgs args)
     {
         var tl = TopLevel.GetTopLevel(this);
-
-        if (tl is AppWindow aw && args.NewColor.HasValue)
+        if (tl is AppWindow aw)
         {
-            aw.PlatformFeatures.SetWindowBorderColor(args.NewColor.Value);
+            aw.PlatformFeatures.SetWindowBorderColor(args.NewColor);
         }
     }
 

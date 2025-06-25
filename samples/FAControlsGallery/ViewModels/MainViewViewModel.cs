@@ -202,8 +202,6 @@ public class NavigationFactory : INavigationPageFactory
         { "CommandBar", () => new CommandBarPage() },
         { "CommandBarFlyout", () => new CommandBarFlyoutPage() },
         { "XamlUICommand", () => new XamlUICommandPage() },
-        { "FAColorPicker", () => new ColorPickerPage() },
-        { "ColorPickerButton", () => new ColorPickerButtonPage() },
         { "InfoBar", () => new InfoBarPage() },
         { "InfoBadge", () => new InfoBadgePage() },
         { "SettingsExpander", () => new SettingsExpanderPage() },

@@ -229,14 +229,8 @@
                                            VerticalAlignment="Center"
                                            DockPanel.Dock="Left" />
 
-                                <ui:ColorPickerButton Color="{Binding CustomAccentColor}"
-                                                      IsMoreButtonVisible="True"
-                                                      UseSpectrum="True"
-                                                      UseColorWheel="False"
-                                                      UseColorTriangle="False"
-                                                      UseColorPalette="False"
-                                                      IsCompact="True" ShowAcceptDismissButtons="True"
-                                                      DockPanel.Dock="Right"/>
+                                <ColorPicker Color="{Binding CustomAccentColor}"
+                                             DockPanel.Dock="Right" />
                             </DockPanel>
                         </StackPanel>
                     </ui:SettingsExpanderItem.Footer>
