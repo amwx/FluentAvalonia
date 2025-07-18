@@ -154,7 +154,7 @@
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="RadioButton"
-                              TargetType="RepeatButton"
+                              TargetType="RadioButton"
                               EnableShowDocsLink="True"
                               EnableShowDefinitionLink="True">
             <WrapPanel>
