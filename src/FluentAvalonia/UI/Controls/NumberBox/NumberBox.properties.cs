@@ -123,7 +123,7 @@ public partial class NumberBox
     /// Defines the <see cref="SpinButtonPlacementMode"/> property
     /// </summary>
     public static readonly StyledProperty<NumberBoxSpinButtonPlacementMode> SpinButtonPlacementModeProperty =
-        AvaloniaProperty.Register<NumberBox, NumberBoxSpinButtonPlacementMode>(nameof(SpinButtonPlacementMode), 
+        AvaloniaProperty.Register<NumberBox, NumberBoxSpinButtonPlacementMode>(nameof(SpinButtonPlacementMode),
             NumberBoxSpinButtonPlacementMode.Hidden);
 
     /// <summary>
@@ -152,7 +152,20 @@ public partial class NumberBox
          RangeBase.ValueProperty.AddOwner<NumberBox>(
              new StyledPropertyMetadata<double>(
                  enableDataValidation: true,
-                 coerce: (ao, d1) => ((NumberBox)ao).CoerceValueToRange(d1)));
+                 coerce: (ao, d1) =>
+                 {
+                     var nb = ao as NumberBox;
+                     var ret = nb.CoerceValueToRange(d1);
+
+                     // If we had to coerce and the coerced value is the same
+                     // as the current value, the text won't get updated and will
+                     // remain the invalid value, force set, see GH#670
+                     if (ret == nb.Value)
+                     {
+                         nb.UpdateTextToValue();
+                     }
+                     return ret;
+                 }));
 
     //Skip InputScope
 
