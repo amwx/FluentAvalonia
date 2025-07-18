@@ -33,7 +33,7 @@
                                 MinHeight="{DynamicResource ContentDialogMinHeight}"
                                 MaxHeight="{DynamicResource ContentDialogMaxHeight}"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center" Margin="100"
+                                VerticalAlignment="Center"
                                 Effect="drop-shadow(0 8 32 #66000000)"
                                 BackgroundSizing="{TemplateBinding BackgroundSizing}">
                             <!-- Even in WinUI, shadow is always black regardless of light/dark mode -->
