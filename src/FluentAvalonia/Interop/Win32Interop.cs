@@ -40,6 +40,12 @@ internal static unsafe partial class Win32Interop
     [DllImport(s_user32, SetLastError = true)]
     public static extern LRESULT CallWindowProcW(nint lpPrevWndProc, HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern uint GetDpiForWindow(HWND hwnd);
+    
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr SendMessage(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam);
+
 
     [DllImport(s_user32, SetLastError = true)]
     public static extern BOOL PostMessage(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
@@ -225,6 +231,7 @@ internal static unsafe partial class Win32Interop
     public const int WM_SETTINGCHANGE = 0x001A; // Also WM_WININICHANGE
     public const int WM_SYSCOLORCHANGE = 0x0015;
     public const int WM_DESTROY = 0x0002;
+    public const int WM_SHOWWINDOW = 0x0018;
 
     //SC
     public const int SC_CLOSE = 0xF060;

@@ -77,6 +77,14 @@ internal unsafe class Win32WindowManager
     {
         switch (msg)
         {
+            case WM_SHOWWINDOW:
+                if ((WPARAM)wParam != 0 && !_hasCheckedDpi)
+                {
+                    _hasCheckedDpi = true;
+                    CheckAndCorrectDpi();
+                }
+                break;
+            
             case WM_ACTIVATE:
                 EnsureExtended();
                 break;
@@ -150,6 +158,26 @@ internal unsafe class Win32WindowManager
 
         return CallWindowProcW(_oldWndProc, hWnd, msg, wParam, lParam);
     }
+    
+    private void CheckAndCorrectDpi()
+    {
+        var realDpi = GetDpiForWindow(Hwnd);
+        var avaloniaDpi = (uint)(_window.RenderScaling * 96.0);
+
+        if (realDpi == avaloniaDpi) return;
+    
+        WPARAM wParam = (realDpi << 16) | realDpi;
+
+        unsafe
+        {
+            RECT suggestedRect;
+            GetWindowRect(Hwnd, &suggestedRect);
+
+            SendMessage(Hwnd, 0x02E0, wParam, (IntPtr)(&suggestedRect));
+        }
+    }
+
+    private bool _hasCheckedDpi;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private double GetScaling() =>
