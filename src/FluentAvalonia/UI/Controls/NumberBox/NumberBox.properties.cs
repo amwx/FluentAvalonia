@@ -99,14 +99,6 @@ public partial class NumberBox
     public static readonly StyledProperty<string> PlaceholderTextProperty =
         TextBox.WatermarkProperty.AddOwner<NumberBox>();
 
-    //Skip PreventKeyboardDisplayOnProgrammaticFocus
-
-    /// <summary>
-    /// Defines the <see cref="SelectionFlyout"/> property
-    /// </summary>
-    public static readonly StyledProperty<FlyoutBase> SelectionFlyoutProperty =
-        AvaloniaProperty.Register<NumberBox, FlyoutBase>(nameof(SelectionFlyout));
-
     /// <summary>
     /// Defines the <see cref="SelectionHighlightColor"/> property
     /// </summary>
@@ -132,12 +124,6 @@ public partial class NumberBox
     public static readonly DirectProperty<NumberBox, string> TextProperty =
         AvaloniaProperty.RegisterDirect<NumberBox, string>(nameof(Text),
             x => x.Text, (x, v) => x.Text = v, defaultBindingMode: BindingMode.TwoWay);
-
-    /// <summary>
-    /// Defines the <see cref="TextReadingOrder"/> property
-    /// </summary>
-    public static readonly StyledProperty<TextReadingOrder> TextReadingOrderProperty =
-        AvaloniaProperty.Register<NumberBox, TextReadingOrder>(nameof(TextReadingOrder));
 
     /// <summary>
     /// Defines the <see cref="NumberBoxValidationMode"/> property
@@ -291,17 +277,6 @@ public partial class NumberBox
     }
 
     /// <summary>
-    /// Gets or sets the flyout that is shown when text is selected, or null if no flyout is shown.
-    /// NOTE: This property is not implemented
-    /// </summary>
-    [NotImplemented]
-    public FlyoutBase SelectionFlyout
-    {
-        get => GetValue(SelectionFlyoutProperty);
-        set => SetValue(SelectionFlyoutProperty, value);
-    }
-
-    /// <summary>
     /// Gets or sets the brush used to highlight the selected text.
     /// </summary>
     public IBrush SelectionHighlightColor
@@ -343,17 +318,6 @@ public partial class NumberBox
                 UpdateValueToText();
             }
         }
-    }
-
-    /// <summary>
-    /// Gets or sets a value that indicates how the reading order is determined for the NumberBox.
-    /// NOTE This property is not implemented
-    /// </summary>
-    [NotImplemented]
-    public TextReadingOrder TextReadingOrder
-    {
-        get => GetValue(TextReadingOrderProperty);
-        set => SetValue(TextReadingOrderProperty, value);
     }
 
     /// <summary>
