@@ -168,6 +168,12 @@ public partial class NumberBox
         AvaloniaProperty.Register<NumberBox, string>(nameof(SimpleNumberFormat));
 
     /// <summary>
+    /// Defines the <see cref="InnerLeftContent"/> property
+    /// </summary>
+    public static readonly StyledProperty<object> InnerLeftContentProperty =
+        TextBox.InnerLeftContentProperty.AddOwner<NumberBox>();
+
+    /// <summary>
     /// Toggles whether the control will accept and evaluate a basic formulaic expression entered as input.
     /// </summary>
     public bool AcceptsExpression
@@ -345,6 +351,15 @@ public partial class NumberBox
     {
         get => GetValue(TextAlignmentProperty);
         set => SetValue(TextAlignmentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the inner left content of the TextBox within the NumberBox
+    /// </summary>
+    public object InnerLeftContent
+    {
+        get => GetValue(InnerLeftContentProperty);
+        set => SetValue(InnerLeftContentProperty, value);
     }
 
     /// <summary>

@@ -8,11 +8,25 @@
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Hidden" Minimum="0" Maximum="100" Value="10" />
-                <ui:NumberBox Width="150" PlaceholderText="Enter Number" />            
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number" />
+
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number">
+                    <ui:NumberBox.InnerLeftContent>
+                        <TextBlock Text="Hi" />
+                    </ui:NumberBox.InnerLeftContent>
+                </ui:NumberBox>
+
                 <Rectangle Height="1" Fill="Black" Margin="8" />
                 <ui:NumberBox Width="150" PlaceholderText="Enter Number"
                               SpinButtonPlacementMode="Inline"
                               Theme="{DynamicResource CompactNumberBoxStyle}"/>
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number"
+                              SpinButtonPlacementMode="Inline"
+                              Theme="{DynamicResource CompactNumberBoxStyle}">
+                    <ui:NumberBox.InnerLeftContent>
+                        <TextBlock Text="Hi" />
+                    </ui:NumberBox.InnerLeftContent>
+                </ui:NumberBox>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -184,7 +198,8 @@
                                  TextAlignment="{TemplateBinding TextAlignment}"
                                  Classes="clearButton"
                                  Theme="{StaticResource NumberBoxTextBoxStyle}"
-                                 CornerRadius="{TemplateBinding CornerRadius}"/>
+                                 CornerRadius="{TemplateBinding CornerRadius}"
+                                 InnerLeftContent="{TemplateBinding InnerLeftContent}"/>
 
                         <Popup Name="UpDownPopup" Focusable="False"
                                WindowManagerAddShadowHint="False"
@@ -414,7 +429,8 @@
                                  TextAlignment="{TemplateBinding TextAlignment}"
                                  Classes="clearButton"
                                  Theme="{StaticResource CompactNumberBoxTextBoxStyle}"
-                                 CornerRadius="{TemplateBinding CornerRadius}"/>
+                                 CornerRadius="{TemplateBinding CornerRadius}"
+                                 InnerLeftContent="{TemplateBinding InnerLeftContent}"/>
 
                         <Popup Name="UpDownPopup" Focusable="False"
                                WindowManagerAddShadowHint="False"
