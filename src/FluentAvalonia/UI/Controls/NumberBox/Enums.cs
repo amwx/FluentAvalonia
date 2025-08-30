@@ -17,21 +17,6 @@ public enum NumberBoxValidationMode
 }
 
 /// <summary>
-/// Provides a value for TextReadingOrder properties.
-/// </summary>
-/// <remarks>
-/// This enum is currently unused, see 
-/// https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.textreadingorder?view=winui-3.0
-/// for more
-/// </remarks>
-public enum TextReadingOrder
-{
-    Default = 0,
-    UseFlowDirection = 0,
-    DetectFromContent
-}
-
-/// <summary>
 /// Defines values that specify how the spin buttons used to increment or decrement 
 /// the Value of a NumberBox are displayed.
 /// </summary>

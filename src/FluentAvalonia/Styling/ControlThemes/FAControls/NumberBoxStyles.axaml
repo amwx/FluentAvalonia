@@ -9,6 +9,24 @@
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Hidden" Minimum="0" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" PlaceholderText="Enter Number" />
+
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number">
+                    <ui:NumberBox.InnerLeftContent>
+                        <TextBlock Text="Hi" />
+                    </ui:NumberBox.InnerLeftContent>
+                </ui:NumberBox>
+
+                <Rectangle Height="1" Fill="Black" Margin="8" />
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number"
+                              SpinButtonPlacementMode="Inline"
+                              Theme="{DynamicResource CompactNumberBoxStyle}"/>
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number"
+                              SpinButtonPlacementMode="Inline"
+                              Theme="{DynamicResource CompactNumberBoxStyle}">
+                    <ui:NumberBox.InnerLeftContent>
+                        <TextBlock Text="Hi" />
+                    </ui:NumberBox.InnerLeftContent>
+                </ui:NumberBox>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -180,7 +198,8 @@
                                  TextAlignment="{TemplateBinding TextAlignment}"
                                  Classes="clearButton"
                                  Theme="{StaticResource NumberBoxTextBoxStyle}"
-                                 CornerRadius="{TemplateBinding CornerRadius}"/>
+                                 CornerRadius="{TemplateBinding CornerRadius}"
+                                 InnerLeftContent="{TemplateBinding InnerLeftContent}"/>
 
                         <Popup Name="UpDownPopup" Focusable="False"
                                WindowManagerAddShadowHint="False"
@@ -243,6 +262,241 @@
                                       Theme="{StaticResource NumberBoxSpinButtonStyle}"
                                       Margin="0 4 4 4"
                                       IsVisible="False"/>
+
+                        <ContentPresenter Name="DescriptionPresenter"
+                                          Grid.Row="2"
+                                          Grid.ColumnSpan="3"
+                                          Content="{TemplateBinding Description}"
+                                          Foreground="{DynamicResource SystemControlDescriptionTextForegroundBrush}"/>
+                    </Grid>
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:disabled /template/ ContentPresenter#HeaderPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource TextControlHeaderForegroundDisabled}" />
+        </Style>
+
+        <Style Selector="^:spinvisible">
+            <Style Selector="^ /template/ RepeatButton#UpSpinButton">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ RepeatButton#DownSpinButton">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+            <Style Selector="^ /template/ Border#InputEater">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:updisabled">
+            <Style Selector="^ /template/ RepeatButton#UpSpinButton">
+                <Setter Property="IsEnabled" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ RepeatButton#PopupUpSpinButton">
+                <Setter Property="IsEnabled" Value="False" />
+            </Style>
+        </Style>
+        <Style Selector="^:downdisabled">
+            <Style Selector="^ /template/ RepeatButton#DownSpinButton">
+                <Setter Property="IsEnabled" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ RepeatButton#PopupDownSpinButton">
+                <Setter Property="IsEnabled" Value="False" />
+            </Style>
+        </Style>
+    </ControlTheme>
+
+
+    <!-- Compact NumberBox -->
+    <ControlTheme TargetType="TextBox"
+                  x:Key="CompactNumberBoxTextBoxStyle"
+                  BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border Name="PART_BorderElement"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            MinWidth="{TemplateBinding MinWidth}"
+                            MinHeight="{TemplateBinding MinHeight}"
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+
+                    <Border Margin="{TemplateBinding BorderThickness}">
+                        <Grid ColumnDefinitions="Auto,*,Auto" >
+                            <ContentPresenter Grid.Column="0"
+                                              Grid.ColumnSpan="1"
+                                              Content="{TemplateBinding InnerLeftContent}"/>
+                            <DockPanel x:Name="PART_InnerDockPanel"
+                                       Grid.Column="1"
+                                       Grid.ColumnSpan="1"
+                                       Margin="{TemplateBinding Padding}">
+                                <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                              VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
+                                    <Panel>
+                                        <TextBlock Name="PART_Watermark"
+                                                   Foreground="{DynamicResource TextControlPlaceholderForeground}"
+                                                   Text="{TemplateBinding Watermark}"
+                                                   TextAlignment="{TemplateBinding TextAlignment}"
+                                                   TextWrapping="{TemplateBinding TextWrapping}"
+                                                   IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   IsHitTestVisible="False"/>
+                                        <TextPresenter Name="PART_TextPresenter"
+                                                       Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                       CaretIndex="{TemplateBinding CaretIndex}"
+                                                       SelectionStart="{TemplateBinding SelectionStart}"
+                                                       SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                       TextAlignment="{TemplateBinding TextAlignment}"
+                                                       TextWrapping="{TemplateBinding TextWrapping}"
+                                                       PasswordChar="{TemplateBinding PasswordChar}"
+                                                       RevealPassword="{TemplateBinding RevealPassword}"
+                                                       SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                       SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                       CaretBrush="{TemplateBinding CaretBrush}"
+                                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Panel>
+                                </ScrollViewer>
+                            </DockPanel>
+                            <ContentPresenter Content="{TemplateBinding InnerRightContent}"
+                                              Name="InnerRightContent"
+                                              Grid.Column="2" Grid.ColumnSpan="1"/>
+                        </Grid>
+                    </Border>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^.clearButton[AcceptsReturn=False][IsReadOnly=False]:focus:not(TextBox:empty)">
+            <Setter Property="InnerRightContent">
+                <Template>
+                    <Button Theme="{StaticResource TextBoxDeleteButtonStyle}"
+                            Command="{Binding $parent[TextBox].Clear}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource ControlCornerRadius}"
+                            Padding="{StaticResource HelperButtonThemePadding}"
+                            IsTabStop="False"
+                            Focusable="False"
+                            FontSize="{TemplateBinding FontSize}"
+                            Width="30" Background="Red"
+                            VerticalAlignment="Stretch" />
+                </Template>
+            </Setter>
+        </Style>
+
+        <Style Selector="^ /template/ ContentPresenter#InnerRightContent">
+            <Setter Property="Margin" Value="0 0 24 0" />
+        </Style>
+    </ControlTheme>
+    
+    <ControlTheme x:Key="CompactNumberBoxStyle" 
+                  TargetType="ui:NumberBox">
+        <Setter Property="SelectionHighlightColor" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="SpinButtonPlacementMode" Value="Inline" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DataValidationErrors>
+                    <Grid Name="Root" RowDefinitions="Auto,*,Auto"
+                          ColumnDefinitions="*,Auto,Auto">
+
+                        <ContentPresenter Name="HeaderContentPresenter"
+                                          Grid.ColumnSpan="3"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          FontWeight="Normal"
+                                          Margin="{DynamicResource TextBoxTopHeaderMargin}"
+                                          FontSize="{TemplateBinding FontSize}"
+                                          FontFamily="{TemplateBinding FontFamily}"
+                                          VerticalAlignment="Top"
+                                          IsVisible="{TemplateBinding Header, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+
+                        <TextBox Name="InputBox"
+                                 Grid.Row="1"
+                                 Grid.ColumnSpan="3"
+                                 Foreground="{TemplateBinding Foreground}"
+                                 Watermark="{TemplateBinding PlaceholderText}"
+                                 DataValidationErrors.Errors="{TemplateBinding DataValidationErrors.Errors}"
+                                 SelectionBrush="{TemplateBinding SelectionHighlightColor}"
+                                 FontSize="{TemplateBinding FontSize}"
+                                 FontWeight="{TemplateBinding FontWeight}"
+                                 FontFamily="{TemplateBinding FontFamily}"
+                                 TextAlignment="{TemplateBinding TextAlignment}"
+                                 Classes="clearButton"
+                                 Theme="{StaticResource CompactNumberBoxTextBoxStyle}"
+                                 CornerRadius="{TemplateBinding CornerRadius}"
+                                 InnerLeftContent="{TemplateBinding InnerLeftContent}"/>
+
+                        <Popup Name="UpDownPopup" Focusable="False"
+                               WindowManagerAddShadowHint="False"
+                               IsLightDismissEnabled="True"
+                               Placement="AnchorAndGravity"
+                               PlacementAnchor="Right"
+                               PlacementGravity="Bottom"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               VerticalOffset="{DynamicResource NumberBoxPopupVerticalOffset}"
+                               HorizontalOffset="{DynamicResource NumberBoxPopupHorizontalOffset}"
+                               HorizontalAlignment="Left">
+
+                            <Border Name="PopupContentRoot"
+                                    Background="{DynamicResource NumberBoxPopupBackground}"
+                                    BorderBrush="{DynamicResource NumberBoxPopupBorderBrush}"
+                                    BorderThickness="{DynamicResource NumberBoxPopupBorderThickness}"
+                                    CornerRadius="{DynamicResource OverlayCornerRadius}"
+                                    Padding="6">
+
+                                <Grid RowDefinitions="*,*">
+                                    <RepeatButton Name="PopupUpSpinButton" Focusable="False"
+                                                  FontSize="18"
+                                                  Theme="{StaticResource NumberBoxPopupButton}"
+                                                  Content="{StaticResource ChevronUpGlyph}" />
+
+                                    <RepeatButton Name="PopupDownSpinButton" Focusable="False"
+                                                FontSize="18"
+                                                Theme="{StaticResource NumberBoxPopupButton}"
+                                                Grid.Row="1"
+                                                Content="{StaticResource ChevronDownGlyph}" />
+                                </Grid>
+                            </Border>
+                        </Popup>
+
+                        <!-- Prevents hover state of text box if buttons are disabled 
+                        WinUI uses a button b/c reasons, simple border works just fine -->
+                        <Border Background="Transparent"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Margin="4 0 0 0"
+                                Name="InputEater"
+                                IsVisible="False"/>
+
+                        <StackPanel Grid.Column="1"
+                                    Grid.Row="1"
+                                    Margin="4 0 2 0"
+                                    Spacing="1"
+                                    VerticalAlignment="Center">
+                            <RepeatButton Name="UpSpinButton"
+                                          FontSize="12"
+                                          Theme="{StaticResource NumberBoxSpinButtonStyle}"
+                                          Content="{StaticResource ChevronUpGlyph}"
+                                          Margin="0"
+                                          IsVisible="False"
+                                          MinWidth="24"/>
+
+                            <RepeatButton Name="DownSpinButton"
+                                          FontSize="12"
+                                          Content="{StaticResource ChevronDownGlyph}"
+                                          Theme="{StaticResource NumberBoxSpinButtonStyle}"
+                                          Margin="0"
+                                          IsVisible="False"
+                                          MinWidth="24"/>
+                        </StackPanel>
 
                         <ContentPresenter Name="DescriptionPresenter"
                                           Grid.Row="2"
