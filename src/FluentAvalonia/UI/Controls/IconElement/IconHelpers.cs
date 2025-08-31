@@ -5,9 +5,9 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal static class IconHelpers
+public static class IconHelpers
 {
-    public static FontIcon CreateFontIconFromFontIconSource(FontIconSource fis)
+    internal static FontIcon CreateFontIconFromFontIconSource(FontIconSource fis)
     {
         var fi = new FontIcon
         {
@@ -32,7 +32,7 @@ internal static class IconHelpers
         return fi;
     }
 
-    public static FAPathIcon CreatePathIconFromPathIconSource(PathIconSource pis)
+    internal static FAPathIcon CreatePathIconFromPathIconSource(PathIconSource pis)
     {
         var pi = new FAPathIcon
         {
@@ -55,7 +55,7 @@ internal static class IconHelpers
         return pi;
     }
 
-    public static SymbolIcon CreateSymbolIconFromSymbolIconSource(SymbolIconSource sis)
+    internal static SymbolIcon CreateSymbolIconFromSymbolIconSource(SymbolIconSource sis)
     {
         var si = new SymbolIcon
         {
@@ -77,7 +77,7 @@ internal static class IconHelpers
         return si;
     }
 
-    public static BitmapIcon CreateBitmapIconFromBitmapIconSource(BitmapIconSource bis)
+    internal static BitmapIcon CreateBitmapIconFromBitmapIconSource(BitmapIconSource bis)
     {
         // This one works slightly differently to avoid holding multiple instances of the same
         // bitmap in memory (since IconSources are meant for sharing). We don't alter the properties, 
@@ -99,7 +99,7 @@ internal static class IconHelpers
         return bi;
     }
 
-    public static ImageIcon CreateImageIconFromImageIconSource(ImageIconSource iis)
+    internal static ImageIcon CreateImageIconFromImageIconSource(ImageIconSource iis)
     {
         var ii = new ImageIcon
         {
@@ -120,7 +120,7 @@ internal static class IconHelpers
         return ii;
     }
 
-    public static FAIconElement CreateFromUnknown(IconSource src)
+    internal static FAIconElement CreateFromUnknown(IconSource src)
     {
         if (src is BitmapIconSource bis)
         {
@@ -143,6 +143,32 @@ internal static class IconHelpers
             return CreateImageIconFromImageIconSource(iis);
         }
 
+        if (_customConverters != null)
+        {
+            var type = src.GetType();
+            if (_customConverters.TryGetValue(type, out var value))
+            {
+                return value(src);
+            }
+        }
+
         return null;
     }
+
+    /// <summary>
+    /// Registers a <see cref="FAIconElement"/> creation factory for custom <see cref="IconSource"/> types
+    /// </summary>
+    /// <remarks>
+    /// When creating a custom IconSource, you will also need to create a matching FAIconElement type that
+    /// will actually be used for display. Just as the built-in icons do, you will need to handle the mapping
+    /// between the custom IconSource and related FAIconElement.
+    /// </remarks>
+    public static void RegisterCustomIconSourceFactory(Type typeOfIconSource, Func<IconSource, FAIconElement> factory)
+    {
+        _customConverters ??= new Dictionary<Type, Func<IconSource, FAIconElement>>();
+
+        _customConverters.Add(typeOfIconSource, factory);
+    }
+
+    private static Dictionary<Type, Func<IconSource, FAIconElement>> _customConverters;
 }
