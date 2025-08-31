@@ -155,6 +155,14 @@ public static class IconHelpers
         return null;
     }
 
+    /// <summary>
+    /// Registers a <see cref="FAIconElement"/> creation factory for custom <see cref="IconSource"/> types
+    /// </summary>
+    /// <remarks>
+    /// When creating a custom IconSource, you will also need to create a matching FAIconElement type that
+    /// will actually be used for display. Just as the built-in icons do, you will need to handle the mapping
+    /// between the custom IconSource and related FAIconElement.
+    /// </remarks>
     public static void RegisterCustomIconSourceFactory(Type typeOfIconSource, Func<IconSource, FAIconElement> factory)
     {
         _customConverters ??= new Dictionary<Type, Func<IconSource, FAIconElement>>();
