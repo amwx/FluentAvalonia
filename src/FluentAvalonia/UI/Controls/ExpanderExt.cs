@@ -49,7 +49,7 @@ public sealed class ExpanderExt : AvaloniaObject
         if (expander == null)
             return;
 
-        if (val.Equals(s_Fluentv2, StringComparison.OrdinalIgnoreCase))
+        if (val != null && val.Equals(s_Fluentv2, StringComparison.OrdinalIgnoreCase))
         {
             expander.SetValue(ExpanderAnimationInfoProperty, new ExpanderInfo(expander));
         }
@@ -161,8 +161,20 @@ public sealed class ExpanderExt : AvaloniaObject
         private async void RunExpandDownUpAnimation(bool down)
         {
             _expanderContent.SetCurrentValue(Visual.IsVisibleProperty, true);
-            _expanderContent.Measure(Size.Infinity);
-            _contentSize = _expanderContent.DesiredSize;
+
+            if (_expander.Parent is SettingsExpander se && se.Presenter != null)
+            {
+                // SettingsExpander does not use Virtualization, so it's safe here to use
+                // Infinity to measure
+                se.Presenter.Measure(Size.Infinity);
+                _contentSize = se.Presenter.DesiredSize;
+            }
+            else
+            {
+                _expanderContent.Measure(Size.Infinity);
+                _contentSize = _expanderContent.DesiredSize;
+            }
+                
             var startY = down ? -_contentSize.Height : _contentSize.Height;
             var ani = new Animation
             {
