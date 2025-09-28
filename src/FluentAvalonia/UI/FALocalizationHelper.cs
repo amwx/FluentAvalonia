@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
 using Avalonia.Platform;
 
 namespace FluentAvalonia.UI;
@@ -28,10 +29,10 @@ public partial class FALocalizationHelper
     public static FALocalizationHelper Instance { get; }
 
     /// <summary>
-    /// Gets a string resource by the specified name using the CurrentCulture
+    /// Gets a string resource by the specified name using the CurrentUICulture
     /// </summary>
     public string GetLocalizedStringResource(string resName) =>
-        GetLocalizedStringResource(CultureInfo.CurrentCulture, resName);
+        GetLocalizedStringResource(CultureInfo.CurrentUICulture, resName);
 
     /// <summary>
     /// Gets a string resource by the specified name and using the specified culture
@@ -42,7 +43,7 @@ public partial class FALocalizationHelper
     public string GetLocalizedStringResource(CultureInfo ci, string resName)
     {
         string cultureName;
-    
+
         // If running in globalization-invariant mode, always use "en-US" fallback
         if (ci == CultureInfo.InvariantCulture)
         {
@@ -52,11 +53,11 @@ public partial class FALocalizationHelper
         {
             cultureName = ci.Name;
         }
-    
+
         if (_mappings.ContainsKey(resName))
         {
             var cultureMap = _mappings[resName];
-    
+
             if (cultureMap.ContainsKey(cultureName))
             {
                 return cultureMap[cultureName];
@@ -66,7 +67,7 @@ public partial class FALocalizationHelper
                 return cultureMap[s_enUS];
             }
         }
-    
+
         return string.Empty;
     }
 
