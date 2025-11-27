@@ -113,7 +113,7 @@ internal static class NumberBoxParser
             }
             else if (token.Type == MathTokenType.Operator)
             {
-                while (!(operatorTokens.Count == 0))
+                while (operatorTokens.Count != 0)
                 {
                     var top = operatorTokens.Peek();
                     if (top.Type != MathTokenType.Parenthesis && (GetPrecedenceValue(top.Char) >= GetPrecedenceValue(token.Char)))
@@ -136,7 +136,7 @@ internal static class NumberBoxParser
                 }
                 else
                 {
-                    while (!(operatorTokens.Count == 0) && operatorTokens.Peek().Char != '(')
+                    while (operatorTokens.Count != 0 && operatorTokens.Peek().Char != '(')
                     {
                         // Pop operators onto output until we reach a left paren
                         postFixTokens.Add(operatorTokens.Peek());
@@ -156,7 +156,7 @@ internal static class NumberBoxParser
         }
 
         // Pop all remaining operators
-        while (!(operatorTokens.Count == 0))
+        while (operatorTokens.Count != 0)
         {
             if (operatorTokens.Peek().Type == MathTokenType.Parenthesis)
             {
@@ -245,7 +245,7 @@ internal static class NumberBoxParser
         {
             // Rearrange to postfix notation
             var postfixTokens = ConvertInfixToPostfix(tokens);
-            if (postfixTokens.Count > 0)
+            if (postfixTokens?.Count > 0)
             {
                 // Compute expression
                 return ComputePostfixExpression(postfixTokens);
