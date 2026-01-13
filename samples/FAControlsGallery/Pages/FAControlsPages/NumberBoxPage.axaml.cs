@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Controls;
 
@@ -25,5 +26,11 @@ public partial class NumberBoxPage : ControlsPageBase
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+    private void FocusButtonOnClick(object sender, RoutedEventArgs e)
+    {
+        var numBoxToFocus = this.FindControl<NumberBox>("NumBoxToFocus");
+        numBoxToFocus?.Focus();
     }
 }
