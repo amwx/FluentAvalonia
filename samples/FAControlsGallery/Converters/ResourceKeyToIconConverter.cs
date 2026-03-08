@@ -7,7 +7,7 @@ public class ResourceKeyToIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (Application.Current.TryGetResource(value, null, out var icon))
+        if (value != null && Application.Current.TryGetResource(value, null, out var icon))
         {
             return icon;
         }
