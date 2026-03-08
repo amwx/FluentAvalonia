@@ -550,7 +550,7 @@ public class ContentDialogTests : IDisposable
     }
 
     [AvaloniaFact(Timeout = 5000)]
-    public void UsingEnterKeyToLaunchDialogDoesNotImmediatelyCloseDialogIfDefaultButtonIsSet()
+    public async void UsingEnterKeyToLaunchDialogDoesNotImmediatelyCloseDialogIfDefaultButtonIsSet()
     {
 
         var mainButton = new Button { Content = "hello" };
