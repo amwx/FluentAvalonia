@@ -460,8 +460,8 @@ public class ContentDialogTests : IDisposable
 
         dlg.Opened += (_, __) =>
         {
-            _window.KeyPress(Key.Enter, RawInputModifiers.None);
-            _window.KeyRelease(Key.Enter, RawInputModifiers.None);
+            _window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+            _window.KeyReleaseQwerty(PhysicalKey.Enter, RawInputModifiers.None);
         };
 
         var res = await dlg.ShowAsync(_window);
@@ -482,8 +482,8 @@ public class ContentDialogTests : IDisposable
 
         dlg.Opened += (_, __) =>
         {
-            _window.KeyPress(Key.Escape, RawInputModifiers.None);
-            _window.KeyRelease(Key.Escape, RawInputModifiers.None);
+            _window.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+            _window.KeyReleaseQwerty(PhysicalKey.Escape, RawInputModifiers.None);
         };
 
         var res = await dlg.ShowAsync(_window);
@@ -508,8 +508,8 @@ public class ContentDialogTests : IDisposable
         {
             tb.Focus();
 
-            _window.KeyPress(Key.Enter, RawInputModifiers.None);
-            _window.KeyRelease(Key.Enter, RawInputModifiers.None);
+            _window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+            _window.KeyReleaseQwerty(PhysicalKey.Enter, RawInputModifiers.None);
         };
 
         var res = await dlg.ShowAsync(_window);
@@ -539,8 +539,8 @@ public class ContentDialogTests : IDisposable
         {
             tb.Focus();
 
-            _window.KeyPress(Key.Enter, RawInputModifiers.None);
-            _window.KeyRelease(Key.Enter, RawInputModifiers.None);
+            _window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+            _window.KeyReleaseQwerty(PhysicalKey.Enter, RawInputModifiers.None);
             dlg.Hide(ContentDialogResult.None);
         };
 
@@ -583,8 +583,8 @@ public class ContentDialogTests : IDisposable
 
         mainButton.Focus();
 
-        _window.KeyPress(Key.Enter, RawInputModifiers.None);
-        _window.KeyRelease(Key.Enter, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+        _window.KeyReleaseQwerty(PhysicalKey.Enter, RawInputModifiers.None);
 
         _window.Content = null;
     }

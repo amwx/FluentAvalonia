@@ -188,6 +188,7 @@ public class RangeSliderTests : IDisposable
         rs.RangeEnd = 100;
 
         downPoint = TransformToHost(minThumb);
+
         delta = new Point(-rs.DragWidth / 2, 0);
         _window.MouseDown(downPoint, Avalonia.Input.MouseButton.Left);
         _window.MouseMove(downPoint + delta);
@@ -211,10 +212,10 @@ public class RangeSliderTests : IDisposable
 
         minThumb.Focus();
 
-        _window.KeyPress(Key.Right, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
         Assert.Equal(51, rs.RangeStart);
 
-        _window.KeyPress(Key.Left, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowLeft, RawInputModifiers.None);
         Assert.Equal(50, rs.RangeStart);
     }
 
@@ -231,10 +232,10 @@ public class RangeSliderTests : IDisposable
 
         maxThumb.Focus();
 
-        _window.KeyPress(Key.Right, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
         Assert.Equal(51, rs.RangeEnd);
 
-        _window.KeyPress(Key.Left, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowLeft, RawInputModifiers.None);
         Assert.Equal(50, rs.RangeEnd);
     }
 
@@ -281,9 +282,9 @@ public class RangeSliderTests : IDisposable
 
         minThumb.Focus();
 
-        _window.KeyPress(Key.Right, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
         Assert.True(ToolTip.GetIsOpen(minThumb));
-        _window.KeyRelease(Key.Right, RawInputModifiers.None);
+        _window.KeyReleaseQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
 
         // Tooltip dismisses automatically after 1 second, hold the thread here to wait for that
         await Task.Delay(2000);
