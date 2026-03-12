@@ -150,6 +150,7 @@ public class RangeSliderTests : IDisposable
 
         //// Reset to zero so math is easier
         rs.RangeStart = 0;
+        rs.UpdateLayout();
 
         downPoint = TransformToHost(minThumb);
         delta = new Point(rs.DragWidth / 2, 0);
@@ -168,16 +169,16 @@ public class RangeSliderTests : IDisposable
         var rs = new RangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
-        var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MaxThumb").First();
+        var maxThumb = rs.GetTemplateChildren().Where(x => x.Name == "MaxThumb").First();
 
         double stepFreq = 5;
         rs.StepFrequency = stepFreq;
 
-        var downPoint = TransformToHost(minThumb);
+        var downPointA = TransformToHost(maxThumb);
         var delta = new Point(-50, 0);
-        _window.MouseDown(downPoint, Avalonia.Input.MouseButton.Left);
-        _window.MouseMove(downPoint + delta);
-        _window.MouseUp(downPoint + delta, Avalonia.Input.MouseButton.Left);
+        _window.MouseDown(downPointA, Avalonia.Input.MouseButton.Left);
+        _window.MouseMove(downPointA + delta);
+        _window.MouseUp(downPointA + delta, Avalonia.Input.MouseButton.Left);
 
         var pxPerStep = rs.DragWidth / 100; // 100 = Maximum - Minimum = 100 - 0
         var expectedNewValue = 100 - Math.Round((-delta.X /*dragAmount*/ / pxPerStep) / stepFreq) * stepFreq;
@@ -186,12 +187,16 @@ public class RangeSliderTests : IDisposable
 
         //// Reset to zero so math is easier
         rs.RangeEnd = 100;
+        rs.UpdateLayout();
 
-        downPoint = TransformToHost(minThumb);
+        var downPointB = TransformToHost(maxThumb);
+
+        Assert.Equal(downPointA, downPointB);
+
         delta = new Point(-rs.DragWidth / 2, 0);
-        _window.MouseDown(downPoint, Avalonia.Input.MouseButton.Left);
-        _window.MouseMove(downPoint + delta);
-        _window.MouseUp(downPoint + delta, Avalonia.Input.MouseButton.Left);
+        _window.MouseDown(downPointB, Avalonia.Input.MouseButton.Left);
+        _window.MouseMove(downPointB + delta);
+        _window.MouseUp(downPointB + delta, Avalonia.Input.MouseButton.Left);
 
         expectedNewValue = 100 - Math.Round((-delta.X /*dragAmount*/ / pxPerStep) / stepFreq) * stepFreq;
 
@@ -211,10 +216,10 @@ public class RangeSliderTests : IDisposable
 
         minThumb.Focus();
 
-        _window.KeyPress(Key.Right, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
         Assert.Equal(51, rs.RangeStart);
 
-        _window.KeyPress(Key.Left, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowLeft, RawInputModifiers.None);
         Assert.Equal(50, rs.RangeStart);
     }
 
@@ -231,10 +236,10 @@ public class RangeSliderTests : IDisposable
 
         maxThumb.Focus();
 
-        _window.KeyPress(Key.Right, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
         Assert.Equal(51, rs.RangeEnd);
 
-        _window.KeyPress(Key.Left, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowLeft, RawInputModifiers.None);
         Assert.Equal(50, rs.RangeEnd);
     }
 
@@ -281,9 +286,9 @@ public class RangeSliderTests : IDisposable
 
         minThumb.Focus();
 
-        _window.KeyPress(Key.Right, RawInputModifiers.None);
+        _window.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
         Assert.True(ToolTip.GetIsOpen(minThumb));
-        _window.KeyRelease(Key.Right, RawInputModifiers.None);
+        _window.KeyReleaseQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
 
         // Tooltip dismisses automatically after 1 second, hold the thread here to wait for that
         await Task.Delay(2000);

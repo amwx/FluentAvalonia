@@ -330,7 +330,7 @@ public class CollectionViewSourceTests
         
         cvs.Filter = TestFunc;
 
-        Assert.Equal(1, cvs.View.Count);
+        Assert.Single(cvs.View);
 
         bool TestFunc(object o)
         {
