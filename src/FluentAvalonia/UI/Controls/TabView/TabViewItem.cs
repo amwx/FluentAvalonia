@@ -78,7 +78,7 @@ public partial class TabViewItem : SelectorItem
 
         base.OnApplyTemplate(e);
 
-        _selectedBackgroundPath = e.NameScope.Find<Path>(s_tpSelectedBackgroundPathName);
+        _selectedBackgroundPath = e.NameScope.Find<Path>(s_selectedBackgroundPathName);
         _selectedBackgroundPath?.SizeChanged += OnSelectedBackgroundPathSizeChanged;
 
         TabSeparator = e.NameScope.Find<Visual>(s_tpTabSeparator);
@@ -88,7 +88,7 @@ public partial class TabViewItem : SelectorItem
         var tabView = Parent as TabView ?? this.FindAncestorOfType<TabView>();
 
         _closeButton = e.NameScope.Get<Button>(s_tpCloseButton);
-
+       
         if (string.IsNullOrEmpty(AutomationProperties.GetName(_closeButton)))
         {
             // TODO: I need to remember how I made my json file and update it to include this
@@ -96,9 +96,12 @@ public partial class TabViewItem : SelectorItem
             //AutomationProperties.SetName(_closeButton, name);
         }
 
-        // WinUI sets a default tooltip here, I'm removing that see OnHeaderChanged for more
+        if (tabView != null)
+        {
+            ToolTip.SetTip(_closeButton, tabView.GetTabCloseButtonTooltipText());
+        }
 
-        _closeButton?.Click += OnCloseButtonClick;
+        _closeButton.Click += OnCloseButtonClick;
 
         OnHeaderChanged();
         OnIconSourceChanged();
@@ -351,14 +354,7 @@ public partial class TabViewItem : SelectorItem
             rightCorner, rightCorner, rightCorner, rightCorner,
             height - (4 + rightCorner));
 
-        var geom = StreamGeometry.Parse(StringBuilderCache.GetStringAndRelease(builder));
-
-        if (!isTop)
-        {
-            geom.Transform = new RotateTransform(180, geom.Bounds.Width * 0.5, geom.Bounds.Height * 0.5);
-        }
-
-        TabViewTemplateSettings.TabGeometry = geom;
+        TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(StringBuilderCache.GetStringAndRelease(builder));
     }
 
     private void OnIsSelectedPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -509,13 +505,32 @@ public partial class TabViewItem : SelectorItem
     {
         _headerContentPresenter?.Content = Header;
 
-        // WinUI sets an automatic ToolTip based on the header here. I am removing this
-        // for a couple of reasons:
-        // 1 - If the header isn't a simple string all we did was .ToString so that
-        //     would just make the tooltip whatever .ToString returns
-        // 2 - I found it showed too easily and got in the way of a lot of things so
-        //     it got really annoying
-        // If you want a tooltip on your TabViewItems - set it yourself :)
+        if (_firstTimeSettingToolTip)
+        {
+            _firstTimeSettingToolTip = false;
+
+            var tip = ToolTip.GetTip(this);
+            if (tip == null)
+            {
+                // App author has not specified a tooltip; use our own
+
+                // WinUI assigns an empty ToolTip here, but since tooltips work differently
+                // we'll just mark this not null
+                _toolTip = string.Empty;
+            }
+        }
+        
+        if (_toolTip != null)
+        {
+            // Update tooltip text to new header text
+            var headerContent = Header;
+
+            if (headerContent is string s)
+            {
+                _toolTip = s;
+                ToolTip.SetTip(this, _toolTip);
+            }
+        }
     }
 
     private void HideLeftAdjacentTabSeparator()
@@ -569,12 +584,6 @@ public partial class TabViewItem : SelectorItem
 
     private void OnSelectedBackgroundPathSizeChanged(object sender, SizeChangedEventArgs e)
     {
-        // This was added upstream in WinUI to avoid a small gap that sometimes appeared underneath the
-        // tabviewitem. I never saw it in FA, but I'll keep this around
-        if (_location == TabViewTabStripLocation.Left || _location == TabViewTabStripLocation.Right)
-            return;
-
-        bool top = _location == TabViewTabStripLocation.Top;
         var path = _selectedBackgroundPath;
 
         var offset = path.Bounds.Y;
@@ -584,7 +593,7 @@ public partial class TabViewItem : SelectorItem
         {
             // Move the SelectedBackgroundPath element down by a fraction of a pixel to avoid a faint gap line
             // between the selected TabViewItem and its content.
-            var tt = new TranslateTransform(0, top ? actualOffset - offset : offset - actualOffset);
+            var tt = new TranslateTransform(0, actualOffset - offset);
             path.RenderTransform = tt;
         }
         else if (path.RenderTransform != null)
@@ -615,7 +624,6 @@ public partial class TabViewItem : SelectorItem
     private bool _firstTimeSettingToolTip = true;
     private FACompositeDisposable _tabDragRevoker;
     private Path _selectedBackgroundPath;
-    private TabViewTabStripLocation _location;
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;
@@ -629,7 +637,16 @@ public partial class TabViewItem : SelectorItem
 
     private const string c_overlayCornerRadiusKey = "OverlayCornerRadius";
     private const int c_targetRectWidthIncrement = 2;
+    private const string s_selectedBackgroundPathName = "SelectedBackgroundPath";
+    private const string s_pcDragging = ":dragging";
 
     private TargetWeakEventSubscriber<TabView, TabViewTabDragStartingEventArgs> _startingDragSub;
     private TargetWeakEventSubscriber<TabView, TabViewTabDragCompletedEventArgs> _completedDragSub;
+}
+
+public class TabViewItemAutomationPeer : ListItemAutomationPeer
+{
+    public TabViewItemAutomationPeer(ContentControl owner) : base(owner)
+    {
+    }
 }

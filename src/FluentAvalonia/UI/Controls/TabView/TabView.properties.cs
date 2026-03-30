@@ -138,6 +138,10 @@ public partial class TabView
         SelectingItemsControl.SelectedItemProperty.AddOwner<TabView>(x => x.SelectedItem,
             (x, v) => x.SelectedItem = v);
 
+    public static readonly StyledProperty<TabViewTabStripLocation> TabStripLocationProperty =
+        AvaloniaProperty.Register<TabView, TabViewTabStripLocation>(nameof(TabStripLocation));
+
+
     /// <summary>
     /// Defines the <see cref="TabStripLocation"/> property
     /// </summary>
@@ -267,9 +271,6 @@ public partial class TabView
         private set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
     }
 
-    /// <summary>
-    /// Gets or sets the TabItems source for this TabView
-    /// </summary>
     public IEnumerable TabItemsSource
     {
         get => GetValue(TabItemsSourceProperty);
@@ -330,6 +331,12 @@ public partial class TabView
     {
         get => _selectedItem;
         set => SetAndRaise(SelectedItemProperty, ref _selectedItem, value);
+    }
+
+    public TabViewTabStripLocation TabStripLocation
+    {
+        get => GetValue(TabStripLocationProperty);
+        set => SetValue(TabStripLocationProperty, value);
     }
 
     /// <summary>
