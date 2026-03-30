@@ -82,9 +82,15 @@ public partial class TabView
     /// <summary>
     /// Defines the <see cref="TabItems"/> property
     /// </summary>
-    public static readonly DirectProperty<TabView, IEnumerable> TabItemsProperty =
-        AvaloniaProperty.RegisterDirect<TabView, IEnumerable>(nameof(TabItems),
-            x => x.TabItems, (x, v) => x.TabItems = v);
+    public static readonly DirectProperty<TabView, IList> TabItemsProperty =
+        AvaloniaProperty.RegisterDirect<TabView, IList>(nameof(TabItems),
+            x => x.TabItems);
+
+    /// <summary>
+    /// Defines the <see cref="TabItemsSource"/> property
+    /// </summary>
+    public static readonly StyledProperty<IEnumerable> TabItemsSourceProperty =
+        AvaloniaProperty.Register<TabView, IEnumerable>(nameof(TabItemsSource));
 
     /// <summary>
     /// Defines the <see cref="TabItemTemplate"/> property
@@ -123,6 +129,10 @@ public partial class TabView
     public static readonly DirectProperty<TabView, object> SelectedItemProperty =
         SelectingItemsControl.SelectedItemProperty.AddOwner<TabView>(x => x.SelectedItem,
             (x, v) => x.SelectedItem = v);
+
+    public static readonly StyledProperty<TabViewTabStripLocation> TabStripLocationProperty =
+        AvaloniaProperty.Register<TabView, TabViewTabStripLocation>(nameof(TabStripLocation));
+
 
     /// <summary>
     /// Gets or sets how the tabs should be sized
@@ -209,10 +219,16 @@ public partial class TabView
     /// Gets or sets the TabItems this TabView displays
     /// </summary>
     [Content]
-    public IEnumerable TabItems
+    public IList TabItems
     {
         get => _tabItems;
-        set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
+        private set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
+    }
+
+    public IEnumerable TabItemsSource
+    {
+        get => GetValue(TabItemsSourceProperty);
+        set => SetValue(TabItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -271,6 +287,12 @@ public partial class TabView
         set => SetAndRaise(SelectedItemProperty, ref _selectedItem, value);
     }
 
+    public TabViewTabStripLocation TabStripLocation
+    {
+        get => GetValue(TabStripLocationProperty);
+        set => SetValue(TabStripLocationProperty, value);
+    }
+
     /// <summary>
     /// Raised when the user attempts to close a Tab via clicking the x-to-close button
     /// </summary>
@@ -320,15 +342,16 @@ public partial class TabView
     public event EventHandler<DragEventArgs> TabStripDrop;
 
 
-    private IEnumerable _tabItems;
+    private IList _tabItems;
     private int _selectedIndex = 0;
     private object _selectedItem;
 
-    private const string s_tpTabContentPresenter = "TabContentPresenter";
+    // Internal for unit test access
+    internal const string s_tpTabContentPresenter = "TabContentPresenter";
     private const string s_tpRightContentPresenter = "RightContentPresenter";
     private const string s_tpTabContainerGrid = "TabContainerGrid";
     private const string s_tpTabListView = "TabListView";
-    private const string s_tpAddButton = "AddButton";
+    internal const string s_tpAddButton = "AddButton";
 
     // Technically these are template parts on the ScrollViewer, but we ref them here
     private const string s_tpScrollDecreaseButton = "ScrollDecreaseButton";

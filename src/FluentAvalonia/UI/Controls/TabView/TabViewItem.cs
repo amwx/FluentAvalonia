@@ -1,10 +1,13 @@
 ﻿using System.Globalization;
 using System.Text;
 using Avalonia;
+using Avalonia.Automation;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Diagnostics;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -13,51 +16,26 @@ using Avalonia.Threading;
 using Avalonia.Utilities;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
+using FluentAvalonia.UI.Controls.Internal;
+using Path = Avalonia.Controls.Shapes.Path;
 
 namespace FluentAvalonia.UI.Controls;
 
-public partial class TabViewItem : ListBoxItem
+public partial class TabViewItem : SelectorItem
 {
     public TabViewItem()
     {
         TabViewTemplateSettings = new TabViewItemTemplateSettings();
 
-        // Use AttachedToVisualTree override for Loaded event
-
-        // Will use OnPropertyChanged for SizeChanged, IsSelectedProperty changed, and Foreground changed
-
-        // ListBoxItem uses the PressedMixin...ugh... which uses tunnel events to set :pressed
-        // The problem is that doesn't respect if you've clicked on another control
-        // So, when we click the close button, the :pressed state is activated too, we don't want that
-        // So we have to undo what the :pressed mixin does
-        // This is the easy solution, since the other involves not deriving from ListBoxItem
-        AddHandler(PointerPressedEvent, (s, e) =>
-        {
-            var hasButton = (e.Source as Visual).GetVisualAncestors()
-                .Where(x => x == _closeButton).Any();
-
-            if (hasButton)
-            {
-                PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
-            }
-        }, RoutingStrategies.Tunnel);
-    }
-
-    static TabViewItem()
-    {
-        FocusableProperty.OverrideDefaultValue<TabViewItem>(true);
+        Loaded += OnLoaded;
+        SizeChanged += OnSizeChanged;
     }
 
     protected internal TabView ParentTabView
     {
         get
         {
-            // AGH Stupid Mac build fails here because
-            // UsE oF uNaSsIgNeD lOcAl VaRiAbLe 'target'
-            // No Mac compiler, its fine, 'target' isn't used without assignment
-
-            TabView target = null;
-            if (_parentTabView?.TryGetTarget(out target) == true)
+            if (_parentTabView?.TryGetTarget(out var target) == true)
                 return target;
 
             return null;
@@ -67,21 +45,15 @@ public partial class TabViewItem : ListBoxItem
 
     public Visual TabSeparator { get; private set; }
 
+    internal bool IsBeingDragged { get; set; }
+
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == BoundsProperty)
-        {
-            OnSizeChanged(change);
-        }
-        else if (change.Property == IsSelectedProperty)
+        if (change.Property == IsSelectedProperty)
         {
             OnIsSelectedPropertyChanged(change);
-        }
-        else if (change.Property == TextElement.ForegroundProperty)
-        {
-            OnForegroundPropertyChanged(change);
         }
         else if (change.Property == HeaderProperty)
         {
@@ -100,27 +72,35 @@ public partial class TabViewItem : ListBoxItem
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _tabDragRevoker?.Dispose();
+        _selectedBackgroundPath?.SizeChanged -= OnSelectedBackgroundPathSizeChanged;
+        _closeButton?.Click -= OnCloseButtonClick;
 
         base.OnApplyTemplate(e);
+
+        _selectedBackgroundPath = e.NameScope.Find<Path>(s_selectedBackgroundPathName);
+        _selectedBackgroundPath?.SizeChanged += OnSelectedBackgroundPathSizeChanged;
 
         TabSeparator = e.NameScope.Find<Visual>(s_tpTabSeparator);
 
         _headerContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
 
-        var tabView = this.FindAncestorOfType<TabView>();
+        var tabView = Parent as TabView ?? this.FindAncestorOfType<TabView>();
 
-        _closeButton = e.NameScope.Find<Button>(s_tpCloseButton);
-        if (_closeButton != null)
+        _closeButton = e.NameScope.Get<Button>(s_tpCloseButton);
+       
+        if (string.IsNullOrEmpty(AutomationProperties.GetName(_closeButton)))
         {
-            // Skip Automation
-
-            if (tabView != null)
-            {
-                ToolTip.SetTip(_closeButton, tabView.GetTabCloseButtonTooltipText());
-            }
-
-            _closeButton.Click += OnCloseButtonClick;
+            // TODO: I need to remember how I made my json file and update it to include this
+            //var name = FALocalizationHelper.Instance.GetLocalizedStringResource(s_TabViewCloseButtonName);
+            //AutomationProperties.SetName(_closeButton, name);
         }
+
+        if (tabView != null)
+        {
+            ToolTip.SetTip(_closeButton, tabView.GetTabCloseButtonTooltipText());
+        }
+
+        _closeButton.Click += OnCloseButtonClick;
 
         OnHeaderChanged();
         OnIconSourceChanged();
@@ -153,45 +133,48 @@ public partial class TabViewItem : ListBoxItem
             _tabDragRevoker = new FACompositeDisposable(
                 new FADisposable(() => TabView.TabDragStartingWeakEvent.Unsubscribe(tabView, _startingDragSub)),
                 new FADisposable(() => TabView.TabDragCompletedWeakEvent.Unsubscribe(tabView, _completedDragSub)));
-        }
 
-        // Add this to fix a bug that's clearly in WinUI, adding a new TabViewItem doesn't check
-        // the CloseButtonOverlay mode, thus new tabs ALWAYS initialize with 'Auto' even if the 
-        // TabView's CloseButtonOverlayMode is not Auto
-        var tv = ParentTabView;
-
-        if (tv != null)
-        {
-            _closeButtonOverlayMode = tv.CloseButtonOverlayMode;
+            // Add this to fix a bug that's clearly in WinUI, adding a new TabViewItem doesn't check
+            // the CloseButtonOverlay mode, thus new tabs ALWAYS initialize with 'Auto' even if the 
+            // TabView's CloseButtonOverlayMode is not Auto
+            _closeButtonOverlayMode = tabView.CloseButtonOverlayMode;
         }
 
         UpdateCloseButton();
-        UpdateForeground();
         UpdateWidthModeVisualState();
         UpdateTabGeometry();
-
-        // Handle TabViewItem::Loaded
-        if (tv != null)
-        {
-            tv.SetTabSeparatorOpacity(tv.IndexFromContainer(this));
-        }
     }
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
-        if (IsSelected && e.Pointer.Type == PointerType.Mouse)
+        var pointer = e.Pointer;
+        var devType = e.Pointer.Type;
+        var point = e.GetCurrentPoint(this);
+
+        if (devType == PointerType.Mouse || devType == PointerType.Pen)
         {
-            var pointerPoint = e.GetCurrentPoint(this);
-            if (pointerPoint.Properties.IsLeftButtonPressed)
+            if (point.Properties.IsLeftButtonPressed)
             {
-                // TODO: Ctrl + cross-platform??
-                var isCtrlDown = (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control;
-                if (isCtrlDown)
+                _lastPointerPressedPosition = point.Position;
+
+                BeginCheckingForDrag(pointer.Id);
+
+                var mod = TopLevel.GetTopLevel(this).PlatformSettings.HotkeyConfiguration.CommandModifiers;
+                bool ctrlDown = (e.KeyModifiers & mod) == mod;
+
+                if (ctrlDown)
                 {
+                    IsSelected = true;
+
                     // Return here so the base class will not pick it up, but let it remain unhandled so someone else could handle it.
                     return;
                 }
             }
+        }
+        else if (devType == PointerType.Touch)
+        {
+            _lastPointerPressedPosition = point.Position;
+            BeginCheckingForDrag(pointer.Id);
         }
 
         base.OnPointerPressed(e);
@@ -204,9 +187,24 @@ public partial class TabViewItem : ListBoxItem
         }
     }
 
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {
+        base.OnPointerMoved(e);
+
+        if (ShouldStartDrag(e))
+        {
+            UpdateDragDropVisualState(true);
+        }
+    }
+
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         base.OnPointerReleased(e);
+
+        var pointer = e.Pointer;
+
+        StopCheckingForDrag(e.Pointer.Id);
+        UpdateDragDropVisualState(false);
 
         if (_hasPointerCapture)
         {
@@ -250,11 +248,8 @@ public partial class TabViewItem : ListBoxItem
         _isMiddlePointerButtonPressed = false;
 
         UpdateCloseButton();
-        UpdateForeground();
         RestoreLeftAdjacentTabSeparatorVisibility();
     }
-
-    // Don't have PointerCanceled
 
     protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
     {
@@ -263,6 +258,70 @@ public partial class TabViewItem : ListBoxItem
         _hasPointerCapture = false;
         _isMiddlePointerButtonPressed = false;
         RestoreLeftAdjacentTabSeparatorVisibility();
+    }
+
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new TabViewItemAutomationPeer(this);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (!e.Handled && (e.Key == Key.Left || e.Key == Key.Right))
+        {
+            // Alt+Shift+Arrow reorders tabs, so we don't want to handle that combination.
+            // ListView also handles Alt+Arrow  (no Shift) by just doing regular XY focus,
+            // same as how it handles Arrow without any modifier keys, so in that case
+            // we do want to handle things so we get the improved keyboarding experience.
+            bool isAltDown = (e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt;
+            bool isShiftDown = (e.KeyModifiers & KeyModifiers.Shift) == KeyModifiers.Shift;
+
+            if (!isAltDown || !isShiftDown)
+            {
+                bool moveForward = FlowDirection == FlowDirection.LeftToRight && e.Key == Key.Right ||
+                    FlowDirection == FlowDirection.RightToLeft && e.Key == Key.Left;
+
+                e.Handled = ParentTabView?.MoveFocus(moveForward) ?? false;
+            }
+        }
+
+        if (!e.Handled)
+            base.OnKeyDown(e);
+    }
+
+    private bool IsOutsideDragRectangle(Point testPoint, Point dragRectangleCenter)
+    {
+        var dx = double.Abs(testPoint.X - dragRectangleCenter.X);
+        var dy = double.Abs(testPoint.Y - dragRectangleCenter.Y);
+
+        FAUISettings.GetSystemDragSize(TopLevel.GetTopLevel(this).RenderScaling, out var maxDx, out var maxDy);
+
+        maxDx *= 2; //c_tabViewItemMouseDragThresholdMultiplier;
+        maxDy *= 2; //c_tabViewItemMouseDragThresholdMultiplier;
+
+        return (dx > maxDx || dy > maxDy);
+    }
+
+    private bool ShouldStartDrag(PointerEventArgs args)
+    {
+        return _isCheckingForDrag &&
+            IsOutsideDragRectangle(args.GetCurrentPoint(this).Position, _lastPointerPressedPosition) &&
+            _dragPointerId == args.Pointer.Id;
+    }
+
+    private void BeginCheckingForDrag(int pointerId)
+    {
+        _dragPointerId = pointerId;
+        _isCheckingForDrag = true;
+    }
+
+    private void StopCheckingForDrag(int pointerId)
+    {
+        if (_isCheckingForDrag && _dragPointerId == pointerId)
+        {
+            _dragPointerId = 0;
+            _isCheckingForDrag = false;
+        }
     }
 
     private void UpdateTabGeometry()
@@ -274,28 +333,26 @@ public partial class TabViewItem : ListBoxItem
 
         const string data = "F1 M0,{0}  a 4,4 0 0 0 4,-4  L 4,{1}  a {2},{3} 0 0 1 {4},-{5}  l {6},0  a {7},{8} 0 0 1 {9},{10}  l 0,{11}  a 4,4 0 0 0 4,4 Z";
 
-        var builder = new StringBuilder();
+        var builder = StringBuilderCache.Acquire(data.Length * 2);
         // WinUI 6644
-        builder.AppendFormat(CultureInfo.InvariantCulture, 
-            data, 
+        builder.AppendFormat(CultureInfo.InvariantCulture,
+            data,
             height,
             leftCorner, leftCorner, leftCorner, leftCorner, leftCorner,
             Bounds.Width - (leftCorner + rightCorner),
             rightCorner, rightCorner, rightCorner, rightCorner,
             height - (4 + rightCorner));
 
-        TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(builder.ToString());
-    }
-
-    private void OnSizeChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        // WinUI #6748
-        Dispatcher.UIThread.Post(() => UpdateTabGeometry());
+        TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(StringBuilderCache.GetStringAndRelease(builder));
     }
 
     private void OnIsSelectedPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        // Ignore AutomationPeer
+        // Not sure what Avalonia equivalent of this is
+        //if (const auto peer = winrt::FrameworkElementAutomationPeer::CreatePeerForElement(*this))
+        //{
+        //    peer.RaiseAutomationEvent(winrt::AutomationEvents::SelectionItemPatternOnElementSelected);
+        //}
 
         if (change.GetNewValue<bool>())
         {
@@ -308,49 +365,21 @@ public partial class TabViewItem : ListBoxItem
             SetValue(ZIndexProperty, 0);
         }
 
-        // UpdateShadow();
         UpdateWidthModeVisualState();
-
         UpdateCloseButton();
-        UpdateForeground();
-    }
-
-    private void OnForegroundPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        UpdateForeground();
-    }
-
-    private void UpdateForeground()
-    {
-        // We shouldn't have to do this here because Foreground is automatically inherited
-
-        bool isForegroundSet = this.GetDiagnostic(ForegroundProperty).Priority != Avalonia.Data.BindingPriority.Unset;
-        bool set = isForegroundSet && !IsSelected && !_isPointerOver;
-
-        PseudoClasses.Set(s_pcForeground, set);
-
-        // We only need to set the foreground state when the TabViewItem is in rest state and not selected.
-        // if (!IsSelected && !_isPointerOver)
-        // {
-        // If Foreground is set, then change icon and header foreground to match.
-        //winrt::VisualStateManager::GoToState(
-        //   *this,
-        //   ReadLocalValue(winrt::Control::ForegroundProperty()) == winrt::DependencyProperty::UnsetValue() ? L"ForegroundNotSet" : L"ForegroundSet",
-        //   false /*useTransitions*/);
-        //}
     }
 
     private void OnTabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
     {
-        //_isDragging = true;
-        //UpdateShadow();
+        _isBeingDragged = true;
     }
 
     private void OnTabDragCompleted(TabView sender, TabViewTabDragCompletedEventArgs args)
     {
-        //_isDragging = false;
-        //UpdateShadow();
-        UpdateForeground();
+        _isBeingDragged = false;
+
+        StopCheckingForDrag(_dragPointerId);
+        UpdateDragDropVisualState(false);
     }
 
     internal void OnCloseButtonOverlayModeChanged(TabViewCloseButtonOverlayMode mode)
@@ -416,12 +445,15 @@ public partial class TabViewItem : ListBoxItem
         PseudoClasses.Set(SharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
     }
 
+    private void UpdateDragDropVisualState(bool isVisible)
+    {
+        PseudoClasses.Set(s_pcDragging, isVisible);
+    }
+
     private void RequestClose()
     {
-        if (this.FindAncestorOfType<TabView>() is TabView tabView)
-        {
-            tabView.RequestCloseTab(this, false);
-        }
+        var tabView = ParentTabView ?? this.FindAncestorOfType<TabView>();
+        tabView.RequestCloseTab(this, false);
     }
 
     internal void RaiseRequestClose(TabViewTabCloseRequestedEventArgs args)
@@ -447,10 +479,7 @@ public partial class TabViewItem : ListBoxItem
 
     private void OnHeaderChanged()
     {
-        if (_headerContentPresenter != null)
-        {
-            _headerContentPresenter.Content = Header;
-        }
+        _headerContentPresenter?.Content = Header;
 
         if (_firstTimeSettingToolTip)
         {
@@ -466,16 +495,16 @@ public partial class TabViewItem : ListBoxItem
                 _toolTip = string.Empty;
             }
         }
-
+        
         if (_toolTip != null)
         {
             // Update tooltip text to new header text
             var headerContent = Header;
 
-            if (headerContent != null)
+            if (headerContent is string s)
             {
-                _toolTip = headerContent;
-                //ToolTip.SetTip(this, _toolTip);
+                _toolTip = s;
+                ToolTip.SetTip(this, _toolTip);
             }
         }
     }
@@ -529,7 +558,39 @@ public partial class TabViewItem : ListBoxItem
         });
     }
 
+    private void OnSelectedBackgroundPathSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        var path = _selectedBackgroundPath;
 
+        var offset = path.Bounds.Y;
+        var actualOffset = double.Round(offset);
+
+        if (actualOffset > offset)
+        {
+            // Move the SelectedBackgroundPath element down by a fraction of a pixel to avoid a faint gap line
+            // between the selected TabViewItem and its content.
+            var tt = new TranslateTransform(0, actualOffset - offset);
+            path.RenderTransform = tt;
+        }
+        else if (path.RenderTransform != null)
+        {
+            path.RenderTransform = null;
+        }
+    }
+
+    private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        // WinUI #6748
+        Dispatcher.UIThread.Post(() => UpdateTabGeometry());
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (ParentTabView is TabView tv)
+        {
+            tv.SetTabSeparatorOpacity(tv.IndexFromContainer(this));
+        }
+    }
 
     private Button _closeButton;
     private object _toolTip;
@@ -541,17 +602,30 @@ public partial class TabViewItem : ListBoxItem
     //TabDragStarting revoker
     //TabDragCompleted revoker
     private FACompositeDisposable _tabDragRevoker;
+    private Path _selectedBackgroundPath;
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;
-    //private bool _isDragging = false;
+    private bool _isBeingDragged = false;
     private bool _isPointerOver = false;
+    private Point _lastPointerPressedPosition;
+    private int _dragPointerId;
+    private bool _isCheckingForDrag;
 
     private WeakReference<TabView> _parentTabView;
 
     private const string c_overlayCornerRadiusKey = "OverlayCornerRadius";
     private const int c_targetRectWidthIncrement = 2;
+    private const string s_selectedBackgroundPathName = "SelectedBackgroundPath";
+    private const string s_pcDragging = ":dragging";
 
     private TargetWeakEventSubscriber<TabView, TabViewTabDragStartingEventArgs> _startingDragSub;
     private TargetWeakEventSubscriber<TabView, TabViewTabDragCompletedEventArgs> _completedDragSub;
+}
+
+public class TabViewItemAutomationPeer : ListItemAutomationPeer
+{
+    public TabViewItemAutomationPeer(ContentControl owner) : base(owner)
+    {
+    }
 }
