@@ -44,4 +44,8 @@
     <MicroComIdl Include="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.idl" CSharpInteropPath="$(MSBuildThisFileDirectory)\Interop\WinRT\WinRT.Generated.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="FluentAvaloniaTests"/>
+  </ItemGroup>
+
 </Project>
