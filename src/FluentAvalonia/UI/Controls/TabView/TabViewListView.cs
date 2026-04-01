@@ -143,6 +143,7 @@ public sealed class TabViewListView : ListBox
         //
         //        We know we are currently looking at a TabViewItem being recycled if its parent TabView has
         //        already been set.
+        var tabLocation = TabViewTabStripLocation.Top; // Default to top
         if (tvi.ParentTabView == null)
         {
             var parentTV = container.FindAncestorOfType<TabView>();
@@ -150,8 +151,15 @@ public sealed class TabViewListView : ListBox
             {
                 tvi.OnTabViewWidthModeChanged(parentTV.TabWidthMode);
                 tvi.ParentTabView = parentTV;
+                tabLocation = parentTV.TabStripLocation;
             }
         }
+        else
+        {
+            tabLocation = tvi.ParentTabView.TabStripLocation;
+        }
+
+        tvi.HandleTabStripLocationChanged(tabLocation);
 
         // Special b/c we use the header and not Content. Somehow this *just works* in
         // WinUI b/c they don't have to do this.
@@ -169,6 +177,46 @@ public sealed class TabViewListView : ListBox
             tvi.HeaderTemplate = itemTemplate;
 
         base.ContainerForItemPreparedOverride(container, item, index);
+        if (!tvi.IsSelected)
+        {
+            // Bug Fix: When containers are being virtualized, they may "come back online" with
+            // old state left over.
+            // This is also a bug in WinUI, but it materializes differently. In Avalonia, we can see
+            // this very clearly because WinUI pins and does not recycle the SelectedItem container,
+            // but Avalonia does. Thus, when the previously selected container is reused, it still
+            // has the visual state we apply to selected items, specifically the :noborder pseudoclass
+            // Because WinUI pins the container, we never see this issue
+            // HOWEVER, we can see it in in WinUI with the LeftOfSelectedTab/RightOfSelectedTab states
+            // If you select an item and then scroll away such that SelIndex-1 and Selindex+1 container
+            // are recycled, inspect them, you'll see the margin still applied to the Border line indicating
+            // the state was never cleared. If you scroll to those new containers you'll see a tiny little
+            // gap in the bottom border because of this. 
+            // Fix here by just ensuring this state get's updated. I don't want to call TabView.UpdateBottom...
+            // because that iterates over containers and that isn't great in this path. 
+            // Also added unit test to ensure this is fixed.
+
+            var selIndex = SelectedIndex;
+            int state = -1;
+            if (selIndex != -1)
+            {
+                if (index == selIndex)
+                {
+                    state = 0;
+                }
+                else if (index == selIndex - 1)
+                {
+                    state = 1;
+                }
+                else if (index == selIndex + 1)
+                {
+                    state = 2;
+                }
+            }
+
+            ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcNoBorder, state == 0);
+            ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderLeft, state == 1);
+            ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderRight, state == 2);
+        }
     }
 
 

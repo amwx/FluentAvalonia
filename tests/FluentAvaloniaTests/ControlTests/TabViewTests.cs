@@ -16,11 +16,17 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
 using FluentAvaloniaTests.Helpers;
 using Xunit;
 
 namespace FluentAvaloniaTests.ControlTests;
+
+// TODO: Tests to Add
+// Check Keyboard Accelerators
+
+
 
 public class TabViewTests
 {
@@ -272,8 +278,8 @@ public class TabViewTests
         var firstItem = TabView.TabItems[0] as TabViewItem;
 
         var vd = firstItem.GetVisualDescendants();
-           var button = vd.OfType<Button>()
-           .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
+        var button = vd.OfType<Button>()
+        .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
 
         // Default state is for it to be visible
         Assert.NotNull(button);
@@ -315,7 +321,7 @@ public class TabViewTests
 
         bool active = true;
         var testCommand = new TestCommand(TabAdd, x => active);
-       
+
         TabView.AddTabButtonCommand = testCommand;
         TabView.AddTabButtonCommandParameter = "Parameter";
 
@@ -325,7 +331,7 @@ public class TabViewTests
 
         Assert.NotNull(button);
 
-        Assert.True(button.IsEnabled);        
+        Assert.True(button.IsEnabled);
         button.ClickControl(new Point(10, 10), MouseButton.Left);
         Assert.True(commandInvoked);
 
@@ -494,7 +500,7 @@ public class TabViewTests
             // Hoping this gets fixed, opened issue #21046
             TabView.TabItems.RemoveAt(TabView.TabItems.IndexOf(e.Tab));
         }
-        
+
         TabView.TabCloseRequested += RequestClose;
         var item = TabView.TabItems[0] as TabViewItem;
         var item1 = TabView.TabItems[1];
@@ -528,6 +534,218 @@ public class TabViewTests
         w.Close();
     }
 
+    [AvaloniaFact]
+    public void TabViewDefaultsToTopMode()
+    {
+        var (w, TabView) = GetTabView();
+
+        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcTop));
+
+        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcTop));
+        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcTop));
+
+        foreach (var item in TabView.TabItems)
+            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcTop));
+    }
+
+    [AvaloniaFact]
+    public void ChangingTabStripLocationUpdatesAllPseudoclasses()
+    {
+        var (w, TabView) = GetTabView();
+
+        // LEFT TEST
+        TabView.TabStripLocation = TabViewTabStripLocation.Left;
+        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcLeft));
+
+        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcLeft));
+        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcLeft));
+
+        foreach (var item in TabView.TabItems)
+            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcLeft));
+
+        // RIGHT TEST
+        TabView.TabStripLocation = TabViewTabStripLocation.Right;
+        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcRight));
+
+        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcRight));
+        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcRight));
+
+        foreach (var item in TabView.TabItems)
+            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcRight));
+
+        // BOTTOM TEST
+        TabView.TabStripLocation = TabViewTabStripLocation.Bottom;
+        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcBottom));
+
+        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcBottom));
+        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcBottom));
+
+        foreach (var item in TabView.TabItems)
+            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcBottom));
+
+        // BACK TO TOP TEST
+        TabView.TabStripLocation = TabViewTabStripLocation.Top;
+        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcTop));
+
+        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcTop));
+        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcTop));
+
+        foreach (var item in TabView.TabItems)
+            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcTop));        
+    }
+
+    [AvaloniaFact]
+    public void AddingNewItemsSetsStripLocationOnTab()
+    {
+        // TODO: Turn this back on when we can do this
+        //var (w, TabView) = GetTabView();
+        //TabView.TabStripLocation = TabViewTabStripLocation.Left;
+
+        //var newItem = new TabViewItem();
+        //TabView.TabItems.Add(newItem);
+        //TabView.UpdateLayout();
+        //Assert.True(ClassesContains(newItem.Classes, TabView.s_pcLeft));
+        //w.Close();
+
+        // NOW CHECK WITH TABITEMSSOURCE
+        var (w, TabView) = GetTabView(false);
+        TabView.TabStripLocation = TabViewTabStripLocation.Left;
+        var items = new AvaloniaList<TestTabItem>
+        {
+            new TestTabItem { Header = "This is tab 1", Content = "Tab1 Content" },
+            new TestTabItem { Header = "This is tab 2", Content = "Tab2 Content" },
+            new TestTabItem { Header = "This is tab 3", Content = "Tab2 Content" },
+        };
+        TabView.TabItemsSource = items;
+        TabView.UpdateLayout();
+
+        items.Add(new TestTabItem());
+        TabView.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+        var panel = TabView.ListView.ItemsPanelRoot;
+        var item = TabView.ContainerFromIndex(3);
+        Assert.True(ClassesContains(item.Classes, TabView.s_pcLeft));
+    }
+
+    [AvaloniaFact]
+    public void ChangingTabStripLocationPreservesSelection()
+    {
+        var (w, TabView) = GetTabViewWithItemsSource();
+        TabView.SelectedIndex = 1;
+
+        TabView.TabStripLocation = TabViewTabStripLocation.Left;
+        TabView.UpdateLayout();
+        Assert.Equal(1, TabView.SelectedIndex);
+    }
+
+    [AvaloniaFact]
+    public void AddingTabsWhileVirtualizedInitializesCorrectly()
+    {
+        var (w, TabView) = GetTabView(false);
+        var l = new AvaloniaList<string>();
+        for (int i = 0; i < 100; i++)
+        {
+            l.Add($"New Tab {i + 1}");
+        }
+        TabView.TabItemsSource = l;
+        TabView.UpdateLayout();
+        TabView.SelectedIndex = 0;
+        TabView.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+        // Baseline check: First item is selected, it should have the :noborder class
+        // All other items should not have it
+        var item0 = TabView.ContainerFromIndex(0);
+        Assert.True(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcNoBorder));
+
+        int idx = 1;        
+        while (idx < l.Count)
+        {
+            var item = TabView.ContainerFromIndex(idx);
+            if (item == null)
+                break; // End of realized containers
+
+            Assert.False(ClassesContains(item.Classes, SharedPseudoclasses.s_pcNoBorder));
+            idx++;
+        }
+
+        // Now scroll and recheck
+        var scroller = TabView.ListView.Scroller;
+        var scrollableWidth = scroller.Extent.Width - scroller.Viewport.Width;
+        scroller.Offset = new Vector(scrollableWidth * 0.5, 0);
+        TabView.UpdateLayout();
+
+        // Recheck - first item is still selected so all other containers should
+        // not have the :noborder class
+        // Skip Item0 b/c its the "focused" item in the Panel so it will always return a container in ContainerFromIndex
+        idx = 1; 
+        bool foundFirstRealized = false;
+        while (idx < l.Count)
+        {
+            var cont = TabView.ContainerFromIndex(idx);
+            if (!foundFirstRealized && cont == null)
+            {
+                idx++;
+                continue;
+            }
+
+            foundFirstRealized = true;
+            if (cont == null)
+                break;
+
+            Assert.False(ClassesContains(cont.Classes, SharedPseudoclasses.s_pcNoBorder), $"Failed on container {idx}");
+            Assert.False(ClassesContains(cont.Classes, SharedPseudoclasses.s_pcBorderLeft), $"Failed on container {idx}");
+            Assert.False(ClassesContains(cont.Classes, SharedPseudoclasses.s_pcBorderRight), $"Failed on container {idx}");
+            idx++;
+        }
+
+        // Now go back and ensure the first 2 containers (Sel + Sel+1) have their state set correctly
+        scroller.Offset = new Vector(0, 0);
+        TabView.UpdateLayout();
+
+        // Should be :noborder only (selected)
+        item0 = TabView.ContainerFromIndex(0);
+        Assert.True(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcNoBorder));
+        Assert.False(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcBorderLeft));
+        Assert.False(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcBorderRight));
+        
+        // Should be :borderright (selected + 1)
+        var item1 = TabView.ContainerFromIndex(1);
+        Assert.False(ClassesContains(item1.Classes, SharedPseudoclasses.s_pcNoBorder));
+        Assert.False(ClassesContains(item1.Classes, SharedPseudoclasses.s_pcBorderLeft));
+        Assert.True(ClassesContains(item1.Classes, SharedPseudoclasses.s_pcBorderRight));
+    }
+
+    [AvaloniaFact]
+    public void TabWidthsAreEqualInEqualMode()
+    {
+        var (w, TabView) = GetTabView(false);
+        w.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+        var l = new AvaloniaList<string>();
+        for (int i = 0; i < 100; i++)
+        {
+            l.Add($"New Tab {i + 1}");
+        }
+        TabView.TabItemsSource = l;
+        TabView.UpdateLayout();
+        TabView.SelectedIndex = 0;
+        TabView.UpdateLayout();
+
+        var width0 = TabView.ContainerFromIndex(0).Bounds.Width;
+
+        int idx = 1;
+        while (idx < l.Count)
+        {
+            var cont = TabView.ContainerFromIndex(idx);
+            if (cont == null)
+                break;
+
+            Assert.True(width0 == cont.Bounds.Width, $"Failed on container {idx}, {cont.Bounds.Width} expecting {width0}");
+            idx++;
+        }
+    }
+
+
     private (Window w, TabView tv) GetTabView(bool addTabs = true, int? selIndex = null)
     {
         var tv = new TabView();
@@ -549,6 +767,35 @@ public class TabViewTests
         Dispatcher.UIThread.RunJobs();
         return (w, tv);
     }
+
+    private (Window w, TabView tv) GetTabViewWithItemsSource(bool addTabs = true, int? selIndex = null)
+    {
+        var tv = new TabView();
+        if (addTabs)
+        {
+            var l = new AvaloniaList<TestTabItem>
+            {
+                new TestTabItem { Header = "This is tab 1", Content = "Tab1 Content" },
+                new TestTabItem { Header = "This is tab 2", Content = "Tab2 Content" },
+                new TestTabItem { Header = "This is tab 3", Content = "Tab2 Content" },
+            };
+            tv.TabItemsSource = l;
+        }
+
+        if (selIndex.HasValue)
+        {
+            tv.SelectedIndex = selIndex.Value;
+        }
+
+        var w = new Window { Content = tv };
+        w.Show();
+        tv.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+        return (w, tv);
+    }
+
+    private static bool ClassesContains(Classes classes, string c) =>
+            classes.Contains(c);
 }
 
 public class TestTabItem

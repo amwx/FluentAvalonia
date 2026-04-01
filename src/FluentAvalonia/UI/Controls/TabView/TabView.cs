@@ -70,6 +70,7 @@ public partial class TabView : TemplatedControl
         });
 
         _tabCloseButtonTooltipText = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewCloseButtonTooltipWithKA);
+        PseudoClasses.Set(s_pcTop, true);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -85,10 +86,17 @@ public partial class TabView : TemplatedControl
         _rightContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpRightContentPresenter);
 
         _tabContainerGrid = e.NameScope.Get<Grid>(s_tpTabContainerGrid);
+        if (_tabContainerGrid.ColumnDefinitions.Count > 0)
+        {
         _leftContentColumn = _tabContainerGrid.ColumnDefinitions[0];
         _tabColumn = _tabContainerGrid.ColumnDefinitions[1];
         _addButtonColumn = _tabContainerGrid.ColumnDefinitions[2];
         _rightContentColumn = _tabContainerGrid.ColumnDefinitions[3];
+        }
+        else
+        {
+            _tabContainerGrid.SizeChanged += HandleTabContainerGridSizeChangedForVerticalTabView;
+        }
 
         _tabContainerGrid.PointerEntered += OnTabStripPointerEnter;
         _tabContainerGrid.PointerExited += OnTabStripPointerLeave;
@@ -137,6 +145,16 @@ public partial class TabView : TemplatedControl
             _addButton.KeyDown += OnAddButtonKeyDown;
         }
 
+        var handle = e.NameScope.Get<Border>(s_tpPaneResizeHandle);
+        if (handle != null) // Null in Top/Bottom modes
+        {
+            handle.PointerPressed += OnPaneResizeHandlePointerPressed;
+            handle.PointerMoved += OnPaneResizeHandlePointerMoved;
+            handle.PointerReleased += OnPaneResizeHandlePointerReleased;
+            handle.PointerCaptureLost += OnPaneResizeHandlePointerCaptureLost;
+            _verticalPaneResizeHandle = handle;
+        }
+
         //UpdateListViewItemContainerTransitions();
     }
 
@@ -180,6 +198,10 @@ public partial class TabView : TemplatedControl
         {
             OnTabWidthModePropertyChanged(change);
         }
+        else if (change.Property == TabStripLocationProperty)
+        {
+            OnTabStripLocationPropertyChanged(change);
+    }
     }
 
     internal void SetTabSeparatorOpacity(int index, int opacityValue)
@@ -212,6 +234,48 @@ public partial class TabView : TemplatedControl
         }
     }
 
+    protected virtual void OnTabStripLocationPropertyChanged(AvaloniaPropertyChangedEventArgs args)
+    {
+        var (oldValue, newValue) = args.GetOldAndNewValue<TabViewTabStripLocation>();
+
+        //if ((IsHorizontal(oldValue) && !IsHorizontal(newValue)) ||
+        //    (!IsHorizontal(oldValue) && IsHorizontal(newValue)) &&
+        //    _listView != null && _listView.ItemsSource == null)
+        //{
+        //    // We're switching from vertical to horizontal or horizontal to vertical
+        //    // If we're not using the TabItemsSource, we need to make a copy of the
+        //    // TabItems to unhook them from the ItemsControl
+        //    var l = new List<object>();
+        //    foreach (var item in TabItems)
+        //        l.Add(item);
+
+        //    _listView.Items.Clear();
+        //    TabItems = l;
+        //}
+
+
+        _isSwitchingTabLocation = true;
+
+        if ((IsHorizontal(oldValue) && !IsHorizontal(newValue)) ||
+            (!IsHorizontal(oldValue) && IsHorizontal(newValue)))
+        {
+            // Only set TabContent to null if we're truly switching orientations
+            UpdateTabContent();
+        }
+
+
+        var oldClass = GetClassForStripLocation(args.GetOldValue<TabViewTabStripLocation>());
+        var newClass = GetClassForStripLocation(args.GetNewValue<TabViewTabStripLocation>());
+        PseudoClasses.Remove(oldClass);
+        PseudoClasses.Add(newClass);
+
+        _listView?.HandleTabStripLocationChanged(args.GetNewValue<TabViewTabStripLocation>(), oldClass, newClass);
+        
+        UpdateTabWidths();
+
+        static bool IsHorizontal(TabViewTabStripLocation loc) =>
+            loc == TabViewTabStripLocation.Top || loc == TabViewTabStripLocation.Bottom;
+    }
 
     private void OnListViewDraggingPropertyChanged()
     {
@@ -371,17 +435,38 @@ public partial class TabView : TemplatedControl
     {
         UpdateTabViewWithTearOutList();
     }
-    internal TabViewListView AListView => _listView;
+
     private void OnListViewLoaded(object sender, RoutedEventArgs args)
     {
         var lv = _listView;
 
         // Now that ListView exists, we can start using its Items collection.
         var lvItems = lv.Items;
-        if (lvItems != null)
+        // 2nd condition added, if TabItems is already the ListView's ItemCollection, we just swapped in the same
+        // orientation (top - bottom / left - right), so the ListView was reloaded, but its still the same one
+        if (lvItems != null && lvItems != TabItems)
         {
             if (lv.ItemsSource == null)
             {
+                if (_isSwitchingTabLocation)
+                {
+                    // Unhook the TabItems from the old ItemCollection
+                    var tabItems = TabItems;
+
+                    foreach (var item in tabItems)
+                    {
+                        if (item is TabViewItem tvi && tvi.GetVisualParent() is Panel p)
+                        {
+                            p.Children.Remove(tvi);
+                        }
+
+                        lvItems.Add(item);
+                    }
+
+                    TabItems.Clear();
+                }
+                else
+                {
                 // copy the list, because clearing lvItems may also clear TabItems
                 using var l = new PooledList<object>(lvItems.Count);
 
@@ -393,9 +478,16 @@ public partial class TabView : TemplatedControl
                 foreach (var item in l.AsSpan())
                     lvItems.Add(item);
             }
+            }
 
             TabItems = lvItems;
         }
+
+
+        // Ensure the ListView is configured correctly when it loads
+        var stripLocation = TabStripLocation;
+        lv.HandleTabStripLocationChanged(stripLocation, null, GetClassForStripLocation(stripLocation));
+
 
         if (SelectedItem != null)
         {
@@ -410,10 +502,21 @@ public partial class TabView : TemplatedControl
         SelectedIndex = lv.SelectedIndex;
         SelectedItem = lv.SelectedItem;
 
-        _itemsPresenter = _listView.Presenter as ItemsPresenter;
+        if (_isSwitchingTabLocation)
+        {
+            _isSwitchingTabLocation = false;
+            UpdateTabContent();
+        }
+
+        if (_itemsPresenter != null)
+        {
+            _itemsPresenter = _listView.Presenter;
         _itemsPresenter.SizeChanged += OnItemsPresenterSizeChanged;
+        }
+
 
         var scrollViewer = _listView.Scroller;
+        _scrollViewer = scrollViewer;
         if (scrollViewer != null)
         {
             if (scrollViewer.IsLoaded)
@@ -426,6 +529,7 @@ public partial class TabView : TemplatedControl
             }
         }
         _scrollViewer = scrollViewer;
+
 
         UpdateBottomBorderLineVisualStates();
         UpdateNonClientRegion();
@@ -487,11 +591,16 @@ public partial class TabView : TemplatedControl
     private void OnScrollViewerViewChanged(AvaloniaPropertyChangedEventArgs args)
     {
         UpdateScrollViewerDecreaseAndIncreaseButtonsViewState();
+
+        // Another case where we have to do something WinUI doesn't. Scrolling (recycling) tabs
+        // doesn't ensure their widths are set correctly and so some will autosize to their
+        // content and be just slightly bigger. Ensure that doesn't happen
+        UpdateTabWidths();
     }
 
     private void UpdateScrollViewerDecreaseAndIncreaseButtonsViewState()
     {
-        if (_scrollViewer != null)
+        if (_scrollViewer != null && _scrollDecreaseButton != null && _scrollIncreaseButton != null)
         {
             const double minThreshold = 0.1d;
             var hOffset = _scrollViewer.Offset.X;
@@ -525,6 +634,11 @@ public partial class TabView : TemplatedControl
             // Make sure that the selected tab is fully in view and not cut off
             BringSelectedTabIntoView();
         }
+    }
+
+    private void HandleTabContainerGridSizeChangedForVerticalTabView(object sender, SizeChangedEventArgs e)
+    {
+        UpdateTabWidths();
     }
 
     private void BringSelectedTabIntoView()
@@ -606,18 +720,12 @@ public partial class TabView : TemplatedControl
                 // Posting to Dispatcher so delay calling this until after next layout pass
                 // when items are all realized and ContainerFromIndex works
                 // TODO: Do we still need to post to dispatcher
+                
+                Dispatcher.UIThread.Post(() =>
+                {
                 UpdateTabWidths();
                 SetTabSeparatorOpacity(numItems - 1);
             }
-        }
-        else
-        {
-            // TODO: Needed still?
-            //// Added this for full collection change - Set content to first item
-            //if (lvSelIndex == -1 && numItems > 0)
-            //{
-            //    SelectedIndex = 0;
-            //}
         }
 
         UpdateBottomBorderLineVisualStates();
@@ -625,6 +733,12 @@ public partial class TabView : TemplatedControl
 
     private void OnListViewSelectionChanged(object sender, SelectionChangedEventArgs args)
     {
+        // If we're currently switching TabLocation, ignore this selected item change
+        // because it just got set to -1. We'll set it back to the correct index
+        // when the ListView loaded handler is called
+        if (_isSwitchingTabLocation)
+            return;
+
         SelectedIndex = _listView.SelectedIndex;
         SelectedItem = _listView.SelectedItem;
 
@@ -739,7 +853,7 @@ public partial class TabView : TemplatedControl
         if (_tabContentPresenter == null)
             return;
 
-        if (SelectedItem == null)
+        if (SelectedItem == null || _isSwitchingTabLocation)
         {
             _tabContentPresenter.Content = null;
             _tabContentPresenter.ContentTemplate = null;
@@ -864,8 +978,9 @@ public partial class TabView : TemplatedControl
         {
             tabCount++;
         }
-
-        if (_tabContainerGrid != null)
+        var stripLocation = TabStripLocation;
+        var isHorizontal = (stripLocation == TabViewTabStripLocation.Top || stripLocation == TabViewTabStripLocation.Bottom);
+        if (_tabContainerGrid != null && isHorizontal)
         {
             // Add up width taken by custom content and + button
             double widthTaken = 0.0;
@@ -1017,14 +1132,43 @@ public partial class TabView : TemplatedControl
             }
         }
 
+        if (!isHorizontal)
+        {
+            if (_listView != null)
+            {
+                // If not in Horizontal, ensure we let the scrollviewer work correctly
+                _listView.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+                _listView.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+            }
+            
+            if (_tabContainerGrid != null)
+            {
+                var rows = _tabContainerGrid.RowDefinitions;
+                // Calcuate the height of the rows without the TabView
+                double height = 0;
+                foreach (var item in _tabContainerGrid.Children)
+                {
+                    if (item is TabViewListView)
+                        continue;
+
+                    height += item.DesiredSize.Height;
+                }    
+                var maxSpace = _tabContainerGrid.Bounds.Height;
+
+                _scrollViewer?.MaxHeight = double.Clamp(maxSpace - height, 0, double.PositiveInfinity);
+            }
+        }
+        else if (_scrollViewer != null)
+        {
+            _scrollViewer.MaxHeight = double.PositiveInfinity;
+        }
+
         if (shouldUpdateWidths || TabWidthMode != TabViewWidthMode.Equal)
         {
             foreach (var item in TabItems)
             {
                 var tvi = item as TabViewItem ?? ContainerFromItem(item) as TabViewItem;
-
-                if (tvi != null)
-                    tvi.Width = tabWidth;
+                tvi?.Width = tabWidth;
             }
         }
     }
@@ -1058,6 +1202,79 @@ public partial class TabView : TemplatedControl
 
     public object ItemFromContainer(Control container) =>
         _listView?.ItemFromContainer(container);
+
+    private void OnPaneResizeHandlePointerPressed(object sender, PointerPressedEventArgs e)
+    {
+        if (e.Handled)
+            return;
+
+        var pt = e.GetCurrentPoint(null);
+        if (e.Properties.IsLeftButtonPressed)
+        {
+            _initDragPanePoint = pt.Position;
+            _startingPaneSize = VerticalOpenPaneLength;
+        }
+    }
+
+    private void OnPaneResizeHandlePointerMoved(object sender, PointerEventArgs e)
+    {
+        if (e.Handled)
+            return;
+
+        if (_initDragPanePoint.HasValue)
+        {
+            var point = e.GetCurrentPoint(null);
+            var delta = (point.Position - _initDragPanePoint.Value).X;
+            if (!_isDraggingPane)
+            {
+                FAUISettings.GetSystemDragSize(TopLevel.GetTopLevel(this).RenderScaling, out var cxDrag, out _);
+                
+                if (double.Abs(delta) < cxDrag)
+                {
+                    return;
+                }
+
+                _isDraggingPane = true;
+            }
+
+            var min = MinimumVerticalOpenPaneLength;
+            var max = MaximumVerticalOpenPaneLength;
+
+            if (TabStripLocation == TabViewTabStripLocation.Right)
+                delta *= -1;
+
+            var paneLength = _startingPaneSize;
+            var length = double.Clamp(paneLength + delta, min, max);
+
+            SetCurrentValue(VerticalOpenPaneLengthProperty, length);
+        }
+    }
+
+    private void OnPaneResizeHandlePointerReleased(object sender, PointerReleasedEventArgs e)
+    {
+        if (e.Handled)
+            return;
+
+        if (_initDragPanePoint.HasValue)
+        {
+            var point = e.GetCurrentPoint(null);
+            if (point.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
+            {
+                _initDragPanePoint = null;
+                _isDraggingPane = false;
+            }
+        }
+    }
+
+
+    private void OnPaneResizeHandlePointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
+    {
+        if (e.Handled)
+            return;
+
+        _initDragPanePoint = null;
+        _isDraggingPane = false;
+    }
 
     private int GetItemCount()
     {
@@ -1235,6 +1452,13 @@ public partial class TabView : TemplatedControl
 
         _scrollViewerViewChangedRevoker?.Dispose();
 
+        if (_verticalPaneResizeHandle != null) // Null in Top/Bottom modes
+        {
+            _verticalPaneResizeHandle.PointerPressed -= OnPaneResizeHandlePointerPressed;
+            _verticalPaneResizeHandle.PointerMoved -= OnPaneResizeHandlePointerMoved;
+            _verticalPaneResizeHandle.PointerReleased -= OnPaneResizeHandlePointerReleased;
+            _verticalPaneResizeHandle.PointerCaptureLost -= OnPaneResizeHandlePointerCaptureLost;
+        }
 
         _leftContentColumn = null;
         _tabColumn = null;
@@ -1286,8 +1510,15 @@ public partial class TabView : TemplatedControl
     private RepeatButton _scrollIncreaseButton;
     private Button _addButton;
     private ItemsPresenter _itemsPresenter;
+    private Border _verticalPaneResizeHandle;
+    private SplitView _splitView;
 
-    // private Grid _shadowReceiver
+    private bool _isDraggingPane;
+    private Point? _initDragPanePoint;
+    private double _startingPaneSize;
+
+    private bool _isSwitchingTabLocation;
+    private int _selectedIndexBeforeTabSwitch = -1;
 
     // A bunch of event revokers
     private IDisposable _scrollViewerViewChangedRevoker;

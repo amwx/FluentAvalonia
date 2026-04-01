@@ -326,6 +326,10 @@ public partial class TabViewItem : SelectorItem
 
     private void UpdateTabGeometry()
     {
+        if (_location == TabViewTabStripLocation.Left || _location == TabViewTabStripLocation.Right)
+            return;
+
+        bool isTop = _location == TabViewTabStripLocation.Top;
         var height = Bounds.Height;
         var popupRadius = this.TryFindResource(c_overlayCornerRadiusKey, out var value) ? (CornerRadius)value : default;
         var leftCorner = popupRadius.TopLeft;
@@ -343,7 +347,14 @@ public partial class TabViewItem : SelectorItem
             rightCorner, rightCorner, rightCorner, rightCorner,
             height - (4 + rightCorner));
 
-        TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(StringBuilderCache.GetStringAndRelease(builder));
+        var geom = StreamGeometry.Parse(StringBuilderCache.GetStringAndRelease(builder));
+
+        if (!isTop)
+        {
+            geom.Transform = new RotateTransform(180, geom.Bounds.Width * 0.5, geom.Bounds.Height * 0.5);
+    }
+
+        TabViewTemplateSettings.TabGeometry = geom;
     }
 
     private void OnIsSelectedPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -392,6 +403,19 @@ public partial class TabViewItem : SelectorItem
     {
         _tabViewWidthMode = mode;
         UpdateWidthModeVisualState();
+    }
+
+    internal void HandleTabStripLocationChanged(TabViewTabStripLocation newLocation)
+    {
+        _location = newLocation;
+        PseudoClasses.Set(TabView.s_pcTop, newLocation == TabViewTabStripLocation.Top);
+        PseudoClasses.Set(TabView.s_pcBottom, newLocation == TabViewTabStripLocation.Bottom);
+        PseudoClasses.Set(TabView.s_pcRight, newLocation == TabViewTabStripLocation.Right);
+        PseudoClasses.Set(TabView.s_pcLeft, newLocation == TabViewTabStripLocation.Left);
+
+        UpdateTabGeometry();
+        if (_selectedBackgroundPath != null)
+            OnSelectedBackgroundPathSizeChanged(null, null);
     }
 
     private void UpdateCloseButton()
@@ -481,32 +505,32 @@ public partial class TabViewItem : SelectorItem
     {
         _headerContentPresenter?.Content = Header;
 
-        if (_firstTimeSettingToolTip)
-        {
-            _firstTimeSettingToolTip = false;
+        //if (_firstTimeSettingToolTip)
+        //{
+        //    _firstTimeSettingToolTip = false;
 
-            var tip = ToolTip.GetTip(this);
-            if (tip == null)
-            {
-                // App author has not specified a tooltip; use our own
+        //    var tip = ToolTip.GetTip(this);
+        //    if (tip == null)
+        //    {
+        //        // App author has not specified a tooltip; use our own
 
-                // WinUI assigns an empty ToolTip here, but since tooltips work differently
-                // we'll just mark this not null
-                _toolTip = string.Empty;
-            }
-        }
+        //        // WinUI assigns an empty ToolTip here, but since tooltips work differently
+        //        // we'll just mark this not null
+        //        _toolTip = string.Empty;
+        //    }
+        //}
         
-        if (_toolTip != null)
-        {
-            // Update tooltip text to new header text
-            var headerContent = Header;
+        //if (_toolTip != null)
+        //{
+        //    // Update tooltip text to new header text
+        //    var headerContent = Header;
 
-            if (headerContent is string s)
-            {
-                _toolTip = s;
-                ToolTip.SetTip(this, _toolTip);
-            }
-        }
+        //    if (headerContent is string s)
+        //    {
+        //        _toolTip = s;
+        //        ToolTip.SetTip(this, _toolTip);
+        //    }
+        //}
     }
 
     private void HideLeftAdjacentTabSeparator()
