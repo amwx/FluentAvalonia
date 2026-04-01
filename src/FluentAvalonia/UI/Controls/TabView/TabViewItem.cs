@@ -354,7 +354,14 @@ public partial class TabViewItem : SelectorItem
             rightCorner, rightCorner, rightCorner, rightCorner,
             height - (4 + rightCorner));
 
-        TabViewTemplateSettings.TabGeometry = StreamGeometry.Parse(StringBuilderCache.GetStringAndRelease(builder));
+        var geom = StreamGeometry.Parse(StringBuilderCache.GetStringAndRelease(builder));
+
+        if (!isTop)
+        {
+            geom.Transform = new RotateTransform(180, geom.Bounds.Width * 0.5, geom.Bounds.Height * 0.5);
+    }
+
+        TabViewTemplateSettings.TabGeometry = geom;
     }
 
     private void OnIsSelectedPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -505,32 +512,32 @@ public partial class TabViewItem : SelectorItem
     {
         _headerContentPresenter?.Content = Header;
 
-        if (_firstTimeSettingToolTip)
-        {
-            _firstTimeSettingToolTip = false;
+        //if (_firstTimeSettingToolTip)
+        //{
+        //    _firstTimeSettingToolTip = false;
 
-            var tip = ToolTip.GetTip(this);
-            if (tip == null)
-            {
-                // App author has not specified a tooltip; use our own
+        //    var tip = ToolTip.GetTip(this);
+        //    if (tip == null)
+        //    {
+        //        // App author has not specified a tooltip; use our own
 
-                // WinUI assigns an empty ToolTip here, but since tooltips work differently
-                // we'll just mark this not null
-                _toolTip = string.Empty;
-            }
-        }
+        //        // WinUI assigns an empty ToolTip here, but since tooltips work differently
+        //        // we'll just mark this not null
+        //        _toolTip = string.Empty;
+        //    }
+        //}
         
-        if (_toolTip != null)
-        {
-            // Update tooltip text to new header text
-            var headerContent = Header;
+        //if (_toolTip != null)
+        //{
+        //    // Update tooltip text to new header text
+        //    var headerContent = Header;
 
-            if (headerContent is string s)
-            {
-                _toolTip = s;
-                ToolTip.SetTip(this, _toolTip);
-            }
-        }
+        //    if (headerContent is string s)
+        //    {
+        //        _toolTip = s;
+        //        ToolTip.SetTip(this, _toolTip);
+        //    }
+        //}
     }
 
     private void HideLeftAdjacentTabSeparator()

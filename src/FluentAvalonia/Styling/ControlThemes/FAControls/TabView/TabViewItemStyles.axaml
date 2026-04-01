@@ -5,11 +5,17 @@
                     xmlns:core="using:FluentAvalonia.Core">
 
     <Design.PreviewWith>
-        <Border Padding="20" Width="300" Height="100">
-            <StackPanel Spacing="20" HorizontalAlignment="Left">
-                <ui:TabViewItem Header="Hello" IconSource="Save"
-                                core:VisualStateHelper.ForcedClassesProperty=":selected"/>
-            </StackPanel>
+        <Border Width="800" Height="500">
+            <Panel >
+                <ui:TabView TabStripLocation="Bottom">
+                    <ui:TabView.TabItems>
+                        <ui:TabViewItem Header="Item1">
+                            <Border Background="Transparent" />
+                        </ui:TabViewItem>
+                        <ui:TabViewItem Header="Item1" />
+                    </ui:TabView.TabItems>
+                </ui:TabView>
+            </Panel>
         </Border>
     </Design.PreviewWith>
 
@@ -54,6 +60,97 @@
         </Style>
     </ControlTheme>
 
+    <!-- ControlTemplate used when tabs are vertical (Left/Right location)-->
+    <ControlTemplate x:Key="VerticalTabViewTabItemTemplate"
+                     TargetType="ui:TabViewItem">
+        <Border Name="LayoutRootBorder"
+                Padding="{TemplateBinding Padding}">
+            <Panel Name="LayoutRoot">
+
+                <Rectangle Name="SelectionIndicator"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Width="3" Height="16"
+                           Margin="2 0 0 0"
+                           UseLayoutRounding="False"
+                           RadiusX="2" RadiusY="2"
+                           IsVisible="False"
+                           RenderTransform="scaleY(0)"
+                           Fill="{DynamicResource AccentFillColorDefaultBrush}">
+                    <Rectangle.Transitions>
+                        <Transitions>
+                            <TransformOperationsTransition Duration="00:00:00.167"
+                                                           Property="RenderTransform"
+                                                           Easing="0,0 0,1"/>
+                        </Transitions>
+                    </Rectangle.Transitions>
+                </Rectangle>
+
+
+                <Border Name="TabContainerBorder"
+                        Grid.Column="1"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        TemplatedControl.IsTemplateFocusTarget="True"
+                        Padding="{DynamicResource TabViewItemHeaderPadding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Grid Name="TabContainer">
+                        <Grid.ColumnDefinitions>
+                            <!-- x:Name = "IconColumn" -->
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Since we can't change the icon column in the styles, to avoid locking it in
+                                code, we use this Rectangle as the sizer for the column -->
+                        <Rectangle HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   Name="IconColumn" />
+
+                        <Viewbox Name="IconBox"
+                                 MaxWidth="{DynamicResource TabViewItemHeaderIconSize}"
+                                 MaxHeight="{DynamicResource TabViewItemHeaderIconSize}"
+                                 Margin="{DynamicResource TabViewItemHeaderIconMargin}"
+                                 IsVisible="False">
+                            <ContentControl Name="IconControl"
+                                            Content="{Binding TabViewTemplateSettings.IconElement, RelativeSource={RelativeSource TemplatedParent}}"
+                                            KeyboardNavigation.IsTabStop="False"
+                                            Foreground="{DynamicResource TabViewItemIconForeground}"/>
+                        </Viewbox>
+
+                        <!-- If we template bind the ContentPresenter's Content property to the TabViewItem.Header property
+                                 we unfortunately run into the following issue if the header is [null] or empty:
+                                 The TabViewItem.Content property will be implictly bound to the Content property of the ContentPresenter.
+                                 To prevent this, we explicitly set a default empty content here and update the content in code behind. -->
+
+                        <ContentPresenter Name="ContentPresenter"
+                                          Grid.Column="1"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content=""
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          FontWeight="{TemplateBinding FontWeight}"
+                                          FontSize="{DynamicResource TabViewItemHeaderFontSize}"
+                                          Foreground="{DynamicResource TabViewItemHeaderForeground}"/>
+
+                        <Button Name="CloseButton"
+                                Grid.Column="2"
+                                Margin="{DynamicResource TabViewItemHeaderCloseMargin}"
+                                Content="&#xE711;"
+                                Theme="{StaticResource TabViewCloseButtonTheme}"
+                                KeyboardNavigation.IsTabStop="False" />
+                    </Grid>
+                </Border>
+
+            </Panel>
+        </Border>
+    </ControlTemplate>
+    
+    
+    
+    
    
     <ControlTheme x:Key="{x:Type ui:TabViewItem}" TargetType="ui:TabViewItem">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackground}" />
@@ -80,30 +177,40 @@
                     <Border Name="BottomBorderLine" 
                             Background="{DynamicResource TabViewBorderBrush}" 
                             Height="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" />
-
+ 
                     <!--Note: WinUI doesn't set a Zindex here, but if we dont then the paths get clipped
                               by stuff on top and it doesn't look right. Normally you won't see it unless
-                              you're zoomed way in, but now the arcs look much nicer :) -->
+                              you're zoomed way in, but now the arcs look much nicer :) 
+                              
+                        Also: I've adjusted these paths to use Stretch Fill, despite default None being set
+                              in WinUI because it causes everything to line up better. Also added a 1px bottom
+                              margin (or 1px top for Bottom TabStripLocation) which again helps line everything
+                              up. Not really sure why its needed but it is. Note at if your remove the 1px
+                              margin, there is a slight gap between the arc & the tab border, which is also
+                              present in WinUI, so I've fixed something even upstream has :)
+                    -->
                     <Path Name="LeftRadiusRenderArc" ZIndex="1"
-                          Fill="{DynamicResource TabViewBorderBrush}" 
+                          Fill="{DynamicResource TabViewBorderBrush}" Stretch="Fill"
                           VerticalAlignment="Bottom" 
                           IsVisible="False" 
-                          Margin="-4,0,0,0" Height="4" Width="4"
+                          Margin="-4,0,0,1" Height="4" Width="4"
                           Data="M4 0C4 1.19469 3.47624 2.26706 2.64582 3H0C1.65685 3 3 1.65685 3 0H4Z" />
                     
                     <Path Name="RightRadiusRenderArc" ZIndex="1"
-                          Grid.Column="2" IsVisible="False" 
+                          Grid.Column="2" IsVisible="False" Stretch="Fill"
                           Fill="{DynamicResource TabViewBorderBrush}" VerticalAlignment="Bottom" 
-                          Margin="0,0,-4,0" Height="4" Width="4" 
+                          Margin="0,0,-4,1" Height="4" Width="4" 
                           Data="M0 0C0 1.19469 0.523755 2.26706 1.35418 3H4C2.34315 3 1 1.65685 1 0H0Z" />
                     
-                    <!-- This Path wrapped in a Canvas to prevent an infinite loop in calculating its width. -->
-                    <Canvas Grid.ColumnSpan="3">
-                        <Path Name="SelectedBackgroundPath"                                
-                              Fill="{DynamicResource TabViewItemHeaderBackgroundSelected}" 
-                              VerticalAlignment="Bottom" Margin="-4,0" 
-                              IsVisible="False" 
-                              Data="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabViewTemplateSettings.TabGeometry}" />
+                    <!-- (WinUI) This Path wrapped in a Canvas to prevent an infinite loop in calculating its width. 
+                    -->
+                    <Canvas Grid.ColumnSpan="3" Name="SelectedBackgroundPathHost">
+                        <Path Data="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabViewTemplateSettings.TabGeometry}" 
+                              Fill="{DynamicResource TabViewItemHeaderBackground}" 
+                              VerticalAlignment="Bottom"
+                              IsVisible="False" Opacity="1"
+                              Margin="-4,0"
+                              Name="SelectedBackgroundPath"/>
                     </Canvas>
 
                     <Border Name="TabSeparator" HorizontalAlignment="Right" 
@@ -125,7 +232,6 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             TemplatedControl.IsTemplateFocusTarget="True"
                             Padding="{DynamicResource TabViewItemHeaderPadding}"
-                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource TopCornerRadiusFilterConverter}}"
                             Name="TabContainerBorder"
                             Grid.Column="1">
                         
@@ -167,8 +273,12 @@
                 </Grid> 
             </ControlTemplate>
         </Setter>
-        
-        <Style Selector="^:pointerover">
+        <Style Selector="^ /template/ Border#TabContainerBorder">
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource TopCornerRadiusFilterConverter}}" />
+        </Style>
+
+        <Style Selector="^:top, ^:bottom">
+            <Style Selector="^:pointerover">
                 <Style Selector="^ /template/ Border#TabContainerBorder">
                     <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundPointerOver}" />
                 </Style>
@@ -416,52 +526,42 @@
             </Style>
         </Style>
 
-
-        <!-- :borderleft WinUI: LeftOfSelectedTab -->
-        <Style Selector="^:borderleft /template/ Border#BottomBorderLine">
-            <Setter Property="Margin" Value="0 0 2 0" />
-        </Style>
-
-        <!-- :borderright WinUI: RightOfSelectedTab-->
-        <Style Selector="^:borderright /template/ Border#BottomBorderLine">
-            <Setter Property="Margin" Value="2 0 0 0" />
-        </Style>
-
-        <!-- :noborder WinUI: NoBottomBorderLine -->
-        <Style Selector="^:noborder /template/ Border#BottomBorderLine">
-            <Setter Property="IsVisible" Value="False" />
-        </Style>
-
-        <!-- WinUI: CloseButtonCollapsed TODO: CloseButtonVisible?-->
-        <Style Selector="^:closeCollapsed">
-            <Style Selector="^ /template/ Border#TabContainerBorder">
-                <Setter Property="Padding" Value="{DynamicResource TabViewItemHeaderPaddingWithoutCloseButton}" />
-            </Style>
-
-            <Style Selector="^ /template/ Button#CloseButton">
-                <Setter Property="IsVisible" Value="False" />
-            </Style>
-        </Style>
-        
-
         <Style Selector="^:icon /template/ Viewbox#IconBox">
             <Setter Property="IsVisible" Value="True" />
-        </Style>
-
-        <Style Selector="^:compact">
-            <Style Selector="^ /template/ Viewbox#IconBox">
-                <Setter Property="Margin" Value="0" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
-                <Setter Property="IsVisible" Value="False" />
-            </Style>
-            <Style Selector="^ /template/ Rectangle#IconColumn">
-                <Setter Property="Width" Value="{DynamicResource TabViewItemHeaderIconSize}" />
-            </Style>
         </Style>
 
         <Style Selector="^:dragging /template/ Grid#LayoutRoot">
             <Setter Property="Opacity" Value="0" />
         </Style>
+
+        <Style Selector="^:bottom">
+            <Style Selector="^ /template/ Border#BottomBorderLine">
+                <Setter Property="VerticalAlignment" Value="Top" />
+            </Style>
+
+            <Style Selector="^ /template/ Path#LeftRadiusRenderArc">
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="RenderTransform" Value="scaleY(-1)" />
+                <Setter Property="Margin" Value="-4 1 0 0" />
+            </Style>
+            <Style Selector="^ /template/ Path#RightRadiusRenderArc">
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="RenderTransform" Value="scaleY(-1)" />
+                <Setter Property="Margin" Value="0 1 -4 0" />
+            </Style>
+
+            <Style Selector="^ /template/ Border#TabContainerBorder">
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}" />
+            </Style>
+            <Style Selector="^:selected">
+                <Style Selector="^ /template/ Border#TabContainerBorder">
+                    <Setter Property="Margin" Value="{DynamicResource TabViewSelectedItemHeaderMarginBottom}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrushBottom}" />
+                    <Setter Property="BorderThickness" Value="1 0 1 1" />
+                </Style>
+            </Style>
+        </Style>
+       
     </ControlTheme>
 </ResourceDictionary>
