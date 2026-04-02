@@ -88,7 +88,7 @@ public partial class TabViewItem : SelectorItem
         var tabView = Parent as TabView ?? this.FindAncestorOfType<TabView>();
 
         _closeButton = e.NameScope.Get<Button>(s_tpCloseButton);
-       
+
         if (string.IsNullOrEmpty(AutomationProperties.GetName(_closeButton)))
         {
             // TODO: I need to remember how I made my json file and update it to include this
@@ -101,7 +101,7 @@ public partial class TabViewItem : SelectorItem
             ToolTip.SetTip(_closeButton, tabView.GetTabCloseButtonTooltipText());
         }
 
-        _closeButton.Click += OnCloseButtonClick;
+        _closeButton?.Click += OnCloseButtonClick;
 
         OnHeaderChanged();
         OnIconSourceChanged();
@@ -359,7 +359,7 @@ public partial class TabViewItem : SelectorItem
         if (!isTop)
         {
             geom.Transform = new RotateTransform(180, geom.Bounds.Width * 0.5, geom.Bounds.Height * 0.5);
-    }
+        }
 
         TabViewTemplateSettings.TabGeometry = geom;
     }
@@ -591,22 +591,26 @@ public partial class TabViewItem : SelectorItem
 
     private void OnSelectedBackgroundPathSizeChanged(object sender, SizeChangedEventArgs e)
     {
-        var path = _selectedBackgroundPath;
+        //if (_location == TabViewTabStripLocation.Left || _location == TabViewTabStripLocation.Right)
+        //    return;
 
-        var offset = path.Bounds.Y;
-        var actualOffset = double.Round(offset);
+        //bool top = _location == TabViewTabStripLocation.Top;
+        //var path = _selectedBackgroundPath;
 
-        if (actualOffset > offset)
-        {
-            // Move the SelectedBackgroundPath element down by a fraction of a pixel to avoid a faint gap line
-            // between the selected TabViewItem and its content.
-            var tt = new TranslateTransform(0, actualOffset - offset);
-            path.RenderTransform = tt;
-        }
-        else if (path.RenderTransform != null)
-        {
-            path.RenderTransform = null;
-        }
+        //var offset = path.Bounds.Y;
+        //var actualOffset = double.Round(offset);
+
+        //if (actualOffset > offset)
+        //{
+        //    // Move the SelectedBackgroundPath element down by a fraction of a pixel to avoid a faint gap line
+        //    // between the selected TabViewItem and its content.
+        //    var tt = new TranslateTransform(0, top ? actualOffset - offset : offset - actualOffset);
+        //    path.RenderTransform = tt;
+        //}
+        //else if (path.RenderTransform != null)
+        //{
+        //    path.RenderTransform = null;
+        //}
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -631,6 +635,7 @@ public partial class TabViewItem : SelectorItem
     private bool _firstTimeSettingToolTip = true;
     private FACompositeDisposable _tabDragRevoker;
     private Path _selectedBackgroundPath;
+    private TabViewTabStripLocation _location;
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;
