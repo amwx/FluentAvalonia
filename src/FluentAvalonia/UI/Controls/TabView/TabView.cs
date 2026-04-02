@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Reflection.Metadata;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Automation.Peers;
@@ -71,6 +72,7 @@ public partial class TabView : TemplatedControl
 
         _tabCloseButtonTooltipText = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewCloseButtonTooltipWithKA);
         PseudoClasses.Set(s_pcTop, true);
+        DragDrop.SetAllowDrop(this, true);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -88,21 +90,20 @@ public partial class TabView : TemplatedControl
         _tabContainerGrid = e.NameScope.Get<Grid>(s_tpTabContainerGrid);
         if (_tabContainerGrid.ColumnDefinitions.Count > 0)
         {
-        _leftContentColumn = _tabContainerGrid.ColumnDefinitions[0];
-        _tabColumn = _tabContainerGrid.ColumnDefinitions[1];
-        _addButtonColumn = _tabContainerGrid.ColumnDefinitions[2];
-        _rightContentColumn = _tabContainerGrid.ColumnDefinitions[3];
+            _leftContentColumn = _tabContainerGrid.ColumnDefinitions[0];
+            _tabColumn = _tabContainerGrid.ColumnDefinitions[1];
+            _addButtonColumn = _tabContainerGrid.ColumnDefinitions[2];
+            _rightContentColumn = _tabContainerGrid.ColumnDefinitions[3];
         }
         else
         {
             _tabContainerGrid.SizeChanged += HandleTabContainerGridSizeChangedForVerticalTabView;
         }
-
+        
         _tabContainerGrid.PointerEntered += OnTabStripPointerEnter;
         _tabContainerGrid.PointerExited += OnTabStripPointerLeave;
 
         _listView = e.NameScope.Get<TabViewListView>(s_tpTabListView);
-
         if (_listView != null)
         {
             LogicalChildren.Add(_listView);
@@ -113,11 +114,10 @@ public partial class TabView : TemplatedControl
             _listView.DragItemsStarting += OnListViewDragItemsStarting;
             _listView.DragItemsCompleted += OnListViewDragItemsCompleted;
 
-            _listView.AddHandler(DragDrop.DragOverEvent, OnListViewDragOver);
-
-            _listView.AddHandler(DragDrop.DropEvent, OnListViewDrop);
-            _listView.AddHandler(DragDrop.DragEnterEvent, OnListViewDragEnter);
-            _listView.AddHandler(DragDrop.DragLeaveEvent, OnListViewDragLeave);
+            _listView.DragOver += OnListViewDragOver;
+            _listView.Drop += OnListViewDrop;
+            _listView.DragEnter += OnListViewDragEnter;
+            _listView.DragLeave += OnListViewDragLeave;
 
             // TODO: v3
             //_listView.GettingFocus += OnListViewGettingFocus();
@@ -128,7 +128,7 @@ public partial class TabView : TemplatedControl
                 .Subscribe(_ => OnListViewDraggingPropertyChanged());
             _listViewAllowDropPropertyChangedRevoker =
                 _listView.GetPropertyChangedObservable(DragDrop.AllowDropProperty)
-                .Subscribe(_ => OnListViewDraggingPropertyChanged());            
+                .Subscribe(_ => OnListViewDraggingPropertyChanged());
         }
 
         _addButton = e.NameScope.Find<Button>(s_tpAddButton);
@@ -201,7 +201,7 @@ public partial class TabView : TemplatedControl
         else if (change.Property == TabStripLocationProperty)
         {
             OnTabStripLocationPropertyChanged(change);
-    }
+        }
     }
 
     internal void SetTabSeparatorOpacity(int index, int opacityValue)
@@ -262,7 +262,7 @@ public partial class TabView : TemplatedControl
             // Only set TabContent to null if we're truly switching orientations
             UpdateTabContent();
         }
-
+        
 
         var oldClass = GetClassForStripLocation(args.GetOldValue<TabViewTabStripLocation>());
         var newClass = GetClassForStripLocation(args.GetNewValue<TabViewTabStripLocation>());
@@ -467,17 +467,17 @@ public partial class TabView : TemplatedControl
                 }
                 else
                 {
-                // copy the list, because clearing lvItems may also clear TabItems
-                using var l = new PooledList<object>(lvItems.Count);
+                    // copy the list, because clearing lvItems may also clear TabItems
+                    using var l = new PooledList<object>(lvItems.Count);
 
-                foreach (var item in TabItems)
-                    l.Add(item);
+                    foreach (var item in TabItems)
+                        l.Add(item);
 
-                lvItems.Clear();
+                    lvItems.Clear();
 
-                foreach (var item in l.AsSpan())
-                    lvItems.Add(item);
-            }
+                    foreach (var item in l.AsSpan())
+                        lvItems.Add(item);
+                }                
             }
 
             TabItems = lvItems;
@@ -511,9 +511,9 @@ public partial class TabView : TemplatedControl
         if (_itemsPresenter != null)
         {
             _itemsPresenter = _listView.Presenter;
-        _itemsPresenter.SizeChanged += OnItemsPresenterSizeChanged;
+            _itemsPresenter.SizeChanged += OnItemsPresenterSizeChanged;
         }
-
+        
 
         var scrollViewer = _listView.Scroller;
         _scrollViewer = scrollViewer;
@@ -528,8 +528,7 @@ public partial class TabView : TemplatedControl
                 scrollViewer.Loaded += OnScrollViewerLoaded;
             }
         }
-        _scrollViewer = scrollViewer;
-
+        
 
         UpdateBottomBorderLineVisualStates();
         UpdateNonClientRegion();
@@ -579,6 +578,7 @@ public partial class TabView : TemplatedControl
             }
         }
 
+        // TODO: We now have ScrollChanged event, can probably switch to that
         _scrollViewerViewChangedRevoker = new FACompositeDisposable(
             _scrollViewer.GetPropertyChangedObservable(ScrollViewer.OffsetProperty).Subscribe(OnScrollViewerViewChanged),
             _scrollViewer.GetPropertyChangedObservable(ScrollViewer.ExtentProperty).Subscribe(OnScrollViewerViewChanged),
@@ -723,8 +723,9 @@ public partial class TabView : TemplatedControl
                 
                 Dispatcher.UIThread.Post(() =>
                 {
-                UpdateTabWidths();
-                SetTabSeparatorOpacity(numItems - 1);
+                    UpdateTabWidths();
+                    SetTabSeparatorOpacity(numItems - 1);
+                });
             }
         }
 
@@ -1366,6 +1367,7 @@ public partial class TabView : TemplatedControl
 
     private void UpdateIsItemDraggedOver(bool isItemDraggedOver)
     {
+        // TODO: How do we want to handle this?
         if (_isItemDraggedOver != isItemDraggedOver)
         {
             _isItemDraggedOver = isItemDraggedOver;
@@ -1432,10 +1434,10 @@ public partial class TabView : TemplatedControl
 
             _listView.DragItemsStarting -= OnListViewDragItemsStarting;
             _listView.DragItemsCompleted -= OnListViewDragItemsCompleted;
-            _listView.RemoveHandler(DragDrop.DragOverEvent, OnListViewDragOver);
-            _listView.RemoveHandler(DragDrop.DropEvent, OnListViewDrop);
-            _listView.RemoveHandler(DragDrop.DragEnterEvent, OnListViewDragEnter);
-            _listView.RemoveHandler(DragDrop.DragLeaveEvent, OnListViewDragLeave);
+            _listView.DragOver -= OnListViewDragOver;
+            _listView.Drop -= OnListViewDrop;
+            _listView.DragEnter -= OnListViewDragEnter;
+            _listView.DragLeave -= OnListViewDragLeave;
 
             _listViewAllowDropPropertyChangedRevoker?.Dispose();
             _listViewCanReorderItemsPropertyChangedRevoker?.Dispose();
@@ -1542,10 +1544,6 @@ public partial class TabView : TemplatedControl
     // (WinUI) TODO: what is the right number and should this be customizable?
     private static double c_scrollAmount = 50d;
 
-    private const string s_pcTop = ":top";
-    private const string s_pcLeft = ":left";
-    private const string s_pcRight = ":right";
-    private const string s_pcBottom = ":bottom";
 
     class TabViewCommand : ICommand
     {

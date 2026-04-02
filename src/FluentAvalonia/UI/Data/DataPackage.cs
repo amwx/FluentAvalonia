@@ -1,48 +1,65 @@
 ﻿using Avalonia.Input;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
 
 namespace FluentAvalonia.UI.Data;
 
 /// <summary>
-/// This class is part of the ListView logic, which has been suspended for now
+/// Contains the data a user want to exchange
 /// </summary>
-public class DataPackage : IDataObject
+/// <remarks>This class is a wrapper around Avalonia's <see cref="IDataTransfer"/> API to
+/// keep things more inline with WinUI</remarks>
+public sealed class DataPackage : IDataTransfer, IAsyncDataTransfer
 {
+    public DataPackage()
+    {
+        _dt = new DataTransfer();
+    }
+
     /// <summary>
     /// Gets or sets the requested operation for the data object
     /// </summary>
     public DragDropEffects RequestedOperation { get; set; }
 
-    public bool Contains(string dataFormat) =>
-        _data.ContainsKey(dataFormat);
+    public void SetText(string text)
+    {
+        _dt.Add(DataTransferItem.CreateText(text));
+    }
 
-    public object Get(string dataFormat) =>
-        _data.TryGetValue(dataFormat, out var value) ? value :
-        throw new ArgumentException($"No data format of {dataFormat} was found in the data package");
+    public string GetText()
+    {
+        return _dt.TryGetText();
+    }
 
-    public IEnumerable<string> GetDataFormats() =>
-        _data.Keys;
+    public void SetStorageItems(IEnumerable<IStorageItem> items)
+    {
+        foreach (var item in items)
+        {
+            _dt.Add(DataTransferItem.CreateFile(item));
+        }
+    }
 
-    public IEnumerable<string> GetFileNames() =>
-        Get(DataFormats.Files) as IEnumerable<string>;
+    public IReadOnlyList<IStorageItem> GetStorageItems()
+    {
+        return _dt.TryGetFiles();
+    }
 
-    /// <summary>
-    /// Gets the data for the operation as a string
-    /// </summary>
-    public string GetText() =>
-        Get(DataFormats.Text) as string;
+    public void SetBitmap(Bitmap bmp)
+    {
+        throw new NotImplementedException("Avalonia doesn't currently support this");
+    }
 
-    /// <summary>
-    /// Sets string content as the data for the operation
-    /// </summary>
-    /// <param name="txt"></param>
-    public void SetText(string txt) =>
-        _data.Add(DataFormats.Text, txt);
+    IReadOnlyList<DataFormat> IDataTransfer.Formats => _dt.Formats;
 
-    /// <summary>
-    /// Sets the data for the operation with the specified format
-    /// </summary>
-    public void SetData(string format, object value) =>
-        _data.Add(format, value);
+    IReadOnlyList<IDataTransferItem> IDataTransfer.Items => _dt.Items;
 
-    private readonly Dictionary<string, object> _data = new Dictionary<string, object>();
+    public IReadOnlyList<DataFormat> Formats => _dt.Formats;
+    public IReadOnlyList<IAsyncDataTransferItem> Items => _dt.Items;
+
+    public void Dispose()
+    {
+
+    }
+
+    private readonly DataTransfer _dt;
 }

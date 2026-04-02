@@ -7,8 +7,10 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
@@ -744,6 +746,87 @@ public class TabViewTests
             idx++;
         }
     }
+
+    [AvaloniaFact]
+    public void DragItemsStartingDoesNotFireWithReorder()
+    {
+        var (w, TabView) = GetTabViewWithItemsSource();
+        TabView.CanDragTabs = false;
+        TabView.CanReorderTabs = true;
+        DragDrop.SetAllowDrop(w, true); // Ensure the window is a drop target so we get events
+
+        Dispatcher.UIThread.RunJobs();
+
+        bool fired = false;
+        TabView.TabDragStarting += (s, e) =>
+        {
+            fired = true;
+        };
+
+        var tabItem = TabView.ContainerFromIndex(0);
+
+        tabItem.MouseDownControl(new Point(10, 10), MouseButton.Left);
+        tabItem.MoveMouseToControl(new Point(100, 10));
+        tabItem.MouseUpControl(new Point(110, 0), MouseButton.Left);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.False(fired);
+    }
+
+    [AvaloniaFact]
+    public void DragItemsStartingFiresWhenCanDragTabsIsTrue()
+    {
+        var (w, TabView) = GetTabViewWithItemsSource();
+        TabView.CanDragTabs = true;
+        TabView.CanReorderTabs = true;
+
+        Dispatcher.UIThread.RunJobs();
+
+        TabViewTabDragStartingEventArgs args = null;
+        TabView.TabDragStarting += (s, e) =>
+        {
+            args = e;
+        };
+
+        var tabItem = TabView.ContainerFromIndex(0);
+
+        tabItem.MouseDownControl(new Point(10, 10), MouseButton.Left);
+        tabItem.MoveMouseToControl(new Point(100, 10));
+        tabItem.MouseUpControl(new Point(110, 0), MouseButton.Left);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.NotNull(args);
+        Assert.Equal(tabItem, args.Tab);
+        Assert.Equal(TabView.TabItemsSource.ElementAt(0), args.Item);
+    }
+
+    [AvaloniaFact]
+    public void DragItemsCompletedFiresWhenDnDIsFinished()
+    {
+        var (w, TabView) = GetTabViewWithItemsSource();
+        TabView.CanDragTabs = true;
+        TabView.CanReorderTabs = true;
+
+        Dispatcher.UIThread.RunJobs();
+
+        TabViewTabDragCompletedEventArgs args = null;
+        TabView.TabDragCompleted += (s, e) =>
+        {
+            args = e;
+        };
+
+        var tabItem = TabView.ContainerFromIndex(0);
+
+        tabItem.MouseDownControl(new Point(10, 10), MouseButton.Left);
+        tabItem.MoveMouseToControl(new Point(100, 10));
+        tabItem.MouseUpControl(new Point(110, 0), MouseButton.Left);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.NotNull(args);
+        Assert.Equal(tabItem, args.Tab);
+        Assert.Equal(TabView.TabItemsSource.ElementAt(0), args.Item);
+    }
+
 
 
     private (Window w, TabView tv) GetTabView(bool addTabs = true, int? selIndex = null)
