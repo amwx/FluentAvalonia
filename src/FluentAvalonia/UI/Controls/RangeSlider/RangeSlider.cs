@@ -386,8 +386,13 @@ public partial class RangeSlider : TemplatedControl
 
     private void ContainerCanvasPointerExited(object sender, PointerEventArgs e)
     {
-        var position = e.GetCurrentPoint(_containerCanvas).Position.X;
-        var normalizedPosition = ((position / DragWidth) * (Maximum - Minimum)) + Minimum;
+        var position = e.GetCurrentPoint(_containerCanvas).Position;
+
+        // Bug in Avalonia.InputElement.PointerExited // https://github.com/avaloniaui/avalonia/issues/20520
+        if (position.X >= _containerCanvas.Bounds.Left && position.X <= _containerCanvas.Bounds.Right && position.Y >= _containerCanvas.Bounds.Top && position.Y <= _containerCanvas.Bounds.Bottom)
+            return;
+
+        var normalizedPosition = ((position.X / DragWidth) * (Maximum - Minimum)) + Minimum;
 
         if (_pointerManipulatingMin)
         {
