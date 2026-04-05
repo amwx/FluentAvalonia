@@ -14,7 +14,7 @@ namespace FluentAvalonia.UI.Controls;
 [TemplatePart(s_tpTabSeparator, typeof(Visual))]
 [TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpCloseButton, typeof(Button))]
-[TemplatePart(s_tpSelectedBackgroundPathName, typeof(Avalonia.Controls.Shapes.Path))]
+[TemplatePart(s_tpSelectedBackgroundPathName, typeof(Path))]
 public partial class TabViewItem
 {
     /// <summary>
@@ -103,6 +103,7 @@ public partial class TabViewItem
 
 
     private const string s_pcCloseCollapsed = ":closeCollapsed";
+    private const string s_pcDragging = ":dragging";
 
     private const string s_tpSelectedBackgroundPathName = "SelectedBackgroundPath";
     private const string s_tpTabSeparator = "TabSeparator";

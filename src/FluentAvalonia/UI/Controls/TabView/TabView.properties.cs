@@ -305,6 +305,9 @@ public partial class TabView
         private set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
     }
 
+    /// <summary>
+    /// Gets or sets the TabItems source for this TabView
+    /// </summary>
     public IEnumerable TabItemsSource
     {
         get => GetValue(TabItemsSourceProperty);

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using System.Reflection.Metadata;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Automation.Peers;
@@ -17,14 +16,6 @@ using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
-
-public enum TabViewTabStripLocation
-{
-    Top,
-    Left,
-    Right,
-    Bottom
-}
 
 /// <summary>
 /// A control used to display a set of tabs and their respective content
@@ -237,6 +228,7 @@ public partial class TabView : TemplatedControl
     {
         var (oldValue, newValue) = args.GetOldAndNewValue<TabViewTabStripLocation>();
 
+        // TODO v3: Is this needed or left over from my testing?
         //if ((IsHorizontal(oldValue) && !IsHorizontal(newValue)) ||
         //    (!IsHorizontal(oldValue) && IsHorizontal(newValue)) &&
         //    _listView != null && _listView.ItemsSource == null)
@@ -487,7 +479,6 @@ public partial class TabView : TemplatedControl
         var stripLocation = TabStripLocation;
         lv.HandleTabStripLocationChanged(stripLocation, null, GetClassForStripLocation(stripLocation));
 
-
         if (SelectedItem != null)
         {
             UpdateSelectedItem();
@@ -513,7 +504,6 @@ public partial class TabView : TemplatedControl
             _itemsPresenter.SizeChanged += OnItemsPresenterSizeChanged;
         }
         
-
         var scrollViewer = _listView.Scroller;
         _scrollViewer = scrollViewer;
         if (scrollViewer != null)
@@ -526,8 +516,7 @@ public partial class TabView : TemplatedControl
             {
                 scrollViewer.Loaded += OnScrollViewerLoaded;
             }
-        }
-        
+        }        
 
         UpdateBottomBorderLineVisualStates();
         UpdateNonClientRegion();
@@ -1154,6 +1143,12 @@ public partial class TabView : TemplatedControl
                     height += item.DesiredSize.Height;
                 }    
                 var maxSpace = _tabContainerGrid.Bounds.Height;
+                
+                if (_isItemDraggedOver)
+                {
+                    // Add the dragging space in vertical view by using the avg. item height
+                    height += (height / _tabContainerGrid.Children.Count);
+                }
 
                 _scrollViewer?.MaxHeight = double.Clamp(maxSpace - height, 0, double.PositiveInfinity);
             }
@@ -1266,7 +1261,6 @@ public partial class TabView : TemplatedControl
         }
     }
 
-
     private void OnPaneResizeHandlePointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
     {
         if (e.Handled)
@@ -1366,13 +1360,14 @@ public partial class TabView : TemplatedControl
 
     private void UpdateIsItemDraggedOver(bool isItemDraggedOver)
     {
-        // TODO: How do we want to handle this?
         if (_isItemDraggedOver != isItemDraggedOver)
         {
             _isItemDraggedOver = isItemDraggedOver;
             UpdateTabWidths();
         }
     }
+
+    // ----------- TABVIEW TEAROUT - The following is left while I investigate adding this
 
     private void UpdateTabViewWithTearOutList()
     {
@@ -1413,6 +1408,7 @@ public partial class TabView : TemplatedControl
 
     private nint GetAppWindowId() => 0;
 
+    // ---------------- END TABVIEW TEAROUT
 
     private void UnhookEventsAndClearFields()
     {
@@ -1571,12 +1567,5 @@ public partial class TabView : TemplatedControl
         CtrlF4,
         CtrlTab,
         CtrlShftTab
-    }
-}
-
-public class TabViewAutomationPeer : ControlAutomationPeer
-{
-    public TabViewAutomationPeer(Control owner) : base(owner)
-    {
     }
 }
