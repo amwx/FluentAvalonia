@@ -3,9 +3,9 @@
 namespace FluentAvalonia.UI.Data;
 
 /// <summary>
-/// Expands <see cref="ICollectionView"/> to support filtering and sorting of items
+/// Expands <see cref="IFACollectionView"/> to support filtering and sorting of items
 /// </summary>
-public interface IAdvancedCollectionView : ICollectionView, INotifyPropertyChanged
+public interface IFAAdvancedCollectionView : IFACollectionView, INotifyPropertyChanged
 {
     /// <summary>
     /// Gets or sets the filter applied to the items in the CollectionView
@@ -15,7 +15,7 @@ public interface IAdvancedCollectionView : ICollectionView, INotifyPropertyChang
     /// <summary>
     /// Gets or sets the list of items used to sort the items in the CollectionView
     /// </summary>
-    IList<SortDescription> SortDescriptions { get; }
+    IList<FASortDescription> SortDescriptions { get; }
 
     /// <summary>
     /// Performs a full refresh of the items in the CollectionView

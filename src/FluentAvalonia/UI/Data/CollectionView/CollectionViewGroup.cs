@@ -7,9 +7,9 @@ using System.ComponentModel;
 
 namespace FluentAvalonia.UI.Data;
 
-internal class CollectionViewGroup : ICollectionViewGroup
+internal class CollectionViewGroup : IFACollectionViewGroup
 {
-    public CollectionViewGroup(GroupedDataCollectionView owner, object item, bool hasItemsBinding)
+    public CollectionViewGroup(FAGroupedDataCollectionView owner, object item, bool hasItemsBinding)
     {
         _owner = owner;
         Group = item;
@@ -55,13 +55,13 @@ internal class CollectionViewGroup : ICollectionViewGroup
         _owner.GroupItemsChanged(this, args);
     }
 
-    protected GroupedDataCollectionView _owner;
+    protected FAGroupedDataCollectionView _owner;
     protected bool _hasItemsBinding;
 }
 
 internal class SpecializedCollectionViewGroup : CollectionViewGroup, IComparer<object>
 {
-    public SpecializedCollectionViewGroup(GroupedDataCollectionView owner, object item, bool hasItemsBinding)
+    public SpecializedCollectionViewGroup(FAGroupedDataCollectionView owner, object item, bool hasItemsBinding)
         : base(owner, item, hasItemsBinding)
     {
 
@@ -462,7 +462,7 @@ internal class SpecializedCollectionViewGroup : CollectionViewGroup, IComparer<o
 
                 var cmp = desc.Comparer.Compare(cx, cy);
                 if (cmp != 0)
-                    return desc.Direction == SortDirection.Ascending ? cmp : -cmp;
+                    return desc.Direction == FASortDirection.Ascending ? cmp : -cmp;
             }
         }
 

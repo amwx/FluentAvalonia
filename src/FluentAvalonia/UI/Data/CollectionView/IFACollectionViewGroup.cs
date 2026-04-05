@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents any grouped items within a view
 /// </summary>
-public interface ICollectionViewGroup
+public interface IFACollectionViewGroup
 {
     /// <summary>
     /// Gets or sets the grouping contextused for grouping the data, which sets the data context

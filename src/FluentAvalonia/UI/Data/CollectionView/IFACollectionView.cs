@@ -6,7 +6,7 @@ namespace FluentAvalonia.UI.Data;
 /// <summary>
 /// Enables collections to support current record management, grouping, and incremental loading
 /// </summary>
-public interface ICollectionView : IEnumerable<object>, IList<object>, INotifyCollectionChanged
+public interface IFACollectionView : IEnumerable<object>, IList<object>, INotifyCollectionChanged
 {
     // WinUI/UWP docs say that these objects should be ICollectionViewGroup even though
     // it's specified as I[List]<object>, so to avoid needless casting all the time, 
@@ -14,7 +14,7 @@ public interface ICollectionView : IEnumerable<object>, IList<object>, INotifyCo
     /// <summary>
     /// Returns any collection groups that are associated with the view
     /// </summary>
-    IAvaloniaList<ICollectionViewGroup> CollectionGroups { get; }
+    IAvaloniaList<IFACollectionViewGroup> CollectionGroups { get; }
 
     /// <summary>
     /// Gets the current item in the view
@@ -50,7 +50,7 @@ public interface ICollectionView : IEnumerable<object>, IList<object>, INotifyCo
     /// <param name="count">The number of items to load</param>
     /// <returns>The wrapped results of the load operation</returns>
     /// <remarks>Not implemented</remarks>
-    Task<LoadMoreItemsResult> LoadMoreItemsAsync(uint count);
+    Task<FALoadMoreItemsResult> LoadMoreItemsAsync(uint count);
 
     /// <summary>
     /// Sets the specified item to be the CurrentItem in the view
@@ -98,5 +98,5 @@ public interface ICollectionView : IEnumerable<object>, IList<object>, INotifyCo
     /// <summary>
     /// When implementing this interface, fire this event before changing the current item. The event handler can cancel this event
     /// </summary>
-    event CurrentChangingEventHandler CurrentChanging;
+    event FACurrentChangingEventHandler CurrentChanging;
 }

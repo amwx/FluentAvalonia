@@ -9,21 +9,21 @@ namespace FluentAvalonia.UI.Data;
 /// <summary>
 /// Provides data on how a CollectionView should sort its items
 /// </summary>
-public class SortDescription
+public class FASortDescription
 {
     /// <summary>
     /// Creates a default sort description, that sorts in Ascending order using the default
     /// object comparer (which compares the items themselves)
     /// </summary>
-    public SortDescription()
-        : this(null, null, SortDirection.Ascending, ObjectComparer.Instance) { }
+    public FASortDescription()
+        : this(null, null, FASortDirection.Ascending, ObjectComparer.Instance) { }
 
     /// <summary>
     /// Creates a sort description with the specified SortDirection and comparer
     /// </summary>
     /// <param name="direction">The direction this description should sort items</param>
     /// <param name="comparer">The custom IComparer implementation</param>
-    public SortDescription(SortDirection direction, IComparer comparer = null)
+    public FASortDescription(FASortDirection direction, IComparer comparer = null)
         : this(null, null, direction, comparer) { }
 
     /// <summary>
@@ -34,8 +34,8 @@ public class SortDescription
     /// from the binding, if applicable</param>
     /// <param name="comparer">The custom IComparer implementation</param>
     /// <remarks>Note: nested properties are not supported, particularly for live shaping</remarks>
-    public SortDescription(BindingBase property, string propertyName = null, IComparer comparer = null)
-        : this(property, propertyName, SortDirection.Ascending, comparer) { }
+    public FASortDescription(BindingBase property, string propertyName = null, IComparer comparer = null)
+        : this(property, propertyName, FASortDirection.Ascending, comparer) { }
 
     /// <summary>
     /// Creates a custom sort description with a specified property binding, direction, and IComparer
@@ -46,7 +46,7 @@ public class SortDescription
     /// <param name="direction">The direction this description should sort items</param>
     /// <param name="comparer">The custom IComparer implementation</param>
     /// <remarks>Note: nested properties are not supported, particularly for live shaping</remarks>
-    public SortDescription(BindingBase property, string propertyName, SortDirection direction, IComparer comparer)
+    public FASortDescription(BindingBase property, string propertyName, FASortDirection direction, IComparer comparer)
     {
         Property = property;
         _propertyName = propertyName;
@@ -88,25 +88,25 @@ public class SortDescription
     /// <summary>
     /// Gets or sets the direction the sort description should sort
     /// </summary>
-    public SortDirection Direction { get; set; }
+    public FASortDirection Direction { get; set; }
 
     /// <summary>
     /// Gets or sets a custom IComparer implementation used to compare items for sorting
     /// </summary>
     public IComparer Comparer { get; set; }
 
-    public static SortDescription CreateCompiled(string propertyName,
+    public static FASortDescription CreateCompiled(string propertyName,
         Func<object, object> getter,
         Type propertyType,
-        SortDirection direction)
+        FASortDirection direction)
     {
         return CreateCompiled(propertyName, getter, propertyType, direction, null);
     }
 
-    public static SortDescription CreateCompiled(string propertyName,
+    public static FASortDescription CreateCompiled(string propertyName,
         Func<object, object> getter,
         Type propertyType,
-        SortDirection direction,
+        FASortDirection direction,
         IComparer comparer)
     {
         var x = new CompiledBindingPathBuilder();
@@ -117,7 +117,7 @@ public class SortDescription
 
         var cb = new CompiledBindingExtension(path);
 
-        return new SortDescription(cb, propertyName, direction, comparer);
+        return new FASortDescription(cb, propertyName, direction, comparer);
     }
 
     private string _propertyName;

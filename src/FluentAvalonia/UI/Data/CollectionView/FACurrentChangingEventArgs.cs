@@ -7,24 +7,24 @@ namespace FluentAvalonia.UI.Data;
 /// </summary>
 /// <param name="sender">The source of the event</param>
 /// <param name="e">The event data</param>
-public delegate void CurrentChangingEventHandler([In] object sender, [In] CurrentChangingEventArgs e);
+public delegate void FACurrentChangingEventHandler(object sender, FACurrentChangingEventArgs e);
 
 /// <summary>
 /// Provides data for the CurrentChanging event
 /// </summary>
-public class CurrentChangingEventArgs : EventArgs
+public class FACurrentChangingEventArgs : EventArgs
 {
     /// <summary>
     /// Initializes a new instance of the CurrentChangingEventArgs class
     /// </summary>
-    public CurrentChangingEventArgs() { }
+    public FACurrentChangingEventArgs() { }
 
     /// <summary>
     /// Initializes a new instance of the CurrentChangingEventArgs class
     /// </summary>
     /// <param name="canCancel">True to disable the ability to cancel a CurrentItem change; False 
     /// to enable cancellation</param>
-    public CurrentChangingEventArgs([In] bool canCancel)
+    public FACurrentChangingEventArgs([In] bool canCancel)
     {
         IsCancelable = canCancel;
     }
