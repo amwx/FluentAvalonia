@@ -6,25 +6,25 @@ using Avalonia.Styling;
 
 namespace FluentAvalonia.UI.Windowing;
 
-public partial class AppWindow : Window
+public partial class FAAppWindow : Window
 {
     /// <summary>
     /// Defines the <see cref="TemplateSettings"/> property
     /// </summary>
-    public static readonly StyledProperty<AppWindowTemplateSettings> TemplateSettingsProperty =
-        AvaloniaProperty.Register<AppWindow, AppWindowTemplateSettings>(nameof(TemplateSettings));
+    public static readonly StyledProperty<FAAppWindowTemplateSettings> TemplateSettingsProperty =
+        AvaloniaProperty.Register<FAAppWindow, FAAppWindowTemplateSettings>(nameof(TemplateSettings));
 
     /// <summary>
     /// Defines the <see cref="Icon"/> property
     /// </summary>
     public static readonly new StyledProperty<IImage> IconProperty =
-        AvaloniaProperty.Register<AppWindow, IImage>(nameof(Icon));
+        AvaloniaProperty.Register<FAAppWindow, IImage>(nameof(Icon));
 
     /// <summary>
     /// Defines the AllowInteractionInTitleBar attached property
     /// </summary>
     public static readonly AttachedProperty<bool> AllowInteractionInTitleBarProperty =
-        AvaloniaProperty.RegisterAttached<AppWindow, Control, bool>("AllowInteractionInTitleBar");
+        AvaloniaProperty.RegisterAttached<FAAppWindow, Control, bool>("AllowInteractionInTitleBar");
 
     /// <summary>
     /// Gets the value of the <see cref="AllowInteractionInTitleBarProperty"/> attached property for the given control
@@ -41,7 +41,7 @@ public partial class AppWindow : Window
     /// <summary>
     /// Provides calculated data for items within the Template of AppWindow
     /// </summary>
-    public AppWindowTemplateSettings TemplateSettings
+    public FAAppWindowTemplateSettings TemplateSettings
     {
         get => GetValue(TemplateSettingsProperty);
         private set => SetValue(TemplateSettingsProperty, value);
@@ -79,7 +79,7 @@ public partial class AppWindow : Window
     /// <summary>
     /// Gets or sets the splash screen that should show when the window first loads
     /// </summary>
-    public IApplicationSplashScreen SplashScreen
+    public IFAApplicationSplashScreen SplashScreen
     {
         get => _splashContext?.SplashScreen;
         set
@@ -121,14 +121,14 @@ public partial class AppWindow : Window
 
     protected internal bool IsWindows { get; internal set; }
 
-    protected override Type StyleKeyOverride => typeof(AppWindow);
+    protected override Type StyleKeyOverride => typeof(FAAppWindow);
 
-    internal MinMaxCloseControl SystemCaptionControl => _captionButtons;
+    internal FAMinMaxCloseControl SystemCaptionControl => _captionButtons;
 
 
     private SplashScreenContext _splashContext;
     private Border _templateRoot;
-    private MinMaxCloseControl _captionButtons;
+    private FAMinMaxCloseControl _captionButtons;
     private Panel _defaultTitleBar;
     private AppWindowTitleBar _titleBar;
     private List<WeakReference<Control>> _excludeHitTestList;

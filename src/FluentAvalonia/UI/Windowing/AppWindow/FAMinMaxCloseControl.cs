@@ -8,11 +8,11 @@ using FluentAvalonia.Core;
 namespace FluentAvalonia.UI.Windowing;
 
 /// <summary>
-/// Represents the caption buttons for a <see cref="AppWindow"/>
+/// Represents the caption buttons for a <see cref="FAAppWindow"/>
 /// </summary>
-public class MinMaxCloseControl : TemplatedControl
+public class FAMinMaxCloseControl : TemplatedControl
 {
-    public MinMaxCloseControl()
+    public FAMinMaxCloseControl()
     {
         KeyboardNavigation.SetIsTabStop(this, false);
     }
@@ -49,7 +49,7 @@ public class MinMaxCloseControl : TemplatedControl
 
         // MinMaxCloseControl should only be used in Template of AppWindow - so TemplatedParent
         // here should A) never be null, and B) Always be AppWindow
-        _owner = TemplatedParent as AppWindow;
+        _owner = TemplatedParent as FAAppWindow;
         _owner.Opened += OwnerWindowOpened;
 
         if (_owner.ShowAsDialog)
@@ -176,7 +176,7 @@ public class MinMaxCloseControl : TemplatedControl
     }
 
     private IDisposable _windowStateObservable;
-    private AppWindow _owner;
+    private FAAppWindow _owner;
     private Button _minimizeButton;
     private Button _maximizeButton;
     private Button _closeButton;

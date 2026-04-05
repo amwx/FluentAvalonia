@@ -4,7 +4,7 @@ using FluentAvalonia.Interop;
 
 namespace FluentAvalonia.UI.Windowing;
 
-public partial class AppWindow
+public partial class FAAppWindow
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
     private void InitializeAppWindow()
