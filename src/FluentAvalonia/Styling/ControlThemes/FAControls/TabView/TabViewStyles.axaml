@@ -6,16 +6,16 @@
 
     <Design.PreviewWith>
         <Border Width="800" Height="500">
-            <ui:TabView>
-                <ui:TabView.TabItems>
-                    <ui:TabViewItem Header="Item1" />
-                    <ui:TabViewItem Header="Item1" />
-                </ui:TabView.TabItems>
-            </ui:TabView>
+            <ui:FATabView>
+                <ui:FATabView.TabItems>
+                    <ui:FATabViewItem Header="Item1" />
+                    <ui:FATabViewItem Header="Item1" />
+                </ui:FATabView.TabItems>
+            </ui:FATabView>
         </Border>
     </Design.PreviewWith>
 
-    <!-- Change from WinUI:
+    <!-- Change from Winui:FA
         Must setting H padding here so ItemsPresenter sits slightly offset so the curve on the 
         bottom left of the first tab (if selected) shows, and the separator on the last item
         shows. Otherwise they get clipped by the ScrollContentPresenter

@@ -7,17 +7,17 @@
 
     <Design.PreviewWith>
         <Border Padding="20" Width="800" >
-            <ui:TabView>
-                <ui:TabView.TabItems>
-                    <ui:TabViewItem Header="Item1" />
-                    <ui:TabViewItem Header="Item1" />
-                </ui:TabView.TabItems>
-            </ui:TabView>
+            <ui:FATabView>
+                <ui:FATabView.TabItems>
+                    <ui:FATabViewItem Header="Item1" />
+                    <ui:FATabViewItem Header="Item1" />
+                </ui:FATabView.TabItems>
+            </ui:FATabView>
         </Border>
     </Design.PreviewWith>
 
     <!-- Resources in TabViewStyles.axaml -->
-    <conv:ScrollViewerVisibilityToBoolConverter x:Key="SVVTBC" />
+    <conv:FAScrollViewerVisibilityToBoolConverter x:Key="SVVTBC" />
 
     <ControlTheme x:Key="TabViewScrollButtonStyle" TargetType="RepeatButton">
         <Setter Property="Background" Value="{DynamicResource TabViewScrollButtonBackground}"/>

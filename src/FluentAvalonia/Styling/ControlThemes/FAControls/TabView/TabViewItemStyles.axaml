@@ -7,7 +7,7 @@
     <Design.PreviewWith>
         <Border Padding="20" Width="300" Height="100">
             <StackPanel Spacing="20" HorizontalAlignment="Left">
-                <ui:TabViewItem Header="Hello" IconSource="Save"
+                <ui:FATabViewItem Header="Hello" IconSource="Save"
                                 core:VisualStateHelper.ForcedClassesProperty=""/>
             </StackPanel>
         </Border>

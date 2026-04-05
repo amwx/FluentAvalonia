@@ -6,14 +6,14 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <ui:FAMenuFlyoutPresenter>
-                <ui:MenuFlyoutSubItem Text="Hello" IconSource="SaveFilled" />
+                <ui:FAMenuFlyoutSubItem Text="Hello" IconSource="SaveFilled" />
             </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
 
     <!-- All resources are in BaseResources.axaml -->
 
-    <ControlTheme x:Key="{x:Type ui:MenuFlyoutSubItem}" TargetType="ui:MenuFlyoutSubItem">
+    <ControlTheme x:Key="{x:Type ui:FAMenuFlyoutSubItem}" TargetType="ui:FAMenuFlyoutSubItem">
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource MenuFlyoutItemBackgroundBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutItemBorderThickness}"/>
@@ -48,7 +48,7 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Stretch" />
 
-                        <ui:SymbolIcon Symbol="ChevronRight"
+                        <ui:FASymbolIcon Symbol="ChevronRight"
                                        Grid.Column="1"
                                        Name="SubItemChevron"
                                        Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
@@ -69,7 +69,7 @@
             <Style Selector="^ /template/ ContentPresenter#IconContent">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FASymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
             </Style>
         </Style>
@@ -84,7 +84,7 @@
             <Style Selector="^ /template/ ContentPresenter#IconContent">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundPressed}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FASymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPressed}" />
             </Style>
         </Style>
@@ -99,7 +99,7 @@
             <Style Selector="^ /template/ ContentPresenter#IconContent">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundSubMenuOpened}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FASymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronSubMenuOpened}" />
             </Style>
         </Style>
@@ -114,7 +114,7 @@
             <Style Selector="^ /template/ ContentPresenter#IconContent">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemForegroundDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FASymbolIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />
             </Style>
         </Style>
