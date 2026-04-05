@@ -342,7 +342,7 @@ public partial class Frame : ContentControl
 
                     SetContentAndAnimate(CurrentEntry);
                     // We only raise the NavigatedEvent 
-                    page.RaiseEvent(new NavigationEventArgs(page, NavigationMode.New, null, param, pageType) { RoutedEvent = NavigatedToEvent });
+                    page.RaiseEvent(new FluentAvalonia.UI.Navigation.NavigationEventArgs(page, NavigationMode.New, null, param, pageType) { RoutedEvent = NavigatedToEvent });
                 }
                 else
                 {
@@ -465,7 +465,7 @@ public partial class Frame : ContentControl
             var oldEntry = CurrentEntry;
             CurrentEntry = entry;
 
-            var navEA = new NavigationEventArgs(
+            var navEA = new FluentAvalonia.UI.Navigation.NavigationEventArgs(
                 CurrentEntry.Instance,
                 mode, entry.NavigationTransitionInfo,
                 entry.Parameter,
@@ -553,7 +553,7 @@ public partial class Frame : ContentControl
 
     private void OnNavigationStopped(PageStackEntry entry, NavigationMode mode)
     {
-        NavigationStopped?.Invoke(this, new NavigationEventArgs(entry.Instance,
+        NavigationStopped?.Invoke(this, new FluentAvalonia.UI.Navigation.NavigationEventArgs(entry.Instance,
             mode, entry.NavigationTransitionInfo, entry.Parameter, entry.SourcePageType));
     }
 

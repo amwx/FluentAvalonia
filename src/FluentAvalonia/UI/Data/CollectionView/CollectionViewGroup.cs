@@ -469,16 +469,19 @@ internal class SpecializedCollectionViewGroup : CollectionViewGroup, IComparer<o
         return 0;
     }
 
-    private static object EvaluateBinding(IBinding binding, object item)
+    private static object EvaluateBinding(BindingBase binding, object item)
     {
-        _bindingHelper ??= new GroupedDataCollectionView.BindingHelper();
+        _bindingHelper ??= new BindingEvaluator<object>();
+        _bindingHelper.UpdateBinding(binding);
 
-        return _bindingHelper.Evaluate(binding, item);
+        var result = _bindingHelper.Evaluate(item);
+        _bindingHelper.ClearDataContext();
+        return result;
     }
 
     private List<object> _view;
     private IEnumerable _actualItems;
-    private static GroupedDataCollectionView.BindingHelper _bindingHelper;
+    private static BindingEvaluator<object> _bindingHelper;
     private bool _ignoreNotify;
 }
 

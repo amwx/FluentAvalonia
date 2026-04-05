@@ -130,34 +130,25 @@ public partial class NumberBox : TemplatedControl
         }
     }
 
-    protected override void OnGotFocus(GotFocusEventArgs e)
+    protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
 
-        if (_textBox != null)
-        {
-            _textBox.SelectAll();
-        }
+        _textBox?.SelectAll();
 
         if (SpinButtonPlacementMode == NumberBoxSpinButtonPlacementMode.Compact)
         {
-            if (_popup != null)
-            {
-                _popup.IsOpen = true;
-            }
+            _popup?.IsOpen = true;
         }
     }
 
-    protected override void OnLostFocus(RoutedEventArgs e)
+    protected override void OnLostFocus(FocusChangedEventArgs e)
     {
         base.OnLostFocus(e);
 
         ValidateInput();
 
-        if (_popup != null)
-        {
-            _popup.IsOpen = false;
-        }
+        _popup?.IsOpen = false;
     }
 
     protected override void OnPointerWheelChanged(PointerWheelEventArgs e)

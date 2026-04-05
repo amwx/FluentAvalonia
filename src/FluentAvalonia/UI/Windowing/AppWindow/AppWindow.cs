@@ -447,7 +447,7 @@ public partial class AppWindow : Window
         {
             // Control likely isn't attached to the visual tree yet so we have no way of attaching this to the 
             // AppWindow hosting it, defer now, but we'll check first just in case
-            if (control.GetVisualRoot() is AppWindow aw)
+            if (GetTopLevel(control) is AppWindow aw)
             {
                 aw.AddExcludeHitTestItem(control);
             }
@@ -461,7 +461,7 @@ public partial class AppWindow : Window
         {
             // If we change the value to false while still connected, we'll remove it from the list
             // Otherwise, we'll have to wait for the ref to be GC'd then we'll remove it later
-            if (control.GetVisualRoot() is AppWindow aw)
+            if (GetTopLevel(control) is AppWindow aw)
             {
                 aw.RemoveExcludeHitTestItem(control);
             }
@@ -472,7 +472,7 @@ public partial class AppWindow : Window
             var control = sender as Control;
             control.AttachedToVisualTree -= AwaitControlAttachedToVisualTree;
 
-            if (control.GetVisualRoot() is AppWindow aw)
+            if (GetTopLevel(control) is AppWindow aw)
             {
                 aw.AddExcludeHitTestItem(control);
             }

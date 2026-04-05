@@ -193,16 +193,16 @@ public partial class Frame : ContentControl
     /// Indiates to a page that it has been navigated away from. Takes the place of
     /// Microsoft.UI.Xaml.Controls.Page.OnNavigatedFrom() method
     /// </summary>
-    public static readonly RoutedEvent<NavigationEventArgs> NavigatedFromEvent =
-        RoutedEvent.Register<Control, NavigationEventArgs>("NavigatedFrom",
+    public static readonly RoutedEvent<FluentAvalonia.UI.Navigation.NavigationEventArgs> NavigatedFromEvent =
+        RoutedEvent.Register<Control, FluentAvalonia.UI.Navigation.NavigationEventArgs>("NavigatedFrom",
             RoutingStrategies.Direct);
 
     /// <summary>
     /// Indiates to a page that it is being navigated to. Takes the place of
     /// Microsoft.UI.Xaml.Controls.Page.OnNavigatedTo() method
     /// </summary>
-    public static readonly RoutedEvent<NavigationEventArgs> NavigatedToEvent =
-        RoutedEvent.Register<Control, NavigationEventArgs>("NavigatedTo",
+    public static readonly RoutedEvent<FluentAvalonia.UI.Navigation.NavigationEventArgs> NavigatedToEvent =
+        RoutedEvent.Register<Control, FluentAvalonia.UI.Navigation.NavigationEventArgs>("NavigatedTo",
             RoutingStrategies.Direct);
 
     private IList<PageStackEntry> _backStack;

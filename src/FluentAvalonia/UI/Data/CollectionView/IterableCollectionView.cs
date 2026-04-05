@@ -675,11 +675,15 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private object EvaluateBinding(IBinding binding, object item)
+    private object EvaluateBinding(BindingBase binding, object item)
     {
-        _bindingHelper ??= new GroupedDataCollectionView.BindingHelper();
+        _bindingHelper ??= new BindingEvaluator<object>();
+        _bindingHelper.UpdateBinding(binding);
 
-        return _bindingHelper.Evaluate(binding, item);
+        var result = _bindingHelper.Evaluate(item);
+        _bindingHelper.ClearDataContext();
+
+        return result;
     }
 
 
@@ -758,6 +762,6 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
     private List<object> _view;
     private HashSet<string> _filterProperties;
     private int _deferCounter;
-    private static GroupedDataCollectionView.BindingHelper _bindingHelper;
+    private static BindingEvaluator<object> _bindingHelper;
     private bool _hasFilterOrSort;
 }

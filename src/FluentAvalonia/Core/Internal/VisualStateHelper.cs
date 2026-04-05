@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Utilities;
+using FluentAvalonia.Core.Internal;
 
 namespace FluentAvalonia.Core;
 

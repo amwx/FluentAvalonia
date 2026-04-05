@@ -1051,7 +1051,7 @@ public partial class TeachingTip : ContentControl
         {
             SetViewportChangedEvent(_target);
             _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
-                .TransformToAABB(_target.TransformToVisual(_target.GetVisualRoot() as Visual) ?? Matrix.Identity);
+                .TransformToAABB(_target.TransformToVisual(TopLevel.GetTopLevel(_target)) ?? Matrix.Identity);
         }
         else
         {
@@ -1408,7 +1408,7 @@ public partial class TeachingTip : ContentControl
 
     private void OnPopupOpened(object sender, EventArgs args)
     {
-        _currentXamlRootSize = VisualRoot.ClientSize;
+        _currentXamlRootSize = TopLevel.GetTopLevel(VisualRoot).ClientSize;
         if (VisualRoot is Control c)
         {
             _xamlRootChangedRevoker = c.GetObservable(BoundsProperty).Subscribe(XamlRootChanged);
@@ -1645,7 +1645,7 @@ public partial class TeachingTip : ContentControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            _currentXamlRootSize = VisualRoot.ClientSize;
+            _currentXamlRootSize = TopLevel.GetTopLevel(VisualRoot).ClientSize;
             RepositionPopup();
         }, DispatcherPriority.Render);
     }

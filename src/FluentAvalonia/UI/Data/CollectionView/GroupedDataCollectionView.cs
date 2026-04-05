@@ -9,31 +9,32 @@ using Avalonia.Collections;
 using Avalonia.Collections.Pooled;
 using Avalonia.Data;
 using Avalonia.Logging;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Data;
 
 public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollectionView, IList
 {
-    public GroupedDataCollectionView(IEnumerable collection, IBinding itemsBinding = null)
+    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding = null)
         : this(collection, itemsBinding, false, null, null, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, IBinding itemsBinding,
+    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         bool isLiveShaping)
         : this(collection, itemsBinding, isLiveShaping, null, null, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, IBinding itemsBinding,
+    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         Predicate<object> filter)
         : this(collection, itemsBinding, false, filter, null, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, IBinding itemsBinding,
+    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         Predicate<object> filter, IList<string> filterProperties)
         : this(collection, itemsBinding, true, filter, filterProperties, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, IBinding itemsBinding,
+    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
        IList<SortDescription> sortDescriptions)
         : this(collection, itemsBinding, false, null, null, sortDescriptions) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, IBinding itemsBinding,
+    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         bool isLiveShaping,
         Predicate<object> filter, IList<string> filterProperties,
         IList<SortDescription> sortDescriptions)
@@ -124,7 +125,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
     internal IEnumerable Source => _source;
 
-    internal IBinding ItemsBinding => _itemsBinding;
+    internal BindingBase ItemsBinding => _itemsBinding;
 
     public event EventHandler<object> CurrentChanged;
     public event CurrentChangingEventHandler CurrentChanging;
@@ -468,9 +469,12 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
     internal IEnumerable GetItemsFromGroup(object group)
     {
-        _helper ??= new BindingHelper();
+        _helper ??= new BindingEvaluator<object>();
+        _helper.UpdateBinding(_itemsBinding);
 
-        var items = _helper.Evaluate(_itemsBinding, group) as IEnumerable;
+        var items = _helper.Evaluate(group) as IEnumerable;
+
+        _helper.ClearDataContext();
 
         if (items == null)
             throw new ArgumentException($"Unable to resolve items from group of type {group.GetType()}");
@@ -748,44 +752,14 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
     }
 
     private IEnumerable _source;
-    private IBinding _itemsBinding;
+    private BindingBase _itemsBinding;
     private int _count;
-    private static BindingHelper _helper;
+    private static BindingEvaluator<object> _helper;
     private bool _hasSortOrFilter;
     private Predicate<object> _filter;
     private HashSet<string> _filterProperties;
     private IList<SortDescription> _sortDescriptions;
     private bool _ignoreGroupChanges;
-
-    internal class BindingHelper : StyledElement
-    {
-        public static readonly StyledProperty<object> ValueProperty =
-            AvaloniaProperty.Register<BindingHelper, object>("Value");
-
-        public object Evaluate(IBinding binding, object dataContext)
-        {
-            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-
-            if (binding is null)
-            {
-                _lastBinding = null;
-                return dataContext;
-            }
-
-            if (!dataContext.Equals(DataContext))
-                DataContext = dataContext;
-
-            if (_lastBinding != binding)
-            {
-                _lastBinding = binding;
-                Bind(ValueProperty, binding);
-            }
-
-            return GetValue(ValueProperty);
-        }
-
-        private IBinding _lastBinding;
-    }
 
 
     private struct GroupEnumerator : IEnumerator, IEnumerator<object>

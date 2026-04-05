@@ -305,9 +305,7 @@ public sealed class TabViewListView : ListBox
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
-        _parent?.RemoveHandler(DragDrop.DragLeaveEvent, OnParentDragEnter);
-        _parent = null;
+        //FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
     }
 
     private async void BeginDragReorder()
@@ -471,10 +469,8 @@ public sealed class TabViewListView : ListBox
         }        
     }
 
-    private void OnListViewDrop(object sender, DragEventArgs e)
-    {
-        if (e.Handled)
-            return;
+        var dropResult =
+            await DragDrop.DoDragDropAsync(args, disArgs.Data, effects);
 
         if (DropCausesReorder())
         {
