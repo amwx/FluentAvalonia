@@ -9,12 +9,12 @@ namespace FluentAvalonia.UI.Media.Animation;
 /// <summary>
 /// Provides the parameters for a slide navigation transition.
 /// </summary>
-public class SlideNavigationTransitionInfo : NavigationTransitionInfo
+public class FASlideNavigationTransitionInfo : FANavigationTransitionInfo
 {
     /// <summary>
     /// Gets or sets the type of animation effect to play during the slide transition.
     /// </summary>
-    public SlideNavigationTransitionEffect Effect { get; set; } = SlideNavigationTransitionEffect.FromRight;
+    public FASlideNavigationTransitionEffect Effect { get; set; } = FASlideNavigationTransitionEffect.FromRight;
 
     /// <summary>
     /// Gets or sets the HorizontalOffset used when animating from the Left or Right
@@ -32,17 +32,17 @@ public class SlideNavigationTransitionInfo : NavigationTransitionInfo
         bool isVertical = false;
         switch (Effect)
         {
-            case SlideNavigationTransitionEffect.FromLeft:
+            case FASlideNavigationTransitionEffect.FromLeft:
                 length = -FromHorizontalOffset;
                 break;
-            case SlideNavigationTransitionEffect.FromRight:
+            case FASlideNavigationTransitionEffect.FromRight:
                 length = FromHorizontalOffset;
                 break;
-            case SlideNavigationTransitionEffect.FromTop:
+            case FASlideNavigationTransitionEffect.FromTop:
                 length = -FromVerticalOffset;
                 isVertical = true;
                 break;
-            case SlideNavigationTransitionEffect.FromBottom:
+            case FASlideNavigationTransitionEffect.FromBottom:
                 length = FromVerticalOffset;
                 isVertical = true;
                 break;

@@ -14,7 +14,7 @@ public class FAPageStackEntry
     /// <param name="sourcePageType">The type of page associated with the navigation entry, as a type reference</param>
     /// <param name="parameter">The navigation parameter associated with the navigation entry.</param>
     /// <param name="navigationTransitionInfo">Info about the animated transition associated with the navigation entry.</param>
-    public FAPageStackEntry(Type sourcePageType, object parameter, NavigationTransitionInfo navigationTransitionInfo)
+    public FAPageStackEntry(Type sourcePageType, object parameter, FANavigationTransitionInfo navigationTransitionInfo)
     {
         NavigationTransitionInfo = navigationTransitionInfo;
         SourcePageType = sourcePageType;
@@ -29,7 +29,7 @@ public class FAPageStackEntry
     /// <summary>
     /// Gets a value that indicates the animated transition associated with the navigation entry.
     /// </summary>
-    public NavigationTransitionInfo NavigationTransitionInfo { get; internal set; }
+    public FANavigationTransitionInfo NavigationTransitionInfo { get; internal set; }
 
     /// <summary>
     /// Gets the navigation parameter associated with this navigation entry.

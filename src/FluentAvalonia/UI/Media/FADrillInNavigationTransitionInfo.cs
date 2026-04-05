@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Media.Animation;
 /// Specifies the animation to run when a user navigates forward in a logical hierarchy, 
 /// like from a master list to a detail page.
 /// </summary>
-public class DrillInNavigationTransitionInfo : NavigationTransitionInfo
+public class FADrillInNavigationTransitionInfo : FANavigationTransitionInfo
 {
     /// <summary>
     /// Gets or sets whether the animation should drill in (false) or drill out (true)

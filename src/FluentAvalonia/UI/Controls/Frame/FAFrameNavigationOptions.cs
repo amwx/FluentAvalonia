@@ -11,7 +11,7 @@ public class FAFrameNavigationOptions
     /// <summary>
     /// Gets or sets a value that indicates the animated transition associated with the navigation.
     /// </summary>
-    public NavigationTransitionInfo TransitionInfoOverride { get; set; }
+    public FANavigationTransitionInfo TransitionInfoOverride { get; set; }
 
     /// <summary>
     /// Gets or sets a value that indicates whether navigation is recorded in the Frame's ForwardStack or BackStack.

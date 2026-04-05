@@ -23,7 +23,7 @@ public delegate void FANavigationStoppedEventHandler(object sender, FANavigation
 public class FANavigationEventArgs : RoutedEventArgs
 {
     internal FANavigationEventArgs(object content, FANavigationMode mode,
-        NavigationTransitionInfo navInfo, object param,
+        FANavigationTransitionInfo navInfo, object param,
         Type srcPgType)
     {
         Content = content;
@@ -58,5 +58,5 @@ public class FANavigationEventArgs : RoutedEventArgs
     /// <summary>
     /// Gets a value that indicates the animated transition associated with the navigation.
     /// </summary>
-    public NavigationTransitionInfo NavigationTransitionInfo { get; }
+    public FANavigationTransitionInfo NavigationTransitionInfo { get; }
 }

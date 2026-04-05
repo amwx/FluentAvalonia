@@ -25,5 +25,5 @@ public class FANavigationViewSelectionChangedEventArgs : EventArgs
     /// <summary>
     /// Gets the navigation transition recommended for the direction of the navigation.
     /// </summary>
-    public NavigationTransitionInfo RecommendedNavigationTransitionInfo { get; internal set; }
+    public FANavigationTransitionInfo RecommendedNavigationTransitionInfo { get; internal set; }
 }
