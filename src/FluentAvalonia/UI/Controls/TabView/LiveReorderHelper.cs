@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -299,8 +296,6 @@ internal class LiveReorderHelper
     {
         StopLiveReorderTimer();
 
-        Debug.Assert(_liveReorderIndices.draggedItemIndex != -1);
-
         var orientation = _owner.GetLogicalOrientation().Value;
 
         using var newItems = new PooledList<MovedItem>();
@@ -314,11 +309,6 @@ internal class LiveReorderHelper
         MoveItemsForLiveReorder(false /*areNewItems*/, oldItemsToMoveBack);
 
         MoveItemsForLiveReorder(true, newItemsToMove);
-
-        foreach (var item in _movedItems.AsSpan())
-        {
-            Debug.WriteLine($"\t MovedItems: {item.sourceIndex} -> {item.destinationIndex} || {item.sourceRect} -> {item.destinationRect}");
-        }
     }
 
     private void GetNewMovedItemsForLiveReorder(IList<MovedItem> newItems)
