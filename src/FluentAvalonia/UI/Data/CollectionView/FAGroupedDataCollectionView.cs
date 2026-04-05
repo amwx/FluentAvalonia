@@ -13,31 +13,31 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Data;
 
-public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollectionView, IList
+public sealed class FAGroupedDataCollectionView : IFACollectionView, IFAAdvancedCollectionView, IList
 {
-    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding = null)
+    public FAGroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding = null)
         : this(collection, itemsBinding, false, null, null, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
+    public FAGroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         bool isLiveShaping)
         : this(collection, itemsBinding, isLiveShaping, null, null, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
+    public FAGroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         Predicate<object> filter)
         : this(collection, itemsBinding, false, filter, null, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
+    public FAGroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         Predicate<object> filter, IList<string> filterProperties)
         : this(collection, itemsBinding, true, filter, filterProperties, null) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
-       IList<SortDescription> sortDescriptions)
+    public FAGroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
+       IList<FASortDescription> sortDescriptions)
         : this(collection, itemsBinding, false, null, null, sortDescriptions) { }
 
-    public GroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
+    public FAGroupedDataCollectionView(IEnumerable collection, BindingBase itemsBinding,
         bool isLiveShaping,
         Predicate<object> filter, IList<string> filterProperties,
-        IList<SortDescription> sortDescriptions)
+        IList<FASortDescription> sortDescriptions)
     {
         collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
@@ -59,7 +59,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
             if (sortDescriptions != null)
             {
-                var l = new AvaloniaList<SortDescription>(sortDescriptions);
+                var l = new AvaloniaList<FASortDescription>(sortDescriptions);
                 l.CollectionChanged += OnSortDescriptionsChanged;
                 _sortDescriptions = l;
             }
@@ -74,7 +74,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
         }
     }
 
-    public IAvaloniaList<ICollectionViewGroup> CollectionGroups { get; private set; }
+    public IAvaloniaList<IFACollectionViewGroup> CollectionGroups { get; private set; }
 
     public int CurrentPosition { get; private set; }
 
@@ -106,13 +106,13 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
         }
     }
 
-    public IList<SortDescription> SortDescriptions
+    public IList<FASortDescription> SortDescriptions
     {
         get
         {
             if (_sortDescriptions == null)
             {
-                var l = new AvaloniaList<SortDescription>();
+                var l = new AvaloniaList<FASortDescription>();
                 l.CollectionChanged += OnSortDescriptionsChanged;
                 _sortDescriptions = l;
             }
@@ -128,7 +128,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
     internal BindingBase ItemsBinding => _itemsBinding;
 
     public event EventHandler<object> CurrentChanged;
-    public event CurrentChangingEventHandler CurrentChanging;
+    public event FACurrentChangingEventHandler CurrentChanging;
     public event NotifyCollectionChangedEventHandler CollectionChanged;
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -155,7 +155,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
         if (pos < 0 || pos >= Count)
             return false;
 
-        var args = new CurrentChangingEventArgs();
+        var args = new FACurrentChangingEventArgs();
         CurrentChanging?.Invoke(this, args);
 
         if (args.Cancel)
@@ -210,7 +210,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
     }
 
     internal void UpdateViewFromCollectionViewSource(Predicate<object> filter, IList<string> filterProperties,
-        IList<SortDescription> sortDescriptions)
+        IList<FASortDescription> sortDescriptions)
     {
         using var defer = DeferRefresh();
                 
@@ -287,7 +287,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
         if (CollectionGroups == null)
         {
             // First time
-            CollectionGroups = new AvaloniaList<ICollectionViewGroup>(groups);
+            CollectionGroups = new AvaloniaList<IFACollectionViewGroup>(groups);
         }
         else
         {
@@ -452,7 +452,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
             return ct;
         }
 
-        static int GetItemCountToIndex(IList<ICollectionViewGroup> groups, int index)
+        static int GetItemCountToIndex(IList<IFACollectionViewGroup> groups, int index)
         {
             int ct = 0;
             for (int i = 0; i < groups.Count; i++)
@@ -482,7 +482,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
         return items;
     }
 
-    internal void GroupItemsChanged(ICollectionViewGroup sender, NotifyCollectionChangedEventArgs args)
+    internal void GroupItemsChanged(IFACollectionViewGroup sender, NotifyCollectionChangedEventArgs args)
     {
         // With sorting/filtering, ignore events here when bulk operations are happening
         if (_ignoreGroupChanges)
@@ -568,7 +568,7 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
     // SORTING & FILTERING 
 
-    internal IList<SortDescription> GetSortDescriptions()
+    internal IList<FASortDescription> GetSortDescriptions()
     {
         // The getter for the property will materialize the items
         // Therefore, we need a way to get the sort descriptions for SpecializedCollectionViewGroup
@@ -718,10 +718,10 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
     int ICollection.Count => _count;
 
-    Task<LoadMoreItemsResult> ICollectionView.LoadMoreItemsAsync(uint count) =>
+    Task<FALoadMoreItemsResult> IFACollectionView.LoadMoreItemsAsync(uint count) =>
         throw new NotImplementedException();
 
-    bool ICollectionView.HasMoreItems => false;
+    bool IFACollectionView.HasMoreItems => false;
 
     void IList.Insert(int index, object item) => ThrowICollectionViewNotMutableWhenGrouping();
 
@@ -758,13 +758,13 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
     private bool _hasSortOrFilter;
     private Predicate<object> _filter;
     private HashSet<string> _filterProperties;
-    private IList<SortDescription> _sortDescriptions;
+    private IList<FASortDescription> _sortDescriptions;
     private bool _ignoreGroupChanges;
 
 
     private struct GroupEnumerator : IEnumerator, IEnumerator<object>
     {
-        public GroupEnumerator(GroupedDataCollectionView owner)
+        public GroupEnumerator(FAGroupedDataCollectionView owner)
         {
             _owner = owner;
         }
@@ -817,6 +817,6 @@ public sealed class GroupedDataCollectionView : ICollectionView, IAdvancedCollec
 
         private int _curPos = -1;
         private int _lastGroupIndex = -1;
-        private GroupedDataCollectionView _owner;
+        private FAGroupedDataCollectionView _owner;
     }
 }

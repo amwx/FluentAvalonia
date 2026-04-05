@@ -3,7 +3,7 @@
 /// <summary>
 /// Wraps the asynchronous results of a LoadMoreItemsAsync call
 /// </summary>
-public struct LoadMoreItemsResult
+public struct FALoadMoreItemsResult
 {
     /// <summary>
     /// The number of items that were actually loaded

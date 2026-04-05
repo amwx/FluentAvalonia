@@ -12,27 +12,27 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Data;
 
-public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectionView, IList, IComparer<object>
+public sealed class FAIterableCollectionView : IFACollectionView, IFAAdvancedCollectionView, IList, IComparer<object>
 {
-    public IterableCollectionView(IEnumerable collection)
+    public FAIterableCollectionView(IEnumerable collection)
         : this(collection, false, null, null, null) { }
 
-    public IterableCollectionView(IEnumerable collection, bool isLiveShaping)
+    public FAIterableCollectionView(IEnumerable collection, bool isLiveShaping)
         : this(collection, isLiveShaping, null, null, null) { }
 
-    public IterableCollectionView(IEnumerable collection, Predicate<object> filter)
+    public FAIterableCollectionView(IEnumerable collection, Predicate<object> filter)
         : this(collection, false, filter, null, null) { }
 
-    public IterableCollectionView(IEnumerable collection, Predicate<object> filter,
+    public FAIterableCollectionView(IEnumerable collection, Predicate<object> filter,
         IList<string> filterProperties)
         : this(collection, true, filter, filterProperties, null) { }
 
-    public IterableCollectionView(IEnumerable collection, IList<SortDescription> sortDescriptions)
+    public FAIterableCollectionView(IEnumerable collection, IList<FASortDescription> sortDescriptions)
         : this(collection, false, null, null, sortDescriptions) { }
 
-    public IterableCollectionView(IEnumerable collection, bool isLiveShaping,
+    public FAIterableCollectionView(IEnumerable collection, bool isLiveShaping,
         Predicate<object> filter, IList<string> filterProperties,
-        IList<SortDescription> sortDescriptions)
+        IList<FASortDescription> sortDescriptions)
     {
         collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
@@ -57,7 +57,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
 
             if (sortDescriptions != null)
             {
-                var l = new AvaloniaList<SortDescription>(sortDescriptions);
+                var l = new AvaloniaList<FASortDescription>(sortDescriptions);
                 l.CollectionChanged += OnSortDescriptionsChanged;
                 _sortDescriptions = l;
             }
@@ -85,13 +85,13 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
         }
     }
 
-    public IList<SortDescription> SortDescriptions
+    public IList<FASortDescription> SortDescriptions
     {
         get
         {
             if (_sortDescriptions == null)
             {
-                var l = new AvaloniaList<SortDescription>();
+                var l = new AvaloniaList<FASortDescription>();
                 l.CollectionChanged += OnSortDescriptionsChanged;
                 _sortDescriptions = l;
             }
@@ -143,7 +143,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
     internal IEnumerable Source => _source;
 
     public event EventHandler<object> CurrentChanged;
-    public event CurrentChangingEventHandler CurrentChanging;
+    public event FACurrentChangingEventHandler CurrentChanging;
     public event NotifyCollectionChangedEventHandler CollectionChanged;
     public event PropertyChangedEventHandler PropertyChanged;
     public void Add(object item) => Insert(Count, item);
@@ -239,7 +239,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
         if (pos < 0 || pos >= Count)
             return false;
 
-        var args = new CurrentChangingEventArgs();
+        var args = new FACurrentChangingEventArgs();
         CurrentChanging?.Invoke(this, args);
 
         if (args.Cancel)
@@ -315,7 +315,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
     }
 
     internal void UpdateViewFromCollectionViewSource(Predicate<object> filter, IList<string> filterProperties,
-        IList<SortDescription> sortDescriptions)
+        IList<FASortDescription> sortDescriptions)
     {
         using var defer = DeferRefresh();
                 
@@ -709,7 +709,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
 
                 var cmp = desc.Comparer.Compare(cx, cy);
                 if (cmp != 0)
-                    return desc.Direction == SortDirection.Ascending ? cmp : -cmp;
+                    return desc.Direction == FASortDirection.Ascending ? cmp : -cmp;
             }
         }
 
@@ -719,7 +719,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    IAvaloniaList<ICollectionViewGroup> ICollectionView.CollectionGroups => null;
+    IAvaloniaList<IFACollectionViewGroup> IFACollectionView.CollectionGroups => null;
 
     bool IList.IsFixedSize => _source is IList l && l.IsFixedSize;
 
@@ -729,7 +729,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
 
     int ICollection.Count => Count;
 
-    Task<LoadMoreItemsResult> ICollectionView.LoadMoreItemsAsync(uint count) =>
+    Task<FALoadMoreItemsResult> IFACollectionView.LoadMoreItemsAsync(uint count) =>
         throw new NotImplementedException();
 
     void IList.Insert(int index, object item) => Insert(index, item);
@@ -755,7 +755,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
             "must implement non-generic IList for CollectionView mutation");
     }
 
-    private IList<SortDescription> _sortDescriptions;
+    private IList<FASortDescription> _sortDescriptions;
     private Predicate<object> _filter;
     private IEnumerable _source;
     private ItemsSourceView _sourceView;
