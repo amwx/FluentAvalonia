@@ -15,7 +15,15 @@ using Avalonia.Utilities;
 
 namespace FluentAvalonia.UI.Controls;
 
+// Note a Border (s_tpPaneResizeHandle) and a SplitView are not listed here because
+// they're only required in Left/Right display modes. If anyone wrote an analyzer 
+// that generates errors for missing templat parts, I don't want to cause them
+// issues. However, if you retemplate anything, left/right require these controls
+
+// Also note the custom ScrollViewer has required template parts, see below
+
 [PseudoClasses(SharedPseudoclasses.s_pcNoBorder, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcBorderRight, s_pcSingleBorder)]
+[PseudoClasses(s_pcTop, s_pcLeft, s_pcBottom, s_pcRight)]
 [TemplatePart(s_tpTabContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpRightContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpTabContainerGrid, typeof(Grid))]
@@ -259,6 +267,9 @@ public partial class TabView
         private set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
     }
 
+    /// <summary>
+    /// Gets or sets the TabItems source for this TabView
+    /// </summary>
     public IEnumerable TabItemsSource
     {
         get => GetValue(TabItemsSourceProperty);

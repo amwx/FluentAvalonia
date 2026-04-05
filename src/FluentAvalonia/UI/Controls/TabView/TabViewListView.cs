@@ -307,7 +307,7 @@ public sealed class TabViewListView : ListBox
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        _parent.RemoveHandler(DragDrop.DragLeaveEvent, OnParentDragEnter);
+        _parent?.RemoveHandler(DragDrop.DragLeaveEvent, OnParentDragEnter);
         _parent = null;
     }
 

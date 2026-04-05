@@ -10,9 +10,11 @@ namespace FluentAvalonia.UI.Controls;
 
 [PseudoClasses(SharedPseudoclasses.s_pcIcon, SharedPseudoclasses.s_pcCompact, s_pcCloseCollapsed)]
 [PseudoClasses(SharedPseudoclasses.s_pcBorderRight, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcNoBorder)]
+[PseudoClasses(s_pcDragging)]
 [TemplatePart(s_tpTabSeparator, typeof(Visual))]
 [TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpCloseButton, typeof(Button))]
+[TemplatePart(s_tpSelectedBackgroundPathName, typeof(Path))]
 public partial class TabViewItem
 {
     /// <summary>
@@ -101,7 +103,9 @@ public partial class TabViewItem
 
 
     private const string s_pcCloseCollapsed = ":closeCollapsed";
+    private const string s_pcDragging = ":dragging";
 
+    private const string s_tpSelectedBackgroundPathName = "SelectedBackgroundPath";
     private const string s_tpTabSeparator = "TabSeparator";
     private const string s_tpContentPresenter = "ContentPresenter";
     internal const string s_tpCloseButton = "CloseButton";
