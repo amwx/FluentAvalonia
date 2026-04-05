@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Utilities;
 using FluentAvalonia.Core.Internal;
 
 namespace FluentAvalonia.Core;
@@ -8,9 +7,9 @@ namespace FluentAvalonia.Core;
 /// <summary>
 /// Visual State Helper
 /// </summary>
-public class VisualStateHelper
+public sealed class FAVisualStateHelper
 {
-    static VisualStateHelper()
+    static FAVisualStateHelper()
     {
         ForcedClassesProperty.Changed.Subscribe(OnForcedClassesPropertyChanged);
     }
@@ -19,7 +18,7 @@ public class VisualStateHelper
     /// Forced Classes 
     /// </summary>
     public static readonly AttachedProperty<string> ForcedClassesProperty =
-        AvaloniaProperty.RegisterAttached<VisualStateHelper, StyledElement, string>("ForcedClasses");
+        AvaloniaProperty.RegisterAttached<FAVisualStateHelper, StyledElement, string>("ForcedClasses");
 
     /// <summary>
     /// Get value of <see cref="ForcedClassesProperty"/> property.
@@ -71,5 +70,4 @@ public class VisualStateHelper
                 cr.Skip(1);
         }
     }
-
 }

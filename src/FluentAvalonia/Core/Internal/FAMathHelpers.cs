@@ -3,7 +3,7 @@
 /// <summary>
 /// Maths Helpers
 /// </summary>
-public static class MathHelpers
+public static class FAMathHelpers
 {
     /// <summary>
     /// Returns <paramref name="value"/> clamped to the inclusive range of min and max.

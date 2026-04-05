@@ -3,9 +3,9 @@
 namespace FluentAvalonia.Core;
 
 /// <summary>
-/// 
+/// Extension methods for an Avaloina <see cref="Thickness"/>
 /// </summary>
-public static class ThicknessExtensions
+public static class FAThicknessExtensions
 {
     /// <summary>
     /// Retreives the total vertical thickness (top + bottom)

@@ -1,21 +1,19 @@
-﻿using System;
+﻿namespace FluentAvalonia.Core;
 
-namespace FluentAvalonia.Core;
-
-public delegate void DeferralCompletedHandler();
+public delegate void FADeferralCompletedHandler();
 
 /// <summary>
-/// Stores a <see cref="DeferralCompletedHandler"/> to be invoked upon completion of the 
+/// Stores a <see cref="FADeferralCompletedHandler"/> to be invoked upon completion of the 
 /// deferral and manipulates the state of the deferral.
 /// </summary>
-public class Deferral
+public class FADeferral
 {
     /// <summary>
-    /// Initializes a new Deferral object and specifies a <see cref="DeferralCompletedHandler"/> to be called 
+    /// Initializes a new Deferral object and specifies a <see cref="FADeferralCompletedHandler"/> to be called 
     /// upon completion of the deferral. 
     /// </summary>
     /// <param name="completedHandler">A DeferralCompletedHandler to be called upon completion of the deferral.</param>
-    public Deferral(DeferralCompletedHandler completedHandler)
+    public FADeferral(FADeferralCompletedHandler completedHandler)
     {
         if (completedHandler is null)
             throw new ArgumentNullException(nameof(completedHandler), "Completion delegate cannot be null");
@@ -31,5 +29,5 @@ public class Deferral
         _handler.Invoke();
     }
 
-    private DeferralCompletedHandler _handler;
+    private FADeferralCompletedHandler _handler;
 }

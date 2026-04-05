@@ -7,28 +7,28 @@ using System.Globalization;
 namespace FluentAvalonia.Converters;
 
 /// <summary>
-/// Converter that converts a color to a SolidColorBrush
+/// A converter that allows lightening or darkening a color by an amount 
+/// specified in the parameter argument
 /// </summary>
-public class ColorToBrushConv : IValueConverter
+public sealed class FAColorShadeBrushConv : IValueConverter
 {
+
     /// <inheritdoc />
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is Color c)
-            return new SolidColorBrush(c);
+        var color = (Color2)value;
 
-        if (value is Color2 c2)
-            return new SolidColorBrush(c2);
+        if (!float.TryParse(parameter.ToString(), out float amount))
+        {
+            amount = 0;
+        }
 
-        return BindingOperations.DoNothing;
+        return new SolidColorBrush(color.LightenPercent(amount));
     }
 
     /// <inheritdoc />
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is ISolidColorBrush sc)
-            return sc.Color;
-
         return BindingOperations.DoNothing;
     }
 }

@@ -1,27 +1,23 @@
 ﻿using System.Globalization;
+using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 
 namespace FluentAvalonia.Converters;
 
 /// <summary>
-/// Converter that invert a boolean value. 
+/// Special converter to convert ScrollBarVisbility enum values to bool
 /// </summary>
-public class NativeMenuInverseBoolConverter : IValueConverter
+public sealed class FAScrollViewerVisibilityToBoolConverter : IValueConverter
 {
-    /// <summary>
-    /// It return value if value is null.
-    /// </summary>
-    public bool Default { get; set; }
-
     /// <inheritdoc />
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value is bool b ? !b : Default;
+        return ((ScrollBarVisibility)value) == ScrollBarVisibility.Visible;
     }
 
     /// <inheritdoc />
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value is bool b ? !b : !Default;
+        throw new NotImplementedException();
     }
 }
