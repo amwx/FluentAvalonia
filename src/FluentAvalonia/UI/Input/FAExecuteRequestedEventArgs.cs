@@ -3,9 +3,9 @@
 /// <summary>
 /// Provides event data for the ExecuteRequested event.
 /// </summary>
-public class ExecuteRequestedEventArgs : EventArgs
+public class FAExecuteRequestedEventArgs : EventArgs
 {
-    internal ExecuteRequestedEventArgs(object param)
+    internal FAExecuteRequestedEventArgs(object param)
     {
         Parameter = param;
     }

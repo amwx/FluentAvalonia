@@ -44,7 +44,7 @@ public partial class FACommandBarToggleButton : ToggleButton, IFACommandBarEleme
         }
         else if (change.Property == CommandProperty)
         {
-            if (change.OldValue is XamlUICommand xamlComOld)
+            if (change.OldValue is FAXamlUICommand xamlComOld)
             {
                 if (Label == xamlComOld.Label)
                 {
@@ -62,7 +62,7 @@ public partial class FACommandBarToggleButton : ToggleButton, IFACommandBarEleme
                 }
             }
 
-            if (change.NewValue is XamlUICommand xamlCom)
+            if (change.NewValue is FAXamlUICommand xamlCom)
             {
                 if (string.IsNullOrEmpty(Label))
                 {
