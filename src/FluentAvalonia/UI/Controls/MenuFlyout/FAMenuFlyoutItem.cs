@@ -70,7 +70,7 @@ public partial class FAMenuFlyoutItem : FAMenuFlyoutItemBase, ICommandSource
             var oldCommand = change.GetOldValue<ICommand>();
             var newCommand = change.GetNewValue<ICommand>();
 
-            if (oldCommand is XamlUICommand oldXaml)
+            if (oldCommand is FAXamlUICommand oldXaml)
             {
                 if (Text == oldXaml.Label)
                 {
@@ -83,7 +83,7 @@ public partial class FAMenuFlyoutItem : FAMenuFlyoutItemBase, ICommandSource
                 }
             }
 
-            if (newCommand is XamlUICommand newXaml)
+            if (newCommand is FAXamlUICommand newXaml)
             {
                 if (string.IsNullOrEmpty(Text))
                 {

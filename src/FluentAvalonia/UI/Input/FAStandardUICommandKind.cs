@@ -4,7 +4,7 @@
 /// Specifies the set of platform commands (with pre-defined properties such as icon, 
 /// keyboard accelerator, and description) that can be used with a StandardUICommand.
 /// </summary>
-public enum StandardUICommandKind
+public enum FAStandardUICommandKind
 {
     /// <summary>
     /// No command. Default.

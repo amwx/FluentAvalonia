@@ -37,7 +37,7 @@ public class FATextCommandBarFlyout : FACommandBarFlyout
     }
 
     private void InitializeButtonWithUICommand(Button b,
-        XamlUICommand command, Action executeFunc)
+        FAXamlUICommand command, Action executeFunc)
     {
         // WinUI collects the event token for revoking later, but never actually does
         // This should be ok because the button is tied to the TextCommandBarFlyout
@@ -369,7 +369,7 @@ public class FATextCommandBarFlyout : FACommandBarFlyout
                 case TextControlButtons.Cut:
                     {
                         var button = new FACommandBarButton();
-                        InitializeButtonWithUICommand(button, new StandardUICommand(StandardUICommandKind.Cut), ExecuteCutCommand);
+                        InitializeButtonWithUICommand(button, new FAStandardUICommand(FAStandardUICommandKind.Cut), ExecuteCutCommand);
                         _buttons.Add(TextControlButtons.Cut, button);
                         return button;
                     }
@@ -377,7 +377,7 @@ public class FATextCommandBarFlyout : FACommandBarFlyout
                 case TextControlButtons.Copy:
                     {
                         var button = new FACommandBarButton();
-                        InitializeButtonWithUICommand(button, new StandardUICommand(StandardUICommandKind.Copy), ExecuteCopyCommand);
+                        InitializeButtonWithUICommand(button, new FAStandardUICommand(FAStandardUICommandKind.Copy), ExecuteCopyCommand);
                         _buttons.Add(TextControlButtons.Copy, button);
                         return button;
                     }
@@ -385,7 +385,7 @@ public class FATextCommandBarFlyout : FACommandBarFlyout
                 case TextControlButtons.Paste:
                     {
                         var button = new FACommandBarButton();
-                        InitializeButtonWithUICommand(button, new StandardUICommand(StandardUICommandKind.Paste), ExecutePasteCommand);
+                        InitializeButtonWithUICommand(button, new FAStandardUICommand(FAStandardUICommandKind.Paste), ExecutePasteCommand);
                         _buttons.Add(TextControlButtons.Paste, button);
                         return button;
                     }
@@ -400,7 +400,7 @@ public class FATextCommandBarFlyout : FACommandBarFlyout
                 case TextControlButtons.Undo:
                     {
                         var button = new FACommandBarButton();
-                        InitializeButtonWithUICommand(button, new StandardUICommand(StandardUICommandKind.Undo), ExecuteUndoCommand);
+                        InitializeButtonWithUICommand(button, new FAStandardUICommand(FAStandardUICommandKind.Undo), ExecuteUndoCommand);
                         _buttons.Add(TextControlButtons.Undo, button);
                         return button;
                     }
@@ -408,7 +408,7 @@ public class FATextCommandBarFlyout : FACommandBarFlyout
                 case TextControlButtons.Redo:
                     {
                         var button = new FACommandBarButton();
-                        InitializeButtonWithUICommand(button, new StandardUICommand(StandardUICommandKind.Redo), ExecuteRedoCommand);
+                        InitializeButtonWithUICommand(button, new FAStandardUICommand(FAStandardUICommandKind.Redo), ExecuteRedoCommand);
                         _buttons.Add(TextControlButtons.Redo, button);
                         return button;
                     }
@@ -416,7 +416,7 @@ public class FATextCommandBarFlyout : FACommandBarFlyout
                 case TextControlButtons.SelectAll:
                     {
                         var button = new FACommandBarButton();
-                        InitializeButtonWithUICommand(button, new StandardUICommand(StandardUICommandKind.SelectAll), ExecuteSelectAllCommand);
+                        InitializeButtonWithUICommand(button, new FAStandardUICommand(FAStandardUICommandKind.SelectAll), ExecuteSelectAllCommand);
                         _buttons.Add(TextControlButtons.SelectAll, button);
                         return button;
                     }

@@ -7,7 +7,7 @@ namespace FluentAvalonia.UI.Input;
 /// Provides a base class for defining the command behavior of an interactive UI element that 
 /// performs an action when invoked (such as sending an email, deleting an item, or submitting a form).
 /// </summary>
-public partial class XamlUICommand : AvaloniaObject, ICommand
+public partial class FAXamlUICommand : AvaloniaObject, ICommand
 {
     public void NotifyCanExecuteChanged() => CanExecuteChanged?.Invoke(this, null);
 
@@ -15,7 +15,7 @@ public partial class XamlUICommand : AvaloniaObject, ICommand
     {
         bool canExec = false;
 
-        var args = new CanExecuteRequestedEventArgs(param);
+        var args = new FACanExecuteRequestedEventArgs(param);
 
         CanExecuteRequested?.Invoke(this, args);
 
@@ -33,7 +33,7 @@ public partial class XamlUICommand : AvaloniaObject, ICommand
 
     public void Execute(object param)
     {
-        var args = new ExecuteRequestedEventArgs(param);
+        var args = new FAExecuteRequestedEventArgs(param);
 
         ExecuteRequested?.Invoke(this, args);
 

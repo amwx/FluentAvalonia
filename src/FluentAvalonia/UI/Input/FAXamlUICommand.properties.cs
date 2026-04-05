@@ -10,37 +10,37 @@ namespace FluentAvalonia.UI.Input;
 /// Provides a base class for defining the command behavior of an interactive UI element that 
 /// performs an action when invoked (such as sending an email, deleting an item, or submitting a form).
 /// </summary>
-public partial class XamlUICommand : AvaloniaObject, ICommand
+public partial class FAXamlUICommand : AvaloniaObject, ICommand
 {
     /// <summary>
     /// Defines the <see cref="Command"/> property
     /// </summary>
     public static readonly StyledProperty<ICommand> CommandProperty =
-        AvaloniaProperty.Register<XamlUICommand, ICommand>(nameof(Command));
+        AvaloniaProperty.Register<FAXamlUICommand, ICommand>(nameof(Command));
 
     /// <summary>
     /// Defines the <see cref="Description"/> property
     /// </summary>
     public static readonly StyledProperty<string> DescriptionProperty =
-        AvaloniaProperty.Register<XamlUICommand, string>(nameof(Description));
+        AvaloniaProperty.Register<FAXamlUICommand, string>(nameof(Description));
 
     /// <summary>
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
     public static readonly StyledProperty<FAIconSource> IconSourceProperty =
-        AvaloniaProperty.Register<XamlUICommand, FAIconSource>(nameof(IconSource));
+        AvaloniaProperty.Register<FAXamlUICommand, FAIconSource>(nameof(IconSource));
 
     /// <summary>
     /// Defines the <see cref="HotKey"/> property
     /// </summary>
     public static readonly StyledProperty<KeyGesture> HotKeyProperty =
-        AvaloniaProperty.Register<XamlUICommand, KeyGesture>(nameof(HotKey));
+        AvaloniaProperty.Register<FAXamlUICommand, KeyGesture>(nameof(HotKey));
 
     /// <summary>
     /// Defines the <see cref="Label"/> property
     /// </summary>
     public static readonly StyledProperty<string> LabelProperty =
-        AvaloniaProperty.Register<XamlUICommand, string>(nameof(Label));
+        AvaloniaProperty.Register<FAXamlUICommand, string>(nameof(Label));
 
     /// <summary>
     /// Gets or sets the command behavior of an interactive UI element that performs an action when invoked, 
@@ -96,10 +96,10 @@ public partial class XamlUICommand : AvaloniaObject, ICommand
     /// <summary>
     /// Occurs when a CanExecute call is made.
     /// </summary>
-    public event TypedEventHandler<XamlUICommand, CanExecuteRequestedEventArgs> CanExecuteRequested;
+    public event TypedEventHandler<FAXamlUICommand, FACanExecuteRequestedEventArgs> CanExecuteRequested;
 
     /// <summary>
     /// Occurs when an Execute call is made.
     /// </summary>
-    public event TypedEventHandler<XamlUICommand, ExecuteRequestedEventArgs> ExecuteRequested;
+    public event TypedEventHandler<FAXamlUICommand, FAExecuteRequestedEventArgs> ExecuteRequested;
 }

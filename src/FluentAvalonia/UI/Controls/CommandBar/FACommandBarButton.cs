@@ -70,7 +70,7 @@ public partial class FACommandBarButton : Button, IFACommandBarElement
         }
         else if (change.Property == CommandProperty)
         {
-            if (change.OldValue is XamlUICommand xamlComOld)
+            if (change.OldValue is FAXamlUICommand xamlComOld)
             {
                 if (Label == xamlComOld.Label)
                 {
@@ -88,7 +88,7 @@ public partial class FACommandBarButton : Button, IFACommandBarElement
                 }
             }
 
-            if (change.NewValue is XamlUICommand xamlCom)
+            if (change.NewValue is FAXamlUICommand xamlCom)
             {
                 if (string.IsNullOrEmpty(Label))
                 {

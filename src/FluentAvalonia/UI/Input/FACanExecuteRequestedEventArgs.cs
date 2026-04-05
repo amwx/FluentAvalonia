@@ -3,9 +3,9 @@
 /// <summary>
 /// Provides event data for the CanExecuteRequested event.
 /// </summary>
-public class CanExecuteRequestedEventArgs : EventArgs
+public class FACanExecuteRequestedEventArgs : EventArgs
 {
-    internal CanExecuteRequestedEventArgs(object param)
+    internal FACanExecuteRequestedEventArgs(object param)
     {
         Parameter = param;
     }
