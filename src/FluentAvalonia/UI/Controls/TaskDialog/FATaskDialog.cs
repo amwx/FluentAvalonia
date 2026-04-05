@@ -240,7 +240,7 @@ public partial class FATaskDialog : ContentControl
             PseudoClasses.Set(s_pcHidden, false);
             PseudoClasses.Set(s_pcHosted, false);
 
-            var host = new AppWindow()
+            var host = new FAAppWindow()
             {
                 CanResize = false,
                 SizeToContent = SizeToContent.WidthAndHeight,

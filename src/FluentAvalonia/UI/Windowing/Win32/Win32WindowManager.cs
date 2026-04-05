@@ -13,7 +13,7 @@ namespace FluentAvalonia.UI.Windowing;
 
 internal unsafe class Win32WindowManager
 {
-    public Win32WindowManager(AppWindow window)
+    public Win32WindowManager(FAAppWindow window)
     {
         _window = window;
 
@@ -417,7 +417,7 @@ internal unsafe class Win32WindowManager
         new Dictionary<HWND, Win32WindowManager>();
 #endif
 
-    private readonly AppWindow _window;
+    private readonly FAAppWindow _window;
     private bool _fakingMaximizeButton;
     private bool _wasFakeMaximizeDown;
     private bool _isMaximized;

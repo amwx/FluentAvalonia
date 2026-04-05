@@ -28,12 +28,12 @@ public enum TitleBarHitTestType
 }
 
 /// <summary>
-/// Represents the title bar of an <see cref="AppWindow"/> allowing customization such as
+/// Represents the title bar of an <see cref="FAAppWindow"/> allowing customization such as
 /// colors, hit testing, and allowing app content in the title bar area
 /// </summary>
 public class AppWindowTitleBar
 {
-    internal AppWindowTitleBar(AppWindow parent)
+    internal AppWindowTitleBar(FAAppWindow parent)
     {
         _parent = parent;
     }
@@ -340,7 +340,7 @@ public class AppWindowTitleBar
         //}
     }
 
-    private AppWindow _parent;
+    private FAAppWindow _parent;
     private Color? _backgroundColor;
     private Color? _buttonBackgroundColor;
     private Color? _buttonForegroundColor;

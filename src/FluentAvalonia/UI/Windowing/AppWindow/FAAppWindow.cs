@@ -20,11 +20,11 @@ namespace FluentAvalonia.UI.Windowing;
 /// Custom Window that supports a modern Windows look and title bar customization,
 /// with a graceful fallback for MacOS and Linux
 /// </summary>
-public partial class AppWindow : Window
+public partial class FAAppWindow : Window
 {
-    public AppWindow()
+    public FAAppWindow()
     {
-        TemplateSettings = new AppWindowTemplateSettings();
+        TemplateSettings = new FAAppWindowTemplateSettings();
         _titleBar = new AppWindowTitleBar(this);
 
         if (OperatingSystem.IsWindows() && !Design.IsDesignMode)
@@ -33,7 +33,7 @@ public partial class AppWindow : Window
         }
     }
 
-    static AppWindow()
+    static FAAppWindow()
     {
         AllowInteractionInTitleBarProperty.Changed.AddClassHandler<Control>(OnAllowInteractionInTitleBarChanged);
     }
@@ -72,7 +72,7 @@ public partial class AppWindow : Window
         {
             _templateRoot = e.NameScope.Find<Border>("RootBorder");
                         
-            _captionButtons = e.NameScope.Find<MinMaxCloseControl>("SystemCaptionButtons");
+            _captionButtons = e.NameScope.Find<FAMinMaxCloseControl>("SystemCaptionButtons");
             _defaultTitleBar = e.NameScope.Find<Panel>("DefaultTitleBar");
 
             // This will set all our TemplateSettings properties
@@ -447,7 +447,7 @@ public partial class AppWindow : Window
         {
             // Control likely isn't attached to the visual tree yet so we have no way of attaching this to the 
             // AppWindow hosting it, defer now, but we'll check first just in case
-            if (GetTopLevel(control) is AppWindow aw)
+            if (GetTopLevel(control) is FAAppWindow aw)
             {
                 aw.AddExcludeHitTestItem(control);
             }
@@ -461,7 +461,7 @@ public partial class AppWindow : Window
         {
             // If we change the value to false while still connected, we'll remove it from the list
             // Otherwise, we'll have to wait for the ref to be GC'd then we'll remove it later
-            if (GetTopLevel(control) is AppWindow aw)
+            if (GetTopLevel(control) is FAAppWindow aw)
             {
                 aw.RemoveExcludeHitTestItem(control);
             }
@@ -472,7 +472,7 @@ public partial class AppWindow : Window
             var control = sender as Control;
             control.AttachedToVisualTree -= AwaitControlAttachedToVisualTree;
 
-            if (GetTopLevel(control) is AppWindow aw)
+            if (GetTopLevel(control) is FAAppWindow aw)
             {
                 aw.AddExcludeHitTestItem(control);
             }

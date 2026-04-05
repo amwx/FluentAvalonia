@@ -5,7 +5,7 @@ namespace FluentAvalonia.UI.Windowing;
 /// <summary>
 /// Defines a user specified UWP-like SplashScreen for CoreWindow
 /// </summary>
-public interface IApplicationSplashScreen
+public interface IFAApplicationSplashScreen
 {
     /// <summary>
     /// Specifies the name of the Application to display during the SplashScreen

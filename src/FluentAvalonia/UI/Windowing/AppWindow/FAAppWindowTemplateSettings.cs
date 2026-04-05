@@ -4,33 +4,33 @@ using Avalonia.Media;
 namespace FluentAvalonia.UI.Windowing;
 
 /// <summary>
-/// Defines settings used in the template of an <see cref="AppWindow"/> (Windows Only)
+/// Defines settings used in the template of an <see cref="FAAppWindow"/> (Windows Only)
 /// </summary>
-public class AppWindowTemplateSettings : AvaloniaObject
+public sealed class FAAppWindowTemplateSettings : AvaloniaObject
 {
     /// <summary>
     /// Defines the <see cref="TitleBarHeight"/> property
     /// </summary>
     public static readonly StyledProperty<double> TitleBarHeightProperty =
-        AvaloniaProperty.Register<AppWindowTemplateSettings, double>(nameof(TitleBarHeight), 32d);
+        AvaloniaProperty.Register<FAAppWindowTemplateSettings, double>(nameof(TitleBarHeight), 32d);
 
     /// <summary>
     /// Defines the <see cref="ContentMargin"/> property
     /// </summary>
     public static readonly StyledProperty<Thickness> ContentMarginProperty =
-        AvaloniaProperty.Register<AppWindowTemplateSettings, Thickness>(nameof(ContentMargin));
+        AvaloniaProperty.Register<FAAppWindowTemplateSettings, Thickness>(nameof(ContentMargin));
 
     /// <summary>
     /// Defines the <see cref="IsTitleBarContentVisible"/> property
     /// </summary>
     public static readonly StyledProperty<bool> IsTitleBarContentVisibleProperty =
-        AvaloniaProperty.Register<AppWindowTemplateSettings, bool>(nameof(IsTitleBarContentVisible));
+        AvaloniaProperty.Register<FAAppWindowTemplateSettings, bool>(nameof(IsTitleBarContentVisible));
 
     /// <summary>
     /// Defines the <see cref="WindowIcon"/> property
     /// </summary>
     public static readonly StyledProperty<IImage> WindowIconProperty =
-        AvaloniaProperty.Register<AppWindowTemplateSettings, IImage>(nameof(WindowIcon));
+        AvaloniaProperty.Register<FAAppWindowTemplateSettings, IImage>(nameof(WindowIcon));
 
     /// <summary>
     /// Gets or sets the height of the managed titlebar for AppWindow
