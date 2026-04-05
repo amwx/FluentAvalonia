@@ -8,9 +8,8 @@ using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(SharedPseudoclasses.s_pcIcon, SharedPseudoclasses.s_pcCompact, s_pcCloseCollapsed)]
-[PseudoClasses(SharedPseudoclasses.s_pcBorderRight, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcNoBorder)]
-[PseudoClasses(s_pcDragging)]
+[PseudoClasses(FASharedPseudoclasses.s_pcIcon, FASharedPseudoclasses.s_pcCompact, s_pcCloseCollapsed, s_pcForeground)]
+[PseudoClasses(FASharedPseudoclasses.s_pcBorderRight, FASharedPseudoclasses.s_pcBorderLeft, FASharedPseudoclasses.s_pcNoBorder)]
 [TemplatePart(s_tpTabSeparator, typeof(Visual))]
 [TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpCloseButton, typeof(Button))]
@@ -32,8 +31,8 @@ public partial class TabViewItem
     /// <summary>
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
-    public static readonly StyledProperty<IconSource> IconSourceProperty =
-        SettingsExpander.IconSourceProperty.AddOwner<TabViewItem>();
+    public static readonly StyledProperty<FAIconSource> IconSourceProperty =
+        FASettingsExpander.IconSourceProperty.AddOwner<TabViewItem>();
 
     /// <summary>
     /// Defines the <see cref="IsClosable"/> property
@@ -68,7 +67,7 @@ public partial class TabViewItem
     /// <summary>
     /// Gets or sets a value for the IconSource to be displayed within the tab
     /// </summary>
-    public IconSource IconSource
+    public FAIconSource IconSource
     {
         get => GetValue(IconSourceProperty);
         set => SetValue(IconSourceProperty, value);

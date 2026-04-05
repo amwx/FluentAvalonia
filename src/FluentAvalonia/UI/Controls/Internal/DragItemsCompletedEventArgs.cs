@@ -1,5 +1,7 @@
 ﻿using Avalonia.Input;
 
+// TODO: These will be updated with the TabView changes
+
 /// <summary>
 /// Provides event data for the DragItemsCompleted event
 /// </summary>

@@ -101,7 +101,7 @@ public partial class AppWindow : Window
         if (change.Property == IconProperty)
         {
             base.Icon = new WindowIcon(change.NewValue as Bitmap);
-            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, change.NewValue != null);
+            PseudoClasses.Set(FASharedPseudoclasses.s_pcIcon, change.NewValue != null);
         }
         else if (change.Property == ActualThemeVariantProperty)
         {

@@ -28,8 +28,30 @@ public partial class TabViewItem : SelectorItem
     {
         TabViewTemplateSettings = new TabViewItemTemplateSettings();
 
-        Loaded += OnLoaded;
-        SizeChanged += OnSizeChanged;
+        // Use AttachedToVisualTree override for Loaded event
+
+        // Will use OnPropertyChanged for SizeChanged, IsSelectedProperty changed, and Foreground changed
+
+        // ListBoxItem uses the PressedMixin...ugh... which uses tunnel events to set :pressed
+        // The problem is that doesn't respect if you've clicked on another control
+        // So, when we click the close button, the :pressed state is activated too, we don't want that
+        // So we have to undo what the :pressed mixin does
+        // This is the easy solution, since the other involves not deriving from ListBoxItem
+        AddHandler(PointerPressedEvent, (s, e) =>
+        {
+            var hasButton = (e.Source as Visual).GetVisualAncestors()
+                .Where(x => x == _closeButton).Any();
+
+            if (hasButton)
+            {
+                PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, false);
+            }
+        }, RoutingStrategies.Tunnel);
+    }
+
+    static TabViewItem()
+    {
+        FocusableProperty.OverrideDefaultValue<TabViewItem>(true);
     }
     
     protected internal TabView ParentTabView
@@ -470,7 +492,7 @@ public partial class TabViewItem : SelectorItem
         // => :compact
 
         // Handling compact/non compact width mode
-        PseudoClasses.Set(SharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
+        PseudoClasses.Set(FASharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
     }
 
     private void UpdateDragDropVisualState(bool isVisible)
@@ -545,13 +567,13 @@ public partial class TabViewItem : SelectorItem
     {
         if (IconSource != null)
         {
-            TabViewTemplateSettings.IconElement = IconHelpers.CreateFromUnknown(IconSource);
-            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, true);
+            TabViewTemplateSettings.IconElement = FAIconHelpers.CreateFromUnknown(IconSource);
+            PseudoClasses.Set(FASharedPseudoclasses.s_pcIcon, true);
         }
         else
         {
             TabViewTemplateSettings.IconElement = null;
-            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, false);
+            PseudoClasses.Set(FASharedPseudoclasses.s_pcIcon, false);
         }
     }
 

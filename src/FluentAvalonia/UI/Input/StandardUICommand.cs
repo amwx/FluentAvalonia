@@ -56,107 +56,107 @@ public class StandardUICommand : XamlUICommand
 
             case StandardUICommandKind.Cut:
                 Label = "Cut";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Cut };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Cut };
                 Description = "Remove the selected content and put it on the clipboard";
                 HotKey = new KeyGesture(Key.X, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.Copy:
                 Label = "Copy";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Copy };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Copy };
                 Description = "Copy the selected content to the clipboard";
                 HotKey = new KeyGesture(Key.C, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.Paste:
                 Label = "Paste";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Paste };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Paste };
                 Description = "Insert the contents of the clipboard at the current location";
                 HotKey = new KeyGesture(Key.V, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.SelectAll:
                 Label = "Select All";
-                IconSource = new SymbolIconSource { Symbol = Symbol.SelectAll };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.SelectAll };
                 Description = "Select all content";
                 HotKey = new KeyGesture(Key.A, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.Delete:
                 Label = "Delete";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Delete };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Delete };
                 Description = "Delete the selected content";
                 HotKey = new KeyGesture(Key.Delete);
                 break;
 
             case StandardUICommandKind.Share:
                 Label = "Share";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Share };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Share };
                 Description = "Share the selected content";
                 // No HotKey
                 break;
 
             case StandardUICommandKind.Save:
                 Label = "Save";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Save };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Save };
                 Description = "Save your changes";
                 HotKey = new KeyGesture(Key.S, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.Open:
                 Label = Description = "Open";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Open };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Open };
                 HotKey = new KeyGesture(Key.O, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.Close:
                 Label = Description = "Close";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Dismiss };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Dismiss };
                 HotKey = new KeyGesture(Key.W, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.Pause:
                 Label = Description = "Pause";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Pause };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Pause };
                 // No HotKey
                 break;
 
             case StandardUICommandKind.Play:
                 Label = Description = "Play";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Play };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Play };
                 // No HotKey
                 break;
 
             case StandardUICommandKind.Stop:
                 Label = Description = "Stop";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Stop };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Stop };
                 // No HotKey
                 break;
 
             case StandardUICommandKind.Forward:
                 Label = "Forward";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Forward };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Forward };
                 Description = "Go to the next item";
                 // No HotKey
                 break;
 
             case StandardUICommandKind.Backward:
                 Label = "Backward";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Back };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Back };
                 Description = "Back";
                 // No HotKey
                 break;
 
             case StandardUICommandKind.Undo:
                 Label = "Undo";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Undo };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Undo };
                 Description = "Reverse the most recent action";
                 HotKey = new KeyGesture(Key.Z, KeyModifiers.Control);
                 break;
 
             case StandardUICommandKind.Redo:
                 Label = "Redo";
-                IconSource = new SymbolIconSource { Symbol = Symbol.Redo };
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Redo };
                 Description = "Repeat the most recently undone action";
                 HotKey = new KeyGesture(Key.Y, KeyModifiers.Control);
                 break;
