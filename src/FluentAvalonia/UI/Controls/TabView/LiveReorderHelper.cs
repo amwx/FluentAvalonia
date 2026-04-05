@@ -150,7 +150,7 @@ internal class LiveReorderHelper
         ClearContainerBoundsCache();
     }
 
-    private int GetInsertionIndexForLiveReorder()
+    public int GetInsertionIndexForLiveReorder()
     {
         var draggedIndex = _liveReorderIndices.draggedItemIndex;
         var insertIndex = _liveReorderIndices.draggedOverIndex;
@@ -167,7 +167,7 @@ internal class LiveReorderHelper
         return insertIndex;
     }
 
-    private int GetClosestElement(Point dragPoint, bool requestingInsertionIndex = false)
+    public int GetClosestElement(Point dragPoint, bool requestingInsertionIndex = false)
     {
         // This estimates the container index given the current pointer position
         var panel = ItemsPanelRoot;

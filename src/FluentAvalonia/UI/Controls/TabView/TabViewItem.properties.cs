@@ -14,7 +14,7 @@ namespace FluentAvalonia.UI.Controls;
 [TemplatePart(s_tpTabSeparator, typeof(Visual))]
 [TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpCloseButton, typeof(Button))]
-[TemplatePart(s_tpSelectedBackgroundPathName, typeof(Path))]
+[TemplatePart(s_tpSelectedBackgroundPathName, typeof(Avalonia.Controls.Shapes.Path))]
 public partial class TabViewItem
 {
     /// <summary>
