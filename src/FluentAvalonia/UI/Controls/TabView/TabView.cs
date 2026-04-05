@@ -92,7 +92,7 @@ public partial class TabView : TemplatedControl
             _listView.DragOver += OnListViewDragOver;
             _listView.Drop += OnListViewDrop;
 
-            _listView.GotFocus += OnListViewGettingFocus;
+            _listView.GettingFocus += OnListViewGettingFocus;
 
             _listViewCanReorderItemsPropertyChangedRevoker =
                 _listView.GetPropertyChangedObservable(TabViewListView.CanReorderItemsProperty)
@@ -210,7 +210,7 @@ public partial class TabView : TemplatedControl
     }
 
 
-    private void OnListViewGettingFocus(object sender, GotFocusEventArgs e)
+    private void OnListViewGettingFocus(object sender, FocusChangingEventArgs e)
     {
         // TabViewItems overlap each other by one pixel in order to get the desired visuals for the separator.
         // This causes problems with 2d focus navigation. Because the items overlap, pressing Down or Up from a
@@ -717,17 +717,18 @@ public partial class TabView : TemplatedControl
 
                 if (shouldMoveFocusToNewTab)
                 {
-                    var focusable = KeyboardNavigationHandler.GetNext(_tabContentPresenter, NavigationDirection.Next);
-                    if (focusable == null)
-                    {
-                        // If there is nothing focusable in the new tab, just move focus to the TabViewItem itself.
-                        focusable = tvi;
-                    }
+                    // TODO: v3
+                    //var focusable = KeyboardNavigationHandler.GetNext(_tabContentPresenter, NavigationDirection.Next);
+                    //if (focusable == null)
+                    //{
+                    //    // If there is nothing focusable in the new tab, just move focus to the TabViewItem itself.
+                    //    focusable = tvi;
+                    //}
 
-                    if (focusable != null)
-                    {
-                        focusable.Focus(NavigationMethod.Unspecified);
-                    }
+                    //if (focusable != null)
+                    //{
+                    //    focusable.Focus(NavigationMethod.Unspecified);
+                    //}
                 }
             }
         }
@@ -1080,7 +1081,7 @@ public partial class TabView : TemplatedControl
             _listView.Loaded -= OnListViewLoaded;
             LogicalChildren.Remove(_listView);
             _listView.SelectionChanged -= OnListViewSelectionChanged;
-            _listView.GotFocus -= OnListViewGettingFocus;
+            _listView.GettingFocus -= OnListViewGettingFocus;
 
             _listView.DragItemsStarting -= OnListViewDragItemsStarting;
             _listView.DragItemsCompleted -= OnListViewDragItemsCompleted;

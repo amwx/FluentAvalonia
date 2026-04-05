@@ -5,6 +5,8 @@
     <conv:InverseBooleanValueConverter x:Key="AvaloniaThemesFluentNativeMenuBarInverseBooleanValueConverter" Default="True"/>
     <conv:IBitmapToImageConverter x:Key="AvaloniaThemesFluentNativeMenuBarIBitmapToImageConverter"/>
 
+    <!--
+    TODO v3: Looks like this was removed in 12.0 in favor of coded templates - double check
     <ControlTheme x:Key="{x:Type NativeMenuBar}" TargetType="NativeMenuBar">
         <Setter Property="Template">
             <ControlTemplate>
@@ -20,12 +22,12 @@
                             <Setter Property="Command" Value="{Binding Command}"/>
                             <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
                             <Setter Property="(NativeMenuBar.EnableMenuItemClickForwarding)" Value="True"/>
-                            <!--NativeMenuItem is IBitmap and MenuItem is Image-->
+                            --><!--NativeMenuItem is IBitmap and MenuItem is Image--><!--
                             <Setter Property="Icon" Value="{Binding Icon , Converter={StaticResource AvaloniaThemesFluentNativeMenuBarIBitmapToImageConverter}}"/>
                         </Style>
                     </Menu.Styles>
                 </Menu>
             </ControlTemplate>
         </Setter>
-    </ControlTheme>
+    </ControlTheme>-->
 </ResourceDictionary>

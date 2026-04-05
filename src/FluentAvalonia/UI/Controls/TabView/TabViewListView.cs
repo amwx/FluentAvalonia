@@ -313,7 +313,7 @@ public class TabViewListView : ListBox
 
     private void UpdateDragInfo()
     {
-        FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
+        //FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
     }
 
     private void BeginReorder(PointerEventArgs args)
@@ -488,7 +488,7 @@ public class TabViewListView : ListBox
         }
 
         var dropResult =
-            await DragDrop.DoDragDrop(args, disArgs.Data, effects);
+            await DragDrop.DoDragDropAsync(args, disArgs.Data, effects);
 
         _isInDrag = false;
         if (hasReorder)

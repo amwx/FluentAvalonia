@@ -23,8 +23,8 @@ public class CollectionViewSource : AvaloniaObject, ISupportInitialize
     /// <summary>
     /// Defines the <see cref="ItemsBinding"/> property
     /// </summary>
-    public static readonly DirectProperty<CollectionViewSource, IBinding> ItemsBindingProperty =
-     AvaloniaProperty.RegisterDirect<CollectionViewSource, IBinding>(nameof(ItemsBinding),
+    public static readonly DirectProperty<CollectionViewSource, BindingBase> ItemsBindingProperty =
+     AvaloniaProperty.RegisterDirect<CollectionViewSource, BindingBase>(nameof(ItemsBinding),
          x => x.ItemsBinding, (x, v) => x.ItemsBinding = v);
 
     /// <summary>
@@ -71,7 +71,7 @@ public class CollectionViewSource : AvaloniaObject, ISupportInitialize
     /// </summary>
     [AssignBinding]
     [InheritDataTypeFromItems(nameof(Source))]
-    public IBinding ItemsBinding
+    public BindingBase ItemsBinding
     {
         get => _itemsBinding;
         set => SetAndRaise(ItemsBindingProperty, ref _itemsBinding, value);
@@ -248,7 +248,7 @@ public class CollectionViewSource : AvaloniaObject, ISupportInitialize
 
     private bool _isInitializing;
     private bool _isSourceGrouped;
-    private IBinding _itemsBinding;
+    private BindingBase _itemsBinding;
     private IEnumerable _source;
     private ICollectionView _view;
     private AvaloniaList<string> _liveFilterProperties;

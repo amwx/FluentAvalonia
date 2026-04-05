@@ -11,6 +11,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using FluentAvalonia.Collections;
 using FluentAvalonia.Core;
 
@@ -30,7 +31,7 @@ public class BreadcrumbBar : TemplatedControl
         
         AddHandler(KeyDownEvent, OnChildPreviewKeyDown, RoutingStrategies.Tunnel);
         //AccessKeyInvoked
-        GotFocus += OnGettingFocus;
+        GettingFocus += OnGettingFocus;
         // Ignore FlowDirection
     }
 
@@ -350,11 +351,49 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private void OnGettingFocus(object sender, GotFocusEventArgs args)
+    private void OnGettingFocus(object sender, FocusChangingEventArgs args)
     {
         if (_itemsRepeater is ItemsRepeater repeater)
         {
-            //
+            // WinUI checks args InputDevice for Keyboard
+            if (args.NavigationMethod == NavigationMethod.Directional || args.NavigationMethod == NavigationMethod.Tab)
+            {
+                var ctrl = Application.Current.PlatformSettings.HotkeyConfiguration.CommandModifiers;
+                var oldFocusedElement = args.OldFocusedElement;
+                if (oldFocusedElement == null || repeater != (oldFocusedElement as Visual)?.GetVisualParent())
+                {
+                    if (_itemsRepeaterLayout != null)
+                    {
+                        if (_itemsRepeaterLayout.EllipsisIsRendered)
+                        {
+                            _focusedIndex = 0;
+                        }
+                        else
+                        {
+                            _focusedIndex = 1;
+                        }
+
+                        FocusElementAt(_focusedIndex);
+                    }
+
+                    if (repeater.TryGetElement(_focusedIndex) is Control selectedItem)
+                    {
+                        if (args.TrySetNewFocusedElement(selectedItem))
+                        {
+                            args.Handled = true;
+                        }
+                    }
+                }
+                // Focus was already in the repeater: in RS3+ Selection follows focus unless control is held down.
+                else if ((ctrl & args.KeyModifiers) != KeyModifiers.Control)
+                {
+                    if (args.NewFocusedElement is Control newFocus)
+                    {
+                        FocusElementAt(repeater.GetElementIndex(newFocus));
+                        args.Handled = true;
+                    }
+                }
+            }
         }
     }
 
@@ -441,7 +480,14 @@ public class BreadcrumbBar : TemplatedControl
         return MoveFocus(movementNext);
     }
 
-    // GetFindNextElementOptions
+    private FindNextElementOptions GetFindNextElementOptions()
+    {
+        var options = new FindNextElementOptions
+        {
+            SearchRoot = this
+        };
+        return options;
+    }
 
     private void OnChildPreviewKeyDown(object sender, KeyEventArgs args)
     {

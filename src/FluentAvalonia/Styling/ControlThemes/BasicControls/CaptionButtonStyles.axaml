@@ -8,9 +8,11 @@
     </Design.PreviewWith>
 
 
+    <!--
+    TODO v3
     <ControlTheme x:Key="FluentCaptionButton" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
-        <!-- Reusing BorderBrush to define pressed background color, as it's not used otherwise -->
+        --><!-- Reusing BorderBrush to define pressed background color, as it's not used otherwise --><!--
         <Setter Property="BorderBrush" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
         <Setter Property="Width" Value="45"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -95,5 +97,5 @@
         <Style Selector="^:fullscreen /template/ Panel#PART_MinimizeButton">
             <Setter Property="IsVisible" Value="False" />
         </Style>
-    </ControlTheme>
+    </ControlTheme>-->
 </ResourceDictionary>

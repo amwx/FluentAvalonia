@@ -124,7 +124,7 @@ public partial class NavigationView : HeaderedContentControl
                 _leftNavRepeater.ElementClearing += OnRepeaterElementClearing;
 
                 _leftNavRepeater.Loaded += OnRepeaterLoaded;
-                _leftNavRepeater.GotFocus += OnRepeaterGettingFocus;
+                _leftNavRepeater.GettingFocus += OnRepeaterGettingFocus;
 
                 _leftNavRepeater.ItemTemplate = _itemsFactory;
             }
@@ -140,7 +140,7 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavRepeater.ElementClearing += OnRepeaterElementClearing;
 
                 _topNavRepeater.Loaded += OnRepeaterLoaded;
-                _topNavRepeater.GotFocus += OnRepeaterGettingFocus;
+                _topNavRepeater.GettingFocus += OnRepeaterGettingFocus;
 
                 _topNavRepeater.ItemTemplate = _itemsFactory;
             }
@@ -187,7 +187,7 @@ public partial class NavigationView : HeaderedContentControl
                 _leftNavFooterMenuRepeater.ElementClearing += OnRepeaterElementClearing;
 
                 _leftNavFooterMenuRepeater.Loaded += OnRepeaterLoaded;
-                _leftNavFooterMenuRepeater.GotFocus += OnRepeaterGettingFocus;
+                _leftNavFooterMenuRepeater.GettingFocus += OnRepeaterGettingFocus;
 
                 _leftNavFooterMenuRepeater.ItemTemplate = _itemsFactory;
             }
@@ -203,7 +203,7 @@ public partial class NavigationView : HeaderedContentControl
                 _topNavFooterMenuRepeater.ElementClearing += OnRepeaterElementClearing;
 
                 _topNavFooterMenuRepeater.Loaded += OnRepeaterLoaded;
-                _topNavFooterMenuRepeater.GotFocus += OnRepeaterGettingFocus;
+                _topNavFooterMenuRepeater.GettingFocus += OnRepeaterGettingFocus;
 
                 _topNavFooterMenuRepeater.ItemTemplate = _itemsFactory;
             }
@@ -482,142 +482,144 @@ public partial class NavigationView : HeaderedContentControl
     //WinUI also uses PreviewKeyDown to reset m_TabKeyPrecedesFocusChange
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        _tabKeyPrecedesFocusChange = false;
-        switch (e.Key)
-        {
-            case Key.Back:
-                if (IsPaneOpen && IsLightDismissable)
-                {
-                    e.Handled = AttemptClosePaneLightly();
-                }
-                break;
+        // TODO v3
 
-            case Key.Tab:
-                // arrow keys navigation through ItemsRepeater don't get here
-                // so handle tab key to distinguish between tab focus and arrow focus navigation
-                _tabKeyPrecedesFocusChange = true;
-                break;
+        //_tabKeyPrecedesFocusChange = false;
+        //switch (e.Key)
+        //{
+        //    case Key.Back:
+        //        if (IsPaneOpen && IsLightDismissable)
+        //        {
+        //            e.Handled = AttemptClosePaneLightly();
+        //        }
+        //        break;
 
-            case Key.Left:
-                if (((e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt) && IsPaneOpen && IsLightDismissable)
-                {
-                    e.Handled = AttemptClosePaneLightly();
-                    break;
-                }
-                goto case Key.Up;
+        //    case Key.Tab:
+        //        // arrow keys navigation through ItemsRepeater don't get here
+        //        // so handle tab key to distinguish between tab focus and arrow focus navigation
+        //        _tabKeyPrecedesFocusChange = true;
+        //        break;
 
-            case Key.Up:
-            case Key.Down:
-            case Key.Right:
-                //Continued logic from the NVIKeyDown handler, to compensate for no XYKeyboardFocus
-                //we still want the arrow keys to work on the rest of the pane (panetogglebutton,
-                //autocompletebox, etc.) so if 'e' is not handled yet, we'll handle it here
+        //    case Key.Left:
+        //        if (((e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt) && IsPaneOpen && IsLightDismissable)
+        //        {
+        //            e.Handled = AttemptClosePaneLightly();
+        //            break;
+        //        }
+        //        goto case Key.Up;
 
-                if (e.Handled)
-                    break;
+        //    case Key.Up:
+        //    case Key.Down:
+        //    case Key.Right:
+        //        //Continued logic from the NVIKeyDown handler, to compensate for no XYKeyboardFocus
+        //        //we still want the arrow keys to work on the rest of the pane (panetogglebutton,
+        //        //autocompletebox, etc.) so if 'e' is not handled yet, we'll handle it here
 
-                bool isTopNav = IsTopNavigationView;
+        //        if (e.Handled)
+        //            break;
 
-                if (isTopNav && _topNavGrid == null)
-                    break;
-                else if (!isTopNav && _paneContentGrid == null)
-                    break;
+        //        bool isTopNav = IsTopNavigationView;
 
-                var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as InputElement;
+        //        if (isTopNav && _topNavGrid == null)
+        //            break;
+        //        else if (!isTopNav && _paneContentGrid == null)
+        //            break;
 
-                if (current == null)
-                    break;
+        //        var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as InputElement;
 
-                //Make sure current focus is in the NavPane, we don't want to disturb content
-                //being displayed in the NavView
-                if (!VerifyInPane(current, isTopNav ? _topNavGrid : _paneContentGrid))
-                    break;
+        //        if (current == null)
+        //            break;
 
-                if ((isTopNav && e.Key == Key.Left) || (!isTopNav && e.Key == Key.Up))
-                {
-                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous) as InputElement;
-                    if (next == null)
-                        break;
+        //        //Make sure current focus is in the NavPane, we don't want to disturb content
+        //        //being displayed in the NavView
+        //        if (!VerifyInPane(current, isTopNav ? _topNavGrid : _paneContentGrid))
+        //            break;
 
-                    //Next focus falls outside of the pane, don't focus it
-                    if (!VerifyInPane(next, isTopNav ? _topNavGrid : _paneContentGrid))
-                        break;
+        //        if ((isTopNav && e.Key == Key.Left) || (!isTopNav && e.Key == Key.Up))
+        //        {
+        //            var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous) as InputElement;
+        //            if (next == null)
+        //                break;
 
-                    if (next is NavigationViewItem nvi)
-                    {
-                        var rep = GetParentItemsRepeaterForContainer(nvi);
-                        //null check here b/c if NVIs are used in PaneFooter, it won't have an
-                        //items repeater & we want default logic there
-                        if (rep != null)
-                        {
-                            var ct = rep.ItemsSourceView.Count;
-                            for (int i = ct - 1; i >= 0; i--)
-                            {
-                                if (rep.TryGetElement(i) is NavigationViewItem nvi2)
-                                {
-                                    if (DoesNavigationViewItemHaveChildren(nvi2) && nvi2.IsExpanded && !SelectionFollowsFocus)
-                                    {
-                                        var item = SearchTreeForLowestFocusItem(nvi2);
-                                        if (item is NavigationViewItem c)
-                                        {
-                                            c.Focus(NavigationMethod.Directional);
-                                            c.BringIntoView();
-                                            e.Handled = true;
-                                            break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        nvi2.Focus(NavigationMethod.Directional);
-                                        nvi2.BringIntoView();
-                                        e.Handled = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
+        //            //Next focus falls outside of the pane, don't focus it
+        //            if (!VerifyInPane(next, isTopNav ? _topNavGrid : _paneContentGrid))
+        //                break;
 
-                    if (!e.Handled)
-                    {
-                        next.Focus(NavigationMethod.Directional);
-                        e.Handled = true;
-                    }
-                }
-                else if ((isTopNav && e.Key == Key.Right) || (!isTopNav && e.Key == Key.Down))
-                {
-                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next) as InputElement;
-                    if (next == null)
-                        break;
+        //            if (next is NavigationViewItem nvi)
+        //            {
+        //                var rep = GetParentItemsRepeaterForContainer(nvi);
+        //                //null check here b/c if NVIs are used in PaneFooter, it won't have an
+        //                //items repeater & we want default logic there
+        //                if (rep != null)
+        //                {
+        //                    var ct = rep.ItemsSourceView.Count;
+        //                    for (int i = ct - 1; i >= 0; i--)
+        //                    {
+        //                        if (rep.TryGetElement(i) is NavigationViewItem nvi2)
+        //                        {
+        //                            if (DoesNavigationViewItemHaveChildren(nvi2) && nvi2.IsExpanded && !SelectionFollowsFocus)
+        //                            {
+        //                                var item = SearchTreeForLowestFocusItem(nvi2);
+        //                                if (item is NavigationViewItem c)
+        //                                {
+        //                                    c.Focus(NavigationMethod.Directional);
+        //                                    c.BringIntoView();
+        //                                    e.Handled = true;
+        //                                    break;
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                nvi2.Focus(NavigationMethod.Directional);
+        //                                nvi2.BringIntoView();
+        //                                e.Handled = true;
+        //                                break;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
 
-                    //Next focus falls outside of the pane, don't focus it
-                    if (!VerifyInPane(next, isTopNav ? _topNavGrid : _paneContentGrid))
-                        break;
+        //            if (!e.Handled)
+        //            {
+        //                next.Focus(NavigationMethod.Directional);
+        //                e.Handled = true;
+        //            }
+        //        }
+        //        else if ((isTopNav && e.Key == Key.Right) || (!isTopNav && e.Key == Key.Down))
+        //        {
+        //            var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next) as InputElement;
+        //            if (next == null)
+        //                break;
 
-                    if (next is NavigationViewItem nvi)
-                    {
-                        if (DoesNavigationViewItemHaveChildren(nvi) && nvi.IsExpanded)
-                        {
-                            var rep = nvi.GetRepeater;
-                            if (rep != null && rep.TryGetElement(0) is NavigationViewItem nvi2)
-                            {
-                                nvi2.Focus(NavigationMethod.Directional);
-                                nvi2.BringIntoView();
-                                e.Handled = true;
-                                break;
-                            }
-                        }
-                    }
+        //            //Next focus falls outside of the pane, don't focus it
+        //            if (!VerifyInPane(next, isTopNav ? _topNavGrid : _paneContentGrid))
+        //                break;
 
-                    if (!e.Handled)
-                    {
-                        next.Focus(NavigationMethod.Directional);
-                        e.Handled = true;
-                    }
-                }
+        //            if (next is NavigationViewItem nvi)
+        //            {
+        //                if (DoesNavigationViewItemHaveChildren(nvi) && nvi.IsExpanded)
+        //                {
+        //                    var rep = nvi.GetRepeater;
+        //                    if (rep != null && rep.TryGetElement(0) is NavigationViewItem nvi2)
+        //                    {
+        //                        nvi2.Focus(NavigationMethod.Directional);
+        //                        nvi2.BringIntoView();
+        //                        e.Handled = true;
+        //                        break;
+        //                    }
+        //                }
+        //            }
 
-                break;
-        }
+        //            if (!e.Handled)
+        //            {
+        //                next.Focus(NavigationMethod.Directional);
+        //                e.Handled = true;
+        //            }
+        //        }
+
+        //        break;
+        //}
 
         base.OnKeyDown(e);
     }
@@ -963,14 +965,14 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnRepeaterGettingFocus(object sender, GotFocusEventArgs e)
+    private void OnRepeaterGettingFocus(object sender, FocusChangingEventArgs e)
     {
         // if focus change was invoked by tab key
         // and there is selected item in ItemsRepeater that gatting focus
         // we should put focus on selected item
         if (_tabKeyPrecedesFocusChange && _selectionModel.SelectedIndex != IndexPath.Unselected)
         {
-            //TODO
+            // TODO v3
         }
 
         _tabKeyPrecedesFocusChange = false;
@@ -1833,15 +1835,15 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnNavigationViewItemGotFocus(object sender, GotFocusEventArgs e)
+    private void OnNavigationViewItemGotFocus(object sender, FocusChangedEventArgs e)
     {
         var nvi = (NavigationViewItem)sender;
 
-        //In WinUI, Focus isn't given to an item until AFTER the Tapped event, which differs
-        //from how Avalonia handles it. Which means here, this is called first, and the NVI
-        //hasn't yet been selected, which means OnNVIInvoked gets called twice and will open
-        //and close an item if it has child items. So disable here if focus was given via
-        //the pointer to prevent that from occuring
+        // In WinUI, Focus isn't given to an item until AFTER the Tapped event, which differs
+        // from how Avalonia handles it. Which means here, this is called first, and the NVI
+        // hasn't yet been selected, which means OnNVIInvoked gets called twice and will open
+        // and close an item if it has child items. So disable here if focus was given via
+        // the pointer to prevent that from occuring
         if (SelectionFollowsFocus && e.NavigationMethod != NavigationMethod.Pointer)
         {
             // if nvi is already selected we don't need to invoke it again
@@ -2016,53 +2018,54 @@ public partial class NavigationView : HeaderedContentControl
 
     private void FocusNextDownItem(NavigationViewItem nvi, KeyEventArgs args)
     {
-        if (DoesNavigationViewItemHaveChildren(nvi) && nvi.IsExpanded && !SelectionFollowsFocus)
-        {
-            var ir = nvi.GetRepeater;
-            var ct = ir.ItemsSourceView.Count;
-            for (int i = 0; i < ct; i++)
-            {
-                if (ir.TryGetElement(i) is Control c && c.Focusable)
-                {
-                    c.Focus(NavigationMethod.Directional);
-                    c.BringIntoView();
-                    args.Handled = true;
-                    return;
-                }
-            }
+        // TODO v3
+        //if (DoesNavigationViewItemHaveChildren(nvi) && nvi.IsExpanded && !SelectionFollowsFocus)
+        //{
+        //    var ir = nvi.GetRepeater;
+        //    var ct = ir.ItemsSourceView.Count;
+        //    for (int i = 0; i < ct; i++)
+        //    {
+        //        if (ir.TryGetElement(i) is Control c && c.Focusable)
+        //        {
+        //            c.Focus(NavigationMethod.Directional);
+        //            c.BringIntoView();
+        //            args.Handled = true;
+        //            return;
+        //        }
+        //    }
 
-        }
-        else
-        {
-            var parentIR = GetParentItemsRepeaterForContainer(nvi);
-            var index = parentIR.GetElementIndex(nvi);
-            if (index != -1)
-            {
-                index++;
-                var count = parentIR.ItemsSourceView.Count - 1;
-                while (index <= count)
-                {
-                    if (parentIR.TryGetElement(index) is NavigationViewItem nvi2)
-                    {
-                        nvi2.Focus(NavigationMethod.Directional);
-                        nvi2.BringIntoView();
-                        args.Handled = true;
-                        return;
-                    }
-                    index++;
-                }
-            }
-        }
+        //}
+        //else
+        //{
+        //    var parentIR = GetParentItemsRepeaterForContainer(nvi);
+        //    var index = parentIR.GetElementIndex(nvi);
+        //    if (index != -1)
+        //    {
+        //        index++;
+        //        var count = parentIR.ItemsSourceView.Count - 1;
+        //        while (index <= count)
+        //        {
+        //            if (parentIR.TryGetElement(index) is NavigationViewItem nvi2)
+        //            {
+        //                nvi2.Focus(NavigationMethod.Directional);
+        //                nvi2.BringIntoView();
+        //                args.Handled = true;
+        //                return;
+        //            }
+        //            index++;
+        //        }
+        //    }
+        //}
 
-        //We couldn't find another item to focus, move to next part of pane (this will also handle
-        //the jump from Primary items to footer)
-        var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Next) as Control;
-        if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
-            return;
+        //// We couldn't find another item to focus, move to next part of pane (this will also handle
+        //// the jump from Primary items to footer)
+        //var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Next) as Control;
+        //if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
+        //    return;
 
-        next.Focus(NavigationMethod.Directional);
-        next.BringIntoView();
-        args.Handled = true;
+        //next.Focus(NavigationMethod.Directional);
+        //next.BringIntoView();
+        //args.Handled = true;
     }
 
     private void OnNavigationViewItemTapped(object sender, Avalonia.Interactivity.RoutedEventArgs e)

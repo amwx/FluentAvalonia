@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Avalonia.Utilities;
+using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -268,7 +269,7 @@ public class AppWindowTitleBar
         get => _height;
         set
         {
-            if (!MathUtilities.AreClose(_height, value))
+            if (!MathHelpers.IsClose(_height, value))
             {
                 _height = value;
                 _parent.OnTitleBarHeightChanged(value);

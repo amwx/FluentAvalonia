@@ -537,7 +537,7 @@ public partial class NavigationView : HeaderedContentControl
             _leftNavRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
             _leftNavRepeater.Loaded -= OnRepeaterLoaded;
-            _leftNavRepeater.GotFocus -= OnRepeaterGettingFocus;
+            _leftNavRepeater.GettingFocus -= OnRepeaterGettingFocus;
             _leftNavRepeater = null;
         }
 
@@ -547,7 +547,7 @@ public partial class NavigationView : HeaderedContentControl
             _topNavRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
             _topNavRepeater.Loaded -= OnRepeaterLoaded;
-            _topNavRepeater.GotFocus -= OnRepeaterGettingFocus;
+            _topNavRepeater.GettingFocus -= OnRepeaterGettingFocus;
             _topNavRepeater = null;
         }
 
@@ -574,7 +574,7 @@ public partial class NavigationView : HeaderedContentControl
             _leftNavFooterMenuRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
             _leftNavFooterMenuRepeater.Loaded -= OnRepeaterLoaded;
-            _leftNavFooterMenuRepeater.GotFocus -= OnRepeaterGettingFocus;
+            _leftNavFooterMenuRepeater.GettingFocus -= OnRepeaterGettingFocus;
             _leftNavFooterMenuRepeater = null;
         }
 
@@ -584,7 +584,7 @@ public partial class NavigationView : HeaderedContentControl
             _topNavFooterMenuRepeater.ElementPrepared -= OnRepeaterElementPrepared;
 
             _topNavFooterMenuRepeater.Loaded -= OnRepeaterLoaded;
-            _topNavFooterMenuRepeater.GotFocus -= OnRepeaterGettingFocus;
+            _topNavFooterMenuRepeater.GettingFocus -= OnRepeaterGettingFocus;
             _topNavFooterMenuRepeater = null;
         }
 
