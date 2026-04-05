@@ -487,30 +487,31 @@ public class TabViewListView : ListBox
             }
         }
 
-        var dropResult =
-            await DragDrop.DoDragDropAsync(args, disArgs.Data, effects);
+        // This will get fixed when the TabView PR is merged
+        //var dropResult =
+        //    await DragDrop.DoDragDropAsync(args, disArgs.Data, effects);
 
-        _isInDrag = false;
-        if (hasReorder)
-        {
-            EndReorder();
-        }
-        else
-        {
-            (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
+        //_isInDrag = false;
+        //if (hasReorder)
+        //{
+        //    EndReorder();
+        //}
+        //else
+        //{
+        //    (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
 
-            if (ToolTip.GetIsOpen(_dragItem))
-            {
-                ToolTip.SetIsOpen(_dragItem, false);
-            }
-            ToolTip.SetTip(_dragItem, _dragItemToolTip);
-        }
+        //    if (ToolTip.GetIsOpen(_dragItem))
+        //    {
+        //        ToolTip.SetIsOpen(_dragItem, false);
+        //    }
+        //    ToolTip.SetTip(_dragItem, _dragItemToolTip);
+        //}
 
-        DragItemsCompleted?.Invoke(this, new DragItemsCompletedEventArgs(dropResult, disArgs.Items));
+        //DragItemsCompleted?.Invoke(this, new DragItemsCompletedEventArgs(dropResult, disArgs.Items));
 
-        _initialPoint = null;
-        _dragItem = null;
-        _dragIndex = -1;
+        //_initialPoint = null;
+        //_dragItem = null;
+        //_dragIndex = -1;
     }
 
     private void OnDragEnter(object sender, DragEventArgs e)
