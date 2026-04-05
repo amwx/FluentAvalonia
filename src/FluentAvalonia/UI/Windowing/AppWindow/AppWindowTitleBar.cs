@@ -269,7 +269,7 @@ public class AppWindowTitleBar
         get => _height;
         set
         {
-            if (!MathHelpers.IsClose(_height, value))
+            if (!FAMathHelpers.IsClose(_height, value))
             {
                 _height = value;
                 _parent.OnTitleBarHeightChanged(value);

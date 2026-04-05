@@ -15,7 +15,7 @@ using Avalonia.Utilities;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(SharedPseudoclasses.s_pcNoBorder, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcBorderRight, s_pcSingleBorder)]
+[PseudoClasses(FASharedPseudoclasses.s_pcNoBorder, FASharedPseudoclasses.s_pcBorderLeft, FASharedPseudoclasses.s_pcBorderRight, s_pcSingleBorder)]
 [TemplatePart(s_tpTabContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpRightContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpTabContainerGrid, typeof(Grid))]

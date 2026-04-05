@@ -15,7 +15,7 @@ internal enum NavigationViewSplitVectorID
 
 internal class TopNavigationViewDataProvider : SplitDataSourceBase<object, NavigationViewSplitVectorID, double>
 {
-    public TopNavigationViewDataProvider(NavigationView owner) : base(5)
+    public TopNavigationViewDataProvider(FANavigationView owner) : base(5)
     {
         //Wow Microsoft, creative naming
         Func<object, int> lambda = (object value) =>
@@ -346,7 +346,7 @@ internal class TopNavigationViewDataProvider : SplitDataSourceBase<object, Navig
     public bool IsContainerNavigationViewItem(int index)
     {
         var item = GetAt(index);
-        if (item is NavigationViewItemHeader || item is NavigationViewItemSeparator)
+        if (item is FANavigationViewItemHeader || item is FANavigationViewItemSeparator)
         {
             return false;
         }
@@ -356,7 +356,7 @@ internal class TopNavigationViewDataProvider : SplitDataSourceBase<object, Navig
     public bool IsContainerNavigationViewHeader(int index)
     {
         var item = GetAt(index);
-        if (item is NavigationViewItemHeader)
+        if (item is FANavigationViewItemHeader)
         {
             return true;
         }

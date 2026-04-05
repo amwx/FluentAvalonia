@@ -271,9 +271,9 @@ public partial class TabView : TemplatedControl
 
             if (ContainerFromIndex(i) is TabViewItem tvi)
             {
-                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcNoBorder, state == 0);
-                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderLeft, state == 1);
-                ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderRight, state == 2);
+                ((IPseudoClasses)tvi.Classes).Set(FASharedPseudoclasses.s_pcNoBorder, state == 0);
+                ((IPseudoClasses)tvi.Classes).Set(FASharedPseudoclasses.s_pcBorderLeft, state == 1);
+                ((IPseudoClasses)tvi.Classes).Set(FASharedPseudoclasses.s_pcBorderRight, state == 2);
             }
         }
     }
@@ -288,13 +288,13 @@ public partial class TabView : TemplatedControl
         // Update border lines in the inner TabViewListView
         if (_listView != null)
         {
-            (_listView.Classes as IPseudoClasses).Set(SharedPseudoclasses.s_pcNoBorder, _isDragging);
+            (_listView.Classes as IPseudoClasses).Set(FASharedPseudoclasses.s_pcNoBorder, _isDragging);
         }
 
         // Update border lines in the ScrollViewer
         if (_scrollViewer != null)
         {
-            (_scrollViewer.Classes as IPseudoClasses).Set(SharedPseudoclasses.s_pcNoBorder, _isDragging);
+            (_scrollViewer.Classes as IPseudoClasses).Set(FASharedPseudoclasses.s_pcNoBorder, _isDragging);
         }
     }
 
@@ -816,7 +816,7 @@ public partial class TabView : TemplatedControl
                         {
                             // Calculate the proportional width of each tab given the width of the ScrollViewer.
                             var tabWidthForScroller = (availableWidth - (padding.Horizontal() + headerWidth + footerWidth)) / (double)TabItems.Count();
-                            tabWidth = MathHelpers.Clamp(tabWidthForScroller, minTabWidth, maxTabWidth);
+                            tabWidth = FAMathHelpers.Clamp(tabWidthForScroller, minTabWidth, maxTabWidth);
                         }
                         else
                         {
@@ -839,7 +839,7 @@ public partial class TabView : TemplatedControl
 
                             // Use current size to update items to fill the currently occupied space
                             var tabWidthUnclamped = availableTabViewSpace / (double)TabItems.Count();
-                            tabWidth = MathHelpers.Clamp(tabWidthUnclamped, minTabWidth, maxTabWidth);
+                            tabWidth = FAMathHelpers.Clamp(tabWidthUnclamped, minTabWidth, maxTabWidth);
                         }
 
                         // Size tab column to needed size

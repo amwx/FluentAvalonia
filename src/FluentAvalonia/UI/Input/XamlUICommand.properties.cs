@@ -27,8 +27,8 @@ public partial class XamlUICommand : AvaloniaObject, ICommand
     /// <summary>
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
-    public static readonly StyledProperty<IconSource> IconSourceProperty =
-        AvaloniaProperty.Register<XamlUICommand, IconSource>(nameof(IconSource));
+    public static readonly StyledProperty<FAIconSource> IconSourceProperty =
+        AvaloniaProperty.Register<XamlUICommand, FAIconSource>(nameof(IconSource));
 
     /// <summary>
     /// Defines the <see cref="HotKey"/> property
@@ -64,7 +64,7 @@ public partial class XamlUICommand : AvaloniaObject, ICommand
     /// <summary>
     /// Gets or sets an IconSource for this element.
     /// </summary>
-    public IconSource IconSource
+    public FAIconSource IconSource
     {
         get => GetValue(IconSourceProperty);
         set => SetValue(IconSourceProperty, value);
