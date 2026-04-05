@@ -469,36 +469,31 @@ public sealed class TabViewListView : ListBox
         }        
     }
 
-        var dropResult =
-            await DragDrop.DoDragDropAsync(args, disArgs.Data, effects);
+        // This will get fixed when the TabView PR is merged
+        //var dropResult =
+        //    await DragDrop.DoDragDropAsync(args, disArgs.Data, effects);
 
-        if (DropCausesReorder())
-        {
-            var pt = e.GetPosition(this);
-            OnReorderDrop(pt);
+        //_isInDrag = false;
+        //if (hasReorder)
+        //{
+        //    EndReorder();
+        //}
+        //else
+        //{
+        //    (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
 
-            e.DragEffects = DragDropEffects.Move;
-            e.Handled = true;
-        }
-        else
-        {
-            _liveReorderHelper?.ResetAllItemsForLiveReorder();
-        }
+        //    if (ToolTip.GetIsOpen(_dragItem))
+        //    {
+        //        ToolTip.SetIsOpen(_dragItem, false);
+        //    }
+        //    ToolTip.SetTip(_dragItem, _dragItemToolTip);
+        //}
 
-        Drop?.Invoke(this, e);
-    }
+        //DragItemsCompleted?.Invoke(this, new DragItemsCompletedEventArgs(dropResult, disArgs.Items));
 
-    private void CancelDrag()
-    {
-        _initArgs = null;
-        _initialPoint = null;
-        _isInDrag = _isInReorder = false;
-        _dragIndex = -1;
-        _dragItem = null;
-        _isDraggingOverSelf = false;
-        _lastDragOverPoint = null;
-        _isDragWithinTabStrip = false;
-        _liveReorderHelper?.ResetAllItemsForLiveReorder();
+        //_initialPoint = null;
+        //_dragItem = null;
+        //_dragIndex = -1;
     }
 
     private bool DropCausesReorder()
