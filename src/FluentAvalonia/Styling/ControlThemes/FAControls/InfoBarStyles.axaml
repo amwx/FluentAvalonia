@@ -7,34 +7,34 @@
     <Design.PreviewWith>
         <Border Padding="40">
             <StackPanel Spacing="10">
-                <ui:InfoBar IsOpen="True" Title="Title1" Message="Message" IsClosable="True" IsIconVisible="True" />
-                <ui:InfoBar IsOpen="True" Title="Title" Message="Message" IsClosable="False" IsIconVisible="True" />
-                <ui:InfoBar IsOpen="True" Title="Title" Message="Message" IsClosable="True" IsIconVisible="False" />
+                <ui:FAInfoBar IsOpen="True" Title="Title1" Message="Message" IsClosable="True" IsIconVisible="True" />
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="Message" IsClosable="False" IsIconVisible="True" />
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="Message" IsClosable="True" IsIconVisible="False" />
 
                 <Border Background="Black" Height="1" />
 
-                <ui:InfoBar IsOpen="True" Title="Title" Message="Message" Severity="Informational" />
-                <ui:InfoBar IsOpen="True" Title="Title" Message="Message" Severity="Warning" />
-                <ui:InfoBar IsOpen="True" Title="Title" Message="Message" Severity="Error" />
-                <ui:InfoBar IsOpen="True" Title="Title" Message="Message" Severity="Success" />
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="Message" Severity="Informational" />
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="Message" Severity="Warning" />
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="Message" Severity="Error" />
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="Message" Severity="Success" />
 
-                <ui:InfoBar IsOpen="True" Title="Title" Background="DarkSlateBlue" Message="Message" Severity="Success" Foreground="Red" />
+                <ui:FAInfoBar IsOpen="True" Title="Title" Background="DarkSlateBlue" Message="Message" Severity="Success" Foreground="Red" />
 
-                <ui:InfoBar IsOpen="True" Title="Custom Icon" Message="akls;df">
-                    <ui:InfoBar.IconSource>
-                        <ui:SymbolIconSource Symbol="Add" />
-                    </ui:InfoBar.IconSource>
-                </ui:InfoBar>
+                <ui:FAInfoBar IsOpen="True" Title="Custom Icon" Message="akls;df">
+                    <ui:FAInfoBar.IconSource>
+                        <ui:FASymbolIconSource Symbol="Add" />
+                    </ui:FAInfoBar.IconSource>
+                </ui:FAInfoBar>
 
-                <ui:InfoBar IsOpen="True" Title="Title" Message="Action Button">
-                    <ui:InfoBar.ActionButton>
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="Action Button">
+                    <ui:FAInfoBar.ActionButton>
                         <Button Content="Click" />
-                    </ui:InfoBar.ActionButton>
-                </ui:InfoBar>
+                    </ui:FAInfoBar.ActionButton>
+                </ui:FAInfoBar>
 
-                <ui:InfoBar IsOpen="True" Title="Title" Message="asdf">
+                <ui:FAInfoBar IsOpen="True" Title="Title" Message="asdf">
                     <CheckBox Content="Custom Content" />
-                </ui:InfoBar>
+                </ui:FAInfoBar>
 
             </StackPanel>
         </Border>
@@ -79,7 +79,7 @@
     <Thickness x:Key="InfoBarMessageVerticalOrientationMargin">0,4,0,0</Thickness>
     <Thickness x:Key="InfoBarActionHorizontalOrientationMargin">16,8,0,0</Thickness>
     <Thickness x:Key="InfoBarActionVerticalOrientationMargin">0,12,0,0</Thickness>
-    <ui:Symbol x:Key="InfoBarCloseButtonSymbol">Dismiss</ui:Symbol>
+    <ui:FASymbol x:Key="InfoBarCloseButtonSymbol">Dismiss</ui:FASymbol>
 
     
     <ControlTheme x:Key="InfoBarCloseButtonStyle"
@@ -93,7 +93,7 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type ui:InfoBar}" TargetType="ui:InfoBar">
+    <ControlTheme x:Key="{x:Type ui:FAInfoBar}" TargetType="ui:FAInfoBar">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
@@ -126,7 +126,7 @@
                                          VerticalAlignment="Top"
                                          Margin="{StaticResource InfoBarIconMargin}"/>
 
-                                <ui:FontIcon VerticalAlignment="Top"
+                                <ui:FAFontIcon VerticalAlignment="Top"
                                              FontFamily="{StaticResource SymbolThemeFontFamily}"
                                              Name="StandardIcon"
                                              Margin="{DynamicResource InfoBarIconMargin}"/>
@@ -139,10 +139,10 @@
                                      MaxWidth="{DynamicResource InfoBarIconFontSize}"
                                      MaxHeight="{DynamicResource InfoBarIconFontSize}"
                                      Margin="{DynamicResource InfoBarIconMargin}">
-                                <ui:IconSourceElement IconSource="{TemplateBinding IconSource}" />
+                                <ui:FAIconSourceElement IconSource="{TemplateBinding IconSource}" />
                             </Viewbox>
 
-                            <uip:InfoBarPanel Grid.Column="1"
+                            <uip:FAInfoBarPanel Grid.Column="1"
                                               Margin="{StaticResource InfoBarPanelMargin}"
                                               HorizontalOrientationPadding="{StaticResource InfoBarPanelHorizontalOrientationPadding}"
                                               VerticalOrientationPadding="{StaticResource InfoBarPanelVerticalOrientationPadding}">
@@ -150,8 +150,8 @@
                                 <TextBlock Name="Title"
                                            Foreground="{DynamicResource InfoBarTitleForeground}"
                                            Text="{TemplateBinding Title}"
-                                           uip:InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarTitleHorizontalOrientationMargin}"
-                                           uip:InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarTitleVerticalOrientationMargin}"
+                                           uip:FAInfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarTitleHorizontalOrientationMargin}"
+                                           uip:FAInfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarTitleVerticalOrientationMargin}"
                                            TextWrapping="Wrap"
                                            FontWeight="{StaticResource InfoBarTitleFontWeight}"
                                            FontSize="{StaticResource InfoBarTitleFontSize}" />
@@ -159,20 +159,20 @@
                                 <TextBlock x:Name="Message"
                                            Foreground="{DynamicResource InfoBarMessageForeground}"
                                            Text="{TemplateBinding Message}"
-                                           uip:InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarMessageHorizontalOrientationMargin}"
-                                           uip:InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarMessageVerticalOrientationMargin}"
+                                           uip:FAInfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarMessageHorizontalOrientationMargin}"
+                                           uip:FAInfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarMessageVerticalOrientationMargin}"
                                            TextWrapping="Wrap"
                                            FontWeight="{StaticResource InfoBarMessageFontWeight}"
                                            FontSize="{StaticResource InfoBarMessageFontSize}"/>
 
-                                <ContentPresenter uip:InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarActionHorizontalOrientationMargin}"
-                                                  uip:InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarActionVerticalOrientationMargin}"
+                                <ContentPresenter uip:FAInfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarActionHorizontalOrientationMargin}"
+                                                  uip:FAInfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarActionVerticalOrientationMargin}"
                                                   VerticalAlignment="Top"
                                                   Content="{TemplateBinding ActionButton}"
                                                   HorizontalContentAlignment="Stretch"
                                                   VerticalContentAlignment="Center" />
 
-                            </uip:InfoBarPanel>
+                            </uip:FAInfoBarPanel>
 
                             <ContentPresenter Grid.Column="1"
                                               Grid.Row="1"
@@ -193,7 +193,7 @@
                                          Height="{StaticResource InfoBarCloseButtonGlyphSize}"
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center">
-                                    <ui:SymbolIcon Symbol="{StaticResource InfoBarCloseButtonSymbol}" />
+                                    <ui:FASymbolIcon Symbol="{StaticResource InfoBarCloseButtonSymbol}" />
                                 </Viewbox>
                             </Button>
                         </Grid>
@@ -209,7 +209,7 @@
             <Style Selector="^ /template/ Ellipse#IconBackground">
                 <Setter Property="Fill" Value="{DynamicResource InfoBarInformationalSeverityIconBackground}" />
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#StandardIcon">
+            <Style Selector="^ /template/ ui|FAFontIcon#StandardIcon">
                 <Setter Property="Glyph" Value="&#x0069;" />
                 <Setter Property="FontSize" Value="10" />
                 <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
@@ -223,7 +223,7 @@
             <Style Selector="^ /template/ Ellipse#IconBackground">
                 <Setter Property="Fill" Value="{DynamicResource InfoBarErrorSeverityIconBackground}" />
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#StandardIcon">
+            <Style Selector="^ /template/ ui|FAFontIcon#StandardIcon">
                 <Setter Property="Glyph" Value="&#xE10A;" />
                 <Setter Property="FontSize" Value="10" />
                 <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
@@ -238,7 +238,7 @@
             <Style Selector="^ /template/ Ellipse#IconBackground">
                 <Setter Property="Fill" Value="{DynamicResource InfoBarWarningSeverityIconBackground}" />
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#StandardIcon">
+            <Style Selector="^ /template/ ui|FAFontIcon#StandardIcon">
                 <Setter Property="Glyph" Value="&#x0021;" />
                 <Setter Property="FontSize" Value="10" />
                 <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
@@ -252,7 +252,7 @@
             <Style Selector="^ /template/ Ellipse#IconBackground">
                 <Setter Property="Fill" Value="{DynamicResource InfoBarSuccessSeverityIconBackground}" />
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#StandardIcon">
+            <Style Selector="^ /template/ ui|FAFontIcon#StandardIcon">
                 <Setter Property="Glyph" Value="&#xE10B;" />
                 <Setter Property="FontSize" Value="10" />
                 <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />

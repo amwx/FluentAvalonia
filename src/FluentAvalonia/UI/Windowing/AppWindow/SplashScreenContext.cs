@@ -15,7 +15,7 @@ internal class SplashScreenContext
 
     public bool HasShownSplashScreen { get; set; }
 
-    public AppSplashScreen Host
+    public FAAppSplashScreen Host
     {
         get => _splashHost;
         set
@@ -40,11 +40,11 @@ internal class SplashScreenContext
         _splashCTS = null;
     }
 
-    private AppSplashScreen _splashHost;
+    private FAAppSplashScreen _splashHost;
     private CancellationTokenSource _splashCTS;
 }
 
-public class AppSplashScreen : TemplatedControl
+public class FAAppSplashScreen : TemplatedControl
 {
     public IFAApplicationSplashScreen SplashScreen { get; set; }
 

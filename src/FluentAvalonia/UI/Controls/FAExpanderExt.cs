@@ -12,9 +12,9 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Special helper class to enable WinUI like animations on the Expander control
 /// </summary>
-public sealed class ExpanderExt : AvaloniaObject
+public sealed class FAExpanderExt : AvaloniaObject
 {
-    static ExpanderExt()
+    static FAExpanderExt()
     {
         ExpanderAnimationTypeProperty.Changed.Subscribe(
             new SimpleObserver<AvaloniaPropertyChangedEventArgs>(HandleExpanderAnimationTypeChanged));
@@ -24,10 +24,10 @@ public sealed class ExpanderExt : AvaloniaObject
     /// Defines the ExpanderAnimationType attached property
     /// </summary>
     public static readonly AttachedProperty<string> ExpanderAnimationTypeProperty =
-        AvaloniaProperty.RegisterAttached<ExpanderExt, Expander, string>("ExpanderAnimationType");
+        AvaloniaProperty.RegisterAttached<FAExpanderExt, Expander, string>("ExpanderAnimationType");
 
     private static readonly AttachedProperty<ExpanderInfo> ExpanderAnimationInfoProperty =
-        AvaloniaProperty.RegisterAttached<ExpanderExt, Expander, ExpanderInfo>("ExpanderAnimationInfo");
+        AvaloniaProperty.RegisterAttached<FAExpanderExt, Expander, ExpanderInfo>("ExpanderAnimationInfo");
 
     /// <summary>
     /// Gets the current value of the <see cref="ExpanderAnimationTypeProperty"/>

@@ -5731,7 +5731,7 @@
     <avconv:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
     <avconv:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
 
-    <conv:ColorToBrushConv x:Key="ColorBrushConv" />
+    <conv:FAColorToBrushConv x:Key="ColorBrushConv" />
 
     <x:String x:Key="ChevronDownGlyph">&#xE70D;</x:String>
     <x:String x:Key="ChevronUpGlyph">&#xE70E;</x:String>

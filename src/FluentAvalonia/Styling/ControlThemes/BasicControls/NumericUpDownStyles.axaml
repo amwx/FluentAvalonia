@@ -3,7 +3,7 @@
                     xmlns:conv="using:FluentAvalonia.Converters"
                     x:CompileBindings="True">
 
-    <conv:NUDSpinLocationConverter x:Key="NUDSpinLocationConverter" />
+    <conv:FANUDSpinLocationConverter x:Key="NUDSpinLocationConverter" />
 
     <Design.PreviewWith>
         <Border Padding="20">

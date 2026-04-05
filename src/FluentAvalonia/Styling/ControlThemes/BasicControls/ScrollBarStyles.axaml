@@ -105,20 +105,20 @@
                         BorderBrush="{DynamicResource ScrollBarButtonBorderBrush}"
                         CornerRadius="{DynamicResource ScrollBarCornerRadius}"
                         Padding="-1">
-                    <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    <ui:FAFontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                  Name="ArrowGlyph"
                                  FontSize="{DynamicResource ScrollBarButtonArrowIconFontSize}"
                                  Foreground="{DynamicResource ScrollBarButtonArrowForeground}"
                                  Glyph="{TemplateBinding Content}"
                                  RenderTransform="none"
                                  RenderTransformOrigin="50%,50%">
-                        <ui:FontIcon.Transitions>
+                        <ui:FAFontIcon.Transitions>
                             <Transitions>
                                 <TransformOperationsTransition Duration="00:00:00.016"
                                                                Property="RenderTransform" />
                             </Transitions>
-                        </ui:FontIcon.Transitions>
-                    </ui:FontIcon>
+                        </ui:FAFontIcon.Transitions>
+                    </ui:FAFontIcon>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -129,14 +129,14 @@
             </Transitions>
         </Setter>
 
-        <Style Selector="^:pointerover /template/ ui|FontIcon">
+        <Style Selector="^:pointerover /template/ ui|FAFontIcon">
             <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForegroundPointerOver}" />
         </Style>
-        <Style Selector="^:pressed /template/ ui|FontIcon">
+        <Style Selector="^:pressed /template/ ui|FAFontIcon">
             <Setter Property="RenderTransform" Value="scale(0.875)" />
             <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForegroundPressed}" />
         </Style>
-        <Style Selector="^:disabled /template/ ui|FontIcon">
+        <Style Selector="^:disabled /template/ ui|FAFontIcon">
             <Setter Property="Foreground" Value="{DynamicResource ScrollBarButtonArrowForegroundDisabled}" />
         </Style>
     </ControlTheme>

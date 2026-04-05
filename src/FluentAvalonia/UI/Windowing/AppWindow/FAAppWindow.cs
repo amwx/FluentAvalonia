@@ -83,7 +83,7 @@ public partial class FAAppWindow : Window
 
         if (SplashScreen != null)
         {
-            var host = e.NameScope.Find<AppSplashScreen>("SplashHost");
+            var host = e.NameScope.Find<FAAppSplashScreen>("SplashHost");
             if (host != null)
             {
                 _splashContext.Host = host;
