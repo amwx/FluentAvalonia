@@ -9,7 +9,7 @@ namespace FluentAvalonia.Converters;
 /// <summary>
 /// Special converter for the NumericUpDown to pass info from the NumericUpDown to the textbox
 /// </summary>
-public class NUDSpinLocationConverter : IValueConverter
+public sealed class FANUDSpinLocationConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
