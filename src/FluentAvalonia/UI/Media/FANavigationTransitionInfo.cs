@@ -3,13 +3,13 @@ using Avalonia.Animation;
 
 namespace FluentAvalonia.UI.Media.Animation;
 
-//NOTE: These are custom implementations of these classes as the source is still closed...
+//NOTE: These are custom implementations of these classes as the source is still closed...TODO v3
 
 /// <summary>
 /// Provides parameter info for the Frame.Navigate method. Controls how the transition animation 
 /// runs during the navigation action.
 /// </summary>
-public abstract class NavigationTransitionInfo : AvaloniaObject
+public abstract class FANavigationTransitionInfo : AvaloniaObject
 {
     /// <summary>
     /// Executes a predefined animation on the desired object

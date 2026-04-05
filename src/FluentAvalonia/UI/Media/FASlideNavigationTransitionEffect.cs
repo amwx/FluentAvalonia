@@ -3,7 +3,7 @@
 /// <summary>
 /// Defines constants that describe the type of animation to play during a slide transition.
 /// </summary>
-public enum SlideNavigationTransitionEffect
+public enum FASlideNavigationTransitionEffect
 {
     /// <summary>
     /// The exiting page leaves to the right of the panel and the entering page enters from the left.

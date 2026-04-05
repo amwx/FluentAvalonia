@@ -15,7 +15,7 @@ public delegate void FANavigatingCancelEventHandler(object sender, FANavigatingC
 /// </summary>
 public class FANavigatingCancelEventArgs : RoutedEventArgs
 {
-    internal FANavigatingCancelEventArgs(FANavigationMode mode, NavigationTransitionInfo info,
+    internal FANavigatingCancelEventArgs(FANavigationMode mode, FANavigationTransitionInfo info,
         object param, Type srcType)
     {
         NavigationMode = mode;
@@ -42,7 +42,7 @@ public class FANavigatingCancelEventArgs : RoutedEventArgs
     /// <summary>
     /// Gets a value that indicates the animated transition associated with the navigation.
     /// </summary>
-    public NavigationTransitionInfo NavigationTransitionInfo { get; }
+    public FANavigationTransitionInfo NavigationTransitionInfo { get; }
 
     /// <summary>
     /// Gets the navigation parameter associated with this navigation.

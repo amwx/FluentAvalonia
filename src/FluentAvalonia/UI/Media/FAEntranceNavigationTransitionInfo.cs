@@ -9,7 +9,7 @@ namespace FluentAvalonia.UI.Media.Animation;
 /// <summary>
 /// Specifies the animation to run when content appears on a Page.
 /// </summary>
-public class EntranceNavigationTransitionInfo : NavigationTransitionInfo
+public class FAEntranceNavigationTransitionInfo : FANavigationTransitionInfo
 {
     /// <summary>
     /// Gets or sets the Horizontal Offset used when animating

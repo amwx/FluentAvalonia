@@ -488,7 +488,7 @@ public partial class FANavigationView : HeaderedContentControl
         return recTransDir;
     }
 
-    private NavigationTransitionInfo CreateNavigationTransitionInfo(NavigationRecommendedTransitionDirection recDir)
+    private FANavigationTransitionInfo CreateNavigationTransitionInfo(NavigationRecommendedTransitionDirection recDir)
     {
         // In current implementation, if click is from overflow item, just recommend FromRight Slide animation.
         if (recDir == NavigationRecommendedTransitionDirection.FromOverflow)
@@ -499,15 +499,15 @@ public partial class FANavigationView : HeaderedContentControl
         if ((recDir == NavigationRecommendedTransitionDirection.FromLeft ||
             recDir == NavigationRecommendedTransitionDirection.FromRight))
         {
-            return new SlideNavigationTransitionInfo
+            return new FASlideNavigationTransitionInfo
             {
                 Effect = recDir == NavigationRecommendedTransitionDirection.FromRight ?
-                 SlideNavigationTransitionEffect.FromRight : SlideNavigationTransitionEffect.FromLeft
+                 FASlideNavigationTransitionEffect.FromRight : FASlideNavigationTransitionEffect.FromLeft
             };
         }
         else
         {
-            return new EntranceNavigationTransitionInfo();
+            return new FAEntranceNavigationTransitionInfo();
         }
     }
 

@@ -109,7 +109,7 @@ public partial class FAFrame : ContentControl
     /// and specifies the animated transition to use.
     /// </summary>
     /// <param name="infoOverride">Info about the animated transition to use.</param>
-    public void GoBack(NavigationTransitionInfo infoOverride)
+    public void GoBack(FANavigationTransitionInfo infoOverride)
     {
         if (CanGoBack)
         {
@@ -174,7 +174,7 @@ public partial class FAFrame : ContentControl
     /// <param name="infoOverride">Info about the animated transition.</param>
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
-    public bool Navigate(Type sourcePageType, object parameter, NavigationTransitionInfo infoOverride)
+    public bool Navigate(Type sourcePageType, object parameter, FANavigationTransitionInfo infoOverride)
     {
         return NavigateCore(new FAPageStackEntry(sourcePageType, parameter,
             infoOverride), FANavigationMode.New);
@@ -671,7 +671,7 @@ public partial class FAFrame : ContentControl
         if (_presenter != null)
         {
             //Default to entrance transition
-            entry.NavigationTransitionInfo = entry.NavigationTransitionInfo ?? new EntranceNavigationTransitionInfo();
+            entry.NavigationTransitionInfo = entry.NavigationTransitionInfo ?? new FAEntranceNavigationTransitionInfo();
             _presenter.Opacity = 0;
 
             _cts?.Cancel();
