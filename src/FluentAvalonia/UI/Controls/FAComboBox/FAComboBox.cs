@@ -124,7 +124,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
         else if (change.Property == HeaderProperty)
         {
-            PseudoClasses.Set(SharedPseudoclasses.s_pcHeader, change.NewValue is not null);
+            PseudoClasses.Set(FASharedPseudoclasses.s_pcHeader, change.NewValue is not null);
         }
     }
 
@@ -280,7 +280,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             if (_popup?.IsInsidePopup(src) == true)
                 return;
         }
-        PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, true);
+        PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, true);
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -308,7 +308,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 e.Handled = true;
             }
         }
-        PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
+        PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, false);
         base.OnPointerReleased(e);
     }
 
@@ -793,7 +793,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     {
         if (e.GetCurrentPoint(_dropDownOverlay).Properties.IsLeftButtonPressed)
         {
-            ((IPseudoClasses)_dropDownOverlay.Classes).Set(SharedPseudoclasses.s_pcPressed, true);
+            ((IPseudoClasses)_dropDownOverlay.Classes).Set(FASharedPseudoclasses.s_pcPressed, true);
             e.Handled = true;
         }
     }
@@ -802,7 +802,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     {
         if (e.GetCurrentPoint(_dropDownOverlay).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
         {
-            ((IPseudoClasses)_dropDownOverlay.Classes).Set(SharedPseudoclasses.s_pcPressed, false);
+            ((IPseudoClasses)_dropDownOverlay.Classes).Set(FASharedPseudoclasses.s_pcPressed, false);
             IsDropDownOpen = !IsDropDownOpen;
             UpdateSelectionBoxItem(SelectedItem);
             e.Handled = true;
@@ -811,7 +811,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
     private void OnDropDownOverlayPointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
     {
-        ((IPseudoClasses)_dropDownOverlay.Classes).Set(SharedPseudoclasses.s_pcPressed, false);
+        ((IPseudoClasses)_dropDownOverlay.Classes).Set(FASharedPseudoclasses.s_pcPressed, false);
     }
 
     private string FormatValue(object item)

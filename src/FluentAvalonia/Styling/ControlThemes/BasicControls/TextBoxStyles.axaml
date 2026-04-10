@@ -18,7 +18,7 @@
     <Thickness x:Key="TextBoxTopHeaderMargin">0,0,0,8</Thickness>
     <Thickness x:Key="TextBoxInnerButtonMargin">0,4,4,4</Thickness>
     <x:Double x:Key="TextBoxIconFontSize">12</x:Double>
-    <ui:TextCommandBarFlyout x:Key="DefaultTextBoxContextFlyout" />
+    <ui:FATextCommandBarFlyout x:Key="DefaultTextBoxContextFlyout" />
 
     <ControlTheme TargetType="Button" x:Key="TextBoxDeleteButtonStyle">
         <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
@@ -35,7 +35,7 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Background="Transparent"
                         CornerRadius="{TemplateBinding CornerRadius}">
-                    <ui:SymbolIcon Foreground="{TemplateBinding Foreground}"
+                    <ui:FASymbolIcon Foreground="{TemplateBinding Foreground}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    FontSize="{StaticResource TextBoxIconFontSize}"
@@ -51,7 +51,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource TextControlButtonBorderBrushPointerOver}" />
             </Style>
 
-            <Style Selector="^ /template/ ui|SymbolIcon#Glyph">
+            <Style Selector="^ /template/ ui|FASymbolIcon#Glyph">
                 <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPointerOver}" />
             </Style>
         </Style>
@@ -62,7 +62,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource TextControlButtonBorderBrushPressed}" />
             </Style>
 
-            <Style Selector="^ /template/ ui|SymbolIcon#Glyph">
+            <Style Selector="^ /template/ ui|FASymbolIcon#Glyph">
                 <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPressed}" />
             </Style>
         </Style>
@@ -87,7 +87,7 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}">
-                    <ui:FontIcon VerticalAlignment="Center"
+                    <ui:FAFontIcon VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
                                  FontSize="{StaticResource TextBoxIconFontSize}"
                                  FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -103,7 +103,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource TextControlButtonBorderBrushPointerOver}" />
             </Style>
 
-            <Style Selector="^ /template/ ui|FontIcon#Glyph">
+            <Style Selector="^ /template/ ui|FAFontIcon#Glyph">
                 <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPointerOver}" />
             </Style>
         </Style>
@@ -114,7 +114,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource TextControlButtonBorderBrushPressed}" />
             </Style>
 
-            <Style Selector="^ /template/ ui|FontIcon#Glyph">
+            <Style Selector="^ /template/ ui|FAFontIcon#Glyph">
                 <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPressed}" />
             </Style>
         </Style>
@@ -122,10 +122,10 @@
         <!-- In WinUI Password Box, this isn't a toggle button and the password is only
              visible if the button is pressed. To mimic this, we'll dim the foreground
              of the glyph when checked so there is a distinct visual state -->
-        <Style Selector="^:checked /template/ ui|FontIcon#Glyph">
+        <Style Selector="^:checked /template/ ui|FAFontIcon#Glyph">
             <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPressed}" />
         </Style>
-        <Style Selector="^:checked:pressed /template/ ui|FontIcon#Glyph">
+        <Style Selector="^:checked:pressed /template/ ui|FAFontIcon#Glyph">
             <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPointerOver}" />
         </Style>
         

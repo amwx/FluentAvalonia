@@ -132,7 +132,7 @@
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center" />
                             
-                            <ui:SymbolIcon Name="PART_ChevronPath"
+                            <ui:FASymbolIcon Name="PART_ChevronPath"
                                            Height="16"
                                            Symbol="ChevronRight"
                                            Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
@@ -184,7 +184,7 @@
             <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#PART_ChevronPath">
+            <Style Selector="^ /template/ ui|FASymbolIcon#PART_ChevronPath">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
             </Style>
         </Style>
@@ -198,7 +198,7 @@
             <Style Selector="^ TextBlock#PART_InputGestureText">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPressed}" />
             </Style>
-            <Style Selector="^ ui|SymbolIcon#PART_ChevronPath">
+            <Style Selector="^ ui|FASymbolIcon#PART_ChevronPath">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronPressed}" />
             </Style>
         </Style>
@@ -214,16 +214,16 @@
             <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|SymbolIcon#PART_ChevronPath">
+            <Style Selector="^ /template/ ui|FASymbolIcon#PART_ChevronPath">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />
             </Style>
         </Style>
         
-        <Style Selector="^:open /template/ ui|SymbolIcon#PART_ChevronPath">
+        <Style Selector="^:open /template/ ui|FASymbolIcon#PART_ChevronPath">
             <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutSubItemChevronSubMenuOpened}" />
         </Style>
 
-        <Style Selector="^:empty /template/ ui|SymbolIcon#PART_ChevronPath">
+        <Style Selector="^:empty /template/ ui|FASymbolIcon#PART_ChevronPath">
             <Setter Property="IsVisible" Value="False" />
         </Style>
 
@@ -239,7 +239,7 @@
             <Setter Property="IsVisible" Value="True" />
             <Setter Property="Content">
                 <Template>
-                    <ui:SymbolIcon Symbol="Checkmark" />
+                    <ui:FASymbolIcon Symbol="Checkmark" />
                 </Template>
             </Setter>
         </Style>

@@ -3,11 +3,11 @@ using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class RepeaterLayoutContext : VirtualizingLayoutContext
+internal class RepeaterLayoutContext : FAVirtualizingLayoutContext
 {
-    public RepeaterLayoutContext(ItemsRepeater owner)
+    public RepeaterLayoutContext(FAItemsRepeater owner)
     {
-        _owner = new WeakReference<ItemsRepeater>(owner);
+        _owner = new WeakReference<FAItemsRepeater>(owner);
     }
 
     protected internal override int ItemCountCore()
@@ -16,11 +16,11 @@ internal class RepeaterLayoutContext : VirtualizingLayoutContext
         return dataSource?.Count ?? 0;
     }
 
-    protected override Control GetOrCreateElementAtCore(int index, ElementRealizationOptions options)
+    protected override Control GetOrCreateElementAtCore(int index, FAElementRealizationOptions options)
     {
         return GetOwner()?.GetElementImpl(index,
-            (options & ElementRealizationOptions.ForceCreate) == ElementRealizationOptions.ForceCreate,
-            (options & ElementRealizationOptions.SuppressAutoRecycle) == ElementRealizationOptions.SuppressAutoRecycle);
+            (options & FAElementRealizationOptions.ForceCreate) == FAElementRealizationOptions.ForceCreate,
+            (options & FAElementRealizationOptions.SuppressAutoRecycle) == FAElementRealizationOptions.SuppressAutoRecycle);
     }
 
     protected internal override object LayoutStateCore
@@ -28,7 +28,7 @@ internal class RepeaterLayoutContext : VirtualizingLayoutContext
         get => GetOwner()?.LayoutState;
         set
         {
-            if (GetOwner() is ItemsRepeater ir)
+            if (GetOwner() is FAItemsRepeater ir)
             {
                 ir.LayoutState = value;
             }
@@ -78,11 +78,11 @@ internal class RepeaterLayoutContext : VirtualizingLayoutContext
 
     protected override void LayoutOriginCore(Point value)
     {
-        if (GetOwner() is ItemsRepeater ir)
+        if (GetOwner() is FAItemsRepeater ir)
             ir.LayoutOrigin = value;
     }
 
-    private ItemsRepeater GetOwner()
+    private FAItemsRepeater GetOwner()
     {
         if (_owner.TryGetTarget(out var target))
             return target;
@@ -90,5 +90,5 @@ internal class RepeaterLayoutContext : VirtualizingLayoutContext
         return null;
     }
 
-    private WeakReference<ItemsRepeater> _owner;
+    private WeakReference<FAItemsRepeater> _owner;
 }

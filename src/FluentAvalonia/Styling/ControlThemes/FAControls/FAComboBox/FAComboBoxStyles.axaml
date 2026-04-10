@@ -133,7 +133,7 @@
                             Width="30"
                             HorizontalAlignment="Right" />
 
-                    <ui:FontIcon Name="DropDownGlyph"
+                    <ui:FAFontIcon Name="DropDownGlyph"
                                  MinHeight="{DynamicResource ComboBoxMinHeight}"
                                  Grid.Row="1"
                                  Grid.Column="1"
@@ -230,7 +230,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundDisabled}" />
                 <!--<Setter Property="Foreground" Value="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={DynamicResource ComboBoxPlaceHolderForegroundDisabled}}" />-->
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#DropDownGlyph">
+            <Style Selector="^ /template/ ui|FAFontIcon#DropDownGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundDisabled}" />
             </Style>
         </Style>
@@ -249,7 +249,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundFocused}" />
                 <!--<Setter Property="Foreground" Value="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={DynamicResource ComboBoxPlaceHolderForegroundFocused}}" />-->
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#DropDownGlyph">
+            <Style Selector="^ /template/ ui|FAFontIcon#DropDownGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundFocused}" />
             </Style>
 
@@ -261,7 +261,7 @@
                     <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundFocusedPressed}" />
                     <!--<Setter Property="Foreground" Value="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={DynamicResource ComboBoxPlaceHolderForegroundFocusedPressed}}" />-->
                 </Style>
-                <Style Selector="^ /template/ ui|FontIcon#DropDownGlyph">
+                <Style Selector="^ /template/ ui|FAFontIcon#DropDownGlyph">
                     <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundFocusedPressed}" />
                 </Style>
             </Style>

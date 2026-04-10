@@ -4,7 +4,7 @@
 
     <Design.PreviewWith>
         <Border MinWidth="200" MinHeight="100" Background="#202020">
-            <ui:RangeSlider VerticalAlignment="Center" Margin="20"
+            <ui:FARangeSlider VerticalAlignment="Center" Margin="20"
                             RangeStart="20" RangeEnd="80"
                             IsEnabled="False"/>
         </Border>
@@ -21,8 +21,8 @@
         <Setter Property="Focusable" Value="True" />
     </ControlTheme>
     
-    <ControlTheme TargetType="ui:RangeSlider"
-                  x:Key="{x:Type ui:RangeSlider}">
+    <ControlTheme TargetType="ui:FARangeSlider"
+                  x:Key="{x:Type ui:FARangeSlider}">
         <Setter Property="Background" Value="{DynamicResource SliderTrackFill}" />
         <Setter Property="BorderThickness" Value="{DynamicResource SliderBorderThemeThickness}" />
         <Setter Property="Foreground" Value="{DynamicResource SliderTrackValueFill}" />

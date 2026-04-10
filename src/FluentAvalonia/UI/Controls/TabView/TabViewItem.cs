@@ -38,7 +38,7 @@ public partial class TabViewItem : ListBoxItem
 
             if (hasButton)
             {
-                PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
+                PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, false);
             }
         }, RoutingStrategies.Tunnel);
     }
@@ -413,7 +413,7 @@ public partial class TabViewItem : ListBoxItem
         // => :compact
 
         // Handling compact/non compact width mode
-        PseudoClasses.Set(SharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
+        PseudoClasses.Set(FASharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
     }
 
     private void RequestClose()
@@ -507,13 +507,13 @@ public partial class TabViewItem : ListBoxItem
     {
         if (IconSource != null)
         {
-            TabViewTemplateSettings.IconElement = IconHelpers.CreateFromUnknown(IconSource);
-            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, true);
+            TabViewTemplateSettings.IconElement = FAIconHelpers.CreateFromUnknown(IconSource);
+            PseudoClasses.Set(FASharedPseudoclasses.s_pcIcon, true);
         }
         else
         {
             TabViewTemplateSettings.IconElement = null;
-            PseudoClasses.Set(SharedPseudoclasses.s_pcIcon, false);
+            PseudoClasses.Set(FASharedPseudoclasses.s_pcIcon, false);
         }
     }
 
