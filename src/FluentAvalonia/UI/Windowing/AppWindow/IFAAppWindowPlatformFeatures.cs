@@ -5,7 +5,7 @@ namespace FluentAvalonia.UI.Windowing;
 /// <summary>
 /// Represents constants that define the TaskBarProgressBar's state
 /// </summary>
-public enum TaskBarProgressBarState
+public enum FATaskBarProgressBarState
 {
     /// <summary>
     /// No TaskBarProgressBar is displayed
@@ -37,7 +37,7 @@ public enum TaskBarProgressBarState
 /// Provides a set of function that enable platform-specific functionality through AppWindow
 /// These function are only available on Windows at the current time
 /// </summary>
-public interface IAppWindowPlatformFeatures
+public interface IFAAppWindowPlatformFeatures
 {
     /// <summary>
     /// Windows11 only, sets the border color of the current window to the specified color
@@ -47,7 +47,7 @@ public interface IAppWindowPlatformFeatures
     /// <summary>
     /// Activate the taskbar progressbar indicator with the given state
     /// </summary>
-    void SetTaskBarProgressBarState(TaskBarProgressBarState state);
+    void SetTaskBarProgressBarState(FATaskBarProgressBarState state);
 
     /// <summary>
     /// Activate the taskbar progressbar indicator with the given values

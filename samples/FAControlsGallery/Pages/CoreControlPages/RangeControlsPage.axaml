@@ -46,10 +46,10 @@
             <ctrls:ControlExample.Options>
                 <StackPanel Spacing="4">
                     <CheckBox Content="AllowSpin" Name="AllowSpinCheck" IsChecked="True"/>
-                    <ui:NumberBox Header="Minimum" Minimum="-1000" Maximum="-1" Value="-1000"
+                    <ui:FANumberBox Header="Minimum" Minimum="-1000" Maximum="-1" Value="-1000"
                                   Name="MinimumBox" SpinButtonPlacementMode="Inline"
                                   MinWidth="125"/>
-                    <ui:NumberBox Header="Maximum" Minimum="1" Maximum="1000" Value="1000"
+                    <ui:FANumberBox Header="Maximum" Minimum="1" Maximum="1000" Value="1000"
                                   Name="MaximumBox" SpinButtonPlacementMode="Inline"
                                   MinWidth="125"/>
                 </StackPanel>
@@ -75,7 +75,7 @@
                     </ComboBox>
                     <CheckBox Content="IsSnapToTickEnabled"
                               IsChecked="{Binding #TargetSlider.IsSnapToTickEnabled}"/>
-                    <ui:NumberBox Header="TickFrequency" Minimum="1" Maximum="10"
+                    <ui:FANumberBox Header="TickFrequency" Minimum="1" Maximum="10"
                                   Value="{Binding #TargetSlider.TickFrequency}"
                                   Name="TickFreqBox" SpinButtonPlacementMode="Inline"
                                   MinWidth="125"/>
@@ -104,7 +104,7 @@
                     </ComboBox>
                     <CheckBox Content="IsIndeterminate"
                               IsChecked="{Binding #TargetProgressBar.IsIndeterminate}"/>
-                    <ui:NumberBox Header="Value" Minimum="0" Maximum="100"
+                    <ui:FANumberBox Header="Value" Minimum="0" Maximum="100"
                                   Value="{Binding #TargetProgressBar.Value}"
                                   IsEnabled="{Binding !IsIndeterminate, ElementName=TargetProgressBar}"
                                   SpinButtonPlacementMode="Inline"

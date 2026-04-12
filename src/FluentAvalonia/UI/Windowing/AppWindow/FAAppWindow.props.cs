@@ -109,13 +109,13 @@ public partial class FAAppWindow : Window
     /// Use this property to customize the colors, height, and whether the window contents should
     /// display in the titlebar area
     /// </remarks>
-    public AppWindowTitleBar TitleBar => _titleBar;
+    public FAAppWindowTitleBar TitleBar => _titleBar;
 
     /// <summary>
     /// Gets the interface for custom platform-specific features through the AppWindow class
     /// NOTE: Only implemented on Windows right now
     /// </summary>
-    public IAppWindowPlatformFeatures PlatformFeatures { get; private set; }
+    public IFAAppWindowPlatformFeatures PlatformFeatures { get; private set; }
 
     protected internal bool IsWindows11 { get; internal set; }
 
@@ -130,7 +130,7 @@ public partial class FAAppWindow : Window
     private Border _templateRoot;
     private FAMinMaxCloseControl _captionButtons;
     private Panel _defaultTitleBar;
-    private AppWindowTitleBar _titleBar;
+    private FAAppWindowTitleBar _titleBar;
     private List<WeakReference<Control>> _excludeHitTestList;
     private bool _hideSizeButtons;
 

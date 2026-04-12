@@ -34,7 +34,7 @@ public partial class MainView : UserControl
                 {
                     var item = acb.SelectedItem as MainAppSearchItem;
                     NavigationService.Instance.NavigateFromContext(item.ViewModel,
-                        new EntranceNavigationTransitionInfo());
+                        new FAEntranceNavigationTransitionInfo());
                 }
                 else
                 {
@@ -44,7 +44,7 @@ public partial class MainView : UserControl
                         if (string.Equals(item.Header, acb.Text, StringComparison.OrdinalIgnoreCase))
                         {
                             NavigationService.Instance.NavigateFromContext(item.ViewModel,
-                                new EntranceNavigationTransitionInfo());
+                                new FAEntranceNavigationTransitionInfo());
                             break;
                         }
                     }
@@ -69,7 +69,7 @@ public partial class MainView : UserControl
         NavigationService.Instance.SetOverlayHost(OverlayHost);
 
         // On desktop, the window will call this during the splashscreen
-        if (e.Root is AppWindow aw)
+        if (TopLevel.GetTopLevel(this) is FAAppWindow aw)
         {
             (aw.SplashScreen as MainAppSplashScreen).InitApp += () =>
             {
@@ -90,7 +90,7 @@ public partial class MainView : UserControl
     {
         base.OnLoaded(e);
 
-        if (VisualRoot is AppWindow aw)
+        if (TopLevel.GetTopLevel(this) is FAAppWindow aw)
         {
             TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
         }
@@ -141,8 +141,8 @@ public partial class MainView : UserControl
             }
         };
 
-        var menuItems = new List<NavigationViewItemBase>(4);
-        var footerItems = new List<NavigationViewItemBase>(2);
+        var menuItems = new List<FANavigationViewItemBase>(4);
+        var footerItems = new List<FANavigationViewItemBase>(2);
 
         bool inDesign = Design.IsDesignMode;
         
@@ -151,11 +151,11 @@ public partial class MainView : UserControl
             for (int i = 0; i < mainPages.Length; i++)
             {
                 var pg = mainPages[i];
-                var nvi = new NavigationViewItem
+                var nvi = new FANavigationViewItem
                 {
                     Content = pg.NavHeader,
                     Tag = pg,
-                    IconSource = (IconSource)this.FindResource(pg.IconKey)
+                    IconSource = (FAIconSource)this.FindResource(pg.IconKey)
                 };
 
                 //ToolTip.SetTip(nvi, pg.NavHeader);
@@ -185,7 +185,7 @@ public partial class MainView : UserControl
             }
             else
             {
-                NavView.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftMinimal;
+                NavView.PaneDisplayMode = FANavigationViewPaneDisplayMode.LeftMinimal;
             }
 
             FrameView.NavigateFromObject((NavView.MenuItemsSource.ElementAt(0) as Control).Tag);
@@ -210,19 +210,19 @@ public partial class MainView : UserControl
         base.OnPointerReleased(e);
     }
 
-    private void OnNavigationViewBackRequested(object sender, NavigationViewBackRequestedEventArgs e)
+    private void OnNavigationViewBackRequested(object sender, FANavigationViewBackRequestedEventArgs e)
     {
         FrameView.GoBack();
     }
 
-    private void OnNavigationViewItemInvoked(object sender, NavigationViewItemInvokedEventArgs e)
+    private void OnNavigationViewItemInvoked(object sender, FANavigationViewItemInvokedEventArgs e)
     {
         // Change the current selected item back to normal
         // SetNVIIcon(sender as NavigationViewItem, false);
 
-        if (e.InvokedItemContainer is NavigationViewItem nvi)
+        if (e.InvokedItemContainer is FANavigationViewItem nvi)
         {
-            NavigationTransitionInfo info;
+            FANavigationTransitionInfo info;
 
             // Keep the frame navigation when not using connected animation but suppress it
             // if we have a connected animation binding two pages
@@ -230,7 +230,7 @@ public partial class MainView : UserControl
                 ((cpb.TargetType == null && nvi.Tag is CoreControlsPageViewModel) ||
                 (cpb.TargetType != null && nvi.Tag is FAControlsOverviewPageViewModel)))
             {
-                info = new SuppressNavigationTransitionInfo();
+                info = new FASuppressNavigationTransitionInfo();
             }
             else
             {
@@ -241,7 +241,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private void OnFrameViewNavigated(object sender, NavigationEventArgs e)
+    private void OnFrameViewNavigated(object sender, FANavigationEventArgs e)
     {
         var page = e.Content as Control;
         var dc = page.DataContext;
@@ -261,7 +261,7 @@ public partial class MainView : UserControl
             mainPage = cpb.CreationContext.Parent;
         }
 
-        foreach (NavigationViewItem nvi in NavView.MenuItemsSource)
+        foreach (FANavigationViewItem nvi in NavView.MenuItemsSource)
         {
             if (nvi.Tag == mainPage)
             {
@@ -274,7 +274,7 @@ public partial class MainView : UserControl
             }
         }
 
-        foreach (NavigationViewItem nvi in NavView.FooterMenuItemsSource)
+        foreach (FANavigationViewItem nvi in NavView.FooterMenuItemsSource)
         {
             if (nvi.Tag == mainPage)
             {
@@ -297,7 +297,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private void SetNVIIcon(NavigationViewItem item, bool selected)
+    private void SetNVIIcon(FANavigationViewItem item, bool selected)
     {
         // Technically, yes you could set up binding and converters and whatnot to let the icon change
         // between filled and unfilled based on selection, but this is so much simpler 
@@ -310,27 +310,27 @@ public partial class MainView : UserControl
         if (t is HomePageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "HomeIconFilled" : "HomeIcon", out var value) ?
-                (IconSource)value : null;
+                (FAIconSource)value : null;
         }
         else if (t is CoreControlsPageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "CoreControlsIconFilled" : "CoreControlsIcon", out var value) ?
-                (IconSource)value : null;
+                (FAIconSource)value : null;
         }
         else if (t is FAControlsOverviewPageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "FAControlsIconFilled" : "FAControlsIcon", out var value) ?
-                (IconSource)value : null;
+                (FAIconSource)value : null;
         }
         else if (t is DesignPageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "DesignIconFilled" : "DesignIcon", out var value) ?
-                (IconSource)value : null;
+                (FAIconSource)value : null;
         }
         else if (t is SettingsPageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "SettingsIconFilled" : "SettingsIcon", out var value) ?
-               (IconSource)value : null;
+               (FAIconSource)value : null;
         }
     }
 

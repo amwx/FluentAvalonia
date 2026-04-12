@@ -68,14 +68,14 @@
             </Border>
         </Grid>
 
-        <ui:NavigationView AlwaysShowHeader="False"
+        <ui:FANavigationView AlwaysShowHeader="False"
                            PaneDisplayMode="Left"
                            Grid.RowSpan="2"
                            Name="NavView"
                            IsSettingsVisible="False"
                            IsBackEnabled="{Binding #FrameView.CanGoBack}">
-            <ui:Frame Name="FrameView" />
-        </ui:NavigationView>
+            <ui:FAFrame Name="FrameView" />
+        </ui:FANavigationView>
 
         <Panel Name="OverlayHost"
                Grid.Row="1">

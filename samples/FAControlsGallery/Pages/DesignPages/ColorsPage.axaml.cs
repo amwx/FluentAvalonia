@@ -16,7 +16,7 @@ public partial class ColorsPage : ControlsPageBase
         Classes.Add("design");
 
         ControlName = "Colors";
-        PreviewImage = (IconSource)App.Current.FindResource("TextPageIcon");
+        PreviewImage = (FAIconSource)App.Current.FindResource("TextPageIcon");
 
         Description = "Color provides an intuitive way of communicating information to users in your app. " +
             "It can be used to indicate interactivity, give feedback to user actions and give your interface " +
@@ -44,26 +44,26 @@ public partial class ColorsPage : ControlsPageBase
         _oldIndex = idx;
     }
 
-    private SlideNavigationTransitionEffect GetEffect(int oldIndex, int index)
+    private FASlideNavigationTransitionEffect GetEffect(int oldIndex, int index)
     {
         if (oldIndex < 0)
-            return SlideNavigationTransitionEffect.FromBottom;
+            return FASlideNavigationTransitionEffect.FromBottom;
 
         if (oldIndex > index)
-            return SlideNavigationTransitionEffect.FromRight;
+            return FASlideNavigationTransitionEffect.FromRight;
         else
-            return SlideNavigationTransitionEffect.FromLeft;
+            return FASlideNavigationTransitionEffect.FromLeft;
     }
 
-    private NavigationTransitionInfo GetTransitionInfo(int oldIndex, int index)
+    private FANavigationTransitionInfo GetTransitionInfo(int oldIndex, int index)
     {
         if (oldIndex == -1)
         {
-            return new SuppressNavigationTransitionInfo();
+            return new FASuppressNavigationTransitionInfo();
         }
         else
         {
-            return new SlideNavigationTransitionInfo
+            return new FASlideNavigationTransitionInfo
             {
                 Effect = GetEffect(oldIndex, index)
             };

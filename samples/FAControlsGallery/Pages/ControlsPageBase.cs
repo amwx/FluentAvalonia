@@ -24,8 +24,8 @@ public class ControlsPageBase : UserControl
     public ControlsPageBase()
     {        
         SizeChanged += ControlsPageBaseSizeChanged;
-        AddHandler(Frame.NavigatingFromEvent, FrameNavigatingFrom, RoutingStrategies.Direct);
-        AddHandler(Frame.NavigatedToEvent, FrameNavigatedTo, RoutingStrategies.Direct);
+        AddHandler(FAFrame.NavigatingFromEvent, FrameNavigatingFrom, RoutingStrategies.Direct);
+        AddHandler(FAFrame.NavigatedToEvent, FrameNavigatedTo, RoutingStrategies.Direct);
     }
 
     public static readonly StyledProperty<string> ControlNameProperty =
@@ -40,8 +40,8 @@ public class ControlsPageBase : UserControl
     public static readonly StyledProperty<string> DescriptionProperty =
         AvaloniaProperty.Register<ControlsPageBase, string>(nameof(Description));
 
-    public static readonly StyledProperty<IconSource> PreviewImageProperty =
-        AvaloniaProperty.Register<ControlsPageBase, IconSource>(nameof(PreviewImage));
+    public static readonly StyledProperty<FAIconSource> PreviewImageProperty =
+        AvaloniaProperty.Register<ControlsPageBase, FAIconSource>(nameof(PreviewImage));
 
     public static readonly StyledProperty<string> WinUINamespaceProperty =
         AvaloniaProperty.Register<ControlsPageBase, string>(nameof(WinUINamespace));
@@ -86,7 +86,7 @@ public class ControlsPageBase : UserControl
         set => SetValue(DescriptionProperty, value);
     }
 
-    public IconSource PreviewImage
+    public FAIconSource PreviewImage
     {
         get => GetValue(PreviewImageProperty);
         set => SetValue(PreviewImageProperty, value);
@@ -152,7 +152,7 @@ public class ControlsPageBase : UserControl
 
         ThemeScopeProvider = e.NameScope.Find<ThemeVariantScope>("ThemeScopeProvider");
 
-        _previewImageHost = e.NameScope.Find<IconSourceElement>("PreviewImageElement");
+        _previewImageHost = e.NameScope.Find<FAIconSourceElement>("PreviewImageElement");
         _detailsHost = e.NameScope.Find<StackPanel>("DetailsTextHost");
         _optionsHost = e.NameScope.Find<StackPanel>("OptionsRegion");
         _detailsPanel = e.NameScope.Find<Panel>("PageDetails");
@@ -161,13 +161,13 @@ public class ControlsPageBase : UserControl
         _toggleThemeButton = e.NameScope.Find<Button>("ToggleThemeButton");
         _toggleThemeButton.Click += ToggleThemeButtonClick;
 
-        _winUIDocsItem = e.NameScope.Find<MenuFlyoutItem>("WinUIDocsItem");
-        _winUIGuidelinesItem = e.NameScope.Find<MenuFlyoutItem>("WinUIGuidelinesItem");
-        _xamlSourceItem = e.NameScope.Find<MenuFlyoutItem>("XamlSourceItem");
-        _cSharpSourceItem = e.NameScope.Find<MenuFlyoutItem>("CSharpSourceItem");
-        _showDefItem = e.NameScope.Find<MenuFlyoutItem>("ShowDefItem");
-        _sep1 = e.NameScope.Find<MenuFlyoutSeparator>("Sep1");
-        _sep2 = e.NameScope.Find<MenuFlyoutSeparator>("Sep2");
+        _winUIDocsItem = e.NameScope.Find<FAMenuFlyoutItem>("WinUIDocsItem");
+        _winUIGuidelinesItem = e.NameScope.Find<FAMenuFlyoutItem>("WinUIGuidelinesItem");
+        _xamlSourceItem = e.NameScope.Find<FAMenuFlyoutItem>("XamlSourceItem");
+        _cSharpSourceItem = e.NameScope.Find<FAMenuFlyoutItem>("CSharpSourceItem");
+        _showDefItem = e.NameScope.Find<FAMenuFlyoutItem>("ShowDefItem");
+        _sep1 = e.NameScope.Find<FAMenuFlyoutSeparator>("Sep1");
+        _sep2 = e.NameScope.Find<FAMenuFlyoutSeparator>("Sep2");
 
         var winUIDocs = WinUIDocsLink;
         var winUIGuidelines = WinUIGuidelinesLink;
@@ -197,7 +197,7 @@ public class ControlsPageBase : UserControl
 
     private void MoreOptionsItemClick(object sender, RoutedEventArgs e)
     {
-        if (sender is MenuFlyoutItem mfi)
+        if (sender is FAMenuFlyoutItem mfi)
         {
             switch (mfi.Name)
             {
@@ -341,7 +341,7 @@ public class ControlsPageBase : UserControl
         }
     }
 
-    private void FrameNavigatingFrom(object sender, NavigatingCancelEventArgs e)
+    private void FrameNavigatingFrom(object sender, FANavigatingCancelEventArgs e)
     {
         // If TargetType is not set, we know we're currently on a CoreControls page since those
         // are grouped pages - whereas, FA controls only display one control per page and
@@ -354,15 +354,15 @@ public class ControlsPageBase : UserControl
         {
             // Only setup the Back connected animation if we're going back to the
             // controls list pages
-            var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+            var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
             svc.PrepareToAnimate("BackAnimation", (Control)_previewImageHost.Parent);
             NavigationService.Instance.PreviousPage = this;
         }
     }
 
-    private void FrameNavigatedTo(object sender, NavigationEventArgs e)
+    private void FrameNavigatedTo(object sender, FANavigationEventArgs e)
     {
-        var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+        var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
         var animation = svc.GetAnimation("ForwardAnimation");
 
         if (animation != null)
@@ -388,14 +388,14 @@ public class ControlsPageBase : UserControl
     private Button _toggleThemeButton;
     private Panel _detailsPanel;
     private StackPanel _optionsHost;
-    private IconSourceElement _previewImageHost;
+    private FAIconSourceElement _previewImageHost;
     private StackPanel _detailsHost;
     private ScrollViewer _scroller;
 
-    private MenuFlyoutItem _winUIDocsItem;
-    private MenuFlyoutItem _winUIGuidelinesItem;
-    private MenuFlyoutItem _xamlSourceItem;
-    private MenuFlyoutItem _cSharpSourceItem;
-    private MenuFlyoutItem _showDefItem;
-    private MenuFlyoutSeparator _sep1, _sep2;
+    private FAMenuFlyoutItem _winUIDocsItem;
+    private FAMenuFlyoutItem _winUIGuidelinesItem;
+    private FAMenuFlyoutItem _xamlSourceItem;
+    private FAMenuFlyoutItem _cSharpSourceItem;
+    private FAMenuFlyoutItem _showDefItem;
+    private FAMenuFlyoutSeparator _sep1, _sep2;
 }

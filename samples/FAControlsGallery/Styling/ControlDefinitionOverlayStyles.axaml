@@ -8,7 +8,7 @@
         <Border Padding="20"
                 Width="600"
                 Height="600">
-            <local:ControlDefinitionOverlay TargetType="ui:InfoBar"
+            <local:ControlDefinitionOverlay TargetType="ui:FAInfoBar"
                                             IsVisible="True"/>
         </Border>
     </Design.PreviewWith>
@@ -65,7 +65,7 @@
                                                             Margin="0 12 0 6"
                                                             IsVisible="False"
                                                             Name="InheritanceHCC">
-                                        <ui:ImageIcon>
+                                        <ui:FAImageIcon>
                                             <DrawingImage>
                                                 <DrawingGroup>
                                                     <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
@@ -74,7 +74,7 @@
                                                                      Geometry="M 13.074219,36.076172 C 11.487311,36.076172 10.199219,37.362219 10.199219,38.949219 10.199219,40.536219 11.487311,41.824219 13.074219,41.824219 14.661127,41.824219 15.947266,40.536219 15.947266,38.949219 15.947266,37.362219 14.661127,36.076172 13.074219,36.076172 Z M 21.125,37.226562 20.890625,37.242188 C 20.048825,37.356498 19.400391,38.077862 19.400391,38.951172 19.400391,39.903832 20.17234,40.675781 21.125,40.675781 H 45.275391 L 45.509766,40.660156 C 46.351566,40.545846 47,39.824482 47,38.951172 47,37.998512 46.228051,37.226562 45.275391,37.226562 Z" />
                                                 </DrawingGroup>
                                             </DrawingImage>
-                                        </ui:ImageIcon>
+                                        </ui:FAImageIcon>
                                     </HeaderedContentControl>
 
                                     <TextBlock Text="{TemplateBinding Inheritance}"
@@ -88,7 +88,7 @@
                                                             Margin="0 12 0 6"
                                                             IsVisible="False"
                                                             Name="PseudoclassesHCC">
-                                        <ui:ImageIcon>
+                                        <ui:FAImageIcon>
                                             <DrawingImage>
                                                 <DrawingGroup>
                                                     <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
@@ -99,7 +99,7 @@
                                                                      Geometry="M 17.230469,14.525391 C 16.884256,14.525391 16.537599,14.65576 16.273438,14.919922 L 9.5097656,21.685547 C 8.9814691,22.213844 8.9814411,23.069251 9.5097656,23.597656 L 16.273438,30.361328 C 16.801734,30.889733 17.659203,30.889733 18.1875,30.361328 18.715797,29.832922 18.715797,28.977625 18.1875,28.449219 L 12.378906,22.640625 18.1875,16.833984 C 18.715797,16.305687 18.715797,15.448219 18.1875,14.919922 17.923351,14.65576 17.576682,14.525391 17.230469,14.525391 Z M 23.998047,14.525391 C 23.651797,14.525391 23.305219,14.657713 23.041016,14.921875 22.512855,15.450172 22.512855,16.305687 23.041016,16.833984 L 28.847656,22.640625 23.041016,28.449219 C 22.512828,28.977625 22.512855,29.833193 23.041016,30.361328 23.569422,30.889733 24.426673,30.889733 24.955078,30.361328 L 31.71875,23.597656 C 32.246885,23.069521 32.246885,22.213844 31.71875,21.685547 L 24.955078,14.921875 C 24.690876,14.657713 24.344297,14.525391 23.998047,14.525391 Z" />
                                                 </DrawingGroup>
                                             </DrawingImage>
-                                        </ui:ImageIcon>
+                                        </ui:FAImageIcon>
                                     </HeaderedContentControl>
 
                                     <ItemsControl Name="PseudoclassesDisplay"
@@ -139,7 +139,7 @@
                                                             Margin="0 12 0 6"
                                                             IsVisible="False"
                                                             Name="TemplatePartsHCC">
-                                        <ui:ImageIcon>
+                                        <ui:FAImageIcon>
                                             <DrawingImage>
                                                 <DrawingGroup>
                                                     <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
@@ -150,7 +150,7 @@
                                                                      Geometry="M 18.25,9.854954 C 18.903384,9.854954 19.50074,10.224104 19.79284,10.808511 L 21.67999,14.582765 25.3639,15.043271 C 26.04585,15.128486 26.61211,15.610244 26.80531,16.269631 26.99874,16.929018 26.78208,17.640224 26.25423,18.080122 L 23.61199,20.28205 24.53383,24.43079 C 24.68471,25.10929 24.41354,25.81217 23.8459,26.21352 23.27826,26.61487 22.52524,26.63626 21.93575,26.2678 L 18.25,23.96412 14.56425,26.2678 C 13.97476,26.63626 13.22174,26.61487 12.654146,26.21352 12.086529,25.81217 11.81529,25.10929 11.966078,24.43079 L 12.88801,20.28205 10.245678,18.080122 C 9.717805,17.640224 9.501352,16.929018 9.69469,16.269631 9.888005,15.610244 10.454219,15.128486 11.136054,15.043271 L 14.819987,14.582765 16.707114,10.808511 C 16.999329,10.224104 17.596616,9.854954 18.25,9.854954 Z" />
                                                 </DrawingGroup>
                                             </DrawingImage>
-                                        </ui:ImageIcon>
+                                        </ui:FAImageIcon>
                                     </HeaderedContentControl>
                                     
                                     <Panel Margin="0 4"
@@ -185,7 +185,7 @@
                                     <HeaderedContentControl Header="Definition"
                                                             Theme="{StaticResource CDOverlayHCC}"
                                                             Margin="0 12 0 6">
-                                        <ui:ImageIcon>
+                                        <ui:FAImageIcon>
                                             <DrawingImage>
                                                 <DrawingGroup>
                                                     <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
@@ -194,7 +194,7 @@
                                                                      Geometry="M 15.344371,39.275058 29.644335,7.3750199 C 30.017235,6.5434859 30.993375,6.1715759 31.824975,6.5443219 32.587276,6.8860259 32.963256,7.7348519 32.733576,8.5144448 L 32.655696,8.7249188 18.355645,40.624979 C 17.982899,41.45658 17.006604,41.82838 16.17507,41.4557 15.412813,41.114039 15.036789,40.265059 15.266535,39.485599 L 15.344371,39.275058 29.644335,7.3750199 Z" />
                                                 </DrawingGroup>
                                             </DrawingImage>
-                                        </ui:ImageIcon>
+                                        </ui:FAImageIcon>
                                     </HeaderedContentControl>
                                     
                                     <aedit:TextEditor Name="TextEditor"
@@ -210,7 +210,7 @@
                                        VerticalAlignment="Top"
                                        Theme="{StaticResource TransparentButton}"
                                        Margin="12">
-                                <ui:SymbolIcon Symbol="Dismiss" FontSize="18" />
+                                <ui:FASymbolIcon Symbol="Dismiss" FontSize="18" />
                             </Button>
                         </Panel>
 
