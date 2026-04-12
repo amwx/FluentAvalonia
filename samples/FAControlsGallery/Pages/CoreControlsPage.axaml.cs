@@ -16,20 +16,20 @@ public partial class CoreControlsPage : UserControl
     public CoreControlsPage()
     {
         InitializeComponent();
-        AddHandler(SettingsExpander.ClickEvent, SettingsExpanderClick);
+        AddHandler(FASettingsExpander.ClickEvent, SettingsExpanderClick);
 
         // Use the frame events here to ensure ConnectedAnimations still work with
         // Back/Forward navigation and not just explicit page invokes
-        AddHandler(Frame.NavigatingFromEvent, OnNavigatingFrom, RoutingStrategies.Direct);
-        AddHandler(Frame.NavigatedToEvent, OnNavigatedTo, RoutingStrategies.Direct);
+        AddHandler(FAFrame.NavigatingFromEvent, OnNavigatingFrom, RoutingStrategies.Direct);
+        AddHandler(FAFrame.NavigatedToEvent, OnNavigatedTo, RoutingStrategies.Direct);
     }
 
-    private void OnNavigatedTo(object sender, NavigationEventArgs e)
+    private void OnNavigatedTo(object sender, FANavigationEventArgs e)
     {
         if (_connectedAnimationSource == -1)
             return;
 
-        var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+        var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
         var anim = svc.GetAnimation("BackAnimation");
 
         if (anim == null)
@@ -44,19 +44,19 @@ public partial class CoreControlsPage : UserControl
         // the animation will be cut off, but the back animation is pretty fast and mostly is
         // only visible closer to the element so we're ok, I think
         var x = presenter.GetVisualParent();
-        while (!(x is SettingsExpander) && x != null)
+        while (!(x is FASettingsExpander) && x != null)
         {
             x.ClipToBounds = false;
             x = x.GetVisualParent();
         }
 
-        anim.Configuration = new DirectConnectedAnimationConfiguration();
+        anim.Configuration = new FADirectConnectedAnimationConfiguration();
         anim.TryStart(presenter);
     }
 
     private void SettingsExpanderClick(object sender, RoutedEventArgs e)
     {
-        var presenter = (e.Source as SettingsExpander)
+        var presenter = (e.Source as FASettingsExpander)
             .GetVisualDescendants().OfType<ContentPresenter>()
             .Where(x => x.Name == "IconPresenter")
             .FirstOrDefault();
@@ -64,10 +64,10 @@ public partial class CoreControlsPage : UserControl
         Debug.Assert(presenter != null);
 
         _connectedAnimationSource = ItemsControl.IndexFromContainer(
-            (e.Source as SettingsExpander).Parent as ContentPresenter);        
+            (e.Source as FASettingsExpander).Parent as ContentPresenter);        
     }
 
-    private void OnNavigatingFrom(object sender, NavigatingCancelEventArgs e)
+    private void OnNavigatingFrom(object sender, FANavigatingCancelEventArgs e)
     {
         if (_connectedAnimationSource == -1)
             return;
@@ -82,7 +82,7 @@ public partial class CoreControlsPage : UserControl
 
         var presenter = GetAnimationSource();
 
-        var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+        var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
         svc.PrepareToAnimate("ForwardAnimation", presenter);
     }
 

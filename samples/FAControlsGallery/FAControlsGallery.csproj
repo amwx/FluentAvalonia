@@ -16,7 +16,6 @@
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.AvaloniaEdit" />
     <PackageReference Include="AvaloniaEdit.TextMate" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
   </ItemGroup>
   <ItemGroup>    
     <ProjectReference Include="..\..\src\FluentAvalonia\FluentAvalonia.csproj" />

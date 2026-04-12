@@ -83,7 +83,7 @@ public partial class FAFrame : ContentControl
     {
         base.OnAttachedToVisualTree(e);
 
-        if (e.Root is TopLevel tl)
+        if (TopLevel.GetTopLevel(this) is TopLevel tl)
         {
             tl.BackRequested += OnTopLevelBackRequested;
         }
@@ -93,7 +93,7 @@ public partial class FAFrame : ContentControl
     {
         base.OnDetachedFromVisualTree(e);
 
-        if (e.Root is TopLevel tl)
+        if (TopLevel.GetTopLevel(this) is TopLevel tl)
         {
             tl.BackRequested -= OnTopLevelBackRequested;
         }
@@ -527,7 +527,7 @@ public partial class FAFrame : ContentControl
             // Now posted to dispatcher to ensure page has loaded - enabling composition
             // animations to work now - CompositionVisuals *should* be ready now
             Dispatcher.UIThread.Post(() =>
-            {
+            { 
                 if (entry.Instance is Control newPage)
                 {
                     navEA.RoutedEvent = NavigatedToEvent;

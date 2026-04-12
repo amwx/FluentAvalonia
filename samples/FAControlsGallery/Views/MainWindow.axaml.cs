@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
@@ -11,19 +12,15 @@ using FluentAvalonia.UI.Windowing;
 
 namespace FAControlsGallery;
 
-public partial class MainWindow : AppWindow
+public partial class MainWindow : FAAppWindow
 {
     public MainWindow()
     {
         AvaloniaXamlLoader.Load(this);
-
-#if DEBUG
-        this.AttachDevTools();
-#endif
-
+        
         SplashScreen = new MainAppSplashScreen(this);
         TitleBar.ExtendsContentIntoTitleBar = true;
-        TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
+        TitleBar.TitleBarHitTestType = FATitleBarHitTestType.Complex;
         
         Application.Current.ActualThemeVariantChanged += OnActualThemeVariantChanged;
     }
@@ -90,7 +87,7 @@ public partial class MainWindow : AppWindow
     } 
 }
 
-internal class MainAppSplashScreen : IApplicationSplashScreen
+internal class MainAppSplashScreen : IFAApplicationSplashScreen
 {
     public MainAppSplashScreen(MainWindow owner)
     {

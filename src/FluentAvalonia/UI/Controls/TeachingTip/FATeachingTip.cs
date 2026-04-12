@@ -244,7 +244,7 @@ public partial class FATeachingTip : ContentControl
             },
             WindowManagerAddShadowHint = false,
             IsLightDismissEnabled = true,
-            PlacementTarget = (Control)VisualRoot
+            PlacementTarget = TopLevel.GetTopLevel(this)
         };
 
         _lightDismissIndicatorPopup = popup;
@@ -1045,7 +1045,7 @@ public partial class FATeachingTip : ContentControl
         //Reset the close reason to the default value of programmatic.
         _lastCloseReason = FATeachingTipCloseReason.Programmatic;
 
-        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual) ?? Matrix.Identity);
+        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(TopLevel.GetTopLevel(this)) ?? Matrix.Identity);
 
         if (_target != null)
         {
@@ -1100,7 +1100,7 @@ public partial class FATeachingTip : ContentControl
             if (_popup != null)
             {
                 // We have to do this so styles inherit 
-                ((ISetLogicalParent)_popup).SetParent(_target ?? (Control)VisualRoot);
+                ((ISetLogicalParent)_popup).SetParent(_target ?? TopLevel.GetTopLevel(this));
 
                 // HACK
                 if (_repositionOnNextOpen)
@@ -1136,7 +1136,7 @@ public partial class FATeachingTip : ContentControl
 
         if (VisualRoot != null)
         {
-            _acceleratorKeyActivatedRevoker = (VisualRoot as Interactive).AddDisposableHandler(KeyDownEvent, OnF6PreviewKeyDownClicked, RoutingStrategies.Tunnel);
+            _acceleratorKeyActivatedRevoker = (TopLevel.GetTopLevel(this) as Interactive).AddDisposableHandler(KeyDownEvent, OnF6PreviewKeyDownClicked, RoutingStrategies.Tunnel);
         }
 
         // Make sure we are in the correct VSM state after ApplyTemplate and moving the template content from the Control to the Popup:
@@ -1181,7 +1181,7 @@ public partial class FATeachingTip : ContentControl
         {
             WindowManagerAddShadowHint = false,
             IsLightDismissEnabled = false,
-            PlacementTarget = (Control)VisualRoot,
+            PlacementTarget = TopLevel.GetTopLevel(this),
             // Raw Popups in WinUI don't have placement methods like we have and always positioned at <0,0> in the Window
             // so we mimic that here so that the remaining positioning logic elsewhere in this code still works
             Placement = PlacementMode.AnchorAndGravity,
@@ -1408,8 +1408,8 @@ public partial class FATeachingTip : ContentControl
 
     private void OnPopupOpened(object sender, EventArgs args)
     {
-        _currentXamlRootSize = TopLevel.GetTopLevel(VisualRoot).ClientSize;
-        if (VisualRoot is Control c)
+        _currentXamlRootSize = TopLevel.GetTopLevel(this).ClientSize;
+        if (TopLevel.GetTopLevel(this) is Control c)
         {
             _xamlRootChangedRevoker = c.GetObservable(BoundsProperty).Subscribe(XamlRootChanged);
         }
@@ -1603,7 +1603,7 @@ public partial class FATeachingTip : ContentControl
             if (_target != null)
             {
                 _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
-                    .TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value);
+                    .TransformToAABB(_target.TransformToVisual(TopLevel.GetTopLevel(this) as Visual).Value);
 
                 SetViewportChangedEvent(_target);
             }
@@ -1645,7 +1645,7 @@ public partial class FATeachingTip : ContentControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            _currentXamlRootSize = TopLevel.GetTopLevel(VisualRoot).ClientSize;
+            _currentXamlRootSize = TopLevel.GetTopLevel(this).ClientSize;
             RepositionPopup();
         }, DispatcherPriority.Render);
     }
@@ -1655,9 +1655,9 @@ public partial class FATeachingTip : ContentControl
         if (IsOpen)
         {
             var newTargetBounds = _target != null ?
-                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value) : default;
+                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(TopLevel.GetTopLevel(this) as Visual).Value) : default;
 
-            var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual).Value);
+            var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(TopLevel.GetTopLevel(this) as Visual).Value);
 
             if (newTargetBounds != _currentTargetBoundsInCoreWindowSpace ||
                 newCurrentBounds != _currentBoundsInCoreWindowSpace)
@@ -2184,7 +2184,7 @@ public partial class FATeachingTip : ContentControl
         {
             // For Avalonia, screen only matters for windowed systems. Since WinUI doesn't have this concept
             // we'll return a normal rect like GetEffectiveWindowBoundsInCoreWindowSpace does
-            if (VisualRoot is Window w)
+            if (TopLevel.GetTopLevel(this) is Window w)
             {
                 var displayInfo = w.Screens.ScreenFromWindow(w);
                 var scaleFactor = displayInfo.Scaling;
@@ -2200,7 +2200,7 @@ public partial class FATeachingTip : ContentControl
 
     private Rect GetWindowBounds()
     {
-        return new Rect((VisualRoot as Visual)?.Bounds.Size ?? default);
+        return new Rect((TopLevel.GetTopLevel(this) as Visual)?.Bounds.Size ?? default);
     }
 
     private void GetPlacementFallbackOrder(FATeachingTipPlacementMode preferredPlacement,

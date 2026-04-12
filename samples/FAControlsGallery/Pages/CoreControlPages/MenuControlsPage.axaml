@@ -21,7 +21,7 @@
                     </MenuItem>
                     <MenuItem Header="Open">
                         <MenuItem.Icon>
-                            <ui:SymbolIcon Symbol="Open" />
+                            <ui:FASymbolIcon Symbol="Open" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />

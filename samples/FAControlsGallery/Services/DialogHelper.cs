@@ -13,15 +13,15 @@ public class DialogHelper
 {
     public static async Task ShowUnableToOpenLinkDialog(Uri uri)
     {
-        var copyLinkButton = new TaskDialogCommand
+        var copyLinkButton = new FATaskDialogCommand
         {
             Text = "Copy Link",
-            IconSource = new SymbolIconSource { Symbol = Symbol.Link },
+            IconSource = new FASymbolIconSource { Symbol = FASymbol.Link },
             Description = uri.ToString(),
             ClosesOnInvoked = false
         };
 
-        var td = new TaskDialog
+        var td = new FATaskDialog
         {
             Content = "It looks like your platform doesn't support Process.Start " +
             "and we are unable to open a link.",
@@ -32,9 +32,9 @@ public class DialogHelper
             },
             Buttons =
             {
-                TaskDialogButton.OKButton
+                FATaskDialogButton.OKButton
             },
-            IconSource = new SymbolIconSource { Symbol = Symbol.ImportantFilled }
+            IconSource = new FASymbolIconSource { Symbol = FASymbol.ImportantFilled }
         };
 
         copyLinkButton.Click += async (s, __) =>
@@ -46,7 +46,7 @@ public class DialogHelper
                 Content = "Copied!"
             };
 
-            var comHost = td.FindDescendantOfType<TaskDialogCommandHost>();
+            var comHost = td.FindDescendantOfType<FATaskDialogCommandHost>();
 
             FlyoutBase.SetAttachedFlyout(comHost, flyout);
             FlyoutBase.ShowAttachedFlyout(comHost);

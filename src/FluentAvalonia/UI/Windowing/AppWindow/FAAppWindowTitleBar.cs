@@ -8,7 +8,7 @@ namespace FluentAvalonia.UI.Windowing;
 /// <summary>
 /// Values describing the complexity the title bar hit test logic should use
 /// </summary>
-public enum TitleBarHitTestType
+public enum FATitleBarHitTestType
 {
     /// <summary>
     /// Hit testing is done with a simple bounds check
@@ -31,9 +31,9 @@ public enum TitleBarHitTestType
 /// Represents the title bar of an <see cref="FAAppWindow"/> allowing customization such as
 /// colors, hit testing, and allowing app content in the title bar area
 /// </summary>
-public class AppWindowTitleBar
+public class FAAppWindowTitleBar
 {
-    internal AppWindowTitleBar(FAAppWindow parent)
+    internal FAAppWindowTitleBar(FAAppWindow parent)
     {
         _parent = parent;
     }
@@ -254,7 +254,7 @@ public class AppWindowTitleBar
     /// Gets or sets how the hit test logic should handle hit testing controls that are placed
     /// in the title bar drag rect region
     /// </summary>
-    public TitleBarHitTestType TitleBarHitTestType { get; set; }
+    public FATitleBarHitTestType TitleBarHitTestType { get; set; }
 
     /// <summary>
     /// Gets or sets the height of the default title bar
@@ -313,7 +313,7 @@ public class AppWindowTitleBar
         {
             if (_dragRects[i].Contains(p))
             {
-                if (TitleBarHitTestType == TitleBarHitTestType.Simple)
+                if (TitleBarHitTestType == FATitleBarHitTestType.Simple)
                     return true;
 
                 return _parent.ComplexHitTest(p);

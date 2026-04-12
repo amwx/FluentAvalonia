@@ -19,8 +19,8 @@ public partial class FAControlsOverviewPage : UserControl
         InitializeComponent();
         // Use the frame events here to ensure ConnectedAnimations still work with
         // Back/Forward navigation and not just explicit page invokes
-        AddHandler(Frame.NavigatingFromEvent, OnNavigatingFrom, RoutingStrategies.Direct);
-        AddHandler(Frame.NavigatedToEvent, OnNavigatedTo, RoutingStrategies.Direct);
+        AddHandler(FAFrame.NavigatingFromEvent, OnNavigatingFrom, RoutingStrategies.Direct);
+        AddHandler(FAFrame.NavigatedToEvent, OnNavigatedTo, RoutingStrategies.Direct);
 
         Tapped += FAControlsOverviewPageTapped;
     }
@@ -42,12 +42,12 @@ public partial class FAControlsOverviewPage : UserControl
         }
     }
 
-    private void OnNavigatedTo(object sender, NavigationEventArgs e)
+    private void OnNavigatedTo(object sender, FANavigationEventArgs e)
     {
         if (_animationPage == null)
             return;
 
-        var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+        var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
         var anim = svc.GetAnimation("BackAnimation");
 
         if (anim == null)
@@ -74,11 +74,11 @@ public partial class FAControlsOverviewPage : UserControl
             x = x.GetVisualParent();
         }
 
-        anim.Configuration = new DirectConnectedAnimationConfiguration();
+        anim.Configuration = new FADirectConnectedAnimationConfiguration();
         anim.TryStart(presenter);
     }
 
-    private void OnNavigatingFrom(object sender, NavigatingCancelEventArgs e)
+    private void OnNavigatingFrom(object sender, FANavigatingCancelEventArgs e)
     {
         if (_animationPage == null)
             return;
@@ -98,7 +98,7 @@ public partial class FAControlsOverviewPage : UserControl
                     .GetVisualDescendants()
                     .Where(x => x is Viewbox && x.Name == "IconHost")
                     .FirstOrDefault();
-        var svc = ConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+        var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
         svc.PrepareToAnimate("ForwardAnimation", item);
     }
 

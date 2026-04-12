@@ -12,11 +12,11 @@ public class NavViewPageViewModel : ViewModelBase
     {
         Categories = new List<CategoryBase>();
 
-        Categories.Add(new Category { Name = "Category 1", Icon = Symbol.Home, ToolTip = "This is category 1" });
-        Categories.Add(new Category { Name = "Category 2", Icon = Symbol.Keyboard, ToolTip = "This is category 2" });
+        Categories.Add(new Category { Name = "Category 1", Icon = FASymbol.Home, ToolTip = "This is category 1" });
+        Categories.Add(new Category { Name = "Category 2", Icon = FASymbol.Keyboard, ToolTip = "This is category 2" });
         Categories.Add(new Separator());
-        Categories.Add(new Category { Name = "Category 3", Icon = Symbol.Library, ToolTip = "This is category 3" });
-        Categories.Add(new Category { Name = "Category 4", Icon = Symbol.Mail, ToolTip = "This is category 4" });
+        Categories.Add(new Category { Name = "Category 3", Icon = FASymbol.Library, ToolTip = "This is category 3" });
+        Categories.Add(new Category { Name = "Category 4", Icon = FASymbol.Mail, ToolTip = "This is category 4" });
 
         SelectedCategory = Categories[0];
     }
@@ -47,7 +47,7 @@ public class NavViewPageViewModel : ViewModelBase
             var pg = Activator.CreateInstance(Type.GetType(smpPage));
             CurrentPage = (Control)pg;
         }
-        else if (SelectedCategory is NavigationViewItem nvi)
+        else if (SelectedCategory is FANavigationViewItem nvi)
         {
             var smpPage = $"FAControlsGallery.Pages.NVSamplePages.NVSamplePageSettings";
             var pg = Activator.CreateInstance(Type.GetType(smpPage));
@@ -65,7 +65,7 @@ public class Category : CategoryBase
 {
     public string Name { get; set; }
     public string ToolTip { get; set; }
-    public Symbol Icon { get; set; }
+    public FASymbol Icon { get; set; }
 }
 
 public class Separator : CategoryBase
@@ -73,7 +73,7 @@ public class Separator : CategoryBase
 
 }
 
-public class MenuItemTemplateSelector : DataTemplateSelector
+public class MenuItemTemplateSelector : FADataTemplateSelector
 {
     [Content]
     public IDataTemplate ItemTemplate { get; set; }

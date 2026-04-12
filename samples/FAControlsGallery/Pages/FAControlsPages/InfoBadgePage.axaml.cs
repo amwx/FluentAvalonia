@@ -11,7 +11,7 @@ public partial class InfoBadgePage : ControlsPageBase
         InitializeComponent();
 
         DataContext = new InfoBadgePageViewModel();
-        TargetType = typeof(InfoBadge);
+        TargetType = typeof(FAInfoBadge);
     }
 
     private void InitializeComponent()

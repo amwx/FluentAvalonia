@@ -25,7 +25,7 @@ public partial class FAAppWindow : Window
     public FAAppWindow()
     {
         TemplateSettings = new FAAppWindowTemplateSettings();
-        _titleBar = new AppWindowTitleBar(this);
+        _titleBar = new FAAppWindowTitleBar(this);
 
         if (OperatingSystem.IsWindows() && !Design.IsDesignMode)
         {
@@ -243,7 +243,7 @@ public partial class FAAppWindow : Window
             // Therefore, we only need to do check the Y coordinate
             if (p.Y < _titleBar.Height)
             {
-                if (TitleBar.TitleBarHitTestType == TitleBarHitTestType.Complex &&
+                if (TitleBar.TitleBarHitTestType == FATitleBarHitTestType.Complex &&
                     !ComplexHitTest(p))
                 {
                     return false;

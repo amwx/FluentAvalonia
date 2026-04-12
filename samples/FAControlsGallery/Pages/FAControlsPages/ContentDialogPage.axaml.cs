@@ -11,7 +11,7 @@ public partial class ContentDialogPage : ControlsPageBase
         InitializeComponent();
 
         DataContext = new ContentDialogPageViewModel();
-        TargetType = typeof(ContentDialog);
+        TargetType = typeof(FAContentDialog);
     }
 
     private void InitializeComponent()

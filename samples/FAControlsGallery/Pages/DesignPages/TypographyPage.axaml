@@ -25,7 +25,7 @@
     </UserControl.Styles>
 
     <StackPanel Spacing="8">
-        <ui:InfoBar Title="Cross Platform"
+        <ui:FAInfoBar Title="Cross Platform"
                     IsOpen="True" IsClosable="False"
                     Severity="Informational"
                     IconSource="ImportantFilled"
@@ -48,7 +48,7 @@
                                             Theme="{StaticResource TransparentButton}"
                                             Padding="10"
                                             Margin="0 0 12 0">
-                                        <ui:SymbolIcon Symbol="Copy" />
+                                        <ui:FASymbolIcon Symbol="Copy" />
                                     </Button>
                                     
                                     <TextBlock VerticalAlignment="Center"

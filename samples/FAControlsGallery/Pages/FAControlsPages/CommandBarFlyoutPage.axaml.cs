@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FluentAvalonia.UI.Controls;
 using FAControlsGallery.ViewModels;
+using Avalonia.Input;
 
 namespace FAControlsGallery.Pages;
 
@@ -13,7 +14,7 @@ public partial class CommandBarFlyoutPage : ControlsPageBase
         InitializeComponent();
                
         DataContext = new CommandBarFlyoutPageViewModel();
-        TargetType = typeof(CommandBarFlyout);
+        TargetType = typeof(FACommandBarFlyout);
 
         this.FindControl<Button>("myImageButton").ContextRequested += OnMyImageButtonContextRequested;
     }
@@ -31,7 +32,7 @@ public partial class CommandBarFlyoutPage : ControlsPageBase
 
     private void ShowMenu(bool isTransient)
     {
-        var flyout = Resources["CommandBarFlyout1"] as CommandBarFlyout;
+        var flyout = Resources["CommandBarFlyout1"] as FACommandBarFlyout;
         flyout.ShowMode = isTransient ? FlyoutShowMode.Transient : FlyoutShowMode.Standard;
 
         flyout.ShowAt(this.FindControl<Image>("Image1"));

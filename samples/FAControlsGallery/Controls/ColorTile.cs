@@ -14,7 +14,7 @@ public class ColorTile : TemplatedControl
         AvaloniaProperty.Register<ColorTile, string>(nameof(ColorName));
 
     public static readonly StyledProperty<string> DescriptionProperty =
-        SettingsExpander.DescriptionProperty.AddOwner<ColorTile>();
+        FASettingsExpander.DescriptionProperty.AddOwner<ColorTile>();
 
     public static readonly StyledProperty<string> WarningProperty =
         AvaloniaProperty.Register<ColorTile, string>(nameof(Warning));

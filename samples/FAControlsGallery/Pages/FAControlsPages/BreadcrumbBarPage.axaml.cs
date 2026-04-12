@@ -30,7 +30,7 @@ public partial class BreadcrumbBarPage : ControlsPageBase
         ResetSampleButton.Click += ResetSampleButtonClick;
     }
 
-    private void BreadcrumbBar2ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
+    private void BreadcrumbBar2ItemClicked(FABreadcrumbBar sender, FABreadcrumbBarItemClickedEventArgs args)
     {
         var items = BreadcrumbBar2.ItemsSource as ObservableCollection<BreadcrumbFolder>;
         for (int i = items.Count - 1; i >= args.Index + 1; i--)

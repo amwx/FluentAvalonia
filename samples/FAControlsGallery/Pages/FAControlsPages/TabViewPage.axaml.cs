@@ -50,7 +50,7 @@ public partial class TabViewPage : ControlsPageBase
         var tvi = new TabViewItem
         {
             Header = $"Document {index}",
-            IconSource = new SymbolIconSource { Symbol = Symbol.Document }
+            IconSource = new FASymbolIconSource { Symbol = FASymbol.Document }
         };
 
         switch (index % 3)
