@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace FluentAvaloniaTests.Helpers;
@@ -22,6 +18,11 @@ internal class TestCommand : ICommand
 
     public void Execute(object parameter) =>
         _executeMethod.Invoke(parameter);
+
+    public void Invalidate()
+    {
+        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    }
 
     private Action<object> _executeMethod;
     private Func<object, bool> _canExecuteMethod;

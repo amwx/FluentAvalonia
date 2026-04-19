@@ -15,7 +15,15 @@ using Avalonia.Utilities;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(FASharedPseudoclasses.s_pcNoBorder, FASharedPseudoclasses.s_pcBorderLeft, FASharedPseudoclasses.s_pcBorderRight, s_pcSingleBorder)]
+// Note a Border (s_tpPaneResizeHandle) and a SplitView are not listed here because
+// they're only required in Left/Right display modes. If anyone wrote an analyzer 
+// that generates errors for missing templat parts, I don't want to cause them
+// issues. However, if you retemplate anything, left/right require these controls
+
+// Also note the custom ScrollViewer has required template parts, see below
+
+[PseudoClasses(SharedPseudoclasses.s_pcNoBorder, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcBorderRight, s_pcSingleBorder)]
+[PseudoClasses(s_pcTop, s_pcLeft, s_pcBottom, s_pcRight)]
 [TemplatePart(s_tpTabContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpRightContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpTabContainerGrid, typeof(Grid))]
@@ -82,9 +90,15 @@ public partial class TabView
     /// <summary>
     /// Defines the <see cref="TabItems"/> property
     /// </summary>
-    public static readonly DirectProperty<TabView, IEnumerable> TabItemsProperty =
-        AvaloniaProperty.RegisterDirect<TabView, IEnumerable>(nameof(TabItems),
-            x => x.TabItems, (x, v) => x.TabItems = v);
+    public static readonly DirectProperty<TabView, IList> TabItemsProperty =
+        AvaloniaProperty.RegisterDirect<TabView, IList>(nameof(TabItems),
+            x => x.TabItems);
+
+    /// <summary>
+    /// Defines the <see cref="TabItemsSource"/> property
+    /// </summary>
+    public static readonly StyledProperty<IEnumerable> TabItemsSourceProperty =
+        AvaloniaProperty.Register<TabView, IEnumerable>(nameof(TabItemsSource));
 
     /// <summary>
     /// Defines the <see cref="TabItemTemplate"/> property
@@ -123,6 +137,44 @@ public partial class TabView
     public static readonly DirectProperty<TabView, object> SelectedItemProperty =
         SelectingItemsControl.SelectedItemProperty.AddOwner<TabView>(x => x.SelectedItem,
             (x, v) => x.SelectedItem = v);
+
+    /// <summary>
+    /// Defines the <see cref="TabStripLocation"/> property
+    /// </summary>
+    public static readonly StyledProperty<TabViewTabStripLocation> TabStripLocationProperty =
+        AvaloniaProperty.Register<TabView, TabViewTabStripLocation>(nameof(TabStripLocation));
+
+    /// <summary>
+    /// Defines the <see cref="IsVerticalPaneOpen"/> property
+    /// </summary>
+    public static readonly StyledProperty<bool> IsVerticalPaneOpenProperty = 
+        AvaloniaProperty.Register<TabView, bool>(nameof(IsVerticalPaneOpen), defaultValue: true);
+
+    /// <summary>
+    /// Defines the <see cref="VerticalOpenPaneLength"/> property
+    /// </summary>
+    public static readonly StyledProperty<double> VerticalOpenPaneLengthProperty = 
+        AvaloniaProperty.Register<TabView, double>(nameof(VerticalOpenPaneLength), defaultValue: 225d);
+
+    /// <summary>
+    /// Defines the <see cref="MinimumVerticalOpenPaneLength"/> property
+    /// </summary>
+    public static readonly StyledProperty<double> MinimumVerticalOpenPaneLengthProperty = 
+        AvaloniaProperty.Register<TabView, double>(nameof(MinimumVerticalOpenPaneLength), defaultValue: 40d);
+
+    /// <summary>
+    /// Defines the <see cref="MaximumVerticalOpenPaneLength"/> property
+    /// </summary>
+    public static readonly StyledProperty<double> MaximumVerticalOpenPaneLengthProperty = 
+        AvaloniaProperty.Register<TabView, double>(nameof(MaximumVerticalOpenPaneLength), defaultValue: 700d);
+
+    /// <summary>
+    /// Defines the <see cref="VerticalPaneDisplayMode"/> property
+    /// </summary>
+    public static readonly StyledProperty<SplitViewDisplayMode> VerticalPaneDisplayModeProperty = 
+        AvaloniaProperty.Register<TabView, SplitViewDisplayMode>(nameof(VerticalPaneDisplayMode), defaultValue: SplitViewDisplayMode.Inline);
+
+
 
     /// <summary>
     /// Gets or sets how the tabs should be sized
@@ -209,10 +261,19 @@ public partial class TabView
     /// Gets or sets the TabItems this TabView displays
     /// </summary>
     [Content]
-    public IEnumerable TabItems
+    public IList TabItems
     {
         get => _tabItems;
-        set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
+        private set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the TabItems source for this TabView
+    /// </summary>
+    public IEnumerable TabItemsSource
+    {
+        get => GetValue(TabItemsSourceProperty);
+        set => SetValue(TabItemsSourceProperty, value);
     }
 
     /// <summary>
@@ -272,6 +333,68 @@ public partial class TabView
     }
 
     /// <summary>
+    /// Gets or sets the location of the tab strip for this TabView
+    /// </summary>
+    public TabViewTabStripLocation TabStripLocation
+    {
+        get => GetValue(TabStripLocationProperty);
+        set => SetValue(TabStripLocationProperty, value);
+    }
+
+    /// <summary>
+    /// When the tab strip is on the left or the right, returns whether the pane is open.
+    /// If the tab strip is on the top or bottom, this has no effect
+    /// </summary>
+    public bool IsVerticalPaneOpen
+    {
+        get => GetValue(IsVerticalPaneOpenProperty);
+        set => SetValue(IsVerticalPaneOpenProperty, value);
+    }
+
+    /// <summary>
+    /// When the tab strip is on the left or the right, returns pane's open length
+    /// If the tab strip is on the top or bottom, this has no effect
+    /// </summary>
+    public double VerticalOpenPaneLength
+    {
+        get => GetValue(VerticalOpenPaneLengthProperty);
+        set => SetValue(VerticalOpenPaneLengthProperty, value);
+    }
+
+    /// <summary>
+    /// When the tab strip is on the left or the right, returns the minimum width
+    /// the pane can be opened. If the tab strip is on the top or bottom, this has no effect
+    /// </summary>
+    public double MinimumVerticalOpenPaneLength
+    {
+        get => GetValue(MinimumVerticalOpenPaneLengthProperty);
+        set => SetValue(MinimumVerticalOpenPaneLengthProperty, value);
+    }
+
+    /// <summary>
+    /// When the tab strip is on the left or the right, returns the maximum width
+    /// the pane can be opened. If the tab strip is on the top or bottom, this has no effect
+    /// </summary>
+    public double MaximumVerticalOpenPaneLength
+    {
+        get => GetValue(MaximumVerticalOpenPaneLengthProperty);
+        set => SetValue(MaximumVerticalOpenPaneLengthProperty, value);
+    }
+
+    /// <summary>
+    /// When the tab strip is on the left or the right, returns the display mode of the pane.
+    /// If the tab strip is on the top or bottom, this has no effect.
+    /// </summary>
+    public SplitViewDisplayMode VerticalPaneDisplayMode
+    {
+        get => GetValue(VerticalPaneDisplayModeProperty);
+        set => SetValue(VerticalPaneDisplayModeProperty, value);
+    }
+
+    // Internal for Unit Tests Only
+    internal TabViewListView ListView => _listView;
+
+    /// <summary>
     /// Raised when the user attempts to close a Tab via clicking the x-to-close button
     /// </summary>
     public event TypedEventHandler<TabView, TabViewTabCloseRequestedEventArgs> TabCloseRequested;
@@ -320,25 +443,33 @@ public partial class TabView
     public event EventHandler<DragEventArgs> TabStripDrop;
 
 
-    private IEnumerable _tabItems;
+    private IList _tabItems;
     private int _selectedIndex = 0;
     private object _selectedItem;
 
-    private const string s_tpTabContentPresenter = "TabContentPresenter";
+    // Internal for unit test access
+    internal const string s_tpTabContentPresenter = "TabContentPresenter";
     private const string s_tpRightContentPresenter = "RightContentPresenter";
     private const string s_tpTabContainerGrid = "TabContainerGrid";
     private const string s_tpTabListView = "TabListView";
-    private const string s_tpAddButton = "AddButton";
+    internal const string s_tpAddButton = "AddButton";
 
     // Technically these are template parts on the ScrollViewer, but we ref them here
     private const string s_tpScrollDecreaseButton = "ScrollDecreaseButton";
     private const string s_tpScrollIncreaseButton = "ScrollIncreaseButton";
-    
+
+    private const string s_tpPaneResizeHandle = "BorderResizeHandleHost";
+
     // These two come from the WinUI port, so they don't follow the normal naming convention for parity upstream
     private static string c_tabViewItemMinWidthName = "TabViewItemMinWidth";
     private static string c_tabViewItemMaxWidthName = "TabViewItemMaxWidth";
 
     private const string s_pcSingleBorder = ":singleBorder";
+
+    internal const string s_pcTop = ":top";
+    internal const string s_pcLeft = ":left";
+    internal const string s_pcRight = ":right";
+    internal const string s_pcBottom = ":bottom";
 
     private static readonly string SR_TabViewCloseButtonTooltipWithKA = "TabViewCloseButtonTooltipWithKA";
     private static readonly string SR_TabViewAddButtonTooltip = "TabViewAddButtonTooltip";
