@@ -6,11 +6,11 @@ using Avalonia.VisualTree;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Represents the <see cref="AutomationPeer"/> for a <see cref="TabViewItem"/>
+/// Represents the <see cref="AutomationPeer"/> for a <see cref="FATabViewItem"/>
 /// </summary>
-public sealed class TabViewItemAutomationPeer : ListItemAutomationPeer, ISelectionItemProvider
+public sealed class FATabViewItemAutomationPeer : ListItemAutomationPeer, ISelectionItemProvider
 {
-    public TabViewItemAutomationPeer(ContentControl owner) 
+    public FATabViewItemAutomationPeer(ContentControl owner) 
         : base(owner)
     {
     }
@@ -24,7 +24,7 @@ public sealed class TabViewItemAutomationPeer : ListItemAutomationPeer, ISelecti
 
         if (string.IsNullOrEmpty(name))
         {
-            if (Owner is TabViewItem tvi)
+            if (Owner is FATabViewItem tvi)
             {
                 name = tvi.Header?.ToString() ?? "TabViewItem";
             }
@@ -33,13 +33,13 @@ public sealed class TabViewItemAutomationPeer : ListItemAutomationPeer, ISelecti
         return name;
     }
 
-    bool ISelectionItemProvider.IsSelected => (Owner as TabViewItem)?.IsSelected ?? false;
+    bool ISelectionItemProvider.IsSelected => (Owner as FATabViewItem)?.IsSelected ?? false;
 
     ISelectionProvider ISelectionItemProvider.SelectionContainer
     {
         get
         {
-            if (GetParentTabView() is TabView tv)
+            if (GetParentTabView() is FATabView tv)
             {
                 return ControlAutomationPeer.CreatePeerForElement(tv) as ISelectionProvider;
             }
@@ -60,15 +60,15 @@ public sealed class TabViewItemAutomationPeer : ListItemAutomationPeer, ISelecti
 
     void ISelectionItemProvider.Select()
     {
-        if (Owner is TabViewItem tvi)
+        if (Owner is FATabViewItem tvi)
             tvi.IsSelected = true;
     }
 
-    private TabView GetParentTabView()
+    private FATabView GetParentTabView()
     {
-        if (Owner is TabViewItem tvi)
+        if (Owner is FATabViewItem tvi)
         {
-            return tvi.ParentTabView ?? tvi.FindAncestorOfType<TabView>();
+            return tvi.ParentTabView ?? tvi.FindAncestorOfType<FATabView>();
         }
 
         return null;

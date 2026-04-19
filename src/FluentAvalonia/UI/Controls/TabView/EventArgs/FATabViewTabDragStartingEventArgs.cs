@@ -3,11 +3,11 @@
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Provides data for the <see cref="TabView.TabDragStarting"/> event
+/// Provides data for the <see cref="FATabView.TabDragStarting"/> event
 /// </summary>
-public class TabViewTabDragStartingEventArgs : EventArgs
+public class FATabViewTabDragStartingEventArgs : EventArgs
 {
-    internal TabViewTabDragStartingEventArgs(DragItemsStartingEventArgs args, object item, TabViewItem tab)
+    internal FATabViewTabDragStartingEventArgs(DragItemsStartingEventArgs args, object item, FATabViewItem tab)
     {
         _innerArgs = args;
         Item = item;
@@ -36,7 +36,7 @@ public class TabViewTabDragStartingEventArgs : EventArgs
     /// <summary>
     /// Gets the TabViewItem that was selected for the drag action
     /// </summary>
-    public TabViewItem Tab { get; }
+    public FATabViewItem Tab { get; }
 
     private DragItemsStartingEventArgs _innerArgs;
 }

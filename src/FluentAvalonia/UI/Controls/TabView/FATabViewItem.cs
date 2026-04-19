@@ -22,11 +22,11 @@ using Path = Avalonia.Controls.Shapes.Path;
 
 namespace FluentAvalonia.UI.Controls;
 
-public partial class TabViewItem : SelectorItem
+public partial class FATabViewItem : FASelectorItem
 {
-    public TabViewItem()
+    public FATabViewItem()
     {
-        TabViewTemplateSettings = new TabViewItemTemplateSettings();
+        TabViewTemplateSettings = new FATabViewItemTemplateSettings();
 
         // Use AttachedToVisualTree override for Loaded event
 
@@ -54,7 +54,7 @@ public partial class TabViewItem : SelectorItem
         FocusableProperty.OverrideDefaultValue<TabViewItem>(true);
     }
     
-    protected internal TabView ParentTabView
+    protected internal FATabView ParentTabView
     {
         get
         {
@@ -63,7 +63,7 @@ public partial class TabViewItem : SelectorItem
 
             return null;
         }
-        set => _parentTabView = new WeakReference<TabView>(value);
+        set => _parentTabView = new WeakReference<FATabView>(value);
     }
 
     public Visual TabSeparator { get; private set; }
@@ -107,7 +107,7 @@ public partial class TabViewItem : SelectorItem
 
         _headerContentPresenter = e.NameScope.Find<ContentPresenter>(s_tpContentPresenter);
 
-        var tabView = Parent as TabView ?? this.FindAncestorOfType<TabView>();
+        var tabView = Parent as FATabView ?? this.FindAncestorOfType<FATabView>();
 
         _closeButton = e.NameScope.Get<Button>(s_tpCloseButton);
 
@@ -134,25 +134,25 @@ public partial class TabViewItem : SelectorItem
             //           Not 100% sure this is done correctly (there's no docs for this as I think this is
             //           meant to be an Avalonia internal specific thing), but at least according to VS's memory
             //           snapshot, no TVIs remained after removing & forcing a GC.Collect()
-            _startingDragSub = new TargetWeakEventSubscriber<TabView, TabViewTabDragStartingEventArgs>(
+            _startingDragSub = new TargetWeakEventSubscriber<FATabView, FATabViewTabDragStartingEventArgs>(
                 tabView, static (target, _, _, e) =>
                 {
                     e.Tab?.OnTabDragStarting(target, e);
                 });
 
-            TabView.TabDragStartingWeakEvent.Subscribe(tabView, _startingDragSub);
+            FATabView.TabDragStartingWeakEvent.Subscribe(tabView, _startingDragSub);
 
-            _completedDragSub = new TargetWeakEventSubscriber<TabView, TabViewTabDragCompletedEventArgs>(
+            _completedDragSub = new TargetWeakEventSubscriber<FATabView, FATabViewTabDragCompletedEventArgs>(
                 tabView, static (target, _, _, e) =>
                 {
                     e.Tab?.OnTabDragCompleted(target, e);
                 });
 
-            TabView.TabDragCompletedWeakEvent.Subscribe(tabView, _completedDragSub);
+            FATabView.TabDragCompletedWeakEvent.Subscribe(tabView, _completedDragSub);
 
             _tabDragRevoker = new FACompositeDisposable(
-                new FADisposable(() => TabView.TabDragStartingWeakEvent.Unsubscribe(tabView, _startingDragSub)),
-                new FADisposable(() => TabView.TabDragCompletedWeakEvent.Unsubscribe(tabView, _completedDragSub)));
+                new FADisposable(() => FATabView.TabDragStartingWeakEvent.Unsubscribe(tabView, _startingDragSub)),
+                new FADisposable(() => FATabView.TabDragCompletedWeakEvent.Unsubscribe(tabView, _completedDragSub)));
 
             // Add this to fix a bug that's clearly in WinUI, adding a new TabViewItem doesn't check
             // the CloseButtonOverlay mode, thus new tabs ALWAYS initialize with 'Auto' even if the 
@@ -179,7 +179,7 @@ public partial class TabViewItem : SelectorItem
 
                 BeginCheckingForDrag(pointer.Id);
 
-                var mod = TopLevel.GetTopLevel(this).PlatformSettings.HotkeyConfiguration.CommandModifiers;
+                var mod = TopLevel.GetTopLevel(this).GetPlatformSettings().HotkeyConfiguration.CommandModifiers;
                 bool ctrlDown = (e.KeyModifiers & mod) == mod;
 
                 if (ctrlDown)
@@ -288,7 +288,7 @@ public partial class TabViewItem : SelectorItem
 
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-        return new TabViewItemAutomationPeer(this);
+        return new FATabViewItemAutomationPeer(this);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -352,10 +352,10 @@ public partial class TabViewItem : SelectorItem
 
     private void UpdateTabGeometry()
     {
-        if (_location == TabViewTabStripLocation.Left || _location == TabViewTabStripLocation.Right)
+        if (_location == FATabViewTabStripLocation.Left || _location == FATabViewTabStripLocation.Right)
             return;
 
-        bool isTop = _location == TabViewTabStripLocation.Top;
+        bool isTop = _location == FATabViewTabStripLocation.Top;
         var height = Bounds.Height;
         var popupRadius = this.TryFindResource(c_overlayCornerRadiusKey, out var value) ? (CornerRadius)value : default;
         var leftCorner = popupRadius.TopLeft;
@@ -406,12 +406,12 @@ public partial class TabViewItem : SelectorItem
         UpdateCloseButton();
     }
 
-    private void OnTabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
+    private void OnTabDragStarting(FATabView sender, FATabViewTabDragStartingEventArgs args)
     {
         _isBeingDragged = true;
     }
 
-    private void OnTabDragCompleted(TabView sender, TabViewTabDragCompletedEventArgs args)
+    private void OnTabDragCompleted(FATabView sender, FATabViewTabDragCompletedEventArgs args)
     {
         _isBeingDragged = false;
 
@@ -419,25 +419,25 @@ public partial class TabViewItem : SelectorItem
         UpdateDragDropVisualState(false);
     }
 
-    internal void OnCloseButtonOverlayModeChanged(TabViewCloseButtonOverlayMode mode)
+    internal void OnCloseButtonOverlayModeChanged(FATabViewCloseButtonOverlayMode mode)
     {
         _closeButtonOverlayMode = mode;
         UpdateCloseButton();
     }
 
-    internal void OnTabViewWidthModeChanged(TabViewWidthMode mode)
+    internal void OnTabViewWidthModeChanged(FATabViewWidthMode mode)
     {
         _tabViewWidthMode = mode;
         UpdateWidthModeVisualState();
     }
 
-    internal void HandleTabStripLocationChanged(TabViewTabStripLocation newLocation)
+    internal void HandleTabStripLocationChanged(FATabViewTabStripLocation newLocation)
     {
         _location = newLocation;
-        PseudoClasses.Set(TabView.s_pcTop, newLocation == TabViewTabStripLocation.Top);
-        PseudoClasses.Set(TabView.s_pcBottom, newLocation == TabViewTabStripLocation.Bottom);
-        PseudoClasses.Set(TabView.s_pcRight, newLocation == TabViewTabStripLocation.Right);
-        PseudoClasses.Set(TabView.s_pcLeft, newLocation == TabViewTabStripLocation.Left);
+        PseudoClasses.Set(FATabView.s_pcTop, newLocation == FATabViewTabStripLocation.Top);
+        PseudoClasses.Set(FATabView.s_pcBottom, newLocation == FATabViewTabStripLocation.Bottom);
+        PseudoClasses.Set(FATabView.s_pcRight, newLocation == FATabViewTabStripLocation.Right);
+        PseudoClasses.Set(FATabView.s_pcLeft, newLocation == FATabViewTabStripLocation.Left);
 
         UpdateTabGeometry();
         if (_selectedBackgroundPath != null)
@@ -460,7 +460,7 @@ public partial class TabViewItem : SelectorItem
         {
             switch (_closeButtonOverlayMode)
             {
-                case TabViewCloseButtonOverlayMode.OnPointerOver:
+                case FATabViewCloseButtonOverlayMode.OnPointerOver:
                     {    // If we only want to show the button on hover, we also show it when we are selected, otherwise hide it
                         if (IsSelected || _isPointerOver)
                         {
@@ -492,7 +492,7 @@ public partial class TabViewItem : SelectorItem
         // => :compact
 
         // Handling compact/non compact width mode
-        PseudoClasses.Set(FASharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == TabViewWidthMode.Compact);
+        PseudoClasses.Set(FASharedPseudoclasses.s_pcCompact, !IsSelected && _tabViewWidthMode == FATabViewWidthMode.Compact);
     }
 
     private void UpdateDragDropVisualState(bool isVisible)
@@ -502,11 +502,11 @@ public partial class TabViewItem : SelectorItem
 
     private void RequestClose()
     {
-        var tabView = ParentTabView ?? this.FindAncestorOfType<TabView>();
+        var tabView = ParentTabView ?? this.FindAncestorOfType<FATabView>();
         tabView.RequestCloseTab(this, false);
     }
 
-    internal void RaiseRequestClose(TabViewTabCloseRequestedEventArgs args)
+    internal void RaiseRequestClose(FATabViewTabCloseRequestedEventArgs args)
     {
         // This should only be called from TabView, to ensure that both this event and the TabView TabRequestedClose event are raised
         CloseRequested?.Invoke(this, args);
@@ -542,7 +542,7 @@ public partial class TabViewItem : SelectorItem
 
     private void HideLeftAdjacentTabSeparator()
     {
-        if (ParentTabView is TabView tv)
+        if (ParentTabView is FATabView tv)
         {
             var index = tv.IndexFromContainer(this);
             tv.SetTabSeparatorOpacity(index - 1, 0);
@@ -551,7 +551,7 @@ public partial class TabViewItem : SelectorItem
 
     private void RestoreLeftAdjacentTabSeparatorVisibility()
     {
-        if (ParentTabView is TabView tv)
+        if (ParentTabView is FATabView tv)
         {
             var index = tv.IndexFromContainer(this);
             tv.SetTabSeparatorOpacity(index - 1);
@@ -593,10 +593,10 @@ public partial class TabViewItem : SelectorItem
     {
         // This was added upstream in WinUI to avoid a small gap that sometimes appeared underneath the
         // tabviewitem. I never saw it in FA, but I'll keep this around
-        if (_location == TabViewTabStripLocation.Left || _location == TabViewTabStripLocation.Right)
+        if (_location == FATabViewTabStripLocation.Left || _location == FATabViewTabStripLocation.Right)
             return;
 
-        bool top = _location == TabViewTabStripLocation.Top;
+        bool top = _location == FATabViewTabStripLocation.Top;
         var path = _selectedBackgroundPath;
 
         var offset = path.Bounds.Y;
@@ -623,7 +623,7 @@ public partial class TabViewItem : SelectorItem
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (ParentTabView is TabView tv)
+        if (ParentTabView is FATabView tv)
         {
             tv.SetTabSeparatorOpacity(tv.IndexFromContainer(this));
         }
@@ -632,12 +632,12 @@ public partial class TabViewItem : SelectorItem
     private Button _closeButton;
     private object _toolTip;
     private ContentPresenter _headerContentPresenter;
-    private TabViewWidthMode _tabViewWidthMode = TabViewWidthMode.Equal;
-    private TabViewCloseButtonOverlayMode _closeButtonOverlayMode = TabViewCloseButtonOverlayMode.Auto;
+    private FATabViewWidthMode _tabViewWidthMode = FATabViewWidthMode.Equal;
+    private FATabViewCloseButtonOverlayMode _closeButtonOverlayMode = FATabViewCloseButtonOverlayMode.Auto;
     private bool _firstTimeSettingToolTip = true;
     private FACompositeDisposable _tabDragRevoker;
     private Path _selectedBackgroundPath;
-    private TabViewTabStripLocation _location;
+    private FATabViewTabStripLocation _location;
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;
@@ -647,11 +647,11 @@ public partial class TabViewItem : SelectorItem
     private int _dragPointerId;
     private bool _isCheckingForDrag;
 
-    private WeakReference<TabView> _parentTabView;
+    private WeakReference<FATabView> _parentTabView;
 
     private const string c_overlayCornerRadiusKey = "OverlayCornerRadius";
     private const int c_targetRectWidthIncrement = 2;
 
-    private TargetWeakEventSubscriber<TabView, TabViewTabDragStartingEventArgs> _startingDragSub;
-    private TargetWeakEventSubscriber<TabView, TabViewTabDragCompletedEventArgs> _completedDragSub;
+    private TargetWeakEventSubscriber<FATabView, FATabViewTabDragStartingEventArgs> _startingDragSub;
+    private TargetWeakEventSubscriber<FATabView, FATabViewTabDragCompletedEventArgs> _completedDragSub;
 }

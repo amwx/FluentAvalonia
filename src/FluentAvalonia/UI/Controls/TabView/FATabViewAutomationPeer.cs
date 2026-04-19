@@ -5,11 +5,11 @@ using Avalonia.Controls;
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Represets the <see cref="AutomationPeer"/> for a <see cref="TabView"/>
+/// Represets the <see cref="AutomationPeer"/> for a <see cref="FATabView"/>
 /// </summary>
-public sealed class TabViewAutomationPeer : ControlAutomationPeer, ISelectionProvider
+public sealed class FATabViewAutomationPeer : ControlAutomationPeer, ISelectionProvider
 {
-    public TabViewAutomationPeer(Control owner)
+    public FATabViewAutomationPeer(Control owner)
         : base(owner)
     {
     }
@@ -18,16 +18,16 @@ public sealed class TabViewAutomationPeer : ControlAutomationPeer, ISelectionPro
 
     public bool IsSelectionRequired => true;
         
-    protected override string GetClassNameCore() => nameof(TabView);
+    protected override string GetClassNameCore() => nameof(FATabView);
 
     protected override AutomationControlType GetAutomationControlTypeCore() =>
         AutomationControlType.Tab;
 
     public IReadOnlyList<AutomationPeer> GetSelection()
     {
-        if (Owner is TabView tv)
+        if (Owner is FATabView tv)
         {
-            if (tv.ContainerFromIndex(tv.SelectedIndex) is TabViewItem tvi)
+            if (tv.ContainerFromIndex(tv.SelectedIndex) is FATabViewItem tvi)
             {
                 return new AutomationPeer[] { ControlAutomationPeer.CreatePeerForElement(tvi) };
             }

@@ -6,11 +6,15 @@
                     x:CompileBindings="True">
 
     <Design.PreviewWith>
-        <Border Padding="20" Width="800" >
-            <ui:FATabView>
+        <Border Padding="20" Width="500" Height="150" Background="Beige">
+            <ui:FATabView TabStripLocation="Top">
                 <ui:FATabView.TabItems>
                     <ui:FATabViewItem Header="Item1" />
+                    <ui:FATabViewItem Header="Item1"/>
                     <ui:FATabViewItem Header="Item1" />
+                    <ui:FATabViewItem Header="Item1"/>
+                    <ui:FATabViewItem Header="Item1" />
+                    <ui:FATabViewItem Header="Item1"/>
                 </ui:FATabView.TabItems>
             </ui:FATabView>
         </Border>
@@ -180,7 +184,7 @@
 
 
     
-    <ControlTheme x:Key="{x:Type uip:TabViewListView}" TargetType="uip:TabViewListView">
+    <ControlTheme x:Key="{x:Type uip:FATabViewListView}" TargetType="uip:FATabViewListView">
         <!-- WinUI doesn't set a background here, but this allows us to receive drag events
              over the TabViewListView and allows the icon to display properly for the drag effects -->
         <Setter Property="Background" Value="Transparent" />

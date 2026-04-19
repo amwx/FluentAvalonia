@@ -10,20 +10,20 @@ using FluentAvalonia.Core;
 namespace FluentAvalonia.UI.Controls.Internal;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-public abstract class SelectorItem : ContentControl, ISelectable
+public abstract class FASelectorItem : ContentControl, ISelectable
 {
-    static SelectorItem()
+    static FASelectorItem()
     {
-        SelectableMixin.Attach<SelectorItem>(IsSelectedProperty);
-        FocusableProperty.OverrideDefaultValue<SelectorItem>(true);
-        AutomationProperties.IsOffscreenBehaviorProperty.OverrideDefaultValue<SelectorItem>(IsOffscreenBehavior.FromClip);
+        SelectableMixin.Attach<FASelectorItem>(IsSelectedProperty);
+        FocusableProperty.OverrideDefaultValue<FASelectorItem>(true);
+        AutomationProperties.IsOffscreenBehaviorProperty.OverrideDefaultValue<FASelectorItem>(IsOffscreenBehavior.FromClip);
     }
 
     /// <summary>
     /// Defines the <see cref="IsSelected"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsSelectedProperty =
-        SelectingItemsControl.IsSelectedProperty.AddOwner<SelectorItem>();
+        SelectingItemsControl.IsSelectedProperty.AddOwner<FASelectorItem>();
 
     /// <summary>
     /// Gets or sets whether the item is selected
@@ -124,7 +124,7 @@ public abstract class SelectorItem : ContentControl, ISelectable
 
     private void UpdateVisualState()
     {
-        PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, _isPressed);
+        PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, _isPressed);
     }
 
     private bool _isPressed;

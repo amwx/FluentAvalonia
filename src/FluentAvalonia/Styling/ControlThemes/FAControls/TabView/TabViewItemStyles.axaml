@@ -5,11 +5,17 @@
                     xmlns:core="using:FluentAvalonia.Core">
 
     <Design.PreviewWith>
-        <Border Padding="20" Width="300" Height="100">
-            <StackPanel Spacing="20" HorizontalAlignment="Left">
-                <ui:FATabViewItem Header="Hello" IconSource="Save"
-                                core:VisualStateHelper.ForcedClassesProperty=""/>
-            </StackPanel>
+        <Border Width="800" Height="500">
+            <Panel >
+                <ui:FATabView TabStripLocation="Bottom">
+                    <ui:FATabView.TabItems>
+                        <ui:FATabViewItem Header="Item1">
+                            <Border Background="Transparent" />
+                        </ui:FATabViewItem>
+                        <ui:TabViewItem Header="Item1" />
+                    </ui:FATabView.TabItems>
+                </ui:FATabView>
+            </Panel>
         </Border>
     </Design.PreviewWith>
 
@@ -56,7 +62,7 @@
 
     <!-- ControlTemplate used when tabs are vertical (Left/Right location)-->
     <ControlTemplate x:Key="VerticalTabViewTabItemTemplate"
-                     TargetType="ui:TabViewItem">
+                     TargetType="ui:FATabViewItem">
         <Border Name="LayoutRootBorder"
                 Padding="{TemplateBinding Padding}">
             <Panel Name="LayoutRoot">
@@ -146,7 +152,7 @@
     
     
    
-    <ControlTheme x:Key="{x:Type ui:TabViewItem}" TargetType="ui:TabViewItem">
+    <ControlTheme x:Key="{x:Type ui:FATabViewItem}" TargetType="ui:FATabViewItem">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackground}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />

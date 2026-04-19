@@ -4,7 +4,7 @@
 /// Defines constants that describe the behavior of the close button contained with
 /// each TabViewItem
 /// </summary>
-public enum TabViewCloseButtonOverlayMode
+public enum FATabViewCloseButtonOverlayMode
 {
     /// <summary>
     /// Behavior is defined by the framework. Default: this always maps to Always

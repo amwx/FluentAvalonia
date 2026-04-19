@@ -18,23 +18,23 @@ using FluentAvalonia.UI.Data;
 namespace FluentAvalonia.UI.Controls.Primitives;
 
 /// <summary>
-/// Represents the ListView used in the TabStrip of a <see cref="TabView"/>
+/// Represents the ListView used in the TabStrip of a <see cref="FATabView"/>
 /// </summary>
 /// <remarks>
 /// This control should not be used outside of a TabView
 /// </remarks>
 [PseudoClasses(s_pcReorder)]
 [TemplatePart(s_tpScrollViewer, typeof(ScrollViewer))]
-public sealed class TabViewListView : ListBox
+public sealed class FATabViewListView : ListBox
 {
-    public TabViewListView()
+    public FATabViewListView()
     {
         ItemsView.CollectionChanged += OnItemsChanged;
 
 
         Tapped += (s, e) =>
         {
-            if (e.Source is Visual v && v.FindAncestorOfType<TabViewItem>(true) is TabViewItem tvi)
+            if (e.Source is Visual v && v.FindAncestorOfType<FATabViewItem>(true) is FATabViewItem tvi)
             {
                 var index = IndexFromContainer(tvi);
                 UpdateSelection(index, true);
@@ -53,13 +53,13 @@ public sealed class TabViewListView : ListBox
     /// Defines the <see cref="CanReorderItems"/> property
     /// </summary>
     public static readonly StyledProperty<bool> CanReorderItemsProperty =
-        AvaloniaProperty.Register<TabViewListView, bool>(nameof(CanReorderItems));
+        AvaloniaProperty.Register<FATabViewListView, bool>(nameof(CanReorderItems));
 
     /// <summary>
     /// Defines the <see cref="CanDragItems"/> property
     /// </summary>
     public static readonly StyledProperty<bool> CanDragItemsProperty =
-        AvaloniaProperty.Register<TabViewListView, bool>(nameof(CanDragItems));
+        AvaloniaProperty.Register<FATabViewListView, bool>(nameof(CanDragItems));
 
     /// <summary>
     /// Gets or sets whether this ListView can reorder items
@@ -94,7 +94,7 @@ public sealed class TabViewListView : ListBox
     /// <summary>
     /// Occurs when a drag operation that involves one of the items in the view is ended.
     /// </summary>
-    public event TypedEventHandler<TabViewListView, DragItemsCompletedEventArgs> DragItemsCompleted;
+    public event TypedEventHandler<FATabViewListView, DragItemsCompletedEventArgs> DragItemsCompleted;
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -109,7 +109,7 @@ public sealed class TabViewListView : ListBox
         // TabViewItems - ABSOLUTELY NOTHING FROM TABVIEWLISTVIEW, arghhhhh...That's annoying
         // So this seems to work - if we grab a drag enter handler on the TabView itself and do a bounds
         // check on this, we know if the pointer left the tab strip or not. 
-        _parent = this.FindAncestorOfType<TabView>();
+        _parent = this.FindAncestorOfType<FATabView>();
         _parent.AddHandler(DragDrop.DragLeaveEvent, OnParentDragEnter);
     }
 
@@ -125,8 +125,8 @@ public sealed class TabViewListView : ListBox
 
     protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
     {
-        bool isItem = item is TabViewItem;
-        recycleKey = isItem ? null : nameof(TabViewItem);
+        bool isItem = item is FATabViewItem;
+        recycleKey = isItem ? null : nameof(FATabViewItem);
         return !isItem;
     }
 
@@ -134,13 +134,13 @@ public sealed class TabViewListView : ListBox
     {
         var cont = this.FindDataTemplate(item, ItemTemplate)?.Build(item);
         
-        if (cont is TabViewItem tvi)
+        if (cont is FATabViewItem tvi)
         {
             tvi.IsContainerFromTemplate = true;
             return tvi;
         }
 
-        return new TabViewItem();
+        return new FATabViewItem();
     }
 
     protected override void ContainerForItemPreparedOverride(Control container, object item, int index)
@@ -148,7 +148,7 @@ public sealed class TabViewListView : ListBox
         // NOTE: BE CAREFUL HERE! Avalonia has two separate preparation events
         // PrepareContainerForItemOverride - does not have the container connected yet
         // This one does - I've raised an issue b/c this is dumb
-        var tvi = container as TabViewItem;
+        var tvi = container as FATabViewItem;
 
         // WinUI: Due to virtualization, a TabViewItem might be recycled to display a different tab data item.
         //        In that case, there is no need to set the TabWidthMode of the TabViewItem or its parent TabView
@@ -156,10 +156,10 @@ public sealed class TabViewListView : ListBox
         //
         //        We know we are currently looking at a TabViewItem being recycled if its parent TabView has
         //        already been set.
-        var tabLocation = TabViewTabStripLocation.Top; // Default to top
+        var tabLocation = FATabViewTabStripLocation.Top; // Default to top
         if (tvi.ParentTabView == null)
         {
-            var parentTV = container.FindAncestorOfType<TabView>();
+            var parentTV = container.FindAncestorOfType<FATabView>();
             if (parentTV != null)
             {
                 tvi.OnTabViewWidthModeChanged(parentTV.TabWidthMode);
@@ -227,9 +227,9 @@ public sealed class TabViewListView : ListBox
                 }
             }
 
-            ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcNoBorder, state == 0);
-            ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderLeft, state == 1);
-            ((IPseudoClasses)tvi.Classes).Set(SharedPseudoclasses.s_pcBorderRight, state == 2);
+            ((IPseudoClasses)tvi.Classes).Set(FASharedPseudoclasses.s_pcNoBorder, state == 0);
+            ((IPseudoClasses)tvi.Classes).Set(FASharedPseudoclasses.s_pcBorderLeft, state == 1);
+            ((IPseudoClasses)tvi.Classes).Set(FASharedPseudoclasses.s_pcBorderRight, state == 2);
         }
     }
 
@@ -244,7 +244,7 @@ public sealed class TabViewListView : ListBox
             if (currentPoint.Properties.IsLeftButtonPressed)
             {
                 _initialPoint = currentPoint.Position;
-                _dragItem = (args.Source as Visual).FindAncestorOfType<TabViewItem>(true);
+                _dragItem = (args.Source as Visual).FindAncestorOfType<FATabViewItem>(true);
                 _dragIndex = IndexFromContainer(_dragItem);
                 _isDragItemFocused = _dragItem.IsFocused;
                 _isDragItemSelected = _dragItem.IsSelected;
@@ -631,7 +631,7 @@ public sealed class TabViewListView : ListBox
             }
 
             // Disable if we're right up on the edge
-            if (MathUtilities.AreClose(bound, offset.X, 0.05))
+            if (FAMathHelpers.IsClose(bound, offset.X, 0.05))
             {
                 hVelocity = 0;
             }
@@ -651,7 +651,7 @@ public sealed class TabViewListView : ListBox
             }
 
             // Disable if we're right up on the edge
-            if (MathUtilities.AreClose(bound, offset.Y, 0.05))
+            if (FAMathHelpers.IsClose(bound, offset.Y, 0.05))
             {
                 vVelocity = 0;
             }
@@ -738,7 +738,7 @@ public sealed class TabViewListView : ListBox
     }
 
     private static bool IsStationary(Vector v) =>
-        MathUtilities.IsZero(v.X) && MathUtilities.IsZero(v.Y);
+        FAMathHelpers.IsZero(v.X) && FAMathHelpers.IsZero(v.Y);
 
     internal Orientation? GetLogicalOrientation()
     {
@@ -751,7 +751,7 @@ public sealed class TabViewListView : ListBox
         return null;
     }
 
-    internal void HandleTabStripLocationChanged(TabViewTabStripLocation newLocation, string oldClass, string newClass)
+    internal void HandleTabStripLocationChanged(FATabViewTabStripLocation newLocation, string oldClass, string newClass)
     {
         if (oldClass != null)
             PseudoClasses.Set(oldClass, false);
@@ -771,7 +771,7 @@ public sealed class TabViewListView : ListBox
         {
             foreach (var item in panel.Children)
             {
-                if (item is TabViewItem tvi)
+                if (item is FATabViewItem tvi)
                 {
                     tvi.HandleTabStripLocationChanged(newLocation);
                 }
@@ -783,12 +783,12 @@ public sealed class TabViewListView : ListBox
             if (panel is VirtualizingStackPanel vsp)
             {
                 if (vsp.Orientation == Orientation.Vertical &&
-                    (newLocation == TabViewTabStripLocation.Top || newLocation == TabViewTabStripLocation.Bottom))
+                    (newLocation == FATabViewTabStripLocation.Top || newLocation == FATabViewTabStripLocation.Bottom))
                 {
                     vsp.Orientation = Orientation.Horizontal;
                 }
                 else if (vsp.Orientation == Orientation.Horizontal &&
-                    (newLocation == TabViewTabStripLocation.Left || newLocation == TabViewTabStripLocation.Right))
+                    (newLocation == FATabViewTabStripLocation.Left || newLocation == FATabViewTabStripLocation.Right))
                 {
                     vsp.Orientation = Orientation.Vertical;
                 }
@@ -796,12 +796,12 @@ public sealed class TabViewListView : ListBox
             else if (panel is StackPanel sp)
             {
                 if (sp.Orientation == Orientation.Vertical &&
-                    (newLocation == TabViewTabStripLocation.Top || newLocation == TabViewTabStripLocation.Bottom))
+                    (newLocation == FATabViewTabStripLocation.Top || newLocation == FATabViewTabStripLocation.Bottom))
                 {
                     sp.Orientation = Orientation.Horizontal;
                 }
                 else if (sp.Orientation == Orientation.Horizontal &&
-                    (newLocation == TabViewTabStripLocation.Left || newLocation == TabViewTabStripLocation.Right))
+                    (newLocation == FATabViewTabStripLocation.Left || newLocation == FATabViewTabStripLocation.Right))
                 {
                     sp.Orientation = Orientation.Vertical;
                 }
@@ -822,16 +822,17 @@ public sealed class TabViewListView : ListBox
 
     private void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        var tv = this.FindAncestorOfType<TabView>();
+        var tv = this.FindAncestorOfType<FATabView>();
         tv?.OnItemsChanged(e);
     }
 
     private void UpdateDragInfo()
     {
-        FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
+        var scaling = TopLevel.GetTopLevel(this)?.RenderScaling ?? 1;
+        FAUISettings.GetSystemDragSize(scaling, out _cxDrag, out _cyDrag);
     }
 
-    private TabViewItem _dragItem;
+    private FATabViewItem _dragItem;
     private int _dragIndex = -1;
     private bool _isDragItemFocused;
     private bool _isDragItemSelected;

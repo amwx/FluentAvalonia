@@ -6,9 +6,11 @@
 
     <Design.PreviewWith>
         <Border Width="800" Height="500">
-            <ui:FATabView>
+            <ui:FATabView TabStripLocation="Top">
                 <ui:FATabView.TabItems>
-                    <ui:FATabViewItem Header="Item1" />
+                    <ui:FATabViewItem Header="Item1">
+                        <Border Background="Transparent" />
+                    </ui:FATabViewItem>
                     <ui:FATabViewItem Header="Item1" />
                 </ui:FATabView.TabItems>
             </ui:FATabView>
@@ -96,7 +98,7 @@
     </ControlTheme>
 
 
-    <ControlTheme x:Key="{x:Type ui:TabView}" TargetType="ui:TabView">
+    <ControlTheme x:Key="{x:Type ui:FATabView}" TargetType="ui:FATabView">
         <!--Change from WinUI: It makes far more sense for this to be Stretch rather than Top-->
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Padding" Value="{DynamicResource TabViewHeaderPadding}" />
@@ -145,13 +147,13 @@
                                           Content="{TemplateBinding TabStripHeader}"
                                           ContentTemplate="{TemplateBinding TabStripHeaderTemplate}" />
 
-                        <uip:TabViewListView Name="TabListView" Grid.Column="1" HorizontalAlignment="Stretch" 
-                                             Padding="{TemplateBinding Padding}"
-                                             CanReorderItems="{TemplateBinding CanReorderTabs}"
-                                             CanDragItems="{TemplateBinding CanDragTabs}"
-                                             DragDrop.AllowDrop="{TemplateBinding AllowDropTabs}"
-                                             ItemsSource="{TemplateBinding TabItemsSource}"
-                                             ItemTemplate="{TemplateBinding TabItemTemplate}" />
+                        <uip:FATabViewListView Name="TabListView" Grid.Column="1" HorizontalAlignment="Stretch" 
+                                               Padding="{TemplateBinding Padding}"
+                                               CanReorderItems="{TemplateBinding CanReorderTabs}"
+                                               CanDragItems="{TemplateBinding CanDragTabs}"
+                                               DragDrop.AllowDrop="{TemplateBinding AllowDropTabs}"
+                                               ItemsSource="{TemplateBinding TabItemsSource}"
+                                               ItemTemplate="{TemplateBinding TabItemTemplate}" />
 
                         <Border IsVisible="{Binding IsAddTabButtonVisible, RelativeSource={RelativeSource TemplatedParent}}"
                                 Grid.Column="2"
@@ -210,7 +212,7 @@
         <!-- In all honesty, left/right really should use the SplitView -->
         <Style Selector="^:left,^:right">
             <Setter Property="Template">
-                <ControlTemplate TargetType="ui:TabView">
+                <ControlTemplate TargetType="ui:FATabView">
                     <SplitView IsPaneOpen="{TemplateBinding IsVerticalPaneOpen, Mode=TwoWay}"
                                OpenPaneLength="{TemplateBinding VerticalOpenPaneLength, Mode=TwoWay}"
                                CompactPaneLength="{TemplateBinding MinimumVerticalOpenPaneLength}"
@@ -237,13 +239,13 @@
                                                   Content="{TemplateBinding TabStripHeader}"
                                                   ContentTemplate="{TemplateBinding TabStripHeaderTemplate}" />
 
-                                <uip:TabViewListView Grid.Row="1" HorizontalAlignment="Stretch"
-                                                     Name="TabListView" Padding="{TemplateBinding Padding}"
-                                                     CanReorderItems="{TemplateBinding CanReorderTabs}"
-                                                     CanDragItems="{TemplateBinding CanDragTabs}"
-                                                     DragDrop.AllowDrop="{TemplateBinding AllowDropTabs}"
-                                                     ItemsSource="{TemplateBinding TabItemsSource}"
-                                                     ItemTemplate="{TemplateBinding TabItemTemplate}" />
+                                <uip:FATabViewListView Grid.Row="1" HorizontalAlignment="Stretch"
+                                                       Name="TabListView" Padding="{TemplateBinding Padding}"
+                                                       CanReorderItems="{TemplateBinding CanReorderTabs}"
+                                                      CanDragItems="{TemplateBinding CanDragTabs}"
+                                                       DragDrop.AllowDrop="{TemplateBinding AllowDropTabs}"
+                                                       ItemsSource="{TemplateBinding TabItemsSource}"
+                                                       ItemTemplate="{TemplateBinding TabItemTemplate}" />
                                 
                                 <Border IsVisible="{Binding IsAddTabButtonVisible, RelativeSource={RelativeSource TemplatedParent}}"
                                         Grid.Row="2"

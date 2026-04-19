@@ -306,7 +306,7 @@ public partial class FAAppWindow : Window
 
         // Special case for TabViewListView during drag operations where blank space 
         // is inserted and causes HitTest to fail (since nothing focusable is there)
-        if (result is Visual v && v.TemplatedParent is TabViewListView)
+        if (result is Visual v && v.TemplatedParent is FATabViewListView)
             return false;
 
         if (result == _defaultTitleBar)
