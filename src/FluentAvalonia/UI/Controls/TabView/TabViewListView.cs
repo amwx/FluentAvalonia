@@ -1,9 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -11,16 +7,11 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Logging;
-using Avalonia.LogicalTree;
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Avalonia.Utilities;
 using Avalonia.VisualTree;
-using FluentAvalonia.Collections;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Data;
 
@@ -255,6 +246,8 @@ public sealed class TabViewListView : ListBox
                 _initialPoint = currentPoint.Position;
                 _dragItem = (args.Source as Visual).FindAncestorOfType<TabViewItem>(true);
                 _dragIndex = IndexFromContainer(_dragItem);
+                _isDragItemFocused = _dragItem.IsFocused;
+                _isDragItemSelected = _dragItem.IsSelected;
                 _initArgs = args;
                 UpdateDragInfo();
                 // args.Handled = true;
@@ -313,7 +306,6 @@ public sealed class TabViewListView : ListBox
         var package = new DataPackage();
         DragItemsStartingEventArgs dragArgs = null;
         object[] dragItems = null;
-        IDisposable opacity = null;
         bool canReorder = CanReorderItems;
         bool canDrag = CanDragItems;
 
@@ -360,7 +352,7 @@ public sealed class TabViewListView : ListBox
                 return;
             }
 
-            opacity = _dragItem.SetValue(OpacityProperty, 0, BindingPriority.Animation);
+            _dragItemOpacitySub = _dragItem.SetValue(OpacityProperty, 0, BindingPriority.Animation);
 
             // Cache the locations of all containers before we start for reorder hints
             _isInReorder = true;
@@ -371,9 +363,12 @@ public sealed class TabViewListView : ListBox
 
         var dropResult = await DragDrop.DoDragDropAsync(_initArgs, package, effects);
 
+        SetPendingAutoPanVelocity(default);
+        DestroyStartEdgeScrollTimer();
+
         if (_isInReorder)
         {
-            opacity?.Dispose();
+            _dragItemOpacitySub?.Dispose();
             _isInReorder = false;
         }
 
@@ -430,12 +425,18 @@ public sealed class TabViewListView : ListBox
         }
                 
         Process(_isInReorder, canReorder, e);
-                
-        if (_isInReorder || isInReorderFromExternalSource)
+
+        if (_scrollTimer == null)
         {
-            _liveReorderHelper ??= new LiveReorderHelper(this);
-            _liveReorderHelper.ProcessLiveReorder(e, _dragIndex);
+            if (_isInReorder || isInReorderFromExternalSource)
+            {
+                _liveReorderHelper ??= new LiveReorderHelper(this);
+                _liveReorderHelper.ProcessLiveReorder(e, _dragIndex);
+            }
         }
+
+        ComputeEdgeScrollVelocity(e.GetPosition(this), out var pVelocity);
+        SetPendingAutoPanVelocity(pVelocity);
 
         static void Process(bool isInReorder, bool canReorder, DragEventArgs args)
         {
@@ -460,40 +461,49 @@ public sealed class TabViewListView : ListBox
             var pt = e.GetPosition(this);
             if (!bnds.Contains(pt))
             {
+                SetPendingAutoPanVelocity(default);
+                DestroyStartEdgeScrollTimer();
                 _isDragWithinTabStrip = false;
                 _isDraggingOverSelf = false;
-                _liveReorderIndices = default;
                 _liveReorderHelper?.ResetAllItemsForLiveReorder();
                 DragLeave?.Invoke(this, e);
             }
         }        
     }
 
-        // This will get fixed when the TabView PR is merged
-        //var dropResult =
-        //    await DragDrop.DoDragDropAsync(args, disArgs.Data, effects);
+    private void OnListViewDrop(object sender, DragEventArgs e)
+    {
+        if (e.Handled)
+            return;
 
-        //_isInDrag = false;
-        //if (hasReorder)
-        //{
-        //    EndReorder();
-        //}
-        //else
-        //{
-        //    (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
+        if (DropCausesReorder())
+        {
+            var pt = e.GetPosition(this);
+            OnReorderDrop(pt);
 
-        //    if (ToolTip.GetIsOpen(_dragItem))
-        //    {
-        //        ToolTip.SetIsOpen(_dragItem, false);
-        //    }
-        //    ToolTip.SetTip(_dragItem, _dragItemToolTip);
-        //}
+            e.DragEffects = DragDropEffects.Move;
+            e.Handled = true;
+        }
+        else
+        {
+            _liveReorderHelper?.ResetAllItemsForLiveReorder();
+        }
 
-        //DragItemsCompleted?.Invoke(this, new DragItemsCompletedEventArgs(dropResult, disArgs.Items));
+        Drop?.Invoke(this, e);
+    }
 
-        //_initialPoint = null;
-        //_dragItem = null;
-        //_dragIndex = -1;
+    private void CancelDrag()
+    {
+        _initArgs = null;
+        _initialPoint = null;
+        _isInDrag = _isInReorder = false;
+        _dragIndex = -1;
+        _dragItem = null;
+        _isDragItemSelected = _isDragItemFocused = false;
+        _isDraggingOverSelf = false;
+        _lastDragOverPoint = null;
+        _isDragWithinTabStrip = false;
+        _liveReorderHelper?.ResetAllItemsForLiveReorder();
     }
 
     private bool DropCausesReorder()
@@ -510,10 +520,9 @@ public sealed class TabViewListView : ListBox
     {
         // Container & original index - TabView does not support multi-item drag
         // so we don't need anything else here
-        var dragItem = _dragItem;
         var dragIndex = _dragIndex;
-        bool isDragItemFocused = dragItem.IsFocused;
-        bool isDragItemSelected = dragItem.IsSelected;
+        bool isDragItemFocused = _isDragItemFocused;
+        bool isDragItemSelected = _isDragItemSelected;
 
         var insertIndex = _liveReorderHelper.GetInsertionIndexForLiveReorder();
         _liveReorderHelper.ResetAllItemsForLiveReorder();
@@ -525,9 +534,9 @@ public sealed class TabViewListView : ListBox
         {
             insertIndex = _liveReorderHelper.GetClosestElement(dropPoint, true);
         }
-        
+
         // dragItem is the container, we need the actual data item here
-        var data = ItemFromContainer(dragItem);
+        var data = ItemsView.GetAt(_dragIndex);// ItemFromContainer(dragItem);
 
         if (dragIndex < insertIndex)
         {
@@ -582,429 +591,154 @@ public sealed class TabViewListView : ListBox
         }
     }
 
-    //private void CacheContainerBounds()
-    //{
-    //    Debug.WriteLine("CACHING CONTAINER BOUNDS");
-    //    // Because reorder will arrange the containers in new places
-    //    // the Bounds on the container may not actually reflect where
-    //    // the item actually is. In WinUI, ModernCollectionBasePanel's 
-    //    // ContainerManager caches arrange rects and are used for estimation
-    //    // APIs. Here we are mimicing that
-    //    // This must be called at the start of drag/drop, when the auto scroll
-    //    // of the scrollviewer stops, or when we first drag onto the TabView
-    //    // if that TabView didn't start the dragdrop operation
-
-    //    var panel = ItemsPanelRoot;
-    //    if (panel is VirtualizingStackPanel vsp)
-    //    {
-    //        var firstRealized = vsp.FirstRealizedIndex;
-    //        var lastRealized = vsp.LastRealizedIndex;
-    //        _cachedContainerBounds ??= new List<Rect>((lastRealized - firstRealized) + 1);
-
-    //        for (int i = firstRealized; i <= lastRealized; i++)
-    //        {
-    //            var cont = ContainerFromIndex(i);
-    //            _cachedContainerBounds.Add(cont.Bounds);
-    //        }
-    //    }
-    //    else if (panel is StackPanel sp)
-    //    {
-    //        _cachedContainerBounds ??= new List<Rect>(ItemCount);
-    //        // Stack Panels don't virtualize and arrange in order so this is safe
-    //        for (int i = 0; i < ItemCount; i++)
-    //        {
-    //            _cachedContainerBounds.Add(panel.Children[i].Bounds);
-    //        }
-    //    }
-    //}
-
-    //private void ClearContainerBoundsCache(bool clearCompletely = false)
-    //{
-    //    // Clear container bounds
-    //    _cachedContainerBounds?.Clear();
-
-    //    // Don't keep this memory when not in use, so when drag drop operation
-    //    // ceases completely, set it to null
-    //    if (clearCompletely)
-    //        _cachedContainerBounds = null;
-    //}
-
-    //private void ProcessLiveReorder(DragEventArgs args)
-    //{
-    //    _liveReorderHelper ??= new LiveReorderHelper(this);
-
-    //    var orientation = GetLogicalOrientation();
-    //    if (orientation == null)
-    //        return; // We're in a panel we don't know how to deal with, exit out
-        
-    //    var helper = _liveReorderHelper;
-
-    //    if (helper.ShouldCacheContainerBounds())
-    //        helper.CacheContainerBounds();
-
-
-
-
-    //    // OLD --------------------------------------------------------
-    //    var orientation = GetLogicalOrientation();
-    //    if (orientation == null)
-    //        return; // We're in a panel we don't know how to deal with, exit out
-
-    //    // If we don't have a cache of the current realized container bounds,
-    //    // create it now before we start doing anything. This happens on first
-    //    // startup, but can also be reset through the drag operation (autoscroll,
-    //    // drag outside, etc). The cache is cleared on ResetAllItemsForLiveReorder()
-    //    if (_cachedContainerBounds == null || _cachedContainerBounds.Count == 0)
-    //    {
-    //        CacheContainerBounds();
-    //    }
-        
-    //    int draggedIndex = _dragIndex;
-    //    int insertionIndex = -1;
-    //    int dragOverIndex = GetClosestElement(args.GetPosition(this));// IndexFromContainer(currentItem); // The raw item index under the pointer
-    //    var previousDragOverIndex = _liveReorderIndices.draggedOverIndex;
-    //    int itemsCount = ItemCount;
-
-    //    if (draggedIndex == -1)
-    //        draggedIndex = itemsCount;
-
-    //    if (previousDragOverIndex == -1)
-    //    {
-    //        previousDragOverIndex = draggedIndex;
-    //    }
-
-    //    // The estimated insertion index in the panel
-    //    insertionIndex = GetClosestElement(args.GetPosition(this), true /*requestingInsertionIndex*/);
-
-    //    if (draggedIndex == itemsCount && insertionIndex == itemsCount - 1)
-    //    {
-    //        // If we didn't start in this TabView, see if the index is actually the end or -1
-    //        var spLastElement = ContainerFromIndex(insertionIndex);
-    //        if (spLastElement is TabViewItem tvi)
-    //        {
-    //            if (IsInBottomHalf(args.GetPosition(spLastElement), new Rect(spLastElement.Bounds.Size), orientation.Value))
-    //            {
-    //                insertionIndex = itemsCount;
-    //            }
-    //        }
-    //    }
-
-    //    //var old = dragOverIndex; // Keep this here for debug purposes, if needed
-    //    if (insertionIndex == itemsCount)
-    //    {
-    //        dragOverIndex = itemsCount;
-    //    }
-    //    else
-    //    {
-    //        // This adjusts the dragover index based on the direction of the drag
-    //        dragOverIndex = GetDragOverIndex(dragOverIndex, insertionIndex, previousDragOverIndex);
-    //    }
-
-    //    // Debug.WriteLine($"\tLive Reorder DragOverIndex: {dragOverIndex} || DragOverBeforeAdj: {old} || InsertionIndex {insertionIndex} || PrevDragOverIndex {previousDragOverIndex}");
-
-    //    _liveReorderIndices = new LiveReorderIndices(draggedIndex, dragOverIndex, itemsCount);
-
-    //    if (previousDragOverIndex == draggedIndex || previousDragOverIndex != dragOverIndex)
-    //    {
-    //        StartLiveReorderTimer();
-    //    }
-
-    //    static bool IsInBottomHalf(Point pt, Rect rc, Orientation orientation)
-    //    {
-    //        if (orientation == Orientation.Horizontal)
-    //        {
-    //            return (pt.X - rc.Left) >= rc.Width * 0.5;
-    //        }
-    //        else
-    //        {
-    //            return (pt.Y - rc.Top) >= rc.Height * 0.5;
-    //        }
-    //    }
-
-    //    static int GetDragOverIndex(int closestElementIndex, int insertionIndex, int previousDragOverIndex)
-    //    {
-    //        int dragOverIndex = closestElementIndex;
-
-    //        if (insertionIndex == closestElementIndex)
-    //        {
-    //            if (previousDragOverIndex < insertionIndex)
-    //            {
-    //                --dragOverIndex;
-    //            }
-    //        }
-    //        else
-    //        {
-    //            if (previousDragOverIndex >= insertionIndex)
-    //            {
-    //                ++dragOverIndex;
-    //            }
-    //        }
-
-    //        return dragOverIndex;
-    //    }
-    //}
-
-    //private int GetClosestElement(Point dragPoint, bool requestingInsertionIndex = false)
-    //{
-    //    // This estimates the container index given the current pointer position
-    //    var panel = ItemsPanelRoot;
-    //    if (panel is VirtualizingStackPanel vsp)
-    //    {
-    //        var firstRealized = vsp.FirstRealizedIndex;
-    //        var lastRealized = vsp.LastRealizedIndex;
-    //        var orientation = vsp.Orientation;
-    //        var movedItems = _movedItems.AsSpan();
-    //        int closestIndex = -1;
-    //        double closestDist = double.PositiveInfinity;
-    //        Rect closestItemRect = default;
-
-    //        // Loop over the currently realized items to find the closest
-    //        for (int i = firstRealized; i <= lastRealized; i++)
-    //        {
-    //            // If the item is currently in our MovedItems list, it may not be 
-    //            // where it usually is, so we can't test the actual Bounds or we'll
-    //            // estimate the wrong index, but we have the original bounds saved
-    //            Rect rc = _cachedContainerBounds[i - firstRealized];
-    //            double dist;
-
-    //            if (orientation == Orientation.Horizontal)
-    //            {
-    //                double cx = double.Clamp(dragPoint.X, rc.X, rc.Right);
-    //                dist = double.Abs(dragPoint.X - cx);
-    //            }
-    //            else
-    //            {
-    //                double cy = double.Clamp(dragPoint.Y, rc.Y, rc.Bottom);
-    //                dist = double.Abs(dragPoint.Y - cy);
-    //            }
-
-    //            if (dist < closestDist)
-    //            {
-    //                closestDist = dist;
-    //                closestIndex = i;
-    //                closestItemRect = rc;
-    //            }
-    //        }
-
-    //        if (requestingInsertionIndex)
-    //        {
-    //            if (orientation == Orientation.Horizontal)
-    //            {
-    //                if (dragPoint.X - closestItemRect.X >= closestItemRect.Width * 0.5)
-    //                {
-    //                    closestIndex++;
-    //                }
-    //            }
-    //            else if (orientation == Orientation.Vertical)
-    //            {
-    //                if (dragPoint.Y - closestItemRect.Y >= closestItemRect.Height * 0.5)
-    //                {
-    //                    closestIndex++;
-    //                }
-    //            }
-    //        }
-
-    //        return closestIndex;
-    //    }
-    //    else if (panel is StackPanel sp)
-    //    {
-    //        //var children = sp.Children;
-    //        //var orientation = sp.Orientation;
-    //        //var movedItems = _movedItems.AsSpan();
-
-    //        //for (int i = 0; i < children.Count; i++)
-    //        //{
-    //        //    // If the item is currently in our MovedItems list, it may not be 
-    //        //    // where it usually is, so we can't test the actual Bounds or we'll
-    //        //    // estimate the wrong index, but we have the original bounds saved
-    //        //    if (IsInMovedItems(movedItems, i, out var rc))
-    //        //    {
-    //        //        if (rc.Contains(dragPoint))
-    //        //        {
-    //        //            return i;
-    //        //        }
-    //        //    }
-    //        //    else
-    //        //    {
-    //        //        // The item is not in moved items, so it is safe to use the Bounds directly
-    //        //        if (children[i].Bounds.Contains(dragPoint))
-    //        //        {
-    //        //            return i;
-    //        //        }
-    //        //    }
-    //        //}
-    //    }
-
-    //    return -1;
-
-    //    //static bool IsInMovedItems(ReadOnlySpan<MovedItem> items, int sourceIndex, out Rect srcRect)
-    //    //{
-    //    //    foreach (var item in items)
-    //    //    {
-    //    //        if (item.sourceIndex == sourceIndex)
-    //    //        {
-    //    //            srcRect = item.sourceRect;
-    //    //            return true;
-    //    //        }
-    //    //    }
-
-    //    //    srcRect = default;
-    //    //    return false;
-    //    //}
-    //}
-
-    //private void StartLiveReorderTimer()
-    //{
-    //    StopLiveReorderTimer();
-
-    //    EnsureLiveReorderTimer();
-
-    //    _liveReorderTimer.Interval = TimeSpan.FromMilliseconds(200);
-    //    _liveReorderTimer.Start();
-    //}
-
-    //private void EnsureLiveReorderTimer()
-    //{
-    //    if (_liveReorderTimer == null)
-    //    {
-    //        _liveReorderTimer = new DispatcherTimer();
-    //        _liveReorderTimer.Tick += LiveReorderTimerTickHandler;
-    //    }
-    //}
-
-    //private void LiveReorderTimerTickHandler(object sender, EventArgs e)
-    //{
-    //    StopLiveReorderTimer();
-
-    //    Debug.Assert(_liveReorderIndices.draggedItemIndex != -1);
-
-    //    var orientation = GetLogicalOrientation().Value;
-
-    //    using var newItems = new PooledList<MovedItem>();
-    //    using var newItemsToMove = new PooledList<MovedItem>();
-    //    using var oldItemsToMoveBack = new PooledList<MovedItem>();
-
-    //    GetNewMovedItemsForLiveReorder(newItems);
-
-    //    _movedItems.Update(orientation == Orientation.Vertical, newItems, newItemsToMove, oldItemsToMoveBack);
-
-    //    MoveItemsForLiveReorder(false /*areNewItems*/, oldItemsToMoveBack);
-
-    //    MoveItemsForLiveReorder(true, newItemsToMove);
-
-    //    foreach (var item in _movedItems.AsSpan())
-    //    {
-    //        Debug.WriteLine($"\t MovedItems: {item.sourceIndex} -> {item.destinationIndex} || {item.sourceRect} -> {item.destinationRect}");
-    //    }
-    //}
-
-    //private void GetNewMovedItemsForLiveReorder(IList<MovedItem> newItems)
-    //{
-    //    int startIndex = _liveReorderIndices.draggedItemIndex;
-    //    int endIndex = _liveReorderIndices.draggedOverIndex;
-    //    int increment = (startIndex < endIndex) ? 1 : -1;
-
-    //    // Debug.WriteLine($"GetNewMovedItems: {startIndex} -> {endIndex}");
-
-    //    newItems.Clear();
-    //    for (int i = startIndex; i != endIndex; i += increment)
-    //    {
-    //        int targetIndex = i - increment;
-
-    //        if (i == startIndex)
-    //        {
-    //            targetIndex = -1;
-    //        }
-
-    //        AddNewItemForLiveReorder(i, targetIndex, newItems, _liveReorderIndices.itemsCount, this);
-    //    }
-
-    //    AddNewItemForLiveReorder(endIndex, endIndex - increment, newItems, _liveReorderIndices.itemsCount, this);
-
-    //   // Debug.WriteLine($"TotalNewItems: {newItems.Count}");
-
-    //    static void AddNewItemForLiveReorder(int sourceIndex, int targetIndex, IList<MovedItem> newItems, 
-    //        int itemsCount, TabViewListView host)
-    //    {
-    //        Rect src = default;
-    //        Rect target = default;
-
-    //        if (sourceIndex != targetIndex)
-    //        {
-    //            src = GetLayoutSlot(host, sourceIndex);
-    //        }
-
-    //        if (targetIndex != -1 && targetIndex != itemsCount)
-    //        {
-    //            target = GetLayoutSlot(host, targetIndex);
-    //        }
-
-    //        newItems.Add(new MovedItem(sourceIndex, targetIndex, src, target));
-    //    }
-
-    //    static Rect GetLayoutSlot(TabViewListView host, int index)
-    //    {
-    //        // make sure we grab the original bounds. If virtualizing, translate
-    //        // to index in our container cache
-    //        var adjIndex = host.ItemsPanelRoot is VirtualizingStackPanel vsp ?
-    //            index - vsp.FirstRealizedIndex : index;
-
-    //        if (adjIndex >= host._cachedContainerBounds.Count)
-    //            return default;
-
-    //        return host._cachedContainerBounds[adjIndex];
-    //        //return host.ContainerFromIndex(index)?.Bounds ?? default;
-    //    }
-    //}
-
-    //private void MoveItemsForLiveReorder(bool areNewItems, PooledList<MovedItem> newItemsToMove)
-    //{
-    //    Rect rc;
-    //    foreach (var item in newItemsToMove.AsSpan())
-    //    {
-    //        var container = ContainerFromIndex(item.sourceIndex);
-
-    //        if (container is Control c)
-    //        {
-    //            if (areNewItems)
-    //            {
-    //                rc = item.destinationRect;
-    //            }
-    //            else
-    //            {
-    //                rc = item.sourceRect;
-    //            }
-
-    //            c.Arrange(rc);
-    //        }
-    //    }
-    //}
-
-    //private void ResetAllItemsForLiveReorder()
-    //{
-    //    StopLiveReorderTimer();
-
-    //    foreach (var item in _movedItems.AsSpan())
-    //    {
-    //        if (item.destinationIndex != -1)
-    //        {
-    //            var cont = ContainerFromIndex(item.sourceIndex);
-    //            if (cont is Control c)
-    //            {
-    //                c.Arrange(item.sourceRect);
-    //            }
-    //        }
-    //    }
-
-    //    _movedItems.Clear();
-    //    _liveReorderIndices = new LiveReorderIndices(-1,-1,-1);
-    //    ClearContainerBoundsCache();
-    //}
-
-    //private void StopLiveReorderTimer()
-    //{
-    //    _liveReorderTimer?.Stop();
-    //}
+    private void ComputeEdgeScrollVelocity(Point dragPoint, out Vector pVelocity)
+    {
+        bool isVerticalEnabled = false;
+        bool isHorizontalEnabled = false;
+        Size extent = default;
+        Size viewport = default;
+        Vector offset = default;
+
+        if (Scroller != null)
+        {
+            var vertical = Scroller.VerticalScrollBarVisibility;
+            var horizontal = Scroller.HorizontalScrollBarVisibility;
+            extent = Scroller.Extent;
+            viewport = Scroller.Viewport;
+            offset = Scroller.Offset;
+
+            isVerticalEnabled = vertical != ScrollBarVisibility.Disabled;
+            isHorizontalEnabled = horizontal == ScrollBarVisibility.Visible;
+        }
+
+        double hVelocity = 0;
+        double vVelocity = 0;
+        if (isHorizontalEnabled)
+        {
+            // WinUI uses a hardcoded 100px as the threshold for where autoscroll starts, but that
+            // doesn't seem great with small listviews. So I'm using 20% of the width
+            var threshold = Bounds.Size.Width * 0.2;
+            double bound = 0;
+
+            // Try Scrolling Left
+            hVelocity = -ComputeEdgeScrollVelocityFromEdgeDistance(dragPoint.X, threshold);
+            if (hVelocity == 0)
+            {
+                // Try Scrolling Right
+                var width = Bounds.Size.Width;
+                hVelocity = ComputeEdgeScrollVelocityFromEdgeDistance(width - dragPoint.X, threshold);
+                bound = extent.Width - viewport.Width;
+            }
+
+            // Disable if we're right up on the edge
+            if (MathUtilities.AreClose(bound, offset.X, 0.05))
+            {
+                hVelocity = 0;
+            }
+        }
+
+        if (isVerticalEnabled && hVelocity == 0)
+        {
+            var threshold = Bounds.Size.Height * 0.2;
+            double bound = 0;
+
+            vVelocity = -ComputeEdgeScrollVelocityFromEdgeDistance(dragPoint.Y, threshold);
+            if (vVelocity == 0)
+            {
+                double height = Bounds.Size.Height;
+                vVelocity = ComputeEdgeScrollVelocityFromEdgeDistance(height - dragPoint.Y, threshold);
+                bound = extent.Height - viewport.Height;
+            }
+
+            // Disable if we're right up on the edge
+            if (MathUtilities.AreClose(bound, offset.Y, 0.05))
+            {
+                vVelocity = 0;
+            }
+        }
+
+        pVelocity = new Vector(hVelocity, vVelocity);
+    }
+
+    private static double ComputeEdgeScrollVelocityFromEdgeDistance(in double distFromEdge,
+        double edgeDistanceThreshold = 100)
+    {
+        if (distFromEdge <= edgeDistanceThreshold)
+        {
+            return 200 - (distFromEdge / edgeDistanceThreshold) * (200 - 25);
+        }
+
+        return 0;
+    }
+
+    private void SetPendingAutoPanVelocity(Vector velocity)
+    {
+        if (!IsStationary(velocity))
+        {
+            if (!IsStationary(_currentAutoPanVelocity))
+            {
+                _currentAutoPanVelocity = velocity;
+                EnsureStartEdgeScrollTimer();
+            }
+            else
+            {
+                _currentAutoPanVelocity = velocity;
+            }
+
+            // While AutoScrolling, be sure the live reorder manager isn't trying to 
+            // do anything as container bounds are constantly changing and things
+            // won't line up like it expects
+            _liveReorderHelper?.ResetAllItemsForLiveReorder();
+            // Also reset the opacity on the drag item so it doesn't affect
+            // recycled containers
+            _dragItemOpacitySub?.Dispose();
+        }
+        else
+        {
+            DestroyStartEdgeScrollTimer();
+            _currentAutoPanVelocity = default;
+            ScrollWithVelocity(default);
+
+            _dragItemOpacitySub?.Dispose();
+            var cont = ContainerFromIndex(_dragIndex);
+            if (cont != null)
+            {
+                _dragItemOpacitySub = _dragItem.SetValue(OpacityProperty, 0, BindingPriority.Animation);
+            }
+        }
+    }
+
+    private void EnsureStartEdgeScrollTimer()
+    {
+        _scrollTimer ??= new DispatcherTimer(TimeSpan.FromMilliseconds(50),
+            DispatcherPriority.Normal, StartEdgeScrollTimerTick);
+
+        _scrollTimer.Start();
+    }
+
+    private void DestroyStartEdgeScrollTimer()
+    {
+        _scrollTimer?.Stop();
+        _scrollTimer = null;
+    }
+
+    private void StartEdgeScrollTimerTick(object sender, EventArgs args)
+    {
+        ScrollWithVelocity(_currentAutoPanVelocity);
+    }
+
+    private void ScrollWithVelocity(in Vector velocity)
+    {
+        var s = Scroller;
+        var off = s.Offset;
+
+        off += velocity;
+
+        s.Offset = off;
+    }
+
+    private static bool IsStationary(Vector v) =>
+        MathUtilities.IsZero(v.X) && MathUtilities.IsZero(v.Y);
 
     internal Orientation? GetLogicalOrientation()
     {
@@ -1114,10 +848,10 @@ public sealed class TabViewListView : ListBox
     private bool _isDraggingOverSelf;
 
     private LiveReorderHelper _liveReorderHelper;
-    private LiveReorderIndices _liveReorderIndices = new LiveReorderIndices(-1,-1,-1);
+    //private LiveReorderIndices _liveReorderIndices = new LiveReorderIndices(-1,-1,-1);
     private DispatcherTimer _liveReorderTimer;
-    private readonly MovedItems _movedItems = new MovedItems();
-    private List<Rect> _cachedContainerBounds;
+    //private readonly MovedItems _movedItems = new MovedItems();
+    //private List<Rect> _cachedContainerBounds;
     private Point? _lastDragOverPoint;
 
     // For 12.0/v3 - Avalonia has decided to make the decision that the lowest common denominator
@@ -1127,10 +861,6 @@ public sealed class TabViewListView : ListBox
     // And you guessed it, freakin' Wayland
     private PointerPressedEventArgs _initArgs;
     
-    private static Popup _dragReorderPopup;
-    private Point _popupOffset;
-    private object _dragItemToolTip;
-
     private DispatcherTimer _scrollTimer;
     private Vector _currentAutoPanVelocity;
 
@@ -1139,13 +869,4 @@ public sealed class TabViewListView : ListBox
     private const string s_pcReorder = ":reorder";
     private const string s_pcLeftShort = ":leftShort";
     private const string s_pcRightShort = ":rightShort";
-
-    private enum AutoScrollAction
-    {
-        NoAction,
-        ScrollStarted,
-        ScrollEnded,
-    }
-
-
 }
