@@ -3,19 +3,19 @@ using Avalonia.Media;
 
 namespace FluentAvalonia.UI.Controls;
 
-public class TabViewItemTemplateSettings : AvaloniaObject
+public class FATabViewItemTemplateSettings : AvaloniaObject
 {
     /// <summary>
     /// Defines the <see cref="IconElement"/> property
     /// </summary>
     public static readonly StyledProperty<FAIconElement> IconElementProperty =
-        AvaloniaProperty.Register<TabViewItemTemplateSettings, FAIconElement>(nameof(IconElement));
+        AvaloniaProperty.Register<FATabViewItemTemplateSettings, FAIconElement>(nameof(IconElement));
 
     /// <summary>
     /// Defines the <see cref="TabGeometry"/> property
     /// </summary>
     public static readonly StyledProperty<Geometry> TabGeometryProperty =
-        AvaloniaProperty.Register<TabViewItemTemplateSettings, Geometry>(nameof(TabGeometry));
+        AvaloniaProperty.Register<FATabViewItemTemplateSettings, Geometry>(nameof(TabGeometry));
 
     /// <summary>
     /// Gets the IconElement that relates to the IconSource of the current TabViewItem

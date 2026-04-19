@@ -1,9 +1,9 @@
 ﻿namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
-/// Defines constants for where a TabStrip should appear in a <see cref="TabView"/>
+/// Defines constants for where a TabStrip should appear in a <see cref="FATabView"/>
 /// </summary>
-public enum TabViewTabStripLocation
+public enum FATabViewTabStripLocation
 {
     /// <summary>
     /// The TabStrip should appear at the top of the TabView, above the content

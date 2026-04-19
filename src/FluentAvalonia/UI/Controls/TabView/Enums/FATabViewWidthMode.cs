@@ -3,7 +3,7 @@
 /// <summary>
 /// Defines constants that specify the width of the tab
 /// </summary>
-public enum TabViewWidthMode
+public enum FATabViewWidthMode
 {
     /// <summary>
     /// Each tab has the same width

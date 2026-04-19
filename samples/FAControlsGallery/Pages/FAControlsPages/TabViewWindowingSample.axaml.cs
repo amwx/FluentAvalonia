@@ -26,21 +26,21 @@ public partial class TabViewWindowingSample : FAAppWindow
         var tvws = new TabViewWindowingSample();
         // In order for Drag/Drop/Reordering to work, be sure to use an IList with
         // INotifyCollectionChanged, otherwise it may not work as expected
-        tvws.TabView.TabItems = new AvaloniaList<TabViewItem>
+        tvws.TabView.TabItemsSource = new AvaloniaList<FATabViewItem>
         {
-            new TabViewItem
+            new FATabViewItem
             {
                 Header = "TabItem 1",
                 IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
                 Content = new TabViewWindowSampleContent("This is TabPage 1")
             },
-            new TabViewItem
+            new FATabViewItem
             {
                 Header = "TabItem 2",
                 IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
                 Content = new TabViewWindowSampleContent("This is TabPage 2")
             },
-            new TabViewItem
+            new FATabViewItem
             {
                 Header = "TabItem 3",
                 IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
@@ -66,7 +66,7 @@ public partial class TabViewWindowingSample : FAAppWindow
         }
     }
 
-    private void TabView_TabItemsChanged(TabView sender, NotifyCollectionChangedEventArgs args)
+    private void TabView_TabItemsChanged(FATabView sender, NotifyCollectionChangedEventArgs args)
     {
         //// If TabItem count hits zero - close the window
         //// Note that this event ONLY fires based on a INCC change action and not when changing the
@@ -79,10 +79,10 @@ public partial class TabViewWindowingSample : FAAppWindow
         //}
     }
 
-    private void AddTabButtonClick(TabView sender, EventArgs args)
+    private void AddTabButtonClick(FATabView sender, EventArgs args)
     {
-        (sender.TabItems as IList).Add(
-            new TabViewItem
+        (sender.TabItemsSource as IList).Add(
+            new FATabViewItem
             {
                 Header = "New Item",
                 IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
@@ -90,12 +90,12 @@ public partial class TabViewWindowingSample : FAAppWindow
             });
     }
 
-    private void TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+    private void TabCloseRequested(FATabView sender, FATabViewTabCloseRequestedEventArgs args)
     {
         (sender.TabItems as IList).Remove(args.Tab);
     }
 
-    private void TabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
+    private void TabDragStarting(FATabView sender, FATabViewTabDragStartingEventArgs args)
     {
         //// Set the data payload to the drag args
         //args.Data.SetData(DataIdentifier, args.Tab);
@@ -163,7 +163,7 @@ public partial class TabViewWindowingSample : FAAppWindow
         //}
     }
 
-    private void TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
+    private void TabDroppedOutside(FATabView sender, FATabViewTabDroppedOutsideEventArgs args)
     {
         // In this case, the tab was dropped outside of any tabstrip, let's move it to
         // a new window

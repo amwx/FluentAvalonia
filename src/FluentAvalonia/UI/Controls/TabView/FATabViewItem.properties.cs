@@ -8,44 +8,44 @@ using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
-[PseudoClasses(SharedPseudoclasses.s_pcIcon, SharedPseudoclasses.s_pcCompact, s_pcCloseCollapsed)]
-[PseudoClasses(SharedPseudoclasses.s_pcBorderRight, SharedPseudoclasses.s_pcBorderLeft, SharedPseudoclasses.s_pcNoBorder)]
+[PseudoClasses(FASharedPseudoclasses.s_pcIcon, FASharedPseudoclasses.s_pcCompact, s_pcCloseCollapsed)]
+[PseudoClasses(FASharedPseudoclasses.s_pcBorderRight, FASharedPseudoclasses.s_pcBorderLeft, FASharedPseudoclasses.s_pcNoBorder)]
 [PseudoClasses(s_pcDragging)]
 [TemplatePart(s_tpTabSeparator, typeof(Visual))]
 [TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
 [TemplatePart(s_tpCloseButton, typeof(Button))]
 [TemplatePart(s_tpSelectedBackgroundPathName, typeof(Avalonia.Controls.Shapes.Path))]
-public partial class TabViewItem
+public partial class FATabViewItem
 {
     /// <summary>
     /// Defines the <see cref="Header"/> property
     /// </summary>
     public static readonly StyledProperty<object> HeaderProperty =
-        HeaderedContentControl.HeaderProperty.AddOwner<TabViewItem>();
+        HeaderedContentControl.HeaderProperty.AddOwner<FATabViewItem>();
 
     /// <summary>
     /// Defines the <see cref="HeaderTemplate"/> property
     /// </summary>
     public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty =
-        HeaderedContentControl.HeaderTemplateProperty.AddOwner<TabViewItem>();
+        HeaderedContentControl.HeaderTemplateProperty.AddOwner<FATabViewItem>();
 
     /// <summary>
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
-    public static readonly StyledProperty<IconSource> IconSourceProperty =
-        SettingsExpander.IconSourceProperty.AddOwner<TabViewItem>();
+    public static readonly StyledProperty<FAIconSource> IconSourceProperty =
+        FASettingsExpander.IconSourceProperty.AddOwner<FATabViewItem>();
 
     /// <summary>
     /// Defines the <see cref="IsClosable"/> property
     /// </summary>
     public static readonly StyledProperty<bool> IsClosableProperty =
-        AvaloniaProperty.Register<TabViewItem, bool>(nameof(IsClosable), defaultValue: true);
+        AvaloniaProperty.Register<FATabViewItem, bool>(nameof(IsClosable), defaultValue: true);
 
     /// <summary>
     /// Defines the <see cref="TabViewTemplateSettings"/> property
     /// </summary>
-    public static readonly StyledProperty<TabViewItemTemplateSettings> TabViewTemplateSettingsProperty =
-        AvaloniaProperty.Register<TabViewItem, TabViewItemTemplateSettings>(nameof(TabViewTemplateSettings));
+    public static readonly StyledProperty<FATabViewItemTemplateSettings> TabViewTemplateSettingsProperty =
+        AvaloniaProperty.Register<FATabViewItem, FATabViewItemTemplateSettings>(nameof(TabViewTemplateSettings));
 
     /// <summary>
     /// Gets or sets the content that appears inside the tabstrip to represent the tab
@@ -68,7 +68,7 @@ public partial class TabViewItem
     /// <summary>
     /// Gets or sets a value for the IconSource to be displayed within the tab
     /// </summary>
-    public IconSource IconSource
+    public FAIconSource IconSource
     {
         get => GetValue(IconSourceProperty);
         set => SetValue(IconSourceProperty, value);
@@ -87,7 +87,7 @@ public partial class TabViewItem
     /// Gets an object that provides calculated values that can be referenced as {TemplateBinding}
     /// markup extension sources when definign templates for a TabViewItem control
     /// </summary>
-    public TabViewItemTemplateSettings TabViewTemplateSettings
+    public FATabViewItemTemplateSettings TabViewTemplateSettings
     {
         get => GetValue(TabViewTemplateSettingsProperty);
         private set => SetValue(TabViewTemplateSettingsProperty, value);
@@ -97,7 +97,7 @@ public partial class TabViewItem
     /// Raised when the user attempts to close the TabViewItem via clicking the x-to-close
     /// button
     /// </summary>
-    public event TypedEventHandler<TabViewItem, TabViewTabCloseRequestedEventArgs> CloseRequested;
+    public event TypedEventHandler<FATabViewItem, FATabViewTabCloseRequestedEventArgs> CloseRequested;
 
     internal bool IsContainerFromTemplate { get; set; }
 
