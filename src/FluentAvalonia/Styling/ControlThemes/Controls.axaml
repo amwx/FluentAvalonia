@@ -59,6 +59,7 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PathIcon.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/HyperlinkButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/FocusAdornerStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PipsPagerStyles.axaml" />
 
                 
                 <!-- FluentAvalonia Controls -->
