@@ -256,6 +256,8 @@
         <Setter Property="BorderThickness" Value="{DynamicResource DatePickerBorderThemeThickness}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="MinWidth" Value="{DynamicResource DatePickerThemeMinWidth}" />
+        <Setter Property="MaxWidth" Value="{DynamicResource DatePickerThemeMaxWidth}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
@@ -267,8 +269,8 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 IsEnabled="{TemplateBinding IsEnabled}"
-                                MinWidth="{DynamicResource DatePickerThemeMinWidth}"
-                                MaxWidth="{DynamicResource DatePickerThemeMaxWidth}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MaxWidth="{TemplateBinding MaxWidth}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
