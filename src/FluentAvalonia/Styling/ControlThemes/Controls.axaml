@@ -66,6 +66,12 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/DrawerPageStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/NavigationPageStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/TabbedPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/TextSelectionHandleStyles.axaml" />
+                
+                
+                
+                
+                
                 
                 <!-- FluentAvalonia Controls -->
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
