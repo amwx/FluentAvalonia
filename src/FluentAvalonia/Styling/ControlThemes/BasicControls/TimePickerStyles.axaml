@@ -65,6 +65,8 @@
         <Setter Property="BorderThickness" Value="{DynamicResource TimePickerBorderThemeThickness}"/>
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="MinWidth" Value="{DynamicResource TimePickerThemeMinWidth}" />
+        <Setter Property="MaxWidth" Value="{DynamicResource TimePickerThemeMaxWidth}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
@@ -76,8 +78,8 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 IsEnabled="{TemplateBinding IsEnabled}"
-                                MinWidth="{DynamicResource TimePickerThemeMinWidth}"
-                                MaxWidth="{DynamicResource TimePickerThemeMaxWidth}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MaxWidth="{TemplateBinding MaxWidth}"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 VerticalAlignment="Top"
