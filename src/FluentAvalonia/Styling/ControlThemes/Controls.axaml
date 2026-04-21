@@ -60,7 +60,12 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/HyperlinkButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/FocusAdornerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PipsPagerStyles.axaml" />
-
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/GroupBoxStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/ContentPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/CarouselPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/DrawerPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/NavigationPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/TabbedPageStyles.axaml" />
                 
                 <!-- FluentAvalonia Controls -->
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
