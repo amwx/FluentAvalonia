@@ -17,55 +17,6 @@
             </TabbedPage>
         </Border>
     </Design.PreviewWith>
-
-    <ResourceDictionary.ThemeDictionaries>
-        <ResourceDictionary x:Key="Default">
-            <!-- Backgrounds -->
-            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselected" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelected" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundDisabled" ResourceKey="SubtleFillColorDisabledBrush" />
-            <StaticResource x:Key="TabbedPageTabItemSelectionIndicatorBackground" ResourceKey="AccentFillColorDefaultBrush" />
-            
-            <!-- Foregrounds (override via TabbedPageTabItemHeaderForegroundSelected / TabbedPageTabItemHeaderForegroundUnselected resources) -->
-            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundUnselected" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <x:Double x:Key="TabbedPageTabItemHeaderPipeThickness">2</x:Double>
-            <x:Double x:Key="TabbedPageTabItemHeaderVerticalPipeHeight">18</x:Double>
-
-            <CornerRadius x:Key="TabbedPageTabItemHeaderIndicatorCornerRadius">4</CornerRadius>
-            <Thickness x:Key="TabbedPageTabItemHeaderIndicatorMargin">2 0</Thickness>
-
-            <!-- Tab item sizing & shape -->
-            <x:Double x:Key="TabbedPageTabItemHeaderMinHeight">48</x:Double>
-            <StaticResource x:Key="TabbedPageTabItemHeaderCornerRadius" ResourceKey="ControlCornerRadius" />
-            <Thickness x:Key="TabbedPageTabItemHeaderPadding">8,4</Thickness>
-            <Thickness x:Key="TabbedPageTabItemHeaderMargin">0</Thickness>
-
-            <!-- Icon + text header layout -->
-            <x:Double x:Key="TabbedPageTabItemHeaderIconSize">20</x:Double>
-            <x:Double x:Key="TabbedPageTabItemHeaderFontSize">14</x:Double>
-            <x:Double x:Key="TabbedPageTabItemHeaderSpacing">4</x:Double>
-
-            <!-- Tab strip (bar) styling -->
-            <StaticResource x:Key="TabbedPageTabStripBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <CornerRadius x:Key="TabbedPageTabStripCornerRadius">0</CornerRadius>
-            <Thickness x:Key="TabbedPageTabStripBorderThickness">0</Thickness>
-            <StaticResource x:Key="TabbedPageTabStripBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-            <Thickness x:Key="TabbedPageTabStripMargin">0</Thickness>
-            <Thickness x:Key="TabbedPageTabStripPadding">0</Thickness>
-        </ResourceDictionary>
-        <ResourceDictionary x:Key="Dark">
-            
-        </ResourceDictionary>
-        <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
-            
-        </ResourceDictionary>
-    </ResourceDictionary.ThemeDictionaries>
     
 
     <!-- TabbedPage TabControl theme -->

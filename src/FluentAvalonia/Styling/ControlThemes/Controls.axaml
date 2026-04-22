@@ -22,7 +22,6 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowNotificationManagerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CarouselStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ContentControlStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/NativeMenuBarStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ButtonSpinnerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/RepeatButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/GridSplitterStyles.axaml" />
