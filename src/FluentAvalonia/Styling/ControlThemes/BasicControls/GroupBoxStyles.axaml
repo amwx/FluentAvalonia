@@ -7,37 +7,6 @@
             <TextBlock Text="Hello World" />
         </GroupBox>
     </Design.PreviewWith>
-
-    <!-- TODO v3: Move to big dictionary? -->
-    <ResourceDictionary.ThemeDictionaries>
-        <ResourceDictionary x:Key="Default">
-            <Thickness x:Key="GroupBoxPadding">4</Thickness>
-            <x:Double x:Key="GroupBoxHeaderFontSize">12</x:Double>
-            <Thickness x:Key="GroupBoxHeaderMargin">0,4,0,12</Thickness>
-            <Thickness x:Key="GroupBoxBorderThickness">1</Thickness>
-            <StaticResource x:Key="GroupBoxBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="GroupBoxBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="GroupBoxHeaderForeground" ResourceKey="TextFillColorSecondaryBrush" />
-        </ResourceDictionary>
-        <ResourceDictionary x:Key="Dark">
-            <Thickness x:Key="GroupBoxPadding">4</Thickness>
-            <x:Double x:Key="GroupBoxHeaderFontSize">12</x:Double>
-            <Thickness x:Key="GroupBoxHeaderMargin">0,4,0,12</Thickness>
-            <Thickness x:Key="GroupBoxBorderThickness">1</Thickness>
-            <StaticResource x:Key="GroupBoxBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="GroupBoxBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="GroupBoxHeaderForeground" ResourceKey="TextFillColorSecondaryBrush" />
-        </ResourceDictionary>
-        <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
-            <Thickness x:Key="GroupBoxPadding">4</Thickness>
-            <x:Double x:Key="GroupBoxHeaderFontSize">12</x:Double>
-            <Thickness x:Key="GroupBoxHeaderMargin">0,4,0,12</Thickness>
-            <Thickness x:Key="GroupBoxBorderThickness">1</Thickness>
-            <StaticResource x:Key="GroupBoxBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="GroupBoxBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="GroupBoxHeaderForeground" ResourceKey="TextFillColorSecondaryBrush" />
-        </ResourceDictionary>
-    </ResourceDictionary.ThemeDictionaries>
         
     <converters:BorderGapMaskConverter x:Key="BorderGapMaskConverter" />
 
