@@ -21,15 +21,11 @@ internal unsafe class Win32WindowManager
         
         _oldWndProc = GetWindowLongPtrW(Hwnd, GWLP_WNDPROC);
 
-#if NET5_0_OR_GREATER
         _appWindowRegistry.Add(Hwnd, this);
 
         // Apparently...nint and void* aren't blittable types to the mono-wasm compiler
         // so the function pointer here needs to use IntPtr
         _wndProc = (nint)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr>)&WndProcStatic;
-#else
-        _wndProc = Marshal.GetFunctionPointerForDelegate(WndProc);
-#endif
 
         SetWindowLongPtrW(Hwnd, GWLP_WNDPROC, _wndProc);
 
@@ -132,11 +128,9 @@ internal unsafe class Win32WindowManager
                 }
                 break;
 
-#if NET5_0_OR_GREATER
             case WM_DESTROY:
                 _appWindowRegistry.Remove(hWnd);
                 break;
-#endif
         }
 
         return CallWindowProcW(_oldWndProc, hWnd, msg, wParam, lParam);
@@ -430,7 +424,6 @@ internal unsafe class Win32WindowManager
         _isMaximized = (sty & WS_MAXIMIZE) == WS_MAXIMIZE;
     }
 
-#if NET5_0_OR_GREATER
     [UnmanagedCallersOnly]
     private static IntPtr WndProcStatic(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
@@ -444,7 +437,7 @@ internal unsafe class Win32WindowManager
 
     private static Dictionary<HWND, Win32WindowManager> _appWindowRegistry =
         new Dictionary<HWND, Win32WindowManager>();
-#endif
+
 
     private readonly FAAppWindow _window;
     private bool _isMaximized;
