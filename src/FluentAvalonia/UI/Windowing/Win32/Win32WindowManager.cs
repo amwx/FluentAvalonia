@@ -96,35 +96,26 @@ internal unsafe class Win32WindowManager
                 var pt = PointFromLParam(lParam);
                 LastWMSizeSize = new Size(pt.X, pt.Y);
 
-                if (_fakingMaximizeButton)
+                if (_fakingButton != CaptionButton.None)
                 {
-                    _wasFakeMaximizeDown = false;
-                    _window.SystemCaptionControl.ClearMaximizedState();
+                    _currentDownButton = CaptionButton.None;
+                    _window.SystemCaptionControl.ClearButtonState();
+                    _fakingButton = CaptionButton.None;
                 }
 
                 EnsureExtended();
                 return CallWindowProcW(_oldWndProc, hWnd, msg, wParam, lParam);
 
             case WM_NCLBUTTONDOWN:
-                if (_fakingMaximizeButton)
+                if (HandleNCLBUTTONDOWN(lParam))
                 {
-                    var point = _window.PointToClient(PointFromLParam(lParam));
-                    _window.SystemCaptionControl.FakeMaximizePressed(_window.SystemCaptionControl.HitTestMaxButton(point));
-                    _wasFakeMaximizeDown = true;
-
-                    // This is important. If we don't tell the System we've handled this, we'll get that
-                    // classic Win32 button showing when we mouse press, and that's not good
                     return 0;
                 }
                 break;
 
             case WM_NCLBUTTONUP:
-                if (_fakingMaximizeButton && _wasFakeMaximizeDown)
+                if (HandleNCLBUTTONUP(lParam))
                 {
-                    _window.SystemCaptionControl.FakeMaximizePressed(false);
-                    _wasFakeMaximizeDown = false;
-                    _window.SystemCaptionControl.FakeMaximizeClick();
-
                     return 0;
                 }
                 break;
@@ -277,21 +268,37 @@ internal unsafe class Win32WindowManager
         // manage the state and handle stuff through the WM_NCLBUTTON... events
         // This only applies on Windows 11, Windows 10 will work normally b/c no snap layout thing
 
-        if (_window.SystemCaptionControl?.HitTest(point, out var isMaximize) == true)
+        var captionHitTest = _window.SystemCaptionControl.HitTest(point);
+
+        if (captionHitTest != CaptionButton.None)
         {
-            if (true && isMaximize)//_isWindows11
+            if (_fakingButton != captionHitTest)
             {
-                _fakingMaximizeButton = true;
-                _window.SystemCaptionControl.FakeMaximizeHover(true);
+                _window.SystemCaptionControl.FakeButtonHover(_fakingButton, false);
+            }
+
+            _fakingButton = captionHitTest;
+            _window.SystemCaptionControl.FakeButtonHover(captionHitTest, true);
+
+            if (captionHitTest == CaptionButton.Maximize)
+            {
                 return HTMAXBUTTON;
+            }
+            else if (captionHitTest == CaptionButton.Minimize)
+            {
+                return HTMINBUTTON;
+            }
+            else if (captionHitTest == CaptionButton.Close)
+            {
+                return HTCLOSE;
             }
         }
         else
         {
-            if (_fakingMaximizeButton)
+            if (_fakingButton != CaptionButton.None)
             {
-                _fakingMaximizeButton = false;
-                _window.SystemCaptionControl?.ClearMaximizedState();
+                _window.SystemCaptionControl?.ClearButtonState(_fakingButton);
+                _fakingButton = CaptionButton.None;
             }
 
             if (isOnResizeBorder)
@@ -313,13 +320,35 @@ internal unsafe class Win32WindowManager
             }
         }
 
-        if (_fakingMaximizeButton)
+        return HTCLIENT;
+    }
+
+    private bool HandleNCLBUTTONDOWN(LPARAM lParam)
+    {
+        if (_fakingButton != CaptionButton.None)
         {
-            _fakingMaximizeButton = false;
-            _window.SystemCaptionControl?.ClearMaximizedState();
+            var point = _window.PointToClient(PointFromLParam(lParam));
+
+            _window.SystemCaptionControl.FakeButtonPressed(_fakingButton,
+                _window.SystemCaptionControl.HitTest(point) == _fakingButton);
+            _currentDownButton = _fakingButton;
+            return true;
         }
 
-        return HTCLIENT;
+        return false;
+    }
+
+    private bool HandleNCLBUTTONUP(LPARAM lParam)
+    {
+        if (_fakingButton == _currentDownButton)
+        {
+            _window.SystemCaptionControl.FakeButtonPressed(_fakingButton, false);
+            _currentDownButton = CaptionButton.None;
+            _window.SystemCaptionControl.FakeButtonClick(_fakingButton);
+            return true;
+        }
+
+        return false;
     }
 
     private unsafe void HandleRBUTTONUP(LPARAM lParam)
@@ -418,9 +447,9 @@ internal unsafe class Win32WindowManager
 #endif
 
     private readonly FAAppWindow _window;
-    private bool _fakingMaximizeButton;
-    private bool _wasFakeMaximizeDown;
     private bool _isMaximized;
+    private CaptionButton _fakingButton;
+    private CaptionButton _currentDownButton;
 
     private readonly nint _oldWndProc;
     private readonly nint _wndProc;
