@@ -162,9 +162,7 @@
                     <Popup Name="OverflowPopup"
                            WindowManagerAddShadowHint="False"
                            PlacementTarget="{TemplateBinding}"
-                           Placement="AnchorAndGravity"
-                           PlacementAnchor="BottomRight"
-                           PlacementGravity="BottomLeft"
+                           Placement="BottomEdgeAlignedLeft"
                            IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
                            IsLightDismissEnabled="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=!IsSticky}">
                         <ui:FACommandBarOverflowPresenter Name="SecondaryItemsControl" />

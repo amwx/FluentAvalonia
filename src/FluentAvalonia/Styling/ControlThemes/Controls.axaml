@@ -66,7 +66,7 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/NavigationPageStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/TabbedPageStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/TextSelectionHandleStyles.axaml" />
-                
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CommandBarStyles.axaml" />
                 
                 
                 
