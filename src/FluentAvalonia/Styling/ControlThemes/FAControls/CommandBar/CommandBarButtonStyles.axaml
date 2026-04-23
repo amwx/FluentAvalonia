@@ -11,7 +11,7 @@
                                          IconSource="Save" 
                                          HotKey="Ctrl+S" 
                                          IsCompact="True"
-                                         core:VisualStateHelper.ForcedClassesProperty=":labelRight">
+                                         core:FAVisualStateHelper.ForcedClassesProperty=":labelRight">
                         <ui:FACommandBarButton.Flyout>
                             <Flyout />
                         </ui:FACommandBarButton.Flyout>
