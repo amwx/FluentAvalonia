@@ -1969,10 +1969,15 @@
             <StaticResource x:Key="PipsPagerNavigationButtonForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
             <StaticResource x:Key="PipsPagerNavigationButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
             <StaticResource x:Key="PipsPagerNavigationButtonForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
-            
-            
-            
-            
+
+
+
+            <!-- Window Decorations -->
+            <StaticResource x:Key="CaptionButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPointerOver" Color="Black" Opacity="0.09" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPressed" Color="Black" Opacity="0.20" />
+
+            <SolidColorBrush x:Key="CaptionButtonForeground" Color="Black" />
             
             
             
@@ -3950,6 +3955,14 @@
             <StaticResource x:Key="PipsPagerNavigationButtonForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
             <StaticResource x:Key="PipsPagerNavigationButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
             <StaticResource x:Key="PipsPagerNavigationButtonForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
+
+
+            <!-- Window Decorations -->
+            <StaticResource x:Key="CaptionButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPointerOver" Color="White" Opacity="0.09" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPressed" Color="White" Opacity="0.20" />
+            
+            <SolidColorBrush x:Key="CaptionButtonForeground" Color="White" />
             
         </ResourceDictionary>
         
@@ -5926,6 +5939,13 @@
             <StaticResource x:Key="PipsPagerNavigationButtonForegroundDisabled" ResourceKey="SystemColorGrayTextColorBrush" />
 
 
+            <!-- Window Decorations -->
+            <StaticResource x:Key="CaptionButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPointerOver" Color="Black" Opacity="0.09" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPressed" Color="Black" Opacity="0.20" />
+
+            <SolidColorBrush x:Key="CaptionButtonForeground" Color="Black" />
+            
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
