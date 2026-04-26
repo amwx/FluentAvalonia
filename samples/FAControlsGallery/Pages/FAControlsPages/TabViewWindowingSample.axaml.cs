@@ -58,11 +58,11 @@ public partial class TabViewWindowingSample : FAAppWindow
         if (TitleBar != null)
         {
             TitleBar.ExtendsContentIntoTitleBar = true;
-            TitleBar.TitleBarHitTestType = FATitleBarHitTestType.Complex;
+            //TitleBar.TitleBarHitTestType = FATitleBarHitTestType.Complex;
 
-            var dragRegion = this.FindControl<Panel>("CustomDragRegion");
-            dragRegion.MinWidth = FlowDirection == Avalonia.Media.FlowDirection.LeftToRight ?
-                TitleBar.RightInset : TitleBar.LeftInset;
+            //var dragRegion = this.FindControl<Panel>("CustomDragRegion");
+            //dragRegion.MinWidth = FlowDirection == Avalonia.Media.FlowDirection.LeftToRight ?
+            //    TitleBar.RightInset : TitleBar.LeftInset;
         }
     }
 
