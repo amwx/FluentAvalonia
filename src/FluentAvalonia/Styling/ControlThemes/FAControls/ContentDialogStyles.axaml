@@ -5,13 +5,13 @@
                     x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="10">
-            <ui:ContentDialog Title="Title"
+            <ui:FAContentDialog Title="Title"
                               Content="Content goes here"
                               core:VisualStateHelper.ForcedClassesProperty=":open"/>
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme x:Key="{x:Type ui:ContentDialog}" TargetType="ui:ContentDialog">
+    <ControlTheme x:Key="{x:Type ui:FAContentDialog}" TargetType="ui:FAContentDialog">
         <Setter Property="Foreground" Value="{DynamicResource ContentDialogForeground}"/>
         <Setter Property="Background" Value="{DynamicResource ContentDialogBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ContentDialogBorderBrush}"/>

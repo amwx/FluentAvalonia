@@ -116,7 +116,7 @@
                                                              Margin="12 8"
                                                              VerticalAlignment="Center"
                                                              Name="IconHost">
-                                                        <ui:IconSourceElement IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}" />
+                                                        <ui:FAIconSourceElement IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}" />
                                                     </Viewbox>
 
                                                     <StackPanel Grid.Column="1"

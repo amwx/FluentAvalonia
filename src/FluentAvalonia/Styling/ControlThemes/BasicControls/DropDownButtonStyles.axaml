@@ -42,7 +42,7 @@
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
 
-                        <ui:FontIcon Name="DropDownGlyph"
+                        <ui:FAFontIcon Name="DropDownGlyph"
                                      Grid.Column="1"
                                      UseLayoutRounding="False"
                                      IsHitTestVisible="False"
@@ -78,7 +78,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
         </Style>
-        <Style Selector="^:disabled /template/ ui|FontIcon#DropDownGlyph">
+        <Style Selector="^:disabled /template/ ui|FAFontIcon#DropDownGlyph">
             <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
         </Style>
     </ControlTheme>

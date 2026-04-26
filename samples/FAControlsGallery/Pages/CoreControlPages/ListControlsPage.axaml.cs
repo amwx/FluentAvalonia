@@ -10,7 +10,7 @@ public partial class ListControlsPage : ControlsPageBase
         InitializeComponent();
         ControlName = "List Controls";
         App.Current.Resources.TryGetResource("ListPageIcon", null, out var icon);
-        PreviewImage = (IconSource)icon;
+        PreviewImage = (FAIconSource)icon;
     }
 
     private void InitializeComponent()

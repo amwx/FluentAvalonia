@@ -8,13 +8,13 @@ namespace FluentAvalonia.UI.Controls;
 
 internal class Phaser
 {
-    public Phaser(ItemsRepeater owner)
+    public Phaser(FAItemsRepeater owner)
     {
         _owner = owner;
         // ItemsRepeater is not fully constructed yet. Don't interact with it.
     }
 
-    public void PhaseElement(Control element, VirtualizationInfo virtInfo, ContainerContentChangingEventArgs cArgs)
+    public void PhaseElement(Control element, VirtualizationInfo virtInfo, FAContainerContentChangingEventArgs cArgs)
     {
         _pendingElements ??= new List<ElementInfo>();
 
@@ -67,7 +67,7 @@ internal class Phaser
 
                 if (currentPhase > 0)
                 {
-                    var args = new ContainerContentChangingEventArgs(dataIndex,
+                    var args = new FAContainerContentChangingEventArgs(dataIndex,
                         virtInfo.Data, element, virtInfo, currentPhase, this);
 
                     info.Callback.Invoke(_owner, args);
@@ -188,13 +188,13 @@ internal class Phaser
         });
     }
 
-    private readonly ItemsRepeater _owner;
+    private readonly FAItemsRepeater _owner;
     private List<ElementInfo> _pendingElements;
     private bool _registeredForCallbacks;
 
     private readonly struct ElementInfo
     {
-        public ElementInfo(Control element, int phase, TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> callback, 
+        public ElementInfo(Control element, int phase, TypedEventHandler<FAItemsRepeater, FAContainerContentChangingEventArgs> callback, 
             VirtualizationInfo virtInfo)
         {
             Element = element;
@@ -210,7 +210,7 @@ internal class Phaser
 
         public Rect LastArrangeBounds { get; }
 
-        public TypedEventHandler<ItemsRepeater, ContainerContentChangingEventArgs> Callback { get; }
+        public TypedEventHandler<FAItemsRepeater, FAContainerContentChangingEventArgs> Callback { get; }
 
         public VirtualizationInfo VirtInfo { get; }
     }

@@ -46,7 +46,7 @@ public partial class FluentAvaloniaTheme
             {
                 if (OSVersionHelper.IsWindows11())
                 {
-                    AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable Text"));
+                    AddOrUpdateSystemResource("ContentControlThemeFontFamily", new FontFamily("Segoe UI Variable"));
                 }
                 else
                 {

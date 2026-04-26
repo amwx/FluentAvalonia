@@ -5,43 +5,43 @@
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel Spacing="5">
-                <ui:InfoBadge Value="1" />
-                <ui:InfoBadge>
-                    <ui:InfoBadge.IconSource>
-                        <ui:SymbolIconSource Symbol="Add" />
-                    </ui:InfoBadge.IconSource>
-                </ui:InfoBadge>
-                <ui:InfoBadge>
-                    <ui:InfoBadge.IconSource>
-                        <ui:FontIconSource Glyph="A" />
-                    </ui:InfoBadge.IconSource>
-                </ui:InfoBadge>
+                <ui:FAInfoBadge Value="1" />
+                <ui:FAInfoBadge>
+                    <ui:FAInfoBadge.IconSource>
+                        <ui:FASymbolIconSource Symbol="Add" />
+                    </ui:FAInfoBadge.IconSource>
+                </ui:FAInfoBadge>
+                <ui:FAInfoBadge>
+                    <ui:FAInfoBadge.IconSource>
+                        <ui:FAFontIconSource Glyph="A" />
+                    </ui:FAInfoBadge.IconSource>
+                </ui:FAInfoBadge>
 
-                <ui:InfoBadge Classes="Attention Dot"/>
-                <ui:InfoBadge Classes="Attention" Value="10" />
-                <ui:InfoBadge Classes="Attention Icon" />
+                <ui:FAInfoBadge Classes="Attention Dot"/>
+                <ui:FAInfoBadge Classes="Attention" Value="10" />
+                <ui:FAInfoBadge Classes="Attention Icon" />
 
-                <ui:InfoBadge Classes="Informational Dot" />
-                <ui:InfoBadge Classes="Informational" Value="10" />
-                <ui:InfoBadge Classes="Informational Icon" />
+                <ui:FAInfoBadge Classes="Informational Dot" />
+                <ui:FAInfoBadge Classes="Informational" Value="10" />
+                <ui:FAInfoBadge Classes="Informational Icon" />
 
-                <ui:InfoBadge Classes="Success Dot" />
-                <ui:InfoBadge Classes="Success" Value="10" />
-                <ui:InfoBadge Classes="Success Icon" />
+                <ui:FAInfoBadge Classes="Success Dot" />
+                <ui:FAInfoBadge Classes="Success" Value="10" />
+                <ui:FAInfoBadge Classes="Success Icon" />
 
-                <ui:InfoBadge Classes="Caution Dot" />
-                <ui:InfoBadge Classes="Caution" Value="10" />
-                <ui:InfoBadge Classes="Caution Icon" />
+                <ui:FAInfoBadge Classes="Caution Dot" />
+                <ui:FAInfoBadge Classes="Caution" Value="10" />
+                <ui:FAInfoBadge Classes="Caution Icon" />
 
-                <ui:InfoBadge Classes="Critical Dot" />
-                <ui:InfoBadge Classes="Critical" Value="10" />
-                <ui:InfoBadge Classes="Critical Icon" />
+                <ui:FAInfoBadge Classes="Critical Dot" />
+                <ui:FAInfoBadge Classes="Critical" Value="10" />
+                <ui:FAInfoBadge Classes="Critical Icon" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
 
-    <ControlTheme x:Key="{x:Type ui:InfoBadge}" TargetType="ui:InfoBadge">
+    <ControlTheme x:Key="{x:Type ui:FAInfoBadge}" TargetType="ui:FAInfoBadge">
         <Setter Property="MinHeight" Value="{DynamicResource InfoBadgeMinHeight}"/>
         <Setter Property="MinWidth" Value="{DynamicResource InfoBadgeMinWidth}"/>
         <Setter Property="MaxHeight" Value="{DynamicResource InfoBadgeMaxHeight}"/>
@@ -96,7 +96,7 @@
         <Style Selector="^.Attention.Icon">
             <Setter Property="Padding" Value="0 4 0 2" />
             <Setter Property="IconSource">
-                <ui:FontIconSource Glyph="&#xEA38;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                <ui:FAFontIconSource Glyph="&#xEA38;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
             </Setter>
         </Style>
 
@@ -111,8 +111,8 @@
             <!--<Setter Property="Padding" Value="0 4 0 2" />-->
             <Setter Property="RenderTransform" Value="rotate(180deg)" />
             <Setter Property="IconSource">
-                <!--<ui:FontIconSource Glyph="&#xF4A5;" FontFamily="{StaticResource SymbolThemeFontFamily}" />-->
-                <ui:SymbolIconSource Symbol="ImportantFilled"/>
+                <!--<ui:FAFontIconSource Glyph="&#xF4A5;" FontFamily="{StaticResource SymbolThemeFontFamily}" />-->
+                <ui:FASymbolIconSource Symbol="ImportantFilled"/>
             </Setter>
         </Style>
 
@@ -125,7 +125,7 @@
         <Style Selector="^.Success.Icon">
             <Setter Property="IconSource">
                 <Setter.Value>
-                    <ui:SymbolIconSource Symbol="Checkmark" />
+                    <ui:FASymbolIconSource Symbol="Checkmark" />
                 </Setter.Value>
             </Setter>
         </Style>
@@ -137,7 +137,7 @@
         </Style>
         <Style Selector="^.Caution.Icon">
             <Setter Property="IconSource">
-                <ui:SymbolIconSource Symbol="ImportantFilled" />
+                <ui:FASymbolIconSource Symbol="ImportantFilled" />
             </Setter>
         </Style>
 
@@ -149,7 +149,7 @@
         </Style>
         <Style Selector="^.Critical.Icon">
             <Setter Property="IconSource">
-                <ui:SymbolIconSource Symbol="Dismiss" />
+                <ui:FASymbolIconSource Symbol="Dismiss" />
             </Setter>
         </Style>
 

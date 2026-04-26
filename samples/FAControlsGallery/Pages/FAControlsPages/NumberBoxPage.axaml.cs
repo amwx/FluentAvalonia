@@ -10,9 +10,9 @@ public partial class NumberBoxPage : ControlsPageBase
     {
         InitializeComponent();
 
-        TargetType = typeof(NumberBox);
+        TargetType = typeof(FANumberBox);
         
-        var nm = this.FindControl<NumberBox>("FormattedNumBox");
+        var nm = this.FindControl<FANumberBox>("FormattedNumBox");
         nm.NumberFormatter = (input) =>
         {
             double increment = 1 / 0.25;

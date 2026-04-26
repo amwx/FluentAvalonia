@@ -37,7 +37,7 @@
     <PackageReference Include="Avalonia.Controls.ColorPicker" />
     <!--<PackageReference Include="Avalonia.Controls.ItemsRepeater" />-->
     <PackageReference Include="Avalonia.Skia" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+    <!--<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />-->
     <PackageReference Include="Avalonia.Controls.DataGrid" />
     <PackageReference Include="MicroCom.CodeGenerator.MSBuild" PrivateAssets="All" />
     <PackageReference Include="MicroCom.Runtime" />
@@ -46,6 +46,10 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="FluentAvaloniaTests"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="FAControlsGallery"/>
   </ItemGroup>
 
 </Project>

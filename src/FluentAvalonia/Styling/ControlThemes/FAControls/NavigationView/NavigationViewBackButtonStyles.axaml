@@ -35,7 +35,7 @@
                 <Border Name="Root"
                         Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}">
-                    <ui:FontIcon Name="Content"
+                    <ui:FAFontIcon Name="Content"
                                  FontSize="{TemplateBinding FontSize}"
                                  FontFamily="{TemplateBinding FontFamily}"
                                  Glyph="{TemplateBinding Content}"
@@ -44,13 +44,13 @@
                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                  RenderTransform="none"
                                  RenderTransformOrigin="100%,50%">
-                        <ui:FontIcon.Transitions>
+                        <ui:FAFontIcon.Transitions>
                             <Transitions>
                                 <TransformOperationsTransition Duration="00:00:00.083"
                                                                Property="RenderTransform" />
                             </Transitions>
-                        </ui:FontIcon.Transitions>
-                    </ui:FontIcon>
+                        </ui:FAFontIcon.Transitions>
+                    </ui:FAFontIcon>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -59,7 +59,7 @@
             <Style Selector="^ /template/ Border#Root">
                 <Setter Property="Background" Value="{DynamicResource NavigationViewButtonBackgroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#Content">
+            <Style Selector="^ /template/ ui|FAFontIcon#Content">
                 <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundPointerOver}" />
             </Style>
         </Style>
@@ -70,14 +70,14 @@
             </Style>
 
             <!-- Another faked AnimatedIcon, this isn't perfect but pretty close... -->
-            <Style Selector="^ /template/ ui|FontIcon#Content">
+            <Style Selector="^ /template/ ui|FAFontIcon#Content">
                 <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundPressed}" />
                 <Setter Property="RenderTransform" Value="scaleX(0.75) scaleY(0.95)" />
             </Style>
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FontIcon#Content">
+            <Style Selector="^ /template/ ui|FAFontIcon#Content">
                 <Setter Property="Foreground" Value="{DynamicResource NavigationViewButtonForegroundDisabled}" />
             </Style>
         </Style>

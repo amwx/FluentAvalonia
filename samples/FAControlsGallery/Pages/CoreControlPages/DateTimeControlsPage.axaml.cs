@@ -10,7 +10,7 @@ public partial class DateTimeControlsPage : ControlsPageBase
         InitializeComponent();
         ControlName = "Date / Time Controls";
         App.Current.Resources.TryGetResource("DatePageIcon", null, out var icon);
-        PreviewImage = (IconSource)icon;
+        PreviewImage = (FAIconSource)icon;
     }
 
     private void InitializeComponent()

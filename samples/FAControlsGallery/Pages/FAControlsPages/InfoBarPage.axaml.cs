@@ -13,9 +13,9 @@ public partial class InfoBarPage : ControlsPageBase
         InitializeComponent();
 
         DataContext = new InfoBarPageViewModel(this);
-        TargetType = typeof(InfoBar);
+        TargetType = typeof(FAInfoBar);
 
-        _apiInActionBar = this.FindControl<InfoBar>("Bar4");
+        _apiInActionBar = this.FindControl<FAInfoBar>("Bar4");
 
         var cb = this.Find<ComboBox>("Bar4IconType");
         cb.SelectionChanged += (s, e) =>
@@ -28,7 +28,7 @@ public partial class InfoBarPage : ControlsPageBase
                 }
                 else
                 {
-                    _apiInActionBar.IconSource = new SymbolIconSource { Symbol = Symbol.MapPin };
+                    _apiInActionBar.IconSource = new FASymbolIconSource { Symbol = FASymbol.MapPin };
                 }
             }
         };
@@ -68,7 +68,7 @@ public partial class InfoBarPage : ControlsPageBase
     {
         // 0 = none, 1 = Button, 2 = Hyperlink
 
-        var ib = this.FindControl<InfoBar>("Bar2");
+        var ib = this.FindControl<FAInfoBar>("Bar2");
         if (ib != null)
         {
             if (type == 0)
@@ -102,5 +102,5 @@ public partial class InfoBarPage : ControlsPageBase
         _apiInActionBar.Foreground = Brushes.Red;
     }
 
-    private InfoBar _apiInActionBar;
+    private FAInfoBar _apiInActionBar;
 }
