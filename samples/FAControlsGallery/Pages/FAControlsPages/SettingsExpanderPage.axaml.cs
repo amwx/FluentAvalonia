@@ -10,6 +10,6 @@ public partial class SettingsExpanderPage : ControlsPageBase
         InitializeComponent();
 
         DataContext = new SettingsExpanderPageViewModel();
-        TargetType = typeof(FASettingsExpander);
+        TargetType = typeof(SettingsExpander);
     }
 }

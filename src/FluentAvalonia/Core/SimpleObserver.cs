@@ -1,4 +1,6 @@
-﻿namespace FluentAvalonia.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace FluentAvalonia.Core;
 
 internal class SimpleObserver<T> : IObserver<T>
 {

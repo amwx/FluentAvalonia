@@ -4,7 +4,7 @@
                     x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="50">
-            <ui:FAPickerFlyoutPresenter Width="300" Height="300" />
+            <ui:PickerFlyoutPresenter Width="300" Height="300" />
         </Border>
     </Design.PreviewWith>
 
@@ -42,7 +42,7 @@
         </Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type ui:FAPickerFlyoutPresenter}" TargetType="ui:FAPickerFlyoutPresenter">
+    <ControlTheme x:Key="{x:Type ui:PickerFlyoutPresenter}" TargetType="ui:PickerFlyoutPresenter">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Background" Value="{DynamicResource FlyoutPresenterBackground}" />
@@ -73,7 +73,7 @@
                                         VerticalAlignment="Stretch"
                                         Theme="{StaticResource FlyoutAcceptDismiss}"
                                         Margin="4 4 2 4">
-                                    <ui:FASymbolIcon Symbol="Checkmark" FontSize="18" />
+                                    <ui:SymbolIcon Symbol="Checkmark" FontSize="18" />
                                 </Button>
                                 <Button Name="DismissButton"
                                         HorizontalAlignment="Stretch"
@@ -81,7 +81,7 @@
                                         Theme="{StaticResource FlyoutAcceptDismiss}"
                                         Margin="2 4 4 4"
                                         Grid.Column="1">
-                                    <ui:FASymbolIcon Symbol="Dismiss" FontSize="16" />
+                                    <ui:SymbolIcon Symbol="Dismiss" FontSize="16" />
                                 </Button>
                             </Grid>
 

@@ -4,17 +4,17 @@
 
     <Design.PreviewWith>
         <Border Padding="40" >
-            <ui:FANavigationView PaneDisplayMode="Left">
-                <ui:FANavigationView.MenuItems>
-                    <ui:FANavigationViewItem Content="Save" />
-                </ui:FANavigationView.MenuItems>
+            <ui:NavigationView PaneDisplayMode="Left">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Save" />
+                </ui:NavigationView.MenuItems>
                 
                 <TextBlock Text="CONTENT" Margin="20" />
-            </ui:FANavigationView>
+            </ui:NavigationView>
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme x:Key="{x:Type ui:FANavigationView}" TargetType="ui:FANavigationView">
+    <ControlTheme x:Key="{x:Type ui:NavigationView}" TargetType="ui:NavigationView">
         <!--<Setter Property="KeyboardNavigation.IsTabStop" Value="False" />-->
         <Setter Property="CompactPaneLength" Value="{DynamicResource NavigationViewCompactPaneLength}" />
         <Setter Property="Template">
@@ -134,11 +134,11 @@
                                     <ScrollViewer Grid.Column="3"
                                                   HorizontalScrollBarVisibility="Disabled"
                                                   VerticalScrollBarVisibility="Disabled">
-                                        <ui:FAItemsRepeater Name="TopNavMenuItemsHost">
-                                            <ui:FAItemsRepeater.Layout>
-                                                <ui:FAStackLayout Orientation="Horizontal" />
-                                            </ui:FAItemsRepeater.Layout>
-                                        </ui:FAItemsRepeater>
+                                        <ui:ItemsRepeater Name="TopNavMenuItemsHost">
+                                            <ui:ItemsRepeater.Layout>
+                                                <ui:StackLayout Orientation="Horizontal" />
+                                            </ui:ItemsRepeater.Layout>
+                                        </ui:ItemsRepeater>
                                     </ScrollViewer>
 
                                     <Button Name="TopNavOverflowButton"
@@ -155,11 +155,11 @@
                                         <Button.Flyout>
                                             <Flyout Placement="BottomEdgeAlignedRight"
                                                     FlyoutPresenterClasses="NavViewFlyoutStyle">
-                                                <ui:FAItemsRepeater Name="TopNavMenuItemsOverflowHost">
-                                                    <ui:FAItemsRepeater.Layout>
-                                                        <ui:FAStackLayout />
-                                                    </ui:FAItemsRepeater.Layout>
-                                                </ui:FAItemsRepeater>
+                                                <ui:ItemsRepeater Name="TopNavMenuItemsOverflowHost">
+                                                    <ui:ItemsRepeater.Layout>
+                                                        <ui:StackLayout />
+                                                    </ui:ItemsRepeater.Layout>
+                                                </ui:ItemsRepeater>
                                             </Flyout>
                                         </Button.Flyout>
 
@@ -188,12 +188,12 @@
                                                     HorizontalContentAlignment="Stretch"
                                                     Grid.Column="7" />
 
-                                    <ui:FAItemsRepeater Grid.Column="8"
+                                    <ui:ItemsRepeater Grid.Column="8"
                                                    Name="TopFooterMenuItemsHost">
-                                        <ui:FAItemsRepeater.Layout>
-                                            <ui:FAStackLayout Orientation="Horizontal" />
-                                        </ui:FAItemsRepeater.Layout>
-                                    </ui:FAItemsRepeater>
+                                        <ui:ItemsRepeater.Layout>
+                                            <ui:StackLayout Orientation="Horizontal" />
+                                        </ui:ItemsRepeater.Layout>
+                                    </ui:ItemsRepeater>
                                 </Grid>
                             </Border>
 
@@ -309,14 +309,14 @@
                                                       VerticalAlignment="Stretch"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       VerticalScrollBarVisibility="Auto">
-                                            <ui:FAItemsRepeater Name="MenuItemsHost">
-                                                <ui:FAItemsRepeater.Layout>
-                                                    <ui:FAStackLayout />
-                                                </ui:FAItemsRepeater.Layout>
-                                            </ui:FAItemsRepeater>
+                                            <ui:ItemsRepeater Name="MenuItemsHost">
+                                                <ui:ItemsRepeater.Layout>
+                                                    <ui:StackLayout />
+                                                </ui:ItemsRepeater.Layout>
+                                            </ui:ItemsRepeater>
                                         </ScrollViewer>
 
-                                        <ui:FANavigationViewItemSeparator Name="VisualItemsSeparator"
+                                        <ui:NavigationViewItemSeparator Name="VisualItemsSeparator"
                                                                         Grid.Row="1"
                                                                         Margin="0 0 0 2"
                                                                         VerticalAlignment="Center"
@@ -336,11 +336,11 @@
                                                       VerticalScrollBarVisibility="Auto"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Grid.Row="3">
-                                            <ui:FAItemsRepeater Name="FooterMenuItemsHost">
-                                                <ui:FAItemsRepeater.Layout>
-                                                    <ui:FAStackLayout />
-                                                </ui:FAItemsRepeater.Layout>
-                                            </ui:FAItemsRepeater>
+                                            <ui:ItemsRepeater Name="FooterMenuItemsHost">
+                                                <ui:ItemsRepeater.Layout>
+                                                    <ui:StackLayout />
+                                                </ui:ItemsRepeater.Layout>
+                                            </ui:ItemsRepeater>
                                         </ScrollViewer>
 
                                     </Grid>
@@ -519,7 +519,7 @@
             </Style>
         </Style>
 
-        <Style Selector="^:separator /template/ ui|FANavigationViewItemSeparator#VisualItemsSeparator">
+        <Style Selector="^:separator /template/ ui|NavigationViewItemSeparator#VisualItemsSeparator">
             <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>

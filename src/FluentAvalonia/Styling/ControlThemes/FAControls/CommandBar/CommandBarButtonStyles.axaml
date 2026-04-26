@@ -7,32 +7,32 @@
         <Border Width="400" Padding="50" Height="400">
             <StackPanel Spacing="5">
                 <Border Background="SteelBlue">
-                    <ui:FACommandBarButton Label="Button1" 
+                    <ui:CommandBarButton Label="Button1" 
                                          IconSource="Save" 
                                          HotKey="Ctrl+S" 
                                          IsCompact="True"
-                                         core:FAVisualStateHelper.ForcedClassesProperty=":labelRight">
-                        <ui:FACommandBarButton.Flyout>
+                                         core:VisualStateHelper.ForcedClassesProperty=":labelRight">
+                        <ui:CommandBarButton.Flyout>
                             <Flyout />
-                        </ui:FACommandBarButton.Flyout>
-                    </ui:FACommandBarButton>
+                        </ui:CommandBarButton.Flyout>
+                    </ui:CommandBarButton>
                 </Border>
 
-                <ui:FACommandBarOverflowPresenter>
-                    <ui:FACommandBarButton Label="Button1" IconSource="Save">
-                        <ui:FACommandBarButton.Flyout>
+                <ui:CommandBarOverflowPresenter>
+                    <ui:CommandBarButton Label="Button1" IconSource="Save">
+                        <ui:CommandBarButton.Flyout>
                             <Flyout />
-                        </ui:FACommandBarButton.Flyout>
-                    </ui:FACommandBarButton>
-                    <ui:FACommandBarButton Label="Button1" IconSource="Save" />
-                </ui:FACommandBarOverflowPresenter>
+                        </ui:CommandBarButton.Flyout>
+                    </ui:CommandBarButton>
+                    <ui:CommandBarButton Label="Button1" IconSource="Save" />
+                </ui:CommandBarOverflowPresenter>
 
-                <ui:FACommandBar ClosedDisplayMode="Compact" IsOpen="False"
+                <ui:CommandBar ClosedDisplayMode="Compact" IsOpen="False"
                                DefaultLabelPosition="Bottom">
-                    <ui:FACommandBar.PrimaryCommands>
-                        <ui:FACommandBarButton Label="Test" IconSource="Save" IsCompact="False" />
-                    </ui:FACommandBar.PrimaryCommands>
-                </ui:FACommandBar>
+                    <ui:CommandBar.PrimaryCommands>
+                        <ui:CommandBarButton Label="Test" IconSource="Save" IsCompact="False" />
+                    </ui:CommandBar.PrimaryCommands>
+                </ui:CommandBar>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -55,7 +55,7 @@
     <x:Double x:Key="AppBarButtonContentHeight">20</x:Double>
 
 
-    <ControlTheme x:Key="{x:Type ui:FACommandBarButton}" TargetType="ui:FACommandBarButton">
+    <ControlTheme x:Key="{x:Type ui:CommandBarButton}" TargetType="ui:CommandBarButton">
         <Setter Property="Background" Value="{DynamicResource AppBarButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource AppBarButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AppBarButtonBorderBrush}" />
@@ -134,7 +134,7 @@
                                    Foreground="{DynamicResource AppBarButtonKeyboardAcceleratorTextForeground}"
                                    IsVisible="False"/>
 
-                        <ui:FAFontIcon Name="SubItemChevron"
+                        <ui:FontIcon Name="SubItemChevron"
                                      Grid.Column="2"
                                      Glyph="{DynamicResource AppBarButtonOverflowFlyoutGlyph}"
                                      FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -168,7 +168,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FontIcon#SubItemChevron">
                 <!-- WinUI #6831 -->
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPointerOver}" />
             </Style>
@@ -191,7 +191,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPressed}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FontIcon#SubItemChevron">
                 <!-- WinUI #6831 -->
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPressed}" />
             </Style>
@@ -214,7 +214,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FontIcon#SubItemChevron">
                 <!-- WinUI #6831 -->
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundDisabled}" />
             </Style>
@@ -237,7 +237,7 @@
             <Style Selector="^ /template/ TextBlock#OverflowTextLabel">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|FontIcon#SubItemChevron">
                 <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundDisabled}" />
                 <Setter Property="Margin" Value="{DynamicResource AppBarButtonSecondarySubItemChevronMargin}" />
                 <Setter Property="VerticalAlignment" Value="Center" />
@@ -262,7 +262,7 @@
                 <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPointerOver}" />
                 </Style>
-                <Style Selector="^ /template/ ui|FAFontIcon#SubItemChevron">
+                <Style Selector="^ /template/ ui|FontIcon#SubItemChevron">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPointerOver}" />
                 </Style>
             </Style>
@@ -284,7 +284,7 @@
                 <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundPressed}" />
                 </Style>
-                <Style Selector="^ /template/ ui|FAFontIcon#SubItemChevron">
+                <Style Selector="^ /template/ ui|FontIcon#SubItemChevron">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundPressed}" />
                 </Style>
             </Style>
@@ -306,7 +306,7 @@
                 <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonKeyboardAcceleratorTextForegroundSubMenuOpened}" />
                 </Style>
-                <Style Selector="^ /template/ ui|FAFontIcon#SubItemChevron">
+                <Style Selector="^ /template/ ui|FontIcon#SubItemChevron">
                     <Setter Property="Foreground" Value="{DynamicResource AppBarButtonSubItemChevronForegroundSubMenuOpened}" />
                 </Style>
             </Style>
@@ -319,7 +319,7 @@
         </Style>
 
         <!-- Has Flyout -->
-        <Style Selector="^:flyout /template/ ui|FAFontIcon#SubItemChevron">
+        <Style Selector="^:flyout /template/ ui|FontIcon#SubItemChevron">
             <Setter Property="IsVisible" Value="True" />
         </Style>
 
@@ -372,16 +372,16 @@
                 <Setter Property="TextAlignment" Value="Left" />
                 <Setter Property="Margin" Value="{DynamicResource AppBarButtonTextLabelOnRightMargin}" />
             </Style>
-            <Style Selector="^ /template/ ui|FASymbolIcon#SubItemChevron">
+            <Style Selector="^ /template/ ui|SymbolIcon#SubItemChevron">
                 <Setter Property="Margin" Value="-7,20,12,0" />
             </Style>
-            <Style Selector="^:flyout /template/ ui|FAFontIcon#SubItemChevron">
+            <Style Selector="^:flyout /template/ ui|FontIcon#SubItemChevron">
                 <Setter Property="Margin" Value="{StaticResource AppBarButtonSubItemChevronLabelOnRightMargin}" />
             </Style>
         </Style>
 
         <Style Selector="^:labelCollapsed">
-            <Style Selector="^ ui|FACommandBarButton /template/ Grid#ContentRoot">
+            <Style Selector="^ ui|CommandBarButton /template/ Grid#ContentRoot">
                 <Setter Property="MinHeight" Value="{DynamicResource AppBarThemeCompactHeight}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#TextLabel">

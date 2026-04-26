@@ -125,7 +125,7 @@
         <ctrls:DesignColorSection Header="Layer on Mica Base Alt"
                                   Description="Used for fills on Tab control">
 
-            <ui:FATabViewItem Width="150"
+            <ui:TabViewItem Width="150"
                             Height="30"
                             BorderBrush="{DynamicResource ControlStrokeColorSecondaryBrush}"
                             BorderThickness="1"

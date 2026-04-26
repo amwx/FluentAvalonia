@@ -9,7 +9,7 @@ public partial class PickerFlyoutBasePage : ControlsPageBase
     {
         InitializeComponent();
 
-        TargetType = typeof(FAPickerFlyoutBase);
+        TargetType = typeof(PickerFlyoutBase);
         
         DataContext = this;
     }

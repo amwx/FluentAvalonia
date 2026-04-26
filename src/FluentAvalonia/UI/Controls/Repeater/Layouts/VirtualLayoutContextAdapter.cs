@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class VirtualLayoutContextAdapter : FANonVirtualizingLayoutContext
+internal class VirtualLayoutContextAdapter : NonVirtualizingLayoutContext
 {
-    public VirtualLayoutContextAdapter(FAVirtualizingLayoutContext context)
+    public VirtualLayoutContextAdapter(VirtualizingLayoutContext context)
     {
-        _virtualizingContext = new WeakReference<FAVirtualizingLayoutContext>(context);
+        _virtualizingContext = new WeakReference<VirtualizingLayoutContext>(context);
     }
 
     protected override IReadOnlyList<Control> ChildrenCore()
@@ -21,22 +21,22 @@ internal class VirtualLayoutContextAdapter : FANonVirtualizingLayoutContext
         get => GetContext()?.LayoutStateCore;
         set
         {
-            if (GetContext() is FAVirtualizingLayoutContext vlc)
+            if (GetContext() is VirtualizingLayoutContext vlc)
                 vlc.LayoutStateCore = value;
         } 
     }
 
-    private FAVirtualizingLayoutContext GetContext() =>
+    private VirtualizingLayoutContext GetContext() =>
         _virtualizingContext.TryGetTarget(out var target) ? target : null;
 
-    private WeakReference<FAVirtualizingLayoutContext> _virtualizingContext;
+    private WeakReference<VirtualizingLayoutContext> _virtualizingContext;
     private ChildrenCollection _children;
 
     // WinUI makes this Generic, but C# doesn't like the indexer getting a control
     // with returning a generic type
     private class ChildrenCollection : IReadOnlyList<Control>
     {
-        public ChildrenCollection(FAVirtualizingLayoutContext context)
+        public ChildrenCollection(VirtualizingLayoutContext context)
         {
             _context = context;
         }
@@ -45,7 +45,7 @@ internal class VirtualLayoutContextAdapter : FANonVirtualizingLayoutContext
 
         public Control this[int index]
         {
-            get => _context.GetOrCreateElementAt(index, FAElementRealizationOptions.None);
+            get => _context.GetOrCreateElementAt(index, ElementRealizationOptions.None);
         }
 
         public IEnumerator<Control> GetEnumerator()
@@ -59,6 +59,6 @@ internal class VirtualLayoutContextAdapter : FANonVirtualizingLayoutContext
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private FAVirtualizingLayoutContext _context;
+        private VirtualizingLayoutContext _context;
     }
 }

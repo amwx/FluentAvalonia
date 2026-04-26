@@ -3,25 +3,25 @@
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
     <Design.PreviewWith>
         <Border Padding="20" Width="700" Height="350">
-            <!--<ui:FASettingsExpander IconSource="Globe" Header="Test Header"
+            <!--<ui:SettingsExpander IconSource="Globe" Header="Test Header"
                                  Description="This is a description for the SettingsExpander"
                                  ActionIconSource="Save" IsClickEnabled="True">
-                <ui:FASettingsExpander.Footer>
+                <ui:SettingsExpander.Footer>
                     <Button Content="FooterButton" />
-                </ui:FASettingsExpander.Footer>
+                </ui:SettingsExpander.Footer>
                 
-                --><!--<ui:FASettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
-                <ui:FASettingsExpanderItem Content="Content Here">
-                    <ui:FASettingsExpanderItem.Footer>
+                --><!--<ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
+                <ui:SettingsExpanderItem Content="Content Here">
+                    <ui:SettingsExpanderItem.Footer>
                         <Button Content="FooterButton" />
-                    </ui:FASettingsExpanderItem.Footer>
-                </ui:FASettingsExpanderItem>--><!--
-            </ui:FASettingsExpander>-->
-            <ui:FASettingsExpander Header="Test">
-                <ui:FASettingsExpanderItem Content="Item1" />
-                <ui:FASettingsExpanderItem Content="Item2" />
-                <ui:FASettingsExpanderItem Content="Item3" />
-            </ui:FASettingsExpander>
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>--><!--
+            </ui:SettingsExpander>-->
+            <ui:SettingsExpander Header="Test">
+                <ui:SettingsExpanderItem Content="Item1" />
+                <ui:SettingsExpanderItem Content="Item2" />
+                <ui:SettingsExpanderItem Content="Item3" />
+            </ui:SettingsExpander>
         </Border>
     </Design.PreviewWith>
 
@@ -59,7 +59,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <ContentPresenter Content="{TemplateBinding Content}" />
 
-                        <ui:FASymbolIcon Name="ExpandCollapseChevron"
+                        <ui:SymbolIcon Name="ExpandCollapseChevron"
                                        Symbol="ChevronDown"
                                        FontSize="18"
                                        Foreground="{DynamicResource ExpanderChevronForeground}"
@@ -91,7 +91,7 @@
         </Style>
 
         <Style Selector="^:checked">
-            <Style Selector="^ /template/ ui|FASymbolIcon#ExpandCollapseChevron">
+            <Style Selector="^ /template/ ui|SymbolIcon#ExpandCollapseChevron">
                 <Setter Property="RenderTransform" Value="rotate(180deg)" />
             </Style>
             <Style Selector="^:not(:empty) /template/ Border#Root">
@@ -99,7 +99,7 @@
             </Style>
         </Style>
 
-        <Style Selector="^:not(:empty) /template/ ui|FASymbolIcon#ExpandCollapseChevron">
+        <Style Selector="^:not(:empty) /template/ ui|SymbolIcon#ExpandCollapseChevron">
             <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>
@@ -148,13 +148,13 @@
         </Style>
     </ControlTheme>
 
-    <ControlTemplate TargetType="ui:FASettingsExpander"
+    <ControlTemplate TargetType="ui:SettingsExpander"
                  x:Key="DefaultSettingsExpanderControlTemplate">
         <Expander Name="Expander"
                   Theme="{StaticResource SettingsExpanderExpanderStyle}"
                   IsExpanded="{TemplateBinding IsExpanded, Mode=TwoWay}">
             <Expander.Header>
-                <ui:FASettingsExpanderItem Content="{TemplateBinding Header}"
+                <ui:SettingsExpanderItem Content="{TemplateBinding Header}"
                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
                                          Description="{TemplateBinding Description}"
                                          IsClickEnabled="{TemplateBinding IsClickEnabled}"
@@ -171,8 +171,8 @@
         </Expander>
     </ControlTemplate>
 
-    <ControlTheme x:Key="{x:Type ui:FASettingsExpander}" 
-                  TargetType="ui:FASettingsExpander">
+    <ControlTheme x:Key="{x:Type ui:SettingsExpander}" 
+                  TargetType="ui:SettingsExpander">
         <Setter Property="Background" Value="{DynamicResource ExpanderBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ExpanderHeaderBorderThickness}" />
@@ -191,12 +191,12 @@
         </Style>
 
         <Style Selector="^ /template/ Expander#Expander">
-            <Setter Property="ui:FAExpanderExt.ExpanderAnimationType" Value="FluentV2" />
+            <Setter Property="ui:ExpanderExt.ExpanderAnimationType" Value="FluentV2" />
         </Style>
     </ControlTheme>
 
     <ControlTheme x:Key="SettingsExpanderNoAnimationStyle"
-                  TargetType="ui:FASettingsExpander">
+                  TargetType="ui:SettingsExpander">
         <Setter Property="Background" Value="{DynamicResource ExpanderBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ExpanderHeaderBorderThickness}" />
@@ -215,7 +215,7 @@
         </Style>
 
         <Style Selector="^ /template/ Expander#Expander">
-            <Setter Property="ui:FAExpanderExt.ExpanderAnimationType" Value="{x:Null}" />
+            <Setter Property="ui:ExpanderExt.ExpanderAnimationType" Value="{x:Null}" />
         </Style>
     </ControlTheme>
 

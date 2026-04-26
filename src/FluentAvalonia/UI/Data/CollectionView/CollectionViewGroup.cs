@@ -7,9 +7,9 @@ using System.ComponentModel;
 
 namespace FluentAvalonia.UI.Data;
 
-internal class CollectionViewGroup : IFACollectionViewGroup
+internal class CollectionViewGroup : ICollectionViewGroup
 {
-    public CollectionViewGroup(FAGroupedDataCollectionView owner, object item, bool hasItemsBinding)
+    public CollectionViewGroup(GroupedDataCollectionView owner, object item, bool hasItemsBinding)
     {
         _owner = owner;
         Group = item;
@@ -55,13 +55,13 @@ internal class CollectionViewGroup : IFACollectionViewGroup
         _owner.GroupItemsChanged(this, args);
     }
 
-    protected FAGroupedDataCollectionView _owner;
+    protected GroupedDataCollectionView _owner;
     protected bool _hasItemsBinding;
 }
 
 internal class SpecializedCollectionViewGroup : CollectionViewGroup, IComparer<object>
 {
-    public SpecializedCollectionViewGroup(FAGroupedDataCollectionView owner, object item, bool hasItemsBinding)
+    public SpecializedCollectionViewGroup(GroupedDataCollectionView owner, object item, bool hasItemsBinding)
         : base(owner, item, hasItemsBinding)
     {
 
@@ -462,26 +462,23 @@ internal class SpecializedCollectionViewGroup : CollectionViewGroup, IComparer<o
 
                 var cmp = desc.Comparer.Compare(cx, cy);
                 if (cmp != 0)
-                    return desc.Direction == FASortDirection.Ascending ? cmp : -cmp;
+                    return desc.Direction == SortDirection.Ascending ? cmp : -cmp;
             }
         }
 
         return 0;
     }
 
-    private static object EvaluateBinding(BindingBase binding, object item)
+    private static object EvaluateBinding(IBinding binding, object item)
     {
-        _bindingHelper ??= new BindingEvaluator<object>();
-        _bindingHelper.UpdateBinding(binding);
+        _bindingHelper ??= new GroupedDataCollectionView.BindingHelper();
 
-        var result = _bindingHelper.Evaluate(item);
-        _bindingHelper.ClearDataContext();
-        return result;
+        return _bindingHelper.Evaluate(binding, item);
     }
 
     private List<object> _view;
     private IEnumerable _actualItems;
-    private static BindingEvaluator<object> _bindingHelper;
+    private static GroupedDataCollectionView.BindingHelper _bindingHelper;
     private bool _ignoreNotify;
 }
 

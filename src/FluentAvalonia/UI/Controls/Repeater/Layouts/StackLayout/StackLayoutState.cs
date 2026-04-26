@@ -10,7 +10,7 @@ internal class StackLayoutState
 
     public int TotalElementsMeasured { get; private set; }
 
-    public void InitializeForContext(FAVirtualizingLayoutContext context, IFlowLayoutAlgorithmDelegates callbacks)
+    public void InitializeForContext(VirtualizingLayoutContext context, IFlowLayoutAlgorithmDelegates callbacks)
     {
         FlowAlgorithm ??= new FlowLayoutAlgorithm();
         FlowAlgorithm.InitializeForContext(context, callbacks);
@@ -21,7 +21,7 @@ internal class StackLayoutState
         context.LayoutStateCore = this;
     }
 
-    public void UninitializeForContext(FAVirtualizingLayoutContext context) =>
+    public void UninitializeForContext(VirtualizingLayoutContext context) =>
         FlowAlgorithm.UninitializeForContext(context);
 
     public void OnElementMeasured(int elementIndex, double majorSize, double minorSize)

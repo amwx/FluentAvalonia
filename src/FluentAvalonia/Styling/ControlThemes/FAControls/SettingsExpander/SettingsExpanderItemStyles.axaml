@@ -3,22 +3,22 @@
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
     <Design.PreviewWith>
         <Border Padding="20" Width="700" Height="250">
-            <ui:FASettingsExpander IconSource="Globe" Header="Test Header" IsExpanded="True"
+            <ui:SettingsExpander IconSource="Globe" Header="Test Header" IsExpanded="True"
                                  Description="This is a description for the SettingsExpander"
                                  ActionIconSource="Save" IsClickEnabled="False">
-                <ui:FASettingsExpander.Footer>
+                <ui:SettingsExpander.Footer>
                     <Button Content="FooterButton" />
-                </ui:FASettingsExpander.Footer>
+                </ui:SettingsExpander.Footer>
 
-                <ui:FASettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
-                <ui:FASettingsExpanderItem Content="Content Here">
-                    <ui:FASettingsExpanderItem.Footer>
+                <ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
+                <ui:SettingsExpanderItem Content="Content Here">
+                    <ui:SettingsExpanderItem.Footer>
                         <Button Content="FooterButton" />
-                    </ui:FASettingsExpanderItem.Footer>
-                </ui:FASettingsExpanderItem>
-                <ui:FASettingsExpanderItem Content="Right Content Here" 
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>
+                <ui:SettingsExpanderItem Content="Right Content Here" 
                                          HorizontalContentAlignment="Right"/>
-            </ui:FASettingsExpander>
+            </ui:SettingsExpander>
         </Border>
     </Design.PreviewWith>
 
@@ -31,7 +31,7 @@
     <x:Double x:Key="SettingsExpanderItemActionIconSize">18</x:Double>
     <x:Double x:Key="SettingsExpanderItemAdaptiveWidthTrigger">460</x:Double>
 
-    <ControlTheme x:Key="{x:Type ui:FASettingsExpanderItem}" TargetType="ui:FASettingsExpanderItem">
+    <ControlTheme x:Key="{x:Type ui:SettingsExpanderItem}" TargetType="ui:SettingsExpanderItem">
         <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackground}" />
         <Setter Property="Padding" Value="{DynamicResource SettingsExpanderItemPadding}" />
         <Setter Property="MinHeight" Value="{DynamicResource SettingsExpanderItemMinHeight}" />

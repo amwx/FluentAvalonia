@@ -30,7 +30,7 @@ public partial class IconsPage : ControlsPageBase
                 TargetType = idx switch
                 {
                     0 => typeof(FAIconElement),
-                    1 => typeof(FAIconSource),
+                    1 => typeof(IconSource),
                     _ => null
                 };
             }            

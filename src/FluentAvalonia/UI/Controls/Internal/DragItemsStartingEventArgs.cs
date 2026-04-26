@@ -1,7 +1,5 @@
 ﻿using FluentAvalonia.UI.Data;
 
-// TODO: These will be updated with the TabView changes
-
 /// <summary>
 /// Represents the method that will handle the DragItemsStarting event
 /// </summary>

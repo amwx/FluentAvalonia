@@ -88,17 +88,17 @@ public class TabViewPageViewModel : ViewModelBase
         switch (index % 3)
         {
             case 0:
-                tab.IconSource = new FASymbolIconSource { Symbol = FASymbol.Document };
+                tab.IconSource = new SymbolIconSource { Symbol = Symbol.Document };
                 tab.Content = "This is a sample document. Switch tabs to view more.";
                 break;
 
             case 1:
-                tab.IconSource = new FASymbolIconSource { Symbol = FASymbol.Star };
+                tab.IconSource = new SymbolIconSource { Symbol = Symbol.Star };
                 tab.Content = "This is another sample document. Switch tabs to view more.";
                 break;
 
             case 2:
-                tab.IconSource = new FASymbolIconSource { Symbol = FASymbol.Open };
+                tab.IconSource = new SymbolIconSource { Symbol = Symbol.Open };
                 tab.Content = "This is yet another sample document. Switch tabs to view more.";
                 break;
         }
@@ -113,7 +113,7 @@ public class DocumentItem
 {
     public string Header { get; set; }
 
-    public FAIconSource IconSource { get; set; }
+    public IconSource IconSource { get; set; }
 
     public string Content { get; set; }
 }

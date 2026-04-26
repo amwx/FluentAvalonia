@@ -8,18 +8,18 @@ public class MenuFlyoutPageViewModel : ViewModelBase
     {
         TestMenuItems = new List<TempMenuItemBase>
         {
-            new TempMenuItem { Text = "Item 1", Icon = FASymbol.Cut },
-            new TempMenuItem { Text = "Item 2", Icon = FASymbol.Copy },
-            new TempMenuItem { Text = "Item 3", Icon = FASymbol.Paste },
+            new TempMenuItem { Text = "Item 1", Icon = Symbol.Cut },
+            new TempMenuItem { Text = "Item 2", Icon = Symbol.Copy },
+            new TempMenuItem { Text = "Item 3", Icon = Symbol.Paste },
             new TempMenuSeparator(),
             new TempSubItem
             {
                 Text = "Cascading Menu",
                 SubItems = new List<TempMenuItemBase>
                 {
-                    new TempMenuItem { Text = "Sub Item 1", Icon = FASymbol.Globe },
-                    new TempMenuItem { Text = "Sub Item 2", Icon = FASymbol.Games },
-                    new TempMenuItem { Text = "Sub Item 3", Icon = FASymbol.Mail },
+                    new TempMenuItem { Text = "Sub Item 1", Icon = Symbol.Globe },
+                    new TempMenuItem { Text = "Sub Item 2", Icon = Symbol.Games },
+                    new TempMenuItem { Text = "Sub Item 3", Icon = Symbol.Mail },
                 }
             },
             new TempMenuSeparator(),
@@ -44,7 +44,7 @@ public class TempMenuItem : TempMenuItemBase
 {
     public string Text { get; set; }
 
-    public FASymbol Icon { get; set; }
+    public Symbol Icon { get; set; }
 }
 
 public class TempMenuSeparator : TempMenuItemBase { }

@@ -2,7 +2,6 @@
 using FluentAvalonia.UI.Controls;
 using FAControlsGallery.Controls;
 using FluentAvalonia.UI.Media.Animation;
-using FluentAvalonia.UI.Navigation;
 
 namespace FAControlsGallery.Services;
 
@@ -12,7 +11,7 @@ public class NavigationService
 
     public Control PreviousPage { get; set; }
 
-    public void SetFrame(FAFrame f)
+    public void SetFrame(Frame f)
     {
         _frame = f;
     }
@@ -27,13 +26,13 @@ public class NavigationService
         _frame.Navigate(t);
     }
 
-    public void NavigateFromContext(object dataContext, FANavigationTransitionInfo transitionInfo = null)
+    public void NavigateFromContext(object dataContext, NavigationTransitionInfo transitionInfo = null)
     {
         _frame.NavigateFromObject(dataContext,
-            new FAFrameNavigationOptions
+            new FluentAvalonia.UI.Navigation.FrameNavigationOptions
             {
                 IsNavigationStackEnabled = true,
-                TransitionInfoOverride = transitionInfo ?? new FASuppressNavigationTransitionInfo()
+                TransitionInfoOverride = transitionInfo ?? new SuppressNavigationTransitionInfo()
             });
     }
 
@@ -52,7 +51,7 @@ public class NavigationService
 
     }
 
-    private FAFrame _frame;
+    private Frame _frame;
     private Panel _overlayHost;
 }
 

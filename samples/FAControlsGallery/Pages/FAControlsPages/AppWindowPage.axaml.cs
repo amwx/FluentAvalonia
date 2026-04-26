@@ -14,7 +14,7 @@ public partial class AppWindowPage : ControlsPageBase
     {
         InitializeComponent();
 
-        TargetType = typeof(FAAppWindow);
+        TargetType = typeof(AppWindow);
         //Description = "A special window style designed to mock the modern UWP/WinUI window style. " +
         //    "The window is a DWM extended frame window but made to ensure the resize handles are " +
         //    "still outside the window frame in the shadow area and the titlebar retains its size " +
@@ -35,11 +35,11 @@ public partial class AppWindowPage : ControlsPageBase
 
         var tbState = state switch
         {
-            0 => FATaskBarProgressBarState.None,
-            1 => FATaskBarProgressBarState.Normal,
-            2 => FATaskBarProgressBarState.Paused,
-            3 => FATaskBarProgressBarState.Error,
-            4 => FATaskBarProgressBarState.Indeterminate,
+            0 => TaskBarProgressBarState.None,
+            1 => TaskBarProgressBarState.Normal,
+            2 => TaskBarProgressBarState.Paused,
+            3 => TaskBarProgressBarState.Error,
+            4 => TaskBarProgressBarState.Indeterminate,
             _ => throw new ArgumentOutOfRangeException()
         };
 
@@ -47,16 +47,16 @@ public partial class AppWindowPage : ControlsPageBase
 
         var tl = TopLevel.GetTopLevel(this);
 
-        if (tl is FAAppWindow aw)
+        if (tl is AppWindow aw)
         {
             aw.PlatformFeatures.SetTaskBarProgressBarState(tbState);
 
             // MS Docs:
             //Note that a call to SetProgressValue will switch a progress indicator currently in an indeterminate mode
             //(TBPF_INDETERMINATE) to a normal (determinate) display and clear the TBPF_INDETERMINATE flag.
-            if (tbState != FATaskBarProgressBarState.Indeterminate)
+            if (tbState != TaskBarProgressBarState.Indeterminate)
             {
-                if (tbState == FATaskBarProgressBarState.None)
+                if (tbState == TaskBarProgressBarState.None)
                 {
                     aw.PlatformFeatures.SetTaskBarProgressBarValue(0, 0);
                 }
@@ -71,7 +71,7 @@ public partial class AppWindowPage : ControlsPageBase
     private void HandleColorPicker1ColorChanged(object sender, ColorChangedEventArgs args)
     {
         var tl = TopLevel.GetTopLevel(this);
-        if (tl is FAAppWindow aw)
+        if (tl is AppWindow aw)
         {
             aw.PlatformFeatures.SetWindowBorderColor(args.NewColor);
         }
@@ -84,7 +84,7 @@ public partial class AppWindowPage : ControlsPageBase
 
     private void ShowSplashClick(object sender, RoutedEventArgs e)
     {
-        var aw = new FAAppWindow
+        var aw = new AppWindow
         {
             Content = "AppWindow content!!"
         };
@@ -116,7 +116,7 @@ public partial class AppWindowPage : ControlsPageBase
     }
 }
 
-internal class DemoSplashScreen : IFAApplicationSplashScreen
+internal class DemoSplashScreen : IApplicationSplashScreen
 {
     public string AppName { get; init; }
     public IImage AppIcon { get; init; }
@@ -134,7 +134,7 @@ internal class DemoSplashScreen : IFAApplicationSplashScreen
     }
 }
 
-internal class ComplexSplashScreen : IFAApplicationSplashScreen
+internal class ComplexSplashScreen : IApplicationSplashScreen
 {
     public ComplexSplashScreen()
     {

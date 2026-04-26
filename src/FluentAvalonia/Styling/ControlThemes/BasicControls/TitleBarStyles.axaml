@@ -1,7 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!--
-    TODO v3
     <ControlTheme x:Key="{x:Type TitleBar}" TargetType="TitleBar">
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         <Setter Property="VerticalAlignment" Value="Top" />
@@ -51,5 +49,5 @@
         <Style Selector="^:fullscreen:pointerover /template/ Panel#PART_Container">
             <Setter Property="RenderTransform" Value="none" />
         </Style>
-    </ControlTheme>-->
+    </ControlTheme>
 </ResourceDictionary>

@@ -6,7 +6,7 @@
         <Border Padding="50" ClipToBounds="False">
             <DockPanel LastChildFill="True" ClipToBounds="False">
                 <StackPanel Spacing="10" DockPanel.Dock="Top" ClipToBounds="False">
-                    <Slider Value="100" TickPlacement="Outside" TickFrequency="10"/>
+                    <Slider Value="100" />
                     <Slider IsEnabled="False" Value="50" />
                 </StackPanel>
                 <StackPanel Spacing="10" Orientation="Horizontal">
@@ -294,7 +294,6 @@
             <Setter Property="Maximum" Value="{TemplateBinding Slider.Maximum}" />
             <Setter Property="IsVisible" Value="False" />
             <Setter Property="Ticks" Value="{TemplateBinding Ticks}" />
-            <Setter Property="IsDirectionReversed" Value="{TemplateBinding IsDirectionReversed}" />
         </Style>
 
         <Style Selector="^[TickPlacement=TopLeft] /template/ TickBar#LeftTickBar, 

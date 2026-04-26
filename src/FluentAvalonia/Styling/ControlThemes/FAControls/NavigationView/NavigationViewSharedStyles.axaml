@@ -248,7 +248,7 @@
                                Fill="Transparent"
                                IsVisible="False"/>
 
-                    <ui:FAFontIcon Name="Icon"
+                    <ui:FontIcon Name="Icon"
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
@@ -268,7 +268,7 @@
             <Style Selector="^ /template/ Panel#RootGrid">
                 <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#Icon">
+            <Style Selector="^ /template/ ui|FontIcon#Icon">
                 <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundPointerOver}" />
             </Style>
         </Style>
@@ -281,13 +281,13 @@
             <Style Selector="^ /template/ Panel#RootGrid">
                 <Setter Property="Background" Value="{DynamicResource TopNavigationViewItemBackgroundPressed}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#Icon">
+            <Style Selector="^ /template/ ui|FontIcon#Icon">
                 <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundPressed}" />
             </Style>
         </Style>
         
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ ui|FAFontIcon#Icon">
+            <Style Selector="^ /template/ ui|FontIcon#Icon">
                 <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForegroundDisabled}" />
             </Style>
         </Style>

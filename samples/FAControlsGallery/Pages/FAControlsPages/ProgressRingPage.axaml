@@ -12,7 +12,7 @@
         <ctrls:ControlExample Header="An indeterminate progress ring">
 
             <!-- This is set to False so it doesn't run in designer. Changed to true in code-->
-            <ui:FAProgressRing Width="80" Height="80"
+            <ui:ProgressRing Width="80" Height="80"
                              Name="IndetRing"
                              IsIndeterminate="True" />
 
@@ -27,21 +27,21 @@
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:FAProgressRing /&gt;
+&lt;ui:ProgressRing /&gt;
                 </x:String>                
             </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="An determinate progress ring">
 
-            <ui:FAProgressRing Width="80" Height="80"
+            <ui:ProgressRing Width="80" Height="80"
                              Value="25"
                              Name="DetRing"
                              IsIndeterminate="False" />
 
             <ctrls:ControlExample.Options>
                 <StackPanel Spacing="8">
-                    <ui:FANumberBox Width="150" Name="Slider"
+                    <ui:NumberBox Width="150" Name="Slider"
                                   Minimum="0" Maximum="100"
                                   SpinButtonPlacementMode="Inline"
                                   Value="{Binding #DetRing.Value, Mode=TwoWay}"
@@ -55,7 +55,7 @@
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:FAProgressRing IsIndeterminate="False"/&gt;
+&lt;ui:ProgressRing IsIndeterminate="False"/&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>

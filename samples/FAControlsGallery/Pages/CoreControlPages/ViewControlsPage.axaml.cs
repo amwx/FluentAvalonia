@@ -12,7 +12,7 @@ public partial class ViewControlsPage : ControlsPageBase
 
         ControlName = "View Controls";
         App.Current.Resources.TryGetResource("ViewPageIcon", null, out var icon);
-        PreviewImage = (FAIconSource)icon;
+        PreviewImage = (IconSource)icon;
 
         var CollapsingDisabledExpander = this.Get<Expander>("CollapsingDisabledExpander");
         var ExpandingDisabledExpander = this.Get<Expander>("ExpandingDisabledExpander");

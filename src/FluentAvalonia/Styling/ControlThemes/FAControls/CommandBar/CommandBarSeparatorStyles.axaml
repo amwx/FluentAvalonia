@@ -10,8 +10,8 @@
     <!--<x:Double x:Key="AppBarSeparatorCornerRadius">0.5</x:Double>-->
     <CornerRadius x:Key="AppBarSeparatorCornerRadius">0.5</CornerRadius>
 
-    <ControlTheme x:Key="{x:Type ui:FACommandBarSeparator}"
-                  TargetType="ui:FACommandBarSeparator">
+    <ControlTheme x:Key="{x:Type ui:CommandBarSeparator}"
+                  TargetType="ui:CommandBarSeparator">
         <Setter Property="Foreground" Value="{DynamicResource AppBarSeparatorForeground}" />
         <Setter Property="Padding" Value="{DynamicResource AppBarSeparatorMargin}" />
         <Setter Property="Template">

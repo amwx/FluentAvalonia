@@ -10,22 +10,22 @@
              x:DataType="vm:CommandBarFlyoutPageViewModel">
 
     <UserControl.Resources>
-        <ui:FACommandBarFlyout Placement="Right" x:Key="CommandBarFlyout1">
-            <ui:FACommandBarButton Label="Share" IconSource="Share" ToolTip.Tip="Share" Command="{Binding FlyoutCommands}" CommandParameter="Share" />
-            <ui:FACommandBarButton Label="Save" IconSource="Save" ToolTip.Tip="Save" Command="{Binding FlyoutCommands}" CommandParameter="Save" />
-            <ui:FACommandBarButton Label="Delete" IconSource="Delete" ToolTip.Tip="Delete" Command="{Binding FlyoutCommands}" CommandParameter="Delete" />
-            <ui:FACommandBarFlyout.SecondaryCommands>
-                <ui:FACommandBarButton Label="Resize" Command="{Binding FlyoutCommands}" CommandParameter="Resize" />
-                <ui:FACommandBarButton Label="Move" Command="{Binding FlyoutCommands}" CommandParameter="Move" />
-            </ui:FACommandBarFlyout.SecondaryCommands>
-        </ui:FACommandBarFlyout>
+        <ui:CommandBarFlyout Placement="Right" x:Key="CommandBarFlyout1">
+            <ui:CommandBarButton Label="Share" IconSource="Share" ToolTip.Tip="Share" Command="{Binding FlyoutCommands}" CommandParameter="Share" />
+            <ui:CommandBarButton Label="Save" IconSource="Save" ToolTip.Tip="Save" Command="{Binding FlyoutCommands}" CommandParameter="Save" />
+            <ui:CommandBarButton Label="Delete" IconSource="Delete" ToolTip.Tip="Delete" Command="{Binding FlyoutCommands}" CommandParameter="Delete" />
+            <ui:CommandBarFlyout.SecondaryCommands>
+                <ui:CommandBarButton Label="Resize" Command="{Binding FlyoutCommands}" CommandParameter="Resize" />
+                <ui:CommandBarButton Label="Move" Command="{Binding FlyoutCommands}" CommandParameter="Move" />
+            </ui:CommandBarFlyout.SecondaryCommands>
+        </ui:CommandBarFlyout>
 
-        <ui:FATextCommandBarFlyout x:Key="TextCommandBarFlyout1" />
+        <ui:TextCommandBarFlyout x:Key="TextCommandBarFlyout1" />
     </UserControl.Resources>
 
     <StackPanel Spacing="8">
 
-        <ctrls:ControlExample Header="Default FACommandBarFlyout"
+        <ctrls:ControlExample Header="Default CommandBarFlyout"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/CommandBarFlyout.xaml.txt"
                               CSharpSource="avares://FAControlsGallery/Pages/SampleCode/CommandBarFlyout.cs.txt">
 
@@ -41,7 +41,7 @@
 
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="FATextCommandBarFlyout"
+        <ctrls:ControlExample Header="TextCommandBarFlyout"
                               UsageNotes="avares://FAControlsGallery/Pages/SampleCode/TextCommandBarFlyoutUsageNotes.txt">
 
             <StackPanel Spacing="10">

@@ -10,27 +10,27 @@
              x:Class="FAControlsGallery.Pages.XamlUICommandPage"
              x:DataType="vm:StandardUICommandPageViewModel">
     <UserControl.Resources>
-        <input:FAXamlUICommand x:Key="CustomXamlUICommand"
+        <input:XamlUICommand x:Key="CustomXamlUICommand"
                              ExecuteRequested="CustomXamlUICommand_ExecuteRequested"
                              Description="This is a custom command" Label="Custom Command"
                              HotKey="Ctrl+D">
-            <input:FAXamlUICommand.IconSource>
-                <ui:FASymbolIconSource Symbol="Star" />
-            </input:FAXamlUICommand.IconSource>
-        </input:FAXamlUICommand>
+            <input:XamlUICommand.IconSource>
+                <ui:SymbolIconSource Symbol="Star" />
+            </input:XamlUICommand.IconSource>
+        </input:XamlUICommand>
 
-        <input:FAStandardUICommand x:Key="DeleteCommand" Kind="Delete" Command="{Binding DeleteItem}" />
+        <input:StandardUICommand x:Key="DeleteCommand" Kind="Delete" Command="{Binding DeleteItem}" />
     </UserControl.Resources>
 
     <TabControl>
-        <TabItem Header="FAXamlUICommand">
+        <TabItem Header="XamlUICommand">
             <StackPanel Spacing="8">
                 <ctrls:ControlExample Header="Creating a Reusable Command with XamlUICommand"
                                       XamlSource="avares://FAControlsGallery/Pages/SampleCode/XamlUICommand.xaml.txt"
                                       CSharpSource="avares://FAControlsGallery/Pages/SampleCode/XamlUICommand.cs.txt"
                                       UsageNotes="avares://FAControlsGallery/Pages/SampleCode/XamlUICommandUsageNotes.txt">
                     <DockPanel>
-                        <ui:FACommandBarButton Name="CustomButton"
+                        <ui:CommandBarButton Name="CustomButton"
                                              Command="{DynamicResource CustomXamlUICommand}"/>
                         
                         <TextBlock Name="XamlUICommandOutput"
@@ -41,7 +41,7 @@
             </StackPanel>
         </TabItem>
 
-        <TabItem Header="FAStandardUICommand">
+        <TabItem Header="StandardUICommand">
             <StackPanel Spacing="8">
                 <Expander Header="Defined StandardUICommands">
                     <ScrollViewer MaxHeight="400">
@@ -49,7 +49,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <ui:FACommandBarButton DockPanel.Dock="Right"
+                                        <ui:CommandBarButton DockPanel.Dock="Right"
                                                                 Command="{Binding Command}" />
                                         <TextBlock Text="{Binding Name}"
                                                     VerticalAlignment="Center" />
@@ -65,15 +65,15 @@
                                       CSharpSource="avares://FAControlsGallery/Pages/SampleCode/StandardUICommand.cs.txt"
                                       UsageNotes="avares://FAControlsGallery/Pages/SampleCode/StandardUICommandUsageNotes.txt">
                     <StackPanel>
-                        <ui:FACommandBar DefaultLabelPosition="Right">
-                            <ui:FACommandBar.PrimaryCommands>
-                                <ui:FACommandBarButton Label="Add" Command="{Binding AddItem}" />
-                            </ui:FACommandBar.PrimaryCommands>
-                            <ui:FACommandBar.SecondaryCommands>
-                                <ui:FACommandBarButton Command="{StaticResource DeleteCommand}"
+                        <ui:CommandBar DefaultLabelPosition="Right">
+                            <ui:CommandBar.PrimaryCommands>
+                                <ui:CommandBarButton Label="Add" Command="{Binding AddItem}" />
+                            </ui:CommandBar.PrimaryCommands>
+                            <ui:CommandBar.SecondaryCommands>
+                                <ui:CommandBarButton Command="{StaticResource DeleteCommand}"
                                                      CommandParameter="{Binding #ListBox1.SelectedItem}"/>
-                            </ui:FACommandBar.SecondaryCommands>
-                        </ui:FACommandBar>
+                            </ui:CommandBar.SecondaryCommands>
+                        </ui:CommandBar>
                         <ListBox ItemsSource="{Binding TempItems}" Name="ListBox1">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -82,7 +82,7 @@
                                             <TextBlock Text="{Binding}"
                                                        VerticalAlignment="Center" />
 
-                                            <ui:FACommandBarButton HorizontalAlignment="Right"
+                                            <ui:CommandBarButton HorizontalAlignment="Right"
                                                                  Command="{StaticResource DeleteCommand}"
                                                                  CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
                                                                  HotKey="{x:Null}" />
@@ -90,7 +90,7 @@
 
                                         <Border.ContextFlyout>
                                             <ui:FAMenuFlyout>
-                                                <ui:FAMenuFlyoutItem Command="{StaticResource DeleteCommand}"
+                                                <ui:MenuFlyoutItem Command="{StaticResource DeleteCommand}"
                                                                    CommandParameter="{Binding #ListBox1.SelectedItem}" />
                                             </ui:FAMenuFlyout>
                                         </Border.ContextFlyout>

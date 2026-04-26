@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
 
     <ProjectReference Include="..\FAControlsGallery\FAControlsGallery.csproj" />
   </ItemGroup>

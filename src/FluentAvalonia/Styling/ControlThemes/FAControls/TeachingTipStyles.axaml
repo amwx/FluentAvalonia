@@ -5,16 +5,16 @@
 
     <Design.PreviewWith>
         <Border Padding="50" Width="300" Height="300"> 
-            <ui:FATeachingTip Title="Change themes without hassle"
+            <ui:TeachingTip Title="Change themes without hassle"
                             Subtitle="It's easier than ever to see control samples in both light and dark themes!"
                             IconSource="Refresh" IsLightDismissEnabled="False"
                             IsOpen="True" HeroContentPlacement="Auto" 
                             ActionButtonContent="Action" CloseButtonContent="Close"
                             core:VisualStateHelper.ForcedClassesProperty=":bottom">
-                <ui:FATeachingTip.HeroContent>
+                <ui:TeachingTip.HeroContent>
                     <Border Width="100" Height="100" Background="Red" />
-                </ui:FATeachingTip.HeroContent>
-            </ui:FATeachingTip>
+                </ui:TeachingTip.HeroContent>
+            </ui:TeachingTip>
         </Border>
     </Design.PreviewWith>
 
@@ -106,7 +106,7 @@
 
 
 
-    <ControlTheme x:Key="{x:Type ui:FATeachingTip}" TargetType="ui:FATeachingTip">
+    <ControlTheme x:Key="{x:Type ui:TeachingTip}" TargetType="ui:TeachingTip">
         <Setter Property="Background" Value="{DynamicResource TeachingTipBackgroundBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TeachingTipForegroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource TeachingTipBorderBrush}"/>
@@ -288,7 +288,7 @@
         <!-- WinUI ButtonStates group -->
 
         <!--
-        Change from Winui:FA Made this the default state
+        Change from WinUI: Made this the default state
         
         <Style Selector="^:noButtons">
             <Style Selector="^ /template/ Button#CloseButton">
@@ -345,7 +345,7 @@
             <Setter Property="Margin" Value="{DynamicResource TeachingTipMainContentPresentMargin}" />
         </Style>
         <!--
-        Change from Winui:FA Made this the default state        
+        Change from WinUI: Made this the default state        
         
         <Style Selector="^:noContent /template/ ContentPresenter#MainContentPresenter">
             <Setter Property="Margin" Value="{DynamicResource TeachingTipMainContentAbsentMargin}" />
@@ -354,7 +354,7 @@
         <!-- WinUI CloseButtonLocations group -->
 
         <!--
-        Change from Winui:FA Made this the default state
+        Change from WinUI: Made this the default state
         
         <Style Selector="^:headerClose">
             <Style Selector="^ /template/ StackPanel#TitlesStackPanel">
@@ -381,7 +381,7 @@
         </Style>
 
         <!--
-        Change from Winui:FA Made this the default state
+        Change from WinUI: Made this the default state
         
         <Style Selector="^:noIcon /template/ ContentPresenter#IconPresenter">
             <Setter Property="Margin" Value="{DynamicResource TeachingTipIconPresenterMarginWithoutIcon}" />

@@ -7,14 +7,14 @@
 
     <Design.PreviewWith>
         <Border Padding="50">
-            <uip:FATaskDialogCommandHost Content="Content" Description="Description" />
+            <uip:TaskDialogCommandHost Content="Content" Description="Description" />
         </Border>
     </Design.PreviewWith>
 
     <x:Double x:Key="TaskDialogCommandMinHeight">48</x:Double>
 
-    <ControlTheme x:Key="{x:Type uip:FATaskDialogCommandHost}" TargetType="uip:FATaskDialogCommandHost"
-                  x:DataType="ui:FATaskDialogCommand">
+    <ControlTheme x:Key="{x:Type uip:TaskDialogCommandHost}" TargetType="uip:TaskDialogCommandHost"
+                  x:DataType="ui:TaskDialogCommand">
         <Setter Property="Background" Value="{DynamicResource TaskDialogCommandBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TaskDialogCommandBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource TaskDialogCommandBorderThickness}" />
@@ -38,7 +38,7 @@
                     <Grid ColumnDefinitions="Auto,*">
                         <Viewbox Width="18" Height="18" Margin="0 0 12 0" Name="IconHost"
                                  IsVisible="False">
-                            <ui:FAIconSourceElement IconSource="{Binding IconSource}" />
+                            <ui:IconSourceElement IconSource="{Binding IconSource}" />
                         </Viewbox>
                         <StackPanel Spacing="2" Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock Text="{Binding Text}"

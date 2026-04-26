@@ -68,7 +68,7 @@
                         Height="{TemplateBinding Height}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                    <ui:FASymbolIcon Symbol="ChevronRight"
+                    <ui:SymbolIcon Symbol="ChevronRight"
                                    Foreground="{TemplateBinding Foreground}"
                                    FontSize="14"
                                    HorizontalAlignment="Center"

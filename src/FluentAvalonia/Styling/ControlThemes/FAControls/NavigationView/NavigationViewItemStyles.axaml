@@ -7,13 +7,13 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="4">
-                <ui:FANavigationViewItem />
+                <ui:NavigationViewItem />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
 
-    <ControlTheme x:Key="{x:Type ui:FANavigationViewItem}" TargetType="ui:FANavigationViewItem">
+    <ControlTheme x:Key="{x:Type ui:NavigationViewItem}" TargetType="ui:NavigationViewItem">
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
@@ -34,7 +34,7 @@
                         </Style>
                     </Grid.Styles>
 
-                    <uip:FANavigationViewItemPresenter Name="NVIPresenter"
+                    <uip:NavigationViewItemPresenter Name="NVIPresenter"
                                                      IconSource="{TemplateBinding IconSource}"
                                                      InfoBadge="{TemplateBinding InfoBadge}"
                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -50,7 +50,7 @@
                                                      Content="{TemplateBinding Content}"
                                                      TemplatedControl.IsTemplateFocusTarget="True" />
 
-                    <ui:FAItemsRepeater Grid.Row="1"
+                    <ui:ItemsRepeater Grid.Row="1"
                                    IsVisible="False"
                                    Name="NVIMenuItemsHost"
                                    KeyboardNavigation.TabNavigation="Continue" />
@@ -67,16 +67,16 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^:topprimary /template/ uip|FANavigationViewItemPresenter">
+        <Style Selector="^:topprimary /template/ uip|NavigationViewItemPresenter">
             <Setter Property="Margin" Value="{DynamicResource TopNavigationViewItemMargin}" />
             <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForeground}" />
         </Style>
 
-        <Style Selector="^:topnav /template/ uip|FANavigationViewItemPresenter">
+        <Style Selector="^:topnav /template/ uip|NavigationViewItemPresenter">
             <Setter Property="Theme" Value="{DynamicResource NavigationViewItemPresenterWhenOnTopPane}" />
         </Style>
 
-        <Style Selector="^:topoverflow /template/ uip|FANavigationViewItemPresenter">
+        <Style Selector="^:topoverflow /template/ uip|NavigationViewItemPresenter">
             <Setter Property="Theme" Value="{DynamicResource NavigationViewItemPresenterWhenOnTopPaneOverflow}" />
         </Style>
     </ControlTheme>

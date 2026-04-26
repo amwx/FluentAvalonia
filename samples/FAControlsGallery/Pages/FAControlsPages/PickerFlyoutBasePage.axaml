@@ -14,9 +14,9 @@
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="PickerFlyoutPresenter"
-                              TargetType="ui:FAPickerFlyoutPresenter"
+                              TargetType="ui:PickerFlyoutPresenter"
                               EnableShowDefinitionLink="True">
-            <ui:FAPickerFlyoutPresenter Width="200" Height="150" Content="Content for flyout goes here"/>
+            <ui:PickerFlyoutPresenter Width="200" Height="150" Content="Content for flyout goes here"/>
 
             <ctrls:ControlExample.UsageNotes>
                 <x:String xml:space="preserve">

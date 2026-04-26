@@ -10,7 +10,7 @@ public partial class MiscControlsPage : ControlsPageBase
         InitializeComponent();
         ControlName = "Miscellaneous Controls";
         App.Current.Resources.TryGetResource("MiscPageIcon", null, out var icon);
-        PreviewImage = (FAIconSource)icon;
+        PreviewImage = (IconSource)icon;
     }
 
     private void InitializeComponent()

@@ -6,14 +6,14 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <ui:FAMenuFlyoutPresenter>
-                <ui:FAMenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
-                <ui:FAMenuFlyoutSeparator />
-                <ui:FAMenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
+                <ui:MenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
+                <ui:MenuFlyoutSeparator />
+                <ui:MenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
             </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme x:Key="{x:Type ui:FAMenuFlyoutSeparator}" TargetType="ui:FAMenuFlyoutSeparator">
+    <ControlTheme x:Key="{x:Type ui:MenuFlyoutSeparator}" TargetType="ui:MenuFlyoutSeparator">
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutSeparatorBackground}" />
         <Setter Property="Padding" Value="{StaticResource MenuFlyoutSeparatorThemePadding}" />
         <Setter Property="Template">

@@ -12,7 +12,7 @@ internal class UniformGridLayoutState
 
     public double EffectiveItemHeight => _effectiveItemHeight;
 
-    public void InitializeForContext(FAVirtualizingLayoutContext context,
+    public void InitializeForContext(VirtualizingLayoutContext context,
         IFlowLayoutAlgorithmDelegates callbacks)
     {
         _flowAlgorithm ??= new FlowLayoutAlgorithm();
@@ -20,14 +20,14 @@ internal class UniformGridLayoutState
         context.LayoutStateCore = this;
     }
 
-    public void UninitializeForContext(FAVirtualizingLayoutContext context)
+    public void UninitializeForContext(VirtualizingLayoutContext context)
     {
         _flowAlgorithm.UninitializeForContext(context);
     }
 
-    public void EnsureElementSize(Size availableSize, FAVirtualizingLayoutContext context,
+    public void EnsureElementSize(Size availableSize, VirtualizingLayoutContext context,
         double layoutItemWidth, double layoutItemHeight,
-        FAUniformGridLayoutItemsStretch stretch, Orientation orientation,
+        UniformGridLayoutItemsStretch stretch, Orientation orientation,
         double minRowSpacing, double minColumnSpacing, int maxItemsPerLine)
     {
         if (maxItemsPerLine == 0)
@@ -53,7 +53,7 @@ internal class UniformGridLayoutState
                 // has the potential to repeatedly invalidate layout due to recycling causing layout cycles.
                 if (!_isEffectiveSizeValid)
                 {
-                    if (context.GetOrCreateElementAt(0, FAElementRealizationOptions.ForceCreate) is Control firstElement)
+                    if (context.GetOrCreateElementAt(0, ElementRealizationOptions.ForceCreate) is Control firstElement)
                     {
                         firstElement.Measure(CalculateAvailableSize(availableSize, orientation,
                             stretch, maxItemsPerLine, layoutItemWidth, layoutItemHeight,
@@ -90,7 +90,7 @@ internal class UniformGridLayoutState
     }
 
     public Size CalculateAvailableSize(Size availableSize, Orientation orientation,
-        FAUniformGridLayoutItemsStretch stretch, int maxItemsPerLine,
+        UniformGridLayoutItemsStretch stretch, int maxItemsPerLine,
         double itemWidth, double itemHeight, double minRowSpacing, double minColumnSpacing)
     {
         // Since some controls might have certain requirements when rendering (e.g. maintaining an aspect ratio),
@@ -102,7 +102,7 @@ internal class UniformGridLayoutState
             if (!double.IsNaN(itemWidth))
             {
                 double allowedColumnWidth = itemWidth;
-                if (stretch != FAUniformGridLayoutItemsStretch.None)
+                if (stretch != UniformGridLayoutItemsStretch.None)
                 {
                     allowedColumnWidth += CalculateExtraPixelsInLine(maxItemsPerLine,
                         availableSize.Width, itemWidth, minColumnSpacing);
@@ -116,7 +116,7 @@ internal class UniformGridLayoutState
             if (!double.IsNaN(itemHeight))
             {
                 double allowedRowHeight = itemHeight;
-                if (stretch != FAUniformGridLayoutItemsStretch.None)
+                if (stretch != UniformGridLayoutItemsStretch.None)
                 {
                     allowedRowHeight += CalculateExtraPixelsInLine(maxItemsPerLine,
                         availableSize.Height, itemHeight, minRowSpacing);
@@ -150,7 +150,7 @@ internal class UniformGridLayoutState
     }
 
     private void SetSize(Size desiredItemSize, double layoutItemWidth, double layoutItemHeight,
-        Size availableSize, FAUniformGridLayoutItemsStretch stretch, Orientation orientation,
+        Size availableSize, UniformGridLayoutItemsStretch stretch, Orientation orientation,
         double minRowSpacing, double minColumnSpacing, int maxItemsPerLine)
     {
         maxItemsPerLine = maxItemsPerLine == 0 ? 1 : maxItemsPerLine;
@@ -170,7 +170,7 @@ internal class UniformGridLayoutState
                 availableSizeMinor, itemSizeMinor, minorItemSpacing);
         }
 
-        if (stretch == FAUniformGridLayoutItemsStretch.Fill)
+        if (stretch == UniformGridLayoutItemsStretch.Fill)
         {
             if (orientation == Orientation.Horizontal)
             {
@@ -181,7 +181,7 @@ internal class UniformGridLayoutState
                 _effectiveItemHeight += extraMinorPixelsForEachItem;
             }
         }
-        else if (stretch == FAUniformGridLayoutItemsStretch.Uniform)
+        else if (stretch == UniformGridLayoutItemsStretch.Uniform)
         {
             var itemSizeMajor = orientation == Orientation.Horizontal ? _effectiveItemHeight : _effectiveItemWidth;
             var extraMajorPixelsForEachItem = itemSizeMajor * (extraMinorPixelsForEachItem / itemSizeMinor);

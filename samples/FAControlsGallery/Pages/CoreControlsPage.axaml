@@ -43,14 +43,14 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="vm:PageBaseViewModel">
-                        <ui:FASettingsExpander Command="{Binding InvokeCommand}"
+                        <ui:SettingsExpander Command="{Binding InvokeCommand}"
                                              Header="{Binding Header}"
                                              Description="{Binding Description}"
                                              IsClickEnabled="True"
                                              ClipToBounds="False"
                                              IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}">
                             
-                        </ui:FASettingsExpander>
+                        </ui:SettingsExpander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

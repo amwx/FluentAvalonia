@@ -26,7 +26,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Center"
                                      Margin="12 6">
-                                <ui:FAIconSourceElement IconSource="{TemplateBinding Tag}" />
+                                <ui:IconSourceElement IconSource="{TemplateBinding Tag}" />
                             </Viewbox>
                             <!--<ContentPresenter Name="PART_ContentPresenter"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -111,7 +111,7 @@
             </TabStripItem>
         </TabStrip>
 
-        <ui:FAFrame Name="InnerNavFrame"
+        <ui:Frame Name="InnerNavFrame"
                   IsNavigationStackEnabled="False"/>
     </Panel>
     

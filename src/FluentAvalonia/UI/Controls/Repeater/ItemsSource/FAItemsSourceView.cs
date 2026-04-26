@@ -20,7 +20,7 @@ public class FAItemsSourceView
         _vector = source;
         ListenToCollectionChanges();
 
-        _uniqueIdMapping = source as IFAKeyIndexMapping;
+        _uniqueIdMapping = source as IKeyIndexMapping;
     }
 
     /// <summary>
@@ -191,6 +191,6 @@ public class FAItemsSourceView
 
     private int _cachedSize = -1;
     private IEnumerable _vector;
-    private IFAKeyIndexMapping _uniqueIdMapping;
+    private IKeyIndexMapping _uniqueIdMapping;
     private IDisposable _eventToken;
 }

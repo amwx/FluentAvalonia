@@ -10,7 +10,7 @@ public partial class CommandBarPage : ControlsPageBase
         InitializeComponent();
 
         DataContext = this;
-        TargetType = typeof(FACommandBar);
+        TargetType = typeof(CommandBar);
     }
 
     private void InitializeComponent()

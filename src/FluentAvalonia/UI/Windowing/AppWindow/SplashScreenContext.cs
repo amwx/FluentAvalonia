@@ -6,16 +6,16 @@ namespace FluentAvalonia.UI.Windowing;
 
 internal class SplashScreenContext
 {
-    public SplashScreenContext(IFAApplicationSplashScreen splash)
+    public SplashScreenContext(IApplicationSplashScreen splash)
     {
         SplashScreen = splash;
     }
 
-    public IFAApplicationSplashScreen SplashScreen { get; }
+    public IApplicationSplashScreen SplashScreen { get; }
 
     public bool HasShownSplashScreen { get; set; }
 
-    public FAAppSplashScreen Host
+    public AppSplashScreen Host
     {
         get => _splashHost;
         set
@@ -40,13 +40,13 @@ internal class SplashScreenContext
         _splashCTS = null;
     }
 
-    private FAAppSplashScreen _splashHost;
+    private AppSplashScreen _splashHost;
     private CancellationTokenSource _splashCTS;
 }
 
-public class FAAppSplashScreen : TemplatedControl
+public class AppSplashScreen : TemplatedControl
 {
-    public IFAApplicationSplashScreen SplashScreen { get; set; }
+    public IApplicationSplashScreen SplashScreen { get; set; }
 
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

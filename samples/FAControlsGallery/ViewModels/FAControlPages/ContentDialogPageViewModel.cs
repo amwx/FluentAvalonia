@@ -46,9 +46,9 @@ public class ContentDialogPageViewModel : ViewModelBase
         set => RaiseAndSetIfChanged(ref _fullSize, value);
     }
 
-    public FAContentDialogButton[] ContentDialogButtons { get; } = Enum.GetValues<FAContentDialogButton>();
+    public ContentDialogButton[] ContentDialogButtons { get; } = Enum.GetValues<ContentDialogButton>();
 
-    public FAContentDialogButton ContentDialogDefaultButton
+    public ContentDialogButton ContentDialogDefaultButton
     {
         get => _defaultButton;
         set => RaiseAndSetIfChanged(ref _defaultButton, value);
@@ -72,7 +72,7 @@ public class ContentDialogPageViewModel : ViewModelBase
     {
         bool hasDeferral = bool.Parse(parameter.ToString());
 
-        var cd = new FAContentDialog
+        var cd = new ContentDialog
         {
             PrimaryButtonText = PrimaryButtonText,
             SecondaryButtonText = SecondaryButtonText,
@@ -97,7 +97,7 @@ public class ContentDialogPageViewModel : ViewModelBase
         }
     }
 
-    private async void OnPrimaryButtonClick(FAContentDialog sender, FAContentDialogButtonClickEventArgs args)
+    private async void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
         var def = args.GetDeferral();
         await Task.Delay(3000);
@@ -106,7 +106,7 @@ public class ContentDialogPageViewModel : ViewModelBase
 
     public async void ShowInputDialogAsync()
     {
-        var dialog = new FAContentDialog()
+        var dialog = new ContentDialog()
         {
             Title = "Let's go ...",
             PrimaryButtonText = "Ok :-)",
@@ -129,7 +129,7 @@ public class ContentDialogPageViewModel : ViewModelBase
     private string _secondaryText = "Secondary Button";
     private string _closeText = "Close Button";
     private bool _fullSize;
-    private FAContentDialogButton _defaultButton;
+    private ContentDialogButton _defaultButton;
     private bool _primaryEnabled = true;
     private bool _secondaryEnabled = true;
 }

@@ -2,12 +2,10 @@
 
 namespace FluentAvalonia.Core;
 
-// TODO v3: Are these still necessary?
-
 /// <summary>
 /// <see cref="IEnumerable"/> extensions methods
 /// </summary>
-internal static class IEnumerableExtensions
+public static class IEnumerableExtensions
 {
     /// <summary>
     /// Gets the item count of the IEnumerable
