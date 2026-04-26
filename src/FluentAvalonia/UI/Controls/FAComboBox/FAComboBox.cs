@@ -89,7 +89,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
         else if (change.Property == DisplayMemberBindingProperty)
         {
-            var temp = change.GetNewValue<BindingBase>();
+            var temp = change.GetNewValue<IBinding>();
             if (temp != null)
             {
                 _displayMemberTemplate = new FuncDataTemplate<object>((_, _) =>
@@ -124,7 +124,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
         else if (change.Property == HeaderProperty)
         {
-            PseudoClasses.Set(FASharedPseudoclasses.s_pcHeader, change.NewValue is not null);
+            PseudoClasses.Set(SharedPseudoclasses.s_pcHeader, change.NewValue is not null);
         }
     }
 
@@ -280,7 +280,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             if (_popup?.IsInsidePopup(src) == true)
                 return;
         }
-        PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, true);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, true);
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -308,14 +308,13 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 e.Handled = true;
             }
         }
-        PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, false);
+        PseudoClasses.Set(SharedPseudoclasses.s_pcPressed, false);
         base.OnPointerReleased(e);
     }
 
-    protected override void OnGotFocus(FocusChangedEventArgs e)
+    protected override void OnGotFocus(GotFocusEventArgs e)
     {
         base.OnGotFocus(e);
-
         if (IsEditable && _textBox != null)
         {
             if (!IsDropDownOpen)
@@ -337,7 +336,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         UpdateIsSelectionBoxHighlighted();
     }
 
-    protected override void OnLostFocus(FocusChangedEventArgs e)
+    protected override void OnLostFocus(RoutedEventArgs e)
     {
         base.OnLostFocus(e);
 
@@ -446,13 +445,13 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
         _subscriptionsOnOpen.Clear();
 
-        var toplevel = TopLevel.GetTopLevel(this);
+        var toplevel = this.GetVisualRoot() as TopLevel;
         if (toplevel != null)
         {
             _subscriptionsOnOpen.Add(
                 toplevel.AddDisposableHandler(PointerWheelChangedEvent, (s, ev) =>
                 {
-                    if (IsDropDownOpen && TopLevel.GetTopLevel(ev.Source as Visual) == toplevel)
+                    if (IsDropDownOpen && (ev.Source as Visual)?.GetVisualRoot() == toplevel)
                         ev.Handled = true;
                 }, RoutingStrategies.Tunnel));
         }
@@ -491,7 +490,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 if (container is null) // If this happens for any reason, just bail out
                     return;
 
-                var root = TopLevel.GetTopLevel(container);
+                var root = container.GetVisualRoot() as Visual;
                 var transform = container.TransformToVisual(root);
                 if (!transform.HasValue) // Also bail out if this fails for any reason
                     return;
@@ -503,7 +502,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
             _popup.VerticalOffset = -dropDownDelta;
 
-            var contentRoot = TopLevel.GetTopLevel(_popup.Child);
+            var contentRoot = _popup.Child.GetVisualRoot();
             if (contentRoot is PopupRoot)
             {
                 // HACK: Windowed popups appear to be +1 offset on x-axis for some reason
@@ -520,11 +519,11 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     private void UpdateCornerRadius()
     {
         var child = _popup.Child as Visual;
-        var thisRoot = TopLevel.GetTopLevel(this);
-        var popupRoot = TopLevel.GetTopLevel(child);
+        var thisRoot = this.GetVisualRoot();
+        var popupRoot = child.GetVisualRoot();
 
         bool isPopupAbove = false;
-        if (popupRoot == thisRoot)
+        if (popupRoot is OverlayPopupHost oph)
         {
             Debug.Assert(thisRoot == popupRoot);
             // Overlay popups are in use, this is the easiest
@@ -793,7 +792,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     {
         if (e.GetCurrentPoint(_dropDownOverlay).Properties.IsLeftButtonPressed)
         {
-            ((IPseudoClasses)_dropDownOverlay.Classes).Set(FASharedPseudoclasses.s_pcPressed, true);
+            ((IPseudoClasses)_dropDownOverlay.Classes).Set(SharedPseudoclasses.s_pcPressed, true);
             e.Handled = true;
         }
     }
@@ -802,7 +801,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     {
         if (e.GetCurrentPoint(_dropDownOverlay).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
         {
-            ((IPseudoClasses)_dropDownOverlay.Classes).Set(FASharedPseudoclasses.s_pcPressed, false);
+            ((IPseudoClasses)_dropDownOverlay.Classes).Set(SharedPseudoclasses.s_pcPressed, false);
             IsDropDownOpen = !IsDropDownOpen;
             UpdateSelectionBoxItem(SelectedItem);
             e.Handled = true;
@@ -811,7 +810,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
     private void OnDropDownOverlayPointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
     {
-        ((IPseudoClasses)_dropDownOverlay.Classes).Set(FASharedPseudoclasses.s_pcPressed, false);
+        ((IPseudoClasses)_dropDownOverlay.Classes).Set(SharedPseudoclasses.s_pcPressed, false);
     }
 
     private string FormatValue(object item)
@@ -826,17 +825,8 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
         else
         {
-            var result = GetBindingEvaluator().Evaluate(item)?.ToString();
-            _displayMemberBindingEvaluator.ClearDataContext();
-            return result;
+            return _bindingHelper.Evaluate(DisplayMemberBinding, item).ToString();
         }
-    }
-
-    private BindingEvaluator<object> GetBindingEvaluator()
-    {
-        _displayMemberBindingEvaluator ??= new BindingEvaluator<object>();
-        _displayMemberBindingEvaluator.UpdateBinding(DisplayMemberBinding);
-        return _displayMemberBindingEvaluator;
     }
 
     private void OnTextBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -1030,7 +1020,6 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         var items = ItemsView;
         var ct = items.Count;
         var binding = DisplayMemberBinding;
-        var evaluator = GetBindingEvaluator();
 
         for (int i = 0; i < ct; i++)
         {
@@ -1049,17 +1038,15 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             else
             {
                 // Item is a ViewModel
-                var value = binding is null ? item.ToString() : evaluator.Evaluate(item);
+                var value = binding is null ? item.ToString() : _bindingHelper.Evaluate(binding, item);
 
                 if (value != null && value.Equals(text))
                 {
-                    evaluator.ClearDataContext();
                     return i;
                 }
             }
         }
 
-        evaluator.ClearDataContext();
         return -1;
     }
 
@@ -1074,7 +1061,37 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     private bool _hasUnsubmittedText;
     private int _currentTextSelectionStart;
     private readonly ITemplate<Control> _noFocusAdornerTemplate = new FuncTemplate<Control>(() => new Decorator());
-    private BindingEvaluator<object> _displayMemberBindingEvaluator;
 
+    private readonly BindingHelper _bindingHelper = new BindingHelper();
     private FACompositeDisposable _subscriptionsOnOpen = new FACompositeDisposable();
+
+    private class BindingHelper : StyledElement
+    {
+        public static readonly StyledProperty<object> ValueProperty =
+            AvaloniaProperty.Register<BindingHelper, object>("Value");
+
+        public object Evaluate(IBinding binding, object dataContext)
+        {
+            dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+
+            if (binding is null)
+            {
+                _lastBinding = null;
+                return dataContext;
+            }
+
+            if (!dataContext.Equals(DataContext))
+                DataContext = dataContext;
+
+            if (_lastBinding != binding)
+            {
+                _lastBinding = binding;
+                Bind(ValueProperty, binding);
+            }
+
+            return GetValue(ValueProperty);
+        }
+
+        private IBinding _lastBinding;
+    }
 }

@@ -41,8 +41,7 @@
                                       Content="{TemplateBinding Content}"
                                       ContentTemplate="{TemplateBinding ContentTemplate}"
                                       VerticalAlignment="Top"
-                                      Margin="{DynamicResource ToggleSwitchTopHeaderMargin}"
-                                      RecognizesAccessKey="True"/>
+                                      Margin="{DynamicResource ToggleSwitchTopHeaderMargin}"/>
 
                     <Grid Grid.Row="1"
                           HorizontalAlignment="Left"

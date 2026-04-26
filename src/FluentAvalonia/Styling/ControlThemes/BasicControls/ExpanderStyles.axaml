@@ -385,7 +385,7 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Padding" Value="{DynamicResource ExpanderContentPadding}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-        <Setter Property="ui:FAExpanderExt.ExpanderAnimationType" Value="FluentV2" />
+        <Setter Property="ui:ExpanderExt.ExpanderAnimationType" Value="FluentV2" />
         <Setter Property="Template">
             <ControlTemplate>
                 <DockPanel MinWidth="{TemplateBinding MinWidth}"

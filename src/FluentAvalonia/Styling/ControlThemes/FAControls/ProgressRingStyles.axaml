@@ -3,8 +3,8 @@
                     xmlns:ui="using:FluentAvalonia.UI.Controls"
                     xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives">
     
-    <ControlTheme TargetType="ui:FAProgressRing"
-                  x:Key="{x:Type ui:FAProgressRing}">
+    <ControlTheme TargetType="ui:ProgressRing"
+                  x:Key="{x:Type ui:ProgressRing}">
         <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
         <Setter Property="Background" Value="{DynamicResource ControlFillColorTransparentBrush}" />
         <Setter Property="IsHitTestVisible" Value="False" />
@@ -19,7 +19,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Background="Transparent">
-                    <uip:FAProgressRingAnimatedVisual Name="AnimatedVisual" />
+                    <uip:ProgressRingAnimatedVisual Name="AnimatedVisual" />
                 </Panel>
             </ControlTemplate>
         </Setter>

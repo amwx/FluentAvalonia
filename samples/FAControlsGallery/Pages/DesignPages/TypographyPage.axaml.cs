@@ -12,7 +12,7 @@ public partial class TypographyPage : ControlsPageBase
 
         ShowToggleThemeButton = false;
         ControlName = "Typography";
-        PreviewImage = (FAIconSource)App.Current.FindResource("TextPageIcon");
+        PreviewImage = (IconSource)App.Current.FindResource("TextPageIcon");
 
         Description = "Type helps provide structure and hierarchy to the UI. The default font is Segoe UI " +
             "on Windows 10 and Segoe UI Variable on Windows 11. Best practice is to use Regular weight for " +

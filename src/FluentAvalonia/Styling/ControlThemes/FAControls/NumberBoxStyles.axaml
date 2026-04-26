@@ -5,28 +5,28 @@
     <Design.PreviewWith>
         <Border Padding="30">
             <StackPanel Spacing="10">
-                <ui:FANumberBox Width="150" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="100" Value="10" />
-                <ui:FANumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
-                <ui:FANumberBox Width="150" SpinButtonPlacementMode="Hidden" Minimum="0" Maximum="100" Value="10" />
-                <ui:FANumberBox Width="150" PlaceholderText="Enter Number" />
+                <ui:NumberBox Width="150" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="100" Value="10" />
+                <ui:NumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
+                <ui:NumberBox Width="150" SpinButtonPlacementMode="Hidden" Minimum="0" Maximum="100" Value="10" />
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number" />
 
-                <ui:FANumberBox Width="150" PlaceholderText="Enter Number">
-                    <ui:FANumberBox.InnerLeftContent>
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number">
+                    <ui:NumberBox.InnerLeftContent>
                         <TextBlock Text="Hi" />
-                    </ui:FANumberBox.InnerLeftContent>
-                </ui:FANumberBox>
+                    </ui:NumberBox.InnerLeftContent>
+                </ui:NumberBox>
 
                 <Rectangle Height="1" Fill="Black" Margin="8" />
-                <ui:FANumberBox Width="150" PlaceholderText="Enter Number"
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number"
                               SpinButtonPlacementMode="Inline"
                               Theme="{DynamicResource CompactNumberBoxStyle}"/>
-                <ui:FANumberBox Width="150" PlaceholderText="Enter Number"
+                <ui:NumberBox Width="150" PlaceholderText="Enter Number"
                               SpinButtonPlacementMode="Inline"
                               Theme="{DynamicResource CompactNumberBoxStyle}">
-                    <ui:FANumberBox.InnerLeftContent>
+                    <ui:NumberBox.InnerLeftContent>
                         <TextBlock Text="Hi" />
-                    </ui:FANumberBox.InnerLeftContent>
-                </ui:FANumberBox>
+                    </ui:NumberBox.InnerLeftContent>
+                </ui:NumberBox>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -143,7 +143,7 @@
                                          Width="18" Height="18"
                                          Name="PopupIndicator"
                                          IsVisible="False">
-                                    <ui:FAFontIcon Glyph="&#xEC8F;"
+                                    <ui:FontIcon Glyph="&#xEC8F;"
                                                  FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                                  FontSize="24"
                                                  Foreground="{DynamicResource NumberBoxPopupIndicatorForeground}" />
@@ -163,7 +163,7 @@
         </Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type ui:FANumberBox}" TargetType="ui:FANumberBox">
+    <ControlTheme x:Key="{x:Type ui:NumberBox}" TargetType="ui:NumberBox">
         <Setter Property="SelectionHighlightColor" Value="{DynamicResource TextControlSelectionHighlightColor}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
@@ -393,7 +393,7 @@
     </ControlTheme>
     
     <ControlTheme x:Key="CompactNumberBoxStyle" 
-                  TargetType="ui:FANumberBox">
+                  TargetType="ui:NumberBox">
         <Setter Property="SelectionHighlightColor" Value="{DynamicResource TextControlSelectionHighlightColor}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />

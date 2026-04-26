@@ -4,17 +4,17 @@
 
     <Design.PreviewWith>
         <Border Padding="20" Background="#E0E0E0">
-            <ui:FACommandBarFlyoutCommandBar IsOpen="True" Margin="30">
-                <ui:FACommandBarFlyoutCommandBar.PrimaryCommands>
-                    <!--<ui:FACommandBarButton IconSource="Save" />
-                    <ui:FACommandBarToggleButton IconSource="Globe" />-->
-                </ui:FACommandBarFlyoutCommandBar.PrimaryCommands>
+            <ui:CommandBarFlyoutCommandBar IsOpen="True" Margin="30">
+                <ui:CommandBarFlyoutCommandBar.PrimaryCommands>
+                    <!--<ui:CommandBarButton IconSource="Save" />
+                    <ui:CommandBarToggleButton IconSource="Globe" />-->
+                </ui:CommandBarFlyoutCommandBar.PrimaryCommands>
 
-                <ui:FACommandBarFlyoutCommandBar.SecondaryCommands>
-                    <ui:FACommandBarButton IconSource="Save" Label="Save" HotKey="Ctrl+S" />
-                    <ui:FACommandBarToggleButton IconSource="ChevronUp" Label="Move Up" IsChecked="True" HotKey="Ctrl+F1" />
-                </ui:FACommandBarFlyoutCommandBar.SecondaryCommands>
-            </ui:FACommandBarFlyoutCommandBar>
+                <ui:CommandBarFlyoutCommandBar.SecondaryCommands>
+                    <ui:CommandBarButton IconSource="Save" Label="Save" HotKey="Ctrl+S" />
+                    <ui:CommandBarToggleButton IconSource="ChevronUp" Label="Move Up" IsChecked="True" HotKey="Ctrl+F1" />
+                </ui:CommandBarFlyoutCommandBar.SecondaryCommands>
+            </ui:CommandBarFlyoutCommandBar>
         </Border>
     </Design.PreviewWith>
 
@@ -81,7 +81,7 @@
     </ControlTheme>
 
     <ControlTheme x:Key="CBFlyoutPresenterStyle"    
-                  TargetType="ui:FACommandBarOverflowPresenter">
+                  TargetType="ui:CommandBarOverflowPresenter">
         <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutButtonBackground}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="MinWidth" Value="136" />
@@ -114,7 +114,7 @@
     <!-- The buttons have different style declarations for CommandBarFlyout -->
 
     <!-- CommandBarButton when in CommandBarFlyout -->
-    <ControlTheme x:Key="CommandBarFlyoutButtonStyle" TargetType="ui:FACommandBarButton">
+    <ControlTheme x:Key="CommandBarFlyoutButtonStyle" TargetType="ui:CommandBarButton">
         <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommandBarFlyoutAppBarButtonBorderBrush}" />
@@ -179,7 +179,7 @@
                                    VerticalAlignment="Center"
                                    IsVisible="False"/>
 
-                        <ui:FASymbolIcon Name="SubItemChevron"
+                        <ui:SymbolIcon Name="SubItemChevron"
                                        Grid.Column="2"
                                        Symbol="ChevronRight"
                                        FontSize="12"
@@ -294,7 +294,7 @@
             </Style>
         </Style>
 
-        <Style Selector="^:flyout /template/ ui|FASymbolIcon#SubItemChevron">
+        <Style Selector="^:flyout /template/ ui|SymbolIcon#SubItemChevron">
             <Setter Property="IsVisible" Value="True" />
         </Style>
 
@@ -356,7 +356,7 @@
     </ControlTheme>
 
     <!-- CommandBarToggleButton when in CommandBarFlyout -->
-    <ControlTheme x:Key="CommandBarFlyoutToggleButtonStyle" TargetType="ui:FACommandBarToggleButton">
+    <ControlTheme x:Key="CommandBarFlyoutToggleButtonStyle" TargetType="ui:CommandBarToggleButton">
         <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutAppBarButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommandBarFlyoutAppBarButtonBorderBrush}" />
@@ -390,7 +390,7 @@
                     <Grid Name="ContentRoot" ColumnDefinitions="*,Auto"
                           Width="40">
 
-                        <ui:FASymbolIcon Name="OverflowCheckGlyph"
+                        <ui:SymbolIcon Name="OverflowCheckGlyph"
                                        Symbol="Checkmark"
                                        Foreground="{DynamicResource CommandBarFlyoutAppBarButtonForeground}"
                                        FontSize="18"
@@ -511,7 +511,7 @@
                 <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                     <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundDisabled}" />
                 </Style>
-                <Style Selector="^ /template/ ui|FASymbolIcon#OverflowCheckGlyph">
+                <Style Selector="^ /template/ ui|SymbolIcon#OverflowCheckGlyph">
                     <Setter Property="Opacity" Value="1" />
                     <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundDisabled}" />
                 </Style>
@@ -537,7 +537,7 @@
             <Style Selector="^ /template/ TextBlock#OverflowTextLabel">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
-            <Style Selector="^ /template/ ui|FASymbolIcon#OverflowCheckGlyph">
+            <Style Selector="^ /template/ ui|SymbolIcon#OverflowCheckGlyph">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
 
@@ -573,7 +573,7 @@
             </Style>
 
             <Style Selector="^:checked">
-                <Style Selector="^ /template/ ui|FASymbolIcon#OverflowCheckGlyph">
+                <Style Selector="^ /template/ ui|SymbolIcon#OverflowCheckGlyph">
                     <Setter Property="Opacity" Value="1" />
                 </Style>
                 <Style Selector="^ /template/ Border#AppBarButtonInnerBorder">
@@ -596,7 +596,7 @@
                     <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPointerOver}" />
                     </Style>
-                    <Style Selector="^ /template/ ui|FASymbolIcon#OverflowCheckGlyph">
+                    <Style Selector="^ /template/ ui|SymbolIcon#OverflowCheckGlyph">
                         <Setter Property="Opacity" Value="1" />
                         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPointerOver}" />
                     </Style>
@@ -615,7 +615,7 @@
                     <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextLabel">
                         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPressed}" />
                     </Style>
-                    <Style Selector="^ /template/ ui|FASymbolIcon#OverflowCheckGlyph">
+                    <Style Selector="^ /template/ ui|SymbolIcon#OverflowCheckGlyph">
                         <Setter Property="Opacity" Value="1" />
                         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutAppBarButtonForegroundPressed}" />
                     </Style>
@@ -689,8 +689,8 @@
     </ControlTheme>
 
 
-    <ControlTheme x:Key="{x:Type ui:FACommandBarFlyoutCommandBar}"
-                  TargetType="ui:FACommandBarFlyoutCommandBar">
+    <ControlTheme x:Key="{x:Type ui:CommandBarFlyoutCommandBar}"
+                  TargetType="ui:CommandBarFlyoutCommandBar">
         <Setter Property="Background" Value="{DynamicResource CommandBarFlyoutBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource CommandBarFlyoutForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommandBarFlyoutBorderBrush}" />
@@ -712,10 +712,10 @@
                         BorderThickness="1"
                         CornerRadius="{TemplateBinding CornerRadius}">
                     <Border.Styles>
-                        <Style Selector="ui|FACommandBarButton">
+                        <Style Selector="ui|CommandBarButton">
                             <Setter Property="Theme" Value="{StaticResource CommandBarFlyoutButtonStyle}" />
                         </Style>
-                        <Style Selector="ui|FACommandBarToggleButton">
+                        <Style Selector="ui|CommandBarToggleButton">
                             <Setter Property="Theme" Value="{StaticResource CommandBarFlyoutToggleButtonStyle}" />
                         </Style>
                     </Border.Styles>
@@ -741,7 +741,7 @@
                                         Foreground="{TemplateBinding Foreground}"
                                         Grid.Column="1"
                                         Theme="{StaticResource CBFlyoutEllipsisButton}">
-                                <ui:FASymbolIcon Symbol="More"
+                                <ui:SymbolIcon Symbol="More"
                                                 FontSize="24"
                                                 Height="{StaticResource AppBarExpandButtonCircleDiameter}"
                                                 Name="EllipsisIcon"/>
@@ -759,7 +759,7 @@
                                 CornerRadius="{DynamicResource ControlCornerRadius}"
                                 IsVisible="False">
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                                <ui:FACommandBarOverflowPresenter Name="SecondaryItemsControl"
+                                <ui:CommandBarOverflowPresenter Name="SecondaryItemsControl"
                                                                 CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
                                                                 BorderBrush="Transparent"
                                                                 BorderThickness="1 0 1 1"

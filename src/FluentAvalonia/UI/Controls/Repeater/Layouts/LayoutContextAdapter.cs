@@ -4,9 +4,9 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class LayoutContextAdapter : FAVirtualizingLayoutContext
+internal class LayoutContextAdapter : VirtualizingLayoutContext
 {
-    public LayoutContextAdapter(FANonVirtualizingLayoutContext nonVirtualizingContext)
+    public LayoutContextAdapter(NonVirtualizingLayoutContext nonVirtualizingContext)
     {
         _nonVirtualizingContext = nonVirtualizingContext;
     }
@@ -26,7 +26,7 @@ internal class LayoutContextAdapter : FAVirtualizingLayoutContext
     protected override object GetItemAtCore(int index) =>
         _nonVirtualizingContext?.Children[index] ?? null;
 
-    protected override Control GetOrCreateElementAtCore(int index, FAElementRealizationOptions options)
+    protected override Control GetOrCreateElementAtCore(int index, ElementRealizationOptions options)
     {
         if (_nonVirtualizingContext != null)
         {
@@ -68,5 +68,5 @@ internal class LayoutContextAdapter : FAVirtualizingLayoutContext
         }
     }
 
-    private FANonVirtualizingLayoutContext _nonVirtualizingContext;
+    private NonVirtualizingLayoutContext _nonVirtualizingContext;
 }

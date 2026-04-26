@@ -7,30 +7,30 @@
     <Design.PreviewWith>
         <Border Padding="20" Background="#CDCDCD" Height="530" Width="600">
             <Border BorderBrush="#35EFEFEF" BorderThickness="1">
-                <ui:FATaskDialog IconSource="SaveFilled" IsVisible="True"
+                <ui:TaskDialog IconSource="SaveFilled" IsVisible="True"
                                Header="Dialog Heading"
                                SubHeader="Dialog SubHeader"
                                Content="Dialog Content goes here"
                                FooterVisibility="Auto"
                                ShowProgressBar="True" 
                                core:VisualStateHelper.ForcedClassesProperty=":open,:progressSuspend:hosted">
-                    <ui:FATaskDialog.Buttons>
-                        <ui:FATaskDialogButton Text="OK" IconSource="Checkmark" IsDefault="True" />
-                        <ui:FATaskDialogButton Text="Cancel" IconSource="Dismiss" IsEnabled="False"/>
-                    </ui:FATaskDialog.Buttons>
+                    <ui:TaskDialog.Buttons>
+                        <ui:TaskDialogButton Text="OK" IconSource="Checkmark" IsDefault="True" />
+                        <ui:TaskDialogButton Text="Cancel" IconSource="Dismiss" IsEnabled="False"/>
+                    </ui:TaskDialog.Buttons>
 
-                    <ui:FATaskDialog.Commands>
-                        <ui:FATaskDialogCommand Text="Text here" Description="A bigger description goes here" IconSource="Map" />
-                        <ui:FATaskDialogCommand Text="Text here" Description="A bigger description goes here" IsEnabled="False"/>
-                        <ui:FATaskDialogCommand Text="Text here"/>
-                        <ui:FATaskDialogCheckBox Text="CheckBox" />
-                        <ui:FATaskDialogRadioButton Text="RadioButton" />
-                    </ui:FATaskDialog.Commands>
+                    <ui:TaskDialog.Commands>
+                        <ui:TaskDialogCommand Text="Text here" Description="A bigger description goes here" IconSource="Map" />
+                        <ui:TaskDialogCommand Text="Text here" Description="A bigger description goes here" IsEnabled="False"/>
+                        <ui:TaskDialogCommand Text="Text here"/>
+                        <ui:TaskDialogCheckBox Text="CheckBox" />
+                        <ui:TaskDialogRadioButton Text="RadioButton" />
+                    </ui:TaskDialog.Commands>
 
-                    <ui:FATaskDialog.Footer>
+                    <ui:TaskDialog.Footer>
                         <CheckBox Content="Never show me this again" />
-                    </ui:FATaskDialog.Footer>
-                </ui:FATaskDialog>
+                    </ui:TaskDialog.Footer>
+                </ui:TaskDialog>
             </Border>
         </Border>
     </Design.PreviewWith>
@@ -74,7 +74,7 @@
         </Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type ui:FATaskDialog}" TargetType="ui:FATaskDialog">
+    <ControlTheme x:Key="{x:Type ui:TaskDialog}" TargetType="ui:TaskDialog">
         <Setter Property="Background" Value="{DynamicResource ContentDialogBackground}" />
         <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
@@ -102,7 +102,7 @@
                                          HorizontalAlignment="Left"
                                          Margin="{DynamicResource TaskDialogIconMargin}"
                                          IsVisible="False">
-                                    <ui:FAIconSourceElement IconSource="{TemplateBinding IconSource}"
+                                    <ui:IconSourceElement IconSource="{TemplateBinding IconSource}"
                                                           Name="IconElement"/>
                                 </Viewbox>
                                 <TextBlock Text="{TemplateBinding Header}"
@@ -189,7 +189,7 @@
                                                 KeyboardNavigation.TabNavigation="Continue">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <uip:FATaskDialogButtonsPanel Spacing="8"  />
+                                            <uip:TaskDialogButtonsPanel Spacing="8"  />
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
@@ -270,11 +270,11 @@
         </Style>
 
         <Style Selector="^:headerForeground /template/ TextBlock#HeaderText">
-            <Setter Property="Foreground" Value="{Binding $parent[ui:FATaskDialog].HeaderForeground}" />
+            <Setter Property="Foreground" Value="{Binding $parent[ui:TaskDialog].HeaderForeground}" />
         </Style>
 
-        <Style Selector="^:iconForeground /template/ ui|FAIconSourceElement#IconElement">
-            <Setter Property="Foreground" Value="{Binding $parent[ui:FATaskDialog].IconForeground}" />
+        <Style Selector="^:iconForeground /template/ ui|IconSourceElement#IconElement">
+            <Setter Property="Foreground" Value="{Binding $parent[ui:TaskDialog].IconForeground}" />
         </Style>
 
 

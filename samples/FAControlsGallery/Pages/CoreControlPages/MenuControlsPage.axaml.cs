@@ -10,7 +10,7 @@ public partial class MenuControlsPage : ControlsPageBase
         InitializeComponent();
         ControlName = "Menu Controls";
         App.Current.Resources.TryGetResource("MenusPageIcon", null, out var icon);
-        PreviewImage = (FAIconSource)icon;
+        PreviewImage = (IconSource)icon;
     }
 
     private void InitializeComponent()

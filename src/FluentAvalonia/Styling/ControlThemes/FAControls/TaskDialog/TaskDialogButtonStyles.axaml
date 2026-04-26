@@ -5,7 +5,7 @@
                     xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
                     x:CompileBindings="True">
 
-    <ControlTheme x:Key="{x:Type uip:FATaskDialogButtonHost}" TargetType="uip:FATaskDialogButtonHost">
+    <ControlTheme x:Key="{x:Type uip:TaskDialogButtonHost}" TargetType="uip:TaskDialogButtonHost">
         <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThemeThickness}" />
@@ -34,7 +34,7 @@
                                  Height="18"
                                  Name="IconHost"
                                  IsVisible="False">
-                            <ui:FAIconSourceElement IconSource="{TemplateBinding IconSource}" />
+                            <ui:IconSourceElement IconSource="{TemplateBinding IconSource}" />
                         </Viewbox>
 
                         <ContentPresenter Name="PART_ContentPresenter"

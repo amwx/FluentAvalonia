@@ -12,7 +12,7 @@ public partial class TeachingTipPage : ControlsPageBase
         Button2.Click += Button2Click;
         Button3.Click += Button3Click;
 
-        TargetType = typeof(FATeachingTip);
+        TargetType = typeof(TeachingTip);
     }
 
     private void Button1Click(object sender, RoutedEventArgs e)

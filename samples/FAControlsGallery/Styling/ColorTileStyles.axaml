@@ -44,7 +44,7 @@
                                 Name="CopyButton"
                                 Opacity="0"
                                 ToolTip.Tip="Copy brush name">
-                            <ui:FASymbolIcon Symbol="Copy"
+                            <ui:SymbolIcon Symbol="Copy"
                                            FontSize="20"/>
                         </Button>
 
@@ -56,7 +56,7 @@
                                ToolTip.Tip="{TemplateBinding Warning}"
                                IsVisible="False"
                                Name="WarningHost">
-                            <ui:FAFontIcon Glyph="&#xE7BA;"
+                            <ui:FontIcon Glyph="&#xE7BA;"
                                          FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          FontSize="20"
                                          Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>

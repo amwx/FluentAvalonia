@@ -258,8 +258,6 @@ internal static unsafe partial class Win32Interop
     public const int HTCLIENT = 1;
     public const int HTCAPTION = 2;
     public const int HTMAXBUTTON = 9;
-    public const int HTMINBUTTON = 8;
-    public const int HTCLOSE = 20;
     public const int HTTOP = 12;
 
 

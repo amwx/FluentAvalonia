@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls;
 
 internal class ViewportManager
 {
-    public ViewportManager(FAItemsRepeater owner)
+    public ViewportManager(ItemsRepeater owner)
     {
         _owner = owner;
     }
@@ -217,7 +217,7 @@ internal class ViewportManager
         // Unlike OnElementPrepared, we can't make the change and add the virt info
         // as the caller of this (ItemsRepeater.ClearElementImpl) doesn't have a ref
         // and that method has multiple refs which don't have a the virt info either
-        FAItemsRepeater.GetVirtualizationInfo(element).CanBeScrollAnchor = false;
+        ItemsRepeater.GetVirtualizationInfo(element).CanBeScrollAnchor = false;
         _scroller?.UnregisterAnchorCandidate(element);
     }
 
@@ -328,7 +328,7 @@ internal class ViewportManager
         // Make sure that only the target child can be the anchor during the bring into view operation.
         foreach (var child in _owner.Children)
         {
-            var vInfo = FAItemsRepeater.GetVirtualizationInfo(child);
+            var vInfo = ItemsRepeater.GetVirtualizationInfo(child);
             if (vInfo.CanBeScrollAnchor && child != targetChild)
             {
                 // In WinUI, CanBeScrollAnchor is used to automatically set the scroll
@@ -393,7 +393,7 @@ internal class ViewportManager
             // we need to store CanBeScrollAnchor on the Virt Info
             // Fortunately this only happens after a BringIntoView request, which shouldn't
             // be a common case
-            var info = FAItemsRepeater.GetVirtualizationInfo(child);
+            var info = ItemsRepeater.GetVirtualizationInfo(child);
             if (!info.CanBeScrollAnchor && info.IsRealized && info.IsHeldByLayout)
             {
                 _scroller?.RegisterAnchorCandidate(child);
@@ -482,8 +482,8 @@ internal class ViewportManager
 
         var currentVisibleWindow = viewport;
 
-        if (-currentVisibleWindow.X <= FAItemsRepeater.ClearedElementsArrangePosition.X &&
-            -currentVisibleWindow.Y <= FAItemsRepeater.ClearedElementsArrangePosition.Y)
+        if (-currentVisibleWindow.X <= ItemsRepeater.ClearedElementsArrangePosition.X &&
+            -currentVisibleWindow.Y <= ItemsRepeater.ClearedElementsArrangePosition.Y)
         {
 #if DEBUG && REPEATER_TRACE
             Log.Debug("{Layout}: Viewport is invalid. visible window cleared", GetLayoutId());
@@ -554,7 +554,7 @@ internal class ViewportManager
 
     string GetLayoutId() => _owner?.Layout?.LayoutId ?? string.Empty;
 
-    private FAItemsRepeater _owner;
+    private ItemsRepeater _owner;
     private bool _ensuredScroller;
     private IScrollAnchorProvider _scroller;
     private Control _makeAnchorElement;

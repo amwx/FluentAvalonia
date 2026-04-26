@@ -189,7 +189,7 @@
                                 <Button DockPanel.Dock="Left"
                                         Theme="{StaticResource TransparentButton}"
                                         Margin="0">
-                                    <ui:FASymbolIcon Symbol="Up"
+                                    <ui:SymbolIcon Symbol="Up"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Margin="0,1,0,-1"

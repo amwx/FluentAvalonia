@@ -152,7 +152,7 @@
                                 IsVisible="False"
                                 HorizontalAlignment="Right" />
 
-                        <ui:FAFontIcon Name="DropDownGlyph"
+                        <ui:FontIcon Name="DropDownGlyph"
                                      Foreground="{DynamicResource ComboBoxDropDownGlyphForeground}"
                                      MinHeight="{DynamicResource ComboBoxMinHeight}"
                                      Grid.Row="1"
@@ -231,7 +231,7 @@
                 <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrushDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#DropDownGlyph">
+            <Style Selector="^ /template/ ui|FontIcon#DropDownGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundDisabled}" />
             </Style>
         </Style>
@@ -246,7 +246,7 @@
             <Style Selector="^ /template/ TextBlock#PlaceholderTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundFocused}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAFontIcon#DropDownGlyph">
+            <Style Selector="^ /template/ ui|FontIcon#DropDownGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundFocused}" />
             </Style>
         </Style>

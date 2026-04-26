@@ -4,9 +4,9 @@
 
     <Design.PreviewWith>
         <Border MinWidth="200" MinHeight="100" Background="#202020">
-            <ui:FARangeSlider VerticalAlignment="Center" Margin="20"
+            <ui:RangeSlider VerticalAlignment="Center" Margin="20"
                             RangeStart="20" RangeEnd="80"
-                            IsEnabled="True"/>
+                            IsEnabled="False"/>
         </Border>
     </Design.PreviewWith>
 
@@ -16,49 +16,13 @@
     <x:Double x:Key="RangeSliderTrackThemeHeight">4</x:Double>
 
     <ControlTheme TargetType="Thumb"
-                  x:Key="RangeSliderThumbStyle">
+                  x:Key="RangeSliderThumbStyle"
+                  BasedOn="{StaticResource SliderThumbStyle}">
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Background" Value="{DynamicResource SliderThumbBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderBrush}" />
-        <Setter Property="ClipToBounds" Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Border Margin="-2"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Background="{DynamicResource SliderOuterThumbBackground}"
-                            CornerRadius="{DynamicResource SliderThumbCornerRadius}">
-                        <Ellipse Name="SliderInnerThumb"
-                                 Fill="{TemplateBinding Background}"
-                                 Width="{DynamicResource SliderInnerThumbWidth}"
-                                 Height="{DynamicResource SliderInnerThumbHeight}"
-                                 RenderTransform="scaleX(0.86) scaleY(0.86)">
-                            <Ellipse.Transitions>
-                                <Transitions>
-                                    <TransformOperationsTransition Property="RenderTransform" Duration="00:00:00.167" Easing="0,0 0,1" />
-                                </Transitions>
-                            </Ellipse.Transitions>
-                        </Ellipse>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-
-        <Style Selector="^:pointerover /template/ Ellipse#SliderInnerThumb">
-            <Setter Property="RenderTransform" Value="scaleX(1.167) scaleY(1.167)" />
-        </Style>
-        <Style Selector="^:pressed /template/ Ellipse#SliderInnerThumb">
-            <Setter Property="RenderTransform" Value="scaleX(0.71) scaleY(0.71)" />
-        </Style>
-        <Style Selector="^:disabled /template/ Ellipse#SliderInnerThumb">
-            <Setter Property="RenderTransform" Value="scaleX(1.167) scaleY(1.167)" />
-        </Style>
     </ControlTheme>
     
-    <ControlTheme TargetType="ui:FARangeSlider"
-                  x:Key="{x:Type ui:FARangeSlider}">
+    <ControlTheme TargetType="ui:RangeSlider"
+                  x:Key="{x:Type ui:RangeSlider}">
         <Setter Property="Background" Value="{DynamicResource SliderTrackFill}" />
         <Setter Property="BorderThickness" Value="{DynamicResource SliderBorderThemeThickness}" />
         <Setter Property="Foreground" Value="{DynamicResource SliderTrackValueFill}" />
@@ -104,14 +68,14 @@
                         <Thumb Name="MinThumb"
                                AutomationProperties.Name="Min thumb"
                                IsTabStop="True"
-                               Theme="{DynamicResource RangeSliderThumbStyle}"
+                               Theme="{StaticResource RangeSliderThumbStyle}"
                                TabIndex="0" VerticalAlignment="Center"
                                Height="{DynamicResource SliderHorizontalThumbHeight}"
-                               Width="{DynamicResource SliderHorizontalThumbWidth}"/>
+                                                   Width="{DynamicResource SliderHorizontalThumbWidth}"/>
                         <Thumb Name="MaxThumb"
                                AutomationProperties.Name="Max thumb"
                                IsTabStop="True"
-                               Theme="{DynamicResource RangeSliderThumbStyle}"
+                               Theme="{StaticResource RangeSliderThumbStyle}"
                                TabIndex="1" VerticalAlignment="Center"
                                Height="{DynamicResource SliderHorizontalThumbHeight}"
                                Width="{DynamicResource SliderHorizontalThumbWidth}"/>
@@ -128,7 +92,7 @@
             <Setter Property="Fill" Value="{DynamicResource SliderTrackValueFillDisabled}" />
         </Style>
 
-        <Style Selector="^:disabled /template/ Thumb">
+        <Style Selector="^ /template/ Thumb">
             <Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDisabled}" />
         </Style>
     </ControlTheme>

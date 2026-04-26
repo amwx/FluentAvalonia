@@ -65,37 +65,37 @@
                 </DockPanel>
             </Grid>
 
-            <ui:FASettingsExpander Header="App Theme"
+            <ui:SettingsExpander Header="App Theme"
                                  IconSource="DarkTheme"
                                  Description="Change the current app theme">
 
-                <ui:FASettingsExpander.Footer>
+                <ui:SettingsExpander.Footer>
                     <ComboBox SelectedItem="{Binding CurrentAppTheme}"
                               ItemsSource="{Binding AppThemes}"
                               MinWidth="150" />
-                </ui:FASettingsExpander.Footer>
+                </ui:SettingsExpander.Footer>
                 
-            </ui:FASettingsExpander>
+            </ui:SettingsExpander>
 
-            <ui:FASettingsExpander Header="Flow Direction"
+            <ui:SettingsExpander Header="Flow Direction"
                                  IconSource="AlignRight"
                                  Description="Change the current app flow direction">
 
-                <ui:FASettingsExpander.Footer>
+                <ui:SettingsExpander.Footer>
                     <ComboBox SelectedItem="{Binding CurrentFlowDirection}"
                               ItemsSource="{Binding AppFlowDirections}"
                               MinWidth="150" />
-                </ui:FASettingsExpander.Footer>
+                </ui:SettingsExpander.Footer>
 
-            </ui:FASettingsExpander>
+            </ui:SettingsExpander>
 
-            <ui:FASettingsExpander Header="App Accent Color"
+            <ui:SettingsExpander Header="App Accent Color"
                                  IconSource="ColorLine"
                                  Description="Set a custom accent color for the App"
                                  IsExpanded="True">
 
-                <ui:FASettingsExpanderItem Content="Preview">
-                    <ui:FASettingsExpanderItem.Footer>
+                <ui:SettingsExpanderItem Content="Preview">
+                    <ui:SettingsExpanderItem.Footer>
                         <Grid RowDefinitions="*,*,*,*"
                                   ColumnDefinitions="*,*"
                                   HorizontalAlignment="Right"
@@ -145,14 +145,14 @@
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                         </Grid>
-                    </ui:FASettingsExpanderItem.Footer>
-                </ui:FASettingsExpanderItem>
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>
 
-                <ui:FASettingsExpanderItem>
+                <ui:SettingsExpanderItem>
                     <CheckBox Content="Use Custom Accent Color?"
                                       IsChecked="{Binding UseCustomAccent}"
                                       HorizontalAlignment="Right" />
-                    <ui:FASettingsExpanderItem.Footer>
+                    <ui:SettingsExpanderItem.Footer>
                         <StackPanel>
                             <TextBlock Text="Pre-set Colors"
                                        Margin="24 24 0 0"
@@ -194,7 +194,7 @@
                                                             HorizontalAlignment="Right"
                                                             VerticalAlignment="Top"
                                                             Margin="0 2 2 0">
-                                                        <ui:FASymbolIcon Symbol="Checkmark"
+                                                        <ui:SymbolIcon Symbol="Checkmark"
                                                                        Foreground="{DynamicResource SystemAccentColor}"
                                                                        FontSize="18"/>
                                                     </Border>
@@ -233,23 +233,23 @@
                                              DockPanel.Dock="Right" />
                             </DockPanel>
                         </StackPanel>
-                    </ui:FASettingsExpanderItem.Footer>
-                </ui:FASettingsExpanderItem>
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>
                 
-            </ui:FASettingsExpander>
+            </ui:SettingsExpander>
 
-            <ui:FASettingsExpander Header="About"
+            <ui:SettingsExpander Header="About"
                                  IconSource="M2 14C2 20.6274 7.37258 26 14 26C20.6274 26 26 20.6274 26 14C26 7.37258 20.6274 2 14 2C7.37258 2 2 7.37258 2 14ZM15.25 8C15.25 8.69036 14.6904 9.25 14 9.25C13.3096 9.25 12.75 8.69036 12.75 8C12.75 7.30964 13.3096 6.75 14 6.75C14.6904 6.75 15.25 7.30964 15.25 8ZM14 11C14.5523 11 15 11.4477 15 12L15 20C15 20.5523 14.5523 21 14 21C13.4477 21 13 20.5523 13 20L13 12C13 11.4477 13.4477 11 14 11Z">
-                <ui:FASettingsExpanderItem Content="Found a bug? Want a new feature, control, or sample?"
+                <ui:SettingsExpanderItem Content="Found a bug? Want a new feature, control, or sample?"
                                          ActionIconSource="Open"
                                          IsClickEnabled="True"
                                          Name="LaunchRepoLinkItem"/>
-                <ui:FASettingsExpanderItem Content="Clone FluentAvalonia repository">
-                    <ui:FASettingsExpanderItem.Footer>
+                <ui:SettingsExpanderItem Content="Clone FluentAvalonia repository">
+                    <ui:SettingsExpanderItem.Footer>
                         <SelectableTextBlock Text="git clone https://github.com/amwx/FluentAvalonia" />
-                    </ui:FASettingsExpanderItem.Footer>
-                </ui:FASettingsExpanderItem>
-                <ui:FASettingsExpanderItem>
+                    </ui:SettingsExpanderItem.Footer>
+                </ui:SettingsExpanderItem>
+                <ui:SettingsExpanderItem>
                     <StackPanel Spacing="4">
                         <TextBlock Text="Dependencies" />
                         <TextBlock TextWrapping="Wrap"
@@ -274,8 +274,8 @@
                             </Run>
                         </TextBlock>
                     </StackPanel>
-                </ui:FASettingsExpanderItem>
-                <ui:FASettingsExpanderItem>
+                </ui:SettingsExpanderItem>
+                <ui:SettingsExpanderItem>
                     <StackPanel Spacing="4">
                         <TextBlock Text="License" />
                         <TextBlock TextWrapping="Wrap"
@@ -298,8 +298,8 @@
                             </Run>
                         </TextBlock>
                     </StackPanel>
-                </ui:FASettingsExpanderItem>
-            </ui:FASettingsExpander>
+                </ui:SettingsExpanderItem>
+            </ui:SettingsExpander>
         </StackPanel>
     </ScrollViewer>
     

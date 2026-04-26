@@ -190,7 +190,7 @@
                     VerticalAlignment="Stretch"
                     Focusable="False"
                     KeyboardNavigation.IsTabStop="False">
-                <ui:FAFontIcon IsHitTestVisible="False"
+                <ui:FontIcon IsHitTestVisible="False"
                             FontFamily="{DynamicResource SymbolThemeFontFamily}"
                             FontSize="12"
                             Glyph="&#xE70D;" />

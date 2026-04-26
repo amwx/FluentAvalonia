@@ -5,7 +5,7 @@ namespace FluentAvalonia.UI.Controls;
 
 internal class ChildrenInTabFocusOrderIterable : IEnumerable<Control>
 {
-    public ChildrenInTabFocusOrderIterable(FAItemsRepeater owner)
+    public ChildrenInTabFocusOrderIterable(ItemsRepeater owner)
     {
         _repeater = owner;
     }
@@ -15,11 +15,11 @@ internal class ChildrenInTabFocusOrderIterable : IEnumerable<Control>
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private FAItemsRepeater _repeater;
+    private ItemsRepeater _repeater;
 
     private struct ChildrenInTabFocusOrderIterator : IEnumerator<Control>
     {
-        public ChildrenInTabFocusOrderIterator(FAItemsRepeater repeater)
+        public ChildrenInTabFocusOrderIterator(ItemsRepeater repeater)
         {
             var children = repeater.Children;
             _realizedChildren = new List<KeyValuePair<int, Control>>(children.Count);
@@ -27,7 +27,7 @@ internal class ChildrenInTabFocusOrderIterable : IEnumerable<Control>
             for (int i = 0; i < children.Count; i++)
             {
                 var element = children[i];
-                var vInfo = FAItemsRepeater.GetVirtualizationInfo(element);
+                var vInfo = ItemsRepeater.GetVirtualizationInfo(element);
                 if (vInfo.IsRealized)
                 {
                     _realizedChildren.Add(new KeyValuePair<int, Control>(vInfo.Index, element));

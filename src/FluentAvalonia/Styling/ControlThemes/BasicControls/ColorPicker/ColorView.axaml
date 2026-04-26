@@ -275,7 +275,7 @@
                      IsVisible="{TemplateBinding IsColorSpectrumVisible}">
               <TabItem.Header>
                 <Border Height="{DynamicResource ColorViewTabStripHeight}">
-                  <ui:FAFontIcon UseLayoutRounding="False"
+                  <ui:FontIcon UseLayoutRounding="False"
                                IsHitTestVisible="False"
                                FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                Glyph="&#xE76D;" />
@@ -341,7 +341,7 @@
                      IsVisible="{TemplateBinding IsColorPaletteVisible}">
               <TabItem.Header>
                 <Border Height="{DynamicResource ColorViewTabStripHeight}">
-                  <ui:FAFontIcon UseLayoutRounding="False"
+                  <ui:FontIcon UseLayoutRounding="False"
                                IsHitTestVisible="False"
                                FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                Glyph="&#xE790;" />
@@ -377,7 +377,7 @@
                      IsVisible="{TemplateBinding IsColorComponentsVisible}">
               <TabItem.Header>
                 <Border Height="{DynamicResource ColorViewTabStripHeight}">
-                  <ui:FAFontIcon UseLayoutRounding="False"
+                  <ui:FontIcon UseLayoutRounding="False"
                                IsHitTestVisible="False"
                                FontFamily="{DynamicResource SymbolThemeFontFamily}"
                                Glyph="&#xE9E9;" />

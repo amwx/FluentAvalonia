@@ -20,7 +20,7 @@
                        Margin="0"
                        ClipToBounds="False">
 
-                    <ui:FAFontIcon Name="CalendarIcon"
+                    <ui:FontIcon Name="CalendarIcon"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  Glyph="&#xE787;"

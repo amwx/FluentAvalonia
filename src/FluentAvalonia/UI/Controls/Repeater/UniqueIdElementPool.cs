@@ -5,7 +5,7 @@ namespace FluentAvalonia.UI.Controls;
 
 internal class UniqueIdElementPool
 {
-    public UniqueIdElementPool(FAItemsRepeater ir)
+    public UniqueIdElementPool(ItemsRepeater ir)
     {
         _owner = ir;
         // ItemsRepeater is not fully constructed yet. Don't interact with it.
@@ -15,7 +15,7 @@ internal class UniqueIdElementPool
     {
         Debug.Assert(_owner.ItemsSourceView.HasKeyIndexMapping);
 
-        var virtInfo = FAItemsRepeater.GetVirtualizationInfo(element);
+        var virtInfo = ItemsRepeater.GetVirtualizationInfo(element);
         var key = virtInfo.UniqueId;
 
         if (_elementMap.ContainsKey(key))
@@ -44,6 +44,6 @@ internal class UniqueIdElementPool
 
     public IEnumerator<KeyValuePair<string, Control>> GetEnumerator() => _elementMap.GetEnumerator();
 
-    private readonly FAItemsRepeater _owner;
+    private readonly ItemsRepeater _owner;
     private readonly Dictionary<string, Control> _elementMap = new Dictionary<string, Control>();
 }

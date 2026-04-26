@@ -16,7 +16,7 @@ public partial class DesignIconsPage : ControlsPageBase
         ShowToggleThemeButton = false;
         DataContext = new DesignIconsPageViewModel();
         ControlName = "Icons";
-        PreviewImage = (FAIconSource)App.Current.FindResource("TextPageIcon");
+        PreviewImage = (IconSource)App.Current.FindResource("TextPageIcon");
 
         Description = "FluentAvalonia ships with an embedded symbol font based on the FluentUI System Icons project. " +
             "The icons have been remapped and standardized to match the unicode codepoint found in the Segoe Fluent Icons " +
@@ -32,7 +32,7 @@ public partial class DesignIconsPage : ControlsPageBase
         IconPreview.ElementClearing += IconPreviewElementClearing;
     }
 
-    private void IconPreviewElementPrepared(object sender, FAItemsRepeaterElementPreparedEventArgs e)
+    private void IconPreviewElementPrepared(object sender, ItemsRepeaterElementPreparedEventArgs e)
     {
         if (e.Element is ListBoxItem lbi && lbi == _selectedItem)
         {
@@ -40,7 +40,7 @@ public partial class DesignIconsPage : ControlsPageBase
         }
     }
 
-    private void IconPreviewElementClearing(object sender, FAItemsRepeaterElementClearingEventArgs e)
+    private void IconPreviewElementClearing(object sender, ItemsRepeaterElementClearingEventArgs e)
     {
         if (e.Element is ListBoxItem lbi && lbi.IsSelected)
         {

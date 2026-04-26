@@ -27,11 +27,11 @@ public partial class FramePage : ControlsPageBase
         };
         lb.SelectionChanged += OnListBoxSelectionChanged;
 
-        _frame = this.FindControl<FAFrame>("TestFrame");
-        _frame.Navigate(typeof(NVSamplePage6), null, new FASuppressNavigationTransitionInfo());
+        _frame = this.FindControl<Frame>("TestFrame");
+        _frame.Navigate(typeof(NVSamplePage6), null, new SuppressNavigationTransitionInfo());
 
         DataContext = this;
-        TargetType = typeof(FAFrame);
+        TargetType = typeof(Frame);
     }
 
     public List<string> PageOptions { get; }
@@ -45,15 +45,15 @@ public partial class FramePage : ControlsPageBase
                 break;
 
             case 1:
-                _frame.Navigate(typeof(NVSamplePage2), null, new FASlideNavigationTransitionInfo());
+                _frame.Navigate(typeof(NVSamplePage2), null, new SlideNavigationTransitionInfo());
                 break;
 
             case 2:
-                _frame.Navigate(typeof(NVSamplePage3), null, new FADrillInNavigationTransitionInfo());
+                _frame.Navigate(typeof(NVSamplePage3), null, new DrillInNavigationTransitionInfo());
                 break;
 
             case 3:
-                _frame.Navigate(typeof(NVSamplePage4), null, new FASuppressNavigationTransitionInfo());
+                _frame.Navigate(typeof(NVSamplePage4), null, new SuppressNavigationTransitionInfo());
                 break;
         }
     }
@@ -63,5 +63,5 @@ public partial class FramePage : ControlsPageBase
         AvaloniaXamlLoader.Load(this);
     }
 
-    private FAFrame _frame;
+    private Frame _frame;
 }

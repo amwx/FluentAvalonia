@@ -11,7 +11,7 @@ public partial class BasicInputControlsPage : ControlsPageBase
 
         ControlName = "Basic Input Controls";
         App.Current.Resources.TryGetResource("BasicInputPageIcon", null, out var icon);
-        PreviewImage = (FAIconSource)icon;
+        PreviewImage = (IconSource)icon;
     }
 
     private void InitializeComponent()

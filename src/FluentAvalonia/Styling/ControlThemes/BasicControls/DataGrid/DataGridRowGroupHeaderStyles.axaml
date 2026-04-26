@@ -11,7 +11,7 @@
                         Background="Transparent"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                    <ui:FASymbolIcon Symbol="ChevronRight"
+                    <ui:SymbolIcon Symbol="ChevronRight"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    FontSize="16" />
@@ -19,7 +19,7 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^:checked /template/ ui|FASymbolIcon">
+        <Style Selector="^:checked /template/ ui|SymbolIcon">
             <Setter Property="RenderTransform" Value="rotate(90deg)" />
         </Style>
     </ControlTheme>

@@ -7,14 +7,14 @@
     <Design.PreviewWith>
         <Border Width="800" Height="500">
             <Panel >
-                <ui:FATabView TabStripLocation="Bottom">
-                    <ui:FATabView.TabItems>
-                        <ui:FATabViewItem Header="Item1">
+                <ui:TabView TabStripLocation="Bottom">
+                    <ui:TabView.TabItems>
+                        <ui:TabViewItem Header="Item1">
                             <Border Background="Transparent" />
-                        </ui:FATabViewItem>
+                        </ui:TabViewItem>
                         <ui:TabViewItem Header="Item1" />
-                    </ui:FATabView.TabItems>
-                </ui:FATabView>
+                    </ui:TabView.TabItems>
+                </ui:TabView>
             </Panel>
         </Border>
     </Design.PreviewWith>
@@ -62,7 +62,7 @@
 
     <!-- ControlTemplate used when tabs are vertical (Left/Right location)-->
     <ControlTemplate x:Key="VerticalTabViewTabItemTemplate"
-                     TargetType="ui:FATabViewItem">
+                     TargetType="ui:TabViewItem">
         <Border Name="LayoutRootBorder"
                 Padding="{TemplateBinding Padding}">
             <Panel Name="LayoutRoot">
@@ -152,7 +152,7 @@
     
     
    
-    <ControlTheme x:Key="{x:Type ui:FATabViewItem}" TargetType="ui:FATabViewItem">
+    <ControlTheme x:Key="{x:Type ui:TabViewItem}" TargetType="ui:TabViewItem">
         <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackground}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />

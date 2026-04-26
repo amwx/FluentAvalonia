@@ -12,7 +12,7 @@ public partial class DataControlsPage : ControlsPageBase
         InitializeComponent();
         ControlName = "Data Controls";
         App.Current.Resources.TryGetResource("DataPageIcon", null, out var icon);
-        PreviewImage = (FAIconSource)icon;
+        PreviewImage = (IconSource)icon;
         var dg = this.FindControl<DataGrid>("TargetDataGrid");
 
         dg.ItemsSource = new DataGridCollectionView(Countries.All)

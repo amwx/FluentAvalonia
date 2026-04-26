@@ -369,7 +369,7 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         foreach (var p in clr)
         {
-            if (p.GetCustomAttribute<FANotImplementedAttribute>(true) != null)
+            if (p.GetCustomAttribute<NotImplementedAttribute>(true) != null)
             {
                 sb.Append("[Not Implemented] ");
             }
@@ -405,7 +405,7 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         foreach (var ev in events)
         {
-            if (ev.GetCustomAttribute<FANotImplementedAttribute>(true) != null)
+            if (ev.GetCustomAttribute<NotImplementedAttribute>(true) != null)
             {
                 sb.Append("[Not Implemented] ");
             }
@@ -428,7 +428,7 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         foreach (var m in methods)
         {
-            if (m.GetCustomAttribute<FANotImplementedAttribute>(true) != null)
+            if (m.GetCustomAttribute<NotImplementedAttribute>(true) != null)
             {
                 sb.Append("[Not Implemented] ");
             }
@@ -472,7 +472,7 @@ public class ControlDefinitionOverlay : TemplatedControl
         foreach (var en in enums)
         {
             // Skip the Symbol enum because it's too big and can be looked up on the SymbolIcon page
-            if (en == typeof(FASymbol))
+            if (en == typeof(Symbol))
                 continue;
 
             if (en.GetCustomAttribute<FlagsAttribute>() != null)
@@ -521,7 +521,7 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         foreach (var p in clr)
         {
-            if (p.GetCustomAttribute<FANotImplementedAttribute>(true) != null)
+            if (p.GetCustomAttribute<NotImplementedAttribute>(true) != null)
             {
                 sb.Append("[Not Implemented] ");
             }
@@ -555,7 +555,7 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         foreach (var ev in events)
         {
-            if (ev.GetCustomAttribute<FANotImplementedAttribute>(true) != null)
+            if (ev.GetCustomAttribute<NotImplementedAttribute>(true) != null)
             {
                 sb.Append("[Not Implemented] ");
             }
@@ -577,7 +577,7 @@ public class ControlDefinitionOverlay : TemplatedControl
 
         foreach (var m in methods)
         {
-            if (m.GetCustomAttribute<FANotImplementedAttribute>(true) != null)
+            if (m.GetCustomAttribute<NotImplementedAttribute>(true) != null)
             {
                 sb.Append("[Not Implemented] ");
             }
@@ -617,7 +617,7 @@ public class ControlDefinitionOverlay : TemplatedControl
         foreach (var en in enums)
         {
             // Skip the Symbol enum because it's too big and can be looked up on the SymbolIcon page
-            if (en == typeof(FASymbol))
+            if (en == typeof(Symbol))
                 continue;
 
             if (en.GetCustomAttribute<FlagsAttribute>() != null)

@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Defines constants to define which commands should be available
-/// in a <see cref="FATextCommandBarFlyout"/>
+/// in a <see cref="TextCommandBarFlyout"/>
 /// </summary>
 internal enum TextControlButtons
 {

@@ -35,7 +35,7 @@
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}" />
 
-                            <ui:FAFontIcon Name="SortIcon"
+                            <ui:FontIcon Name="SortIcon"
                                          Grid.Column="1"
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center"
@@ -90,12 +90,12 @@
             <Setter Property="Opacity" Value="0.5" />
         </Style>
 
-        <Style Selector="^:sortascending /template/ ui|FAFontIcon#SortIcon">
+        <Style Selector="^:sortascending /template/ ui|FontIcon#SortIcon">
             <Setter Property="IsVisible" Value="True" />
             <Setter Property="Glyph" Value="&#xE110;" />
         </Style>
 
-        <Style Selector="^:sortdescending /template/ ui|FAFontIcon#SortIcon">
+        <Style Selector="^:sortdescending /template/ ui|FontIcon#SortIcon">
             <Setter Property="IsVisible" Value="True" />
             <Setter Property="Glyph" Value="&#xE74B;" />
         </Style>

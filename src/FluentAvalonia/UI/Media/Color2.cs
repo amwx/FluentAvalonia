@@ -1115,10 +1115,10 @@ public struct Color2 : IEquatable<Color2>
     {
         Color2 newColor = new Color2();
         newColor._cType = ColorType.RGB;
-        newColor._c1 = FAMathHelpers.Clamp(r, 0, 1);
-        newColor._c2 = FAMathHelpers.Clamp(g, 0, 1);
-        newColor._c3 = FAMathHelpers.Clamp(b, 0, 1);
-        newColor._alpha = FAMathHelpers.Clamp(a, 0, 1);
+        newColor._c1 = MathHelpers.Clamp(r, 0, 1);
+        newColor._c2 = MathHelpers.Clamp(g, 0, 1);
+        newColor._c3 = MathHelpers.Clamp(b, 0, 1);
+        newColor._alpha = MathHelpers.Clamp(a, 0, 1);
         return newColor;
     }
 
@@ -1162,10 +1162,10 @@ public struct Color2 : IEquatable<Color2>
     {
         Color2 newColor = new Color2();
         newColor._cType = ColorType.HSV;
-        newColor._c1 = hue == -1 ? 0 : FAMathHelpers.Clamp(hue % 360, 0, 360);
-        newColor._c2 = FAMathHelpers.Clamp(sat, 0, 1);
-        newColor._c3 = FAMathHelpers.Clamp(val, 0, 1);
-        newColor._alpha = FAMathHelpers.Clamp(alpha, 0, 1);
+        newColor._c1 = hue == -1 ? 0 : MathHelpers.Clamp(hue % 360, 0, 360);
+        newColor._c2 = MathHelpers.Clamp(sat, 0, 1);
+        newColor._c3 = MathHelpers.Clamp(val, 0, 1);
+        newColor._alpha = MathHelpers.Clamp(alpha, 0, 1);
         return newColor;
     }
 
@@ -1194,10 +1194,10 @@ public struct Color2 : IEquatable<Color2>
     {
         Color2 newColor = new Color2();
         newColor._cType = ColorType.HSL;
-        newColor._c1 = hue == -1 ? 0 : FAMathHelpers.Clamp(hue % 360, 0, 360);
-        newColor._c2 = FAMathHelpers.Clamp(sat, 0, 1);
-        newColor._c3 = FAMathHelpers.Clamp(light, 0, 1);
-        newColor._alpha = FAMathHelpers.Clamp(alpha, 0, 1);
+        newColor._c1 = hue == -1 ? 0 : MathHelpers.Clamp(hue % 360, 0, 360);
+        newColor._c2 = MathHelpers.Clamp(sat, 0, 1);
+        newColor._c3 = MathHelpers.Clamp(light, 0, 1);
+        newColor._alpha = MathHelpers.Clamp(alpha, 0, 1);
         return newColor;
     }
 
@@ -1228,11 +1228,11 @@ public struct Color2 : IEquatable<Color2>
     {
         Color2 newColor = new Color2();
         newColor._cType = ColorType.CMYK;
-        newColor._c1 = FAMathHelpers.Clamp(c, 0, 1);
-        newColor._c2 = FAMathHelpers.Clamp(m, 0, 1);
-        newColor._c3 = FAMathHelpers.Clamp(y, 0, 1);
-        newColor._c4 = FAMathHelpers.Clamp(k, 0, 1);
-        newColor._alpha = FAMathHelpers.Clamp(alpha, 0, 1);
+        newColor._c1 = MathHelpers.Clamp(c, 0, 1);
+        newColor._c2 = MathHelpers.Clamp(m, 0, 1);
+        newColor._c3 = MathHelpers.Clamp(y, 0, 1);
+        newColor._c4 = MathHelpers.Clamp(k, 0, 1);
+        newColor._alpha = MathHelpers.Clamp(alpha, 0, 1);
         return newColor;
     }
 
@@ -1358,7 +1358,7 @@ public struct Color2 : IEquatable<Color2>
             return ToHSL().Lighten(amount);
 
         var l = _c3 + amount;
-        FAMathHelpers.Clamp(l, 0, 1);
+        MathHelpers.Clamp(l, 0, 1);
 
         return FromHSLf(_c1, _c2, l, _alpha);
     }
@@ -1374,7 +1374,7 @@ public struct Color2 : IEquatable<Color2>
             return ToHSL().LightenPercent(percent);
 
         var l = _c3 < EPSILON ? percent : _c3 + (_c3 * percent);
-        FAMathHelpers.Clamp(l, 0, 1);
+        MathHelpers.Clamp(l, 0, 1);
 
         return FromHSLf(_c1, _c2, l, _alpha);
     }

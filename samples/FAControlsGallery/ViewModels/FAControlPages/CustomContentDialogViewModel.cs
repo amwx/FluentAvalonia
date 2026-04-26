@@ -5,9 +5,9 @@ namespace FAControlsGallery.ViewModels;
 
 public class CustomContentDialogViewModel : ViewModelBase
 {
-    private readonly FAContentDialog dialog;
+    private readonly ContentDialog dialog;
 
-    public CustomContentDialogViewModel(FAContentDialog dialog)
+    public CustomContentDialogViewModel(ContentDialog dialog)
     {
         if (dialog is null)
         {
@@ -18,11 +18,11 @@ public class CustomContentDialogViewModel : ViewModelBase
         dialog.Closed += DialogOnClosed;
     }
 
-    private void DialogOnClosed(FAContentDialog sender, FAContentDialogClosedEventArgs args)
+    private void DialogOnClosed(ContentDialog sender, ContentDialogClosedEventArgs args)
     {
         dialog.Closed -= DialogOnClosed;
 
-        var resultHint = new FAContentDialog()
+        var resultHint = new ContentDialog()
         {
             Content = $"You chose \"{args.Result}\"",
             Title = "Result",
@@ -55,12 +55,12 @@ public class CustomContentDialogViewModel : ViewModelBase
         {
             case "accept":
             case "ok":
-                dialog.Hide(FAContentDialogResult.Primary);
+                dialog.Hide(ContentDialogResult.Primary);
                 break;
 
             case "dismiss":
             case "not ok":
-                dialog.Hide(FAContentDialogResult.Secondary);
+                dialog.Hide(ContentDialogResult.Secondary);
                 break;
 
             case "cancel":

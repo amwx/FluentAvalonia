@@ -14,13 +14,16 @@ public class FAComboBoxItem : ListBoxItem
         FocusableProperty.OverrideDefaultValue<FAComboBoxItem>(true);
     }
 
-    protected override void OnGotFocus(FocusChangedEventArgs e)
+    protected override void OnGotFocus(GotFocusEventArgs e)
     {
         base.OnGotFocus(e);
         if (e.NavigationMethod == NavigationMethod.Directional || e.NavigationMethod == NavigationMethod.Tab)
         {
             var parent = (Parent as FAComboBox) ?? this.FindAncestorOfType<FAComboBox>();
-            parent?.ItemFocused(this);
+            if (parent != null)
+            {
+                parent.ItemFocused(this);
+            }
         }
 
     }

@@ -161,7 +161,7 @@ public class SettingsPageViewModel : MainPageViewModelBase
     public List<Color> PredefinedColors { get; private set; }
 
     public string CurrentVersion =>
-        typeof(FluentAvalonia.UI.Controls.FANavigationView).Assembly.GetName().Version?.ToString();
+        typeof(FluentAvalonia.UI.Controls.NavigationView).Assembly.GetName().Version?.ToString();
 
     public string CurrentAvaloniaVersion =>
         typeof(Application).Assembly.GetName().Version?.ToString();

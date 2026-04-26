@@ -32,9 +32,9 @@
                                        Height="4" 
                                        DockPanel.Dock="Top"
                                        Background="{DynamicResource InfoBarInformationalSeverityIconBackground}"/>
-                                <ContentPresenter Name="PART_ContentPresenter" 
-                                                  Content="{TemplateBinding Content}"
-                                                  MinHeight="64"/>
+                                <ContentControl Name="PART_Content" 
+                                                Content="{TemplateBinding Content}"
+                                                MinHeight="64"/>
                             </DockPanel>
                         </Border>
                     </Border>

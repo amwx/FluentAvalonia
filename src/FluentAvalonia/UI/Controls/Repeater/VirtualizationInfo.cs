@@ -6,7 +6,7 @@ internal class VirtualizationInfo
 {
     public VirtualizationInfo()
     {
-        ArrangeBounds = FAItemsRepeater.InvalidRect;
+        ArrangeBounds = ItemsRepeater.InvalidRect;
     }
 
     public int Index => _index;
@@ -67,7 +67,7 @@ internal class VirtualizationInfo
         _pinCounter = 0;
         _index = -1;
         _uniqueId = null;
-        ArrangeBounds = FAItemsRepeater.InvalidRect;
+        ArrangeBounds = ItemsRepeater.InvalidRect;
     }
 
     internal void MoveOwnershipToUniqueIdResetPoolFromLayout()

@@ -7,13 +7,13 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Spacing="4">
-                <uip:FANavigationViewItemPresenter Content="Hello" IconSource="Save" />
+                <uip:NavigationViewItemPresenter Content="Hello" IconSource="Save" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme x:Key="{x:Type uip:FANavigationViewItemPresenter}"
-                  TargetType="uip:FANavigationViewItemPresenter">
+    <ControlTheme x:Key="{x:Type uip:NavigationViewItemPresenter}"
+                  TargetType="uip:NavigationViewItemPresenter">
         <!--<Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />-->
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
@@ -221,8 +221,8 @@
     </ControlTheme>
 
     <ControlTheme x:Key="NavigationViewItemPresenterWhenOnTopPane"
-                  TargetType="uip:FANavigationViewItemPresenter"
-                  BasedOn="{StaticResource {x:Type uip:FANavigationViewItemPresenter}}">
+                  TargetType="uip:NavigationViewItemPresenter"
+                  BasedOn="{StaticResource {x:Type uip:NavigationViewItemPresenter}}">
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForeground}" />
         <Setter Property="Template">
             <ControlTemplate>
@@ -431,8 +431,8 @@
     </ControlTheme>
 
     <ControlTheme x:Key="NavigationViewItemPresenterWhenOnTopPaneOverflow"
-                  TargetType="uip:FANavigationViewItemPresenter"
-                  BasedOn="{StaticResource {x:Type uip:FANavigationViewItemPresenter}}">
+                  TargetType="uip:NavigationViewItemPresenter"
+                  BasedOn="{StaticResource {x:Type uip:NavigationViewItemPresenter}}">
         <Setter Property="Foreground" Value="{DynamicResource TopNavigationViewItemForeground}" />
         <Setter Property="Template">
             <ControlTemplate>

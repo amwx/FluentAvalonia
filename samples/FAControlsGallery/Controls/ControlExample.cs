@@ -160,14 +160,14 @@ public class ControlExample : HeaderedContentControl
         }
         else
         {
-            var l = new List<FAMenuFlyoutItem>();
+            var l = new List<MenuFlyoutItem>();
 
             if (EnableShowDocsLink)
             {
-                var docsItem = new FAMenuFlyoutItem
+                var docsItem = new MenuFlyoutItem
                 {
                     Text = DocsLinkHeader,
-                    IconSource = App.Current.FindResource("LinkIconDocs") as FAIconSource
+                    IconSource = App.Current.FindResource("LinkIconDocs") as IconSource
                 };
 
                 docsItem.Click += LaunchAvaloniaDocs;
@@ -177,10 +177,10 @@ public class ControlExample : HeaderedContentControl
 
             if (EnableShowDefinitionLink)
             {
-                var defItem = new FAMenuFlyoutItem
+                var defItem = new MenuFlyoutItem
                 {
                     Text = "Show Definition",
-                    IconSource = App.Current.FindResource("CodeIconBraces") as FAIconSource
+                    IconSource = App.Current.FindResource("CodeIconBraces") as IconSource
                 };
 
                 defItem.Click += ShowControlDefintion;

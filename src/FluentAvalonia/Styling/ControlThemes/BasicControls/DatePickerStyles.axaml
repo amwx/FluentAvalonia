@@ -256,8 +256,6 @@
         <Setter Property="BorderThickness" Value="{DynamicResource DatePickerBorderThemeThickness}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="MinWidth" Value="{DynamicResource DatePickerThemeMinWidth}" />
-        <Setter Property="MaxWidth" Value="{DynamicResource DatePickerThemeMaxWidth}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
@@ -269,8 +267,8 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 IsEnabled="{TemplateBinding IsEnabled}"
-                                MinWidth="{TemplateBinding MinWidth}"
-                                MaxWidth="{TemplateBinding MaxWidth}"
+                                MinWidth="{DynamicResource DatePickerThemeMinWidth}"
+                                MaxWidth="{DynamicResource DatePickerThemeMaxWidth}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
@@ -450,13 +448,13 @@
                                     Theme="{StaticResource DateTimeFlyoutButtonStyle}"
                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                     Margin="{DynamicResource DatePickerFlyoutPresenterAcceptMargin}">
-                                <ui:FASymbolIcon Symbol="Checkmark" FontSize="18" />
+                                <ui:SymbolIcon Symbol="Checkmark" FontSize="18" />
                             </Button>
                             <Button Name="PART_DismissButton" Grid.Column="1"
                                     Theme="{StaticResource DateTimeFlyoutButtonStyle}"
                                     Margin="{DynamicResource DatePickerFlyoutPresenterDismissMargin}"
                                     FontSize="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <ui:FASymbolIcon Symbol="Dismiss" FontSize="16" />
+                                <ui:SymbolIcon Symbol="Dismiss" FontSize="16" />
                             </Button>
                         </Grid>
                     </Grid>

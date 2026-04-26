@@ -6,45 +6,45 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
-public partial class FACommandBarToggleButton : ToggleButton, IFACommandBarElement
+public partial class CommandBarToggleButton : ToggleButton, ICommandBarElement
 {
     /// <summary>
     /// Defines the <see cref="IsInOverflow"/> property
     /// </summary>
-    public static readonly DirectProperty<FACommandBarToggleButton, bool> IsInOverflowProperty =
-            AvaloniaProperty.RegisterDirect<FACommandBarToggleButton, bool>(nameof(IsInOverflow),
+    public static readonly DirectProperty<CommandBarToggleButton, bool> IsInOverflowProperty =
+            AvaloniaProperty.RegisterDirect<CommandBarToggleButton, bool>(nameof(IsInOverflow),
                 x => x.IsInOverflow);
 
     /// <summary>
     /// Defines the <see cref="IconSource"/> property
     /// </summary>
-    public static readonly StyledProperty<FAIconSource> IconSourceProperty =
-        FASettingsExpander.IconSourceProperty.AddOwner<FACommandBarButton>();
+    public static readonly StyledProperty<IconSource> IconSourceProperty =
+        SettingsExpander.IconSourceProperty.AddOwner<CommandBarButton>();
 
     /// <summary>
     /// Defines the <see cref="Label"/> property
     /// </summary>
     public static readonly StyledProperty<string> LabelProperty =
-        AvaloniaProperty.Register<FACommandBarToggleButton, string>(nameof(Label));
+        AvaloniaProperty.Register<CommandBarToggleButton, string>(nameof(Label));
 
     /// <summary>
     /// Defines the <see cref="DynamicOverflowOrder"/> property
     /// </summary>
-    public static readonly DirectProperty<FACommandBarToggleButton, int> DynamicOverflowOrderProperty =
-        AvaloniaProperty.RegisterDirect<FACommandBarToggleButton, int>(nameof(DynamicOverflowOrder),
+    public static readonly DirectProperty<CommandBarToggleButton, int> DynamicOverflowOrderProperty =
+        AvaloniaProperty.RegisterDirect<CommandBarToggleButton, int>(nameof(DynamicOverflowOrder),
             x => x.DynamicOverflowOrder, (x, v) => x.DynamicOverflowOrder = v);
 
     /// <summary>
     /// Defines the <see cref="IsCompact"/> property
     /// </summary>
     public static readonly StyledProperty<bool> IsCompactProperty =
-        AvaloniaProperty.Register<FACommandBarToggleButton, bool>(nameof(IsCompact));
+        AvaloniaProperty.Register<CommandBarToggleButton, bool>(nameof(IsCompact));
 
     /// <summary>
     /// Defines the <see cref="TemplateSettings"/> property
     /// </summary>
-    public static readonly StyledProperty<FACommandBarButtonTemplateSettings> TemplateSettingsProperty =
-        AvaloniaProperty.Register<FACommandBarToggleButton, FACommandBarButtonTemplateSettings>(nameof(TemplateSettings));
+    public static readonly StyledProperty<CommandBarButtonTemplateSettings> TemplateSettingsProperty =
+        AvaloniaProperty.Register<CommandBarToggleButton, CommandBarButtonTemplateSettings>(nameof(TemplateSettings));
 
     public bool IsCompact
     {
@@ -59,7 +59,7 @@ public partial class FACommandBarToggleButton : ToggleButton, IFACommandBarEleme
         {
             if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
             {
-                PseudoClasses.Set(FASharedPseudoclasses.s_pcOverflow, value);
+                PseudoClasses.Set(SharedPseudoclasses.s_pcOverflow, value);
             }
         }
     }
@@ -67,7 +67,7 @@ public partial class FACommandBarToggleButton : ToggleButton, IFACommandBarEleme
     /// <summary>
     /// Gets or sets the graphic content of the command bar toggle button.
     /// </summary>
-    public FAIconSource IconSource
+    public IconSource IconSource
     {
         get => GetValue(IconSourceProperty);
         set => SetValue(IconSourceProperty, value);
@@ -91,7 +91,7 @@ public partial class FACommandBarToggleButton : ToggleButton, IFACommandBarEleme
     /// <summary>
     /// Gets the template settings for this CommandBarButton
     /// </summary>
-    public FACommandBarButtonTemplateSettings TemplateSettings
+    public CommandBarButtonTemplateSettings TemplateSettings
     {
         get => GetValue(TemplateSettingsProperty);
         private set => SetValue(TemplateSettingsProperty, value);

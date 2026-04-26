@@ -4,7 +4,7 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <StackPanel Orientation="Vertical" Spacing="5">
-                <AutoCompleteBox Width="100" PlaceholderForeground="Red" PlaceholderText="sdfgsadeg"/>
+                <AutoCompleteBox Width="100" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -32,13 +32,11 @@
         <Setter Property="Padding" Value="{DynamicResource TextControlThemePadding}" />
         <Setter Property="MaxDropDownHeight" Value="{DynamicResource AutoCompleteListMaxHeight}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextControlPlaceholderForeground}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="PART_LayoutRoot">
                     <TextBox Name="PART_TextBox"
-                             PlaceholderText="{TemplateBinding PlaceholderText}"
-                             PlaceholderForeground="{TemplateBinding PlaceholderForeground}"
+                             Watermark="{TemplateBinding Watermark}"
                              Width="{TemplateBinding Width}"
                              Foreground="{TemplateBinding Foreground}"
                              Background="{TemplateBinding Background}"
@@ -55,7 +53,7 @@
                              MaxLength="{TemplateBinding MaxLength}"
                              InnerLeftContent="{TemplateBinding InnerLeftContent}"
                              InnerRightContent="{TemplateBinding InnerRightContent}"
-                             ClearSelectionOnLostFocus="{TemplateBinding ClearSelectionOnLostFocus}" />
+                             />
 
                     <Popup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"

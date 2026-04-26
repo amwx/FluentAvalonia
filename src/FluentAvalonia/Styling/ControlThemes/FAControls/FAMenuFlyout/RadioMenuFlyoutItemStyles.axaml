@@ -6,16 +6,16 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <ui:FAMenuFlyoutPresenter>
-                <ui:FARadioMenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
+                <ui:RadioMenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
             </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
 
-    <ui:FAPathIconSource x:Key="RadioMenuFlyoutItemCheckedIcon" Data="M0,2a2,2 0 1,0 4,0a2,2 0 1,0 -4,0" />
+    <ui:PathIconSource x:Key="RadioMenuFlyoutItemCheckedIcon" Data="M0,2a2,2 0 1,0 4,0a2,2 0 1,0 -4,0" />
 
     <!-- All resources are in BaseResources.axaml -->
 
-    <ControlTheme x:Key="{x:Type ui:FARadioMenuFlyoutItem}" TargetType="ui:FARadioMenuFlyoutItem">
+    <ControlTheme x:Key="{x:Type ui:RadioMenuFlyoutItem}" TargetType="ui:RadioMenuFlyoutItem">
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource MenuFlyoutItemBackgroundBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutItemBorderThickness}"/>
@@ -42,7 +42,7 @@
                         Also FluentIcons doesn't have a comparable icon to the WinUI one from Segoe MDL2 Assets
                         so we just use a path icon that draws a small circle and it basically looks the same
                         -->
-                        <ui:FAIconSourceElement IconSource="{StaticResource RadioMenuFlyoutItemCheckedIcon}"
+                        <ui:IconSourceElement IconSource="{StaticResource RadioMenuFlyoutItemCheckedIcon}"
                                               Margin="6 0 16 0"
                                               Name="CheckGlyph"
                                               UseLayoutRounding="False"
@@ -98,7 +98,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAIconSourceElement#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
             </Style>
         </Style>
@@ -116,7 +116,7 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPressed}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAIconSourceElement#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
             </Style>
         </Style>
@@ -134,12 +134,12 @@
             <Style Selector="^ /template/ TextBlock#KeyboardAcceleratorTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|FAIconSourceElement#CheckGlyph">
+            <Style Selector="^ /template/ ui|IconSourceElement#CheckGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
             </Style>
         </Style>
 
-        <Style Selector="^:checked /template/ ui|FAIconSourceElement#CheckGlyph">
+        <Style Selector="^:checked /template/ ui|IconSourceElement#CheckGlyph">
             <Setter Property="Opacity" Value="1" />
         </Style>
 
