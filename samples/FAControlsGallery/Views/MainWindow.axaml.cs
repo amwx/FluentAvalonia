@@ -20,7 +20,7 @@ public partial class MainWindow : FAAppWindow
         
         SplashScreen = new MainAppSplashScreen(this);
         TitleBar.ExtendsContentIntoTitleBar = true;
-        TitleBar.TitleBarHitTestType = FATitleBarHitTestType.Complex;
+        //TitleBar.TitleBarHitTestType = FATitleBarHitTestType.Complex;
         
         Application.Current.ActualThemeVariantChanged += OnActualThemeVariantChanged;
     }
