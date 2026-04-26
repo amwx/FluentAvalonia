@@ -67,8 +67,7 @@ public partial class FAAppWindow : Window
     {
         base.OnPropertyChanged(change);
         
-        if (change.Property == ExtendClientAreaToDecorationsHintProperty ||
-            change.Property == ExtendClientAreaTitleBarHeightHintProperty)
+        if (change.Property == ExtendClientAreaToDecorationsHintProperty)
         {
             if (IsWindows)
             {
