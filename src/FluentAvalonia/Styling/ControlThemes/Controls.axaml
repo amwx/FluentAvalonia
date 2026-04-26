@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="using:FluentAvalonia.UI.Controls">
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:wnd="using:FluentAvalonia.UI.Windowing">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -136,6 +137,13 @@
     <StyleInclude Source="/Styling/ControlThemes/BasicControls/UserControlStyles.axaml" />
 
 
+    <!-- Special Style to hide default titlebar in FAAppWindow -->
+    <Style Selector="wnd|FAAppWindow WindowDrawnDecorations /template/ TextBlock#TitleTextBlock">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="wnd|FAAppWindow:noFullScreen WindowDrawnDecorations /template/ Button#PART_FullScreenButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
 
     <!--
     Amendments to CommandBar buttons which before ControlThemes used these styles to control their 

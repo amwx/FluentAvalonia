@@ -18,22 +18,38 @@
                 <Border Background="{TemplateBinding Background}">
                     <Viewbox Width="{TemplateBinding FontSize}" Height="{TemplateBinding FontSize}">
                         <ui:FAFontIcon Name="ButtonIcon"
-                                       FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                       FontFamily="{TemplateBinding FontFamily}"
                                        Glyph="{TemplateBinding Content}" />
                     </Viewbox>
                 </Border>
             </ControlTemplate>
         </Setter>
 
+
+        <Style Selector="^.inactive">
+            <Style Selector="^ /template/ Border">
+                <Setter Property="Background" Value="{DynamicResource CaptionButtonBackgroundInactive}" />
+            </Style>
+            <Style Selector="^ /template/ ui|FAFontIcon#ButtonIcon">
+                <Setter Property="Foreground" Value="{DynamicResource CaptionButtonForegroundInactive}" />
+            </Style>
+        </Style>
+        
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ Border">
                 <Setter Property="Background" Value="{DynamicResource CaptionButtonBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ui|FAFontIcon#ButtonIcon">
+                <Setter Property="Foreground" Value="{DynamicResource CaptionButtonForegroundPointerOver}" />
             </Style>
         </Style>
 
         <Style Selector="^:pressed">
             <Style Selector="^ /template/ Border">
                 <Setter Property="Background" Value="{DynamicResource CaptionButtonBackgroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ui|FAFontIcon#ButtonIcon">
+                <Setter Property="Foreground" Value="{DynamicResource CaptionButtonForegroundPressed}" />
             </Style>
         </Style>
 
@@ -61,7 +77,6 @@
         <Setter Property="Template">
             <WindowDrawnDecorationsTemplate>
                 <WindowDrawnDecorationsContent>
-
                     <WindowDrawnDecorationsContent.Underlay>
                         <Panel Name="PART_UnderlayWrapper">
                             <Border Name="PART_WindowBorder"
@@ -90,7 +105,8 @@
                                 <TextBlock Text="{TemplateBinding Title}"
                                            VerticalAlignment="Center"
                                            Margin="12,0,0,0"
-                                           FontSize="12" />
+                                           FontSize="12"
+                                           Name="TitleTextBlock"/>
                             </Panel>
                             <StackPanel Name="PART_OverlayPanel"
                                         VerticalAlignment="Top"
@@ -98,28 +114,35 @@
                                         Height="{TemplateBinding TitleBarHeight}"
                                         IsVisible="{TemplateBinding HasTitleBar}"
                                         Orientation="Horizontal"
-                                        Spacing="2"
                                         TextElement.FontSize="10">
                                 <Button Name="PART_FullScreenButton"
                                         Theme="{StaticResource FluentDrawnCaptionButton}"
                                         WindowDecorationProperties.ElementRole="FullScreenButton"
-                                        Content="&#xE740;"/>
+                                        Content="&#xE740;"
+                                        Classes="CaptionButton"
+                                        Classes.inactive="{Binding !$parent[Window].IsActive}"/>
                                 
                                 <Button Name="PART_MinimizeButton"
                                         Theme="{StaticResource FluentDrawnCaptionButton}"
                                         WindowDecorationProperties.ElementRole="MinimizeButton"
-                                        Content="&#xE738;" />
+                                        Content="&#xE738;"                                        
+                                        Classes="CaptionButton"
+                                        Classes.inactive="{Binding !$parent[Window].IsActive}"/>
+                                
                                 <Button Name="PART_MaximizeButton"
                                         Theme="{StaticResource FluentDrawnCaptionButton}"
                                         WindowDecorationProperties.ElementRole="MaximizeButton"
-                                        Content="&#xE739;" />
+                                        Content="&#xE739;"
+                                        Classes="CaptionButton"
+                                        Classes.inactive="{Binding !$parent[Window].IsActive}" />
                                                                 
                                 <Button Name="PART_CloseButton"
-                                        Classes="Close"
+                                        Classes="Close CaptionButton"
                                         Theme="{StaticResource FluentDrawnCaptionButton}"
                                         WindowDecorationProperties.ElementRole="CloseButton"
                                         FontSize="16"
-                                        Content="&#xE711;" />
+                                        Content="&#xE711;"
+                                        Classes.inactive="{Binding !$parent[Window].IsActive}"/>
                             </StackPanel>
                         </Panel>
                     </WindowDrawnDecorationsContent.Overlay>
@@ -140,13 +163,16 @@
                                 <Button Name="PART_PopoverFullScreenButton"
                                         Theme="{StaticResource FluentDrawnCaptionButton}"
                                         WindowDecorationProperties.ElementRole="FullScreenButton"
-                                        Content="&#xE73F;"/>
+                                        Content="&#xE73F;"
+                                        Classes="CaptionButton"
+                                        Classes.inactive="{Binding !$parent[Window].IsActive}"/>
                                 <Button Name="PART_PopoverCloseButton"
                                         Theme="{StaticResource FluentDrawnCaptionButton}"
                                         WindowDecorationProperties.ElementRole="CloseButton"
                                         FontSize="16"
                                         Content="&#xE711;"
-                                        Classes="Close"/>
+                                        Classes="Close CaptionButton"
+                                        Classes.inactive="{Binding !$parent[Window].IsActive}"/>
                             </StackPanel>
                         </Panel>
                     </WindowDrawnDecorationsContent.FullscreenPopover>

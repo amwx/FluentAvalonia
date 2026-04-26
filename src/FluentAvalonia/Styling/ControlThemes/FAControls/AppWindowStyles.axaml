@@ -139,9 +139,10 @@
                 <Panel>
                     <Panel Name="DefaultTitleBar"
                            Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                           Background="{DynamicResource FATitle_TitleBarBackground}"
-                           TextElement.Foreground="{DynamicResource FATitle_TitleBarForeground}"
-                           VerticalAlignment="Top">
+                           Background="{DynamicResource TitleBarBackground}"
+                           TextElement.Foreground="{DynamicResource TitleBarForeground}"
+                           VerticalAlignment="Top"
+                           WindowDecorationProperties.ElementRole="TitleBar">
 
                         <Image Source="{TemplateBinding Icon}"
                                VerticalAlignment="Center"
@@ -151,8 +152,10 @@
                                Margin="8 0 0 0"
                                Name="Icon"/>
 
+                        <!--<Border Background="Blue" />-->
+                        
                         <TextBlock Name="TitleText"
-                                   Text="{TemplateBinding Title}"
+                                   Text="Title"
                                    Margin="12 0 0 0"
                                    FontSize="12"
                                    IsVisible="{Binding TemplateSettings.IsTitleBarContentVisible, RelativeSource={RelativeSource TemplatedParent}}"
@@ -172,7 +175,7 @@
                                          IsVisible="False"/>
 
                     <!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
-                    <wnd:FAMinMaxCloseControl HorizontalAlignment="Right"
+                    <wnd:FAMinMaxCloseControl HorizontalAlignment="Right" IsVisible="False"
                                             VerticalAlignment="Top"
                                             Name="SystemCaptionButtons"
                                             Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -232,8 +235,8 @@
 
             <Style Selector="^[IsActive=False]">
                 <Style Selector="^ /template/ Panel#DefaultTitleBar">
-                    <Setter Property="Background" Value="{DynamicResource FATitle_TitleBarBackgroundInactive}" />
-                    <Setter Property="TextElement.Foreground" Value="{DynamicResource FATitle_TitleBarForegroundInactive}" />
+                    <Setter Property="Background" Value="{DynamicResource TitleBarBackgroundInactive}" />
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource TitleBarForegroundInactive}" />
                 </Style>
             </Style>
         </Style>

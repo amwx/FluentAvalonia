@@ -3961,8 +3961,18 @@
             <StaticResource x:Key="CaptionButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
             <SolidColorBrush x:Key="CaptionButtonBackgroundPointerOver" Color="White" Opacity="0.09" />
             <SolidColorBrush x:Key="CaptionButtonBackgroundPressed" Color="White" Opacity="0.20" />
+            <StaticResource x:Key="CaptionButtonBackgroundInactive" ResourceKey="SubtleFillColorTransparentBrush" />
             
-            <SolidColorBrush x:Key="CaptionButtonForeground" Color="White" />
+            <StaticResource x:Key="CaptionButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="CaptionButtonForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="CaptionButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="CaptionButtonForegroundInactive" ResourceKey="TextFillColorDisabledBrush" />
+
+            <!--FAAppWindow Only-->
+            <StaticResource x:Key="TitleBarBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TitleBarForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TitleBarBackgroundInactive" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TitleBarForegroundInactive" ResourceKey="TextFillColorDisabledBrush" />
             
         </ResourceDictionary>
         
