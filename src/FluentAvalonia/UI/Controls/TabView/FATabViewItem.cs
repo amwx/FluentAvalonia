@@ -49,9 +49,9 @@ public partial class FATabViewItem : FASelectorItem
         }, RoutingStrategies.Tunnel);
     }
 
-    static TabViewItem()
+    static FATabViewItem()
     {
-        FocusableProperty.OverrideDefaultValue<TabViewItem>(true);
+        FocusableProperty.OverrideDefaultValue<FATabViewItem>(true);
     }
     
     protected internal FATabView ParentTabView

@@ -174,46 +174,6 @@ public partial class FATabView
     public static readonly StyledProperty<SplitViewDisplayMode> VerticalPaneDisplayModeProperty = 
         AvaloniaProperty.Register<FATabView, SplitViewDisplayMode>(nameof(VerticalPaneDisplayMode), defaultValue: SplitViewDisplayMode.Inline);
 
-
-
-    /// <summary>
-    /// Defines the <see cref="TabStripLocation"/> property
-    /// </summary>
-    public static readonly StyledProperty<TabViewTabStripLocation> TabStripLocationProperty =
-        AvaloniaProperty.Register<TabView, TabViewTabStripLocation>(nameof(TabStripLocation));
-
-    /// <summary>
-    /// Defines the <see cref="IsVerticalPaneOpen"/> property
-    /// </summary>
-    public static readonly StyledProperty<bool> IsVerticalPaneOpenProperty = 
-        AvaloniaProperty.Register<TabView, bool>(nameof(IsVerticalPaneOpen), defaultValue: true);
-
-    /// <summary>
-    /// Defines the <see cref="VerticalOpenPaneLength"/> property
-    /// </summary>
-    public static readonly StyledProperty<double> VerticalOpenPaneLengthProperty = 
-        AvaloniaProperty.Register<TabView, double>(nameof(VerticalOpenPaneLength), defaultValue: 225d);
-
-    /// <summary>
-    /// Defines the <see cref="MinimumVerticalOpenPaneLength"/> property
-    /// </summary>
-    public static readonly StyledProperty<double> MinimumVerticalOpenPaneLengthProperty = 
-        AvaloniaProperty.Register<TabView, double>(nameof(MinimumVerticalOpenPaneLength), defaultValue: 40d);
-
-    /// <summary>
-    /// Defines the <see cref="MaximumVerticalOpenPaneLength"/> property
-    /// </summary>
-    public static readonly StyledProperty<double> MaximumVerticalOpenPaneLengthProperty = 
-        AvaloniaProperty.Register<TabView, double>(nameof(MaximumVerticalOpenPaneLength), defaultValue: 700d);
-
-    /// <summary>
-    /// Defines the <see cref="VerticalPaneDisplayMode"/> property
-    /// </summary>
-    public static readonly StyledProperty<SplitViewDisplayMode> VerticalPaneDisplayModeProperty = 
-        AvaloniaProperty.Register<TabView, SplitViewDisplayMode>(nameof(VerticalPaneDisplayMode), defaultValue: SplitViewDisplayMode.Inline);
-
-
-
     /// <summary>
     /// Gets or sets how the tabs should be sized
     /// </summary>
