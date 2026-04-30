@@ -7,10 +7,11 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Logging;
 using Avalonia.Threading;
-using FluentAvalonia.UI.Controls.Experimental;
 using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace FluentAvalonia.UI.Controls;
@@ -48,10 +49,12 @@ public partial class FAFrame : ContentControl
         {
             if (!_isNavigating)
             {
-                if (change.NewValue is null)
+                var sourcePageType = SourcePageType;
+                if (sourcePageType is null)
                     throw new InvalidOperationException("SourcePageType cannot be null. Use Content instead.");
+                Debug.Assert(sourcePageType == change.GetNewValue<Type>());
 
-                Navigate(change.GetNewValue<Type>());
+                Navigate(sourcePageType);
             }
         }
         else if (change.Property == IsNavigationStackEnabledProperty)
@@ -145,7 +148,9 @@ public partial class FAFrame : ContentControl
     /// if a <see cref="NavigationPageFactory"/> this can be any type (e.g., a ViewModel)</param>
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
-    public bool Navigate(Type sourcePageType) => Navigate(sourcePageType, null, null);
+    public bool Navigate(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType
+    ) => Navigate(sourcePageType, null, null);
 
 
     /// <summary>
@@ -159,7 +164,10 @@ public partial class FAFrame : ContentControl
     /// using GetNavigationState.</param>
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
-    public bool Navigate(Type sourcePageType, object parameter) => Navigate(sourcePageType, parameter, null);
+    public bool Navigate(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType,
+        object parameter
+    ) => Navigate(sourcePageType, parameter, null);
 
     /// <summary>
     /// Causes the Frame to load content represented by the specified Page -derived data type, 
@@ -174,10 +182,13 @@ public partial class FAFrame : ContentControl
     /// <param name="infoOverride">Info about the animated transition.</param>
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
-    public bool Navigate(Type sourcePageType, object parameter, FANavigationTransitionInfo infoOverride)
+    public bool Navigate(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType,
+        object parameter,
+        FANavigationTransitionInfo infoOverride
+    )
     {
-        return NavigateCore(new FAPageStackEntry(sourcePageType, parameter,
-            infoOverride), FANavigationMode.New);
+        return NavigateCore(new FAPageStackEntry(sourcePageType, parameter, infoOverride), FANavigationMode.New);
     }
 
     /// <summary>
@@ -192,9 +203,15 @@ public partial class FAFrame : ContentControl
     /// and what transition animation is used.</param>
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
-    public bool NavigateToType(Type sourcePageType, object parameter, FAFrameNavigationOptions navOptions) =>
-        NavigateCore(new FAPageStackEntry(sourcePageType, parameter, navOptions?.TransitionInfoOverride),
+    public bool NavigateToType(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType,
+        object parameter,
+        FAFrameNavigationOptions navOptions
+    )
+    {
+        return NavigateCore(new FAPageStackEntry(sourcePageType, parameter, navOptions?.TransitionInfoOverride),
             FANavigationMode.New, navOptions);
+    }
 
     /// <summary>
     /// Causes the frame to load content represented by the specified target property with the
@@ -208,7 +225,10 @@ public partial class FAFrame : ContentControl
     /// and what transition animation is used.</param>
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true or
     /// if <see cref="NavigationPageFactory" /> is not specified; otherwise, <c>true</c>.</returns>
-    public bool NavigateFromObject(object target, FAFrameNavigationOptions navOptions = null)
+    public bool NavigateFromObject<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
+        T target,
+        FAFrameNavigationOptions navOptions = null
+    )
     {
         // Check the cache first to see if we have an existing page that matches
         // For this check we check by both type and object reference
@@ -225,7 +245,7 @@ public partial class FAFrame : ContentControl
         }
 
         // The page source Type here will be whatever was specified as 'target'
-        var entry = new FAPageStackEntry(target.GetType(), null, navOptions?.TransitionInfoOverride)
+        var entry = new FAPageStackEntry(typeof(T), null, navOptions?.TransitionInfoOverride)
         {
             Instance = existing,
             Context = target
@@ -289,6 +309,7 @@ public partial class FAFrame : ContentControl
     /// Reads and restores the navigation history of a Frame from a provided serialization string.
     /// </summary>
     /// <param name="navState">The serialization string that supplies the restore point for navigation history.</param>
+    [RequiresUnreferencedCode("Resolves navigation targets from the navState string.")]
     public void SetNavigationState(string navState) =>
         SetNavigationState(navState, false);
 
@@ -302,6 +323,7 @@ public partial class FAFrame : ContentControl
     /// Calling SetNavigationState with suppressNavigate set to true, OnNavigatedTo is not called and the current page is placed into
     /// the BackStack
     /// </remarks>
+    [RequiresUnreferencedCode("Resolves navigation targets from the navState string.")]
     public void SetNavigationState(string navState, bool suppressNavigate)
     {
         if (!IsNavigationStackEnabled)
@@ -576,7 +598,9 @@ public partial class FAFrame : ContentControl
         RaisePropertyChanged(BackStackDepthProperty, oldCount, _backStack.Count);
     }
 
-    private Control CreatePageAndCacheIfNecessary(Type srcPageType)
+    private Control CreatePageAndCacheIfNecessary(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type srcPageType
+    )
     {
         if (CacheSize == 0)
         {

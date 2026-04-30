@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Diagnostics.CodeAnalysis;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using FluentAvalonia.UI.Navigation;
@@ -10,6 +11,10 @@ public partial class FAFrame : ContentControl
     /// <summary>
     /// Defines the <see cref="SourcePageType"/> property
     /// </summary>
+    /// <remarks>
+    /// When concerned about trimming/aot, do not set the <see cref="SourcePageType"/> using the property!
+    /// Use <see cref="Navigate(Type)"/> instead.
+    /// </remarks>
     public static readonly StyledProperty<Type> SourcePageTypeProperty =
         AvaloniaProperty.Register<FAFrame, Type>(nameof(SourcePageType));
 
@@ -80,9 +85,18 @@ public partial class FAFrame : ContentControl
     /// <summary>
     /// Gets or sets a type reference of the current content, or the content that should be navigated to.
     /// </summary>
+    /// <remarks>
+    /// Do not use this method with trimming/aot! Use <see cref="Navigate(System.Type)"/> instead
+    /// </remarks>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     public Type SourcePageType
     {
+        // We are suppressing the IL2073 warning here.
+        // We do that because we don't own getting the value from a SourcePageTypeProperty.
+        // Therefore, this API is unsafe with NativeAOT/Trimming enabled (see the remarks in the xml docs)
+#pragma warning disable IL2073
         get => GetValue(SourcePageTypeProperty);
+#pragma warning restore IL2073
         set => SetValue(SourcePageTypeProperty, value);
     }
 
