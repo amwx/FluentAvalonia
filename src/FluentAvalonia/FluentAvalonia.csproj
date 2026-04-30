@@ -7,6 +7,7 @@
     <MicroComGeneratorRuntimeNamespace>MicroCom.Runtime</MicroComGeneratorRuntimeNamespace>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <PackageId>FluentAvaloniaUI</PackageId>
+    <IsAotCompatible>true</IsAotCompatible>
 
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
