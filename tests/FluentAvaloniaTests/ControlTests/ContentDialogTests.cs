@@ -25,7 +25,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact]
     public void NotSettingButtonTextShowsNoButtons()
     {
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         _window.Content = dlg;
         dlg.ApplyTemplate();
         dlg.SetupDialog();
@@ -42,7 +42,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact]
     public void SettingPrimaryButtonTextShowsPrimaryButton()
     {
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         _window.Content = dlg;
 
         dlg.PrimaryButtonText = "Primary";
@@ -60,7 +60,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact]
     public void SettingSecondaryButtonTextShowsSecondaryButton()
     {
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         _window.Content = dlg;
 
         dlg.SecondaryButtonText = "Secondary";
@@ -78,7 +78,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact]
     public void SettingCloseButtonTextShowsCloseButton()
     {
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         _window.Content = dlg;
 
         dlg.CloseButtonText = "Close";
@@ -96,7 +96,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task ContentDialogInCodeShows()
     {
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         _window.Content = dlg;
 
         bool shown = false;
@@ -116,7 +116,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task AlreadyParentedContentDialogShows()
     {
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         _window.Content = dlg;
 
         bool shown = false;
@@ -134,7 +134,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task ContentDialogShowsAtCorrectWindow()
     {
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         _window.Content = dlg;
         var wnd2 = new Window();
         wnd2.Show();
@@ -155,7 +155,7 @@ public class ContentDialogTests : IDisposable
     public async Task PrimaryButtonInvokesEventAndCommand()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.PrimaryButtonText = "Primary";
         window.Show();
 
@@ -198,7 +198,7 @@ public class ContentDialogTests : IDisposable
     public async Task SecondaryButtonInvokesEventAndCommand()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.SecondaryButtonText = "Secondary";
         window.Show();
 
@@ -241,7 +241,7 @@ public class ContentDialogTests : IDisposable
     public async Task CloseButtonInvokesEventAndCommand()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.CloseButtonText = "Close";
         window.Show();
 
@@ -283,7 +283,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task FocusIsMovedIntoContentDialogUponOpening()
     {
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary"
         };
@@ -307,7 +307,7 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task OldFocusIsPreservedThroughContentDialog()
     {
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary"
         };
@@ -344,12 +344,12 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task PrimaryDefaultButtonGetsInitialFocus()
     {
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
 
         dlg.Opened += (_, __) =>
@@ -369,12 +369,12 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task SecondaryDefaultButtonGetsInitialFocus()
     {
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Secondary
+            DefaultButton = FAContentDialogButton.Secondary
         };
 
         dlg.Opened += (_, __) =>
@@ -394,12 +394,12 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task CloseDefaultButtonGetsInitialFocus()
     {
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Close
+            DefaultButton = FAContentDialogButton.Close
         };
 
         dlg.Opened += (_, __) =>
@@ -420,12 +420,12 @@ public class ContentDialogTests : IDisposable
     public async Task UserCanOverrideInitialFocus()
     {
         var tb = new TextBox();
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             Content = tb
         };
 
@@ -450,12 +450,12 @@ public class ContentDialogTests : IDisposable
     [AvaloniaFact(Timeout = 5000)]
     public async Task EnterKeyInvokesDefaultButtonIfSet()
     {
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
 
         dlg.Opened += (_, __) =>
@@ -465,19 +465,19 @@ public class ContentDialogTests : IDisposable
         };
 
         var res = await dlg.ShowAsync(_window);
-        Assert.Equal(ContentDialogResult.Primary, res);
+        Assert.Equal(FAContentDialogResult.Primary, res);
         _window.Content = null;
     }
 
     [AvaloniaFact(Timeout = 5000)]
     public async Task EscapeKeyClosesDialogWithNoResult()
     {
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
 
         dlg.Opened += (_, __) =>
@@ -487,7 +487,7 @@ public class ContentDialogTests : IDisposable
         };
 
         var res = await dlg.ShowAsync(_window);
-        Assert.Equal(ContentDialogResult.None, res);
+        Assert.Equal(FAContentDialogResult.None, res);
         _window.Content = null;
     }
 
@@ -495,12 +495,12 @@ public class ContentDialogTests : IDisposable
     public async Task UnhandledEnterKeyInUserContentInvokesDefaultButton()
     {
         var tb = new TextBox();
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             Content = tb
         };
 
@@ -513,7 +513,7 @@ public class ContentDialogTests : IDisposable
         };
 
         var res = await dlg.ShowAsync(_window);
-        Assert.Equal(ContentDialogResult.Primary, res);
+        Assert.Equal(FAContentDialogResult.Primary, res);
         _window.Content = null;
     }
 
@@ -521,12 +521,12 @@ public class ContentDialogTests : IDisposable
     public async Task HandledEnterKeyInUserContentDoesNotInvokesDefaultButton()
     {
         var tb = new TextBox();
-        var dlg = new ContentDialog
+        var dlg = new FAContentDialog
         {
             PrimaryButtonText = "Primary",
             SecondaryButtonText = "Secondary",
             CloseButtonText = "Close",
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             Content = tb
         };
 
@@ -541,11 +541,11 @@ public class ContentDialogTests : IDisposable
 
             _window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
             _window.KeyReleaseQwerty(PhysicalKey.Enter, RawInputModifiers.None);
-            dlg.Hide(ContentDialogResult.None);
+            dlg.Hide(FAContentDialogResult.None);
         };
 
         var res = await dlg.ShowAsync(_window);
-        Assert.Equal(ContentDialogResult.None, res);
+        Assert.Equal(FAContentDialogResult.None, res);
         _window.Content = null;
     }
 
@@ -564,21 +564,21 @@ public class ContentDialogTests : IDisposable
 
         mainButton.Click += async (s, e) =>
         {
-            var dlg = new ContentDialog
+            var dlg = new FAContentDialog
             {
                 PrimaryButtonText = "Primary",
                 SecondaryButtonText = "Secondary",
                 CloseButtonText = "Close",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             };
 
             dlg.Opened += (_, __) =>
             {
-                dlg.Hide(ContentDialogResult.None);
+                dlg.Hide(FAContentDialogResult.None);
             };
 
             var res = await dlg.ShowAsync(_window);
-            Assert.Equal(ContentDialogResult.None, res);
+            Assert.Equal(FAContentDialogResult.None, res);
         };
 
         mainButton.Focus();
@@ -593,7 +593,7 @@ public class ContentDialogTests : IDisposable
     public async Task CancellingClosingInButtonClickCancelsDialogClosing()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.PrimaryButtonText = "Primary";
         window.Show();
 
@@ -620,7 +620,7 @@ public class ContentDialogTests : IDisposable
 
         var res = await dlg.ShowAsync(window);
 
-        Assert.Equal(ContentDialogResult.None, res);
+        Assert.Equal(FAContentDialogResult.None, res);
         window.Close();
     }
 
@@ -628,7 +628,7 @@ public class ContentDialogTests : IDisposable
     public async Task ButtonDeferralWorks()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.PrimaryButtonText = "Primary";
         window.Show();
 
@@ -667,7 +667,7 @@ public class ContentDialogTests : IDisposable
     public async Task CanCancelWithButtonDeferral()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.PrimaryButtonText = "Primary";
         window.Show();
 
@@ -706,7 +706,7 @@ public class ContentDialogTests : IDisposable
 
         var res = await dlg.ShowAsync(window);
         Assert.True(deferralRun);
-        Assert.Equal(ContentDialogResult.None, res);
+        Assert.Equal(FAContentDialogResult.None, res);
 
         window.Close();
     }
@@ -715,7 +715,7 @@ public class ContentDialogTests : IDisposable
     public async Task ClosingDeferralWorks()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.PrimaryButtonText = "Primary";
         window.Show();
 
@@ -745,7 +745,7 @@ public class ContentDialogTests : IDisposable
     public async Task CanCancelWithClosingDeferral()
     {
         var window = new Window();
-        var dlg = new ContentDialog();
+        var dlg = new FAContentDialog();
         dlg.PrimaryButtonText = "Primary";
         window.Show();
 

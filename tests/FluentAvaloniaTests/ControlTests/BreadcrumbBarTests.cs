@@ -23,9 +23,9 @@ using Xunit;
 
 namespace FluentAvaloniaTests.ControlTests;
 
-public class BreadcrumbBarTests : IDisposable
+public class FABreadcrumbBarTests : IDisposable
 {
-    public BreadcrumbBarTests()
+    public FABreadcrumbBarTests()
     {
         _window = new Window();
         _window.Show();
@@ -34,7 +34,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void VerifyBreadcrumbDefaultAPIValues()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
 
         Assert.Null(bcb.ItemsSource);
         Assert.Null(bcb.ItemTemplate);
@@ -43,27 +43,27 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void VerifyDefaultBreadcrumb()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
         _window.Content = bcb;
         _window.UpdateLayout();
 
         var ir = bcb.GetTemplateChildren().Where(x => x.Name == "PART_ItemsRepeater").FirstOrDefault();
 
         Assert.NotNull(ir);
-        Assert.IsType<ItemsRepeater>(ir);
+        Assert.IsType<FAItemsRepeater>(ir);
 
-        var node = (ir as ItemsRepeater).TryGetElement(1);
+        var node = (ir as FAItemsRepeater).TryGetElement(1);
         Assert.Null(node);
     }
 
     [AvaloniaFact]
     public void VerifyCustomItemTemplate()
     {
-        var bcb = new BreadcrumbBar();
-        var bcb2 = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
+        var bcb2 = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<string> { "Node 1", "Node 2" };
-        // Set a custom ItemTemplate to be wrapped in a BreadcrumbBarItem.
+        // Set a custom ItemTemplate to be wrapped in a FABreadcrumbBarItem.
         var itemTemplate = new FuncDataTemplate<string>((x, ns) =>
         {
             return new TextBlock
@@ -76,7 +76,7 @@ public class BreadcrumbBarTests : IDisposable
         bcb2.ItemsSource = new List<string> { "Node 1", "Node 2" };
         var itemTemplate2 = new FuncDataTemplate<string>((x, ns) =>
         {
-            return new BreadcrumbBarItem
+            return new FABreadcrumbBarItem
             {
                 Foreground = Brushes.Blue,
                 Content = new TextBlock
@@ -103,8 +103,8 @@ public class BreadcrumbBarTests : IDisposable
         Assert.NotNull(ir);
         Assert.NotNull(ir2);
 
-        var node1 = ir.TryGetElement(1) as BreadcrumbBarItem;
-        var node2 = ir2.TryGetElement(1) as BreadcrumbBarItem;
+        var node1 = ir.TryGetElement(1) as FABreadcrumbBarItem;
+        var node2 = ir2.TryGetElement(1) as FABreadcrumbBarItem;
 
         Assert.NotNull(node1);
         Assert.NotNull(node2);
@@ -119,10 +119,10 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void VerifyNumericItemsSource()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<int> { 1, 2, 3, 4 };
-        // Set a custom ItemTemplate to be wrapped in a BreadcrumbBarItem.
+        // Set a custom ItemTemplate to be wrapped in a FABreadcrumbBarItem.
         var itemTemplate = new FuncDataTemplate<object>((x, ns) =>
         {
             return new TextBlock
@@ -138,7 +138,7 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
         Assert.NotNull(ir);
 
-        var node1 = ir.TryGetElement(1) as BreadcrumbBarItem;
+        var node1 = ir.TryGetElement(1) as FABreadcrumbBarItem;
 
         Assert.NotNull(node1);
     }
@@ -146,7 +146,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void VerifyObjectItemsSource()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<MockClass>() 
         {
@@ -155,7 +155,7 @@ public class BreadcrumbBarTests : IDisposable
         };
         var itemTemplate = new FuncDataTemplate<MockClass>((x, ns) =>
         {
-            return new BreadcrumbBarItem
+            return new FABreadcrumbBarItem
             {
                 Foreground = Brushes.Blue,
                 Content = x,
@@ -176,14 +176,14 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
         Assert.NotNull(ir);
 
-        var node = ir.TryGetElement(1) as BreadcrumbBarItem;
+        var node = ir.TryGetElement(1) as FABreadcrumbBarItem;
         Assert.NotNull(node);
     }
 
     [AvaloniaFact]
     public void VerifyDropDownItemTemplate()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<MockClass>()
         {
@@ -192,7 +192,7 @@ public class BreadcrumbBarTests : IDisposable
         };
         var itemTemplate = new FuncDataTemplate<MockClass>((x, ns) =>
         {
-            return new BreadcrumbBarItem
+            return new FABreadcrumbBarItem
             {
                 DataContext = x,
                 Content = new Binding(),
@@ -227,7 +227,7 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
         Assert.NotNull(ir);
 
-        var n1 = ir.TryGetElement(0) as BreadcrumbBarItem;
+        var n1 = ir.TryGetElement(0) as FABreadcrumbBarItem;
         Assert.NotNull(n1);
 
         var eb = n1.GetTemplateChildren().Where(x => x.Name == "PART_ItemButton")
@@ -246,11 +246,11 @@ public class BreadcrumbBarTests : IDisposable
         var flyout = rootGrid.Resources["PART_EllipsisFlyout"] as Flyout;
         Assert.NotNull(flyout);
 
-        var ir2 = flyout.Content as ItemsRepeater;
+        var ir2 = flyout.Content as FAItemsRepeater;
         Assert.NotNull(ir2);
 
         // The WinUI version of this test makes no sense, so this is custom from here
-        var ellNode1 = ir2.TryGetElement(0) as BreadcrumbBarItem;
+        var ellNode1 = ir2.TryGetElement(0) as FABreadcrumbBarItem;
         var presenter = ellNode1.GetTemplateChildren()
             .Where(x => x is ContentPresenter cp && cp.Name == "PART_EllipsisDropDownItemContentPresenter")
             .FirstOrDefault();
@@ -265,7 +265,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void VerifyDropDownItemTemplateWithNoControl()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<MockClass>()
         {
@@ -301,7 +301,7 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
         Assert.NotNull(ir);
 
-        var n1 = ir.TryGetElement(0) as BreadcrumbBarItem;
+        var n1 = ir.TryGetElement(0) as FABreadcrumbBarItem;
         Assert.NotNull(n1);
 
         var eb = n1.GetTemplateChildren().Where(x => x.Name == "PART_ItemButton")
@@ -320,11 +320,11 @@ public class BreadcrumbBarTests : IDisposable
         var flyout = rootGrid.Resources["PART_EllipsisFlyout"] as Flyout;
         Assert.NotNull(flyout);
 
-        var ir2 = flyout.Content as ItemsRepeater;
+        var ir2 = flyout.Content as FAItemsRepeater;
         Assert.NotNull(ir2);
 
         // The WinUI version of this test makes no sense, so this is custom from here
-        var ellNode1 = ir2.TryGetElement(0) as BreadcrumbBarItem;
+        var ellNode1 = ir2.TryGetElement(0) as FABreadcrumbBarItem;
         var presenter = ellNode1.GetTemplateChildren()
             .Where(x => x is ContentPresenter cp && cp.Name == "PART_EllipsisDropDownItemContentPresenter")
             .FirstOrDefault();
@@ -339,7 +339,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void VerifyCollectionChangeGetsRespected()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<MockClass>()
         {
@@ -348,7 +348,7 @@ public class BreadcrumbBarTests : IDisposable
         };
         var itemTemplate = new FuncDataTemplate<MockClass>((x, ns) =>
         {
-            return new BreadcrumbBarItem
+            return new FABreadcrumbBarItem
             {
                 DataContext = x,
                 Content = new Binding(),
@@ -369,7 +369,7 @@ public class BreadcrumbBarTests : IDisposable
         Dispatcher.UIThread.RunJobs();
 
         var ir = GetRepeater(bcb);
-        var node2 = ir.TryGetElement(1) as BreadcrumbBarItem;
+        var node2 = ir.TryGetElement(1) as FABreadcrumbBarItem;
         Assert.NotNull(node2);
 
         bcb.ItemsSource = new List<MockClass>()
@@ -381,14 +381,14 @@ public class BreadcrumbBarTests : IDisposable
         };
 
         Dispatcher.UIThread.RunJobs();
-        var node3 = ir.TryGetElement(3) as BreadcrumbBarItem;
+        var node3 = ir.TryGetElement(3) as FABreadcrumbBarItem;
         Assert.NotNull(node3);
     }
 
     [AvaloniaFact]
     public void InlineItemsHaveCorrectPseudoclasses()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
         _window.Content = bcb;
         bcb.ItemsSource = new List<MockClass>()
         {
@@ -403,9 +403,9 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
 
         Assert.NotNull(ir);
-        Assert.IsType<ItemsRepeater>(ir);
+        Assert.IsType<FAItemsRepeater>(ir);
 
-        var ellNode = ir.TryGetElement(0) as BreadcrumbBarItem;
+        var ellNode = ir.TryGetElement(0) as FABreadcrumbBarItem;
         Assert.NotNull(ellNode);
 
         Assert.Contains(":ellipsis", ellNode.Classes);
@@ -420,7 +420,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void EllipsisDropDownItemsHaveCorrectPseudoclasses()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
         
         bcb.ItemsSource = new List<MockClass>()
         {
@@ -444,9 +444,9 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
 
         Assert.NotNull(ir);
-        Assert.IsType<ItemsRepeater>(ir);
+        Assert.IsType<FAItemsRepeater>(ir);
 
-        var n1 = ir.TryGetElement(0) as BreadcrumbBarItem;
+        var n1 = ir.TryGetElement(0) as FABreadcrumbBarItem;
         Assert.NotNull(n1);
 
         var eb = n1.GetTemplateChildren().Where(x => x.Name == "PART_ItemButton")
@@ -465,14 +465,14 @@ public class BreadcrumbBarTests : IDisposable
         var flyout = rootGrid.Resources["PART_EllipsisFlyout"] as Flyout;
         Assert.NotNull(flyout);
 
-        var ir2 = flyout.Content as ItemsRepeater;
+        var ir2 = flyout.Content as FAItemsRepeater;
         Assert.NotNull(ir2);
 
         Assert.True(ir2.ItemsSourceView.Count > 0);
 
         for (int i = 0; i < ir2.ItemsSourceView.Count; i++)
         {
-            var item = ir2.TryGetElement(i) as BreadcrumbBarItem;
+            var item = ir2.TryGetElement(i) as FABreadcrumbBarItem;
             Assert.NotNull(item);
             Assert.DoesNotContain(":inline", item.Classes);
             Assert.Contains(":ellipsisDropDown", item.Classes);
@@ -482,7 +482,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void ClickingInlineItemRaisesItemClickedEvent()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
         _window.Content = bcb;
         bcb.ItemsSource = new List<string>()
         {
@@ -497,9 +497,9 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
 
         Assert.NotNull(ir);
-        Assert.IsType<ItemsRepeater>(ir);
+        Assert.IsType<FAItemsRepeater>(ir);
 
-        var node = ir.TryGetElement(1) as BreadcrumbBarItem;
+        var node = ir.TryGetElement(1) as FABreadcrumbBarItem;
         Assert.NotNull(node);
 
         int index = -1;
@@ -519,7 +519,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void ClickingEllipsisDropDownItemRaisesItemClickedEvent()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
         
         bcb.ItemsSource = new List<string>()
         {
@@ -543,9 +543,9 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
 
         Assert.NotNull(ir);
-        Assert.IsType<ItemsRepeater>(ir);
+        Assert.IsType<FAItemsRepeater>(ir);
 
-        var n1 = ir.TryGetElement(0) as BreadcrumbBarItem;
+        var n1 = ir.TryGetElement(0) as FABreadcrumbBarItem;
         Assert.NotNull(n1);
 
         var eb = n1.GetTemplateChildren().Where(x => x.Name == "PART_ItemButton")
@@ -564,13 +564,13 @@ public class BreadcrumbBarTests : IDisposable
         var flyout = rootGrid.Resources["PART_EllipsisFlyout"] as Flyout;
         Assert.NotNull(flyout);
 
-        var ir2 = flyout.Content as ItemsRepeater;
+        var ir2 = flyout.Content as FAItemsRepeater;
         Assert.NotNull(ir2);
 
         var count = ir2.ItemsSourceView.Count;
 
         // The last item is the first in the ItemsSource list since they're added backwards
-        var node = ir2.TryGetElement(count - 1) as BreadcrumbBarItem;
+        var node = ir2.TryGetElement(count - 1) as FABreadcrumbBarItem;
         Assert.NotNull(node);
 
         int index = -1;
@@ -590,7 +590,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void LastInlineItemIsNotInteractiveByDefault()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
         _window.Content = bcb;
         bcb.ItemsSource = new List<string>()
         {
@@ -605,9 +605,9 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
 
         Assert.NotNull(ir);
-        Assert.IsType<ItemsRepeater>(ir);
+        Assert.IsType<FAItemsRepeater>(ir);
 
-        var node = ir.TryGetElement(3) as BreadcrumbBarItem;
+        var node = ir.TryGetElement(3) as FABreadcrumbBarItem;
         Assert.NotNull(node);
 
         Assert.Contains(":lastItem", node.Classes);
@@ -633,7 +633,7 @@ public class BreadcrumbBarTests : IDisposable
     [AvaloniaFact]
     public void SettingIsLastItemClickEnabledMakesLastInlineItemInteractive()
     {
-        var bcb = new BreadcrumbBar();
+        var bcb = new FABreadcrumbBar();
         _window.Content = bcb;
         bcb.ItemsSource = new List<string>()
         {
@@ -649,9 +649,9 @@ public class BreadcrumbBarTests : IDisposable
         var ir = GetRepeater(bcb);
 
         Assert.NotNull(ir);
-        Assert.IsType<ItemsRepeater>(ir);
+        Assert.IsType<FAItemsRepeater>(ir);
 
-        var node = ir.TryGetElement(3) as BreadcrumbBarItem;
+        var node = ir.TryGetElement(3) as FABreadcrumbBarItem;
         Assert.NotNull(node);
 
         Assert.Contains(":lastItem", node.Classes);
@@ -680,10 +680,10 @@ public class BreadcrumbBarTests : IDisposable
         _window.Close();
     }
 
-    private static ItemsRepeater GetRepeater(BreadcrumbBar b)
+    private static FAItemsRepeater GetRepeater(FABreadcrumbBar b)
     {
         return b.GetTemplateChildren().Where(x => x.Name == "PART_ItemsRepeater")
-            .FirstOrDefault() as ItemsRepeater;
+            .FirstOrDefault() as FAItemsRepeater;
     }
 
     private static bool ClickControl(Control b)

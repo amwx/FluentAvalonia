@@ -14,16 +14,16 @@ public class CollectionViewSourceTests
     [Fact]
     public void SettingCVSSourceCreatesICollectionView()
     {
-        var cvs = new CollectionViewSource();
+        var cvs = new FACollectionViewSource();
         cvs.Source = new AvaloniaList<object>();
 
-        Assert.True(cvs.View is ICollectionView);
+        Assert.True(cvs.View is IFACollectionView);
     }
 
     [Fact]
     public void ChangingCVSSourceChangesView()
     {
-        var cvs = new CollectionViewSource();
+        var cvs = new FACollectionViewSource();
         cvs.Source = new List<object>();
 
         var firstView = cvs.View;
@@ -38,7 +38,7 @@ public class CollectionViewSourceTests
     {
         var groups = CreateGroups();
 
-        var cvs = new CollectionViewSource();
+        var cvs = new FACollectionViewSource();
         cvs.Source = groups;
         cvs.IsSourceGrouped = true;
 
@@ -50,7 +50,7 @@ public class CollectionViewSourceTests
     //{
     //    var groups = CreateGroupsComplex();
 
-    //    var cvs = new CollectionViewSource();
+    //    var cvs = new FACollectionViewSource();
     //    cvs.Source = groups;
     //    cvs.IsSourceGrouped = true;
     //    cvs.ItemsPath = "Items";
@@ -64,7 +64,7 @@ public class CollectionViewSourceTests
     {
         var groups = CreateGroups();
 
-        var cvs = new CollectionViewSource();
+        var cvs = new FACollectionViewSource();
         cvs.Source = groups;
         cvs.IsSourceGrouped = true;
 
@@ -142,7 +142,7 @@ public class CollectionViewSourceTests
 
         var groups = CreateGroups();
 
-        var cvs = new CollectionViewSource();
+        var cvs = new FACollectionViewSource();
         cvs.Source = groups;
         cvs.IsSourceGrouped = true;
 
@@ -244,7 +244,7 @@ public class CollectionViewSourceTests
     //public void NoIssuesWithItemsSourceView()
     //{
     //    var groups = CreateGroups();
-    //    var cvs = new CollectionViewSource();
+    //    var cvs = new FACollectionViewSource();
     //    cvs.Source = groups;
     //    cvs.IsSourceGrouped = true;
 
@@ -263,7 +263,7 @@ public class CollectionViewSourceTests
     public void GroupEnumeratorWorks()
     {
         var groups = CreateGroups();
-        var cvs = new CollectionViewSource();
+        var cvs = new FACollectionViewSource();
         cvs.Source = groups;
         cvs.IsSourceGrouped = true;
 
@@ -284,7 +284,7 @@ public class CollectionViewSourceTests
     [Fact]
     public void CanEditUngroupedCVSButNotGrouped()
     {
-        var cvs = new CollectionViewSource();
+        var cvs = new FACollectionViewSource();
         cvs.Source = new List<string> { "Test1", "Test2", "Test3" };
 
         bool threwException = false;
@@ -323,7 +323,7 @@ public class CollectionViewSourceTests
             "Item 1", "Item 2", "Item 3"
         };
 
-        var cvs = new CollectionViewSource
+        var cvs = new FACollectionViewSource
         {
             Source = col
         };
@@ -346,13 +346,13 @@ public class CollectionViewSourceTests
             "Item 2", "Item 3", "Item 1"
         };
 
-        var cvs = new CollectionViewSource
+        var cvs = new FACollectionViewSource
         {
             Source = col
         };
 
         cvs.SortDescriptions.Add(
-            new SortDescription(SortDirection.Ascending, StringComparer.OrdinalIgnoreCase));
+            new FASortDescription(FASortDirection.Ascending, StringComparer.OrdinalIgnoreCase));
 
         Assert.Equal(col[2], cvs.View[0]);
     }

@@ -35,35 +35,35 @@ public class TabViewTests
     [AvaloniaFact]
     public void TabItemsChangedEventFires()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
         bool eventFired = false;
-        void ItemsChanged(TabView sender, EventArgs e)
+        void ItemsChanged(FATabView sender, EventArgs e)
         {
             eventFired = true;
         }
 
-        TabView.TabItemsChanged += ItemsChanged;
+        FATabView.TabItemsChanged += ItemsChanged;
 
-        TabView.TabItems.Add(new TabViewItem());
+        FATabView.TabItems.Add(new FATabViewItem());
 
         Assert.True(eventFired);
 
-        TabView.TabItemsChanged -= ItemsChanged;
+        FATabView.TabItemsChanged -= ItemsChanged;
     }
 
     [AvaloniaFact]
     public void AddTabButtonFiresAddTabButtonClickEvent()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
         bool eventRaised = false;
-        void TabAdd(TabView sender, EventArgs e)
+        void TabAdd(FATabView sender, EventArgs e)
         {
             eventRaised = true;
         }
 
-        TabView.AddTabButtonClick += TabAdd;
+        FATabView.AddTabButtonClick += TabAdd;
 
-        var button = TabView.GetVisualDescendants()
+        var button = FATabView.GetVisualDescendants()
             .OfType<Button>()
             .FirstOrDefault(x => x.Name == "AddButton");
 
@@ -76,22 +76,22 @@ public class TabViewTests
 
         Assert.True(eventRaised);
 
-        TabView.AddTabButtonClick -= TabAdd;
+        FATabView.AddTabButtonClick -= TabAdd;
     }
 
     [AvaloniaFact]
     public void TabCloseButtonFiresTabCloseRequestedEvent()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
         bool eventRaised = false;
-        void TabClose(TabView sender, TabViewTabCloseRequestedEventArgs e)
+        void TabClose(FATabView sender, FATabViewTabCloseRequestedEventArgs e)
         {
             eventRaised = true;
         }
 
-        TabView.TabCloseRequested += TabClose;
+        FATabView.TabCloseRequested += TabClose;
 
-        var firstItem = TabView.TabItems[0] as TabViewItem;
+        var firstItem = FATabView.TabItems[0] as FATabViewItem;
 
         var button = firstItem.GetVisualDescendants()
             .OfType<Button>()
@@ -106,15 +106,15 @@ public class TabViewTests
 
         Assert.True(eventRaised);
 
-        TabView.TabCloseRequested -= TabClose;
+        FATabView.TabCloseRequested -= TabClose;
     }
 
     [AvaloniaFact]
     public void EqualTabWidthModeProducesEqualWidthTabs()
     {
-        var (w, TabView) = GetTabView();
-        // This is the default TabViewWidthMode, so we don't need to switch states
-        if (TabView.TabItems is AvaloniaList<TabViewItem> l)
+        var (w, FATabView) = GetTabView();
+        // This is the default FATabViewWidthMode, so we don't need to switch states
+        if (FATabView.TabItems is AvaloniaList<FATabViewItem> l)
         {
             var firstSize = l[0].Bounds.Width;
 
@@ -132,16 +132,16 @@ public class TabViewTests
     {
         // NOTE: Only the content presenter is hidden. WinUI does not hide the close button too
         // The only thing that should be visible is the Icon (if present)
-        var (w, TabView) = GetTabView();
-        TabView.TabWidthMode = TabViewWidthMode.Compact;
-        TabView.SelectedIndex = 0;
-        var items = TabView.TabItems;
+        var (w, FATabView) = GetTabView();
+        FATabView.TabWidthMode = FATabViewWidthMode.Compact;
+        FATabView.SelectedIndex = 0;
+        var items = FATabView.TabItems;
 
-        Assert.True(IsContentPresenterVisible(items[0] as TabViewItem));
-        Assert.False(IsContentPresenterVisible(items[1] as TabViewItem));
-        Assert.False(IsContentPresenterVisible(items[2] as TabViewItem));
+        Assert.True(IsContentPresenterVisible(items[0] as FATabViewItem));
+        Assert.False(IsContentPresenterVisible(items[1] as FATabViewItem));
+        Assert.False(IsContentPresenterVisible(items[2] as FATabViewItem));
 
-        static bool IsContentPresenterVisible(TabViewItem item)
+        static bool IsContentPresenterVisible(FATabViewItem item)
         {
             var pres = item.GetTemplateChildren()
                 .FirstOrDefault(x => x is ContentPresenter);
@@ -160,73 +160,73 @@ public class TabViewTests
         // the selected index should be implicitly set to 0 (the first item)
         // NOTE: It does not happen if items are set AFTER everything is loaded - which matches WinUI
 
-        var (w, TabView) = GetTabView();
-        Assert.Equal(0, TabView.SelectedIndex);
+        var (w, FATabView) = GetTabView();
+        Assert.Equal(0, FATabView.SelectedIndex);
     }
 
     [AvaloniaFact]
     public void SettingSelectedIndexBeforeInitializationIsRespected()
     {
-        var (w, TabView) = GetTabView(selIndex: 2);
-        Assert.Equal(2, TabView.SelectedIndex);
+        var (w, FATabView) = GetTabView(selIndex: 2);
+        Assert.Equal(2, FATabView.SelectedIndex);
     }
 
     [AvaloniaFact]
     public void TabContentIsSetWhenTabIsSelected()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
 
-        var presenter = TabView.GetTemplateChildren()
-            .FirstOrDefault(x => x is ContentPresenter c && c.Name.Equals(FluentAvalonia.UI.Controls.TabView.s_tpTabContentPresenter)) as ContentPresenter;
+        var presenter = FATabView.GetTemplateChildren()
+            .FirstOrDefault(x => x is ContentPresenter c && c.Name.Equals(FluentAvalonia.UI.Controls.FATabView.s_tpTabContentPresenter)) as ContentPresenter;
 
-        Assert.Equal((TabView.TabItems[0] as TabViewItem).Content, presenter.Content);
+        Assert.Equal((FATabView.TabItems[0] as FATabViewItem).Content, presenter.Content);
 
-        TabView.SelectedIndex = 1;
-        Assert.Equal((TabView.TabItems[1] as TabViewItem).Content, presenter.Content);
+        FATabView.SelectedIndex = 1;
+        Assert.Equal((FATabView.TabItems[1] as FATabViewItem).Content, presenter.Content);
     }
 
     [AvaloniaFact]
     public void AddTabButtonRespectVisibleProperty()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
 
-        var button = TabView.GetVisualDescendants()
+        var button = FATabView.GetVisualDescendants()
             .OfType<Button>()
-            .FirstOrDefault(x => x.Name == TabView.s_tpAddButton);
+            .FirstOrDefault(x => x.Name == FATabView.s_tpAddButton);
 
         // NOTE: Use IsEffectivelyVisible b/c the Binding is on the Border that hosts the
         // button so IsVisible is not set
-        Assert.Equal(TabView.IsAddTabButtonVisible, button.IsEffectivelyVisible);
+        Assert.Equal(FATabView.IsAddTabButtonVisible, button.IsEffectivelyVisible);
 
-        TabView.IsAddTabButtonVisible = false;
-        Assert.Equal(TabView.IsAddTabButtonVisible, button.IsEffectivelyVisible);
+        FATabView.IsAddTabButtonVisible = false;
+        Assert.Equal(FATabView.IsAddTabButtonVisible, button.IsEffectivelyVisible);
     }
 
     [AvaloniaFact]
     public void LeftClickingOnTabItemChangesSelctedItem()
     {
-        var (w, TabView) = GetTabView();
-        var item = TabView.TabItems[1] as TabViewItem;
+        var (w, FATabView) = GetTabView();
+        var item = FATabView.TabItems[1] as FATabViewItem;
 
         item.ClickControl(new Point(10, 10), MouseButton.Left);
 
-        Assert.Equal(item, TabView.SelectedItem);
-        Assert.Equal(1, TabView.SelectedIndex);
+        Assert.Equal(item, FATabView.SelectedItem);
+        Assert.Equal(1, FATabView.SelectedIndex);
     }
 
     [AvaloniaFact]
     public void MiddleClickingOnTabItemRequestsCloseIfClosable()
     {
         bool raisedEvent = false;
-        void RequestClose(object sender, TabViewTabCloseRequestedEventArgs args)
+        void RequestClose(object sender, FATabViewTabCloseRequestedEventArgs args)
         {
             raisedEvent = true;
         }
 
-        var (w, TabView) = GetTabView();
-        TabView.TabCloseRequested += RequestClose;
-        var item = TabView.TabItems[0] as TabViewItem;
-        var item2 = TabView.TabItems[1] as TabViewItem;
+        var (w, FATabView) = GetTabView();
+        FATabView.TabCloseRequested += RequestClose;
+        var item = FATabView.TabItems[0] as FATabViewItem;
+        var item2 = FATabView.TabItems[1] as FATabViewItem;
         item.IsClosable = false;
 
         item.ClickControl(new Point(10, 10), MouseButton.Middle);
@@ -239,8 +239,8 @@ public class TabViewTests
     [AvaloniaFact]
     public void TabViewItemCloseButtonOverlayModeWorks()
     {
-        var (w, TabView) = GetTabView();
-        var firstItem = TabView.TabItems[0] as TabViewItem;
+        var (w, FATabView) = GetTabView();
+        var firstItem = FATabView.TabItems[0] as FATabViewItem;
 
         var button = firstItem.GetVisualDescendants()
            .OfType<Button>()
@@ -252,13 +252,13 @@ public class TabViewTests
 
         // Currently using the first item, which is selected by default...this should still display its
         // close button even if not pointer over
-        TabView.CloseButtonOverlayMode = TabViewCloseButtonOverlayMode.OnPointerOver;
+        FATabView.CloseButtonOverlayMode = FATabViewCloseButtonOverlayMode.OnPointerOver;
         Dispatcher.UIThread.RunJobs();
         Assert.True(button.IsVisible);
 
         // Switch to the second item, which is unselected and should hide its close button by default, if in
         // PointerOver mode
-        var secondItem = TabView.TabItems[1] as TabViewItem;
+        var secondItem = FATabView.TabItems[1] as FATabViewItem;
         button = secondItem.GetVisualDescendants()
            .OfType<Button>()
            .FirstOrDefault(x => x.Name == "CloseButton");
@@ -270,18 +270,18 @@ public class TabViewTests
         secondItem.MoveMouseToControl(new Point(-100, -100));
         Assert.False(button.IsVisible);
 
-        TabView.CloseButtonOverlayMode = TabViewCloseButtonOverlayMode.Auto; //Auto is default state, same as Always
+        FATabView.CloseButtonOverlayMode = FATabViewCloseButtonOverlayMode.Auto; //Auto is default state, same as Always
     }
 
     [AvaloniaFact]
     public void TabViewItemIsClosableFalseHidesCloseButton()
     {
-        var (w, TabView) = GetTabView();
-        var firstItem = TabView.TabItems[0] as TabViewItem;
+        var (w, FATabView) = GetTabView();
+        var firstItem = FATabView.TabItems[0] as FATabViewItem;
 
         var vd = firstItem.GetVisualDescendants();
         var button = vd.OfType<Button>()
-        .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
+        .FirstOrDefault(x => x.Name == FATabViewItem.s_tpCloseButton);
 
         // Default state is for it to be visible
         Assert.NotNull(button);
@@ -296,10 +296,10 @@ public class TabViewTests
         Assert.True(button.IsVisible);
 
         // Switch to the second item, just to double check unselected items
-        var secondItem = TabView.TabItems[1] as TabViewItem;
+        var secondItem = FATabView.TabItems[1] as FATabViewItem;
         button = secondItem.GetVisualDescendants()
            .OfType<Button>()
-           .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
+           .FirstOrDefault(x => x.Name == FATabViewItem.s_tpCloseButton);
 
         secondItem.IsClosable = false;
         Assert.False(button.IsVisible);
@@ -312,7 +312,7 @@ public class TabViewTests
     [AvaloniaFact]
     public void TabViewAddButtonCommandWorks()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
         bool commandInvoked = false;
         void TabAdd(object parameter)
         {
@@ -324,12 +324,12 @@ public class TabViewTests
         bool active = true;
         var testCommand = new TestCommand(TabAdd, x => active);
 
-        TabView.AddTabButtonCommand = testCommand;
-        TabView.AddTabButtonCommandParameter = "Parameter";
+        FATabView.AddTabButtonCommand = testCommand;
+        FATabView.AddTabButtonCommandParameter = "Parameter";
 
-        var button = TabView.GetVisualDescendants()
+        var button = FATabView.GetVisualDescendants()
             .OfType<Button>()
-            .FirstOrDefault(x => x.Name == TabView.s_tpAddButton);
+            .FirstOrDefault(x => x.Name == FATabView.s_tpAddButton);
 
         Assert.NotNull(button);
 
@@ -341,24 +341,24 @@ public class TabViewTests
         testCommand.Invalidate();
         Assert.False(button.IsEffectivelyEnabled);
 
-        TabView.AddTabButtonCommandParameter = null;
-        TabView.AddTabButtonCommand = null;
+        FATabView.AddTabButtonCommandParameter = null;
+        FATabView.AddTabButtonCommand = null;
     }
 
     [AvaloniaFact]
     public void ClickingAddTabButtonRaisesAddTabButtonClickEvent()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
         bool eventRaised = false;
-        void Handler(TabView tv, EventArgs args)
+        void Handler(FATabView tv, EventArgs args)
         {
             eventRaised = true;
         }
-        TabView.AddTabButtonClick += Handler;
+        FATabView.AddTabButtonClick += Handler;
 
-        var button = TabView.GetVisualDescendants()
+        var button = FATabView.GetVisualDescendants()
             .OfType<Button>()
-            .FirstOrDefault(x => x.Name == TabView.s_tpAddButton);
+            .FirstOrDefault(x => x.Name == FATabView.s_tpAddButton);
         button.ClickControl(new Point(10, 10), MouseButton.Left);
         Assert.True(eventRaised);
     }
@@ -366,14 +366,14 @@ public class TabViewTests
     [AvaloniaFact]
     public void BindingItemsGeneratesTabItems()
     {
-        var (w, TabView) = GetTabView(false);
-        var tv = TabView;
+        var (w, FATabView) = GetTabView(false);
+        var tv = FATabView;
         tv.TabItemTemplate = new FuncDataTemplate<TestTabItem>((x, ns) =>
         {
-            return new TabViewItem
+            return new FATabViewItem
             {
-                [!TabViewItem.HeaderProperty] = new Binding("Header"),
-                [!TabViewItem.ContentProperty] = new Binding("Content")
+                [!FATabViewItem.HeaderProperty] = new Binding("Header"),
+                [!FATabViewItem.ContentProperty] = new Binding("Content")
             };
         });
 
@@ -390,30 +390,30 @@ public class TabViewTests
         for (int i = 0; i < items.Count; i++)
         {
             var container = tv.ContainerFromIndex(i);
-            Assert.IsType<TabViewItem>(container);
+            Assert.IsType<FATabViewItem>(container);
         }
     }
 
     [AvaloniaFact]
     public void UsingTabItemsSourceSetsTabItemsToListViewItemCollection()
     {
-        var (w, TabView) = GetTabView(false);
+        var (w, FATabView) = GetTabView(false);
         var items = new List<TestTabItem>
         {
             new TestTabItem { Header = "This is tab 1", Content = "Tab1 Content" },
             new TestTabItem { Header = "This is tab 2", Content = "Tab2 Content" },
             new TestTabItem { Header = "This is tab 3", Content = "Tab2 Content" },
         };
-        TabView.TabItemsSource = items;
+        FATabView.TabItemsSource = items;
 
-        Assert.IsType<ItemCollection>(TabView.TabItems);
-        Assert.Equal(items.Count, TabView.TabItems.Count);
+        Assert.IsType<ItemCollection>(FATabView.TabItems);
+        Assert.Equal(items.Count, FATabView.TabItems.Count);
     }
 
     [AvaloniaFact]
     public void SelectionChangeIsFiredWhenSelectedItemOrIndexChanges()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
 
         SelectionChangedEventArgs args = null;
         void Handler(object sender, SelectionChangedEventArgs e)
@@ -421,35 +421,35 @@ public class TabViewTests
             args = e;
         }
 
-        TabView.SelectionChanged += Handler;
+        FATabView.SelectionChanged += Handler;
 
-        TabView.SelectedIndex = 1;
+        FATabView.SelectedIndex = 1;
 
         Assert.NotNull(args);
 
         Assert.Single(args.AddedItems);
         Assert.Single(args.RemovedItems);
 
-        Assert.Equal(TabView.TabItems[1], args.AddedItems[0]);
-        Assert.Equal(TabView.TabItems[0], args.RemovedItems[0]);
+        Assert.Equal(FATabView.TabItems[1], args.AddedItems[0]);
+        Assert.Equal(FATabView.TabItems[0], args.RemovedItems[0]);
     }
 
     [AvaloniaFact]
     public void TabCloseRequestedEventHasCorrectInfoWithTabItemsSet()
     {
-        TabViewTabCloseRequestedEventArgs args = null;
-        void RequestClose(object sender, TabViewTabCloseRequestedEventArgs e)
+        FATabViewTabCloseRequestedEventArgs args = null;
+        void RequestClose(object sender, FATabViewTabCloseRequestedEventArgs e)
         {
             args = e;
         }
 
-        var (w, TabView) = GetTabView();
-        TabView.TabCloseRequested += RequestClose;
-        var item = TabView.TabItems[0] as TabViewItem;
+        var (w, FATabView) = GetTabView();
+        FATabView.TabCloseRequested += RequestClose;
+        var item = FATabView.TabItems[0] as FATabViewItem;
 
         var vd = item.GetVisualDescendants();
         var button = vd.OfType<Button>()
-            .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
+            .FirstOrDefault(x => x.Name == FATabViewItem.s_tpCloseButton);
 
         button.ClickControl(new Point(10, 10), MouseButton.Left);
 
@@ -461,28 +461,28 @@ public class TabViewTests
     [AvaloniaFact]
     public void TabCloseRequestedEventHasCorrectInfoWithTabItemsSourceSet()
     {
-        TabViewTabCloseRequestedEventArgs args = null;
-        void RequestClose(object sender, TabViewTabCloseRequestedEventArgs e)
+        FATabViewTabCloseRequestedEventArgs args = null;
+        void RequestClose(object sender, FATabViewTabCloseRequestedEventArgs e)
         {
             args = e;
         }
 
-        var (w, TabView) = GetTabView(false);
+        var (w, FATabView) = GetTabView(false);
         var items = new List<TestTabItem>
         {
             new TestTabItem { Header = "This is tab 1", Content = "Tab1 Content" },
             new TestTabItem { Header = "This is tab 2", Content = "Tab2 Content" },
             new TestTabItem { Header = "This is tab 3", Content = "Tab2 Content" },
         };
-        TabView.TabItemsSource = items;
-        TabView.UpdateLayout();
+        FATabView.TabItemsSource = items;
+        FATabView.UpdateLayout();
 
-        TabView.TabCloseRequested += RequestClose;
-        var item = TabView.ContainerFromIndex(0) as TabViewItem;
+        FATabView.TabCloseRequested += RequestClose;
+        var item = FATabView.ContainerFromIndex(0) as FATabViewItem;
 
         var vd = item.GetVisualDescendants();
         var button = vd.OfType<Button>()
-            .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
+            .FirstOrDefault(x => x.Name == FATabViewItem.s_tpCloseButton);
 
         button.ClickControl(new Point(10, 10), MouseButton.Left);
 
@@ -494,187 +494,187 @@ public class TabViewTests
     [AvaloniaFact]
     public void ClosingTabAttemptsToKeepSelection()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
 
-        void RequestClose(object sender, TabViewTabCloseRequestedEventArgs e)
+        void RequestClose(object sender, FATabViewTabCloseRequestedEventArgs e)
         {
             // NOTE: Because TabItems is an IList, Remove throws an exception
             // Hoping this gets fixed, opened issue #21046
-            TabView.TabItems.RemoveAt(TabView.TabItems.IndexOf(e.Tab));
+            FATabView.TabItems.RemoveAt(FATabView.TabItems.IndexOf(e.Tab));
         }
 
-        TabView.TabCloseRequested += RequestClose;
-        var item = TabView.TabItems[0] as TabViewItem;
-        var item1 = TabView.TabItems[1];
+        FATabView.TabCloseRequested += RequestClose;
+        var item = FATabView.TabItems[0] as FATabViewItem;
+        var item1 = FATabView.TabItems[1];
 
         var vd = item.GetVisualDescendants();
         var button = vd.OfType<Button>()
-            .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
+            .FirstOrDefault(x => x.Name == FATabViewItem.s_tpCloseButton);
 
         button.ClickControl(new Point(10, 10), MouseButton.Left);
 
-        Assert.Equal(0, TabView.SelectedIndex);
-        Assert.Equal(item1, TabView.SelectedItem);
+        Assert.Equal(0, FATabView.SelectedIndex);
+        Assert.Equal(item1, FATabView.SelectedItem);
         w.Close();
 
         // Redo the test, but this time close the last item and it should set to the new last item
-        (w, TabView) = GetTabView();
-        TabView.SelectedIndex = 2;
+        (w, FATabView) = GetTabView();
+        FATabView.SelectedIndex = 2;
 
-        TabView.TabCloseRequested += RequestClose;
-        item = TabView.TabItems[^1] as TabViewItem;
-        item1 = TabView.TabItems[^2];
+        FATabView.TabCloseRequested += RequestClose;
+        item = FATabView.TabItems[^1] as FATabViewItem;
+        item1 = FATabView.TabItems[^2];
 
         vd = item.GetVisualDescendants();
         button = vd.OfType<Button>()
-            .FirstOrDefault(x => x.Name == TabViewItem.s_tpCloseButton);
+            .FirstOrDefault(x => x.Name == FATabViewItem.s_tpCloseButton);
 
         button.ClickControl(new Point(10, 10), MouseButton.Left);
 
-        Assert.Equal(TabView.TabItems.Count - 1, TabView.SelectedIndex);
-        Assert.Equal(item1, TabView.SelectedItem);
+        Assert.Equal(FATabView.TabItems.Count - 1, FATabView.SelectedIndex);
+        Assert.Equal(item1, FATabView.SelectedItem);
         w.Close();
     }
 
     [AvaloniaFact]
     public void TabViewDefaultsToTopMode()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
 
-        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcTop));
+        Assert.True(ClassesContains(FATabView.Classes, FATabView.s_pcTop));
 
-        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcTop));
-        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcTop));
+        Assert.True(ClassesContains(FATabView.ListView.Classes, FATabView.s_pcTop));
+        Assert.True(ClassesContains(FATabView.ListView.Scroller.Classes, FATabView.s_pcTop));
 
-        foreach (var item in TabView.TabItems)
-            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcTop));
+        foreach (var item in FATabView.TabItems)
+            Assert.True(ClassesContains((item as FATabViewItem).Classes, FATabView.s_pcTop));
     }
 
     [AvaloniaFact]
     public void ChangingTabStripLocationUpdatesAllPseudoclasses()
     {
-        var (w, TabView) = GetTabView();
+        var (w, FATabView) = GetTabView();
 
         // LEFT TEST
-        TabView.TabStripLocation = TabViewTabStripLocation.Left;
-        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcLeft));
+        FATabView.TabStripLocation = FATabViewTabStripLocation.Left;
+        Assert.True(ClassesContains(FATabView.Classes, FATabView.s_pcLeft));
 
-        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcLeft));
-        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcLeft));
+        Assert.True(ClassesContains(FATabView.ListView.Classes, FATabView.s_pcLeft));
+        Assert.True(ClassesContains(FATabView.ListView.Scroller.Classes, FATabView.s_pcLeft));
 
-        foreach (var item in TabView.TabItems)
-            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcLeft));
+        foreach (var item in FATabView.TabItems)
+            Assert.True(ClassesContains((item as FATabViewItem).Classes, FATabView.s_pcLeft));
 
         // RIGHT TEST
-        TabView.TabStripLocation = TabViewTabStripLocation.Right;
-        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcRight));
+        FATabView.TabStripLocation = FATabViewTabStripLocation.Right;
+        Assert.True(ClassesContains(FATabView.Classes, FATabView.s_pcRight));
 
-        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcRight));
-        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcRight));
+        Assert.True(ClassesContains(FATabView.ListView.Classes, FATabView.s_pcRight));
+        Assert.True(ClassesContains(FATabView.ListView.Scroller.Classes, FATabView.s_pcRight));
 
-        foreach (var item in TabView.TabItems)
-            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcRight));
+        foreach (var item in FATabView.TabItems)
+            Assert.True(ClassesContains((item as FATabViewItem).Classes, FATabView.s_pcRight));
 
         // BOTTOM TEST
-        TabView.TabStripLocation = TabViewTabStripLocation.Bottom;
-        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcBottom));
+        FATabView.TabStripLocation = FATabViewTabStripLocation.Bottom;
+        Assert.True(ClassesContains(FATabView.Classes, FATabView.s_pcBottom));
 
-        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcBottom));
-        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcBottom));
+        Assert.True(ClassesContains(FATabView.ListView.Classes, FATabView.s_pcBottom));
+        Assert.True(ClassesContains(FATabView.ListView.Scroller.Classes, FATabView.s_pcBottom));
 
-        foreach (var item in TabView.TabItems)
-            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcBottom));
+        foreach (var item in FATabView.TabItems)
+            Assert.True(ClassesContains((item as FATabViewItem).Classes, FATabView.s_pcBottom));
 
         // BACK TO TOP TEST
-        TabView.TabStripLocation = TabViewTabStripLocation.Top;
-        Assert.True(ClassesContains(TabView.Classes, TabView.s_pcTop));
+        FATabView.TabStripLocation = FATabViewTabStripLocation.Top;
+        Assert.True(ClassesContains(FATabView.Classes, FATabView.s_pcTop));
 
-        Assert.True(ClassesContains(TabView.ListView.Classes, TabView.s_pcTop));
-        Assert.True(ClassesContains(TabView.ListView.Scroller.Classes, TabView.s_pcTop));
+        Assert.True(ClassesContains(FATabView.ListView.Classes, FATabView.s_pcTop));
+        Assert.True(ClassesContains(FATabView.ListView.Scroller.Classes, FATabView.s_pcTop));
 
-        foreach (var item in TabView.TabItems)
-            Assert.True(ClassesContains((item as TabViewItem).Classes, TabView.s_pcTop));        
+        foreach (var item in FATabView.TabItems)
+            Assert.True(ClassesContains((item as FATabViewItem).Classes, FATabView.s_pcTop));        
     }
 
     [AvaloniaFact]
     public void AddingNewItemsSetsStripLocationOnTab()
     {
         // TODO: Turn this back on when we can do this
-        //var (w, TabView) = GetTabView();
-        //TabView.TabStripLocation = TabViewTabStripLocation.Left;
+        //var (w, FATabView) = GetTabView();
+        //FATabView.TabStripLocation = FATabViewTabStripLocation.Left;
 
-        //var newItem = new TabViewItem();
-        //TabView.TabItems.Add(newItem);
-        //TabView.UpdateLayout();
-        //Assert.True(ClassesContains(newItem.Classes, TabView.s_pcLeft));
+        //var newItem = new FATabViewItem();
+        //FATabView.TabItems.Add(newItem);
+        //FATabView.UpdateLayout();
+        //Assert.True(ClassesContains(newItem.Classes, FATabView.s_pcLeft));
         //w.Close();
 
         // NOW CHECK WITH TABITEMSSOURCE
-        var (w, TabView) = GetTabView(false);
-        TabView.TabStripLocation = TabViewTabStripLocation.Left;
+        var (w, FATabView) = GetTabView(false);
+        FATabView.TabStripLocation = FATabViewTabStripLocation.Left;
         var items = new AvaloniaList<TestTabItem>
         {
             new TestTabItem { Header = "This is tab 1", Content = "Tab1 Content" },
             new TestTabItem { Header = "This is tab 2", Content = "Tab2 Content" },
             new TestTabItem { Header = "This is tab 3", Content = "Tab2 Content" },
         };
-        TabView.TabItemsSource = items;
-        TabView.UpdateLayout();
+        FATabView.TabItemsSource = items;
+        FATabView.UpdateLayout();
 
         items.Add(new TestTabItem());
-        TabView.UpdateLayout();
+        FATabView.UpdateLayout();
         Dispatcher.UIThread.RunJobs();
-        var panel = TabView.ListView.ItemsPanelRoot;
-        var item = TabView.ContainerFromIndex(3);
-        Assert.True(ClassesContains(item.Classes, TabView.s_pcLeft));
+        var panel = FATabView.ListView.ItemsPanelRoot;
+        var item = FATabView.ContainerFromIndex(3);
+        Assert.True(ClassesContains(item.Classes, FATabView.s_pcLeft));
     }
 
     [AvaloniaFact]
     public void ChangingTabStripLocationPreservesSelection()
     {
-        var (w, TabView) = GetTabViewWithItemsSource();
-        TabView.SelectedIndex = 1;
+        var (w, FATabView) = GetTabViewWithItemsSource();
+        FATabView.SelectedIndex = 1;
 
-        TabView.TabStripLocation = TabViewTabStripLocation.Left;
-        TabView.UpdateLayout();
-        Assert.Equal(1, TabView.SelectedIndex);
+        FATabView.TabStripLocation = FATabViewTabStripLocation.Left;
+        FATabView.UpdateLayout();
+        Assert.Equal(1, FATabView.SelectedIndex);
     }
 
     [AvaloniaFact]
     public void AddingTabsWhileVirtualizedInitializesCorrectly()
     {
-        var (w, TabView) = GetTabView(false);
+        var (w, FATabView) = GetTabView(false);
         var l = new AvaloniaList<string>();
         for (int i = 0; i < 100; i++)
         {
             l.Add($"New Tab {i + 1}");
         }
-        TabView.TabItemsSource = l;
-        TabView.UpdateLayout();
-        TabView.SelectedIndex = 0;
-        TabView.UpdateLayout();
+        FATabView.TabItemsSource = l;
+        FATabView.UpdateLayout();
+        FATabView.SelectedIndex = 0;
+        FATabView.UpdateLayout();
         Dispatcher.UIThread.RunJobs();
         // Baseline check: First item is selected, it should have the :noborder class
         // All other items should not have it
-        var item0 = TabView.ContainerFromIndex(0);
-        Assert.True(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcNoBorder));
+        var item0 = FATabView.ContainerFromIndex(0);
+        Assert.True(ClassesContains(item0.Classes, FASharedPseudoclasses.s_pcNoBorder));
 
         int idx = 1;        
         while (idx < l.Count)
         {
-            var item = TabView.ContainerFromIndex(idx);
+            var item = FATabView.ContainerFromIndex(idx);
             if (item == null)
                 break; // End of realized containers
 
-            Assert.False(ClassesContains(item.Classes, SharedPseudoclasses.s_pcNoBorder));
+            Assert.False(ClassesContains(item.Classes, FASharedPseudoclasses.s_pcNoBorder));
             idx++;
         }
 
         // Now scroll and recheck
-        var scroller = TabView.ListView.Scroller;
+        var scroller = FATabView.ListView.Scroller;
         var scrollableWidth = scroller.Extent.Width - scroller.Viewport.Width;
         scroller.Offset = new Vector(scrollableWidth * 0.5, 0);
-        TabView.UpdateLayout();
+        FATabView.UpdateLayout();
 
         // Recheck - first item is still selected so all other containers should
         // not have the :noborder class
@@ -683,7 +683,7 @@ public class TabViewTests
         bool foundFirstRealized = false;
         while (idx < l.Count)
         {
-            var cont = TabView.ContainerFromIndex(idx);
+            var cont = FATabView.ContainerFromIndex(idx);
             if (!foundFirstRealized && cont == null)
             {
                 idx++;
@@ -694,33 +694,33 @@ public class TabViewTests
             if (cont == null)
                 break;
 
-            Assert.False(ClassesContains(cont.Classes, SharedPseudoclasses.s_pcNoBorder), $"Failed on container {idx}");
-            Assert.False(ClassesContains(cont.Classes, SharedPseudoclasses.s_pcBorderLeft), $"Failed on container {idx}");
-            Assert.False(ClassesContains(cont.Classes, SharedPseudoclasses.s_pcBorderRight), $"Failed on container {idx}");
+            Assert.False(ClassesContains(cont.Classes, FASharedPseudoclasses.s_pcNoBorder), $"Failed on container {idx}");
+            Assert.False(ClassesContains(cont.Classes, FASharedPseudoclasses.s_pcBorderLeft), $"Failed on container {idx}");
+            Assert.False(ClassesContains(cont.Classes, FASharedPseudoclasses.s_pcBorderRight), $"Failed on container {idx}");
             idx++;
         }
 
         // Now go back and ensure the first 2 containers (Sel + Sel+1) have their state set correctly
         scroller.Offset = new Vector(0, 0);
-        TabView.UpdateLayout();
+        FATabView.UpdateLayout();
 
         // Should be :noborder only (selected)
-        item0 = TabView.ContainerFromIndex(0);
-        Assert.True(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcNoBorder));
-        Assert.False(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcBorderLeft));
-        Assert.False(ClassesContains(item0.Classes, SharedPseudoclasses.s_pcBorderRight));
+        item0 = FATabView.ContainerFromIndex(0);
+        Assert.True(ClassesContains(item0.Classes, FASharedPseudoclasses.s_pcNoBorder));
+        Assert.False(ClassesContains(item0.Classes, FASharedPseudoclasses.s_pcBorderLeft));
+        Assert.False(ClassesContains(item0.Classes, FASharedPseudoclasses.s_pcBorderRight));
         
         // Should be :borderright (selected + 1)
-        var item1 = TabView.ContainerFromIndex(1);
-        Assert.False(ClassesContains(item1.Classes, SharedPseudoclasses.s_pcNoBorder));
-        Assert.False(ClassesContains(item1.Classes, SharedPseudoclasses.s_pcBorderLeft));
-        Assert.True(ClassesContains(item1.Classes, SharedPseudoclasses.s_pcBorderRight));
+        var item1 = FATabView.ContainerFromIndex(1);
+        Assert.False(ClassesContains(item1.Classes, FASharedPseudoclasses.s_pcNoBorder));
+        Assert.False(ClassesContains(item1.Classes, FASharedPseudoclasses.s_pcBorderLeft));
+        Assert.True(ClassesContains(item1.Classes, FASharedPseudoclasses.s_pcBorderRight));
     }
 
     [AvaloniaFact]
     public void TabWidthsAreEqualInEqualMode()
     {
-        var (w, TabView) = GetTabView(false);
+        var (w, FATabView) = GetTabView(false);
         w.UpdateLayout();
         Dispatcher.UIThread.RunJobs();
         var l = new AvaloniaList<string>();
@@ -728,17 +728,17 @@ public class TabViewTests
         {
             l.Add($"New Tab {i + 1}");
         }
-        TabView.TabItemsSource = l;
-        TabView.UpdateLayout();
-        TabView.SelectedIndex = 0;
-        TabView.UpdateLayout();
+        FATabView.TabItemsSource = l;
+        FATabView.UpdateLayout();
+        FATabView.SelectedIndex = 0;
+        FATabView.UpdateLayout();
 
-        var width0 = TabView.ContainerFromIndex(0).Bounds.Width;
+        var width0 = FATabView.ContainerFromIndex(0).Bounds.Width;
 
         int idx = 1;
         while (idx < l.Count)
         {
-            var cont = TabView.ContainerFromIndex(idx);
+            var cont = FATabView.ContainerFromIndex(idx);
             if (cont == null)
                 break;
 
@@ -750,20 +750,20 @@ public class TabViewTests
     [AvaloniaFact]
     public void DragItemsStartingDoesNotFireWithReorder()
     {
-        var (w, TabView) = GetTabViewWithItemsSource();
-        TabView.CanDragTabs = false;
-        TabView.CanReorderTabs = true;
+        var (w, FATabView) = GetTabViewWithItemsSource();
+        FATabView.CanDragTabs = false;
+        FATabView.CanReorderTabs = true;
         DragDrop.SetAllowDrop(w, true); // Ensure the window is a drop target so we get events
 
         Dispatcher.UIThread.RunJobs();
 
         bool fired = false;
-        TabView.TabDragStarting += (s, e) =>
+        FATabView.TabDragStarting += (s, e) =>
         {
             fired = true;
         };
 
-        var tabItem = TabView.ContainerFromIndex(0);
+        var tabItem = FATabView.ContainerFromIndex(0);
 
         tabItem.MouseDownControl(new Point(10, 10), MouseButton.Left);
         tabItem.MoveMouseToControl(new Point(100, 10));
@@ -776,19 +776,19 @@ public class TabViewTests
     [AvaloniaFact]
     public void DragItemsStartingFiresWhenCanDragTabsIsTrue()
     {
-        var (w, TabView) = GetTabViewWithItemsSource();
-        TabView.CanDragTabs = true;
-        TabView.CanReorderTabs = true;
+        var (w, FATabView) = GetTabViewWithItemsSource();
+        FATabView.CanDragTabs = true;
+        FATabView.CanReorderTabs = true;
 
         Dispatcher.UIThread.RunJobs();
 
-        TabViewTabDragStartingEventArgs args = null;
-        TabView.TabDragStarting += (s, e) =>
+        FATabViewTabDragStartingEventArgs args = null;
+        FATabView.TabDragStarting += (s, e) =>
         {
             args = e;
         };
 
-        var tabItem = TabView.ContainerFromIndex(0);
+        var tabItem = FATabView.ContainerFromIndex(0);
 
         tabItem.MouseDownControl(new Point(10, 10), MouseButton.Left);
         tabItem.MoveMouseToControl(new Point(100, 10));
@@ -797,25 +797,25 @@ public class TabViewTests
 
         Assert.NotNull(args);
         Assert.Equal(tabItem, args.Tab);
-        Assert.Equal(TabView.TabItemsSource.ElementAt(0), args.Item);
+        Assert.Equal(FATabView.TabItemsSource.ElementAt(0), args.Item);
     }
 
     [AvaloniaFact]
     public void DragItemsCompletedFiresWhenDnDIsFinished()
     {
-        var (w, TabView) = GetTabViewWithItemsSource();
-        TabView.CanDragTabs = true;
-        TabView.CanReorderTabs = true;
+        var (w, FATabView) = GetTabViewWithItemsSource();
+        FATabView.CanDragTabs = true;
+        FATabView.CanReorderTabs = true;
 
         Dispatcher.UIThread.RunJobs();
 
-        TabViewTabDragCompletedEventArgs args = null;
-        TabView.TabDragCompleted += (s, e) =>
+        FATabViewTabDragCompletedEventArgs args = null;
+        FATabView.TabDragCompleted += (s, e) =>
         {
             args = e;
         };
 
-        var tabItem = TabView.ContainerFromIndex(0);
+        var tabItem = FATabView.ContainerFromIndex(0);
 
         tabItem.MouseDownControl(new Point(10, 10), MouseButton.Left);
         tabItem.MoveMouseToControl(new Point(100, 10));
@@ -824,19 +824,19 @@ public class TabViewTests
 
         Assert.NotNull(args);
         Assert.Equal(tabItem, args.Tab);
-        Assert.Equal(TabView.TabItemsSource.ElementAt(0), args.Item);
+        Assert.Equal(FATabView.TabItemsSource.ElementAt(0), args.Item);
     }
 
 
 
-    private (Window w, TabView tv) GetTabView(bool addTabs = true, int? selIndex = null)
+    private (Window w, FATabView tv) GetTabView(bool addTabs = true, int? selIndex = null)
     {
-        var tv = new TabView();
+        var tv = new FATabView();
         if (addTabs)
         {
-            tv.TabItems.Add(new TabViewItem { Header = "Tab1", Content = "ContentTab1" });
-            tv.TabItems.Add(new TabViewItem { Header = "Tab2", Content = "ContentTab2" });
-            tv.TabItems.Add(new TabViewItem { Header = "Tab3", Content = "ContentTab3" });
+            tv.TabItems.Add(new FATabViewItem { Header = "Tab1", Content = "ContentTab1" });
+            tv.TabItems.Add(new FATabViewItem { Header = "Tab2", Content = "ContentTab2" });
+            tv.TabItems.Add(new FATabViewItem { Header = "Tab3", Content = "ContentTab3" });
         }
 
         if (selIndex.HasValue)
@@ -851,9 +851,9 @@ public class TabViewTests
         return (w, tv);
     }
 
-    private (Window w, TabView tv) GetTabViewWithItemsSource(bool addTabs = true, int? selIndex = null)
+    private (Window w, FATabView tv) GetTabViewWithItemsSource(bool addTabs = true, int? selIndex = null)
     {
-        var tv = new TabView();
+        var tv = new FATabView();
         if (addTabs)
         {
             var l = new AvaloniaList<TestTabItem>
