@@ -39,6 +39,32 @@ public class FrameTests : IDisposable
     }
 
     [AvaloniaFact]
+    public void ClearingContentClearsCurrentEntry()
+    {
+        var frame = CreateFrame();
+
+        frame.Navigate(typeof(TestPage1));
+
+        Assert.NotNull(frame.CurrentEntry);
+
+        frame.Content = null;
+
+        Assert.Null(frame.CurrentEntry);
+    }
+
+    [AvaloniaFact]
+    public void SettingSourcePageTypeToNullThrows()
+    {
+        var frame = CreateFrame();
+
+        frame.SourcePageType = typeof(TestPage1);
+
+        var ex = Assert.Throws<InvalidOperationException>(() => frame.SourcePageType = null);
+
+        Assert.Equal("SourcePageType cannot be null. Use Content instead.", ex.Message);
+    }
+
+    [AvaloniaFact]
     public void NavigatingIsCalledBeforeNavigated()
     {
         var frame = CreateFrame();
