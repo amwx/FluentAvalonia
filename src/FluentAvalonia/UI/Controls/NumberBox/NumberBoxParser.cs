@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal static class NumberBoxParser
+internal static partial class NumberBoxParser
 {
     public const string numberBoxOperators = "+-*/^";
 
@@ -65,18 +65,15 @@ internal static class NumberBoxParser
         return tokens;
     }
 
-    public static (double value, int charLen) GetNextNumber(ReadOnlySpan<char> inputSpan)
+    public static (double value, int charLen) GetNextNumber(ReadOnlySpan<char> input)
     {
         //TODO: Remove Regex impl (even tho this was copied from WinUI)
-        string input = inputSpan.ToString();
-        Regex rg = new Regex("^-?([^-+/*\\(\\)\\^\\s]+)");
-        var match = rg.Match(input);
-        if (match.Success)
+        var match = NumberRegex().EnumerateMatches(input);
+        if (match.MoveNext())
         {
             // Might be a number
-            var matchLength = match.Value.Length;
-            //var parsedNum = parser.ParseDouble(input.Substring(0, matchLength));
-            if (double.TryParse(input.Substring(0, matchLength), System.Globalization.NumberStyles.Any, CultureInfo.CurrentCulture, out double result))
+            var matchLength = match.Current.Length;
+            if (double.TryParse(input[..matchLength], NumberStyles.Any, CultureInfo.CurrentCulture, out double result))
             {
                 return (result, matchLength);
             }
@@ -255,6 +252,8 @@ internal static class NumberBoxParser
         return null;
     }
 
+    [GeneratedRegex(@"^-?([^-+/*\(\)\^\s]+)")]
+    private static partial Regex NumberRegex();
 }
 
 internal enum MathTokenType
