@@ -15,7 +15,8 @@
     <Grid RowDefinitions="Auto,*">
         <Grid Name="TitleBarHost"
               ColumnDefinitions="Auto,Auto,*,Auto" 
-              Background="Transparent">
+              Background="Transparent"
+              WindowDecorationProperties.ElementRole="TitleBar">
             <Image Margin="12 4"
                    IsHitTestVisible="False"
                    Source="/Assets/FAIcon.ico"
@@ -48,8 +49,8 @@
                                  Watermark="Search"
                                  Classes="SampleApp"
                                  ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"
-                                 ItemsSource="{Binding SearchTerms}">
-                    <!--wnd:AppWindow.AllowInteractionInTitleBar="True"-->
+                                 ItemsSource="{Binding SearchTerms}"
+                                 WindowDecorationProperties.ElementRole="User">                    
                     <AutoCompleteBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:MainAppSearchItem">
                             <Panel>
@@ -68,12 +69,13 @@
             </Border>
         </Grid>
 
-        <ui:FANavigationView AlwaysShowHeader="False"
-                           PaneDisplayMode="Left"
-                           Grid.RowSpan="2"
-                           Name="NavView"
-                           IsSettingsVisible="False"
-                           IsBackEnabled="{Binding #FrameView.CanGoBack}">
+        <ui:FANavigationView AlwaysShowHeader="False" 
+                             WindowDecorationProperties.ElementRole="User"
+                             PaneDisplayMode="Left"
+                             Grid.RowSpan="2"
+                             Name="NavView"
+                             IsSettingsVisible="False"
+                             IsBackEnabled="{Binding #FrameView.CanGoBack}">
             <ui:FAFrame Name="FrameView" />
         </ui:FANavigationView>
 

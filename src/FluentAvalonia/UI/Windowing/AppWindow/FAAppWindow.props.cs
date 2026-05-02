@@ -21,24 +21,6 @@ public partial class FAAppWindow : Window
         AvaloniaProperty.Register<FAAppWindow, IImage>(nameof(Icon));
 
     /// <summary>
-    /// Defines the AllowInteractionInTitleBar attached property
-    /// </summary>
-    public static readonly AttachedProperty<bool> AllowInteractionInTitleBarProperty =
-        AvaloniaProperty.RegisterAttached<FAAppWindow, Control, bool>("AllowInteractionInTitleBar");
-
-    /// <summary>
-    /// Gets the value of the <see cref="AllowInteractionInTitleBarProperty"/> attached property for the given control
-    /// </summary>
-    public static bool GetAllowInteractionInTitleBar(Control c) => c.GetValue(AllowInteractionInTitleBarProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="AllowInteractionInTitleBarProperty"/> attached property for the given control
-    /// </summary>
-    /// <param name="c"></param>
-    /// <param name="b"></param>
-    public static void SetAllowInteractionInTitleBar(Control c, bool b) => c.SetValue(AllowInteractionInTitleBarProperty, b);
-
-    /// <summary>
     /// Provides calculated data for items within the Template of AppWindow
     /// </summary>
     public FAAppWindowTemplateSettings TemplateSettings
@@ -140,16 +122,16 @@ public partial class FAAppWindow : Window
     private static readonly string s_SystemAccentColorDark1 = "SystemAccentColorDark1";
     private static readonly string s_TextFillColorPrimary = "TextFillColorPrimary";
 
-    private static readonly string s_TitleBarBackground = "FATitle_TitleBarBackground";
-    private static readonly string s_TitleBarForeground = "FATitle_TitleBarForeground";
-    private static readonly string s_TitleBarInactiveBackground = "FATitle_TitleBarBackgroundInactive";
-    private static readonly string s_TitleBarInactiveForeground = "FATitle_TitleBarForegroundInactive";
-    private static readonly string s_SysCaptionBackground = "FATitle_SysCaptionBackground";
-    private static readonly string s_SysCaptionForeground = "FATitle_SysCaptionForeground";
-    private static readonly string s_SysCaptionBackgroundHover = "FATitle_SysCaptionBackgroundHover";
-    private static readonly string s_SysCaptionForegroundHover = "FATitle_SysCaptionForegroundHover";
-    private static readonly string s_SysCaptionBackgroundPressed = "FATitle_SysCaptionBackgroundPressed";
-    private static readonly string s_SysCaptionForegroundPressed = "FATitle_SysCaptionForegroundPressed";
-    private static readonly string s_SysCaptionBackgroundInactive = "FATitle_SysCaptionBackgroundInactive";
-    private static readonly string s_SysCaptionForegroundInactive = "FATitle_SysCaptionForegroundInactive";
+    private static readonly string s_TitleBarBackground = "TitleBarBackground";
+    private static readonly string s_TitleBarForeground = "TitleBarForeground";
+    private static readonly string s_TitleBarInactiveBackground = "TitleBarBackgroundInactive";
+    private static readonly string s_TitleBarInactiveForeground = "TitleBarForegroundInactive";
+    private static readonly string s_SysCaptionBackground = "CaptionButtonBackground";
+    private static readonly string s_SysCaptionForeground = "CaptionButtonForeground";
+    private static readonly string s_SysCaptionBackgroundHover = "CaptionButtonBackgroundPointerOver";
+    private static readonly string s_SysCaptionForegroundHover = "CaptionButtonForegroundPointerOver";
+    private static readonly string s_SysCaptionBackgroundPressed = "CaptionButtonBackgroundPressed";
+    private static readonly string s_SysCaptionForegroundPressed = "CaptionButtonForegroundPressed";
+    private static readonly string s_SysCaptionBackgroundInactive = "CaptionButtonBackgroundInactive";
+    private static readonly string s_SysCaptionForegroundInactive = "CaptionButtonForegroundInactive";
 }

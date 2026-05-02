@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -10,9 +9,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using FluentAvalonia.Core;
-using FluentAvalonia.Interop;
 using FluentAvalonia.UI.Controls.Primitives;
-using FluentAvalonia.UI.Media;
 
 namespace FluentAvalonia.UI.Windowing;
 
@@ -26,6 +23,7 @@ public partial class FAAppWindow : Window
     {
         TemplateSettings = new FAAppWindowTemplateSettings();
         _titleBar = new FAAppWindowTitleBar(this);
+        PseudoClasses.Add(":noFullScreen");
 
         if (OperatingSystem.IsWindows() && !Design.IsDesignMode)
         {
@@ -35,33 +33,8 @@ public partial class FAAppWindow : Window
 
     static FAAppWindow()
     {
-        AllowInteractionInTitleBarProperty.Changed.AddClassHandler<Control>(OnAllowInteractionInTitleBarChanged);
-    }
-
-    protected override Size MeasureOverride(Size availableSize)
-    {
-        var sz = base.MeasureOverride(availableSize);
-
-        // UGLY HACK: Seems with CanResize=False, the window shrinks exactly the amount
-        // we modify the window in WM_NCCALCSIZE so we need to fix that here
-        // But the content measures to the normal size - so in constrained environments
-        // like the TaskDialog, stuff gets cut off
-        if (IsWindows)
-        {
-            // TODO: This doesn't appear necessary for TaskDialog anymore, but just in case, I'll
-            //       keep this here as a reminder
-            //if (!CanResize)
-            //{
-                //var wid = (16 * PlatformImpl.RenderScaling);
-                //var hgt = (8 * PlatformImpl.RenderScaling);
-                //sz = new Size(sz.Width + wid, sz.Height + hgt);
-            //}
-
-            if (SystemCaptionControl != null)
-                _titleBar.SetInset(SystemCaptionControl.DesiredSize.Width, FlowDirection);
-        }        
-
-        return sz;
+        if (OperatingSystem.IsWindows())
+            ExtendClientAreaToDecorationsHintProperty.OverrideDefaultValue<FAAppWindow>(true);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -71,8 +44,7 @@ public partial class FAAppWindow : Window
         if (IsWindows && !Design.IsDesignMode)
         {
             _templateRoot = e.NameScope.Find<Border>("RootBorder");
-                        
-            _captionButtons = e.NameScope.Find<FAMinMaxCloseControl>("SystemCaptionButtons");
+            
             _defaultTitleBar = e.NameScope.Find<Panel>("DefaultTitleBar");
 
             // This will set all our TemplateSettings properties
@@ -93,12 +65,17 @@ public partial class FAAppWindow : Window
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        if (!this.IsWindows || change.Property != WindowStateProperty)  // Lazy base call OnPropertyChanged
+        base.OnPropertyChanged(change);
+        
+        if (change.Property == ExtendClientAreaToDecorationsHintProperty)
         {
-            base.OnPropertyChanged(change);
+            if (IsWindows)
+            {
+                throw new InvalidOperationException("FAAppWindow cannot be customized with ExtendClientAreaToDecorationsHintProperty." +
+                    "Use the TitleBar property or a regular Avalonia window");
+            }
         }
-
-        if (change.Property == IconProperty)
+        else if (change.Property == IconProperty)
         {
             base.Icon = new WindowIcon(change.NewValue as Bitmap);
             PseudoClasses.Set(FASharedPseudoclasses.s_pcIcon, change.NewValue != null);
@@ -107,61 +84,10 @@ public partial class FAAppWindow : Window
         {
             SetTitleBarColors();
         }
-
-        if (IsWindows)
-        {
-            if (change.Property == WindowStateProperty)
-            {
-                HandleFullScreenTransition(change.GetNewValue<WindowState>());
-                OnExtendsContentIntoTitleBarChanged(TitleBar.ExtendsContentIntoTitleBar);
-                base.OnPropertyChanged(change);  // Enable window size modifications before Avalonia's own logic
-            }
-
-            if (!_hasShown)
-            {
-                // HACK: Because of the frame adjustments made to AppWindow, setting the window
-                // size before it is shown will result in an incorrect window size
-                // To determine this, we check if WM_SIZE has been sent, if it hasn't, this is a
-                // user requested size and we store it and apply it in Opened
-                // Changing the size while the window is active works correctly
-                if (change.Property == WidthProperty)
-                {
-                    var newV = change.GetNewValue<double>();
-                    if (double.IsInfinity(_win32Manager.LastWMSizeSize.Width))
-                    {
-                        _win32Manager.LastUserWidth = newV;
-                    }
-                }
-                else if (change.Property == HeightProperty)
-                {
-                    var newV = change.GetNewValue<double>();
-                    if (double.IsInfinity(_win32Manager.LastWMSizeSize.Height))
-                    {
-                        _win32Manager.LastUserHeight = newV;
-                    }
-                }
-            }
-        }
     }
 
     protected override async void OnOpened(EventArgs e)
     {
-        if (IsWindows)
-        {
-            _hasShown = true;
-
-            if (!double.IsNaN(_win32Manager.LastUserHeight))
-            {
-                Height = _win32Manager.LastUserHeight;
-            }
-
-            if (!double.IsNaN(_win32Manager.LastUserWidth))
-            {
-                Width = _win32Manager.LastUserWidth;
-            }
-        }
-        
-
         if (_splashContext != null && !_splashContext.HasShownSplashScreen && !Design.IsDesignMode)
         {
             PseudoClasses.Set(":splashOpen", true);
@@ -194,14 +120,10 @@ public partial class FAAppWindow : Window
         if (isExtended)
         {
             TemplateSettings.IsTitleBarContentVisible = false;
-            TemplateSettings.ContentMargin = new Thickness();
         }
         else
         {
             TemplateSettings.IsTitleBarContentVisible = true;
-            
-            if (WindowState != WindowState.FullScreen)
-                TemplateSettings.ContentMargin = new Thickness(0, _titleBar.Height, 0, 0);
         }
     }
 
@@ -221,83 +143,17 @@ public partial class FAAppWindow : Window
         if (_defaultTitleBar == null)
             return false;
 
-        // Check the specified drag rectangles first - these override the default titlebar behavior
-        // If that returns null, no drag rects were specified and we use the default logic
-        var result = _titleBar.HitTestDragRects(p);
-
-        if (result.HasValue)
+        if (p.Y < _titleBar.Height)
         {
-            if (result.Value)
-                result = CheckExclusionList(p);
-
-            return result.Value;
-        }
-        else
-        {
-            // DEFAULT LOGIC
-
-            // We do a simple bounds check here first for the default title bar
-            // which is always present, even w/ content extended into titlebar
-
-            // What we know is that the default title bar will always be [0,0,WindowWidth,TitleBar.Height]
-            // Therefore, we only need to do check the Y coordinate
-            if (p.Y < _titleBar.Height)
+            if (!ComplexHitTest(p))
             {
-                if (TitleBar.TitleBarHitTestType == FATitleBarHitTestType.Complex &&
-                    !ComplexHitTest(p))
-                {
-                    return false;
-                }
-                // Now we know we're in the top part of the window designated as the titlebar
-                // We need to see if we can actually drag
-                // We need to check our exclusion list to see if we we should let the pointer event pass into
-                // the client area or say we've grabbed the title bar
-
-                return CheckExclusionList(p);
-            }
-
-            return false;
-        }
-
-
-        bool CheckExclusionList(Point p)
-        {
-            if (_excludeHitTestList != null && _excludeHitTestList.Count > 0)
-            {
-                // We don't have to read the AttachedProperty value here because we only add them to the list
-                // IF the value is true, and remove them if it's set to false later - saving us that overhead
-
-                // We iterate backwards as this is where we'll purge the list if any controls 
-                // have been GC'd and the WeakReference no longer exists
-                for (int i = _excludeHitTestList.Count - 1; i >= 0; i--)
-                {
-                    if (_excludeHitTestList[i].TryGetTarget(out var target))
-                    {
-                        // Skip invisible or disconnected controls
-                        if (!target.IsVisible || !target.IsAttachedToVisualTree())
-                            continue;
-
-                        // If control was reparented into new window, matrix may be null, catch that case
-                        var mat = target.TransformToVisual(this);
-                        if (mat.HasValue)
-                        {
-                            if (new Rect(target.Bounds.Size).TransformToAABB(mat.Value).Contains(p))
-                            {
-                                // We've hit a control that's asked to be in the titlebar but allow interaction
-                                // return false so NCHITTEST returns HTCLIENT
-                                return false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        _excludeHitTestList.RemoveAt(i);
-                    }
-                }
+                return false;
             }
 
             return true;
         }
+
+        return false;
     }
 
     internal bool ComplexHitTest(Point p)
@@ -306,7 +162,7 @@ public partial class FAAppWindow : Window
 
         // Special case for TabViewListView during drag operations where blank space 
         // is inserted and causes HitTest to fail (since nothing focusable is there)
-        if (result is Visual v && v.TemplatedParent is TabViewListView)
+        if (result is Visual v && v.TemplatedParent is FATabViewListView)
             return false;
 
         if (result == _defaultTitleBar)
@@ -323,195 +179,48 @@ public partial class FAAppWindow : Window
         return true;
     }
 
-    internal void UpdateContentPosition(Thickness t)
-    {        
-        if (_templateRoot != null)
-            _templateRoot.Margin = t;
-    }
-
-    internal void UpdateFullScreenState(bool isFullScreen)
-    {
-        if (isFullScreen)
-        {
-            TemplateSettings.ContentMargin = new Thickness();
-        }
-        else
-        {
-            OnExtendsContentIntoTitleBarChanged(_titleBar.ExtendsContentIntoTitleBar);
-        }
-    }
-
-    internal void OnWin32WindowStateChanged(WindowState state)
-    {
-        if (state == WindowState.FullScreen)
-        {
-            TemplateSettings.ContentMargin = new Thickness();
-        }
-        else
-        {
-            OnExtendsContentIntoTitleBarChanged(_titleBar.ExtendsContentIntoTitleBar);
-        }
-    }
-    
     private void SetTitleBarColors()
     {
-        if (_templateRoot == null)
+        if (_titleBar == null)
             return;
 
-        bool foundAccent = _templateRoot.TryFindResource(s_SystemAccentColor, out var sysColor);
-        Color? accentVariant = null;
-        var themeVar = ActualThemeVariant;
+        SetResource(s_TitleBarBackground, _titleBar.BackgroundColor);
+        SetResource(s_TitleBarForeground, _titleBar.ForegroundColor);
 
-        if (themeVar == ThemeVariant.Light)
-        {
-            if (_templateRoot.TryFindResource(s_SystemAccentColorDark1, out var v))
-            {
-                accentVariant = Unsafe.Unbox<Color>(v);
-            }
-        }
-        else
-        {
-            if (_templateRoot.TryFindResource(s_SystemAccentColorLight1, out var v))
-            {
-                accentVariant = Unsafe.Unbox<Color>(v);
-            }
-        }
+        SetResource(s_TitleBarInactiveBackground, _titleBar.InactiveBackgroundColor);
+        SetResource(s_TitleBarInactiveForeground, _titleBar.InactiveForegroundColor);
 
-        Color textColor;
-        if (_templateRoot.TryFindResource(s_TextFillColorPrimary, themeVar, out var value))
+        SetResource(s_SysCaptionBackground, _titleBar.ButtonBackgroundColor);
+        SetResource(s_SysCaptionForeground, _titleBar.ButtonForegroundColor);
+
+        SetResource(s_SysCaptionBackgroundHover, _titleBar.ButtonHoverBackgroundColor);
+        SetResource(s_SysCaptionForegroundHover, _titleBar.ButtonHoverForegroundColor);
+
+        SetResource(s_SysCaptionBackgroundPressed, _titleBar.ButtonPressedBackgroundColor);
+        SetResource(s_SysCaptionForegroundPressed, _titleBar.ButtonPressedForegroundColor);
+
+        SetResource(s_SysCaptionBackgroundInactive, _titleBar.ButtonInactiveBackgroundColor);
+        SetResource(s_SysCaptionForegroundInactive, _titleBar.ButtonInactiveForegroundColor);
+
+
+        void SetResource(string name, Color? color)
         {
-            textColor = Unsafe.Unbox<Color>(value);
-        }
-        else
-        {
-            if (ActualThemeVariant == ThemeVariant.Dark)
+            if (color.HasValue)
             {
-                textColor = Colors.White;
+                Resources[name] = color;
             }
             else
             {
-                textColor = Colors.Black;
-            }
-        }
-
-        SetResource(s_TitleBarBackground, _titleBar.BackgroundColor ?? Colors.Transparent);
-        SetResource(s_TitleBarForeground, _titleBar.ForegroundColor ?? textColor);
-
-        SetResource(s_TitleBarInactiveBackground, _titleBar.InactiveBackgroundColor ?? Colors.Transparent);
-        SetResource(s_TitleBarInactiveForeground, _titleBar.InactiveForegroundColor ?? Colors.Gray);
-
-        SetResource(s_SysCaptionBackground, _titleBar.ButtonBackgroundColor ?? Colors.Transparent);
-        SetResource(s_SysCaptionForeground, _titleBar.ButtonForegroundColor ?? textColor);
-
-        SetResource(s_SysCaptionBackgroundHover, _titleBar.ButtonHoverBackgroundColor ??
-            (foundAccent ? Unsafe.Unbox<Color>(sysColor) : Color.FromArgb(23, 0, 0, 0)));
-        SetResource(s_SysCaptionForegroundHover, _titleBar.ButtonHoverForegroundColor ?? textColor);
-
-        SetResource(s_SysCaptionBackgroundPressed, _titleBar.ButtonPressedBackgroundColor ??
-            (foundAccent ? Unsafe.Unbox<Color>(sysColor) : Color.FromArgb(52, 0, 0, 0)));
-        SetResource(s_SysCaptionForegroundPressed, _titleBar.ButtonPressedForegroundColor ?? GetPressedColor(textColor));
-
-        SetResource(s_SysCaptionBackgroundInactive, _titleBar.ButtonInactiveBackgroundColor ?? Colors.Transparent);
-        SetResource(s_SysCaptionForegroundInactive, _titleBar.ButtonInactiveForegroundColor ??
-            (accentVariant ?? Colors.Gray));
-
-
-        void SetResource(string name, Color color)
-        {
-            _templateRoot.Resources[name] = color;
-        }
-
-        Color GetPressedColor(Color c)
-        {
-            Color2 c2 = (Color2)c;
-            c2.GetHSLf(out _, out _, out var l, out _);
-
-            if (l < 0.5f)
-            {
-                return c2.LightenPercent(0.15f);
-            }
-            else
-            {
-                return c2.LightenPercent(-0.15f);
+                Resources.Remove(name);
             }
         }
     }
 
-    private static void OnAllowInteractionInTitleBarChanged(Control control, AvaloniaPropertyChangedEventArgs propChangeArgs)
+    internal void OnShowFullScreenButtonChanged(bool value)
     {
-        if (control is TopLevel tl || control is Popup)
-            return; //throw new InvalidOperationException("AllowTitleBarHitTest cannot be set on TopLevels or Popups");
-
-        
-        if (propChangeArgs.GetNewValue<bool>())
-        {
-            // Control likely isn't attached to the visual tree yet so we have no way of attaching this to the 
-            // AppWindow hosting it, defer now, but we'll check first just in case
-            if (GetTopLevel(control) is FAAppWindow aw)
-            {
-                aw.AddExcludeHitTestItem(control);
-            }
-            else if (!Design.IsDesignMode) // Don't attach in Design mode
-            {
-                // Defer until attached to visual tree
-                control.AttachedToVisualTree += AwaitControlAttachedToVisualTree;
-            }
-        }
-        else
-        {
-            // If we change the value to false while still connected, we'll remove it from the list
-            // Otherwise, we'll have to wait for the ref to be GC'd then we'll remove it later
-            if (GetTopLevel(control) is FAAppWindow aw)
-            {
-                aw.RemoveExcludeHitTestItem(control);
-            }
-        }
-        
-        void AwaitControlAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs args)
-        {
-            var control = sender as Control;
-            control.AttachedToVisualTree -= AwaitControlAttachedToVisualTree;
-
-            if (GetTopLevel(control) is FAAppWindow aw)
-            {
-                aw.AddExcludeHitTestItem(control);
-            }
-        }
+        PseudoClasses.Set(":noFullScreen", value);
     }
-
-    private void AddExcludeHitTestItem(Control c)
-    {
-        if (_excludeHitTestList == null)
-            _excludeHitTestList = new List<WeakReference<Control>>();
-
-        for (int i = 0; i < _excludeHitTestList.Count; i++)
-        {
-            // Control was already added - can happen if removed and re-added to the visual tree and
-            // the control ref was never GC'd (like page navigation w/ cache)
-            if (_excludeHitTestList[i].TryGetTarget(out var target) && target == c)
-                return;
-        }
-
-        _excludeHitTestList.Add(new WeakReference<Control>(c));
-    }
-
-    private void RemoveExcludeHitTestItem(Control c)
-    {
-        if (_excludeHitTestList == null)
-            return;
-            
-        for (int i = _excludeHitTestList.Count - 1; i >= 0; i--)
-        {
-            if (_excludeHitTestList[i].TryGetTarget(out var target) && target == c)
-            {
-                _excludeHitTestList.RemoveAt(i);
-                return;
-            }
-        }
-    }
-
     
-
     private async void LoadApp()
     {
         if (Presenter is not ContentPresenter cp)

@@ -3,9 +3,9 @@
 /// <summary>
 /// Provides data for a tab close event
 /// </summary>
-public class TabViewTabCloseRequestedEventArgs : EventArgs
+public class FATabViewTabCloseRequestedEventArgs : EventArgs
 {
-    internal TabViewTabCloseRequestedEventArgs(object item, TabViewItem tab)
+    internal FATabViewTabCloseRequestedEventArgs(object item, FATabViewItem tab)
     {
         Item = item;
         Tab = tab;
@@ -20,5 +20,5 @@ public class TabViewTabCloseRequestedEventArgs : EventArgs
     /// <summary>
     /// Gets the tab in which a close is being requested
     /// </summary>
-    public TabViewItem Tab { get; }
+    public FATabViewItem Tab { get; }
 }

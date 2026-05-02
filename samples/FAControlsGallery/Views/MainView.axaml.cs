@@ -92,7 +92,7 @@ public partial class MainView : UserControl
 
         if (TopLevel.GetTopLevel(this) is FAAppWindow aw)
         {
-            TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
+            //TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
         }
     }
 

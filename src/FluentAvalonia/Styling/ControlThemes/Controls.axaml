@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="using:FluentAvalonia.UI.Controls">
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:wnd="using:FluentAvalonia.UI.Windowing">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,7 +23,6 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowNotificationManagerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CarouselStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ContentControlStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/NativeMenuBarStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ButtonSpinnerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/RepeatButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/GridSplitterStyles.axaml" />
@@ -59,7 +59,20 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PathIcon.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/HyperlinkButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/FocusAdornerStyles.axaml" />
-
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PipsPagerStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/GroupBoxStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/ContentPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/CarouselPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/DrawerPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/NavigationPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/Page/TabbedPageStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/TextSelectionHandleStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CommandBarStyles.axaml" />
+                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowDecorations.axaml" />
+                
+                
+                
+                
                 
                 <!-- FluentAvalonia Controls -->
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FrameStyles.axaml" />
@@ -124,6 +137,13 @@
     <StyleInclude Source="/Styling/ControlThemes/BasicControls/UserControlStyles.axaml" />
 
 
+    <!-- Special Style to hide default titlebar in FAAppWindow -->
+    <Style Selector="wnd|FAAppWindow WindowDrawnDecorations /template/ TextBlock#TitleTextBlock">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="wnd|FAAppWindow:noFullScreen WindowDrawnDecorations /template/ Button#PART_FullScreenButton">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
 
     <!--
     Amendments to CommandBar buttons which before ControlThemes used these styles to control their 

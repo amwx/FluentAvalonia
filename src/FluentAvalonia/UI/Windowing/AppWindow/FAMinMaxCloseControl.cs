@@ -25,14 +25,9 @@ public class FAMinMaxCloseControl : TemplatedControl
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
-        if (_minimizeButton != null)
-            _minimizeButton.Click -= OnButtonClick;
-
-        if (_maximizeButton != null)
-            _maximizeButton.Click -= OnButtonClick;
-
-        if (_closeButton != null)
-            _closeButton.Click -= OnButtonClick;
+        _minimizeButton?.Click -= OnButtonClick;
+        _maximizeButton?.Click -= OnButtonClick;
+        _closeButton?.Click -= OnButtonClick;
 
         base.OnApplyTemplate(e);
 
@@ -113,25 +108,31 @@ public class FAMinMaxCloseControl : TemplatedControl
         ((IPseudoClasses)CloseButton.Classes).Set(":inactive", !active);
     }
 
-    internal bool HitTest(Point p, out bool isMaximize)
+    internal CaptionButton HitTest(Point p)
     {
-        isMaximize = false;
         if (_maximizeButton == null)
-            return false;
+            return CaptionButton.None;
 
         var mat = this.TransformToVisual(_owner).Value;
         var bnds = new Rect(Bounds.Size).TransformToAABB(mat);
 
         if (bnds.Contains(p))
         {
-            mat = _maximizeButton.TransformToVisual(_owner).Value;
-            bnds = new Rect(_maximizeButton.Bounds.Size).TransformToAABB(mat);
-
-            isMaximize = bnds.Contains(p);
-            return true;
+            if (HitTestMaxButton(p))
+            {
+                return CaptionButton.Maximize;
+            }
+            else if (HitTestMinButton(p))
+            {
+                return CaptionButton.Minimize;
+            }
+            else if (HitTestCloseButton(p))
+            {
+                return CaptionButton.Close;
+            }
         }
 
-        return false;
+        return CaptionButton.None;
     }
 
     internal bool HitTestMaxButton(Point pos)
@@ -145,34 +146,78 @@ public class FAMinMaxCloseControl : TemplatedControl
         return bnds.Contains(pos);
     }
 
-    internal void ClearMaximizedState()
+    internal bool HitTestMinButton(Point pos)
     {
-        FakeMaximizePressed(false);
-        FakeMaximizeHover(false);
+        if (_minimizeButton == null)
+            return false;
+
+        var mat = _minimizeButton.TransformToVisual(_owner).Value;
+        var bnds = new Rect(_minimizeButton.Bounds.Size).TransformToAABB(mat);
+
+        return bnds.Contains(pos);
     }
 
-    internal void FakeMaximizeHover(bool hover)
+    internal bool HitTestCloseButton(Point pos)
     {
-        if (_maximizeButton != null)
+        if (_closeButton == null)
+            return false;
+
+        var mat = _closeButton.TransformToVisual(_owner).Value;
+        var bnds = new Rect(_closeButton.Bounds.Size).TransformToAABB(mat);
+
+        return bnds.Contains(pos);
+    }
+
+    internal void ClearButtonState()
+    {
+        ClearButtonState(CaptionButton.Maximize);
+        ClearButtonState(CaptionButton.Minimize);
+        ClearButtonState(CaptionButton.Close);
+    }
+
+    internal void ClearButtonState(CaptionButton button)
+    {
+        FakeButtonHover(button, false);
+        FakeButtonPressed(button, false);
+    }
+
+    internal void FakeButtonHover(CaptionButton b, bool hover)
+    {
+        var button = GetButton(b);
+
+        if (button != null)
         {
-            // We can't set the IsPointerOver property b/c it's readonly and that make things angry
-            // so we'll just force set the Pseudoclass
-            ((IPseudoClasses)_maximizeButton.Classes).Set(":pointerover", hover);
-            //_maximizeButton.SetValue(InputElement.IsPointerOverProperty, hover);
+            ((IPseudoClasses)button.Classes).Set(":pointerover", hover);
         }
     }
 
-    internal void FakeMaximizePressed(bool pressed)
+    internal void FakeButtonPressed(CaptionButton b, bool pressed)
     {
-        if (_maximizeButton != null)
+        var button = GetButton(b);
+
+        if (button != null)
         {
-            ((IPseudoClasses)_maximizeButton.Classes).Set(":pressed", pressed);
+            ((IPseudoClasses)button.Classes).Set(":pressed", pressed);
         }
     }
 
-    internal void FakeMaximizeClick()
+    internal void FakeButtonClick(CaptionButton b)
     {
-        OnButtonClick(_maximizeButton, null);
+        var button = GetButton(b);
+
+        if (button != null)
+            OnButtonClick(button, null);
+    }
+
+    private Button GetButton(CaptionButton b)
+    {
+        return b switch
+        {
+            CaptionButton.Maximize => _maximizeButton,
+            CaptionButton.Minimize => _minimizeButton,
+            CaptionButton.Close => _closeButton,
+            _ => null
+        };
     }
 
     private IDisposable _windowStateObservable;
@@ -180,4 +225,12 @@ public class FAMinMaxCloseControl : TemplatedControl
     private Button _minimizeButton;
     private Button _maximizeButton;
     private Button _closeButton;
+}
+
+internal enum CaptionButton
+{
+    None,
+    Minimize,
+    Maximize,
+    Close
 }

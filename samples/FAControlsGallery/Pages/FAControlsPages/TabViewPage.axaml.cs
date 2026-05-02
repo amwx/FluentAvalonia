@@ -27,7 +27,7 @@ public partial class TabViewPage : ControlsPageBase
             KeyBindingText = txt
         };
 
-        TargetType = typeof(TabView);
+        TargetType = typeof(FATabView);
     }
 
     private void InitializeComponent()
@@ -35,19 +35,19 @@ public partial class TabViewPage : ControlsPageBase
         AvaloniaXamlLoader.Load(this);
     }
 
-    private void TabView_AddButtonClick(TabView sender, EventArgs args)
+    private void TabView_AddButtonClick(FATabView sender, EventArgs args)
     {
         (sender.TabItems as IList).Add(CreateNewTab(sender.TabItems.Count()));
     }
 
-    private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+    private void TabView_TabCloseRequested(FATabView sender, FATabViewTabCloseRequestedEventArgs args)
     {
         (sender.TabItems as IList).Remove(args.Tab);
     }
 
-    private TabViewItem CreateNewTab(int index)
+    private FATabViewItem CreateNewTab(int index)
     {
-        var tvi = new TabViewItem
+        var tvi = new FATabViewItem
         {
             Header = $"Document {index}",
             IconSource = new FASymbolIconSource { Symbol = FASymbol.Document }
@@ -71,7 +71,7 @@ public partial class TabViewPage : ControlsPageBase
         return tvi;
     }
 
-    private void BindingTabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+    private void BindingTabView_TabCloseRequested(FATabView sender, FATabViewTabCloseRequestedEventArgs args)
     {
         (DataContext as TabViewPageViewModel).Documents.Remove(args.Item as DocumentItem);
     }
