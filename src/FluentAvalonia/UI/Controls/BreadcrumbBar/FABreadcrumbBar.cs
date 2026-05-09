@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Automation;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
@@ -17,6 +15,8 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+// BCB Source is up to date with WinUI as of 5/9/26
+
 /// <summary>
 /// The BreadcrumbBar control provides the direct path of pages or folders to the current location.
 /// </summary>
@@ -29,8 +29,9 @@ public class FABreadcrumbBar : TemplatedControl
         _itemsRepeaterLayout = new BreadcrumbLayout(this);
         _itemsIterable = new BreadcrumbIterable(null);
         
+        // Note WinUI sets these in OnApplyTemplate
         AddHandler(KeyDownEvent, OnChildPreviewKeyDown, RoutingStrategies.Tunnel);
-        //AccessKeyInvoked
+        //AccessKeyInvoked - Avalonia use override method instead
         GettingFocus += OnGettingFocus;
         // Ignore FlowDirection
     }
@@ -241,7 +242,7 @@ public class FABreadcrumbBar : TemplatedControl
                 UpdateEllipsisBreadcrumbBarItemDropDownItemTemplate();
 
                 var str = FALocalizationHelper.Instance
-                    .GetLocalizedStringResource("AutomationNameEllipsisBreadcrumbBarItem");
+                    .GetLocalizedStringResource(SR_AutomationNameEllipsisBreadcrumbBarItem);
                 AutomationProperties.SetName(item, str);
             }
             else
@@ -516,9 +517,7 @@ public class FABreadcrumbBar : TemplatedControl
         }
     }
 
-    // AccessKeyInvoked
-
-
+    // AccessKeyInvoked - skipping because I'm not sure how to translate WinUI -> Avalonia here
 
     private void RevokeListeners()
     {
@@ -530,10 +529,7 @@ public class FABreadcrumbBar : TemplatedControl
             _itemsRepeater.ElementClearing -= OnElementClearingEvent;
         }
 
-        if (_breadcrumbItemsSourceView != null)
-        {
-            _breadcrumbItemsSourceView.CollectionChanged -= OnBreadcrumbBarItemsSourceCollectionChanged;
-        }
+        _breadcrumbItemsSourceView?.CollectionChanged -= OnBreadcrumbBarItemsSourceCollectionChanged;
     }
 
     private FAItemsSourceView _breadcrumbItemsSourceView;
@@ -548,4 +544,6 @@ public class FABreadcrumbBar : TemplatedControl
     private int _focusedIndex;
 
     private const string s_tpItemsRepeater = "PART_ItemsRepeater";
+
+    private const string SR_AutomationNameEllipsisBreadcrumbBarItem = "AutomationNameEllipsisBreadcrumbBarItem";
 }
