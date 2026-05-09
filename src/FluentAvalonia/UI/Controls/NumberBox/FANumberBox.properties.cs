@@ -392,4 +392,9 @@ public partial class FANumberBox
     private const string s_pcSpinCollapsed = ":spincollapsed";
     private const string s_pcUpDisabled = ":updisabled";
     private const string s_pcDownDisabled = ":downdisabled";
+
+    private const string SR_NumberBoxDownSpinButtonName = "NumberBoxDownSpinButtonName";
+    private const string SR_NumberBoxUpSpinButtonName = "NumberBoxUpSpinButtonName";
+    private const string SR_NumberBoxMaximumValueStatus = "NumberBoxMaximumValueStatus";
+    private const string SR_NumberBoxMinimumValueStatus = "NumberBoxMinimumValueStatus";
 }

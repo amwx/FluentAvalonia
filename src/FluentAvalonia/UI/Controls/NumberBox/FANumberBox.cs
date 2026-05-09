@@ -1,6 +1,6 @@
 ﻿using Avalonia;
+using Avalonia.Automation;
 using Avalonia.Automation.Peers;
-using Avalonia.Automation.Provider;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
@@ -10,6 +10,8 @@ using FluentAvalonia.Core;
 using System.Globalization;
 
 namespace FluentAvalonia.UI.Controls;
+
+// NumberBox source is up to date with WinUI as of 5/9/26
 
 /// <summary>
 /// Represents a control that can be used to display and edit numbers.
@@ -23,48 +25,59 @@ public partial class FANumberBox : TemplatedControl
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
+        UnhookEvents();
+
         base.OnApplyTemplate(e);
+
+        var spinDownName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NumberBoxDownSpinButtonName);
+        var spinUpName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NumberBoxUpSpinButtonName);
 
         _spinDown = e.NameScope.Find<RepeatButton>(s_tpDownSpinButton);
         _popupDownButton = e.NameScope.Find<RepeatButton>(s_tpPopupDownSpinButton);
+
         if (_spinDown != null)
         {
             _spinDown.Click += OnSpinDownClick;
+
+            if (AutomationProperties.GetName(_spinDown) == null)
+            {
+                AutomationProperties.SetName(_spinDown, spinDownName);
+            }
         }
-        if (_popupDownButton != null)
-        {
-            _popupDownButton.Click += OnSpinDownClick;
-        }
+        _popupDownButton?.Click += OnSpinDownClick;
+      
 
         _spinUp = e.NameScope.Find<RepeatButton>(s_tpUpSpinButton);
         _popupUpButton = e.NameScope.Find<RepeatButton>(s_tpPopupUpSpinButton);
+
         if (_spinUp != null)
         {
             _spinUp.Click += OnSpinUpClick;
-        }
-        if (_popupUpButton != null)
-        {
-            _popupUpButton.Click += OnSpinUpClick;
+
+            if (AutomationProperties.GetName(_spinUp) == null)
+            {
+                AutomationProperties.SetName(_spinUp, spinUpName);
+            }
         }
 
+        _popupUpButton?.Click += OnSpinUpClick;
+        
         _textBox = e.NameScope.Find<TextBox>(s_tpInputBox);
         if (_textBox != null)
         {
             _textBox.AddHandler(KeyDownEvent, OnNumberBoxKeyDown, RoutingStrategies.Tunnel);
-
             _textBox.KeyUp += OnNumberBoxKeyUp;
+            _textBox.Loaded += OnTextBoxLoaded;
         }
 
         _popup = e.NameScope.Find<Popup>(s_tpUpDownPopup);
-        if (_popup != null)
-        {
-            _popup.OverlayInputPassThroughElement = this;
-        }
+        _popup?.OverlayInputPassThroughElement = this;
 
         UpdateSpinButtonPlacement();
         UpdateSpinButtonEnabled();
 
         //UpdateVisualStateForIsEnabledChange();
+        ReevaluateForwardedUIAProperties();
 
         if (double.IsNaN(Value) &&
             !string.IsNullOrEmpty(_text))
@@ -127,6 +140,15 @@ public partial class FANumberBox : TemplatedControl
         else if (change.Property == MinimumProperty || change.Property == MaximumProperty)
         {
             UpdateSpinButtonEnabled();
+            ReevaluateForwardedUIAProperties();
+        }
+        else if (change.Property == AutomationProperties.NameProperty)
+        {
+            OnAutomationPropertiesNamePropertyChanged();
+        }
+        else if (change.Property == AutomationProperties.LabeledByProperty)
+        {
+            OnAutomationPropertiesLabeledByPropertyChanged();
         }
     }
 
@@ -175,6 +197,12 @@ public partial class FANumberBox : TemplatedControl
         return new FANumberBoxAutomationPeer(this);
     }
 
+    private void OnTextBoxLoaded(object sender, RoutedEventArgs args)
+    {
+        // Updating again once TextBox is loaded so its visual states are set properly.
+        UpdateSpinButtonPlacement();
+    }
+
     private void OnPointerPressedPreview(object sender, PointerPressedEventArgs args)
     {
         // Hack: B/c we make popup lightdismissable, we need to ensure we can reopen the popup if focus
@@ -215,6 +243,47 @@ public partial class FANumberBox : TemplatedControl
             {
                 _valueUpdating = false;
             }
+        }
+    }
+
+    private void OnAutomationPropertiesNamePropertyChanged()
+    {
+        ReevaluateForwardedUIAProperties();
+    }
+
+    private void OnAutomationPropertiesLabeledByPropertyChanged()
+    {
+        ReevaluateForwardedUIAProperties();
+    }
+
+    private void ReevaluateForwardedUIAProperties()
+    {
+        if (_textBox == null)
+            return;
+
+        var name = AutomationProperties.GetName(this);
+        var minimum = Minimum == -double.MinValue ? string.Empty :
+            $" {FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NumberBoxMinimumValueStatus)} {Minimum}";
+        var maximum = Maximum == double.MaxValue ? string.Empty :
+            $" {FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NumberBoxMaximumValueStatus)} {Maximum}";
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            AutomationProperties.SetName(_textBox, name + minimum + maximum);
+        }
+        else
+        {
+            var header = Header;
+            if (header is string s)
+            {
+                AutomationProperties.SetName(_textBox, s + minimum + maximum);
+            }
+        }
+
+        var labeledBy = AutomationProperties.GetLabeledBy(this);
+        if (labeledBy != null)
+        {
+            AutomationProperties.SetLabeledBy(_textBox, labeledBy);
         }
     }
 
@@ -279,12 +348,12 @@ public partial class FANumberBox : TemplatedControl
         return null;
     }
 
-    private void OnSpinDownClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnSpinDownClick(object sender, RoutedEventArgs e)
     {
         StepValue(-SmallChange);
     }
 
-    private void OnSpinUpClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnSpinUpClick(object sender, RoutedEventArgs e)
     {
         StepValue(SmallChange);
     }
@@ -510,10 +579,7 @@ public partial class FANumberBox : TemplatedControl
 
     private void MoveCaretToTextEnd()
     {
-        if (_textBox != null)
-        {
-            _textBox.SelectionStart = _textBox.SelectionEnd = _textBox.CaretIndex = _textBox.Text.Length;
-        }
+        _textBox?.SelectionStart = _textBox.SelectionEnd = _textBox.CaretIndex = _textBox.Text.Length;
     }
 
     private void CoerceValueIfNeeded(double min, double max)
@@ -542,6 +608,16 @@ public partial class FANumberBox : TemplatedControl
         }
 
         return val;
+    }
+
+    private void UnhookEvents()
+    {
+        _spinDown?.Click -= OnSpinDownClick;
+        _spinUp?.Click -= OnSpinUpClick;
+        _popupDownButton?.Click -= OnSpinDownClick;
+        _popupUpButton?.Click -= OnSpinUpClick;
+        _textBox?.RemoveHandler(KeyDownEvent, OnNumberBoxKeyDown);
+        _textBox?.KeyUp -= OnNumberBoxKeyUp;
     }
 
     //Template parts
