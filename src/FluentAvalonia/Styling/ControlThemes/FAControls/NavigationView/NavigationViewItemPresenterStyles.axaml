@@ -8,6 +8,7 @@
         <Border Padding="50">
             <StackPanel Spacing="4">
                 <uip:FANavigationViewItemPresenter Content="Hello" IconSource="Save" />
+                <uip:FANavigationViewItemPresenter Content="Setting" IconSource="Settings" Classes="setting" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -427,7 +428,6 @@
 
 
         <!-- Expand/collapse chevron states should propagate -->
-
     </ControlTheme>
 
     <ControlTheme x:Key="NavigationViewItemPresenterWhenOnTopPaneOverflow"
@@ -595,7 +595,231 @@
         </Style>
         
         <!-- Expand/collapse chevron states should propagate -->
-
     </ControlTheme>
+    
+    <ControlTheme x:Key="NavigationViewItemPresenterWhenSettings"
+                  TargetType="uip:FANavigationViewItemPresenter"
+                  BasedOn="{StaticResource {x:Type uip:FANavigationViewItemPresenter}}">
+        <!--<Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />-->
+        <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource NavigationViewItemBorderThickness}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="LayoutRoot"
+                        MinHeight="{DynamicResource NavigationViewItemOnLeftMinHeight}"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Margin="4,2,4,2"
+                        TemplatedControl.IsTemplateFocusTarget="True">
 
+                    <Panel Name="PresenterContentRootGrid">
+
+                        <Panel HorizontalAlignment="Left"
+                               VerticalAlignment="Center">
+
+                            <Border Name="SelectionIndicator"
+                                    Background="{DynamicResource NavigationViewSelectionIndicatorForeground}"
+                                    Opacity="0"
+                                    Width="{DynamicResource NavigationViewSelectionIndicatorWidth}"
+                                    Height="{DynamicResource NavigationViewSelectionIndicatorHeight}"
+                                    CornerRadius="{DynamicResource NavigationViewSelectionIndicatorRadius}" />
+                        </Panel>
+
+                        <Grid Name="ContentGrid"
+                              MinHeight="{DynamicResource NavigationViewItemOnLeftMinHeight}"
+                              HorizontalAlignment="Stretch"
+                              ColumnDefinitions="Auto,*,Auto,Auto"
+                              Margin="0 0 14 0">
+
+                            <!--
+                            BUG: If NVI is loaded into Flyout, when it returns to Left mode the foreground
+                                 changes to Black for some reason (dark mode). So For the two ContentPresenters
+                                 below, I'm setting the resource directly instead of using the TemplateBinding
+                                 for Foreground
+                                 Thinking this is something with the new styling system but not entirely sure yet
+                            -->
+                            <Border Name="IconColumn">
+                                <Viewbox Name="IconBox"
+                                         Height="{DynamicResource NavigationViewItemOnLeftIconBoxHeight}"
+                                         HorizontalAlignment="Center"
+                                         Margin="{DynamicResource NavigationViewItemOnLeftIconBoxMargin}">
+                                    <ContentPresenter Name="Icon"
+                                                      Content="{Binding TemplateSettings.Icon, RelativeSource={RelativeSource TemplatedParent}}"
+                                                      Foreground="{DynamicResource NavigationViewItemForeground}"/>
+                                </Viewbox>
+                            </Border>
+
+                            <ContentPresenter Name="ContentPresenter"
+                                              Grid.Column="1"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Padding="{TemplateBinding Padding}"
+                                              Margin="{DynamicResource NavigationViewItemContentPresenterMargin}"
+                                              Foreground="{DynamicResource NavigationViewItemForeground}"/>
+
+                            <Panel Name="ExpandCollapseChevron"
+                                   Grid.Column="3"
+                                   HorizontalAlignment="Right"
+                                   Width="40"
+                                   Margin="{DynamicResource NavigationViewItemExpandedChevronMargin}"
+                                   Background="Transparent"
+                                   IsVisible="False">
+                                <Panel.Transitions>
+                                    <Transitions>
+                                        <TransformOperationsTransition Property="RenderTransform" Duration="00:00:00.1" />
+                                    </Transitions>
+                                </Panel.Transitions>
+                                
+                                <TextBlock Foreground="{DynamicResource NavigationViewItemForeground}"
+                                           FontSize="{DynamicResource NavigationViewItemExpandedGlyphFontSize}"
+                                           Text="{StaticResource NavigationViewItemExpandedGlyph}"
+                                           FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </Panel>
+
+                            <ContentPresenter Name="InfoBadgePresenter"
+                                              Content="{TemplateBinding InfoBadge}"
+                                              IsVisible="False"
+                                              Grid.Column="2"
+                                              VerticalAlignment="Center" />
+
+                        </Grid>
+
+
+                    </Panel>
+
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <!-- Bindings in control templates still apply with local value -->
+        <Style Selector="^ /template/ Border#IconColumn">
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerIconWidth}" />
+        </Style>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ Border#LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#Icon">
+                <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundPointerOver}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ Border#LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#Icon">
+                <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:selected">
+            <Style Selector="^ /template/ Border#LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundSelected}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#Icon">
+                <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundSelected}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundSelected}" />
+            </Style>
+
+            <Style Selector="^:pointerover">
+                <Style Selector="^ /template/ Border#LayoutRoot">
+                    <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundSelectedPointerOver}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter#Icon">
+                    <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundSelectedPointerOver}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundSelectedPointerOver}" />
+                </Style>
+            </Style>
+
+            <Style Selector="^:pressed">
+                <Style Selector="^ /template/ Border#LayoutRoot">
+                    <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackgroundSelectedPressed}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter#Icon">
+                    <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundSelectedPressed}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForegroundSelectedPressed}" />
+                </Style>
+            </Style>
+        </Style>
+
+        <Style Selector="^:disabled /template/ Border#LayoutRoot">
+            <Setter Property="Opacity" Value="{DynamicResource ListViewItemDisabledThemeOpacity}" />
+        </Style>
+
+        <Style Selector="^:iconcollapsed">
+            <Style Selector="^ /template/ Viewbox#IconBox">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ /template/ Border#IconColumn">
+                <Setter Property="Width" Value="16" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:chevronopen /template/ Panel#ExpandCollapseChevron">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="RenderTransform" Value="rotate(180deg)" />
+        </Style>
+
+        <!-- :chevronclosed-->
+        <Style Selector="^:chevronclosed /template/ Panel#ExpandCollapseChevron">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="RenderTransform" Value="rotate(0deg)" />
+        </Style>
+
+        <Style Selector="^:closedcompacttop">
+            <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+                <Setter Property="Margin" Value="{DynamicResource NavigationViewCompactItemContentPresenterMargin}" />
+            </Style>
+            <Style Selector="^:infobadge /template/ ContentPresenter#InfoBadgePresenter">
+                <Setter Property="Grid.Column" Value="0" />
+                <Setter Property="Grid.ColumnSpan" Value="4" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Margin" Value="0 2 2 0" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:infobadge /template/ ContentPresenter#InfoBadgePresenter">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        
+        <Style Selector="^ /template/ Viewbox#IconBox">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Duration="0:0:0.167" 
+                                                   Property="RenderTransform" />
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <Style Selector="^:pointerover /template/ Viewbox#IconBox">
+            <Setter Property="RenderTransform" Value="rotate(15deg)" />
+        </Style>
+        
+        <Style Selector="^:pressed /template/ Viewbox#IconBox">
+            <Setter Property="RenderTransform" Value="rotate(180deg)" />
+        </Style>
+    </ControlTheme>
 </ResourceDictionary>

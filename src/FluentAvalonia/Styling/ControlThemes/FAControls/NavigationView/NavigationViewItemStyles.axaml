@@ -11,7 +11,7 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-
+    
 
     <ControlTheme x:Key="{x:Type ui:FANavigationViewItem}" TargetType="ui:FANavigationViewItem">
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
@@ -78,6 +78,10 @@
 
         <Style Selector="^:topoverflow /template/ uip|FANavigationViewItemPresenter">
             <Setter Property="Theme" Value="{DynamicResource NavigationViewItemPresenterWhenOnTopPaneOverflow}" />
+        </Style>
+        
+        <Style Selector="^.setting /template/ uip|FANavigationViewItemPresenter">
+            <Setter Property="Theme" Value="{DynamicResource NavigationViewItemPresenterWhenSettings}" />
         </Style>
     </ControlTheme>
 

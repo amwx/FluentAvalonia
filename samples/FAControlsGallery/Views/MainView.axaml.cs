@@ -165,6 +165,11 @@ public partial class MainView : UserControl
                     nvi.Classes.Add("SampleAppNav");
                 }
 
+                if (pg.NavHeader == "Settings")
+                {
+                    nvi.Classes.Add("setting");
+                }
+
                 if (pg.ShowsInFooter)
                     footerItems.Add(nvi);
                 else

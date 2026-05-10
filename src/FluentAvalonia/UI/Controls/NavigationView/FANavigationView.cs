@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -825,6 +826,7 @@ public partial class FANavigationView : HeaderedContentControl
             {
                 var si = new FANavigationViewItem();
                 si.Name = "SettingsItem";
+                si.Classes.Add("setting");
                 _itemsFactory.SettingsItem = si;
                 _settingsItem = si;
             }
