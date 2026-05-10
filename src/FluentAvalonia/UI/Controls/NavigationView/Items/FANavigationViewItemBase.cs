@@ -10,22 +10,22 @@ public class FANavigationViewItemBase : ListBoxItem
 {
     internal NavigationViewRepeaterPosition Position
     {
-        get => _position;
+        get;
         set
         {
-            _position = value;
+            field = value;
             OnNavigationViewItemBasePositionChanged();
         }
     }
 
     internal int Depth
     {
-        get => _depth;
+        get;
         set
         {
-            if (_depth != value)
+            if (field != value)
             {
-                _depth = value;
+                field = value;
                 OnNavigationViewItemBaseDepthChanged();
             }
         }
@@ -89,6 +89,4 @@ public class FANavigationViewItemBase : ListBoxItem
     protected readonly int _itemIndentation = 31;
 
     private WeakReference<FANavigationView> _navView;
-    private int _depth;
-    private NavigationViewRepeaterPosition _position;
 }

@@ -40,10 +40,10 @@ public class FACommandBarSeparator : TemplatedControl, IFACommandBarElement
 
     public bool IsInOverflow
     {
-        get => _isInOverflow;
+        get;
         internal set
         {
-            if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
+            if (SetAndRaise(IsInOverflowProperty, ref field, value))
             {
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcOverflow, value);
             }
@@ -52,10 +52,7 @@ public class FACommandBarSeparator : TemplatedControl, IFACommandBarElement
 
     public int DynamicOverflowOrder
     {
-        get => _dynamicOverflowOrder;
-        set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
+        get;
+        set => SetAndRaise(DynamicOverflowOrderProperty, ref field, value);
     }
-
-    private bool _isInOverflow;
-    private int _dynamicOverflowOrder;
 }

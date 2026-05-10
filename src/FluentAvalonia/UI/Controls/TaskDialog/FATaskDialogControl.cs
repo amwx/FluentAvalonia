@@ -77,9 +77,9 @@ public abstract class FATaskDialogControl : AvaloniaObject
     /// </summary>
     public bool IsEnabled
     {
-        get => _isEnabled;
-        set => SetAndRaise(IsEnabledProperty, ref _isEnabled, value);
-    }
+        get;
+        set => SetAndRaise(IsEnabledProperty, ref field, value);
+    } = true;
 
     /// <summary>
     /// Gets or sets whether the control is the default button/command.
@@ -90,13 +90,11 @@ public abstract class FATaskDialogControl : AvaloniaObject
     /// </remarks>
     public bool IsDefault
     {
-        get => _isDefault;
-        set => SetAndRaise(IsDefaultProperty, ref _isDefault, value);
+        get;
+        set => SetAndRaise(IsDefaultProperty, ref field, value);
     }
 
 
     private string _text;
     private object _dialogResult = FATaskDialogStandardResult.None;
-    private bool _isEnabled = true;
-    private bool _isDefault;
 }

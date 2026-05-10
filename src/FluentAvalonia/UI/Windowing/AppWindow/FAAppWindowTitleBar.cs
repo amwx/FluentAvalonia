@@ -19,12 +19,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? BackgroundColor
     {
-        get => _backgroundColor;
+        get;
         set
         {
-            if (_backgroundColor != value)
+            if (field != value)
             {
-                _backgroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -35,12 +35,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ForegroundColor
     {
-        get => _foregroundColor;
+        get;
         set
         {
-            if (_foregroundColor != value)
+            if (field != value)
             {
-                _foregroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -51,12 +51,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? InactiveBackgroundColor
     {
-        get => _inactiveBackgroundColor;
+        get;
         set
         {
-            if (_inactiveBackgroundColor != value)
+            if (field != value)
             {
-                _inactiveBackgroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -67,12 +67,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? InactiveForegroundColor
     {
-        get => _inactiveForegroundColor; 
+        get;
         set
         {
-            if (_inactiveForegroundColor != value)
+            if (field != value)
             {
-                _inactiveForegroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -83,12 +83,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonBackgroundColor
     {
-        get => _buttonBackgroundColor; 
+        get;
         set
         {
-            if (_buttonBackgroundColor != value)
+            if (field != value)
             {
-                _buttonBackgroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -99,12 +99,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonForegroundColor
     {
-        get => _buttonForegroundColor; 
+        get;
         set
         {
-            if (_buttonForegroundColor != value)
+            if (field != value)
             {
-                _buttonForegroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -116,12 +116,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonHoverBackgroundColor
     {
-        get => _buttonHoverBackgroundColor;
+        get;
         set
         {
-            if (_buttonHoverBackgroundColor != value)
+            if (field != value)
             {
-                _buttonHoverBackgroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -133,12 +133,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonHoverForegroundColor
     {
-        get => _buttonHoverForegroundColor; 
+        get;
         set
         {
-            if (_buttonHoverForegroundColor != value)
+            if (field != value)
             {
-                _buttonHoverForegroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -150,12 +150,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonPressedBackgroundColor
     {
-        get => _buttonPressedBackgroundColor;
+        get;
         set
         {
-            if (_buttonPressedBackgroundColor != value)
+            if (field != value)
             {
-                _buttonPressedBackgroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -167,12 +167,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonPressedForegroundColor
     {
-        get => _buttonPressedForegroundColor; 
+        get;
         set
         {
-            if (_buttonPressedForegroundColor != value)
+            if (field != value)
             {
-                _buttonPressedForegroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -183,12 +183,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonInactiveBackgroundColor
     {
-        get => _buttonInactiveBackgroundColor; 
+        get;
         set
         {
-            if (_buttonInactiveBackgroundColor != value)
+            if (field != value)
             {
-                _buttonInactiveBackgroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -199,12 +199,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public Color? ButtonInactiveForegroundColor
     {
-        get => _buttonInactiveForegroundColor; 
+        get;
         set
         {
-            if (_buttonInactiveForegroundColor != value)
+            if (field != value)
             {
-                _buttonInactiveForegroundColor = value;
+                field = value;
                 _parent.TitleBarColorsChanged();
             }
         }
@@ -215,12 +215,12 @@ public class FAAppWindowTitleBar
     /// </summary>
     public bool ExtendsContentIntoTitleBar
     {
-        get => _extendsContentIntoTitleBar;
+        get;
         set
         {
-            if (_extendsContentIntoTitleBar != value)
+            if (field != value)
             {
-                _extendsContentIntoTitleBar = value;
+                field = value;
                 _parent.OnExtendsContentIntoTitleBarChanged(value);
             }
         }
@@ -236,47 +236,32 @@ public class FAAppWindowTitleBar
     /// </remarks>
     public double Height
     {
-        get => _height;
+        get;
         set
         {
-            if (!FAMathHelpers.IsClose(_height, value))
+            if (!FAMathHelpers.IsClose(field, value))
             {
-                _height = value;
+                field = value;
                 _parent.OnTitleBarHeightChanged(value);
             }
         }
-    }
+    } = 32;
 
     /// <summary>
     /// Sets whether the full screen button is visible in the title bar.
     /// </summary>
     public bool ShowFullScreenButton
     {
-        get => _showFullScreenButton;
+        get;
         set
         {
-            if (_showFullScreenButton != value)
+            if (field != value)
             {
-                _showFullScreenButton = value;
+                field = value;
                 _parent.OnShowFullScreenButtonChanged(value);
             }
         }
     }
 
     private FAAppWindow _parent;
-    private Color? _backgroundColor;
-    private Color? _buttonBackgroundColor;
-    private Color? _buttonForegroundColor;
-    private Color? _buttonHoverBackgroundColor;
-    private Color? _buttonHoverForegroundColor;
-    private Color? _buttonInactiveBackgroundColor;
-    private Color? _buttonInactiveForegroundColor;
-    private Color? _buttonPressedBackgroundColor;
-    private Color? _buttonPressedForegroundColor;
-    private bool _extendsContentIntoTitleBar;
-    private Color? _foregroundColor;
-    private double _height = 32;
-    private Color? _inactiveBackgroundColor;
-    private Color? _inactiveForegroundColor;
-    private bool _showFullScreenButton;
 }

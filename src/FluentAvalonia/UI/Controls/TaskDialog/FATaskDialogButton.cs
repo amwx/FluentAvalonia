@@ -50,13 +50,13 @@ public class FATaskDialogButton : FATaskDialogControl
     /// </summary>
     public FAIconSource IconSource
     {
-        get => _iconSource;
+        get;
         set
         {
             if (_isStandard)
                 throw new InvalidOperationException("Cannot add icon to a predefined TaskDialogButton");
 
-            SetAndRaise(IconSourceProperty, ref _iconSource, value);
+            SetAndRaise(IconSourceProperty, ref field, value);
         }
     }
 
@@ -65,13 +65,13 @@ public class FATaskDialogButton : FATaskDialogControl
     /// </summary>
     public ICommand Command
     {
-        get => _command;
+        get;
         set
         {
             if (_isStandard)
                 throw new InvalidOperationException("Cannot add Command to a predefined TaskDialogButton");
 
-            SetAndRaise(CommandProperty, ref _command, value);
+            SetAndRaise(CommandProperty, ref field, value);
         }
     }
 
@@ -80,13 +80,13 @@ public class FATaskDialogButton : FATaskDialogControl
     /// </summary>
     public object CommandParameter
     {
-        get => _commandParameter;
+        get;
         set
         {
             if (_isStandard)
                 throw new InvalidOperationException("Cannot add icon to a predefined TaskDialogButton");
 
-            SetAndRaise(CommandParameterProperty, ref _commandParameter, value);
+            SetAndRaise(CommandParameterProperty, ref field, value);
         }
     }
 
@@ -105,9 +105,6 @@ public class FATaskDialogButton : FATaskDialogControl
         Click?.Invoke(this, EventArgs.Empty);
     }
 
-    private FAIconSource _iconSource;
-    private ICommand _command;
-    private object _commandParameter;
     private bool _isStandard;
 
     /// <summary>

@@ -17,11 +17,11 @@ internal class SplashScreenContext
 
     public FAAppSplashScreen Host
     {
-        get => _splashHost;
+        get;
         set
         {
-            _splashHost = value;
-            _splashHost.SplashScreen = SplashScreen;
+            field = value;
+            field.SplashScreen = SplashScreen;
         }
     }
 
@@ -40,7 +40,6 @@ internal class SplashScreenContext
         _splashCTS = null;
     }
 
-    private FAAppSplashScreen _splashHost;
     private CancellationTokenSource _splashCTS;
 }
 

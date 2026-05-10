@@ -25,18 +25,19 @@ public class NavViewPageViewModel : ViewModelBase
 
     public object SelectedCategory
     {
-        get => _selectedCategory;
+        get;
         set
         {
-            this.RaiseAndSetIfChanged(ref _selectedCategory, value);
+            this.RaiseAndSetIfChanged(ref field, value);
             SetCurrentPage();
         }
     }
+
     public Control CurrentPage
     {
-        get => _currentPage;
-        set => RaiseAndSetIfChanged(ref _currentPage, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = new NVSamplePage1();
 
     private void SetCurrentPage()
     {
@@ -54,9 +55,6 @@ public class NavViewPageViewModel : ViewModelBase
             CurrentPage = (Control)pg;
         }
     }
-
-    private object _selectedCategory;
-    private Control _currentPage = new NVSamplePage1();
 }
 
 public abstract class CategoryBase { }

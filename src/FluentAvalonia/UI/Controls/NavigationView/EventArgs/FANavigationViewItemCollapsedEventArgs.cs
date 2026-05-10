@@ -17,14 +17,14 @@ public class FANavigationViewItemCollapsedEventArgs : EventArgs
     {
         get
         {
-            if (_collapsedItem != null)
+            if (field != null)
             {
-                return _collapsedItem;
+                return field;
             }
             if (_navigationView != null)
             {
-                _collapsedItem = _navigationView.MenuItemFromContainer(CollapsedItemContainer);
-                return _collapsedItem;
+                field = _navigationView.MenuItemFromContainer(CollapsedItemContainer);
+                return field;
             }
             return null;
         }
@@ -35,6 +35,5 @@ public class FANavigationViewItemCollapsedEventArgs : EventArgs
     /// </summary>
     public FANavigationViewItemBase CollapsedItemContainer { get; internal set; }
 
-    private object _collapsedItem;
     private FANavigationView _navigationView;
 }

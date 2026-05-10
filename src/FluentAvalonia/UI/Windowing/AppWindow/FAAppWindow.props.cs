@@ -50,10 +50,10 @@ public partial class FAAppWindow : Window
     /// </summary>
     public bool ShowAsDialog
     {
-        get => _hideSizeButtons;
+        get;
         set
         {
-            _hideSizeButtons = value;
+            field = value;
             PseudoClasses.Set(":dialog", value);
         }
     }
@@ -114,7 +114,6 @@ public partial class FAAppWindow : Window
     private Panel _defaultTitleBar;
     private FAAppWindowTitleBar _titleBar;
     private List<WeakReference<Control>> _excludeHitTestList;
-    private bool _hideSizeButtons;
 
     // Resource names used in SetTitleBarColors
     private static readonly string s_SystemAccentColor = "SystemAccentColor";

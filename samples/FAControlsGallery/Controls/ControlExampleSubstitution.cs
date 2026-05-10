@@ -17,27 +17,25 @@ public class ControlExampleSubstitution : AvaloniaObject
 
     public string Key { get; set; }
 
-    private object _value = null;
     public object Value
     {
-        get => _value;
+        get;
         set
         {
-            SetAndRaise(ValueProperty, ref _value, value);
+            SetAndRaise(ValueProperty, ref field, value);
             ValueChanged?.Invoke(this, null);
         }
-    }
+    } = null;
 
-    private bool _enabled = true;
     public bool IsEnabled
     {
-        get => _enabled;
+        get;
         set
         {
-            SetAndRaise(IsEnabledProperty, ref _enabled, value);
+            SetAndRaise(IsEnabledProperty, ref field, value);
             ValueChanged?.Invoke(this, null);
         }
-    }
+    } = true;
 
     public event TypedEventHandler<ControlExampleSubstitution, object> ValueChanged;
 

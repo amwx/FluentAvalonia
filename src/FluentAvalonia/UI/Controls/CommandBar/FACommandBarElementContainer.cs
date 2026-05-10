@@ -44,10 +44,10 @@ public class FACommandBarElementContainer : ContentControl, IFACommandBarElement
 
     public bool IsInOverflow
     {
-        get => _isInOverflow;
+        get;
         internal set
         {
-            if (SetAndRaise(IsInOverflowProperty, ref _isInOverflow, value))
+            if (SetAndRaise(IsInOverflowProperty, ref field, value))
             {
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcOverflow, value);
             }
@@ -56,8 +56,8 @@ public class FACommandBarElementContainer : ContentControl, IFACommandBarElement
 
     public int DynamicOverflowOrder
     {
-        get => _dynamicOverflowOrder;
-        set => SetAndRaise(DynamicOverflowOrderProperty, ref _dynamicOverflowOrder, value);
+        get;
+        set => SetAndRaise(DynamicOverflowOrderProperty, ref field, value);
     }
 
     protected override bool RegisterContentPresenter(ContentPresenter presenter)
@@ -67,7 +67,4 @@ public class FACommandBarElementContainer : ContentControl, IFACommandBarElement
 
         return base.RegisterContentPresenter(presenter);
     }
-
-    private bool _isInOverflow;
-    private int _dynamicOverflowOrder;
 }

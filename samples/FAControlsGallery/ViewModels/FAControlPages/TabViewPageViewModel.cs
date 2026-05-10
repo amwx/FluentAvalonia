@@ -29,8 +29,8 @@ public class TabViewPageViewModel : ViewModelBase
 
     public DocumentItem KeyBindingSelectedDocument
     {
-        get => _keybindingSelectedDocument;
-        set => RaiseAndSetIfChanged(ref _keybindingSelectedDocument, value);
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
     }
 
     public FACommand AddDocumentCommand { get; }
@@ -105,8 +105,6 @@ public class TabViewPageViewModel : ViewModelBase
 
         return tab;
     }
-
-    private DocumentItem _keybindingSelectedDocument;
 }
 
 public class DocumentItem

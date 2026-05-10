@@ -261,8 +261,8 @@ public partial class FATabView
     [Content]
     public IList TabItems
     {
-        get => _tabItems;
-        private set => SetAndRaise(TabItemsProperty, ref _tabItems, value);
+        get;
+        private set => SetAndRaise(TabItemsProperty, ref field, value);
     }
 
     /// <summary>
@@ -317,17 +317,17 @@ public partial class FATabView
     /// </summary>
     public int SelectedIndex
     {
-        get => _selectedIndex;
-        set => SetAndRaise(SelectedIndexProperty, ref _selectedIndex, value);
-    }
+        get;
+        set => SetAndRaise(SelectedIndexProperty, ref field, value);
+    } = 0;
 
     /// <summary>
     /// Gets or sets the selected tab item
     /// </summary>
     public object SelectedItem
     {
-        get => _selectedItem;
-        set => SetAndRaise(SelectedItemProperty, ref _selectedItem, value);
+        get;
+        set => SetAndRaise(SelectedItemProperty, ref field, value);
     }
 
     /// <summary>
@@ -440,10 +440,6 @@ public partial class FATabView
     /// </summary>
     public event EventHandler<DragEventArgs> TabStripDrop;
 
-
-    private IList _tabItems;
-    private int _selectedIndex = 0;
-    private object _selectedItem;
 
     // Internal for unit test access
     internal const string s_tpTabContentPresenter = "TabContentPresenter";

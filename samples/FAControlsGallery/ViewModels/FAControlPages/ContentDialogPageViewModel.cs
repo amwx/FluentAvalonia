@@ -12,59 +12,59 @@ public class ContentDialogPageViewModel : ViewModelBase
 
     public string Title
     {
-        get => _title;
-        set => RaiseAndSetIfChanged(ref _title, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = "Title Here";
 
     public string Content
     {
-        get => _content;
-        set => RaiseAndSetIfChanged(ref _content, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = "Dialog message here (doesn't have to be a string, can be anything)";
 
     public string PrimaryButtonText
     {
-        get => _primaryText;
-        set => RaiseAndSetIfChanged(ref _primaryText, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = "Primary Button";
 
     public string SecondaryButtonText
     {
-        get => _secondaryText;
-        set => RaiseAndSetIfChanged(ref _secondaryText, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = "Secondary Button";
 
     public string CloseButtonText
     {
-        get => _closeText;
-        set => RaiseAndSetIfChanged(ref _closeText, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = "Close Button";
 
     public bool FullSizeDesired
     {
-        get => _fullSize;
-        set => RaiseAndSetIfChanged(ref _fullSize, value);
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
     }
 
     public FAContentDialogButton[] ContentDialogButtons { get; } = Enum.GetValues<FAContentDialogButton>();
 
     public FAContentDialogButton ContentDialogDefaultButton
     {
-        get => _defaultButton;
-        set => RaiseAndSetIfChanged(ref _defaultButton, value);
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
     }
 
     public bool IsPrimaryButtonEnabled
     {
-        get => _primaryEnabled;
-        set => RaiseAndSetIfChanged(ref _primaryEnabled, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = true;
 
     public bool IsSecondaryButtonEnabled
     {
-        get => _secondaryEnabled;
-        set => RaiseAndSetIfChanged(ref _secondaryEnabled, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = true;
 
     public FACommand LaunchDialogCommand { get; }
 
@@ -122,14 +122,4 @@ public class ContentDialogPageViewModel : ViewModelBase
 
         _ = await dialog.ShowAsync();
     }
-
-    private string _title = "Title Here";
-    private string _content = "Dialog message here (doesn't have to be a string, can be anything)";
-    private string _primaryText = "Primary Button";
-    private string _secondaryText = "Secondary Button";
-    private string _closeText = "Close Button";
-    private bool _fullSize;
-    private FAContentDialogButton _defaultButton;
-    private bool _primaryEnabled = true;
-    private bool _secondaryEnabled = true;
 }

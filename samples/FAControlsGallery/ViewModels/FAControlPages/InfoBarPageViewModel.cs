@@ -19,10 +19,10 @@ public class InfoBarPageViewModel : ViewModelBase
 
     public int Bar2MessageType
     {
-        get => _bar2MessageType;
+        get;
         set
         {
-            if (RaiseAndSetIfChanged(ref _bar2MessageType, value))
+            if (RaiseAndSetIfChanged(ref field, value))
             {
                 if (value == 0) // Long Message
                 {
@@ -79,6 +79,5 @@ public class InfoBarPageViewModel : ViewModelBase
     }
 
     private InfoBarPage _owner;
-    private int _bar2MessageType;
     private int _bar2ButtonType;
 }

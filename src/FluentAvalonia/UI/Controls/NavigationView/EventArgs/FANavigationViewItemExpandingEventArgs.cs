@@ -17,13 +17,13 @@ public class FANavigationViewItemExpandingEventArgs : EventArgs
     {
         get
         {
-            if (_expandingItem != null)
-                return _expandingItem;
+            if (field != null)
+                return field;
 
             if (_navigationView != null)
             {
-                _expandingItem = _navigationView.MenuItemFromContainer(ExpandingItemContainer);
-                return _expandingItem;
+                field = _navigationView.MenuItemFromContainer(ExpandingItemContainer);
+                return field;
             }
             return null;
         }
@@ -35,5 +35,4 @@ public class FANavigationViewItemExpandingEventArgs : EventArgs
     public FANavigationViewItemBase ExpandingItemContainer { get; internal set; }
 
     private FANavigationView _navigationView;
-    private object _expandingItem;
 }

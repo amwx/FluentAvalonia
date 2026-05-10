@@ -16,10 +16,10 @@ public class TextControlsPageViewModel : ViewModelBase
 
     public bool WrapTextBoxText
     {
-        get => _wrapTextBoxText;
+        get;
         set
         {
-            if (RaiseAndSetIfChanged(ref _wrapTextBoxText, value))
+            if (RaiseAndSetIfChanged(ref field, value))
                 RaisePropertyChanged(nameof(TextBoxTextWrapping));
         }
     }
@@ -28,10 +28,10 @@ public class TextControlsPageViewModel : ViewModelBase
 
     public string PasswordCharTextValue
     {
-        get => _passwordCharTextValue;
+        get;
         set
         {
-            if (RaiseAndSetIfChanged(ref _passwordCharTextValue, value))
+            if (RaiseAndSetIfChanged(ref field, value))
             {
                 if (char.TryParse(value, out var result))
                     _passwordChar = result;
@@ -102,9 +102,7 @@ public class TextControlsPageViewModel : ViewModelBase
         };
     }
 
-    private bool _wrapTextBoxText;
     private char? _passwordChar;
-    private string _passwordCharTextValue;
 }
 
 public class StateData

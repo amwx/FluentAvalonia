@@ -55,11 +55,9 @@ public class TempToggleMenuItem : TempMenuItemBase
 
     public bool IsChecked
     {
-        get => _isChecked;
-        set => RaiseAndSetIfChanged(ref _isChecked, value);
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
     }
-
-    private bool _isChecked;
 }
 
 public class TempRadioMenuItem : TempMenuItemBase
@@ -68,13 +66,11 @@ public class TempRadioMenuItem : TempMenuItemBase
 
     public bool IsChecked
     {
-        get => _isChecked;
-        set => RaiseAndSetIfChanged(ref _isChecked, value);
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
     }
 
     public string GroupName { get; set; }
-
-    private bool _isChecked;
 }
 
 public class TempSubItem : TempMenuItemBase

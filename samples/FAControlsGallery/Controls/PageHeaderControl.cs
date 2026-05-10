@@ -28,8 +28,8 @@ public class PageHeaderControl : TemplatedControl
 
     public PageHeaderTextType TextType
     {
-        get => _textType;
-        set => SetAndRaise(TextTypeProperty, ref _textType, value);
+        get;
+        set => SetAndRaise(TextTypeProperty, ref field, value);
     }
 
     public static readonly DirectProperty<PageHeaderControl, Uri> TitleTextImageProperty =
@@ -38,8 +38,8 @@ public class PageHeaderControl : TemplatedControl
 
     public Uri TitleTextImage
     {
-        get => _titleTextImage;
-        set => SetAndRaise(TitleTextImageProperty, ref _titleTextImage, value);
+        get;
+        set => SetAndRaise(TitleTextImageProperty, ref field, value);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -99,7 +99,5 @@ public class PageHeaderControl : TemplatedControl
         UpdateTitleText();
     }
 
-    private Uri _titleTextImage;
     private Image _text1;
-    private PageHeaderTextType _textType;
 }

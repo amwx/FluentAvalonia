@@ -17,9 +17,9 @@ public class ColorPickerPageViewModel : ViewModelBase
 
     public Color CurrentColor
     {
-        get => _color;
-        set => RaiseAndSetIfChanged(ref _color, value);
-    }
+        get;
+        set => RaiseAndSetIfChanged(ref field, value);
+    } = Colors.DarkSlateBlue;
 
     public void Execute(object @param)
     {
@@ -102,6 +102,4 @@ public class ColorPickerPageViewModel : ViewModelBase
 
         return Color.FromArgb(c.A, (byte)r, (byte)g, (byte)b);
     }
-
-    private Color _color = Colors.DarkSlateBlue;
 }

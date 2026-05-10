@@ -168,8 +168,8 @@ public partial class FAFrame : ContentControl
     /// </summary>
     public IFANavigationPageFactory NavigationPageFactory
     {
-        get => _pageFactory;
-        set => SetAndRaise(NavigationPageFactoryProperty, ref _pageFactory, value);
+        get;
+        set => SetAndRaise(NavigationPageFactoryProperty, ref field, value);
     }
 
     internal FAPageStackEntry CurrentEntry { get; set; }
@@ -221,5 +221,4 @@ public partial class FAFrame : ContentControl
 
     private IList<FAPageStackEntry> _backStack;
     private IList<FAPageStackEntry> _forwardStack;
-    private IFANavigationPageFactory _pageFactory;
 }

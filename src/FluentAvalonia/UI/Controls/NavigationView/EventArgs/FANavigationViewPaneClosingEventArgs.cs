@@ -13,10 +13,10 @@ public class FANavigationViewPaneClosingEventArgs : EventArgs
     /// </summary>
     public bool Cancel
     {
-        get => _cancel;
+        get;
         set
         {
-            _cancel = value;
+            field = value;
             if (SplitViewClosingArgs != null)
             {
                 SplitViewClosingArgs.Cancel = value;
@@ -28,6 +28,4 @@ public class FANavigationViewPaneClosingEventArgs : EventArgs
     /// Gets the events pane closing event args from the SplitView
     /// </summary>
     public CancelRoutedEventArgs SplitViewClosingArgs { get; internal set; }
-
-    private bool _cancel;
 }

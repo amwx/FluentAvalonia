@@ -21,7 +21,7 @@ public class DesignColorSection : HeaderedContentControl
         set => SetValue(DescriptionProperty, value);
     }
 
-    public IList<ColorTile> Tiles => _tiles ??= new List<ColorTile>();
+    public IList<ColorTile> Tiles => field ??= new List<ColorTile>();
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -44,5 +44,4 @@ public class DesignColorSection : HeaderedContentControl
     }
 
     private ThemeVariantScope _exampleThemeScopeProvider;
-    private IList<ColorTile> _tiles;
 }

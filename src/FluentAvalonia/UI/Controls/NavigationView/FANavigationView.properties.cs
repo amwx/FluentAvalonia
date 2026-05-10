@@ -486,11 +486,8 @@ public partial class FANavigationView : HeaderedContentControl
     /// </summary>
     public object SelectedItem
     {
-        get => _selectedItem;
-        set
-        {
-            SetAndRaise(SelectedItemProperty, ref _selectedItem, value);
-        }
+        get;
+        set { SetAndRaise(SelectedItemProperty, ref field, value); }
     }
 
     //WinUI uses an enum here, but only has Disabled/Enabled, so just use bool
@@ -596,7 +593,6 @@ public partial class FANavigationView : HeaderedContentControl
     internal static readonly AttachedProperty<FACompositeDisposable> NavigationViewItemRevokersProperty =
         AvaloniaProperty.RegisterAttached<FANavigationView, FANavigationViewItem, FACompositeDisposable>("NavigationViewItemRevokers");
 
-    private object _selectedItem;
     private IList<object> _menuItems;
     private IList<object> _footerMenuItems;
     private FANavigationViewDisplayMode _displayMode = FANavigationViewDisplayMode.Minimal;

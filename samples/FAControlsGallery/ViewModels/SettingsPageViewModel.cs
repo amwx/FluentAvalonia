@@ -26,18 +26,19 @@ public class SettingsPageViewModel : MainPageViewModelBase
 
     public string CurrentAppTheme
     {
-        get => _currentAppTheme;
+        get;
         set
         {
-            if (RaiseAndSetIfChanged(ref _currentAppTheme, value))
+            if (RaiseAndSetIfChanged(ref field, value))
             {
                 var newTheme = GetThemeVariant(value);
                 if (newTheme != null)
                 {
                     Application.Current.RequestedThemeVariant = newTheme;
                 }
+
                 if (value != _system)
-                {                    
+                {
                     _faTheme.PreferSystemTheme = false;
                 }
                 else
@@ -46,7 +47,7 @@ public class SettingsPageViewModel : MainPageViewModelBase
                 }
             }
         }
-    }
+    } = _system;
 
     private ThemeVariant GetThemeVariant(string value)
     {
@@ -64,10 +65,10 @@ public class SettingsPageViewModel : MainPageViewModelBase
 
     public FlowDirection CurrentFlowDirection
     {
-        get => _currentFlowDirection;
+        get;
         set
         {
-            if (RaiseAndSetIfChanged(ref _currentFlowDirection, value))
+            if (RaiseAndSetIfChanged(ref field, value))
             {
                 var lifetime = Application.Current.ApplicationLifetime;
                 if (lifetime is IClassicDesktopStyleApplicationLifetime cdl)
@@ -89,13 +90,13 @@ public class SettingsPageViewModel : MainPageViewModelBase
 
     public bool UseCustomAccent
     {
-        get => _useCustomAccentColor;
+        get;
         set
         {
-            if (RaiseAndSetIfChanged(ref _useCustomAccentColor, value))
+            if (RaiseAndSetIfChanged(ref field, value))
             {
                 if (value)
-                {                    
+                {
                     if (_faTheme.TryGetResource("SystemAccentColor", null, out var curColor))
                     {
                         _customAccentColor = (Color)curColor;
@@ -226,10 +227,7 @@ public class SettingsPageViewModel : MainPageViewModelBase
         _faTheme.CustomAccentColor = color;
     }
 
-    private bool _useCustomAccentColor;
     private Color _customAccentColor = Colors.SlateBlue;
-    private string _currentAppTheme = _system;
-    private FlowDirection _currentFlowDirection;
     private Color? _listBoxColor;
 
     private const string _system = "System";

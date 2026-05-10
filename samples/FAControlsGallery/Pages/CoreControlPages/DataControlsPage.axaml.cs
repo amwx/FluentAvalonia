@@ -302,18 +302,16 @@ public static class Countries
         yield return new Country("Zimbabwe", "SUB-SAHARAN AFRICA", 12236805, 390580, 31.3, 0, 0, 67.69, 1900, 90.7, 26.8, 28.01, 21.84);
     }
 
-    static IReadOnlyList<Country> _all;
-
     public static IReadOnlyList<Country> All
     {
         get
         {
-            if (_all == null)
+            if (field == null)
             {
-                _all = GetCountries().ToList().AsReadOnly();
+                field = GetCountries().ToList().AsReadOnly();
             }
 
-            return _all;
+            return field;
         }
 
     }

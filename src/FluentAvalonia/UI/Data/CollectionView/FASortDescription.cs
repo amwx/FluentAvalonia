@@ -49,7 +49,7 @@ public class FASortDescription
     public FASortDescription(BindingBase property, string propertyName, FASortDirection direction, IComparer comparer)
     {
         Property = property;
-        _propertyName = propertyName;
+        PropertyName = propertyName;
         Direction = direction;
         Comparer = comparer ?? ObjectComparer.Instance;
     }
@@ -68,21 +68,21 @@ public class FASortDescription
     {
         get
         {
-            if (_propertyName == null)
+            if (field == null)
             {
                 if (Property is Binding b)
                 {
-                    _propertyName = b.Path;
+                    field = b.Path;
                 }
                 else if (Property is CompiledBindingExtension cbe)
                 {
-                    _propertyName = cbe.Path.ToString();
+                    field = cbe.Path.ToString();
                 }
             }
 
-            return _propertyName;
+            return field;
         }
-        set => _propertyName = value;
+        set;
     }
 
     /// <summary>
@@ -119,8 +119,6 @@ public class FASortDescription
 
         return new FASortDescription(cb, propertyName, direction, comparer);
     }
-
-    private string _propertyName;
 
     private class ObjectComparer : IComparer
     {

@@ -31,15 +31,15 @@ internal class SelectionNode : IDisposable
 
     public object Source
     {
-        get => _source;
+        get;
         set
         {
-            if (_source != value)
+            if (field != value)
             {
                 ClearSelection();
                 UnhookCollectionChangedHandler();
 
-                _source = value;
+                field = value;
 
                 // Setup ItemsSourceView
                 var newDataSource = value as ItemsSourceView;
@@ -66,9 +66,9 @@ internal class SelectionNode : IDisposable
 
     public int AnchorIndex
     {
-        get => _anchorIndex;
-        set => _anchorIndex = value;
-    }
+        get;
+        set => field = value;
+    } = -1;
 
     public IndexPath IndexPath
     {
@@ -779,11 +779,9 @@ internal class SelectionNode : IDisposable
     private readonly List<SelectionNode> _childrenNodes = new List<SelectionNode>();
     private readonly SelectionNode _parent;
     private readonly List<IndexRange> _selected = new List<IndexRange>();
-    private object _source;
     private ItemsSourceView _dataSource;
     private int _selectedCount;
     private readonly List<int> _selectedIndicesCached = new List<int>();
     private bool _selectedIndicesCacheIsValid;
-    private int _anchorIndex = -1;
     private int _realizedChildrenNodeCount;
 }

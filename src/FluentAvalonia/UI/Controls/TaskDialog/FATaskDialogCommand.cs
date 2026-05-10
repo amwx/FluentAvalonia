@@ -24,9 +24,7 @@ public class FATaskDialogCommand : FATaskDialogButton
     /// </summary>
     public string Description
     {
-        get => _description;
-        set => SetAndRaise(DescriptionProperty, ref _description, value);
+        get;
+        set => SetAndRaise(DescriptionProperty, ref field, value);
     }
-
-    private string _description;
 }

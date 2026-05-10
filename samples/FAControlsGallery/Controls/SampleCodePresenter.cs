@@ -49,8 +49,8 @@ public class SampleCodePresenter : HeaderedContentControl
 
     public IList<ControlExampleSubstitution> Substitutions
     {
-        get => _substitutions;
-        set => SetAndRaise(SubstitutionsProperty, ref _substitutions, value);
+        get;
+        set => SetAndRaise(SubstitutionsProperty, ref field, value);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -261,7 +261,6 @@ public class SampleCodePresenter : HeaderedContentControl
     private static Flyout _confirmCopiedFlyout;
 
     private static readonly Regex SubstitutionPattern = new Regex(@"\$\(([^\)]+)\)");
-    private IList<ControlExampleSubstitution> _substitutions;
     private bool _hasRegisteredSubstitutions;
 
     private TextEditor _textHost;
