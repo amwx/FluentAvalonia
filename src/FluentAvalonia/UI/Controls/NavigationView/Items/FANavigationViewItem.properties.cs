@@ -192,7 +192,23 @@ public partial class FANavigationViewItem
     private bool IsOnLeftNav => Position == NavigationViewRepeaterPosition.LeftNav ||
         Position == NavigationViewRepeaterPosition.LeftFooter;
 
-    private bool IsOnTopPrimary => Position == NavigationViewRepeaterPosition.TopPrimary;
+    private bool IsOnTopPrimary
+    {
+        get
+        {
+            bool isPaneDisplayModeTop = true;
+            if (GetNavigationView is FANavigationView nv)
+            {
+                // There is a delay between the NavigationViewPaneDisplayMode update and the 
+                // position property of NavigationViewItem being updated. This function gets called
+                // in that delay period, so we need to check the PaneDisplayMode as further verification
+                // of whether we are in Top mode or switching away from it.
+                isPaneDisplayModeTop = nv.PaneDisplayMode == FANavigationViewPaneDisplayMode.Top;
+            }
+
+            return Position == NavigationViewRepeaterPosition.TopPrimary && isPaneDisplayModeTop;
+        }
+    }
 
     internal bool ShouldRepeaterShowInFlyout => (_isClosedCompact && IsTopLevelItem) || IsOnTopPrimary;
 
