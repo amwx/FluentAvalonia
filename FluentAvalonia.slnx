@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/FAControlsGallery.Android/FAControlsGallery.Android.csproj">
+      <Deploy />
+    </Project>
+    <Project Path="samples/FAControlsGallery.Desktop/FAControlsGallery.Desktop.csproj" />
+    <Project Path="samples/FAControlsGallery.iOS/FAControlsGallery.iOS.csproj" />
+    <Project Path="samples/FAControlsGallery.Web/FAControlsGallery.Web.csproj" />
+    <Project Path="samples/FAControlsGallery/FAControlsGallery.csproj" />
+    <Project Path="samples/FASandbox/FASandbox.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Packages.props" />
+    <File Path="LICENSE" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+    <File Path="src/Directory.Build.props" />
+    <File Path="src/SourceLink.props" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FluentAvaloniaTests/FluentAvaloniaTests.csproj" />
+  </Folder>
+  <Project Path="src/FluentAvalonia/FluentAvalonia.csproj" />
+</Solution>
