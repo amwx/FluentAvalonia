@@ -101,6 +101,8 @@ public partial class FATabViewItem
 
     internal bool IsContainerFromTemplate { get; set; }
 
+    internal Button CloseButton => _closeButton;
+
 
     private const string s_pcCloseCollapsed = ":closeCollapsed";
     private const string s_pcDragging = ":dragging";
