@@ -19,6 +19,7 @@
                 CanReorderTabs="True"
                 CanDragTabs="True"
                 TabDroppedOutside="TabDroppedOutside"
+                TabDragCompleted="TabDragCompleted"
                 TabStripDragOver="TabStripDragOver"
                 TabDragStarting="TabDragStarting"
                 TabStripDrop="TabStripDrop">

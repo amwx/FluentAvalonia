@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Specialized;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
@@ -19,34 +18,18 @@ public partial class TabViewWindowingSample : AppWindow
         TabView.TabItemsChanged += TabView_TabItemsChanged;
     }
 
-    public static readonly string DataIdentifier = "MyTabItem";
+    public const string DataIdentifier = "MyTabItem";
+    private const string DataPrefix = DataIdentifier + ":";
+    private static readonly Dictionary<string, WeakReference<TabViewItem>> s_draggedTabs = new();
 
     public static void LaunchRoot()
     {
         var tvws = new TabViewWindowingSample();
         // In order for Drag/Drop/Reordering to work, be sure to use an IList with
         // INotifyCollectionChanged, otherwise it may not work as expected
-        tvws.TabView.TabItems = new AvaloniaList<TabViewItem>
-        {
-            new TabViewItem
-            {
-                Header = "TabItem 1",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
-                Content = new TabViewWindowSampleContent("This is TabPage 1")
-            },
-            new TabViewItem
-            {
-                Header = "TabItem 2",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
-                Content = new TabViewWindowSampleContent("This is TabPage 2")
-            },
-            new TabViewItem
-            {
-                Header = "TabItem 3",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
-                Content = new TabViewWindowSampleContent("This is TabPage 3")
-            },
-        };
+        tvws.TabView.TabItems.Add(CreateTab("TabItem 1", "This is TabPage 1"));
+        tvws.TabView.TabItems.Add(CreateTab("TabItem 2", "This is TabPage 2"));
+        tvws.TabView.TabItems.Add(CreateTab("TabItem 3", "This is TabPage 3"));
 
         tvws.Show();
     }
@@ -81,13 +64,7 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void AddTabButtonClick(TabView sender, EventArgs args)
     {
-        (sender.TabItems as IList).Add(
-            new TabViewItem
-            {
-                Header = "New Item",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
-                Content = new TabViewWindowSampleContent("New item content")
-            });
+        (sender.TabItems as IList).Add(CreateTab("New Item", "New item content"));
     }
 
     private void TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
@@ -97,8 +74,11 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void TabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
     {
+        var dragId = Guid.NewGuid().ToString();
+        s_draggedTabs[dragId] = new WeakReference<TabViewItem>(args.Tab);
+
         // Set the data payload to the drag args
-        args.Data.SetData(DataIdentifier, args.Tab);
+        args.Data.SetText(DataPrefix + dragId);
 
         // Indicate we can move
         args.Data.RequestedOperation = DragDropEffects.Move;
@@ -106,7 +86,7 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void TabStripDrop(object sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataIdentifier) && e.Data.Get(DataIdentifier) is TabViewItem tvi)
+        if (TryGetDraggedTab(e.DataTransfer, out var dragId, out var tvi))
         {
             var destinationTabView = sender as TabView;
 
@@ -143,6 +123,7 @@ public partial class TabViewWindowingSample : AppWindow
 
             destinationTabView.SelectedItem = tvi;
             e.Handled = true;
+            s_draggedTabs.Remove(dragId);
 
             // Remember, TabItemsChanged won't fire during DragDrop so we need to check
             // here if we should close the window if TabItems.Count() == 0
@@ -156,11 +137,54 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void TabStripDragOver(object sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataIdentifier))
+        if (TryGetDraggedTab(e.DataTransfer, out _, out _))
         {
             // For dragover, use the standard DragEffects property
             e.DragEffects = DragDropEffects.Move;
         }
+    }
+
+    private void TabDragCompleted(TabView sender, TabViewTabDragCompletedEventArgs args)
+    {
+        foreach (var item in s_draggedTabs.ToArray())
+        {
+            if (!item.Value.TryGetTarget(out var tab) || ReferenceEquals(tab, args.Tab))
+            {
+                s_draggedTabs.Remove(item.Key);
+            }
+        }
+    }
+
+    private static TabViewItem CreateTab(string header, string content)
+    {
+        return new TabViewItem
+        {
+            Header = header,
+            IconSource = new SymbolIconSource { Symbol = Symbol.Document },
+            Content = new TabViewWindowSampleContent(content)
+        };
+    }
+
+    private static bool TryGetDraggedTab(IDataTransfer data, out string dragId, out TabViewItem tab)
+    {
+        dragId = null;
+        tab = null;
+
+        var text = data.TryGetText();
+        if (text?.StartsWith(DataPrefix, StringComparison.Ordinal) != true)
+        {
+            return false;
+        }
+
+        dragId = text[DataPrefix.Length..];
+        if (s_draggedTabs.TryGetValue(dragId, out var tabReference) &&
+            tabReference.TryGetTarget(out tab))
+        {
+            return true;
+        }
+
+        s_draggedTabs.Remove(dragId);
+        return false;
     }
 
     private void TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
