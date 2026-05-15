@@ -469,6 +469,7 @@ public partial class FATabView
     private static readonly string SR_TabViewAddButtonTooltip = "TabViewAddButtonTooltip";
     private static readonly string SR_TabViewScrollDecreaseButtonTooltip = "TabViewScrollDecreaseButtonTooltip";
     private static readonly string SR_TabViewScrollIncreaseButtonTooltip = "TabViewScrollIncreaseButtonTooltip";
+    private static readonly string SR_TabViewAddButtonName = "TabViewAddButtonName";
 
     // TabViewItem subs to these in OnApplyTemplate, but we need to make sure the strong ref to TabView isn't
     // held if the TabViewItem is removed

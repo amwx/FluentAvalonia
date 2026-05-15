@@ -108,22 +108,30 @@
                                 <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                                               VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
                                     <Panel>
-                                        <TextBlock Name="PART_Watermark"
-                                                   Foreground="{DynamicResource TextControlPlaceholderForeground}"
-                                                   Text="{TemplateBinding Watermark}"
-                                                   TextAlignment="{TemplateBinding TextAlignment}"
-                                                   TextWrapping="{TemplateBinding TextWrapping}"
-                                                   IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
-                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                   IsHitTestVisible="False"/>
+                                        <TextBlock Name="PART_Placeholder"
+                                                       Foreground="{TemplateBinding PlaceholderForeground}"
+                                                       Text="{TemplateBinding PlaceholderText}"
+                                                       TextAlignment="{TemplateBinding TextAlignment}"
+                                                       TextWrapping="{TemplateBinding TextWrapping}"
+                                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                            <TextBlock.IsVisible>
+                                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                    <Binding ElementName="PART_TextPresenter" Path="PreeditText" Converter="{x:Static StringConverters.IsNullOrEmpty}"/>
+                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Text" Converter="{x:Static StringConverters.IsNullOrEmpty}"/>
+                                                </MultiBinding>
+                                            </TextBlock.IsVisible>
+                                        </TextBlock>
                                         <TextPresenter Name="PART_TextPresenter"
                                                        Text="{TemplateBinding Text, Mode=TwoWay}"
                                                        CaretIndex="{TemplateBinding CaretIndex}"
+                                                       CaretBlinkInterval="{TemplateBinding CaretBlinkInterval}"
                                                        SelectionStart="{TemplateBinding SelectionStart}"
                                                        SelectionEnd="{TemplateBinding SelectionEnd}"
                                                        TextAlignment="{TemplateBinding TextAlignment}"
                                                        TextWrapping="{TemplateBinding TextWrapping}"
+                                                       LineHeight="{TemplateBinding LineHeight}"
+                                                       LetterSpacing="{TemplateBinding LetterSpacing}"
                                                        PasswordChar="{TemplateBinding PasswordChar}"
                                                        RevealPassword="{TemplateBinding RevealPassword}"
                                                        SelectionBrush="{TemplateBinding SelectionBrush}"
@@ -189,7 +197,8 @@
                                  Grid.Row="1"
                                  Grid.ColumnSpan="3"
                                  Foreground="{TemplateBinding Foreground}"
-                                 Watermark="{TemplateBinding PlaceholderText}"
+                                 PlaceholderText="{TemplateBinding PlaceholderText}"
+                                 PlaceholderForeground="{TemplateBinding PlaceholderForeground}"
                                  DataValidationErrors.Errors="{TemplateBinding DataValidationErrors.Errors}"
                                  SelectionBrush="{TemplateBinding SelectionHighlightColor}"
                                  FontSize="{TemplateBinding FontSize}"

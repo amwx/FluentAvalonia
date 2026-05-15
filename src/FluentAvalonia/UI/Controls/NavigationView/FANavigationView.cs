@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Automation;
+using Avalonia.Automation.Peers;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -20,6 +21,11 @@ using FluentAvalonia.UI.Controls.Primitives;
 
 namespace FluentAvalonia.UI.Controls;
 
+// NavigationView should *mostly* be up to date as of 5/9/26
+// I only say mostly because this is a really large control
+// and I'm not scanning all 10,000 lines of code to ensure they're 
+// up to date. I've hit the big items though...
+
 /// <summary>
 /// Represents a container that enables navigation of app content. It has a header, 
 /// a view for the main content, and a menu pane for navigation commands.
@@ -37,11 +43,8 @@ public partial class FANavigationView : HeaderedContentControl
 
         _sizeChangedRevoker = this.GetObservable(BoundsProperty).Subscribe(OnSizeChanged);
 
-        _selectionModelSource = new AvaloniaList<IEnumerable>(2);// new object[2];
-        _selectionModelSource.Add(null);
-        _selectionModelSource.Add(null);
-
-
+        _selectionModelSource = new AvaloniaList<IEnumerable>(2) { null, null };
+        
         _topDataProvider = new TopNavigationViewDataProvider(this);
 
         MenuItems = new AvaloniaList<object>();
@@ -52,9 +55,11 @@ public partial class FANavigationView : HeaderedContentControl
         Loaded += OnNavViewLoaded;
         // Unloaded is titlebar related - ignore
 
-        _selectionModel = new SelectionModel();
-        _selectionModel.SingleSelect = true;
-        _selectionModel.Source = _selectionModelSource;
+        _selectionModel = new SelectionModel()
+        {
+            SingleSelect = true,
+            Source = _selectionModelSource
+        };
         _selectionModel.SelectionChanged += OnSelectionModelSelectionChanged;
         _selectionModel.ChildrenRequested += OnSelectionModelChildrenRequested;
 
@@ -146,7 +151,7 @@ public partial class FANavigationView : HeaderedContentControl
                 _topNavRepeater.ItemTemplate = _itemsFactory;
             }
 
-            //TODO: This may not be found b/c its in the button flyout
+            // TODO: This may not be found b/c its in the button flyout
             _topNavRepeaterOverflowView = e.NameScope.Get<FAItemsRepeater>(s_tpTopNavMenuItemsOverflowHost);
             if (_topNavRepeaterOverflowView != null)
             {
@@ -163,12 +168,11 @@ public partial class FANavigationView : HeaderedContentControl
             if (_topNavOverflowButton != null)
             {
                 // Newest style doesn't have content, only an icon, so we'll skip setting that here like WinUI
-                // TODO: Automation
                 var flyout = _topNavOverflowButton.Flyout as PopupFlyoutBase;
-                if (flyout != null)
-                {
-                    flyout.Closing += OnFlyoutClosing;
-                }
+                flyout?.Closing += OnFlyoutClosing;
+
+                AutomationProperties.SetName(_topNavOverflowButton,
+                    FALocalizationHelper.Instance.GetLocalizedStringResource(SR_NavigationOverflowButtonName));                
 
                 var tip = ToolTip.GetTip(_topNavOverflowButton);
                 if (tip != null)
@@ -291,7 +295,7 @@ public partial class FANavigationView : HeaderedContentControl
             //UpdateSingleSelectionFollowsFocusTemplateSetting();
             UpdatePaneVisibility();
             UpdateVisualState();
-            UpdatePaneTitleMargins();
+            //UpdatePaneTitleMargins();
             UpdatePaneLayout();
             UpdatePaneOverlayGroup();
 
@@ -362,7 +366,6 @@ public partial class FANavigationView : HeaderedContentControl
 
             var (oldValue, newValue) = change.GetOldAndNewValue<FANavigationViewPaneDisplayMode>();
 
-            CollapseTopLevelMenuItems(oldValue);
             UpdatePaneToggleButtonVisibility();
             UpdatePaneDisplayMode(oldValue, newValue);
             UpdatePaneTitleFrameworkElementParents();
@@ -483,144 +486,30 @@ public partial class FANavigationView : HeaderedContentControl
     //WinUI also uses PreviewKeyDown to reset m_TabKeyPrecedesFocusChange
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        // TODO v3
+        _tabKeyPrecedesFocusChange = false;
+        switch (e.Key)
+        {
+            case Key.Back:
+                if (IsPaneOpen && IsLightDismissable)
+                {
+                    e.Handled = AttemptClosePaneLightly();
+                }
+                break;
 
-        //_tabKeyPrecedesFocusChange = false;
-        //switch (e.Key)
-        //{
-        //    case Key.Back:
-        //        if (IsPaneOpen && IsLightDismissable)
-        //        {
-        //            e.Handled = AttemptClosePaneLightly();
-        //        }
-        //        break;
+            case Key.Tab:
+                // arrow keys navigation through ItemsRepeater don't get here
+                // so handle tab key to distinguish between tab focus and arrow focus navigation
+                _tabKeyPrecedesFocusChange = true;
+                break;
 
-        //    case Key.Tab:
-        //        // arrow keys navigation through ItemsRepeater don't get here
-        //        // so handle tab key to distinguish between tab focus and arrow focus navigation
-        //        _tabKeyPrecedesFocusChange = true;
-        //        break;
-
-        //    case Key.Left:
-        //        if (((e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt) && IsPaneOpen && IsLightDismissable)
-        //        {
-        //            e.Handled = AttemptClosePaneLightly();
-        //            break;
-        //        }
-        //        goto case Key.Up;
-
-        //    case Key.Up:
-        //    case Key.Down:
-        //    case Key.Right:
-        //        //Continued logic from the NVIKeyDown handler, to compensate for no XYKeyboardFocus
-        //        //we still want the arrow keys to work on the rest of the pane (panetogglebutton,
-        //        //autocompletebox, etc.) so if 'e' is not handled yet, we'll handle it here
-
-        //        if (e.Handled)
-        //            break;
-
-        //        bool isTopNav = IsTopNavigationView;
-
-        //        if (isTopNav && _topNavGrid == null)
-        //            break;
-        //        else if (!isTopNav && _paneContentGrid == null)
-        //            break;
-
-        //        var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as InputElement;
-
-        //        if (current == null)
-        //            break;
-
-        //        //Make sure current focus is in the NavPane, we don't want to disturb content
-        //        //being displayed in the NavView
-        //        if (!VerifyInPane(current, isTopNav ? _topNavGrid : _paneContentGrid))
-        //            break;
-
-        //        if ((isTopNav && e.Key == Key.Left) || (!isTopNav && e.Key == Key.Up))
-        //        {
-        //            var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous) as InputElement;
-        //            if (next == null)
-        //                break;
-
-        //            //Next focus falls outside of the pane, don't focus it
-        //            if (!VerifyInPane(next, isTopNav ? _topNavGrid : _paneContentGrid))
-        //                break;
-
-        //            if (next is NavigationViewItem nvi)
-        //            {
-        //                var rep = GetParentItemsRepeaterForContainer(nvi);
-        //                //null check here b/c if NVIs are used in PaneFooter, it won't have an
-        //                //items repeater & we want default logic there
-        //                if (rep != null)
-        //                {
-        //                    var ct = rep.ItemsSourceView.Count;
-        //                    for (int i = ct - 1; i >= 0; i--)
-        //                    {
-        //                        if (rep.TryGetElement(i) is NavigationViewItem nvi2)
-        //                        {
-        //                            if (DoesNavigationViewItemHaveChildren(nvi2) && nvi2.IsExpanded && !SelectionFollowsFocus)
-        //                            {
-        //                                var item = SearchTreeForLowestFocusItem(nvi2);
-        //                                if (item is NavigationViewItem c)
-        //                                {
-        //                                    c.Focus(NavigationMethod.Directional);
-        //                                    c.BringIntoView();
-        //                                    e.Handled = true;
-        //                                    break;
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                nvi2.Focus(NavigationMethod.Directional);
-        //                                nvi2.BringIntoView();
-        //                                e.Handled = true;
-        //                                break;
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            if (!e.Handled)
-        //            {
-        //                next.Focus(NavigationMethod.Directional);
-        //                e.Handled = true;
-        //            }
-        //        }
-        //        else if ((isTopNav && e.Key == Key.Right) || (!isTopNav && e.Key == Key.Down))
-        //        {
-        //            var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next) as InputElement;
-        //            if (next == null)
-        //                break;
-
-        //            //Next focus falls outside of the pane, don't focus it
-        //            if (!VerifyInPane(next, isTopNav ? _topNavGrid : _paneContentGrid))
-        //                break;
-
-        //            if (next is NavigationViewItem nvi)
-        //            {
-        //                if (DoesNavigationViewItemHaveChildren(nvi) && nvi.IsExpanded)
-        //                {
-        //                    var rep = nvi.GetRepeater;
-        //                    if (rep != null && rep.TryGetElement(0) is NavigationViewItem nvi2)
-        //                    {
-        //                        nvi2.Focus(NavigationMethod.Directional);
-        //                        nvi2.BringIntoView();
-        //                        e.Handled = true;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-
-        //            if (!e.Handled)
-        //            {
-        //                next.Focus(NavigationMethod.Directional);
-        //                e.Handled = true;
-        //            }
-        //        }
-
-        //        break;
-        //}
+            case Key.Left:
+                if (((e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt) && IsPaneOpen && IsLightDismissable)
+                {
+                    e.Handled = AttemptClosePaneLightly();
+                    
+                }
+                break;
+        }
 
         base.OnKeyDown(e);
     }
@@ -631,6 +520,11 @@ public partial class FANavigationView : HeaderedContentControl
             return true;
 
         return base.RegisterContentPresenter(presenter);
+    }
+
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new FANavigationViewAutomationPeer(this);
     }
 
     private void OnLayoutUpdated(object sender, EventArgs e)
@@ -679,12 +573,16 @@ public partial class FANavigationView : HeaderedContentControl
         var item = SelectedItem;
         if (item != null && !IsSelectionSuppressed(item))
         {
-            var nvi = NavigationViewItemOrSettingsContentFromData(item);
-            if (nvi != null)
+            if (!IsSelectionSuppressed(item))
             {
+                var nvi = NavigationViewItemOrSettingsContentFromData(item);
                 nvi.IsSelected = true;
-            }
 
+                // Make sure the SelectionModel m_selectionModel and actual selection are in sync. An item may have been selected
+                // while the ItemsRepeater was still unloaded. Thus m_selectionModel still does not know about that selection.
+                UpdateSelectionModelSelectionForSelectedItem(item);
+            }
+            
             AnimateSelectionChanged(item);
         }
     }
@@ -708,8 +606,7 @@ public partial class FANavigationView : HeaderedContentControl
             _selectionModelSource[0] = itemsSource;
         }
 
-        if (_menuItemsSource != null)
-            _menuItemsSource.CollectionChanged -= OnMenuItemsSourceCollectionChanged;
+        _menuItemsSource?.CollectionChanged -= OnMenuItemsSourceCollectionChanged;
 
         if (itemsSource != null)
         {
@@ -897,6 +794,7 @@ public partial class FANavigationView : HeaderedContentControl
         {
             nvib.SetNavigationViewParent(this);
             nvib.IsTopLevelItem = IsTopLevelItem(nvib);
+            nvib.IsInNavigationViewOwnedRepeater = true;
             NavigationViewRepeaterPosition position(FAItemsRepeater ir)
             {
                 if (IsTopNavigationView)
@@ -930,22 +828,37 @@ public partial class FANavigationView : HeaderedContentControl
                 nvib.Depth = 0;
             }
 
+            // Apply any custom container styling
+            ApplyCustomMenuItemContainerStyling(nvib, (sender as FAItemsRepeater), args.Index);
+
+            SetNavigationViewItemBaseRevokers(nvib);
+
             if (args.Element is FANavigationViewItem nvi)
             {
                 var childDepth = nvib.Position == NavigationViewRepeaterPosition.TopPrimary ? 0 : nvib.Depth + 1;
 
                 nvi.PropagateDepthToChildren(childDepth);
 
-                nvi.Tapped += OnNavigationViewItemTapped;
-                nvi.KeyDown += OnNavigationViewItemKeyDown;
-                nvi.GotFocus += OnNavigationViewItemGotFocus;
-                var nviRevokers = new FACompositeDisposable(
-                    nvi.GetPropertyChangedObservable(FANavigationViewItem.IsSelectedProperty).Subscribe(OnNavigationViewItemIsSelectedPropertyChanged),
-                    nvi.GetPropertyChangedObservable(FANavigationViewItem.IsExpandedProperty).Subscribe(OnNavigationViewItemExpandedPropertyChanged));
+                SetNavigationViewItemRevokers(nvi);
 
-                nvi.SetValue(NavigationViewItemRevokersProperty, nviRevokers);
+                var item = MenuItemFromContainer(nvi);
+                if (SelectedItem == item && nvi.IsEffectivelyVisible)
+                {
+                    if (_isSelectionChangedPending && _pendingSelectionChangedItem != null)
+                    {
+                        Debug.Assert(_pendingSelectionChangedItem == item);
+                    }
+
+                    nvi.LayoutUpdated += OnSelectedItemLayoutUpdated;
+                }
             }
         }
+    }
+
+    private void ApplyCustomMenuItemContainerStyling(FANavigationViewItemBase item, FAItemsRepeater ir, int index)
+    {
+        var theme = MenuItemContainerTheme;
+        item.Theme = theme;
     }
 
     internal void OnRepeaterElementClearing(object sender, FAItemsRepeaterElementClearingEventArgs args)
@@ -954,15 +867,17 @@ public partial class FANavigationView : HeaderedContentControl
         {
             nvib.Depth = 0;
             nvib.IsTopLevelItem = false;
+            nvib.IsInNavigationViewOwnedRepeater = false;
+            ClearNavigationViewItemBaseRevokers(nvib);
 
             if (nvib is FANavigationViewItem nvi)
             {
                 nvi.Tapped -= OnNavigationViewItemTapped;
                 nvi.KeyDown -= OnNavigationViewItemKeyDown;
                 nvi.GotFocus -= OnNavigationViewItemGotFocus;
-                var rev = GetValue(NavigationViewItemRevokersProperty);
+                var rev = GetValue(NavigationViewItemBaseRevokersProperty);
                 rev?.Dispose();
-                SetValue(NavigationViewItemRevokersProperty, null);
+                SetValue(NavigationViewItemBaseRevokersProperty, null);
             }
         }
     }
@@ -972,9 +887,35 @@ public partial class FANavigationView : HeaderedContentControl
         // if focus change was invoked by tab key
         // and there is selected item in ItemsRepeater that gatting focus
         // we should put focus on selected item
-        if (_tabKeyPrecedesFocusChange && _selectionModel.SelectedIndex != IndexPath.Unselected)
+        if (_tabKeyPrecedesFocusChange && _selectionModel.SelectedIndex != IndexPath.Unselected &&
+            (e.NavigationMethod == NavigationMethod.Directional || e.NavigationMethod == NavigationMethod.Tab))
         {
-            // TODO v3
+            // Note: we can't implement yet (still in v3/Av12) because FocusChangingEventArgs doesn't have a Direction
+            // property like WinUI does, which is part of this code
+            if (e.OldFocusedElement is Control c)
+            {
+                if (sender is FAItemsRepeater newRootItemsRepeater)
+                {
+                    // f(x) - isFocusOutSideCurrentRootRepeater
+                    // f(x) - rootRepeaterForSelectedItem
+
+                    // If focus is coming from outside the root repeater,
+                    // and selected item is within current repeater
+                    // we should put focus on selected item
+                    //if (newRootItemsRepeater == rootRepeaterForSelectedItem && isFocuseOutsideCurrentRootRepeater)
+                    //{
+                    //    var selectedContainer = GetContainerForIndexPath(_selectionModel.SelectedIndex, true);
+                    //    if (e.TrySetNewFocusedElement(selectedContainer))
+                    //    {
+                    //        e.Handled = true;
+                    //    }
+                    //}
+                    //else if (!isFocusOutsideCurrentRootRepeater)
+                    //{
+                        
+                    //}
+                }
+            }
         }
 
         _tabKeyPrecedesFocusChange = false;
@@ -1004,8 +945,6 @@ public partial class FANavigationView : HeaderedContentControl
     {
         if (!IsTopNavigationView)
         {
-            //call update layout on LeftNavRepeater...just call invalidate measure?
-            _leftNavRepeater?.InvalidateMeasure();
             UpdatePaneLayout();
         }
     }
@@ -1328,8 +1267,31 @@ public partial class FANavigationView : HeaderedContentControl
             UpdateSelectionModelSelectionForSelectedItem(nextItem);
 
             // UIA stuff
+            {
+                try
+                {
+                    // Selection changed and we need to notify UIA
+                    // HOWEVER expand collapse can also trigger if an item can expand/collapse
+                    // There are multiple cases when selection changes:
+                    // - Through click on item with no children -> No expand/collapse change
+                    // - Through click on item with children -> Expand/collapse change
+                    // - Through API with item without children -> No expand/collapse change
+                    // - Through API with item with children -> No expand/collapse change
+                    if (!_shouldIgnoreUIASelectionRaiseAsExpandCollapseWillRaise)
+                    {
+                        if (ControlAutomationPeer.FromElement(this) is FANavigationViewAutomationPeer p)
+                        {
+                            p.RaiseSelectionChangedEvent(prevItem, nextItem);
+                        }
+                    }
+                }
+                finally
+                {
+                    _shouldIgnoreUIASelectionRaiseAsExpandCollapseWillRaise = false;
+                }
+            }
 
-
+            // If this item has an associated container, we'll raise the SelectionChanged event on it immediately.
             var nvi = NavigationViewItemOrSettingsContentFromData(nextItem);
             if (nvi != null)
             {
@@ -1719,6 +1681,42 @@ public partial class FANavigationView : HeaderedContentControl
     //////// NAVIGATIONVIEWITEM RELATED ////////////
     ///////////////////////////////////////////////
 
+    private void SetNavigationViewItemBaseRevokers(FANavigationViewItemBase nvib)
+    {
+        var disp = new FACompositeDisposable(
+            nvib.GetPropertyChangedObservable(IsVisibleProperty).Subscribe(OnNavigationViewItemBaseVisibilityPropertyChanged));
+
+        nvib.SetValue(NavigationViewItemBaseRevokersProperty, disp);
+        // Note: I'm not doing this since this list is for the destructor in the C++ side of the control
+        // Since that is unnecessary here, skip it
+        //_itemsWithRevokers.Add(nvib);
+    }
+
+    private void SetNavigationViewItemRevokers(FANavigationViewItem nvi)
+    {
+        var revokers = nvi.GetValue(NavigationViewItemBaseRevokersProperty);
+        // Technically this shouldn't happen b/c BaseRevokers should be called first
+        if (revokers == null)
+        {
+            revokers = new FACompositeDisposable();
+            nvi.SetValue(NavigationViewItemBaseRevokersProperty, revokers);
+        }
+
+        revokers.Add(nvi.AddDisposableHandler(KeyDownEvent, OnNavigationViewItemKeyDown));
+        revokers.Add(nvi.AddDisposableHandler(GotFocusEvent, OnNavigationViewItemGotFocus));
+        revokers.Add(nvi.AddDisposableHandler(TappedEvent, OnNavigationViewItemTapped));
+        revokers.Add(nvi.GetPropertyChangedObservable(ListBoxItem.IsSelectedProperty).Subscribe(OnNavigationViewItemIsSelectedPropertyChanged));
+        revokers.Add(nvi.GetPropertyChangedObservable(FANavigationViewItem.IsExpandedProperty).Subscribe(OnNavigationViewItemExpandedPropertyChanged));
+    }
+
+    private void ClearNavigationViewItemBaseRevokers(FANavigationViewItemBase nvib)
+    {
+        //RevokeNavigationViewItemBaseRevokers;
+        var revokers = nvib.GetValue(NavigationViewItemBaseRevokersProperty);
+        revokers?.Dispose();
+        nvib.SetValue(NavigationViewItemBaseRevokersProperty, null);
+        //_itemsWithRevokers.Remove(nvib);
+    }
 
     private void OnNavigationViewItemIsSelectedPropertyChanged(AvaloniaPropertyChangedEventArgs args)
     {
@@ -1738,9 +1736,23 @@ public partial class FANavigationView : HeaderedContentControl
                 var indexPath = GetIndexPathForContainer(nvi);
                 var indexPathFromModel = _selectionModel.SelectedIndex;
 
-                if (indexPathFromModel != IndexPath.Unselected && indexPath.CompareTo(indexPathFromModel) == 0)
+                if (indexPathFromModel != IndexPath.Unselected)
                 {
-                    _selectionModel.DeselectAt(indexPath);
+                    if (indexPath.CompareTo(indexPathFromModel) == 0)
+                    {
+                        _selectionModel.DeselectAt(indexPath);
+                    }
+                    else if (!IsPaneOpen && indexPath.GetSize() == 0)
+                    {
+                        UpdateIsChildSelected(indexPathFromModel, IndexPath.Unselected);
+                        if (_prevIndicator == null && _nextIndicator == null && _activeIndicator != null)
+                        {
+                            ResetElementAnimationProperties(_activeIndicator, 0);
+                            _activeIndicator = null;
+                        }
+
+                        _selectionModel.DeselectAt(indexPathFromModel);
+                    }
                 }
             }
 
@@ -1767,6 +1779,11 @@ public partial class FANavigationView : HeaderedContentControl
                 RaiseCollapsedEvent(nvi);
             }
         }
+    }
+
+    private void OnNavigationViewItemBaseVisibilityPropertyChanged(AvaloniaPropertyChangedEventArgs args)
+    {
+        UpdatePaneLayout();
     }
 
     private void RaiseItemInvokedForNavigationViewItem(FANavigationViewItem nvi)
@@ -1945,132 +1962,151 @@ public partial class FANavigationView : HeaderedContentControl
 
     private void KeyboardFocusFirstItemFromItem(FANavigationViewItemBase nvib)
     {
-        var firstElement = GetParentRootItemsRepeaterForContainer(nvib)?.TryGetElement(0);
-
-        if (firstElement != null)
+        FAItemsRepeater parentIR = null;
+        if (_lastItemExpandedIntoFlyout != null)
         {
-            firstElement.Focus(NavigationMethod.Directional);
-            firstElement.BringIntoView();
+            parentIR = _lastItemExpandedIntoFlyout.GetRepeater;
+        }
+        else
+        {
+            parentIR = GetParentRootItemsRepeaterForContainer(nvib);
+        }
+
+        if (GetFirstFocusableElement(parentIR) is Control c)
+        {
+            c.Focus(NavigationMethod.Directional);
         }
     }
 
     private void KeyboardFocusLastItemFromItem(FANavigationViewItemBase nvib)
     {
-        var parentIR = GetParentRootItemsRepeaterForContainer(nvib);
-        if (parentIR != null && parentIR.ItemsSourceView != null)
+        FAItemsRepeater parentIR = null;
+        if (_lastItemExpandedIntoFlyout != null)
         {
-            int lastIndex = parentIR.ItemsSourceView.Count - 1;
-            if (parentIR.TryGetElement(lastIndex) is Control c)
-            {
-                c.Focus(NavigationMethod.Directional);
-                c.BringIntoView();
-            }
+            parentIR = _lastItemExpandedIntoFlyout.GetRepeater;
+        }
+        else
+        {
+            parentIR = GetParentRootItemsRepeaterForContainer(nvib);
+        }
+
+        if (GetLastFocusableElement(parentIR) is Control c)
+        {
+            c.Focus(NavigationMethod.Directional);
         }
     }
 
     private void FocusNextUpItem(FANavigationViewItem nvi, KeyEventArgs args)
     {
-        //This is a bit more complex than focusing down b/c default logic will focus the first
-        //item in the Primary repeater if coming from Footer items so we need to make sure that
-        //doesn't happen and we focus the last visible item
-
-        var parentRepeater = GetParentItemsRepeaterForContainer(nvi);
-        var rootRep = GetParentRootItemsRepeaterForContainer(nvi);
-        var index = parentRepeater.GetElementIndex(nvi);
-
-        //Top of repeater, let NavigationView.OnKeyDown handle this
-        if (rootRep == parentRepeater && index == 0)
+        if (args.Source != nvi)
             return;
 
-        //We're at the top of a child repeater, focus parent item
-        if (index == 0)
-        {
-            var parent = GetParentNavigationViewItemForContainer(nvi);
-            parent.Focus(NavigationMethod.Directional);
-            args.Handled = true;
-            parent.BringIntoView();
-            return;
-        }
+        bool shouldHandleFocus = false;
+        var options = new FindNextElementOptions() { SearchRoot = TopLevel.GetTopLevel(this)?.Content as InputElement };
+        var nextFocusableElement = TopLevel.GetTopLevel(this)?.FocusManager.FindNextElement(NavigationDirection.Up, options);
 
-        for (int i = index - 1; i >= 0; i--)
+        if (nextFocusableElement is FANavigationViewItem nextNVI)
         {
-            if (parentRepeater.TryGetElement(i) is FANavigationViewItem prevItem)
+            if (nextNVI.Depth == nvi.Depth)
             {
-                if (DoesNavigationViewItemHaveChildren(prevItem) && prevItem.IsExpanded && !SelectionFollowsFocus)
+                // If we not at the top of the list for our current depth and the item above us has children, check whether we should move focus onto a child
+                if (DoesNavigationViewItemHaveChildren(nextNVI))
                 {
-                    var check = SearchTreeForLowestFocusItem(prevItem);
-                    if (check != null)
+                    // Focus on last lowest level visible container
+                    if (nextNVI.GetRepeater is FAItemsRepeater ir)
                     {
-                        check.Focus(NavigationMethod.Directional);
-                        args.Handled = true;
-                        check.BringIntoView();
-                        return;
+                        if (FocusManager.FindLastFocusableElement(ir) is Control lastFocusableElement)
+                        {
+                            args.Handled = lastFocusableElement.Focus(NavigationMethod.Directional);
+                        }
+                        else
+                        {
+                            args.Handled = nextNVI.Focus(NavigationMethod.Directional);
+                        }
                     }
                 }
                 else
                 {
-                    prevItem.Focus(NavigationMethod.Directional);
-                    args.Handled = true;
-                    prevItem.BringIntoView();
-                    return;
+                    // Traversing up a list where XYKeyboardFocus will result in correct behavior
+                    shouldHandleFocus = false;
                 }
+            }
+        }
+
+        // We are at the top of the list, focus on parent
+        if (shouldHandleFocus && !args.Handled && nvi.Depth > 0)
+        {
+            if (GetParentNavigationViewItemForContainer(nvi) is FANavigationViewItem parent)
+            {
+                args.Handled = parent.Focus(NavigationMethod.Directional);
             }
         }
     }
 
     private void FocusNextDownItem(FANavigationViewItem nvi, KeyEventArgs args)
     {
-        // TODO v3
-        //if (DoesNavigationViewItemHaveChildren(nvi) && nvi.IsExpanded && !SelectionFollowsFocus)
-        //{
-        //    var ir = nvi.GetRepeater;
-        //    var ct = ir.ItemsSourceView.Count;
-        //    for (int i = 0; i < ct; i++)
-        //    {
-        //        if (ir.TryGetElement(i) is Control c && c.Focusable)
-        //        {
-        //            c.Focus(NavigationMethod.Directional);
-        //            c.BringIntoView();
-        //            args.Handled = true;
-        //            return;
-        //        }
-        //    }
+        if (args.Source != nvi)
+            return;
 
-        //}
-        //else
-        //{
-        //    var parentIR = GetParentItemsRepeaterForContainer(nvi);
-        //    var index = parentIR.GetElementIndex(nvi);
-        //    if (index != -1)
-        //    {
-        //        index++;
-        //        var count = parentIR.ItemsSourceView.Count - 1;
-        //        while (index <= count)
-        //        {
-        //            if (parentIR.TryGetElement(index) is NavigationViewItem nvi2)
-        //            {
-        //                nvi2.Focus(NavigationMethod.Directional);
-        //                nvi2.BringIntoView();
-        //                args.Handled = true;
-        //                return;
-        //            }
-        //            index++;
-        //        }
-        //    }
-        //}
-
-        //// We couldn't find another item to focus, move to next part of pane (this will also handle
-        //// the jump from Primary items to footer)
-        //var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Next) as Control;
-        //if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
-        //    return;
-
-        //next.Focus(NavigationMethod.Directional);
-        //next.BringIntoView();
-        //args.Handled = true;
+        if (DoesNavigationViewItemHaveChildren(nvi))
+        {
+            if (nvi.GetRepeater is FAItemsRepeater ir)
+            {
+                var first = FocusManager.FindFirstFocusableElement(ir);
+                if (first != null)
+                {
+                    args.Handled = first.Focus(NavigationMethod.Directional);
+                }
+            }
+        }
     }
 
-    private void OnNavigationViewItemTapped(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private Control GetFirstFocusableElement(FAItemsRepeater ir)
+    {
+        if (ir == null)
+            return null;
+
+        if (ir.ItemsSourceView is FAItemsSourceView isv)
+        {
+            var lastIndex = isv.Count - 1;
+            int index = 0;
+            while (index <= lastIndex)
+            {
+                if (ir.TryGetElement(index) is Control c && c.Focusable)
+                {
+                    return c;
+                }
+
+                index++;
+            }
+        }
+
+        return null;
+    }
+
+    private Control GetLastFocusableElement(FAItemsRepeater ir)
+    {
+        if (ir == null)
+            return null;
+
+        if (ir.ItemsSourceView is FAItemsSourceView isv)
+        {
+            int index = isv.Count - 1;
+            while (index >= 0)
+            {
+                if (ir.TryGetElement(index) is Control c && c.Focusable)
+                {
+                    return c;
+                }
+
+                index--;
+            }
+        }
+
+        return null;
+    }
+
+    private void OnNavigationViewItemTapped(object sender, RoutedEventArgs e)
     {
         var nvi = (FANavigationViewItem)sender;
         OnNavigationViewItemInvoked(nvi);
@@ -2162,6 +2198,30 @@ public partial class FANavigationView : HeaderedContentControl
         var ea = new FANavigationViewItemCollapsedEventArgs(this);
         ea.CollapsedItemContainer = nvib;
         ItemCollapsed?.Invoke(this, ea);
+    }
+
+    private void OnSelectedItemLayoutUpdated(object sender, EventArgs args)
+    {
+        if (_isSelectionChangedPending)
+        {
+            _isSelectionChangedPending = false;
+
+            var item = _pendingSelectionChangedItem;
+            var direction = _pendingSelectionChangedDirection;
+
+            _pendingSelectionChangedItem = null;
+            _pendingSelectionChangedDirection = NavigationRecommendedTransitionDirection.Default;
+
+            (sender as Control).LayoutUpdated -= OnSelectedItemLayoutUpdated;
+
+            var nvi = NavigationViewItemOrSettingsContentFromData(item);
+            if (nvi != null)
+            {
+                AnimateSelectionChanged(nvi);
+            }
+
+            RaiseSelectionChangedEvent(item, IsSettingsItem(item), direction);
+        }
     }
 
 
@@ -2265,11 +2325,11 @@ public partial class FANavigationView : HeaderedContentControl
         // Only continue if we have a positive amount of space to manage.
         if (totalHeight > 0)
         {
-            // We need this value more than twice, so cache it.
-            var totalHeightHalf = totalHeight / 2;
-
             double heightForMenuItems()
             {
+                // We need this value more than twice, so cache it.
+                var totalHeightHalf = totalHeight / 2;
+
                 if (_footerItemsScrollViewer != null)
                 {
                     if (_leftNavFooterMenuRepeater != null)
@@ -2401,7 +2461,6 @@ public partial class FANavigationView : HeaderedContentControl
     // Call this when you want an uncancellable close
     private void ClosePane()
     {
-        CollapseMenuItemsInRepeater(_leftNavRepeater);
         try
         {
             _isOpenPaneForInteraction = true;
@@ -2912,10 +2971,7 @@ public partial class FANavigationView : HeaderedContentControl
                 }
             }
 
-            if (_paneToggleButton != null)
-            {
-                _paneToggleButton.Width = toggleWidth;
-            }
+            _paneToggleButton?.Width = toggleWidth;
         }
     }
 
@@ -3008,6 +3064,10 @@ public partial class FANavigationView : HeaderedContentControl
                 if (!IsOverlay && showBack)
                 {
                     backButtonRowHeight = _backButtonHeight;
+                }
+                else if (_backButton == null)
+                {
+                    backButtonRowHeight = c_toggleButtonHeightWithNoBackButton;
                 }
 
                 _paneContentGrid.RowDefinitions[_backButtonRowDefinition].Height = new GridLength(backButtonRowHeight);
@@ -3645,7 +3705,7 @@ public partial class FANavigationView : HeaderedContentControl
 
         UpdateTitleBarPadding();
         UpdateBackAndCloseButtonsVisibility();
-        UpdatePaneTitleMargins();
+        //UpdatePaneTitleMargins();
         UpdatePaneToggleSize();
     }
 
@@ -3822,21 +3882,29 @@ public partial class FANavigationView : HeaderedContentControl
 
         if (!IsTopNavigationView)
         {
-            if (IsPaneOpen)
+            // In rare cases it is possible to end up in a state where two calls to OnPropertyChanged for PaneDisplayMode can end up on the stack
+            // Calls above to UpdatePaneDisplayMode() can result in further property updates.
+            // As a result of this reentrancy, we can end up with an incorrect result for IsPaneOpen as the later OnPropertyChanged for PaneDisplayMode
+            // will complete during the OnPropertyChanged of the earlier one.
+            // To avoid this, we only call OpenPane()/ClosePane() if PaneDisplayMode has not changed.
+            if (newMode == PaneDisplayMode)
             {
-                if (newMode == FANavigationViewPaneDisplayMode.LeftMinimal)
+                if (IsPaneOpen)
                 {
-                    ClosePane();
+                    if (newMode == FANavigationViewPaneDisplayMode.LeftMinimal)
+                    {
+                        ClosePane();
+                    }
                 }
-            }
-            else
-            {
-                if (oldMode == FANavigationViewPaneDisplayMode.LeftMinimal
-                    && newMode == FANavigationViewPaneDisplayMode.Left)
+                else
                 {
-                    OpenPane();
+                    if (oldMode == FANavigationViewPaneDisplayMode.LeftMinimal
+                        && newMode == FANavigationViewPaneDisplayMode.Left)
+                    {
+                        OpenPane();
+                    }
                 }
-            }
+            }            
         }
     }
 
@@ -3916,19 +3984,12 @@ public partial class FANavigationView : HeaderedContentControl
     private void UpdateHeaderVisibility(FANavigationViewDisplayMode dMode)
     {
         // Ignore AlwaysShowHeader property in case DisplayMode is Minimal and it's not Top NavigationView
-        bool showHeader = AlwaysShowHeader || (!IsTopNavigationView && dMode == FANavigationViewDisplayMode.Minimal);
-
-        // Like bug 17517627, Customer like WallPaper Studio 10 expects a HeaderContent visual even if Header() is null. 
-        // App crashes when they have dependency on that visual, but the crash is not directly state that it's a header problem.   
-        // NavigationView doesn't use quirk, but we determine the version by themeresource.
-        // As a workaround, we 'quirk' it for RS4 or before release. if it's RS4 or before, HeaderVisible is not related to Header().
-        // If theme resource is RS5 or later, we will not show header if header is null.
-        showHeader = Header != null && showHeader;
+        bool showHeader = Header != null && (AlwaysShowHeader || (!IsTopNavigationView && dMode == FANavigationViewDisplayMode.Minimal));
 
         PseudoClasses.Set(s_pcHeaderCollapsed, !showHeader);
     }
 
-    private void UpdatePaneTitleMargins() { } //SKIP RS4-
+    // private void UpdatePaneTitleMargins() { } //SKIP RS4-
 
     //OnTitleBarMetricsChanged
 
@@ -4106,6 +4167,11 @@ public partial class FANavigationView : HeaderedContentControl
                                 return foundIP;
                             }
                         }
+                    }
+                    else
+                    {
+                        // We found an unrealized child, so we'll want to manually realize and search if we don't find the item.
+                        areChildrenRealized = false;
                     }
                 }
             }
