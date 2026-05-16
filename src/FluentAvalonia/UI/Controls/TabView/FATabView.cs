@@ -733,7 +733,10 @@ public partial class FATabView : TemplatedControl
         SelectedIndex = _listView.SelectedIndex;
         SelectedItem = _listView.SelectedItem;
 
-        UpdateTabContent();
+        // Fix for GH714. Closing the active tab would not update the current tab content. Seems to be caused by
+        // a delay in the VirtualizingStackPanel where ItemFromContainer would return the old container (we closed)
+        // on the new SelectedIndex. So ensure the VSP is up to date before we switch tab content.
+        Dispatcher.UIThread.Post(UpdateTabContent);
 
         SelectionChanged?.Invoke(this, args);
     }

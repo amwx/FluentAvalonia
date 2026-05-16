@@ -392,6 +392,8 @@ public partial class FATabView
     // Internal for Unit Tests Only
     internal FATabViewListView ListView => _listView;
 
+    internal ContentPresenter TabContentPresenter => _tabContentPresenter;
+
     /// <summary>
     /// Raised when the user attempts to close a Tab via clicking the x-to-close button
     /// </summary>

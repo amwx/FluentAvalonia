@@ -827,6 +827,30 @@ public class TabViewTests
         Assert.Equal(TabView.TabItemsSource.ElementAt(0), args.Item);
     }
 
+    [AvaloniaFact]
+    public void TabContentSwitchesCorrectlyWhenClosingActiveTab()
+    {
+        // Fix for #714
+        var (w, TabView) = GetTabViewWithItemsSource();
+        var src = TabView.TabItemsSource as AvaloniaList<TestTabItem>;
+        
+        Dispatcher.UIThread.RunJobs();
+
+        bool itemRemoved = false;
+        TabView.TabCloseRequested += (s, e) =>
+        {
+            itemRemoved = src.Remove(e.Item as TestTabItem);
+        };
+
+        var tab = TabView.ContainerFromIndex(TabView.SelectedIndex) as FATabViewItem;
+        tab.RequestClose();
+        Dispatcher.UIThread.RunJobs();
+        Assert.True(itemRemoved);
+
+        var pres = TabView.TabContentPresenter;
+        Assert.Equal(src[TabView.SelectedIndex], pres.Content);
+    }
+
 
 
     private (Window w, FATabView tv) GetTabView(bool addTabs = true, int? selIndex = null)

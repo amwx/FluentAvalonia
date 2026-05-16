@@ -500,7 +500,11 @@ public partial class FATabViewItem : FASelectorItem
         PseudoClasses.Set(s_pcDragging, isVisible);
     }
 
-    private void RequestClose()
+    /// <summary>
+    /// Let's the TabView know this Tab would like to close, causing the TabView's
+    /// TabCloseRequested event to fire
+    /// </summary>
+    public void RequestClose()
     {
         var tabView = ParentTabView ?? this.FindAncestorOfType<FATabView>();
         tabView.RequestCloseTab(this, false);
