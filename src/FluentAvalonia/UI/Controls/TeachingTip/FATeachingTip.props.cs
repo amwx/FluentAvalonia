@@ -378,6 +378,10 @@ public partial class FATeachingTip : ContentControl
     /// </summary>
     public event TypedEventHandler<FATeachingTip, FATeachingTipClosedEventArgs> Closed;
 
+    /// <summary>
+    /// Occurs after the tip is opened
+    /// </summary>
+    public event TypedEventHandler<FATeachingTip, FATeachingTipOpenedEventArgs> Opened;
 
     private const string s_tpContainer = "Container";
     private const string s_tpTailOcclusionGrid = "TailOcclusionGrid";
@@ -412,4 +416,9 @@ public partial class FATeachingTip : ContentControl
     private const string s_pcLeftBottom = ":leftBottom";
     private const string s_pcRightBottom = ":rightBottom";
     private const string s_pcCenter = ":center";
+
+    private static readonly string SR_TeachingTipAlternateCloseButtonName = "TeachingTipAlternateCloseButtonName";
+    private static readonly string SR_TeachingTipAlternateCloseButtonTooltip = "TeachingTipAlternateCloseButtonTooltip";
+    private const string SR_TeachingTipNotification = "TeachingTipNotification";
+    private const string SR_TeachingTipNotificationWithoutAppName = "TeachingTipNotificationWithoutAppName";
 }

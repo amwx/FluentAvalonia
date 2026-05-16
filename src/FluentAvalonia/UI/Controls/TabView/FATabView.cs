@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Windows.Input;
 using Avalonia;
+using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -38,8 +39,6 @@ public partial class FATabView : TemplatedControl
 
         _keyboardAcceleratorHandler = new TabViewCommand(OnKeyboardAcceleratorInvoked);
 
-        // TODO v3: Be sure to grab these key strokes from Platform settings to ensure
-        // we're using the correct key (Control vs Meta)
         var closeTabGesture = new KeyGesture(Key.F4, ctrl);
         KeyBindings.Add(new KeyBinding
         {
@@ -109,7 +108,6 @@ public partial class FATabView : TemplatedControl
             _listView.DragEnter += OnListViewDragEnter;
             _listView.DragLeave += OnListViewDragLeave;
 
-            // TODO: v3
             _listView.GettingFocus += OnListViewGettingFocus;
 
             _listViewCanReorderItemsPropertyChangedRevoker =
@@ -123,7 +121,12 @@ public partial class FATabView : TemplatedControl
         _addButton = e.NameScope.Find<Button>(s_tpAddButton);
         if (_addButton != null)
         {
-            // TODO: Automation
+            var name = AutomationProperties.GetName(_addButton);
+            if (name == null)
+            {
+                var addButtonName = FALocalizationHelper.Instance.GetLocalizedStringResource(SR_TabViewAddButtonName);
+                AutomationProperties.SetName(_addButton, addButtonName);
+            }
 
             if (ToolTip.GetTip(_addButton) == null)
             {
@@ -228,6 +231,9 @@ public partial class FATabView : TemplatedControl
         var (oldValue, newValue) = args.GetOldAndNewValue<FATabViewTabStripLocation>();
 
         // TODO v3: Is this needed or left over from my testing?
+        // Avalonia needs to fix https://github.com/AvaloniaUI/Avalonia/issues/21055 first
+        // then this will probably need to be turned back on
+
         //if ((IsHorizontal(oldValue) && !IsHorizontal(newValue)) ||
         //    (!IsHorizontal(oldValue) && IsHorizontal(newValue)) &&
         //    _listView != null && _listView.ItemsSource == null)
@@ -285,6 +291,7 @@ public partial class FATabView : TemplatedControl
         // For Keyboard, we cancel the focus movement.
 
         // TODO: v3
+        // To implement this code we need a Direction property on FocusChangingEventArgs
     }
 
     private void OnSelectedIndexPropertyChanged(AvaloniaPropertyChangedEventArgs args)
@@ -373,9 +380,9 @@ public partial class FATabView : TemplatedControl
 
     private void OnCanTearOutTabsPropertyChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        UpdateTabViewWithTearOutList();
-        AttachMoveSizeLoopEvents();
-        UpdateNonClientRegion();
+        //UpdateTabViewWithTearOutList();
+        //AttachMoveSizeLoopEvents();
+        //UpdateNonClientRegion();
     }
 
     private void OnTabWidthModePropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -416,14 +423,14 @@ public partial class FATabView : TemplatedControl
     private void OnLoaded(object sender, RoutedEventArgs args)
     {
         UpdateTabContent();
-        UpdateTabViewWithTearOutList();
-        AttachMoveSizeLoopEvents();
-        UpdateNonClientRegion();
+        //UpdateTabViewWithTearOutList();
+        //AttachMoveSizeLoopEvents();
+        //UpdateNonClientRegion();
     }
 
     private void OnUnloaded(object sender, RoutedEventArgs args)
     {
-        UpdateTabViewWithTearOutList();
+        //UpdateTabViewWithTearOutList();
     }
 
     private void OnListViewLoaded(object sender, RoutedEventArgs args)
@@ -518,7 +525,7 @@ public partial class FATabView : TemplatedControl
         }        
 
         UpdateBottomBorderLineVisualStates();
-        UpdateNonClientRegion();
+        //UpdateNonClientRegion();
     }
 
     private void OnTabStripPointerLeave(object sender, PointerEventArgs e)
@@ -565,17 +572,12 @@ public partial class FATabView : TemplatedControl
             }
         }
 
-        // TODO: We now have ScrollChanged event, can probably switch to that
-        _scrollViewerViewChangedRevoker = new FACompositeDisposable(
-            _scrollViewer.GetPropertyChangedObservable(ScrollViewer.OffsetProperty).Subscribe(OnScrollViewerViewChanged),
-            _scrollViewer.GetPropertyChangedObservable(ScrollViewer.ExtentProperty).Subscribe(OnScrollViewerViewChanged),
-            _scrollViewer.GetPropertyChangedObservable(ScrollViewer.ViewportProperty).Subscribe(OnScrollViewerViewChanged)
-            );
-
+        _scrollViewer.ScrollChanged += OnScrollViewerViewChanged;
+        
         UpdateTabWidths();
     }
 
-    private void OnScrollViewerViewChanged(AvaloniaPropertyChangedEventArgs args)
+    private void OnScrollViewerViewChanged(object sender, ScrollChangedEventArgs args)
     {
         UpdateScrollViewerDecreaseAndIncreaseButtonsViewState();
 
@@ -730,14 +732,17 @@ public partial class FATabView : TemplatedControl
         SelectedIndex = _listView.SelectedIndex;
         SelectedItem = _listView.SelectedItem;
 
-        UpdateTabContent();
+        // Fix for GH714. Closing the active tab would not update the current tab content. Seems to be caused by
+        // a delay in the VirtualizingStackPanel where ItemFromContainer would return the old container (we closed)
+        // on the new SelectedIndex. So ensure the VSP is up to date before we switch tab content.
+        Dispatcher.UIThread.Post(UpdateTabContent);
 
         SelectionChanged?.Invoke(this, args);
     }
 
     private void OnListViewSizeChanged(object sender, SizeChangedEventArgs args)
     {
-        UpdateNonClientRegion();
+        //UpdateNonClientRegion();
     }
 
     private FATabViewItem FindTabViewItemFromDragItem(object item)
@@ -857,11 +862,13 @@ public partial class FATabView : TemplatedControl
                 // The new tab content is not available at the time of the LosingFocus event, so we need to
                 // move focus later.
                 bool shouldMoveFocusToNewTab = false;
-                // TODO: v3: Switch to LosingFocus
-                _tabContentPresenter.LostFocus += (s, e) =>
+                _tabContentPresenter.LosingFocus += TabContentPresenterLostFocus;
+
+                void TabContentPresenterLostFocus(object sender, FocusChangingEventArgs args)
                 {
+                    _tabContentPresenter.LosingFocus -= TabContentPresenterLostFocus;
                     shouldMoveFocusToNewTab = true;
-                };
+                }
 
                 _tabContentPresenter.Content = tvi.Content;
                 _tabContentPresenter.ContentTemplate = tvi.ContentTemplate;
@@ -869,7 +876,6 @@ public partial class FATabView : TemplatedControl
                 // It is not ideal to call UpdateLayout here, but it is necessary to ensure that the ContentPresenter has expanded its content
                 // into the live visual tree.
                 
-
                 if (shouldMoveFocusToNewTab)
                 {
                     var focusable = TopLevel.GetTopLevel(this)?.FocusManager?.FindNextElement(NavigationDirection.Next,
@@ -880,8 +886,13 @@ public partial class FATabView : TemplatedControl
 
                     focusable?.Focus(NavigationMethod.Unspecified);
                 }
+                else
+                {
+                    // Ensure this is disconnected
+                    _tabContentPresenter.LosingFocus -= TabContentPresenterLostFocus;
+                }
             }
-        }
+        }       
     }
 
     internal void RequestCloseTab(FATabViewItem container, bool updateTabWidths)
@@ -905,11 +916,55 @@ public partial class FATabView : TemplatedControl
 
         if (tabIsFocused)
         {
-            // TODO: v3
-            container.LostFocus += (s, args) =>
+            container.LosingFocus += ContainerLosingFocus;
+
+            void ContainerLosingFocus(object sender, FocusChangingEventArgs args)
             {
-                // TODO
-            };
+                container.LosingFocus -= ContainerLosingFocus;
+
+                if (!args.Canceled && !args.Handled)
+                {
+                    int focusedIndex = IndexFromContainer(container);
+                    Control newFocusedElement = null;
+
+                    for (int i = focusedIndex + 1; i < GetItemCount(); i++)
+                    {
+                        if (ContainerFromIndex(i) is Control element)
+                        {
+                            if (IsFocusable(element))
+                            {
+                                newFocusedElement = element;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (newFocusedElement == null)
+                    {
+                        for (int i = focusedIndex - 1; i >= 0; i--)
+                        {
+                            if (ContainerFromIndex(i) is Control element)
+                            {
+                                if (IsFocusable(element))
+                                {
+                                    newFocusedElement = element;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (newFocusedElement == args.NewFocusedElement)
+                        return;
+
+                    if (newFocusedElement == null)
+                    {
+                        newFocusedElement = _addButton;
+                    }
+
+                    args.Handled = args.TrySetNewFocusedElement(newFocusedElement);
+                }
+            }
         }
 
         if (_listView != null)
@@ -1006,7 +1061,7 @@ public partial class FATabView : TemplatedControl
                         {
                             // Calculate the proportional width of each tab given the width of the ScrollViewer.
                             var tabWidthForScroller = (availableWidth - (padding.Horizontal() + headerWidth + footerWidth)) / (double)TabItems.Count();
-                            tabWidth = FAMathHelpers.Clamp(tabWidthForScroller, minTabWidth, maxTabWidth);
+                            tabWidth = double.Clamp(tabWidthForScroller, minTabWidth, maxTabWidth);
                         }
                         else
                         {
@@ -1029,7 +1084,7 @@ public partial class FATabView : TemplatedControl
 
                             // Use current size to update items to fill the currently occupied space
                             var tabWidthUnclamped = availableTabViewSpace / (double)TabItems.Count();
-                            tabWidth = FAMathHelpers.Clamp(tabWidthUnclamped, minTabWidth, maxTabWidth);
+                            tabWidth = double.Clamp(tabWidthUnclamped, minTabWidth, maxTabWidth);
                         }
 
                         _tabColumn.MaxWidth = availableWidth + headerWidth + footerWidth;
@@ -1279,13 +1334,123 @@ public partial class FATabView : TemplatedControl
 
     internal bool MoveFocus(bool moveForward)
     {
-        // TODO: v3
+        if (TopLevel.GetTopLevel(this) is TopLevel tl)
+        {
+            var focusedControl = tl.FocusManager.GetFocusedElement() as Control;
+
+            // If there's no focused control, then we have nothing to do.
+            if (focusedControl == null)
+                return false;
+
+            // Focus goes in this order:
+            //
+            //    Tab 1 -> Tab 1 close button -> Tab 2 -> Tab 2 close button -> ... -> Tab N -> Tab N close button -> Add tab button -> Tab 1
+            //
+            // Any element that's not focusable is skipped.
+            using var focusOrderList = new PooledList<Control>();
+            
+            for (int i = 0; i < GetItemCount(); i++)
+            {
+                if (ContainerFromIndex(i) is FATabViewItem tab)
+                {
+                    if (IsFocusable(tab))
+                    {
+                        focusOrderList.Add(tab);
+
+                        var cb = tab.CloseButton;
+                        if (cb != null)
+                        {
+                            if (IsFocusable(cb, false))
+                            {
+                                focusOrderList.Add(cb);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (_addButton != null)
+            {
+                if (IsFocusable(_addButton))
+                {
+                    focusOrderList.Add(_addButton);
+                }
+            }
+
+            var index = focusOrderList.IndexOf(focusedControl);
+
+            // The focused control is not in the focus order list - nothing for us to do here either.
+            if (index == -1)
+            {
+                return false;
+            }
+
+            // At this point, we know that the focused control is indeed in the focus list, so we'll move focus to the next or previous control in the list.
+            int sourceIndex = index;
+            int listSize = focusOrderList.Count;
+            int increment = moveForward ? 1 : -1;
+            int nextIndex = sourceIndex + increment;
+
+            if (nextIndex < 0)
+            {
+                nextIndex = listSize - 1;
+            }
+            else if (nextIndex >= listSize)
+            {
+                nextIndex = 0;
+            }
+
+            // We have to do a bit of a dance for the close buttons - we don't want users to be able to give them focus when tabbing through an app,
+            // since we only want to tab into the TabView once and then tab out on the next tab press.  However, IsTabStop also controls keyboard
+            // focusability in general - we can't give keyboard focus to a control with IsTabStop = false.  To work around this, we'll temporarily set
+            // IsTabStop = true before calling Focus(), and then set it back to false if it was previously false.
+
+            var control = focusOrderList[nextIndex];
+            bool originalIsTabStop = control.IsTabStop;
+
+            try
+            {
+                control.IsTabStop = true;
+
+                bool focusResult = control.Focus(NavigationMethod.Tab);
+                return focusResult;
+            }
+            finally
+            {
+                control.IsTabStop = originalIsTabStop;
+            }
+        }
+
         return false;
     }
 
     private bool MoveSelection(bool moveForward)
     {
-        // TODO: v3
+        int originalIndex = SelectedIndex;
+        int increment = moveForward ? 1 : -1;
+        int currentIndex = originalIndex + increment;
+        int itemCount = GetItemCount();
+
+        while (currentIndex != originalIndex)
+        {
+            if (currentIndex < 0)
+            {
+                currentIndex = itemCount - 1;
+            }
+            else if (currentIndex >= itemCount)
+            {
+                currentIndex = 0;
+            }
+
+            if (ContainerFromIndex(currentIndex) is Control c && IsFocusable(c))
+            {
+                SelectedIndex = currentIndex;
+                return true;
+            }
+
+            currentIndex += increment;
+        }
+
         return false;
     }
 
@@ -1337,7 +1502,7 @@ public partial class FATabView : TemplatedControl
 
     // Note that the parameter is a DependencyObject for convenience to allow us to call this on the return value of ContainerFromIndex.
     // There are some non-control elements that can take focus - e.g. a hyperlink in a RichTextBlock - but those aren't relevant for our purposes here.
-    private bool IsFocusable(InputElement obj, bool checkTabStop)
+    private bool IsFocusable(InputElement obj, bool checkTabStop = false)
     {
         if (obj == null)
             return false;
@@ -1345,7 +1510,7 @@ public partial class FATabView : TemplatedControl
         if (obj is Control c)
         {
             return c.IsEffectivelyVisible &&
-                (c.IsEffectivelyEnabled) && // AllowFocusWhenDisabled (TODO v3)
+                (c.IsEffectivelyEnabled) &&
                 (c.IsTabStop || !checkTabStop);
         }
 
@@ -1363,34 +1528,34 @@ public partial class FATabView : TemplatedControl
 
     // ----------- TABVIEW TEAROUT - The following is left while I investigate adding this
 
-    private void UpdateTabViewWithTearOutList()
-    {
-        //var list = GetTabViewWithTearOutList();
-    }
+    //private void UpdateTabViewWithTearOutList()
+    //{
+    //    //var list = GetTabViewWithTearOutList();
+    //}
 
-    private void AttachMoveSizeLoopEvents() { }
+    //private void AttachMoveSizeLoopEvents() { }
 
-    private void OnEnteringMoveSize() { }
+    //private void OnEnteringMoveSize() { }
 
-    private void OnEnteredMoveSize() { }
+    //private void OnEnteredMoveSize() { }
 
-    private void OnWindowRectChanging() { }
+    //private void OnWindowRectChanging() { }
 
-    private void DragTabWithinTabView() { }
+    //private void DragTabWithinTabView() { }
 
-    private void UpdateTabIndex() { }
+    //private void UpdateTabIndex() { }
 
-    private void TearOutTab() { }
+    //private void TearOutTab() { }
 
-    private void DragTornOutTab() { }
+    //private void DragTornOutTab() { }
 
-    private int GetTabInsertionIndex() => -1;
+    //private int GetTabInsertionIndex() => -1;
 
-    private void OnExitedMoveSize() { }
+    //private void OnExitedMoveSize() { }
 
-    private FATabViewItem GetTabAtPoint(Point point) => null;
+    //private FATabViewItem GetTabAtPoint(Point point) => null;
 
-    private void PopulateTabViewList() { }
+    //private void PopulateTabViewList() { }
 
     // MutexLockedResource
 
@@ -1398,9 +1563,9 @@ public partial class FATabView : TemplatedControl
 
     // GetAppWindowCoordinateConverter
 
-    private void UpdateNonClientRegion() { }
+    // private void UpdateNonClientRegion() { }
 
-    private nint GetAppWindowId() => 0;
+    //private nint GetAppWindowId() => 0;
 
     // ---------------- END TABVIEW TEAROUT
 
@@ -1417,7 +1582,6 @@ public partial class FATabView : TemplatedControl
             _listView.Loaded -= OnListViewLoaded;
             LogicalChildren.Remove(_listView);
             _listView.SelectionChanged -= OnListViewSelectionChanged;
-            // TODO: v3
             _listView.GettingFocus -= OnListViewGettingFocus;
 
             _listView.DragItemsStarting -= OnListViewDragItemsStarting;
@@ -1440,7 +1604,7 @@ public partial class FATabView : TemplatedControl
 
         _scrollIncreaseButton?.Click -= OnScrollIncreaseClick;
 
-        _scrollViewerViewChangedRevoker?.Dispose();
+        _scrollViewer?.ScrollChanged -= OnScrollViewerViewChanged;
 
         if (_verticalPaneResizeHandle != null) // Null in Top/Bottom modes
         {
@@ -1511,8 +1675,6 @@ public partial class FATabView : TemplatedControl
     private int _selectedIndexBeforeTabSwitch = -1;
 
     // A bunch of event revokers
-    private IDisposable _scrollViewerViewChangedRevoker;
-    private IDisposable _itemsPresenterSizeChangedRevoker;
     private IDisposable _listViewCanReorderItemsPropertyChangedRevoker;
     private IDisposable _listViewAllowDropPropertyChangedRevoker;
     private string _tabCloseButtonTooltipText;

@@ -429,7 +429,7 @@ public partial class FANavigationView : HeaderedContentControl
         return selItemCont == nvib;
     }
 
-    private FANavigationViewItem GetSelectedContainer()
+    internal FANavigationViewItem GetSelectedContainer()
     {
         if (SelectedItem == null)
             return null;
@@ -562,10 +562,7 @@ public partial class FANavigationView : HeaderedContentControl
         if (_topNavOverflowButton != null)
         {
             var flyout = _topNavOverflowButton.Flyout as PopupFlyoutBase;
-            if (flyout != null)
-            {
-                flyout.Closing -= OnFlyoutClosing;
-            }
+            flyout?.Closing -= OnFlyoutClosing;
         }
 
         if (_leftNavFooterMenuRepeater != null)
@@ -591,27 +588,21 @@ public partial class FANavigationView : HeaderedContentControl
         _paneTitleHolderRevoker?.Dispose();
         _paneTitleHolderRevoker = null;
 
-        if (_paneSearchButton != null)
-        {
-            _paneSearchButton.Click -= OnPaneSearchButtonClick;
-        }
+        _paneSearchButton?.Click -= OnPaneSearchButtonClick;
 
-        if (_backButton != null)
-        {
-            _backButton.Click -= OnBackButtonClicked;
-        }
+        _backButton?.Click -= OnBackButtonClicked;
 
         //titlebar?
 
-        if (_closeButton != null)
-        {
-            _closeButton.Click -= OnPaneToggleButtonClick;
-        }
+        _closeButton?.Click -= OnPaneToggleButtonClick;
 
         _itemsContainerSizeRevoker?.Dispose();
         _itemsContainerSizeRevoker = null;
 
         _itemsContainerSizeRevoker?.Dispose();
+
+        // Skip selectionChangedRevoker, .net will kill that for us
+        // autoSuggestBoxQuerySubmitted
     }
 
     private NavigationViewItemsFactory _itemsFactory;
@@ -727,7 +718,7 @@ public partial class FANavigationView : HeaderedContentControl
 
     private bool _moveTopNavOverflowItemOnFlyoutClose;
 
-    //private bool _shouldIgnoreUIASelectionRaiseAsExpandCollapseWillRaise;
+    private bool _shouldIgnoreUIASelectionRaiseAsExpandCollapseWillRaise;
 
     private bool _orientationChangedPendingAnimation;
 
@@ -744,6 +735,7 @@ public partial class FANavigationView : HeaderedContentControl
     private const int _paneToggleButtonWidth = 40;
     private const int _backButtonRowDefinition = 1;
     private const float paneElevationTranslationZ = 32;
+    private const int c_toggleButtonHeightWithNoBackButton = 56;
 
     private const int _mainMenuBlockIndex = 0;
     private const int _footerMenuBlockIndex = 1;
@@ -758,10 +750,11 @@ public partial class FANavigationView : HeaderedContentControl
     private NavigationRecommendedTransitionDirection _pendingSelectionChangedDirection;
 
     // Localization String Resources
-    private static readonly string SR_SettingsButtonName = "SettingsButtonName";
-    private static readonly string SR_NavigationOverflowButtonToolTip = "NavigationOverflowButtonToolTip";
-    private static readonly string SR_NavigationViewSearchButtonName = "NavigationViewSearchButtonName";
-    private static readonly string SR_NavigationBackButtonToolTip = "NavigationBackButtonToolTip";
-    private static readonly string SR_NavigationButtonOpenName = "NavigationButtonOpenName";
-    private static readonly string SR_NavigationButtonClosedName = "NavigationButtonClosedName";
+    private const string SR_SettingsButtonName = "SettingsButtonName";
+    private const string SR_NavigationOverflowButtonToolTip = "NavigationOverflowButtonToolTip";
+    private const string SR_NavigationViewSearchButtonName = "NavigationViewSearchButtonName";
+    private const string SR_NavigationBackButtonToolTip = "NavigationBackButtonToolTip";
+    private const string SR_NavigationButtonOpenName = "NavigationButtonOpenName";
+    private const string SR_NavigationButtonClosedName = "NavigationButtonClosedName";
+    private const string SR_NavigationOverflowButtonName = "NavigationOverflowButtonName";
 }
