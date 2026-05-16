@@ -23,9 +23,9 @@ using Xunit;
 
 namespace FluentAvaloniaTests.ControlTests;
 
-public class FABreadcrumbBarTests : IDisposable
+public class BreadcrumbBarTests : IDisposable
 {
-    public FABreadcrumbBarTests()
+    public BreadcrumbBarTests()
     {
         _window = new Window();
         _window.Show();
@@ -63,7 +63,7 @@ public class FABreadcrumbBarTests : IDisposable
         var bcb2 = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<string> { "Node 1", "Node 2" };
-        // Set a custom ItemTemplate to be wrapped in a FABreadcrumbBarItem.
+        // Set a custom ItemTemplate to be wrapped in a BreadcrumbBarItem.
         var itemTemplate = new FuncDataTemplate<string>((x, ns) =>
         {
             return new TextBlock
@@ -122,7 +122,7 @@ public class FABreadcrumbBarTests : IDisposable
         var bcb = new FABreadcrumbBar();
 
         bcb.ItemsSource = new List<int> { 1, 2, 3, 4 };
-        // Set a custom ItemTemplate to be wrapped in a FABreadcrumbBarItem.
+        // Set a custom ItemTemplate to be wrapped in a BreadcrumbBarItem.
         var itemTemplate = new FuncDataTemplate<object>((x, ns) =>
         {
             return new TextBlock

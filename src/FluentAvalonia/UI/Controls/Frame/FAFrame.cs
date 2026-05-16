@@ -149,7 +149,7 @@ public partial class FAFrame : ContentControl
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
     public bool Navigate(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type sourcePageType
     ) => Navigate(sourcePageType, null, null);
 
 
@@ -165,7 +165,7 @@ public partial class FAFrame : ContentControl
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
     public bool Navigate(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type sourcePageType,
         object parameter
     ) => Navigate(sourcePageType, parameter, null);
 
@@ -183,7 +183,7 @@ public partial class FAFrame : ContentControl
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
     public bool Navigate(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type sourcePageType,
         object parameter,
         FANavigationTransitionInfo infoOverride
     )
@@ -204,7 +204,7 @@ public partial class FAFrame : ContentControl
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true; 
     /// otherwise, <c>true</c>.</returns>
     public bool NavigateToType(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type sourcePageType,
         object parameter,
         FAFrameNavigationOptions navOptions
     )
@@ -225,7 +225,7 @@ public partial class FAFrame : ContentControl
     /// and what transition animation is used.</param>
     /// <returns><c>false</c> if a <see cref="NavigationFailed"/> event handler has set Handled to true or
     /// if <see cref="NavigationPageFactory" /> is not specified; otherwise, <c>true</c>.</returns>
-    public bool NavigateFromObject<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
+    public bool NavigateFromObject<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] T>(
         T target,
         FAFrameNavigationOptions navOptions = null
     )

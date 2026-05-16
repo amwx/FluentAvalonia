@@ -88,7 +88,7 @@ public partial class FAFrame : ContentControl
     /// <remarks>
     /// Do not use this method with trimming/aot! Use <see cref="Navigate(System.Type)"/> instead
     /// </remarks>
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public Type SourcePageType
     {
         // We are suppressing the IL2073 warning here.

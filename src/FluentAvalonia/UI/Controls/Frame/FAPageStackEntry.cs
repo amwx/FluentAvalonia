@@ -16,7 +16,7 @@ public class FAPageStackEntry
     /// <param name="parameter">The navigation parameter associated with the navigation entry.</param>
     /// <param name="navigationTransitionInfo">Info about the animated transition associated with the navigation entry.</param>
     public FAPageStackEntry(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type sourcePageType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type sourcePageType,
         object parameter,
         FANavigationTransitionInfo navigationTransitionInfo
     )
@@ -29,7 +29,7 @@ public class FAPageStackEntry
     /// <summary>
     /// Gets the type of page associated with this navigation entry.
     /// </summary>
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public Type SourcePageType { get; set; }
 
     /// <summary>
