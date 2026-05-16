@@ -572,7 +572,6 @@ public partial class FATabView : TemplatedControl
             }
         }
 
-        // TODO: We now have ScrollChanged event, can probably switch to that
         _scrollViewer.ScrollChanged += OnScrollViewerViewChanged;
         
         UpdateTabWidths();
@@ -863,7 +862,6 @@ public partial class FATabView : TemplatedControl
                 // The new tab content is not available at the time of the LosingFocus event, so we need to
                 // move focus later.
                 bool shouldMoveFocusToNewTab = false;
-                // TODO: v3: Switch to LosingFocus
                 _tabContentPresenter.LosingFocus += TabContentPresenterLostFocus;
 
                 void TabContentPresenterLostFocus(object sender, FocusChangingEventArgs args)
@@ -887,6 +885,11 @@ public partial class FATabView : TemplatedControl
                     focusable ??= tvi;
 
                     focusable?.Focus(NavigationMethod.Unspecified);
+                }
+                else
+                {
+                    // Ensure this is disconnected
+                    _tabContentPresenter.LosingFocus -= TabContentPresenterLostFocus;
                 }
             }
         }       

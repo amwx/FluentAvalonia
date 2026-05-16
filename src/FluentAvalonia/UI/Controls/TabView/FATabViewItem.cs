@@ -27,26 +27,6 @@ public partial class FATabViewItem : FASelectorItem
     public FATabViewItem()
     {
         TabViewTemplateSettings = new FATabViewItemTemplateSettings();
-
-        // Use AttachedToVisualTree override for Loaded event
-
-        // Will use OnPropertyChanged for SizeChanged, IsSelectedProperty changed, and Foreground changed
-
-        // ListBoxItem uses the PressedMixin...ugh... which uses tunnel events to set :pressed
-        // The problem is that doesn't respect if you've clicked on another control
-        // So, when we click the close button, the :pressed state is activated too, we don't want that
-        // So we have to undo what the :pressed mixin does
-        // This is the easy solution, since the other involves not deriving from ListBoxItem
-        AddHandler(PointerPressedEvent, (s, e) =>
-        {
-            var hasButton = (e.Source as Visual).GetVisualAncestors()
-                .Where(x => x == _closeButton).Any();
-
-            if (hasButton)
-            {
-                PseudoClasses.Set(FASharedPseudoclasses.s_pcPressed, false);
-            }
-        }, RoutingStrategies.Tunnel);
     }
 
     static FATabViewItem()

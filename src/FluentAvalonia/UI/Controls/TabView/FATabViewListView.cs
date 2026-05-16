@@ -245,6 +245,11 @@ public sealed class FATabViewListView : ListBox
             {
                 _initialPoint = currentPoint.Position;
                 _dragItem = (args.Source as Visual).FindAncestorOfType<FATabViewItem>(true);
+
+                // Clicking in empty space of tab row will still fire this.
+                if (_dragItem == null)
+                    return;
+
                 _dragIndex = IndexFromContainer(_dragItem);
                 _isDragItemFocused = _dragItem.IsFocused;
                 _isDragItemSelected = _dragItem.IsSelected;
