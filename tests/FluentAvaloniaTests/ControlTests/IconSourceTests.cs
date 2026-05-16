@@ -1,107 +1,95 @@
-﻿//using System;
-//using Avalonia;
-//using Avalonia.Controls.Documents;
-//using Avalonia.Media;
-//using Avalonia.VisualTree;
-//using FluentAvalonia.UI.Controls;
-//using FluentAvaloniaTests.Helpers;
-//using Xunit;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.Documents;
+using Avalonia.Headless.XUnit;
+using Avalonia.Media;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
+using FluentAvalonia.UI.Controls;
+using Xunit;
 
-//namespace FluentAvaloniaTests.ControlTests;
+namespace FluentAvaloniaTests.ControlTests;
 
-//public class IconSourceTextContext : IDisposable
-//{
-//    public IconSourceTextContext()
-//    {
-//        _appDisposable = UnitTestApplication.Start();
+public class IconSourceTests
+{
+    [AvaloniaFact]
+    public void IconSourceWithUnsetForegroundUsesInherited()
+    {
+        var w = GetWindow();
+        w.Content = new FAIconSourceElement
+        {
+            IconSource = (FASymbolIconSource)(w.Resources["SymbolIcon"])
+        };
+        w.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
 
-//        Root = new TestRoot(new Size(1280, 720));
-//        Root.StylingParent = UnitTestApplication.Current;
+        w.SetValue(TextElement.ForegroundProperty, Brushes.Red);
+        Dispatcher.UIThread.RunJobs();
 
-//        Root.Resources.Add("SymbolIcon", new SymbolIconSource { Symbol = Symbol.Save });            
-//    }
+        var sym = w.FindDescendantOfType<FASymbolIcon>();
 
-//    public TestRoot Root { get; private set; }
+        Assert.NotNull(sym);
 
-//    public void Dispose()
-//    {
-//        _appDisposable.Dispose();
-//    }
+        Assert.Equal(Brushes.Red, sym.GetValue(TextElement.ForegroundProperty));
+    }
 
-//    private IDisposable _appDisposable;
-//}
+    [AvaloniaFact]
+    public void IconSourceUsesSetForeground()
+    {
+        var w = GetWindow();
 
-//public class IconSourceTests : IClassFixture<IconSourceTextContext>
-//{
-//    public IconSourceTests(IconSourceTextContext ctx)
-//    {
-//        Context = ctx;
-//    }
+        var ico = (FASymbolIconSource)(w.Resources["SymbolIcon"]);
+        ico.Foreground = Brushes.DarkSlateBlue;
+        w.Content = new FAIconSourceElement
+        {
+            IconSource = ico
+        };
+        w.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
 
-//    public IconSourceTextContext Context { get; }
+        w.SetValue(TextElement.ForegroundProperty, Brushes.Red);
+        Dispatcher.UIThread.RunJobs();
 
-//    [Fact]
-//    public void IconSourceWithUnsetForegroundUsesInherited()
-//    {
-//        Context.Root.Child = new IconSourceElement
-//        {
-//            IconSource = (SymbolIconSource)(Context.Root.Resources["SymbolIcon"])
-//        };
+        var sym = w.FindDescendantOfType<FASymbolIcon>();
 
-//        Context.Root.SetValue(TextElement.ForegroundProperty, Brushes.Red);
+        Assert.NotNull(sym);
 
-//        var sym = Context.Root.FindDescendantOfType<SymbolIcon>();
+        Assert.Equal(Brushes.DarkSlateBlue, sym.GetValue(TextElement.ForegroundProperty));
+    }
 
-//        Assert.NotNull(sym);
+    [AvaloniaFact]
+    public void IconUpdatesForegroundIfChangedOnIconSource()
+    {
+        var w = GetWindow();
+        var ico = (FASymbolIconSource)(w.Resources["SymbolIcon"]);
+        ico.Foreground = Brushes.DarkSlateBlue;
+        w.Content = new FAIconSourceElement
+        {
+            IconSource = ico
+        };
+        w.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
 
-//        Assert.Equal(Brushes.Red, sym.GetValue(TextElement.ForegroundProperty));
+        w.SetValue(TextElement.ForegroundProperty, Brushes.Red);
+        Dispatcher.UIThread.RunJobs();
 
-//        Context.Root.Child = null;
-//    }
+        var sym = w.FindDescendantOfType<FASymbolIcon>();
 
-//    [Fact]
-//    public void IconSourceUsesSetForeground()
-//    {
-//        var ico = (SymbolIconSource)(Context.Root.Resources["SymbolIcon"]);
-//        ico.Foreground = Brushes.DarkSlateBlue;
-//        Context.Root.Child = new IconSourceElement
-//        {
-//            IconSource = ico
-//        };
+        Assert.NotNull(sym);
 
-//        Context.Root.SetValue(TextElement.ForegroundProperty, Brushes.Red);
+        Assert.Equal(Brushes.DarkSlateBlue, sym.GetValue(TextElement.ForegroundProperty));
 
-//        var sym = Context.Root.FindDescendantOfType<SymbolIcon>();
+        ico.Foreground = Brushes.Yellow;
+        Dispatcher.UIThread.RunJobs();
 
-//        Assert.NotNull(sym);
+        Assert.Equal(Brushes.Yellow, sym.GetValue(TextElement.ForegroundProperty));
+    }
 
-//        Assert.Equal(Brushes.DarkSlateBlue, sym.GetValue(TextElement.ForegroundProperty));
-
-//        Context.Root.Child = null;
-//    }
-
-//    [Fact]
-//    public void IconUpdatesForegroundIfChangedOnIconSource()
-//    {
-//        var ico = (SymbolIconSource)(Context.Root.Resources["SymbolIcon"]);
-//        ico.Foreground = Brushes.DarkSlateBlue;
-//        Context.Root.Child = new IconSourceElement
-//        {
-//            IconSource = ico
-//        };
-
-//        Context.Root.SetValue(TextElement.ForegroundProperty, Brushes.Red);
-
-//        var sym = Context.Root.FindDescendantOfType<SymbolIcon>();
-
-//        Assert.NotNull(sym);
-
-//        Assert.Equal(Brushes.DarkSlateBlue, sym.GetValue(TextElement.ForegroundProperty));
-
-//        ico.Foreground = Brushes.Yellow;
-
-//        Assert.Equal(Brushes.Yellow, sym.GetValue(TextElement.ForegroundProperty));
-
-//        Context.Root.Child = null;
-//    }
-//}
+    private static Window GetWindow()
+    {
+        var w = new Window();
+        w.Resources.Add("SymbolIcon", new FASymbolIconSource { Symbol = FASymbol.Save });
+        w.Show();
+        Dispatcher.UIThread.RunJobs();
+        return w;
+    }
+}
