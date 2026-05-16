@@ -50,7 +50,7 @@ public class CollectionViewSourceTests
     //{
     //    var groups = CreateGroupsComplex();
 
-    //    var cvs = new FACollectionViewSource();
+    //    var cvs = new CollectionViewSource();
     //    cvs.Source = groups;
     //    cvs.IsSourceGrouped = true;
     //    cvs.ItemsPath = "Items";
@@ -244,7 +244,7 @@ public class CollectionViewSourceTests
     //public void NoIssuesWithItemsSourceView()
     //{
     //    var groups = CreateGroups();
-    //    var cvs = new FACollectionViewSource();
+    //    var cvs = new CollectionViewSource();
     //    cvs.Source = groups;
     //    cvs.IsSourceGrouped = true;
 
