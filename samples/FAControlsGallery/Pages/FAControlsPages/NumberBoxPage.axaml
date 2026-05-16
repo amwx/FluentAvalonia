@@ -5,7 +5,7 @@
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:pg="using:FAControlsGallery.Pages"
-             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="2000"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="2000"
              x:Class="FAControlsGallery.Pages.NumberBoxPage"
              x:DataType="pg:NumberBoxPage">
     <StackPanel Spacing="8">
@@ -86,6 +86,18 @@
             <ctrls:ControlExample.Substitutions>
                 <ctrls:ControlExampleSubstitution Key="Value" Value="{Binding #NumBox2.Value, Mode=OneWay}" />
             </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Pragmatic Focus">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="10">
+                <ui:NumberBox x:Name="NumBoxToFocus"
+                              MinWidth="150"
+                              Value="10"
+                              Minimum="0"
+                              Maximum="100" />
+                <Button Click="FocusButtonOnClick">Focus</Button>
+            </StackPanel>
         </ctrls:ControlExample>
     </StackPanel>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Globalization;
+using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Automation.Provider;
 using Avalonia.Controls;
@@ -6,8 +7,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using FluentAvalonia.Core;
-using System.Globalization;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -19,6 +20,11 @@ public partial class NumberBox : TemplatedControl
     public NumberBox()
     {
         AddHandler(PointerPressedEvent, OnPointerPressedPreview, RoutingStrategies.Tunnel);
+    }
+
+    static NumberBox()
+    {
+        FocusableProperty.OverrideDefaultValue<NumberBox>(true);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -78,6 +84,11 @@ public partial class NumberBox : TemplatedControl
         }
     }
 
+    protected override Control GetTemplateFocusTarget()
+    {
+        return _textBox ?? base.GetTemplateFocusTarget();
+    }
+
     protected override void UpdateDataValidation(AvaloniaProperty property, BindingValueType state, Exception error)
     {
         base.UpdateDataValidation(property, state, error);
@@ -134,10 +145,11 @@ public partial class NumberBox : TemplatedControl
     {
         base.OnGotFocus(e);
 
-        if (_textBox != null)
+        Dispatcher.UIThread.Post(() =>
         {
-            _textBox.SelectAll();
-        }
+            _textBox?.Focus(e.NavigationMethod);
+            _textBox?.SelectAll();
+        });
 
         if (SpinButtonPlacementMode == NumberBoxSpinButtonPlacementMode.Compact)
         {
