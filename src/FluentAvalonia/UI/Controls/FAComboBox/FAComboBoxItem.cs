@@ -1,13 +1,13 @@
-﻿using Avalonia.Controls;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using Avalonia.VisualTree;
+using FluentAvalonia.UI.Controls.Internal;
 
 namespace FluentAvalonia.UI.Controls;
 
 /// <summary>
 /// Represents the container for an item in a <see cref="FAComboBox"/> control.
 /// </summary>
-public class FAComboBoxItem : ListBoxItem
+public class FAComboBoxItem : FASelectorItem
 {
     static FAComboBoxItem()
     {
