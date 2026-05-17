@@ -10,18 +10,18 @@
              x:DataType="pg:BreadcrumbBarPage">
 
     <UserControl.Resources>
-        <ui:SymbolIconSource x:Key="FolderIcon" Symbol="FolderFilled" />
+        <ui:FASymbolIconSource x:Key="FolderIcon" Symbol="FolderFilled" />
     </UserControl.Resources>
 
     <StackPanel Spacing="8">
-        <ctrls:ControlExample TargetType="ui:BreadcrumbBar"
+        <ctrls:ControlExample TargetType="ui:FABreadcrumbBar"
                               Header="A Simple BreadcrumbBar">
 
-            <ui:BreadcrumbBar Name="BreadcrumbBar1" />
+            <ui:FABreadcrumbBar Name="BreadcrumbBar1" />
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;BreadcrumbBar x:Name="BreadcrumbBar1"/&gt;
+&lt;FABreadcrumbBar x:Name="FABreadcrumbBar1"/&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 
@@ -36,23 +36,23 @@ BreadcrumbBar1.ItemsSource = new string[] { "Home", "Documents", "Design", "Nort
         <ctrls:ControlExample Header="BreadcrumbBar With Custom DataTemplate"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/Breadcrumb2.xaml.txt"
                               CSharpSource="avares://FAControlsGallery/Pages/SampleCode/Breadcrumb2.cs.txt">
-            <ui:BreadcrumbBar Name="BreadcrumbBar2">
-                <ui:BreadcrumbBar.ItemTemplate>
+            <ui:FABreadcrumbBar Name="BreadcrumbBar2">
+                <ui:FABreadcrumbBar.ItemTemplate>
                     <DataTemplate DataType="pg:BreadcrumbFolder">
-                        <ui:BreadcrumbBarItem Content="{Binding}"
+                        <ui:FABreadcrumbBarItem Content="{Binding}"
                                               AutomationProperties.Name="{Binding Name}">
-                            <ui:BreadcrumbBarItem.ContentTemplate>
+                            <ui:FABreadcrumbBarItem.ContentTemplate>
                                 <DataTemplate DataType="pg:BreadcrumbFolder">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
-                                        <ui:IconSourceElement IconSource="{StaticResource FolderIcon}" />
+                                        <ui:FAIconSourceElement IconSource="{StaticResource FolderIcon}" />
                                         <TextBlock Text="{Binding Name}" />
                                     </StackPanel>
                                 </DataTemplate>
-                            </ui:BreadcrumbBarItem.ContentTemplate>
-                        </ui:BreadcrumbBarItem>
+                            </ui:FABreadcrumbBarItem.ContentTemplate>
+                        </ui:FABreadcrumbBarItem>
                     </DataTemplate>
-                </ui:BreadcrumbBar.ItemTemplate>
-            </ui:BreadcrumbBar>
+                </ui:FABreadcrumbBar.ItemTemplate>
+            </ui:FABreadcrumbBar>
 
             <ctrls:ControlExample.Options>
                 <Button Content="Reset Sample"

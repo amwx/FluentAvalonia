@@ -1,0 +1,235 @@
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
+using Avalonia.Styling;
+using FluentAvalonia.Core;
+using System.Windows.Input;
+
+namespace FluentAvalonia.UI.Controls;
+
+/// <summary>
+/// An InfoBar is an inline notification for essential app-wide messages. 
+/// The InfoBar will take up space in a layout and will not cover up other content 
+/// or float on top of it. It supports rich content (including titles, messages, icons, and buttons) 
+/// and can be configured to be user-dismissable or persistent.
+/// </summary>
+[PseudoClasses(FASharedPseudoclasses.s_pcHidden, s_pcCloseHidden)]
+[PseudoClasses(s_pcSuccess, s_pcWarning, s_pcError, s_pcInformational)]
+[PseudoClasses(FASharedPseudoclasses.s_pcIcon, s_pcStandardIcon)]
+[PseudoClasses(s_pcForegroundSet, s_pcNoBannerContent)]
+[TemplatePart(s_tpCloseButton, typeof(Button))]
+[TemplatePart(s_tpStandardIcon, typeof(FAFontIcon))]
+public partial class FAInfoBar : ContentControl
+{
+    /// <summary>
+    /// Defines the <see cref="IsOpen"/> property
+    /// </summary>
+    public static readonly StyledProperty<bool> IsOpenProperty =
+        AvaloniaProperty.Register<FAInfoBar, bool>(nameof(IsOpen));
+
+    /// <summary>
+    /// Defines the <see cref="Title"/> property
+    /// </summary>
+    public static readonly StyledProperty<string> TitleProperty =
+        AvaloniaProperty.Register<FAInfoBar, string>(nameof(Title));
+
+    /// <summary>
+    /// Defines the <see cref="Message"/> property
+    /// </summary>
+    public static readonly StyledProperty<string> MessageProperty =
+        AvaloniaProperty.Register<FAInfoBar, string>(nameof(Message));
+
+    /// <summary>
+    /// Defines the <see cref="Severity"/> property
+    /// </summary>
+    public static readonly StyledProperty<FAInfoBarSeverity> SeverityProperty =
+        AvaloniaProperty.Register<FAInfoBar, FAInfoBarSeverity>(nameof(Severity));
+
+    /// <summary>
+    /// Defines the <see cref="IconSource"/> property
+    /// </summary>
+    public static readonly StyledProperty<FAIconSource> IconSourceProperty =
+        FASettingsExpander.IconSourceProperty.AddOwner<FAIconSource>();
+
+    /// <summary>
+    /// Defines the <see cref="IsIconVisible"/> property
+    /// </summary>
+    public static readonly StyledProperty<bool> IsIconVisibleProperty =
+        AvaloniaProperty.Register<FAInfoBar, bool>(nameof(IsIconVisible), true);
+
+    /// <summary>
+    /// Defines the <see cref="IsClosable"/> property
+    /// </summary>
+    public static readonly StyledProperty<bool> IsClosableProperty =
+        AvaloniaProperty.Register<FAInfoBar, bool>(nameof(IsClosable), true);
+
+    /// <summary>
+    /// Defines the <see cref="CloseButtonCommand"/> property
+    /// </summary>
+    public static readonly StyledProperty<ICommand> CloseButtonCommandProperty =
+        AvaloniaProperty.Register<FAInfoBar, ICommand>(nameof(CloseButtonCommand));
+
+    /// <summary>
+    /// Defines the <see cref="CloseButtonCommandParameter"/> property
+    /// </summary>
+    public static readonly StyledProperty<object> CloseButtonCommandParameterProperty =
+        AvaloniaProperty.Register<FAInfoBar, object>(nameof(CloseButtonCommandParameter));
+
+    /// <summary>
+    /// Defines the <see cref="ActionButton"/> property
+    /// </summary>
+    public static readonly StyledProperty<Control> ActionButtonProperty =
+        AvaloniaProperty.Register<FAInfoBar, Control>(nameof(ActionButton));
+
+    /// <summary>
+    /// Defines the <see cref="CloseButtonTheme"/> property
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme> CloseButtonThemeProperty =
+        AvaloniaProperty.Register<FAInfoBadge, ControlTheme>(nameof(CloseButtonTheme));
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether the InfoBar is open.
+    /// </summary>
+    public bool IsOpen
+    {
+        get => GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the title of the InfoBar.
+    /// </summary>
+    public string Title
+    {
+        get => GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the message of the InfoBar.
+    /// </summary>
+    public string Message
+    {
+        get => GetValue(MessageProperty);
+        set => SetValue(MessageProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the type of the InfoBar to apply consistent status color, icon, 
+    /// and assistive technology settings dependent on the criticality of the notification.
+    /// </summary>
+    public FAInfoBarSeverity Severity
+    {
+        get => GetValue(SeverityProperty);
+        set => SetValue(SeverityProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the graphic content to appear alongside the title and message in the InfoBar.
+    /// </summary>
+    public FAIconSource IconSource
+    {
+        get => GetValue(IconSourceProperty);
+        set => SetValue(IconSourceProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether the icon is visible in the InfoBar.
+    /// </summary>
+    public bool IsIconVisible
+    {
+        get => GetValue(IsIconVisibleProperty);
+        set => SetValue(IsIconVisibleProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether the user can close the InfoBar.
+    /// </summary>
+    public bool IsClosable
+    {
+        get => GetValue(IsClosableProperty);
+        set => SetValue(IsClosableProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the command to invoke when the close button is clicked in the InfoBar.
+    /// </summary>
+    public ICommand CloseButtonCommand
+    {
+        get => GetValue(CloseButtonCommandProperty);
+        set => SetValue(CloseButtonCommandProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the parameter to pass to the command for the close button in the InfoBar.
+    /// </summary>
+    public object CloseButtonCommandParameter
+    {
+        get => GetValue(CloseButtonCommandParameterProperty);
+        set => SetValue(CloseButtonCommandParameterProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the action button of the InfoBar.
+    /// </summary>
+    public Control ActionButton
+    {
+        get => GetValue(ActionButtonProperty);
+        set => SetValue(ActionButtonProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the <see cref="ControlTheme"/> for the InfoBar's CloseButton
+    /// </summary>
+    public ControlTheme CloseButtonTheme
+    {
+        get => GetValue(CloseButtonThemeProperty);
+        set => SetValue(CloseButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Occurs after the close button is clicked in the InfoBar.
+    /// </summary>
+    public event TypedEventHandler<FAInfoBar, EventArgs> CloseButtonClick;
+
+    /// <summary>
+    /// Occurs just before the InfoBar begins to close.
+    /// </summary>
+    public event TypedEventHandler<FAInfoBar, FAInfoBarClosingEventArgs> Closing;
+
+    /// <summary>
+    /// Occurs after the InfoBar is closed.
+    /// </summary>
+    public event TypedEventHandler<FAInfoBar, FAInfoBarClosedEventArgs> Closed;
+
+    /// <summary>
+    /// Occurs after the InfoBar is opened
+    /// </summary>
+    public event TypedEventHandler<FAInfoBar, FAInfoBarOpenedEventArgs> Opened;
+
+
+    private const string SR_InfoBarCloseButtonTooltip = "InfoBarCloseButtonTooltip";
+    private const string SR_InfoBarCloseButtonName = "InfoBarCloseButtonName";
+    private const string SR_InfoBarOpenedNotification = "InfoBarOpenedNotification";
+    private const string SR_InfoBarClosedNotification = "InfoBarClosedNotification";
+    private const string SR_InfoBarSeverityInformationalName = "InfoBarSeverityInformationalName";
+    private const string SR_InfoBarSeveritySuccessName = "InfoBarSeveritySuccessName";
+    private const string SR_InfoBarSeverityWarningName = "InfoBarSeverityWarningName";
+    private const string SR_InfoBarSeverityErrorName = "InfoBarSeverityErrorName";
+    private const string SR_InfoBarIconSeverityInformationalName = "InfoBarIconSeverityInformationalName";
+    private const string SR_InfoBarIconSeveritySuccessName = "InfoBarIconSeveritySuccessName";
+    private const string SR_InfoBarIconSeverityWarningName = "InfoBarIconSeverityWarningName";
+    private const string SR_InfoBarIconSeverityErrorName = "InfoBarIconSeverityErrorName";
+
+    private const string s_tpCloseButton = "CloseButton";
+    private const string s_tpStandardIcon = "StandardIcon";
+
+    private const string s_pcSuccess = ":success";
+    private const string s_pcWarning = ":warning";
+    private const string s_pcError = ":error";
+    private const string s_pcInformational = ":informational";
+    private const string s_pcStandardIcon = ":standardIcon";
+    private const string s_pcCloseHidden = ":closehidden";
+    private const string s_pcForegroundSet = ":foregroundset";
+    private const string s_pcNoBannerContent = ":noBannerContent";
+}

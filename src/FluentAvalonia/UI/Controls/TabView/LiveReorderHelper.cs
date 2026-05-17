@@ -13,7 +13,7 @@ namespace FluentAvalonia.UI.Controls;
 
 internal class LiveReorderHelper
 {
-    public LiveReorderHelper(TabViewListView owner)
+    public LiveReorderHelper(FATabViewListView owner)
     {
         _owner = owner;
     }
@@ -63,7 +63,7 @@ internal class LiveReorderHelper
         {
             // If we didn't start in this TabView, see if the index is actually the end or -1
             var spLastElement = _owner.ContainerFromIndex(insertionIndex);
-            if (spLastElement is TabViewItem tvi)
+            if (spLastElement is FATabViewItem tvi)
             {
                 if (IsInBottomHalf(args.GetPosition(spLastElement), new Rect(spLastElement.Bounds.Size), orientation.Value))
                 {
@@ -471,7 +471,7 @@ internal class LiveReorderHelper
     }
 
 
-    private readonly TabViewListView _owner;
+    private readonly FATabViewListView _owner;
     private LiveReorderIndices _liveReorderIndices = new LiveReorderIndices(-1, -1, -1);
     private DispatcherTimer _liveReorderTimer;
     private readonly MovedItems _movedItems = new MovedItems();

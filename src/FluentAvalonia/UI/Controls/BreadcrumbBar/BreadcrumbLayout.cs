@@ -3,13 +3,13 @@ using Avalonia.Controls;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class BreadcrumbLayout : NonVirtualizingLayout
+internal class BreadcrumbLayout : FANonVirtualizingLayout
 {
     public BreadcrumbLayout() { }
 
-    public BreadcrumbLayout(BreadcrumbBar breadcrumb)
+    public BreadcrumbLayout(FABreadcrumbBar breadcrumb)
     {
-        _breadcrumb = new WeakReference<BreadcrumbBar>(breadcrumb);        
+        _breadcrumb = new WeakReference<FABreadcrumbBar>(breadcrumb);        
     }
 
     internal ref readonly bool EllipsisIsRendered => ref _ellipsisIsRendered;
@@ -20,25 +20,25 @@ internal class BreadcrumbLayout : NonVirtualizingLayout
     internal ref readonly int GetVisibleItemsCount =>
         ref _visibleItemsCount;
 
-    protected internal override void InitializeForContextCore(LayoutContext context)
+    protected internal override void InitializeForContextCore(FALayoutContext context)
     {
 
     }
 
-    protected internal override void UninitializeForContextCore(LayoutContext context)
+    protected internal override void UninitializeForContextCore(FALayoutContext context)
     {
 
     }
 
-    public int GetItemCount(NonVirtualizingLayoutContext context) =>
+    public int GetItemCount(FANonVirtualizingLayoutContext context) =>
         context.Children.Count;
 
-    Control GetElementAt(NonVirtualizingLayoutContext context, int index) =>
+    public Control GetElementAt(FANonVirtualizingLayoutContext context, int index) =>
         context.Children[index];
 
     // Measuring is performed in a single step, every element is measured, including the ellipsis
     // item, but the total amount of space needed is only composed of the non-ellipsis breadcrumbs
-    protected internal override Size MeasureOverride(NonVirtualizingLayoutContext context, Size availableSize)
+    protected internal override Size MeasureOverride(FANonVirtualizingLayoutContext context, Size availableSize)
     {
         _availableSize = availableSize;
 
@@ -59,7 +59,7 @@ internal class BreadcrumbLayout : NonVirtualizingLayout
         // Save a reference to the ellipsis button to avoid querying for it multiple times
         if (GetItemCount(context) > 0)
         {
-            if (GetElementAt(context, 0) is BreadcrumbBarItem eb)
+            if (GetElementAt(context, 0) is FABreadcrumbBarItem eb)
             {
                 _ellipsisButton = eb;
             }
@@ -79,7 +79,7 @@ internal class BreadcrumbLayout : NonVirtualizingLayout
 
     // Arranging is performed in a single step, as many elements are tried to be drawn going from the last element
     // towards the first one, if there's not enough space, then the ellipsis button is drawn
-    protected internal override Size ArrangeOverride(NonVirtualizingLayoutContext context, Size finalSize)
+    protected internal override Size ArrangeOverride(FANonVirtualizingLayoutContext context, Size finalSize)
     {
         int itemCount = GetItemCount(context);
         int firstElementToRender = 0;
@@ -145,7 +145,7 @@ internal class BreadcrumbLayout : NonVirtualizingLayout
         accumWidth += elementSize.Width;
     }
 
-    private void ArrangeItem(NonVirtualizingLayoutContext context, int index, ref double accumWidth, double maxElementHeight)
+    private void ArrangeItem(FANonVirtualizingLayoutContext context, int index, ref double accumWidth, double maxElementHeight)
     {
         var element = GetElementAt(context, index);
         ArrangeItem(element, ref accumWidth, maxElementHeight);
@@ -156,13 +156,13 @@ internal class BreadcrumbLayout : NonVirtualizingLayout
         item.Arrange(default(Rect));
     }
 
-    private void HideItem(NonVirtualizingLayoutContext context, int index)
+    private void HideItem(FANonVirtualizingLayoutContext context, int index)
     {
         var element = GetElementAt(context, index);
         HideItem(element);
     }
 
-    private int GetFirstBreadcrumbBarItemToArrange(NonVirtualizingLayoutContext context)
+    private int GetFirstBreadcrumbBarItemToArrange(FANonVirtualizingLayoutContext context)
     {
         int itemCount = GetItemCount(context);
         double accumLength = GetElementAt(context, itemCount - 1).DesiredSize.Width +
@@ -182,7 +182,7 @@ internal class BreadcrumbLayout : NonVirtualizingLayout
         return 0;
     }
 
-    private double GetBreadcrumbBarItemsHeight(NonVirtualizingLayoutContext context, int firstItemToRender)
+    private double GetBreadcrumbBarItemsHeight(FANonVirtualizingLayoutContext context, int firstItemToRender)
     {
         double maxHeight = 0;
 
@@ -199,11 +199,9 @@ internal class BreadcrumbLayout : NonVirtualizingLayout
         return maxHeight;
     }
 
-
-
     private Size _availableSize;
-    private BreadcrumbBarItem _ellipsisButton;
-    private WeakReference<BreadcrumbBar> _breadcrumb; // weak_ref because the BreadcrumbBar already points to us via m_itemsRepeaterLayout
+    private FABreadcrumbBarItem _ellipsisButton;
+    private WeakReference<FABreadcrumbBar> _breadcrumb; // weak_ref because the BreadcrumbBar already points to us via m_itemsRepeaterLayout
     private bool _ellipsisIsRendered;
     private int _firstRenderedItemIndexAfterEllipsis;
     private int _visibleItemsCount;

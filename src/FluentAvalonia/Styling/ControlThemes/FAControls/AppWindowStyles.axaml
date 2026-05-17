@@ -8,102 +8,7 @@
     <x:Double x:Key="SplashScreenTextSize">32</x:Double>
     <FontWeight x:Key="SplashScreenTextFontWeight">SemiBold</FontWeight>
     
-    <ControlTheme TargetType="Button" x:Key="FA_SystemCaptionButton">
-        <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackground}" />
-        <Setter Property="BorderBrush" Value="{x:Null}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Width" Value="46" />
-        <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForeground}" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border Background="{TemplateBinding Background}">
-                    <Viewbox Width="{TemplateBinding FontSize}" Height="{TemplateBinding FontSize}">
-                        <ui:FontIcon Name="ButtonIcon"
-                                     FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                     Glyph="{TemplateBinding Content}" />
-                    </Viewbox>
-                </Border>
-            </ControlTemplate>
-        </Setter>
-
-        <Style Selector="^:inactive">
-            <Style Selector="^ /template/ Border">
-                <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundInactive}" />
-            </Style>
-            <Style Selector="^ /template/ ui|FontIcon">
-                <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundInactive}" />
-            </Style>
-        </Style>
-
-        <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ Border">
-                <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundHover}" />
-            </Style>
-            <Style Selector="^ /template/ ui|FontIcon">
-                <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundHover}" />
-            </Style>
-        </Style>
-
-        <Style Selector="^:pressed">
-            <Style Selector="^ /template/ Border">
-                <Setter Property="Background" Value="{DynamicResource FATitle_SysCaptionBackgroundPressed}" />
-            </Style>
-            <Style Selector="^ /template/ ui|FontIcon">
-                <Setter Property="Foreground" Value="{DynamicResource FATitle_SysCaptionForegroundPressed}" />
-            </Style>
-        </Style>
-
-        <Style Selector="^.Close">
-            <Style Selector="^:pointerover /template/ Border">
-                <Setter Property="Background" Value="#e81123" />
-            </Style>
-            <Style Selector="^:pointerover /template/ ui|FontIcon">
-                <Setter Property="Foreground" Value="White" />
-            </Style>
-            <Style Selector="^:pressed /template/ Border">
-                <Setter Property="Background" Value="#f1707a" />
-            </Style>
-            <Style Selector="^:pressed /template/ ui|FontIcon">
-                <Setter Property="Foreground" Value="White" />
-            </Style>
-        </Style>
-
-        <Style Selector="^:disabled">
-            <Setter Property="Opacity" Value="0.5" />
-        </Style>
-    </ControlTheme>
-
-    <ControlTheme TargetType="wnd:MinMaxCloseControl" x:Key="{x:Type wnd:MinMaxCloseControl}">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <StackPanel Orientation="Horizontal">
-                    <Button Name="MinimizeButton"
-                            Theme="{StaticResource FA_SystemCaptionButton}"
-                            Content="&#xE738;"/>
-                    <Button Name="MaxRestoreButton"
-                            Theme="{StaticResource FA_SystemCaptionButton}"
-                            Content="&#xE739;" />
-                    <Button Name="CloseButton"
-                            Theme="{StaticResource FA_SystemCaptionButton}"
-                            Content="&#xE711;"
-                            FontSize="16"
-                            Classes="Close"  />
-                </StackPanel>
-            </ControlTemplate>
-        </Setter>
-
-        <Style Selector="^:maximized /template/ Button#MaxRestoreButton">
-            <Setter Property="Content" Value="&#xE923;" />
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-    </ControlTheme>
-
-    <ControlTheme TargetType="wnd:AppSplashScreen" x:Key="{x:Type wnd:AppSplashScreen}">
+    <ControlTheme TargetType="wnd:FAAppSplashScreen" x:Key="{x:Type wnd:FAAppSplashScreen}">
         <Setter Property="Background" Value="{DynamicResource CoreSplashScreenBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource CoreSplashScreenForeground}" />
         <Setter Property="Template">
@@ -130,8 +35,8 @@
         </Setter>
     </ControlTheme>
 
-    <ControlTemplate x:Key="AppWindowOnWindowsTemplate" TargetType="{x:Type wnd:AppWindow}">
-        <VisualLayerManager>
+    <ControlTemplate x:Key="AppWindowOnWindowsTemplate" TargetType="{x:Type wnd:FAAppWindow}">
+        <VisualLayerManager Name="PART_VisualLayerManager">
             <!-- Because we use the System Border, we don't specify anything like that here.-->
             <Border Background="{TemplateBinding Background}"
                     Padding="{TemplateBinding Padding}"
@@ -139,9 +44,10 @@
                 <Panel>
                     <Panel Name="DefaultTitleBar"
                            Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                           Background="{DynamicResource FATitle_TitleBarBackground}"
-                           TextElement.Foreground="{DynamicResource FATitle_TitleBarForeground}"
-                           VerticalAlignment="Top">
+                           Background="{DynamicResource TitleBarBackground}"
+                           TextElement.Foreground="{DynamicResource TitleBarForeground}"
+                           VerticalAlignment="Top"
+                           WindowDecorationProperties.ElementRole="TitleBar">
 
                         <Image Source="{TemplateBinding Icon}"
                                VerticalAlignment="Center"
@@ -152,7 +58,7 @@
                                Name="Icon"/>
 
                         <TextBlock Name="TitleText"
-                                   Text="{TemplateBinding Title}"
+                                   Text="Title"
                                    Margin="12 0 0 0"
                                    FontSize="12"
                                    IsVisible="{Binding TemplateSettings.IsTitleBarContentVisible, RelativeSource={RelativeSource TemplatedParent}}"
@@ -168,29 +74,19 @@
                                       Content="{TemplateBinding Content}"
                                       ContentTemplate="{TemplateBinding ContentTemplate}" />
 
-                    <wnd:AppSplashScreen Name="SplashHost"
-                                         IsVisible="False"/>
-
-                    <!-- Add the Caption Buttons, these should ALWAYS overlay the window -->
-                    <wnd:MinMaxCloseControl HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
-                                            Name="SystemCaptionButtons"
-                                            Height="{Binding TemplateSettings.TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}}"/>
-
+                    <wnd:FAAppSplashScreen Name="SplashHost"
+                                           IsVisible="False"/>
                 </Panel>
             </Border>
         </VisualLayerManager>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="AppWindowDefaultTemplate" TargetType="{x:Type wnd:AppWindow}">
+    <ControlTemplate x:Key="AppWindowDefaultTemplate" TargetType="{x:Type wnd:FAAppWindow}">
         <Panel>
             <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
             <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
             <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
-            <VisualLayerManager>
-                <VisualLayerManager.ChromeOverlayLayer>
-                    <TitleBar />
-                </VisualLayerManager.ChromeOverlayLayer>
+            <VisualLayerManager Name="PART_VisualLayerManager">
                 <ContentPresenter Name="PART_ContentPresenter"
                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                   Content="{TemplateBinding Content}"
@@ -198,13 +94,13 @@
                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </VisualLayerManager>
-            <wnd:AppSplashScreen Name="SplashHost"
+            <wnd:FAAppSplashScreen Name="SplashHost"
                                  IsVisible="False"/>
         </Panel>
     </ControlTemplate>
 
 
-    <ControlTheme TargetType="wnd:AppWindow" x:Key="{x:Type wnd:AppWindow}">
+    <ControlTheme TargetType="wnd:FAAppWindow" x:Key="{x:Type wnd:FAAppWindow}">
         <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ApplicationPageBackgroundThemeBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
@@ -228,21 +124,18 @@
                 <Style Selector="^ /template/ Panel#DefaultTitleBar">
                     <Setter Property="IsVisible" Value="False" />
                 </Style>
-                <Style Selector="^ /template/ wnd|MinMaxCloseControl#SystemCaptionButtons">
-                    <Setter Property="IsVisible" Value="False" />
-                </Style>
             </Style>
 
             <Style Selector="^[IsActive=False]">
                 <Style Selector="^ /template/ Panel#DefaultTitleBar">
-                    <Setter Property="Background" Value="{DynamicResource FATitle_TitleBarBackgroundInactive}" />
-                    <Setter Property="TextElement.Foreground" Value="{DynamicResource FATitle_TitleBarForegroundInactive}" />
+                    <Setter Property="Background" Value="{DynamicResource TitleBarBackgroundInactive}" />
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource TitleBarForegroundInactive}" />
                 </Style>
             </Style>
         </Style>
 
         <Style Selector="^:splashOpen">
-            <Style Selector="^ /template/ wnd|AppSplashScreen#SplashHost">
+            <Style Selector="^ /template/ wnd|FAAppSplashScreen#SplashHost">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
         </Style>

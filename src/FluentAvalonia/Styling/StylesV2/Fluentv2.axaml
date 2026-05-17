@@ -1894,6 +1894,93 @@
             <Thickness x:Key="BreadcrumbBarEllipsisFlyoutPresenterBorderThemeThickness">1</Thickness>
             <StaticResource x:Key="BreadcrumbBarItemThemeFontSize" ResourceKey="ControlContentThemeFontSize" />
             <x:Double x:Key="BreadcrumbBarChevronFontSize">12</x:Double>
+
+
+            <!-- Group Box -->
+            <Thickness x:Key="GroupBoxPadding">4</Thickness>
+            <x:Double x:Key="GroupBoxHeaderFontSize">12</x:Double>
+            <Thickness x:Key="GroupBoxHeaderMargin">0,4,0,12</Thickness>
+            <Thickness x:Key="GroupBoxBorderThickness">1</Thickness>
+            <StaticResource x:Key="GroupBoxBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="GroupBoxBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
+            <StaticResource x:Key="GroupBoxHeaderForeground" ResourceKey="TextFillColorSecondaryBrush" />
+
+            <!-- TabbedPage -->
+            <!-- Backgrounds -->
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselected" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelected" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundDisabled" ResourceKey="SubtleFillColorDisabledBrush" />
+            <StaticResource x:Key="TabbedPageTabItemSelectionIndicatorBackground" ResourceKey="AccentFillColorDefaultBrush" />
+            <!-- Foregrounds (override via TabbedPageTabItemHeaderForegroundSelected / TabbedPageTabItemHeaderForegroundUnselected resources) -->
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundUnselected" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+            <x:Double x:Key="TabbedPageTabItemHeaderPipeThickness">2</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderVerticalPipeHeight">18</x:Double>
+            <CornerRadius x:Key="TabbedPageTabItemHeaderIndicatorCornerRadius">4</CornerRadius>
+            <Thickness x:Key="TabbedPageTabItemHeaderIndicatorMargin">2 0</Thickness>
+            <!-- Tab item sizing & shape -->
+            <x:Double x:Key="TabbedPageTabItemHeaderMinHeight">48</x:Double>
+            <StaticResource x:Key="TabbedPageTabItemHeaderCornerRadius" ResourceKey="ControlCornerRadius" />
+            <Thickness x:Key="TabbedPageTabItemHeaderPadding">8,4</Thickness>
+            <Thickness x:Key="TabbedPageTabItemHeaderMargin">0</Thickness>
+            <!-- Icon + text header layout -->
+            <x:Double x:Key="TabbedPageTabItemHeaderIconSize">20</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderFontSize">14</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderSpacing">4</x:Double>
+            <!-- Tab strip (bar) styling -->
+            <StaticResource x:Key="TabbedPageTabStripBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <CornerRadius x:Key="TabbedPageTabStripCornerRadius">0</CornerRadius>
+            <Thickness x:Key="TabbedPageTabStripBorderThickness">0</Thickness>
+            <StaticResource x:Key="TabbedPageTabStripBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
+            <Thickness x:Key="TabbedPageTabStripMargin">0</Thickness>
+            <Thickness x:Key="TabbedPageTabStripPadding">0</Thickness>
+
+
+            <!-- PipsPager -->
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackground" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundSelected" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrush" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushSelected" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForeground" ResourceKey="ControlStrongFillColorDefaultBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundSelected" ResourceKey="ControlStrongFillColorDefaultBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackground" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrush" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForeground" ResourceKey="ControlStrongFillColorDefaultBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
+
+
+
+            <!-- Window Decorations -->
+            <StaticResource x:Key="CaptionButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPointerOver" Color="Black" Opacity="0.09" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPressed" Color="Black" Opacity="0.20" />
+
+            <SolidColorBrush x:Key="CaptionButtonForeground" Color="Black" />
+            
+            
+            
             
         </ResourceDictionary>
         
@@ -3796,7 +3883,96 @@
             <Thickness x:Key="BreadcrumbBarEllipsisFlyoutPresenterBorderThemeThickness">1</Thickness>
             <StaticResource x:Key="BreadcrumbBarItemThemeFontSize" ResourceKey="ControlContentThemeFontSize" />
             <x:Double x:Key="BreadcrumbBarChevronFontSize">12</x:Double>
+
+            <!-- GroupBox -->
+            <Thickness x:Key="GroupBoxPadding">4</Thickness>
+            <x:Double x:Key="GroupBoxHeaderFontSize">12</x:Double>
+            <Thickness x:Key="GroupBoxHeaderMargin">0,4,0,12</Thickness>
+            <Thickness x:Key="GroupBoxBorderThickness">1</Thickness>
+            <StaticResource x:Key="GroupBoxBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="GroupBoxBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
+            <StaticResource x:Key="GroupBoxHeaderForeground" ResourceKey="TextFillColorSecondaryBrush" />
+
+            <!-- TabbedPage -->
+            <!-- Backgrounds -->
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselected" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelected" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundDisabled" ResourceKey="SubtleFillColorDisabledBrush" />
+            <StaticResource x:Key="TabbedPageTabItemSelectionIndicatorBackground" ResourceKey="AccentFillColorDefaultBrush" />
+            <!-- Foregrounds (override via TabbedPageTabItemHeaderForegroundSelected / TabbedPageTabItemHeaderForegroundUnselected resources) -->
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundUnselected" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+            <x:Double x:Key="TabbedPageTabItemHeaderPipeThickness">2</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderVerticalPipeHeight">18</x:Double>
+            <CornerRadius x:Key="TabbedPageTabItemHeaderIndicatorCornerRadius">4</CornerRadius>
+            <Thickness x:Key="TabbedPageTabItemHeaderIndicatorMargin">2 0</Thickness>
+            <!-- Tab item sizing & shape -->
+            <x:Double x:Key="TabbedPageTabItemHeaderMinHeight">48</x:Double>
+            <StaticResource x:Key="TabbedPageTabItemHeaderCornerRadius" ResourceKey="ControlCornerRadius" />
+            <Thickness x:Key="TabbedPageTabItemHeaderPadding">8,4</Thickness>
+            <Thickness x:Key="TabbedPageTabItemHeaderMargin">0</Thickness>
+            <!-- Icon + text header layout -->
+            <x:Double x:Key="TabbedPageTabItemHeaderIconSize">20</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderFontSize">14</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderSpacing">4</x:Double>
+            <!-- Tab strip (bar) styling -->
+            <StaticResource x:Key="TabbedPageTabStripBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <CornerRadius x:Key="TabbedPageTabStripCornerRadius">0</CornerRadius>
+            <Thickness x:Key="TabbedPageTabStripBorderThickness">0</Thickness>
+            <StaticResource x:Key="TabbedPageTabStripBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
+            <Thickness x:Key="TabbedPageTabStripMargin">0</Thickness>
+            <Thickness x:Key="TabbedPageTabStripPadding">0</Thickness>
+            <!-- PipsPager -->
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackground" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundSelected" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrush" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushSelected" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForeground" ResourceKey="ControlStrongFillColorDefaultBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundSelected" ResourceKey="ControlStrongFillColorDefaultBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackground" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrush" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushPointerOver" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushPressed" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForeground" ResourceKey="ControlStrongFillColorDefaultBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
+
+
+            <!-- Window Decorations -->
+            <StaticResource x:Key="CaptionButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPointerOver" Color="White" Opacity="0.09" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPressed" Color="White" Opacity="0.20" />
+            <StaticResource x:Key="CaptionButtonBackgroundInactive" ResourceKey="SubtleFillColorTransparentBrush" />
             
+            <StaticResource x:Key="CaptionButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="CaptionButtonForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="CaptionButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="CaptionButtonForegroundInactive" ResourceKey="TextFillColorDisabledBrush" />
+
+            <!--FAAppWindow Only-->
+            <StaticResource x:Key="TitleBarBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TitleBarForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TitleBarBackgroundInactive" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TitleBarForegroundInactive" ResourceKey="TextFillColorDisabledBrush" />
             
         </ResourceDictionary>
         
@@ -5698,6 +5874,87 @@
             <Thickness x:Key="BreadcrumbBarEllipsisFlyoutPresenterBorderThemeThickness">2</Thickness>
             <StaticResource x:Key="BreadcrumbBarItemThemeFontSize" ResourceKey="ControlContentThemeFontSize" />
             <x:Double x:Key="BreadcrumbBarChevronFontSize">12</x:Double>
+
+            <!-- GroupBox -->
+            <Thickness x:Key="GroupBoxPadding">4</Thickness>
+            <x:Double x:Key="GroupBoxHeaderFontSize">12</x:Double>
+            <Thickness x:Key="GroupBoxHeaderMargin">0,4,0,12</Thickness>
+            <Thickness x:Key="GroupBoxBorderThickness">1</Thickness>
+            <StaticResource x:Key="GroupBoxBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="GroupBoxBorderBrush" ResourceKey="ControlStrokeColorDefaultBrush" />
+            <StaticResource x:Key="GroupBoxHeaderForeground" ResourceKey="TextFillColorSecondaryBrush" />
+
+            <!-- TabbedPage -->
+            <!-- Backgrounds -->
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselected" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelected" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundUnselectedPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundSelectedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderBackgroundDisabled" ResourceKey="SubtleFillColorDisabledBrush" />
+            <StaticResource x:Key="TabbedPageTabItemSelectionIndicatorBackground" ResourceKey="AccentFillColorDefaultBrush" />
+            <!-- Foregrounds (override via TabbedPageTabItemHeaderForegroundSelected / TabbedPageTabItemHeaderForegroundUnselected resources) -->
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundUnselected" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TabbedPageTabItemHeaderForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+            <x:Double x:Key="TabbedPageTabItemHeaderPipeThickness">2</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderVerticalPipeHeight">18</x:Double>
+            <CornerRadius x:Key="TabbedPageTabItemHeaderIndicatorCornerRadius">4</CornerRadius>
+            <Thickness x:Key="TabbedPageTabItemHeaderIndicatorMargin">2 0</Thickness>
+            <!-- Tab item sizing & shape -->
+            <x:Double x:Key="TabbedPageTabItemHeaderMinHeight">48</x:Double>
+            <StaticResource x:Key="TabbedPageTabItemHeaderCornerRadius" ResourceKey="ControlCornerRadius" />
+            <Thickness x:Key="TabbedPageTabItemHeaderPadding">8,4</Thickness>
+            <Thickness x:Key="TabbedPageTabItemHeaderMargin">0</Thickness>
+            <!-- Icon + text header layout -->
+            <x:Double x:Key="TabbedPageTabItemHeaderIconSize">20</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderFontSize">14</x:Double>
+            <x:Double x:Key="TabbedPageTabItemHeaderSpacing">4</x:Double>
+            <!-- Tab strip (bar) styling -->
+            <StaticResource x:Key="TabbedPageTabStripBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <CornerRadius x:Key="TabbedPageTabStripCornerRadius">0</CornerRadius>
+            <Thickness x:Key="TabbedPageTabStripBorderThickness">0</Thickness>
+            <StaticResource x:Key="TabbedPageTabStripBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
+            <Thickness x:Key="TabbedPageTabStripMargin">0</Thickness>
+            <Thickness x:Key="TabbedPageTabStripPadding">0</Thickness>
+
+            <!-- PipsPager -->
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundPressed" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundSelected" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBackgroundDisabled" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrush" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushPressed" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushSelected" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorBorderBrushDisabled" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForeground" ResourceKey="SystemColorButtonTextColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundSelected" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="PipsPagerSelectionIndicatorForegroundDisabled" ResourceKey="SystemColorGrayTextColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundPointerOver" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundPressed" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBackgroundDisabled" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrush" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushPressed" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonBorderBrushDisabled" ResourceKey="SystemColorButtonFaceColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForeground" ResourceKey="SystemColorButtonTextColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundPressed" ResourceKey="SystemColorHighlightColorBrush" />
+            <StaticResource x:Key="PipsPagerNavigationButtonForegroundDisabled" ResourceKey="SystemColorGrayTextColorBrush" />
+
+
+            <!-- Window Decorations -->
+            <StaticResource x:Key="CaptionButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPointerOver" Color="Black" Opacity="0.09" />
+            <SolidColorBrush x:Key="CaptionButtonBackgroundPressed" Color="Black" Opacity="0.20" />
+
+            <SolidColorBrush x:Key="CaptionButtonForeground" Color="Black" />
             
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
@@ -5731,7 +5988,7 @@
     <avconv:CornerRadiusFilterConverter x:Key="LeftCornerRadiusFilterConverter" Filter="TopLeft, BottomLeft"/>
     <avconv:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
 
-    <conv:ColorToBrushConv x:Key="ColorBrushConv" />
+    <conv:FAColorToBrushConv x:Key="ColorBrushConv" />
 
     <x:String x:Key="ChevronDownGlyph">&#xE70D;</x:String>
     <x:String x:Key="ChevronUpGlyph">&#xE70E;</x:String>

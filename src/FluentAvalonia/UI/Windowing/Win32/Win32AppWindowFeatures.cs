@@ -7,14 +7,14 @@ using static FluentAvalonia.Interop.Win32Interop;
 
 namespace FluentAvalonia.UI.Windowing;
 
-internal class Win32AppWindowFeatures : IAppWindowPlatformFeatures
+internal class Win32AppWindowFeatures : IFAAppWindowPlatformFeatures
 {
-    public Win32AppWindowFeatures(AppWindow owner)
+    public Win32AppWindowFeatures(FAAppWindow owner)
     {
         _owner = owner;
     }
 
-    public void SetTaskBarProgressBarState(TaskBarProgressBarState state)
+    public void SetTaskBarProgressBarState(FATaskBarProgressBarState state)
     {
         if (_taskBarList == null)
         {
@@ -76,6 +76,6 @@ internal class Win32AppWindowFeatures : IAppWindowPlatformFeatures
         }
     }
 
-    private AppWindow _owner;
+    private FAAppWindow _owner;
     private ITaskbarList3 _taskBarList;
 }

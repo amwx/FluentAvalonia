@@ -7,17 +7,17 @@ public class StandardUICommandPageViewModel : ViewModelBase
 {
     public StandardUICommandPageViewModel()
     {
-        var coms = Enum.GetValues<StandardUICommandKind>();
+        var coms = Enum.GetValues<FAStandardUICommandKind>();
         StandardCommands = new List<StandardCommandItem>(coms.Length);
         foreach (var item in coms)
         {
-            if (item == StandardUICommandKind.None)
+            if (item == FAStandardUICommandKind.None)
                 continue;
 
             StandardCommands.Add(new StandardCommandItem
             {
                 Name = item.ToString(),
-                Command = new StandardUICommand(item)
+                Command = new FAStandardUICommand(item)
             });
         }
 
@@ -51,5 +51,5 @@ public class StandardUICommandPageViewModel : ViewModelBase
 public class StandardCommandItem
 {
     public string Name { get; set; }
-    public StandardUICommand Command { get; set; }
+    public FAStandardUICommand Command { get; set; }
 }

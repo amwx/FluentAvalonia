@@ -189,7 +189,7 @@
                                 <Button DockPanel.Dock="Left"
                                         Theme="{StaticResource TransparentButton}"
                                         Margin="0">
-                                    <ui:SymbolIcon Symbol="Up"
+                                    <ui:FASymbolIcon Symbol="Up"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Margin="0,1,0,-1"
@@ -213,7 +213,7 @@
                                               SelectedItem="{Binding SelectedFilter}"
                                               Margin="2 0 0 0"/>
                                     <TextBox Text="{Binding FileName}" 
-                                             Watermark="File name" 
+                                             PlaceholderText="File name" 
                                              IsVisible="{Binding !SelectingFolder}"
                                              Margin="0 0 2 0"/>
                                 </DockPanel>

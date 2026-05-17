@@ -11,7 +11,7 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
 
     public Rect LastExtent => _lastExtent;
 
-    public void InitializeForContext(VirtualizingLayoutContext context,
+    public void InitializeForContext(FAVirtualizingLayoutContext context,
         IFlowLayoutAlgorithmDelegates callbacks)
     {
         _algorithmCallbacks = callbacks;
@@ -19,7 +19,7 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
         _elementManager.SetContext(context);
     }
 
-    public void UninitializeForContext(VirtualizingLayoutContext context)
+    public void UninitializeForContext(FAVirtualizingLayoutContext context)
     {
         if (IsVirtualizingContext())
         {
@@ -30,7 +30,7 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
         context.LayoutStateCore = null;
     }
 
-    public Size Measure(Size availableSize, VirtualizingLayoutContext context,
+    public Size Measure(Size availableSize, FAVirtualizingLayoutContext context,
         bool isWrapping, double minItemSpacing, double lineSpacing,
         int maxItemsPerLine, ScrollOrientation orientation,
         bool disableVirtualization, string layoutId)
@@ -86,7 +86,7 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
         return _lastExtent.Size;
     }
 
-    public Size Arrange(Size finalSize, VirtualizingLayoutContext context,
+    public Size Arrange(Size finalSize, FAVirtualizingLayoutContext context,
         bool isWrapping, LineAlignment lineAlignment,
         string layoutId)
     {
@@ -100,7 +100,7 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
             Math.Max(finalSize.Height, _lastExtent.Height));
     }
 
-    public void MakeAnchor(VirtualizingLayoutContext context, int index, Size availableSize)
+    public void MakeAnchor(FAVirtualizingLayoutContext context, int index, Size availableSize)
     {
         _elementManager.ClearRealizedRange();
         // FlowLayout requires that the anchor is the first element in the row.
@@ -115,21 +115,21 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
         for (int dataIndex = internalAnchor.Index; dataIndex < index + 1; dataIndex++)
         {
             var element = context.GetOrCreateElementAt(dataIndex,
-                ElementRealizationOptions.ForceCreate | ElementRealizationOptions.SuppressAutoRecycle);
+                FAElementRealizationOptions.ForceCreate | FAElementRealizationOptions.SuppressAutoRecycle);
             element.Measure(_algorithmCallbacks.Algorithm_GetMeasureSize(dataIndex, availableSize, context));
             _elementManager.Add(element, dataIndex);
         }
     }
 
     public void OnItemsSourceChanged(object source, NotifyCollectionChangedEventArgs args,
-        VirtualizingLayoutContext context)
+        FAVirtualizingLayoutContext context)
     {
         _elementManager.DataSourceChanged(source, args);
         _collectionChangePending = true;
     }
 
     public Size MeasureElement(Control element, int index, Size availableSize,
-        VirtualizingLayoutContext context)
+        FAVirtualizingLayoutContext context)
     {
         var measureSize = _algorithmCallbacks.Algorithm_GetMeasureSize(index, availableSize, context);
         element.Measure(measureSize);
@@ -256,7 +256,7 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
                 // Disconnected, throw everything and create new anchor
                 _elementManager.ClearRealizedRange();
                 var anchor = _context.GetOrCreateElementAt(anchorIndex,
-                    ElementRealizationOptions.ForceCreate | ElementRealizationOptions.SuppressAutoRecycle);
+                    FAElementRealizationOptions.ForceCreate | FAElementRealizationOptions.SuppressAutoRecycle);
                 _elementManager.Add(anchor, anchorIndex);
             }
 
@@ -746,7 +746,7 @@ internal class FlowLayoutAlgorithm : IOrientationBasedMeasures
     private Size _lastAvailableSize;
     private double _lastItemSpacing;
     private bool _collectionChangePending;
-    private VirtualizingLayoutContext _context;
+    private FAVirtualizingLayoutContext _context;
     private IFlowLayoutAlgorithmDelegates _algorithmCallbacks;
     private Rect _lastExtent;
     private int _firstRealizedDataIndexInsideRealizationWindow = -1;

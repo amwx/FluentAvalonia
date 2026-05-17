@@ -6,14 +6,14 @@
     <Design.PreviewWith>
         <Border Padding="50">
             <ui:FAMenuFlyoutPresenter>
-                <ui:MenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
+                <ui:FAMenuFlyoutItem Text="Hello" IconSource="SaveFilled" InputGesture="Ctrl+k"/>
             </ui:FAMenuFlyoutPresenter>
         </Border>
     </Design.PreviewWith>
 
     <!-- All resources are in BaseResources.axaml -->
 
-    <ControlTheme x:Key="{x:Type ui:MenuFlyoutItem}" TargetType="ui:MenuFlyoutItem">
+    <ControlTheme x:Key="{x:Type ui:FAMenuFlyoutItem}" TargetType="ui:FAMenuFlyoutItem">
         <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource MenuFlyoutItemBackgroundBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutItemBorderThickness}"/>

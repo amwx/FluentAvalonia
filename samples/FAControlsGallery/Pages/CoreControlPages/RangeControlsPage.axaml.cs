@@ -12,7 +12,7 @@ public partial class RangeControlsPage : ControlsPageBase
 
         ControlName = "Range Controls";
         App.Current.Resources.TryGetResource("RangePageIcon", null, out var icon);
-        PreviewImage = (IconSource)icon;
+        PreviewImage = (FAIconSource)icon;
 
         this.FindControl<ButtonSpinner>("TargetButtonSpinner").Spin += (s, e) =>
         {

@@ -7,8 +7,6 @@ namespace FluentAvalonia.UI.Data;
 /// <summary>
 /// Contains the data a user want to exchange
 /// </summary>
-/// <remarks>This class is a wrapper around Avalonia's <see cref="IDataTransfer"/> API to
-/// keep things more inline with WinUI</remarks>
 public sealed class DataPackage : IDataTransfer, IAsyncDataTransfer
 {
     public DataPackage()

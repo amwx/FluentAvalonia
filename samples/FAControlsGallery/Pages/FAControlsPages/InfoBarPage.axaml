@@ -10,8 +10,8 @@
              x:Class="FAControlsGallery.Pages.InfoBarPage"
              x:DataType="vm:InfoBarPageViewModel">
     <StackPanel Spacing="8">
-        <ctrls:ControlExample Header="A Closable InfoBar with Options to Change its Severity">
-            <ui:InfoBar Name="Bar1"
+        <ctrls:ControlExample Header="A Closable FAInfoBar with Options to Change its Severity">
+            <ui:FAInfoBar Name="Bar1"
                         Title="Title"
                         Message="Essential app message for your users to be informed of, acknowledge, or take action on."
                         IsOpen="True"
@@ -23,17 +23,17 @@
                     <ComboBox Name="SevList1" 
                               SelectedIndex="0"
                               HorizontalAlignment="Stretch">
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Informational}" />
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Success}" />
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Warning}" />
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Error}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Informational}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Success}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Warning}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Error}" />
                     </ComboBox>
                 </StackPanel>
             </ctrls:ControlExample.Options>
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:InfoBar Title="Title" IsOpen="$(Open)" Severity="$(Severity)" Message="Essential app message for your users to be informed of, acknowledge, or take action on." /&gt;
+&lt;ui:FAInfoBar Title="Title" IsOpen="$(Open)" Severity="$(Severity)" Message="Essential app message for your users to be informed of, acknowledge, or take action on." /&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 
@@ -45,8 +45,8 @@
         </ctrls:ControlExample>
 
 
-        <ctrls:ControlExample Header="A Closable InfoBar with a long or short message and various buttons">
-            <ui:InfoBar Name="Bar2"
+        <ctrls:ControlExample Header="A Closable FAInfoBar with a long or short message and various buttons">
+            <ui:FAInfoBar Name="Bar2"
                         Title="Title"
                         Message="{Binding Bar2CurrentMessage}"
                         IsOpen="True" />
@@ -75,9 +75,9 @@
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:InfoBar Title="Title" IsOpen="$(Open)" Message="$(Message)"&gt;
+&lt;ui:FAInfoBar Title="Title" IsOpen="$(Open)" Message="$(Message)"&gt;
 $(Action)
-&lt;/ui:InfoBar&gt;
+&lt;/ui:FAInfoBar&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 
@@ -90,8 +90,8 @@ $(Action)
         </ctrls:ControlExample>
 
 
-        <ctrls:ControlExample Header="A Closable InfoBar with Options to Display the Close Button and Icon">
-            <ui:InfoBar Name="Bar3"
+        <ctrls:ControlExample Header="A Closable FAInfoBar with Options to Display the Close Button and Icon">
+            <ui:FAInfoBar Name="Bar3"
                         Title="Title"
                         Message="Essential app message for your users to be informed of, acknowledge, or take action on."
                         IsOpen="True" />
@@ -106,7 +106,7 @@ $(Action)
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:InfoBar Title="Title" IsOpen="$(Open)" IsIconVisible="$(Icon)" IsClosable="$(Close)" Message="Essential app message for your users to be informed of, acknowledge, or take action on." /&gt;
+&lt;ui:FAInfoBar Title="Title" IsOpen="$(Open)" IsIconVisible="$(Icon)" IsClosable="$(Close)" Message="Essential app message for your users to be informed of, acknowledge, or take action on." /&gt;
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 
@@ -118,15 +118,15 @@ $(Action)
 
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="InfoBar API in Action">
+        <ctrls:ControlExample Header="FAInfoBar API in Action">
 
-            <ui:InfoBar Name="Bar4"
+            <ui:FAInfoBar Name="Bar4"
                             Title="Title"
                             Message="Message"
                             IsOpen="True"
                             Severity="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=SevList2, Mode=TwoWay}">
                 <CheckBox Content="Custom Content" IsVisible="{Binding #Bar4CustomContent.IsChecked}" />
-            </ui:InfoBar>
+            </ui:FAInfoBar>
 
             <ctrls:ControlExample.Options>
                 <StackPanel>
@@ -153,10 +153,10 @@ $(Action)
                     <ComboBox Name="SevList2"
                               SelectedIndex="0"
                               HorizontalAlignment="Stretch">
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Informational}" />
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Success}" />
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Warning}" />
-                        <ComboBoxItem Content="{x:Static ui:InfoBarSeverity.Error}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Informational}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Success}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Warning}" />
+                        <ComboBoxItem Content="{x:Static ui:FAInfoBarSeverity.Error}" />
                     </ComboBox>
 
                     <TextBlock Text="Title" />

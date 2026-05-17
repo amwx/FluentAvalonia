@@ -12,7 +12,7 @@
              ScrollViewer.VerticalScrollBarVisibility="Auto">
 
     <UserControl.Resources>
-        <data:CollectionViewSource Source="{Binding Icons^}"
+        <data:FACollectionViewSource Source="{Binding Icons^}"
                                    Filter="{Binding Filter}"
                                    x:Key="IconsSource"/>
 
@@ -36,7 +36,7 @@
                             ToolTip.Tip="{Binding Name}"
                             BackgroundSizing="InnerBorderEdge">
                         <Panel x:DataType="vm:FontIconInfo">
-                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            <ui:FAFontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          Glyph="{Binding Glyph}"
                                          FontSize="28"
                                          VerticalAlignment="Center"
@@ -82,7 +82,7 @@
                  Watermark="Search Icons"
                  Margin="12">
             <TextBox.InnerRightContent>
-                <ui:SymbolIcon Symbol="Find"
+                <ui:FASymbolIcon Symbol="Find"
                                Margin="8 0"
                                FontSize="18"/>
             </TextBox.InnerRightContent>
@@ -90,24 +90,24 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Disabled"
                       Grid.Row="4">
-            <ui:ItemsRepeater Grid.Row="4" 
+            <ui:FAItemsRepeater Grid.Row="4" 
                            ItemsSource="{Binding Source={StaticResource IconsSource}, Path=View}"
                            Name="IconPreview">
-                <ui:ItemsRepeater.Layout>
-                    <ui:FlowLayout Orientation="Horizontal" />
-                </ui:ItemsRepeater.Layout>
-                <ui:ItemsRepeater.ItemTemplate>
+                <ui:FAItemsRepeater.Layout>
+                    <ui:FAFlowLayout Orientation="Horizontal" />
+                </ui:FAItemsRepeater.Layout>
+                <ui:FAItemsRepeater.ItemTemplate>
                     <DataTemplate DataType="vm:FontIconInfo">
                         <ListBoxItem Theme="{StaticResource IconItem}"
                                      Content="{Binding }"/>
                     </DataTemplate>
-                </ui:ItemsRepeater.ItemTemplate>
-            </ui:ItemsRepeater>
+                </ui:FAItemsRepeater.ItemTemplate>
+            </ui:FAItemsRepeater>
         </ScrollViewer>
 
-        <ui:TeachingTip Name="IconInfoTip"
+        <ui:FATeachingTip Name="IconInfoTip"
                         PreferredPlacement="Right">
-            <ui:TeachingTip.ContentTemplate>
+            <ui:FATeachingTip.ContentTemplate>
                 <DataTemplate DataType="vm:FontIconInfo">
                     <StackPanel Spacing="8">
                         <TextBlock Text="Icon Name" />
@@ -138,8 +138,9 @@
                                    TextWrapping="Wrap"/>
                     </StackPanel>
                 </DataTemplate>
-            </ui:TeachingTip.ContentTemplate>
-        </ui:TeachingTip>
+            </ui:FATeachingTip.ContentTemplate>
+        </ui:FATeachingTip>
 
-    </Grid>
+    
+</Grid>
 </UserControl>

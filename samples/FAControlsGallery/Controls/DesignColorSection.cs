@@ -9,7 +9,7 @@ namespace FAControlsGallery.Controls;
 public class DesignColorSection : HeaderedContentControl
 {
     public static readonly StyledProperty<string> DescriptionProperty =
-        SettingsExpander.DescriptionProperty.AddOwner<DesignColorSection>();
+        FASettingsExpander.DescriptionProperty.AddOwner<DesignColorSection>();
 
     public static readonly DirectProperty<DesignColorSection, IList<ColorTile>> TilesProperty =
         AvaloniaProperty.RegisterDirect<DesignColorSection, IList<ColorTile>>(nameof(Tiles),

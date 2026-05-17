@@ -96,7 +96,7 @@
     </ControlTheme>
 
     <ControlTemplate x:Key="InlineBreadcrumbBarItemTemplate"
-                     TargetType="ui:BreadcrumbBarItem">
+                     TargetType="ui:FABreadcrumbBarItem">
         <Border Name="LayoutRoot" CornerRadius="{TemplateBinding CornerRadius}">
             <Grid Name="PART_LayoutRoot">
                 <Grid.ColumnDefinitions>
@@ -204,7 +204,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="EllipsisDropDownBreadcrumbBarItemTemplate"
-                     TargetType="ui:BreadcrumbBarItem">
+                     TargetType="ui:FABreadcrumbBarItem">
         <Border Name="LayoutRoot" 
                 CornerRadius="{TemplateBinding CornerRadius}"
                 TemplatedControl.IsTemplateFocusTarget="True"
@@ -232,8 +232,8 @@
         </Border>
     </ControlTemplate>
 
-    <ControlTheme TargetType="ui:BreadcrumbBarItem"
-                  x:Key="{x:Type ui:BreadcrumbBarItem}">
+    <ControlTheme TargetType="ui:FABreadcrumbBarItem"
+                  x:Key="{x:Type ui:FABreadcrumbBarItem}">
         <Setter Property="Background" Value="{DynamicResource BreadcrumbBarBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource BreadcrumbBarBorderBrush}" />
         <!--<Setter Property="FocusVisualMargin" Value="1" />-->

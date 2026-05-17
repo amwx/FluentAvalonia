@@ -30,31 +30,31 @@ Known issues:
 
         <ctrls:ControlExample Header="Default NavigationView"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/NavView1.xaml.txt">
-            <ui:NavigationView x:Name="nvSample1" Height="460" PaneDisplayMode="Left">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play"/>
-                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" IconSource="Save" />
-                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
-                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" IconSource="Download" />
-                </ui:NavigationView.MenuItems>
-            </ui:NavigationView>
+            <ui:FANavigationView x:Name="nvSample1" Height="460" PaneDisplayMode="Left">
+                <ui:FANavigationView.MenuItems>
+                    <ui:FANavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play"/>
+                    <ui:FANavigationViewItem Content="Menu Item2" Tag="SamplePage2" IconSource="Save" />
+                    <ui:FANavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
+                    <ui:FANavigationViewItem Content="Menu Item4" Tag="SamplePage4" IconSource="Download" />
+                </ui:FANavigationView.MenuItems>
+            </ui:FANavigationView>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="Adaptive NavigationView"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/NavView2.xaml.txt">
-            <ui:NavigationView x:Name="nvSample2" Height="460" PaneDisplayMode="Auto">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play"/>
-                    <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" IconSource="Save" />
-                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
-                    <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" IconSource="Download" />
-                </ui:NavigationView.MenuItems>
-            </ui:NavigationView>
+            <ui:FANavigationView x:Name="nvSample2" Height="460" PaneDisplayMode="Auto">
+                <ui:FANavigationView.MenuItems>
+                    <ui:FANavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play"/>
+                    <ui:FANavigationViewItem Content="Menu Item2" Tag="SamplePage2" IconSource="Save" />
+                    <ui:FANavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
+                    <ui:FANavigationViewItem Content="Menu Item4" Tag="SamplePage4" IconSource="Download" />
+                </ui:FANavigationView.MenuItems>
+            </ui:FANavigationView>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="Binding to a NavigationView"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/NavView3.xaml.txt">
-            <ui:NavigationView x:Name="nvSample3" Height="460"
+            <ui:FANavigationView x:Name="nvSample3" Height="460"
                                            PaneDisplayMode="LeftCompact"
                                            MenuItemsSource="{Binding Categories}"
                                            Content="{Binding CurrentPage}"
@@ -62,13 +62,13 @@ Known issues:
 
                 <!--
 				If you only need NavigationViewItems, you can just set the ItemTemplate:
-				<ui:NavigationView.MenuItemTemplate>
+				<ui:FANavigationView.MenuItemTemplate>
                     <DataTemplate DataType="{x:Type vm:Category}">
-                        <ui:NavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+                        <ui:FANavigationViewItem Content="{Binding Name}" Icon="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
                     </DataTemplate>
-                </ui:NavigationView.MenuItemTemplate>
+                </ui:FANavigationView.MenuItemTemplate>
                 -->
-                <ui:NavigationView.MenuItemTemplateSelector>
+                <ui:FANavigationView.MenuItemTemplateSelector>
                     <!-- 
                     If you need to bind to multiple different containers,
 				    like including separators, you'll need to use a DataTemplateSelector
@@ -81,67 +81,67 @@ Known issues:
 						MenuItemTemplateSelector
 						-->
                         <DataTemplate DataType="{x:Type vm:Category}">
-                            <ui:NavigationViewItem Content="{Binding Name}" IconSource="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+                            <ui:FANavigationViewItem Content="{Binding Name}" IconSource="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
                         </DataTemplate>
 
                         <vm:MenuItemTemplateSelector.SeparatorTemplate>
                             <DataTemplate DataType="{x:Type vm:Separator}">
-                                <ui:NavigationViewItemSeparator />
+                                <ui:FANavigationViewItemSeparator />
                             </DataTemplate>
                         </vm:MenuItemTemplateSelector.SeparatorTemplate>
                     </vm:MenuItemTemplateSelector>
-                </ui:NavigationView.MenuItemTemplateSelector>               
+                </ui:FANavigationView.MenuItemTemplateSelector>               
                 
-            </ui:NavigationView>
+            </ui:FANavigationView>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="Hierarchical NavigationView"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/NavView4.xaml.txt">
-            <ui:NavigationView x:Name="nvSample4" PaneDisplayMode="Left" Height="460">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Home" Tag="SamplePage1" IconSource="Home" />
-                    <ui:NavigationViewItem Content="Account" Tag="SamplePage2" IconSource="Home">
-                        <ui:NavigationViewItem.MenuItems>
-                            <ui:NavigationViewItem Content="Mail" IconSource="Mail" Tag="SamplePage3" />
-                            <ui:NavigationViewItem Content="Calendar" IconSource="Calendar" Tag="SamplePage4" />
-                        </ui:NavigationViewItem.MenuItems>
-                    </ui:NavigationViewItem>
-                    <ui:NavigationViewItem Content="Document options" Tag="SamplePage3" IconSource="Document" SelectsOnInvoked="False">
-                        <ui:NavigationViewItem.MenuItems>
-                            <ui:NavigationViewItem Content="Create new" IconSource="New" Tag="SamplePage5" />
-                            <ui:NavigationViewItem Content="Upload file" IconSource="Upload" Tag="SamplePage6" />
-                        </ui:NavigationViewItem.MenuItems>
-                    </ui:NavigationViewItem>
-                </ui:NavigationView.MenuItems>
-            </ui:NavigationView>
+            <ui:FANavigationView x:Name="nvSample4" PaneDisplayMode="Left" Height="460">
+                <ui:FANavigationView.MenuItems>
+                    <ui:FANavigationViewItem Content="Home" Tag="SamplePage1" IconSource="Home" />
+                    <ui:FANavigationViewItem Content="Account" Tag="SamplePage2" IconSource="Home">
+                        <ui:FANavigationViewItem.MenuItems>
+                            <ui:FANavigationViewItem Content="Mail" IconSource="Mail" Tag="SamplePage3" />
+                            <ui:FANavigationViewItem Content="Calendar" IconSource="Calendar" Tag="SamplePage4" />
+                        </ui:FANavigationViewItem.MenuItems>
+                    </ui:FANavigationViewItem>
+                    <ui:FANavigationViewItem Content="Document options" Tag="SamplePage3" IconSource="Document" SelectsOnInvoked="False">
+                        <ui:FANavigationViewItem.MenuItems>
+                            <ui:FANavigationViewItem Content="Create new" IconSource="New" Tag="SamplePage5" />
+                            <ui:FANavigationViewItem Content="Upload file" IconSource="Upload" Tag="SamplePage6" />
+                        </ui:FANavigationViewItem.MenuItems>
+                    </ui:FANavigationViewItem>
+                </ui:FANavigationView.MenuItems>
+            </ui:FANavigationView>
         </ctrls:ControlExample> 
 
         <ctrls:ControlExample Header="NavigationView with FooterMenuItems"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/NavView5.xaml.txt">
-            <ui:NavigationView x:Name="nvSample5"
+            <ui:FANavigationView x:Name="nvSample5"
                                Height="460"
                                Header="This is Header Text"
                                PaneDisplayMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=DispModeBox}"
                                IsTabStop="False"
                                IsSettingsVisible="False">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Browse" Tag="SamplePage1" IconSource="Library" />
-                    <ui:NavigationViewItem Content="Track an Order" Tag="SamplePage2" IconSource="Map" />
-                    <ui:NavigationViewItem Content="Order History" Tag="SamplePage3" IconSource="Tag" />
-                </ui:NavigationView.MenuItems>
-                <ui:NavigationView.FooterMenuItems>
-                    <ui:NavigationViewItem Content="Account" Tag="SamplePage4" IconSource="Contact" />
-                    <ui:NavigationViewItem Content="Your Cart" Tag="SamplePage5" IconSource="Shop" />
-                    <ui:NavigationViewItem Content="Help" Tag="SamplePage6" IconSource="Help" />
-                </ui:NavigationView.FooterMenuItems>
-            </ui:NavigationView>
+                <ui:FANavigationView.MenuItems>
+                    <ui:FANavigationViewItem Content="Browse" Tag="SamplePage1" IconSource="Library" />
+                    <ui:FANavigationViewItem Content="Track an Order" Tag="SamplePage2" IconSource="Map" />
+                    <ui:FANavigationViewItem Content="Order History" Tag="SamplePage3" IconSource="Tag" />
+                </ui:FANavigationView.MenuItems>
+                <ui:FANavigationView.FooterMenuItems>
+                    <ui:FANavigationViewItem Content="Account" Tag="SamplePage4" IconSource="Contact" />
+                    <ui:FANavigationViewItem Content="Your Cart" Tag="SamplePage5" IconSource="Shop" />
+                    <ui:FANavigationViewItem Content="Help" Tag="SamplePage6" IconSource="Help" />
+                </ui:FANavigationView.FooterMenuItems>
+            </ui:FANavigationView>
 
             <ctrls:ControlExample.Options>
                 <StackPanel>
                     <TextBlock Text="Display Mode" />
                     <ComboBox MinWidth="125" SelectedIndex="0" Name="DispModeBox">
-                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Left}" />
-                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Top}" />
+                        <ComboBoxItem Content="{x:Static ui:FANavigationViewPaneDisplayMode.Left}" />
+                        <ComboBoxItem Content="{x:Static ui:FANavigationViewPaneDisplayMode.Top}" />
                     </ComboBox>
                 </StackPanel>
             </ctrls:ControlExample.Options>
@@ -154,31 +154,31 @@ Known issues:
 
         <ctrls:ControlExample Header="NavigationView API in Action"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/NavView6.xaml.txt">
-            <ui:NavigationView x:Name="nvSample6" Height="460"
+            <ui:FANavigationView x:Name="nvSample6" Height="460"
                                PaneDisplayMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=DispModeAPIBox}">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play" />
-                    <ui:NavigationViewItemHeader Content="Actions" />
-                    <ui:NavigationViewItem Name="MenuItem2" Content="Menu Item2" Tag="SamplePage2" IconSource="Download" />
-                    <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
-                </ui:NavigationView.MenuItems>
+                <ui:FANavigationView.MenuItems>
+                    <ui:FANavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play" />
+                    <ui:FANavigationViewItemHeader Content="Actions" />
+                    <ui:FANavigationViewItem Name="MenuItem2" Content="Menu Item2" Tag="SamplePage2" IconSource="Download" />
+                    <ui:FANavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" />
+                </ui:FANavigationView.MenuItems>
 
-                <ui:NavigationView.AutoCompleteBox>
+                <ui:FANavigationView.AutoCompleteBox>
                     <AutoCompleteBox />
-                </ui:NavigationView.AutoCompleteBox>
+                </ui:FANavigationView.AutoCompleteBox>
 
-                <ui:NavigationView.PaneCustomContent>
+                <ui:FANavigationView.PaneCustomContent>
                     <TextBlock Name="PaneHyperlink" TextDecorations="Underline" Text="More Info" IsVisible="False" />
-                </ui:NavigationView.PaneCustomContent>
+                </ui:FANavigationView.PaneCustomContent>
 
-                <ui:NavigationView.PaneFooter>
+                <ui:FANavigationView.PaneFooter>
                     <StackPanel Name="FooterStackPanel" Orientation="Vertical" IsVisible="False">
-                        <ui:NavigationViewItem IconSource="Download" />
-                        <ui:NavigationViewItem IconSource="Alert" />
+                        <ui:FANavigationViewItem IconSource="Download" />
+                        <ui:FANavigationViewItem IconSource="Alert" />
                     </StackPanel>
-                </ui:NavigationView.PaneFooter>
+                </ui:FANavigationView.PaneFooter>
 
-            </ui:NavigationView>
+            </ui:FANavigationView>
 
             <ctrls:ControlExample.Options>
                 <StackPanel Grid.Column="1">
@@ -194,10 +194,10 @@ Known issues:
                     <CheckBox Content="PaneFooter visible" IsChecked="{Binding ElementName=FooterStackPanel, Path=IsVisible, Mode=TwoWay}"/>
                     <TextBlock Text="PanePosition" />
                     <ComboBox Name="DispModeAPIBox" SelectedIndex="0" MinWidth="125">
-                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Left}" />
-                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.LeftCompact}" />
-                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.LeftMinimal}" />
-                        <ComboBoxItem Content="{x:Static ui:NavigationViewPaneDisplayMode.Top}" />
+                        <ComboBoxItem Content="{x:Static ui:FANavigationViewPaneDisplayMode.Left}" />
+                        <ComboBoxItem Content="{x:Static ui:FANavigationViewPaneDisplayMode.LeftCompact}" />
+                        <ComboBoxItem Content="{x:Static ui:FANavigationViewPaneDisplayMode.LeftMinimal}" />
+                        <ComboBoxItem Content="{x:Static ui:FANavigationViewPaneDisplayMode.Top}" />
                     </ComboBox>
                     <TextBlock Text="PaneTitle" />
                     <CheckBox IsVisible="False" Content="Keyboard SelectionFollowsFocus" IsChecked="{Binding ElementName=nvSample6, Path=SelectionFollowsFocus, Mode=TwoWay}"/>

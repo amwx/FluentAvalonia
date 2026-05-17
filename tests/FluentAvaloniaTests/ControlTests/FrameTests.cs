@@ -1,436 +1,412 @@
-﻿//using System;
-//using Avalonia;
-//using Avalonia.Controls;
-//using Avalonia.Markup.Xaml;
-//using Avalonia.Styling;
-//using FluentAvalonia.UI.Controls;
-//using FluentAvalonia.UI.Navigation;
-//using FluentAvaloniaTests.Helpers;
-//using Xunit;
-
-//namespace FluentAvaloniaTests.ControlTests;
-
-//public class FrameTestsContext : IDisposable
-//{
-//    public FrameTestsContext()
-//    {
-//        _appDisposable = UnitTestApplication.Start();
-
-//        CreateFrame();
-//    }
-
-//    public Frame Frame { get; private set; }
-
-//    public TestRoot Root { get; private set; }
-
-//    public void Dispose()
-//    {
-//        _appDisposable.Dispose();
-//    }
-
-//    public void ResetFrame()
-//    {
-//        Frame = new Frame();
-
-//        Root.Child = Frame;
-
-//        Root.LayoutManager.ExecuteInitialLayoutPass();
-//        Root.LayoutManager.ExecuteLayoutPass();
-//    }
-
-//    private void CreateFrame()
-//    {
-//        Root = new TestRoot(new Size(1280, 720));
-//        Root.StylingParent = UnitTestApplication.Current;
-
-//       // UnitTestApplication.Current.Styles.Add(
-//       //     (IStyle)AvaloniaXamlLoader.Load(new Uri("avares://FluentAvalonia/Styling/Controls/FrameStyles.axaml")));
-
-//        Frame = new Frame();
-
-//        Root.Child = Frame;
-
-//        Root.LayoutManager.ExecuteInitialLayoutPass();
-//        Root.LayoutManager.ExecuteLayoutPass();
-//    }
-
-//    private IDisposable _appDisposable;
-//}
-
-//public class FrameTests : IClassFixture<FrameTestsContext>
-//{
-//    public FrameTests(FrameTestsContext ctx)
-//    {
-//        Context = ctx;
-//    }
-
-//    public FrameTestsContext Context { get; }
-
-//    [Fact]
-//    public void NavigateWorks()
-//    {
-//        Context.ResetFrame();
-//        Context.Frame.Navigate(typeof(TestPage1));
-
-//        Assert.IsType<TestPage1>(Context.Frame.Content);
-//    }
-
-//    [Fact]
-//    public void NavigatingIsCalledBeforeNavigated()
-//    {
-//        Context.ResetFrame();
-//        bool calledNavigating = false;
-//        bool calledNavigated = false;
-//        void OnNavigating(object sender, NavigatingCancelEventArgs args)
-//        {
-//            Assert.False(calledNavigated);
-//            calledNavigating = true;
-//        }
+﻿using System;
+using Avalonia.Controls;
+using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
+using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Navigation;
+using Xunit;
+
+namespace FluentAvaloniaTests.ControlTests;
+
+
+public class FrameTests 
+{
+    [AvaloniaFact]
+    public void NavigateWorks()
+    {
+        var Context = GetTestContext();
+        Context.Frame.Navigate(typeof(TestPage1));
+
+        Assert.IsType<TestPage1>(Context.Frame.Content);
+    }
+
+    [AvaloniaFact]
+    public void NavigatingIsCalledBeforeNavigated()
+    {
+        var Context = GetTestContext();
+        bool calledNavigating = false;
+        bool calledNavigated = false;
+        void OnNavigating(object sender, FANavigatingCancelEventArgs args)
+        {
+            Assert.False(calledNavigated);
+            calledNavigating = true;
+        }
+
+        void OnNavigated(object sender, FANavigationEventArgs args)
+        {
+            Assert.True(calledNavigating);
+            calledNavigated = true;
+        }
+
+        Context.Frame.Navigating += OnNavigating;
+        Context.Frame.Navigated += OnNavigated;
+
+        Context.Frame.Navigate(typeof(TestPage2));
+
+        Assert.True(calledNavigating);
+        Assert.True(calledNavigated);
+
+        Context.Frame.Navigating -= OnNavigating;
+        Context.Frame.Navigated -= OnNavigated;
+    }
+
+    [AvaloniaFact]
+    public void CancelingNavigatingPreventsNavigation()
+    {
+        var Context = GetTestContext();
+        Context.Frame.Navigate(typeof(TestPage1));
+
+        bool calledNavigating = false;
+        bool calledNavigated = false;
+        void OnNavigating(object sender, FANavigatingCancelEventArgs args)
+        {
+            calledNavigating = true;
+            args.Cancel = true;
+        }
+
+        void OnNavigated(object sender, FANavigationEventArgs args)
+        {
+            calledNavigated = true;
+        }
 
-//        void OnNavigated(object sender, NavigationEventArgs args)
-//        {
-//            Assert.True(calledNavigating);
-//            calledNavigated = true;
-//        }
-
-//        Context.Frame.Navigating += OnNavigating;
-//        Context.Frame.Navigated += OnNavigated;
-
-//        Context.Frame.Navigate(typeof(TestPage2));
-
-//        Assert.True(calledNavigating);
-//        Assert.True(calledNavigated);
+        Context.Frame.Navigating += OnNavigating;
+        Context.Frame.Navigated += OnNavigated;
 
-//        Context.Frame.Navigating -= OnNavigating;
-//        Context.Frame.Navigated -= OnNavigated;
-//    }
+        Context.Frame.Navigate(typeof(TestPage2));
 
-//    [Fact]
-//    public void CancelingNavigatingPreventsNavigation()
-//    {
-//        Context.ResetFrame();
-//        Context.Frame.Navigate(typeof(TestPage1));
+        Assert.True(calledNavigating);
+        Assert.False(calledNavigated);
 
-//        bool calledNavigating = false;
-//        bool calledNavigated = false;
-//        void OnNavigating(object sender, NavigatingCancelEventArgs args)
-//        {
-//            calledNavigating = true;
-//            args.Cancel = true;
-//        }
+        Assert.IsType<TestPage1>(Context.Frame.Content);
 
-//        void OnNavigated(object sender, NavigationEventArgs args)
-//        {
-//            calledNavigated = true;
-//        }
+        Context.Frame.Navigating -= OnNavigating;
+        Context.Frame.Navigated -= OnNavigated;
+    }
 
-//        Context.Frame.Navigating += OnNavigating;
-//        Context.Frame.Navigated += OnNavigated;
+    [AvaloniaFact]
+    public void NavigatingToInvalidTypeRaisesNavigationFailed()
+    {
+        var Context = GetTestContext();
+        bool failed = false;
+        void OnNavigationFailed(object sender, FANavigationFailedEventArgs e)
+        {
+            failed = true;
+        }
 
-//        Context.Frame.Navigate(typeof(TestPage2));
+        Context.Frame.NavigationFailed += OnNavigationFailed;
 
-//        Assert.True(calledNavigating);
-//        Assert.False(calledNavigated);
+        Context.Frame.Navigate(typeof(ThisPageShouldntLoad));
 
-//        Assert.IsType<TestPage1>(Context.Frame.Content);
+        Assert.True(failed);
 
-//        Context.Frame.Navigating -= OnNavigating;
-//        Context.Frame.Navigated -= OnNavigated;
-//    }
+        Context.Frame.NavigationFailed -= OnNavigationFailed;
+    }
 
-//    [Fact]
-//    public void NavigatingToInvalidTypeRaisesNavigationFailed()
-//    {
-//        Context.ResetFrame();
-//        bool failed = false;
-//        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-//        {
-//            failed = true;
-//        }
+    [AvaloniaFact]
+    public void NavigationStackWorks()
+    {
+        var Context = GetTestContext();
 
-//        Context.Frame.NavigationFailed += OnNavigationFailed;
+        Assert.True(Context.Frame.IsNavigationStackEnabled);
 
-//        Context.Frame.Navigate(typeof(ThisPageShouldntLoad));
+        Context.Frame.Navigate(typeof(TestPage1));
+        Context.Frame.Navigate(typeof(TestPage2));
+        Context.Frame.Navigate(typeof(TestPage3));
 
-//        Assert.True(failed);
+        Assert.Equal(2, Context.Frame.BackStackDepth);
+        Assert.Empty(Context.Frame.ForwardStack);
+        Assert.True(Context.Frame.CanGoBack);
+        Assert.False(Context.Frame.CanGoForward);
 
-//        Context.Frame.NavigationFailed -= OnNavigationFailed;
-//    }
+        Context.Frame.GoBack();
 
-//    [Fact]
-//    public void NavigationStackWorks()
-//    {
-//        Context.ResetFrame();
+        Assert.Equal(1, Context.Frame.BackStackDepth);
+        Assert.True(Context.Frame.CanGoBack);
+        Assert.True(Context.Frame.CanGoForward);
 
-//        Assert.True(Context.Frame.IsNavigationStackEnabled);
+        Context.Frame.GoBack();
+        Assert.Empty(Context.Frame.BackStack);
+        Assert.False(Context.Frame.CanGoBack);
+        Assert.True(Context.Frame.CanGoForward);
 
-//        Context.Frame.Navigate(typeof(TestPage1));
-//        Context.Frame.Navigate(typeof(TestPage2));
-//        Context.Frame.Navigate(typeof(TestPage3));
+        Context.Frame.GoForward();
 
-//        Assert.Equal(2, Context.Frame.BackStackDepth);
-//        Assert.Empty(Context.Frame.ForwardStack);
-//        Assert.True(Context.Frame.CanGoBack);
-//        Assert.False(Context.Frame.CanGoForward);
+        Assert.Equal(1, Context.Frame.BackStackDepth);
+        Assert.True(Context.Frame.CanGoBack);
+        Assert.True(Context.Frame.CanGoForward);
+    }
 
-//        Context.Frame.GoBack();
+    [AvaloniaFact]
+    public void PagesAreCachedWhenNavigatingIfUsingNavigationStack()
+    {
+        var Context = GetTestContext();
 
-//        Assert.Equal(1, Context.Frame.BackStackDepth);
-//        Assert.True(Context.Frame.CanGoBack);
-//        Assert.True(Context.Frame.CanGoForward);
+        Assert.True(Context.Frame.IsNavigationStackEnabled);
 
-//        Context.Frame.GoBack();
-//        Assert.Empty(Context.Frame.BackStack);
-//        Assert.False(Context.Frame.CanGoBack);
-//        Assert.True(Context.Frame.CanGoForward);
+        Context.Frame.Navigate(typeof(TestPage1));
+        Context.Frame.Navigate(typeof(TestPage2));
+        Context.Frame.Navigate(typeof(TestPage3));
 
-//        Context.Frame.GoForward();
+        Assert.Equal(2, Context.Frame.BackStackDepth);
 
-//        Assert.Equal(1, Context.Frame.BackStackDepth);
-//        Assert.True(Context.Frame.CanGoBack);
-//        Assert.True(Context.Frame.CanGoForward);
-//    }
+        Assert.IsType<TestPage2>(Context.Frame.BackStack[1].Instance);
+        Assert.IsType<TestPage1>(Context.Frame.BackStack[0].Instance);
 
-//    [Fact]
-//    public void PagesAreCachedWhenNavigatingIfUsingNavigationStack()
-//    {
-//        Context.ResetFrame();
+        var prevPage = Context.Frame.BackStack[1].Instance;
 
-//        Assert.True(Context.Frame.IsNavigationStackEnabled);
+        Context.Frame.GoBack();
 
-//        Context.Frame.Navigate(typeof(TestPage1));
-//        Context.Frame.Navigate(typeof(TestPage2));
-//        Context.Frame.Navigate(typeof(TestPage3));
+        Assert.Equal(prevPage, Context.Frame.Content);
+    }
 
-//        Assert.Equal(2, Context.Frame.BackStackDepth);
+    [AvaloniaFact]
+    public void DisablingNavigationStackPreventsPageCaching()
+    {
+        var Context = GetTestContext();
 
-//        Assert.IsType<TestPage2>(Context.Frame.BackStack[1].Instance);
-//        Assert.IsType<TestPage1>(Context.Frame.BackStack[0].Instance);
+        Context.Frame.IsNavigationStackEnabled = false;
 
-//        var prevPage = Context.Frame.BackStack[1].Instance;
+        Context.Frame.Navigate(typeof(TestPage1));
+        Context.Frame.Navigate(typeof(TestPage2));
+        Context.Frame.Navigate(typeof(TestPage3));
 
-//        Context.Frame.GoBack();
+        Assert.Empty(Context.Frame.BackStack);
+        Assert.Equal(0, Context.Frame.BackStackDepth);
 
-//        Assert.Equal(prevPage, Context.Frame.Content);
-//    }
+        Context.Frame.GoBack();
 
-//    [Fact]
-//    public void DisablingNavigationStackPreventsPageCaching()
-//    {
-//        Context.ResetFrame();
+        Assert.Empty(Context.Frame.ForwardStack);
+    }
 
-//        Context.Frame.IsNavigationStackEnabled = false;
+    [AvaloniaFact]
+    public void NavigationPageEventsFire()
+    {
+        var Context = GetTestContext();
 
-//        Context.Frame.Navigate(typeof(TestPage1));
-//        Context.Frame.Navigate(typeof(TestPage2));
-//        Context.Frame.Navigate(typeof(TestPage3));
+        Context.Frame.Navigate(typeof(TestPage4), "parameter");
+        Dispatcher.UIThread.RunJobs();
 
-//        Assert.Empty(Context.Frame.BackStack);
-//        Assert.Equal(0, Context.Frame.BackStackDepth);
-                
-//        Context.Frame.GoBack();
+        var page4 = Context.Frame.Content as TestPage4;
+        Assert.NotNull(page4);
 
-//        Assert.Empty(Context.Frame.ForwardStack);
-//    }
+        // NavTo should've fired
+        Assert.True(page4.NavigatedToFired);
+        // And the parameter should've been passed
+        Assert.True(page4.ParameterPassed);
 
-//    [Fact]
-//    public void NavigationPageEventsFire()
-//    {
-//        Context.ResetFrame();
 
-//        Context.Frame.Navigate(typeof(TestPage4), "parameter");
+        // Now navigate to TestPage5
 
-//        var page4 = Context.Frame.Content as TestPage4;
-//        Assert.NotNull(page4);
+        Context.Frame.Navigate(typeof(TestPage5), "parameter2");
+        Dispatcher.UIThread.RunJobs();
 
-//        // NavTo should've fired
-//        Assert.True(page4.NavigatedToFired);
-//        // And the parameter should've been passed
-//        Assert.True(page4.ParameterPassed);
+        // NavFrom should've fired on the old page
+        Assert.True(page4.NavigatingFromFired);
+        // Check param
+        Assert.True(page4.ParameterPassed);
+        // NavFrom should've fired on the old page
+        Assert.True(page4.NavigatedFromFired);
+        // Check param
+        Assert.True(page4.ParameterPassed);
 
+        var page5 = Context.Frame.Content as TestPage5;
+        Assert.NotNull(page5);
 
-//        // Now navigate to TestPage5
+        // NavTo should've fired
+        Assert.True(page5.NavigatedToFired);
+        // Check param
+        Assert.True(page5.ParameterPassed);
+    }
 
-//        Context.Frame.Navigate(typeof(TestPage5), "parameter2");
-//        // NavFrom should've fired on the old page
-//        Assert.True(page4.NavigatingFromFired);
-//        // Check param
-//        Assert.True(page4.ParameterPassed);
-//        // NavFrom should've fired on the old page
-//        Assert.True(page4.NavigatedFromFired);
-//        // Check param
-//        Assert.True(page4.ParameterPassed);
+    [AvaloniaFact]
+    public void NavigationStateSavesInCorrectFormat()
+    {
+        var Context = GetTestContext();
 
-//        var page5 = Context.Frame.Content as TestPage5;
-//        Assert.NotNull(page5);
+        Context.Frame.Navigate(typeof(TestPage1));
+        Context.Frame.Navigate(typeof(TestPage2));
+        Context.Frame.Navigate(typeof(TestPage3), "param");
+        Context.Frame.Navigate(null);
 
-//        // NavTo should've fired
-//        Assert.True(page5.NavigatedToFired);
-//        // Check param
-//        Assert.True(page5.ParameterPassed);
-//    }
+        Context.Frame.GoBack();
 
-//    [Fact]
-//    public void NavigationStateSavesInCorrectFormat()
-//    {
-//        Context.ResetFrame();
+        // NavigationState should be:
+        // FluentAvaloniaTests.ControlTests.TestPage2|
+        // 1
+        // FluentAvaloniaTests.ControlTests.TestPage1|
+        // 1
+        // FluentAvaloniaTests.ControlTests.TestPage3|param
+        // [Blank Line]
 
-//        Context.Frame.Navigate(typeof(TestPage1));
-//        Context.Frame.Navigate(typeof(TestPage2));
-//        Context.Frame.Navigate(typeof(TestPage3), "param");
-//        Context.Frame.Navigate(null);
+        var expected =
+            $"{typeof(TestPage2).AssemblyQualifiedName}|" + Environment.NewLine +
+            "1" + Environment.NewLine +
+            $"{typeof(TestPage1).AssemblyQualifiedName}|" + Environment.NewLine +
+            "1" + Environment.NewLine +
+            $"{typeof(TestPage3).AssemblyQualifiedName}|param" + Environment.NewLine;
 
-//        Context.Frame.GoBack();
+        var str = Context.Frame.GetNavigationState();
 
-//        // NavigationState should be:
-//        // FluentAvaloniaTests.ControlTests.TestPage2|
-//        // 1
-//        // FluentAvaloniaTests.ControlTests.TestPage1|
-//        // 1
-//        // FluentAvaloniaTests.ControlTests.TestPage3|param
-//        // [Blank Line]
+        Assert.Equal(expected, str);
+    }
 
-//        var expected =
-//            $"{typeof(TestPage2).AssemblyQualifiedName}|" + Environment.NewLine +
-//            "1" + Environment.NewLine +
-//            $"{typeof(TestPage1).AssemblyQualifiedName}|" + Environment.NewLine +
-//            "1" + Environment.NewLine +
-//            $"{typeof(TestPage3).AssemblyQualifiedName}|param" + Environment.NewLine;
+    [AvaloniaFact]
+    public void NavigationStateIsRestoredCorrectly()
+    {
+        var Context = GetTestContext();
 
-//        var str = Context.Frame.GetNavigationState();
+        Context.Frame.Navigate(typeof(TestPage1));
+        Context.Frame.Navigate(typeof(TestPage2));
+        Context.Frame.Navigate(typeof(TestPage3), "param");
+        Context.Frame.Navigate(null);
 
-//        Assert.Equal(expected, str);
-//    }
+        Context.Frame.GoBack();
 
-//    [Fact]
-//    public void NavigationStateIsRestoredCorrectly()
-//    {
-//        Context.ResetFrame();
+        var str = Context.Frame.GetNavigationState();
+        Context.Dispose();
 
-//        Context.Frame.Navigate(typeof(TestPage1));
-//        Context.Frame.Navigate(typeof(TestPage2));
-//        Context.Frame.Navigate(typeof(TestPage3), "param");
-//        Context.Frame.Navigate(null);
+        Context = GetTestContext();
 
-//        Context.Frame.GoBack();
+        Context.Frame.SetNavigationState(str);
 
-//        var str = Context.Frame.GetNavigationState();
+        Assert.Single(Context.Frame.BackStack);
+        Assert.Single(Context.Frame.ForwardStack);
 
-//        Context.ResetFrame();
+        // The actual controls aren't created yet, just the PageStackEntries, but 
+        // verify they're there
+        Assert.Equal(typeof(TestPage1), Context.Frame.BackStack[0].SourcePageType);
+        Assert.Equal(typeof(TestPage3), Context.Frame.ForwardStack[0].SourcePageType);
 
-//        Context.Frame.SetNavigationState(str);
+        Assert.IsType<TestPage2>(Context.Frame.Content);
 
-//        Assert.Single(Context.Frame.BackStack);
-//        Assert.Single(Context.Frame.ForwardStack);
+        Context.Frame.GoBack();
 
-//        // The actual controls aren't created yet, just the PageStackEntries, but 
-//        // verify they're there
-//        Assert.Equal(typeof(TestPage1), Context.Frame.BackStack[0].SourcePageType);
-//        Assert.Equal(typeof(TestPage3), Context.Frame.ForwardStack[0].SourcePageType);
+        // Going back should build the content now
+        Assert.IsType<TestPage1>(Context.Frame.Content);
+    }
 
-//        Assert.IsType<TestPage2>(Context.Frame.Content);
+    [AvaloniaFact]
+    public void NavigationStateIsRestoredCorrectlyWithSuppressNavigation()
+    {
+        var Context = GetTestContext();
 
-//        Context.Frame.GoBack();
+        Context.Frame.Navigate(typeof(TestPage1));
+        Context.Frame.Navigate(typeof(TestPage2));
+        Context.Frame.Navigate(typeof(TestPage3), "param");
+        Context.Frame.Navigate(null);
 
-//        // Going back should build the content now
-//        Assert.IsType<TestPage1>(Context.Frame.Content);
-//    }
+        Context.Frame.GoBack();
 
-//    [Fact]
-//    public void NavigationStateIsRestoredCorrectlyWithSuppressNavigation()
-//    {
-//        Context.ResetFrame();
+        var str = Context.Frame.GetNavigationState();
 
-//        Context.Frame.Navigate(typeof(TestPage1));
-//        Context.Frame.Navigate(typeof(TestPage2));
-//        Context.Frame.Navigate(typeof(TestPage3), "param");
-//        Context.Frame.Navigate(null);
+        Context.Dispose();
+        Context = GetTestContext();
 
-//        Context.Frame.GoBack();
+        Context.Frame.SetNavigationState(str, true);
 
-//        var str = Context.Frame.GetNavigationState();
+        Assert.Equal(2, Context.Frame.BackStack.Count);
+        Assert.Single(Context.Frame.ForwardStack);
 
-//        Context.ResetFrame();
+        // The actual controls aren't created yet, just the PageStackEntries, but 
+        // verify they're there
+        Assert.Equal(typeof(TestPage1), Context.Frame.BackStack[0].SourcePageType);
 
-//        Context.Frame.SetNavigationState(str, true);
+        // This is the current page, but we didn't want to navigate to it, so it's here
+        Assert.Equal(typeof(TestPage2), Context.Frame.BackStack[1].SourcePageType);
+        Assert.Equal(typeof(TestPage3), Context.Frame.ForwardStack[0].SourcePageType);
 
-//        Assert.Equal(2, Context.Frame.BackStack.Count);
-//        Assert.Single(Context.Frame.ForwardStack);
+        Assert.Null(Context.Frame.Content);
 
-//        // The actual controls aren't created yet, just the PageStackEntries, but 
-//        // verify they're there
-//        Assert.Equal(typeof(TestPage1), Context.Frame.BackStack[0].SourcePageType);
+        Context.Frame.GoBack();
 
-//        // This is the current page, but we didn't want to navigate to it, so it's here
-//        Assert.Equal(typeof(TestPage2), Context.Frame.BackStack[1].SourcePageType);
-//        Assert.Equal(typeof(TestPage3), Context.Frame.ForwardStack[0].SourcePageType);
+        // Going back should load the current page
+        Assert.IsType<TestPage2>(Context.Frame.Content);
+    }
 
-//        Assert.Null(Context.Frame.Content);
+    private static TestContext GetTestContext() => new TestContext();
 
-//        Context.Frame.GoBack();
+    class TestContext : IDisposable
+    {
+        public TestContext()
+        {
+            Frame = new FAFrame();
+            Window = new Window
+            {
+                Content = Frame
+            };
 
-//        // Going back should load the current page
-//        Assert.IsType<TestPage2>(Context.Frame.Content);
-//    }
-//}
+            Window.Show();
+            Dispatcher.UIThread.RunJobs();
+        }
 
-//public class TestPage1 : UserControl { }
+        public Window Window { get; }
 
-//public class TestPage2 : UserControl { }
+        public FAFrame Frame { get; }
 
-//public class TestPage3 : UserControl { }
+        public void Dispose()
+        {
+            Window.Close();
+        }
+    }
+}
 
-//public class ThisPageShouldntLoad  { }
+public class TestPage1 : UserControl { }
 
-//public class TestPage4 : UserControl
-//{
-//    public TestPage4()
-//    {
-//        AddHandler(Frame.NavigatingFromEvent, (s, e) =>
-//        {
-//            NavigatingFromFired = true;
-//            ParameterPassed = e.Parameter.Equals("parameter2");
-//        }, Avalonia.Interactivity.RoutingStrategies.Direct);
+public class TestPage2 : UserControl { }
 
-//        AddHandler(Frame.NavigatedFromEvent, (s, e) =>
-//        {
-//            NavigatedFromFired = true;
-//            ParameterPassed = e.Parameter.Equals("parameter2");
-//        }, Avalonia.Interactivity.RoutingStrategies.Direct);
+public class TestPage3 : UserControl { }
 
-//        AddHandler(Frame.NavigatedToEvent, (s, e) =>
-//        {
-//            NavigatedToFired = true;
-//            ParameterPassed = e.Parameter.Equals("parameter");
-//        }, Avalonia.Interactivity.RoutingStrategies.Direct);
-//    }
+public class ThisPageShouldntLoad { }
 
-//    public bool NavigatingFromFired { get; set; }
+public class TestPage4 : UserControl
+{
+    public TestPage4()
+    {
+        AddHandler(FAFrame.NavigatingFromEvent, (s, e) =>
+        {
+            NavigatingFromFired = true;
+            ParameterPassed = e.Parameter.Equals("parameter2");
+        }, Avalonia.Interactivity.RoutingStrategies.Direct);
 
-//    public bool NavigatedFromFired { get; set; }
+        AddHandler(FAFrame.NavigatedFromEvent, (s, e) =>
+        {
+            NavigatedFromFired = true;
+            ParameterPassed = e.Parameter.Equals("parameter2");
+        }, Avalonia.Interactivity.RoutingStrategies.Direct);
 
-//    public bool NavigatedToFired { get; set; }
+        AddHandler(FAFrame.NavigatedToEvent, (s, e) =>
+        {
+            NavigatedToFired = true;
+            ParameterPassed = e.Parameter.Equals("parameter");
+        }, Avalonia.Interactivity.RoutingStrategies.Direct);
+    }
 
-//    public bool ParameterPassed { get; set; }
-//}
+    public bool NavigatingFromFired { get; set; }
 
-//public class TestPage5 : UserControl
-//{
-//    public TestPage5()
-//    {
-//        AddHandler(Frame.NavigatedToEvent, (s, e) =>
-//        {
-//            NavigatedToFired = true;
+    public bool NavigatedFromFired { get; set; }
 
-//            ParameterPassed = e.Parameter.Equals("parameter2");
-//        }, Avalonia.Interactivity.RoutingStrategies.Direct);
-//    }
+    public bool NavigatedToFired { get; set; }
 
-//    public bool NavigatingFromFired { get; set; }
+    public bool ParameterPassed { get; set; }
+}
 
-//    public bool NavigatedFromFired { get; set; }
+public class TestPage5 : UserControl
+{
+    public TestPage5()
+    {
+        AddHandler(FAFrame.NavigatedToEvent, (s, e) =>
+        {
+            NavigatedToFired = true;
 
-//    public bool NavigatedToFired { get; set; }
+            ParameterPassed = e.Parameter.Equals("parameter2");
+        }, Avalonia.Interactivity.RoutingStrategies.Direct);
+    }
 
-//    public bool ParameterPassed { get; set; }
-//}
+    public bool NavigatingFromFired { get; set; }
+
+    public bool NavigatedFromFired { get; set; }
+
+    public bool NavigatedToFired { get; set; }
+
+    public bool ParameterPassed { get; set; }
+}

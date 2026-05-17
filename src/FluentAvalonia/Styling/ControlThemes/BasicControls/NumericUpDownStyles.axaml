@@ -3,7 +3,7 @@
                     xmlns:conv="using:FluentAvalonia.Converters"
                     x:CompileBindings="True">
 
-    <conv:NUDSpinLocationConverter x:Key="NUDSpinLocationConverter" />
+    <conv:FANUDSpinLocationConverter x:Key="NUDSpinLocationConverter" />
 
     <Design.PreviewWith>
         <Border Padding="20">
@@ -13,32 +13,33 @@
                                Maximum="1454350"
                                ShowButtonSpinner="True"
                                Increment="0.5"
-                               Watermark="Enter text" />
+                               PlaceholderText="Enter text" />
                 <NumericUpDown Minimum="0"
                                Value="28393255555555"
                                Maximum="10"
                                Increment="0.5"
                                ButtonSpinnerLocation="Left"
                                TextAlignment="Right"
-                               Watermark="Enter text" />
+                               PlaceholderText="Enter text" />
                 <NumericUpDown Minimum="0"
                                Value="28393255555555"
                                Maximum="1454350"
                                ShowButtonSpinner="True"
                                Increment="0.5"
                                TextAlignment="Right"
-                               Watermark="Enter text" />
+                               PlaceholderText="Enter text" />
                 <NumericUpDown Minimum="0"
                                Maximum="1454350"
                                ShowButtonSpinner="True"
                                Increment="0.5"
-                               Watermark="Enter text" />
+                               PlaceholderText="Enter text" />
                 <NumericUpDown Minimum="0"
                                Maximum="1454350"
                                ShowButtonSpinner="True"
                                Increment="0.5"
                                TextAlignment="Right"
-                               Watermark="Enter text" />
+                               PlaceholderText="Enter text"
+                               PlaceholderForeground="Red"/>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -127,25 +128,31 @@
                                            Grid.ColumnSpan="1"
                                            Cursor="IBeam"
                                            Margin="{TemplateBinding Padding}">
-                                    <TextBlock Name="PART_FloatingWatermark"
-                                               Foreground="{DynamicResource SystemAccentColor}"
+                                    <TextBlock Name="PART_FloatingPlaceholder"
+                                               Foreground="{TemplateBinding PlaceholderForeground}"
                                                FontSize="{TemplateBinding FontSize}"
                                                IsVisible="False"
-                                               Text="{TemplateBinding Watermark}"
+                                               Text="{TemplateBinding PlaceholderText}"
                                                DockPanel.Dock="Top" />
                                     <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                                                   VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
                                                   IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
                                                   AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
                                         <Panel>
-                                            <TextBlock Name="PART_Watermark"
-                                                       Foreground="{DynamicResource TextControlPlaceholderForeground}"
-                                                       Text="{TemplateBinding Watermark}"
+                                            <TextBlock Name="PART_Placeholder"
+                                                       Foreground="{TemplateBinding PlaceholderForeground}"
+                                                       Text="{TemplateBinding PlaceholderText}"
                                                        TextAlignment="{TemplateBinding TextAlignment}"
                                                        TextWrapping="{TemplateBinding TextWrapping}"
-                                                       IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                                <TextBlock.IsVisible>
+                                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                        <Binding ElementName="PART_TextPresenter" Path="PreeditText" Converter="{x:Static StringConverters.IsNullOrEmpty}"/>
+                                                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Text" Converter="{x:Static StringConverters.IsNullOrEmpty}"/>
+                                                    </MultiBinding>
+                                                </TextBlock.IsVisible>
+                                            </TextBlock>
                                             <TextPresenter Name="PART_TextPresenter"
                                                           Text="{TemplateBinding Text, Mode=TwoWay}"
                                                           CaretIndex="{TemplateBinding CaretIndex}"
@@ -195,6 +202,7 @@
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="Padding" Value="{DynamicResource TextControlThemePadding}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextControlPlaceholderForeground}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <ButtonSpinner Name="PART_Spinner"
@@ -217,7 +225,8 @@
                              MinWidth="0"
                              Foreground="{TemplateBinding Foreground}"
                              FontSize="{TemplateBinding FontSize}"
-                             Watermark="{TemplateBinding Watermark}"
+                             PlaceholderText="{TemplateBinding PlaceholderText}"
+                             PlaceholderForeground="{TemplateBinding PlaceholderForeground}"
                              IsReadOnly="{TemplateBinding IsReadOnly}"
                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
