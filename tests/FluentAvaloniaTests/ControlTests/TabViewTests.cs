@@ -15,6 +15,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -852,7 +853,45 @@ public class TabViewTests
         Assert.Equal(src[TabView.SelectedIndex], pres.Content);
     }
 
+    [AvaloniaFact]
+    public void TabContentTemplateIsAppliedProperly()
+    {
+        // Ensures GH 739 doesn't come back caused by Avalonia applying the template automatically
+        var (w, TabView) = GetTabViewWithItemsSource(false);
 
+        w.DataTemplates.Add(new FuncDataTemplate<TestTabItem>((x, ns) =>
+        {
+            return new TextBlock { Text = x.Content, Background = Brushes.Red };
+        }));
+
+        TabView.TabItemTemplate = new FuncDataTemplate<TestTabItem>((x, ns) =>
+        {
+            return new FATabViewItem
+            {
+                Header = x.Header,
+                [!ContentControl.ContentProperty] = new Binding()
+            };
+        });
+
+        var l = new AvaloniaList<TestTabItem>
+        {
+            new TestTabItem { Header = "This is tab 1", Content = "Tab1 Content" },
+            new TestTabItem { Header = "This is tab 2", Content = "Tab2 Content" },
+            new TestTabItem { Header = "This is tab 3", Content = "Tab2 Content" },
+        };
+        TabView.TabItemsSource = l;
+        TabView.SelectedIndex = 0;
+        TabView.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        var pres = TabView.TabContentPresenter;
+        var children = pres.GetVisualChildren();
+
+        Assert.Null(children.FirstOrDefault(x => x is FATabViewItem));
+        var tb = children.FirstOrDefault(x => x is TextBlock) as TextBlock;
+        Assert.NotNull(tb);
+        Assert.Equal(Brushes.Red, tb.Background);
+    }
 
     private (Window w, FATabView tv) GetTabView(bool addTabs = true, int? selIndex = null)
     {

@@ -178,6 +178,16 @@ public sealed class FATabViewListView : ListBox
         // WinUI b/c they don't have to do this.
         if (container == item || tvi.IsContainerFromTemplate)
         {
+            // PrepareContainerForItemOverride will set the ContentTemplate of the item, but it will default
+            // to ItemTemplate, which only should be applied to the header (since its a TVI). In this case,
+            // undo that and search elsewhere for an appropriate template without defaulting to the
+            // ItemTemplate passed down from the TabView - fixes GH 739
+            var template = ItemTemplate;
+            if (tvi.ContentTemplate == template)
+            {
+                tvi.ContentTemplate = this.FindDataTemplate(item);
+            }
+
             base.ContainerForItemPreparedOverride(container, item, index);
             return;
         }
