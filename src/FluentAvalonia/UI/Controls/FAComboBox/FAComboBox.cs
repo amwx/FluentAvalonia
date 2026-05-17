@@ -289,11 +289,15 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         {
             if (_popup?.IsInsidePopup(src) == true)
             {
-                if (UpdateSelectionFromEventSource(e.Source))
+                var container = GetContainerFromEventSource(e.Source);
+                if (container != null)
                 {
-                    _popup.Close();
-                    e.Handled = true;
-                }
+                    if (UpdateSelectionFromEvent(container, e))
+                    {
+                        _popup.Close();
+                        e.Handled = true;
+                    }
+                }                
             }
             else
             {

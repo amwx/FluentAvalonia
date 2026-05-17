@@ -105,22 +105,18 @@ public partial class FAAppWindow : Window
 
     protected override Type StyleKeyOverride => typeof(FAAppWindow);
 
-    internal FAMinMaxCloseControl SystemCaptionControl => _captionButtons;
-
 
     private SplashScreenContext _splashContext;
     private Border _templateRoot;
-    private FAMinMaxCloseControl _captionButtons;
     private Panel _defaultTitleBar;
     private FAAppWindowTitleBar _titleBar;
-    private List<WeakReference<Control>> _excludeHitTestList;
     private bool _hideSizeButtons;
 
     // Resource names used in SetTitleBarColors
-    private static readonly string s_SystemAccentColor = "SystemAccentColor";
-    private static readonly string s_SystemAccentColorLight1 = "SystemAccentColorLight1";
-    private static readonly string s_SystemAccentColorDark1 = "SystemAccentColorDark1";
-    private static readonly string s_TextFillColorPrimary = "TextFillColorPrimary";
+    //private static readonly string s_SystemAccentColor = "SystemAccentColor";
+    //private static readonly string s_SystemAccentColorLight1 = "SystemAccentColorLight1";
+    //private static readonly string s_SystemAccentColorDark1 = "SystemAccentColorDark1";
+    //private static readonly string s_TextFillColorPrimary = "TextFillColorPrimary";
 
     private static readonly string s_TitleBarBackground = "TitleBarBackground";
     private static readonly string s_TitleBarForeground = "TitleBarForeground";

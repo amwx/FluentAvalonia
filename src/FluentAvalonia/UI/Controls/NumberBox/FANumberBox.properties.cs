@@ -124,9 +124,9 @@ public partial class FANumberBox
     /// <summary>
     /// Defines the <see cref="Text"/> property
     /// </summary>
-    public static readonly DirectProperty<FANumberBox, string> TextProperty =
-        AvaloniaProperty.RegisterDirect<FANumberBox, string>(nameof(Text),
-            x => x.Text, (x, v) => x.Text = v, defaultBindingMode: BindingMode.TwoWay);
+    public static readonly StyledProperty<string> TextProperty =
+        TextBlock.TextProperty.AddOwner<FANumberBox>(
+            new StyledPropertyMetadata<string>(defaultBindingMode: BindingMode.TwoWay));
 
     /// <summary>
     /// Defines the <see cref="FANumberBoxValidationMode"/> property
@@ -326,14 +326,8 @@ public partial class FANumberBox
     /// </summary>
     public string Text
     {
-        get => _text;
-        set
-        {
-            if (!_textUpdating && SetAndRaise(TextProperty, ref _text, value))
-            {
-                UpdateValueToText();
-            }
-        }
+        get => GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
     }
 
     /// <summary>
@@ -377,8 +371,6 @@ public partial class FANumberBox
     /// clicking a spin button, or by changing focus.
     /// </summary>
     public event TypedEventHandler<FANumberBox, FANumberBoxValueChangedEventArgs> ValueChanged;
-
-    private string _text = null;
 
     private const string s_tpDownSpinButton = "DownSpinButton";
     private const string s_tpPopupDownSpinButton = "PopupDownSpinButton";

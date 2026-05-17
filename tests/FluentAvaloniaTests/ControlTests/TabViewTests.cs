@@ -182,6 +182,7 @@ public class TabViewTests
         Assert.Equal((TabView.TabItems[0] as FATabViewItem).Content, presenter.Content);
 
         TabView.SelectedIndex = 1;
+        Dispatcher.UIThread.RunJobs();
         Assert.Equal((TabView.TabItems[1] as FATabViewItem).Content, presenter.Content);
     }
 

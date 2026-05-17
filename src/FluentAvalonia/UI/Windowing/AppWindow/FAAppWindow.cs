@@ -289,6 +289,4 @@ public partial class FAAppWindow : Window
         PseudoClasses.Set(":splashOpen", false);
         _splashContext.HasShownSplashScreen = true;
     }
-
-    private bool _hasShown;
 }

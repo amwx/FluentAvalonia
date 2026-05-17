@@ -80,7 +80,7 @@ public partial class FANumberBox : TemplatedControl
         ReevaluateForwardedUIAProperties();
 
         if (double.IsNaN(Value) &&
-            !string.IsNullOrEmpty(_text))
+            !string.IsNullOrEmpty(Text))
         {
             // If Text has been set, but Value hasn't, update Value based on Text.
             UpdateValueToText();
@@ -109,7 +109,14 @@ public partial class FANumberBox : TemplatedControl
         {
             OnValueChanged(change.GetOldValue<double>(), change.GetNewValue<double>());
         }
-        if (change.Property == IsWrapEnabledProperty)
+        else if (change.Property == TextProperty)
+        {
+            if (!_textUpdating)
+            {
+                UpdateValueToText();
+            }
+        }
+        else if (change.Property == IsWrapEnabledProperty)
         {
             UpdateSpinButtonEnabled();
         }

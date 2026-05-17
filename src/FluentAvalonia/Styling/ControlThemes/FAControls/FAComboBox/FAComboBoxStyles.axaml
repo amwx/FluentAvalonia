@@ -116,7 +116,7 @@
                              BorderBrush="Transparent"
                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                             Watermark="{TemplateBinding PlaceholderText}"
+                             PlaceholderText="{TemplateBinding PlaceholderText}"
                              Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}}"
                              Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, Mode=TwoWay}"
                              IsVisible="False"
