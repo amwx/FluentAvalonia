@@ -67,7 +67,7 @@ public partial class FATabView : TemplatedControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         UnhookEventsAndClearFields();
-        _isItemBeingDragged = false;
+        //_isItemBeingDragged = false;
         _isItemDraggedOver = false;
         _expandedWidthForDragOver = null;
 
@@ -770,7 +770,7 @@ public partial class FATabView : TemplatedControl
 
     private void OnListViewDragItemsStarting(object sender, DragItemsStartingEventArgs args)
     {
-        _isItemBeingDragged = true;
+        //_isItemBeingDragged = true;
 
         var item = args.Items[0];
         var tab = FindTabViewItemFromDragItem(item);
@@ -815,7 +815,7 @@ public partial class FATabView : TemplatedControl
 
     private void OnListViewDragItemsCompleted(object sender, DragItemsCompletedEventArgs args)
     {
-        _isItemBeingDragged = false;
+        //_isItemBeingDragged = false;
 
         // Selection may have changed during drag if dragged outside, so we update SelectedIndex again.
         if (_listView != null)
@@ -1001,10 +1001,10 @@ public partial class FATabView : TemplatedControl
     {
         // Don't update any tab widths when we're in the middle of a tab tear-out loop -
         // we'll update tab widths when it's done.
-        if (_isInTabTearOutLoop)
-        {
-            return;
-        }
+        //if (_isInTabTearOutLoop)
+        //{
+        //    return;
+        //}
 
         var maxTabWidth = this.TryFindResource(c_tabViewItemMaxWidthName, out var mtw) ? (double)mtw : c_tabMaximumWidth;
         double tabWidth = double.NaN;
@@ -1665,14 +1665,14 @@ public partial class FATabView : TemplatedControl
     private Button _addButton;
     private ItemsPresenter _itemsPresenter;
     private Border _verticalPaneResizeHandle;
-    private SplitView _splitView;
+    //private SplitView _splitView;
 
     private bool _isDraggingPane;
     private Point? _initDragPanePoint;
     private double _startingPaneSize;
 
     private bool _isSwitchingTabLocation;
-    private int _selectedIndexBeforeTabSwitch = -1;
+    //private int _selectedIndexBeforeTabSwitch = -1;
 
     // A bunch of event revokers
     private IDisposable _listViewCanReorderItemsPropertyChangedRevoker;
@@ -1681,12 +1681,10 @@ public partial class FATabView : TemplatedControl
     private Size _previousAvailableSize;
 
     private bool _isDragging = false;
-    private bool _isItemBeingDragged;
+    //private bool _isItemBeingDragged;
     private bool _isItemDraggedOver;
     private double? _expandedWidthForDragOver;
-    private bool _isInTabTearOutLoop;
-
-    private Size _lastItemsPresenterSize;
+    //private bool _isInTabTearOutLoop;
 
     private static double c_tabMinimumWidth = 48d;
     private static double c_tabMaximumWidth = 200d;

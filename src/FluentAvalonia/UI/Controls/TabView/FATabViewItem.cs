@@ -388,12 +388,12 @@ public partial class FATabViewItem : FASelectorItem
 
     private void OnTabDragStarting(FATabView sender, FATabViewTabDragStartingEventArgs args)
     {
-        _isBeingDragged = true;
+        //_isBeingDragged = true;
     }
 
     private void OnTabDragCompleted(FATabView sender, FATabViewTabDragCompletedEventArgs args)
     {
-        _isBeingDragged = false;
+        //_isBeingDragged = false;
 
         StopCheckingForDrag(_dragPointerId);
         UpdateDragDropVisualState(false);
@@ -614,18 +614,16 @@ public partial class FATabViewItem : FASelectorItem
     }
 
     private Button _closeButton;
-    private object _toolTip;
     private ContentPresenter _headerContentPresenter;
     private FATabViewWidthMode _tabViewWidthMode = FATabViewWidthMode.Equal;
     private FATabViewCloseButtonOverlayMode _closeButtonOverlayMode = FATabViewCloseButtonOverlayMode.Auto;
-    private bool _firstTimeSettingToolTip = true;
     private FACompositeDisposable _tabDragRevoker;
     private Path _selectedBackgroundPath;
     private FATabViewTabStripLocation _location;
 
     private bool _hasPointerCapture = false;
     private bool _isMiddlePointerButtonPressed = false;
-    private bool _isBeingDragged = false;
+    //private bool _isBeingDragged = false;
     private bool _isPointerOver = false;
     private Point _lastPointerPressedPosition;
     private int _dragPointerId;

@@ -339,7 +339,7 @@ internal class ViewportManager
         }
 
         // Register to rendering event to go back to how things were before where any child can be the anchor.
-        _isBringIntoViewInProgress = true;
+        //_isBringIntoViewInProgress = true;
         if (!_renderingToken)
         {
             _renderingToken = true;
@@ -383,7 +383,7 @@ internal class ViewportManager
         _renderingToken = false;
         //CompositionTarget.Rendering -= OnCompositionTargetRendering;
 
-        _isBringIntoViewInProgress = false;
+        //_isBringIntoViewInProgress = false;
         _makeAnchorElement = null;
 
         // Now that the item has been brought into view, we can let the anchor provider pick a new anchor.
@@ -581,7 +581,7 @@ internal class ViewportManager
     private double _horizontalCacheBufferPerSide;
     private double _verticalCacheBufferPerSide;
 
-    private bool _isBringIntoViewInProgress = false;
+    //private bool _isBringIntoViewInProgress = false;
     // For non-virtualizing layouts, we do not need to keep
     // updating viewports and invalidating measure often. So when
     // a non virtualizing layout is used, we stop doing all that work.

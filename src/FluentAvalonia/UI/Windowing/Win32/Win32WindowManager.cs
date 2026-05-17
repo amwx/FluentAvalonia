@@ -2,10 +2,8 @@
 using Avalonia.Controls;
 using FluentAvalonia.Interop.Win32;
 using Avalonia;
-using Avalonia.Logging;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Avalonia.Threading;
 using Avalonia.Platform;
 using FluentAvalonia.Interop;
 
@@ -136,11 +134,7 @@ internal unsafe class Win32WindowManager
 
 
     private readonly FAAppWindow _window;
-    private bool _isMaximized;
-    private CaptionButton _fakingButton;
-    private CaptionButton _currentDownButton;
 
     private readonly nint _oldWndProc;
     private readonly nint _wndProc;
-    private RECT _restoreRect;
 }

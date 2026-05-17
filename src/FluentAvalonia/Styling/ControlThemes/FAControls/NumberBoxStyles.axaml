@@ -429,7 +429,7 @@
                                  Grid.Row="1"
                                  Grid.ColumnSpan="3"
                                  Foreground="{TemplateBinding Foreground}"
-                                 Watermark="{TemplateBinding PlaceholderText}"
+                                 PlaceholderText="{TemplateBinding PlaceholderText}"
                                  DataValidationErrors.Errors="{TemplateBinding DataValidationErrors.Errors}"
                                  SelectionBrush="{TemplateBinding SelectionHighlightColor}"
                                  FontSize="{TemplateBinding FontSize}"

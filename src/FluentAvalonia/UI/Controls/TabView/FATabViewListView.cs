@@ -844,7 +844,6 @@ public sealed class FATabViewListView : ListBox
     private bool _isInDrag = false;
     private bool _isInReorder = false;
     private IDisposable _dragItemOpacitySub;
-    private bool _processReorder;
     private Point? _initialPoint;
     private double _cxDrag = double.NaN;
     private double _cyDrag = double.NaN;
@@ -853,11 +852,7 @@ public sealed class FATabViewListView : ListBox
     // True if there is a drag drop operation started by this listview
     private bool _isDraggingOverSelf;
 
-    private LiveReorderHelper _liveReorderHelper;
-    //private LiveReorderIndices _liveReorderIndices = new LiveReorderIndices(-1,-1,-1);
-    private DispatcherTimer _liveReorderTimer;
-    //private readonly MovedItems _movedItems = new MovedItems();
-    //private List<Rect> _cachedContainerBounds;
+    private LiveReorderHelper _liveReorderHelper;    
     private Point? _lastDragOverPoint;
 
     // For 12.0/v3 - Avalonia has decided to make the decision that the lowest common denominator
