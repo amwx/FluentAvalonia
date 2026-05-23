@@ -10,18 +10,18 @@
              x:DataType="pg:NumberBoxPage">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="A NumberBox that evaluates expressions">
-            <ui:NumberBox Header="Enter an expression:"
+            <ui:FANumberBox Header="Enter an expression:"
                           PlaceholderText="1 + 2^2" AcceptsExpression="True" />
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:NumberBox Header="Enter an expression:" PlaceholderText="1 + 2^2" AcceptsExpression="True" /&gt;                    
+&lt;ui:FANumberBox Header="Enter an expression:" PlaceholderText="1 + 2^2" AcceptsExpression="True" /&gt;                    
                 </x:String>
             </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="A NumberBox with spin buttons">
-            <ui:NumberBox Name="NumBox2"
+            <ui:FANumberBox Name="NumBox2"
                           MinWidth="150"
                           Header="Enter a number"
                           Value="10"
@@ -32,15 +32,15 @@
 
             <ctrls:ControlExample.Options>
                 <ComboBox Name="SpinPlacementBox" SelectedIndex="1" MinWidth="120">
-                    <ComboBoxItem Content="{x:Static ui:NumberBoxSpinButtonPlacementMode.Hidden}" />
-                    <ComboBoxItem Content="{x:Static ui:NumberBoxSpinButtonPlacementMode.Inline}" />
-                    <ComboBoxItem Content="{x:Static ui:NumberBoxSpinButtonPlacementMode.Compact}" />
+                    <ComboBoxItem Content="{x:Static ui:FANumberBoxSpinButtonPlacementMode.Hidden}" />
+                    <ComboBoxItem Content="{x:Static ui:FANumberBoxSpinButtonPlacementMode.Inline}" />
+                    <ComboBoxItem Content="{x:Static ui:FANumberBoxSpinButtonPlacementMode.Compact}" />
                 </ComboBox>
             </ctrls:ControlExample.Options>
             
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:NumberBox SpinButtonPlacementMode="$(SpinPlacement)" Value="$(Value)" /&gt;                    
+&lt;ui:FANumberBox SpinButtonPlacementMode="$(SpinPlacement)" Value="$(Value)" /&gt;                    
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 
@@ -51,7 +51,7 @@
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="A Formatted NumberBox using SimpleNumberFormat">
-            <ui:NumberBox Header="Enter a decimal:"
+            <ui:FANumberBox Header="Enter a decimal:"
                           Value="10"
                           Minimum="0"
                           Maximum="100" 
@@ -59,7 +59,7 @@
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:NumberBox Value="$(Value)" SimpleNumberFormat="F2" /&gt;                    
+&lt;ui:FANumberBox Value="$(Value)" SimpleNumberFormat="F2" /&gt;                    
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 
@@ -71,7 +71,7 @@
         <ctrls:ControlExample Header="A Formatted NumberBox that Rounds to the Nearest 0.25"
                               CSharpSource="avares://FAControlsGallery/Pages/SampleCode/NumberBox3.cs.txt"
                               UsageNotes="avares://FAControlsGallery/Pages/SampleCode/NumberBox3UsageNotes.txt">
-            <ui:NumberBox Header="Enter an amount:" 
+            <ui:FANumberBox Header="Enter an amount:" 
                           PlaceholderText="0.00"
                           MinWidth="150"
                           Minimum="0" Maximum="10000"
@@ -79,7 +79,7 @@
 
             <ctrls:ControlExample.XamlSource>
                 <x:String xml:space="preserve">
-&lt;ui:NumberBox Value="$(Value)" Name="FormattedNumBox" /&gt;                    
+&lt;ui:FANumberBox Value="$(Value)" Name="FormattedNumBox" /&gt;                    
                 </x:String>
             </ctrls:ControlExample.XamlSource>
 

@@ -11,10 +11,10 @@ public partial class XamlUICommandPage : ControlsPageBase
         InitializeComponent();
 
         DataContext = new StandardUICommandPageViewModel();
-        TargetType = typeof(XamlUICommand);
+        TargetType = typeof(FAXamlUICommand);
     }
 
-    public void CustomXamlUICommand_ExecuteRequested(XamlUICommand command, ExecuteRequestedEventArgs args)
+    public void CustomXamlUICommand_ExecuteRequested(FAXamlUICommand command, FAExecuteRequestedEventArgs args)
     {
         counter++;
         this.FindControl<TextBlock>("XamlUICommandOutput").Text = $"You fired the custom command {counter} times";

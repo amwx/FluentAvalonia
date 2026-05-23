@@ -215,13 +215,14 @@ internal static class NumberBoxParser
                         break;
 
                     case '^':
-                        result = Math.Pow(op2, op1);
+                        result = double.Pow(op2, op1);
                         break;
 
                     default:
                         result = null;
                         break;
                 }
+
                 stack.Push(result);
             }
             else if (token.Type == MathTokenType.Numeric)
@@ -264,7 +265,7 @@ internal enum MathTokenType
     Parenthesis
 }
 
-internal struct MathToken
+internal readonly struct MathToken
 {
     public MathToken(MathTokenType t, char c)
     {
@@ -281,6 +282,8 @@ internal struct MathToken
     }
 
     public MathTokenType Type { get; }
+
     public char Char { get; }
+
     public double Value { get; }
 }

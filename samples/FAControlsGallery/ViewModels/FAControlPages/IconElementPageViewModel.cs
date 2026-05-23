@@ -11,10 +11,10 @@ public class IconElementPageViewModel : ViewModelBase
     {
         return await Task.Run(() =>
         {
-            var symbols = Enum.GetValues<Symbol>();
+            var symbols = Enum.GetValues<FASymbol>();
             var symbolList = new List<SymbolItem>(symbols.Length);
 
-            var type = typeof(Symbol);
+            var type = typeof(FASymbol);
             for (int i = 0; i < symbols.Length; i++)
             {
                 var str = symbols[i].ToString();

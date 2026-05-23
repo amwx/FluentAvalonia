@@ -10,7 +10,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="3000"
              x:Class="FAControlsGallery.Pages.TaskDialogPage">
     <StackPanel Spacing="8">
-        <ctrls:ControlExample TargetType="ui:TaskDialog"
+        <ctrls:ControlExample TargetType="ui:FATaskDialog"
                               Name="FirstExample"
                               Header="A TaskDialog API in Action"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/TaskDialog1.xaml.txt"
@@ -31,30 +31,30 @@
                     I'm only using it here so we can preview the dialog changes from options
                     without launching the dialog
                     -->
-                    <ui:TaskDialog Name="TaskDialog1"
+                    <ui:FATaskDialog Name="TaskDialog1"
                                    IsVisible="True"
                                    Title="FluentAvalonia"
                                    Header="Header Here"
                                    SubHeader="SubHeader"
-                                   Content="This is some sample text, but you can put more advanced content here if you like"                                   
-                                   core:VisualStateHelper.ForcedClassesProperty=":open,:hosted,:hidden!"
+                                   Content="This is some sample text, but you can put more advanced content here if you like"
+                                   core:FAVisualStateHelper.ForcedClassesProperty=":open,:hosted,:hidden!"
                                    FooterVisibility="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=FooterVisCB}">
-                        <ui:TaskDialog.Commands>
-                            <ui:TaskDialogCommand Text="{Binding #CommandText.Text}"
+                        <ui:FATaskDialog.Commands>
+                            <ui:FATaskDialogCommand Text="{Binding #CommandText.Text}"
                                                   Description="{Binding #DescText.Text}"
                                                   IsEnabled="{Binding #CommandEnabledCheck.IsChecked}"
                                                   DialogResult="{Binding #CommandDialogResult.Text}"/>
-                        </ui:TaskDialog.Commands>
+                        </ui:FATaskDialog.Commands>
 
-                        <ui:TaskDialog.Buttons>
-                            <ui:TaskDialogButton Text="OK" DialogResult="OK" />
-                            <ui:TaskDialogButton Text="Cancel" DialogResult="Cancel" />
-                        </ui:TaskDialog.Buttons>
+                        <ui:FATaskDialog.Buttons>
+                            <ui:FATaskDialogButton Text="OK" DialogResult="OK" />
+                            <ui:FATaskDialogButton Text="Cancel" DialogResult="Cancel" />
+                        </ui:FATaskDialog.Buttons>
 
-                        <ui:TaskDialog.Footer>
+                        <ui:FATaskDialog.Footer>
                             <CheckBox Content="Never show me this again" />
-                        </ui:TaskDialog.Footer>
-                    </ui:TaskDialog>
+                        </ui:FATaskDialog.Footer>
+                    </ui:FATaskDialog>
                 </Panel>
                
                 
@@ -80,8 +80,7 @@
                             <TextBox Text="{Binding #TaskDialog1.SubHeader}" />
 
                             <CheckBox Content="Show Icon"
-                                      Checked="TaskDialog1ShowIconChecked"
-                                      Unchecked="TaskDialog1ShowIconUnchecked"/>
+                                      IsCheckedChanged="TaskDialog1ShowIconChecked" />
                         </StackPanel>
                     </Expander>
                     <Expander Header="Progress Bar">
@@ -91,24 +90,20 @@
                                       Name="ShowProgCheck"/>
                             <CheckBox Content="Is Indeterminate"
                                       Name="IndeterminateCheck"
-                                      Checked="TaskDialog1ProgressIndetChecked"
-                                      Unchecked="TaskDialog1ProgressIndetUnchecked"
+                                      IsCheckedChanged="TaskDialog1ProgressIndetChecked"
                                       IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
                             <RadioButton Content="Normal State"
                                          IsChecked="True"
                                          Name="NormalCheck"
-                                         Checked="TaskDialog1ProgressNormalChecked"
-                                         Unchecked="TaskDialog1ProgressNormalUnchecked"
+                                         IsCheckedChanged="TaskDialog1ProgressNormalChecked"
                                          IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
                             <RadioButton Content="Error State"
                                          Name="ErrorCheck"
-                                         Checked="TaskDialog1ProgressErrorChecked"
-                                         Unchecked="TaskDialog1ProgressErrorUnchecked"
+                                         IsCheckedChanged="TaskDialog1ProgressErrorChecked"
                                          IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
                             <RadioButton Content="Suspended State"
                                          Name="SuspendedCheck"
-                                         Checked="TaskDialog1ProgressSuspendedChecked"
-                                         Unchecked="TaskDialog1ProgressSuspendedUnchecked"
+                                         IsCheckedChanged="TaskDialog1ProgressSuspendedChecked"
                                          IsEnabled="{Binding #ShowProgCheck.IsChecked}"/>
                         </StackPanel>
                     </Expander>
@@ -117,9 +112,9 @@
                             <TextBlock Text="Footer Visibility" />
                             <ComboBox Name="FooterVisCB" MinWidth="125"
                                       SelectedIndex="2">
-                                <ComboBoxItem Content="{x:Static ui:TaskDialogFooterVisibility.Never}" />
-                                <ComboBoxItem Content="{x:Static ui:TaskDialogFooterVisibility.Auto}" />
-                                <ComboBoxItem Content="{x:Static ui:TaskDialogFooterVisibility.Always}" />
+                                <ComboBoxItem Content="{x:Static ui:FATaskDialogFooterVisibility.Never}" />
+                                <ComboBoxItem Content="{x:Static ui:FATaskDialogFooterVisibility.Auto}" />
+                                <ComboBoxItem Content="{x:Static ui:FATaskDialogFooterVisibility.Always}" />
                             </ComboBox>
                             <CheckBox IsChecked="{Binding #TaskDialog1.IsFooterExpanded}"
                                       Content="Footer Expanded" />
@@ -137,8 +132,7 @@
                                       IsChecked="True"
                                       Name="CommandEnabledCheck"/>
                             <CheckBox Content="ShowIcon"
-                                      Checked="TaskDialog1CommandShowIconChecked"
-                                      Unchecked="TaskDialog1CommandShowIconUnchecked"/>
+                                      IsCheckedChanged="TaskDialog1CommandShowIconChecked" />
                         </StackPanel>
                     </Expander>
                     <Expander Header="Buttons">
@@ -150,27 +144,20 @@
                             <WrapPanel>
                                 <CheckBox Content="OK" Name="OKCheck"
                                           IsChecked="True"
-                                          Checked="TaskDialog1UpdateButtons"
-                                          Unchecked="TaskDialog1UpdateButtons" />
+                                          IsCheckedChanged="TaskDialog1UpdateButtons" />
                                 <CheckBox Content="Cancel" Name="CancelCheck"
                                           IsChecked="True"
-                                          Checked="TaskDialog1UpdateButtons"
-                                          Unchecked="TaskDialog1UpdateButtons" />
+                                          IsCheckedChanged="TaskDialog1UpdateButtons" />
                                 <CheckBox Content="Yes" Name="YesCheck"
-                                          Checked="TaskDialog1UpdateButtons"
-                                          Unchecked="TaskDialog1UpdateButtons" />
+                                          IsCheckedChanged="TaskDialog1UpdateButtons" />
                                 <CheckBox Content="No" Name="NoCheck"
-                                          Checked="TaskDialog1UpdateButtons"
-                                          Unchecked="TaskDialog1UpdateButtons" />
+                                          IsCheckedChanged="TaskDialog1UpdateButtons" />
                                 <CheckBox Content="Retry" Name="RetryCheck"
-                                          Checked="TaskDialog1UpdateButtons"
-                                          Unchecked="TaskDialog1UpdateButtons" />
+                                          IsCheckedChanged="TaskDialog1UpdateButtons" />
                                 <CheckBox Content="Close" Name="CloseCheck"
-                                          Checked="TaskDialog1UpdateButtons"
-                                          Unchecked="TaskDialog1UpdateButtons" />
+                                          IsCheckedChanged="TaskDialog1UpdateButtons" />
                                 <CheckBox Content="Custom" Name="CustomCheck"
-                                          Checked="TaskDialog1UpdateButtons"
-                                          Unchecked="TaskDialog1UpdateButtons" />
+                                          IsCheckedChanged="TaskDialog1UpdateButtons" />
                             </WrapPanel>
                         </StackPanel>
                     </Expander>

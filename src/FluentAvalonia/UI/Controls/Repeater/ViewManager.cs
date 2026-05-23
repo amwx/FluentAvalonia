@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls;
 
 internal class ViewManager
 {
-    public ViewManager(ItemsRepeater ir)
+    public ViewManager(FAItemsRepeater ir)
     {
         _owner = ir;
         _resetPool = new UniqueIdElementPool(ir);
@@ -33,7 +33,7 @@ internal class ViewManager
             // for a bring into view.
             if (_owner.MadeAnchor is Control c)
             {
-                var virtInfo = ItemsRepeater.TryGetVirtualizationInfo(c);
+                var virtInfo = FAItemsRepeater.TryGetVirtualizationInfo(c);
                 if (virtInfo.Index == index)
                 {
                     element = c;
@@ -62,7 +62,7 @@ internal class ViewManager
         if (element == null)
             element = GetElementFromElementFactory(index);
 
-        var vi = ItemsRepeater.TryGetVirtualizationInfo(element);
+        var vi = FAItemsRepeater.TryGetVirtualizationInfo(element);
         if (suppressAutoRecycle)
         {
             vi.AutoRecycleCandidate = false;
@@ -84,7 +84,7 @@ internal class ViewManager
 
     public void ClearElement(Control element, bool isClearedDueToCollectionChange)
     {
-        var vi = ItemsRepeater.GetVirtualizationInfo(element);
+        var vi = FAItemsRepeater.GetVirtualizationInfo(element);
         int index = vi.Index;
         bool cleared = ClearElementToUniqueIdResetPool(element, vi) ||
             ClearElementToAnimator(element, vi) ||
@@ -136,7 +136,7 @@ internal class ViewManager
     {
         _owner.OnElementClearing(element);
 
-        var vi = ItemsRepeater.GetVirtualizationInfo(element);
+        var vi = FAItemsRepeater.GetVirtualizationInfo(element);
         vi.MoveOwnershipToElementFactory();
 
         // During creation of this object, we were the one setting the DataContext, so clear it now.
@@ -215,7 +215,7 @@ internal class ViewManager
         for (int i = 0; i < children.Count; i++)
         {
             var child = children[i];
-            var virtInfo = ItemsRepeater.TryGetVirtualizationInfo(child);
+            var virtInfo = FAItemsRepeater.TryGetVirtualizationInfo(child);
             if (virtInfo != null && virtInfo.IsHeldByLayout)
             {
                 int currentIndex = virtInfo.Index;
@@ -305,9 +305,9 @@ internal class ViewManager
 
         while (parent != null)
         {
-            if (parent is ItemsRepeater repeater)
+            if (parent is FAItemsRepeater repeater)
             {
-                var virtInfo = ItemsRepeater.GetVirtualizationInfo(child);
+                var virtInfo = FAItemsRepeater.GetVirtualizationInfo(child);
                 if (virtInfo.IsRealized)
                 {
                     if (addPin)
@@ -350,7 +350,7 @@ internal class ViewManager
                         for (int i = 0; i < ct; i++)
                         {
                             var element = children[i];
-                            var vi = ItemsRepeater.GetVirtualizationInfo(element);
+                            var vi = FAItemsRepeater.GetVirtualizationInfo(element);
                             var dataIndex = vi.Index;
 
                             if (vi.IsRealized && dataIndex >= newIndex)
@@ -415,7 +415,7 @@ internal class ViewManager
                         for (int i = 0; i < children.Count; ++i)
                         {
                             var element = children[i];
-                            var virtInfo = ItemsRepeater.GetVirtualizationInfo(element);
+                            var virtInfo = FAItemsRepeater.GetVirtualizationInfo(element);
                             var dataIndex = virtInfo.Index;
 
                             if (virtInfo.IsRealized)
@@ -442,7 +442,7 @@ internal class ViewManager
                     for (int i = 0; i < children.Count; ++i)
                     {
                         var element = children[i];
-                        var virtInfo = ItemsRepeater.GetVirtualizationInfo(element);
+                        var virtInfo = FAItemsRepeater.GetVirtualizationInfo(element);
                         var dataIndex = virtInfo.Index;
 
                         if (virtInfo.IsRealized)
@@ -479,7 +479,7 @@ internal class ViewManager
                         for (int i = 0; i < children.Count; ++i)
                         {
                             var element = children[i];
-                            var virtInfo = ItemsRepeater.GetVirtualizationInfo(element);
+                            var virtInfo = FAItemsRepeater.GetVirtualizationInfo(element);
                             if (virtInfo.IsRealized && virtInfo.AutoRecycleCandidate)
                             {
                                 _owner.ClearElementImpl(element);
@@ -559,7 +559,7 @@ internal class ViewManager
             for (int i = 0; i < children.Count; ++i)
             {
                 var child = children[i];
-                var virtInfo = ItemsRepeater.TryGetVirtualizationInfo(child);
+                var virtInfo = FAItemsRepeater.TryGetVirtualizationInfo(child);
                 if (virtInfo != null && virtInfo.IsHeldByLayout)
                 {
                     // Only give back elements held by layout. If someone else is holding it, they will be served by other methods.
@@ -595,7 +595,7 @@ internal class ViewManager
             if (element != null)
             {
                 // Make sure that the index is updated to the current one
-                var virtInfo = ItemsRepeater.GetVirtualizationInfo(element);
+                var virtInfo = FAItemsRepeater.GetVirtualizationInfo(element);
                 virtInfo.MoveOwnershipToLayoutFromUniqueIdResetPool();
                 UpdateElementIndex(element, virtInfo, index);
 
@@ -664,7 +664,7 @@ internal class ViewManager
 
         if (element == null)
         {
-            IElementFactory GetElementFactory()
+            IFAElementFactory GetElementFactory()
             {
                 if (providedElementFactory == null)
                 {
@@ -692,10 +692,10 @@ internal class ViewManager
             }
         }
 
-        var virtInfo = ItemsRepeater.TryGetVirtualizationInfo(element);
+        var virtInfo = FAItemsRepeater.TryGetVirtualizationInfo(element);
         if (virtInfo == null)
         {
-            virtInfo = ItemsRepeater.CreateAndInitializeVirtualizationInfo(element);
+            virtInfo = FAItemsRepeater.CreateAndInitializeVirtualizationInfo(element);
 #if DEBUG && REPEATER_TRACE
             Log.Debug("Element Created");
 #endif
@@ -711,7 +711,7 @@ internal class ViewManager
         // Clear flag
         virtInfo.MustClearDataContext = false;
 
-        ContainerContentChangingEventArgs cArgs = null;
+        FAContainerContentChangingEventArgs cArgs = null;
         bool shouldPhase = _owner.ShouldPhase;
 
         // NOTE: This code has been changed from WinUI in order to support our version of phased rendering
@@ -750,7 +750,7 @@ internal class ViewManager
                 if (data != element && shouldPhase)
                 {
                     virtInfo.UpdatePhasingInfo(data);
-                    cArgs = new ContainerContentChangingEventArgs(index, data, element, virtInfo, 0, _phaser);
+                    cArgs = new FAContainerContentChangingEventArgs(index, data, element, virtInfo, 0, _phaser);
                     _owner.RaiseContainerContentChanging(cArgs);// index, data, element, virtInfo);
                 }
             }
@@ -858,10 +858,10 @@ internal class ViewManager
             // children.
             while (parent != null)
             {
-                if (parent is ItemsRepeater repeater)
+                if (parent is FAItemsRepeater repeater)
                 {
                     if (child is Control element && repeater == owner &&
-                        ItemsRepeater.GetVirtualizationInfo(element).IsRealized)
+                        FAItemsRepeater.GetVirtualizationInfo(element).IsRealized)
                     {
                         focusedElement = element;
                     }
@@ -924,7 +924,7 @@ internal class ViewManager
     }
 
 
-    private readonly ItemsRepeater _owner;
+    private readonly FAItemsRepeater _owner;
     private readonly List<PinnedElementInfo> _pinnedPool;
     private readonly UniqueIdElementPool _resetPool;
 
@@ -934,8 +934,8 @@ internal class ViewManager
     private Phaser _phaser;
 
     // Cached generate/clear contexts to avoid cost of creation every time.
-    private readonly ElementFactoryGetArgs _elementFactoryGetArgs = new ElementFactoryGetArgs();
-    private readonly ElementFactoryRecycleArgs _elementFactoryRecycleArgs = new ElementFactoryRecycleArgs();
+    private readonly FAElementFactoryGetArgs _elementFactoryGetArgs = new FAElementFactoryGetArgs();
+    private readonly FAElementFactoryRecycleArgs _elementFactoryRecycleArgs = new FAElementFactoryRecycleArgs();
 
     // These are first/last indices requested by layout and not cleared yet.
     // These are also not truly first / last because they are a lower / upper bound on the known realized range.
@@ -953,7 +953,7 @@ internal class ViewManager
         public PinnedElementInfo(Control element, VirtualizationInfo vi = null)
         {
             PinnedElement = element;
-            VirtualizationInfo = vi ?? ItemsRepeater.GetVirtualizationInfo(element);
+            VirtualizationInfo = vi ?? FAItemsRepeater.GetVirtualizationInfo(element);
         }
 
         public Control PinnedElement { get; }

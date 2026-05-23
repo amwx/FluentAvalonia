@@ -9,8 +9,8 @@
              x:Class="FAControlsGallery.Pages.ContentDialogPage"
              x:DataType="vm:ContentDialogPageViewModel">
     <StackPanel Spacing="8">
-        <ctrls:ControlExample TargetType="ui:ContentDialog"
-                              Header="A Simple ContentDialog"
+        <ctrls:ControlExample TargetType="ui:FAContentDialog"
+                              Header="A Simple FAContentDialog"
                               UsageNotes="avares://FAControlsGallery/Pages/SampleCode/ContentDialogUsageNotes.txt">
 
             <StackPanel Spacing="8">
@@ -60,7 +60,7 @@
             
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="ContentDialog with Custom Content"
+        <ctrls:ControlExample Header="FAContentDialog with Custom Content"
                               CSharpSource="avares://FAControlsGallery/Pages/SampleCode/CustomContentDialog.cs.txt">
             <StackPanel Spacing="20">
                 <TextBlock xml:space="preserve">

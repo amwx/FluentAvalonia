@@ -10,13 +10,13 @@ using FluentAvalonia.UI.Windowing;
 
 namespace FAControlsGallery.Pages;
 
-public partial class TabViewWindowingSample : AppWindow
+public partial class TabViewWindowingSample : FAAppWindow
 {
     public TabViewWindowingSample()
     {
         InitializeComponent();
 
-        TabView.TabItemsChanged += TabView_TabItemsChanged;
+        //TabView.TabItemsChanged += TabView_TabItemsChanged;
     }
 
     public static readonly string DataIdentifier = "MyTabItem";
@@ -26,24 +26,24 @@ public partial class TabViewWindowingSample : AppWindow
         var tvws = new TabViewWindowingSample();
         // In order for Drag/Drop/Reordering to work, be sure to use an IList with
         // INotifyCollectionChanged, otherwise it may not work as expected
-        tvws.TabView.TabItems = new AvaloniaList<TabViewItem>
+        tvws.TabView.TabItemsSource = new AvaloniaList<FATabViewItem>
         {
-            new TabViewItem
+            new FATabViewItem
             {
                 Header = "TabItem 1",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
                 Content = new TabViewWindowSampleContent("This is TabPage 1")
             },
-            new TabViewItem
+            new FATabViewItem
             {
                 Header = "TabItem 2",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
                 Content = new TabViewWindowSampleContent("This is TabPage 2")
             },
-            new TabViewItem
+            new FATabViewItem
             {
                 Header = "TabItem 3",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
                 Content = new TabViewWindowSampleContent("This is TabPage 3")
             },
         };
@@ -58,112 +58,112 @@ public partial class TabViewWindowingSample : AppWindow
         if (TitleBar != null)
         {
             TitleBar.ExtendsContentIntoTitleBar = true;
-            TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
+            //TitleBar.TitleBarHitTestType = FATitleBarHitTestType.Complex;
 
-            var dragRegion = this.FindControl<Panel>("CustomDragRegion");
-            dragRegion.MinWidth = FlowDirection == Avalonia.Media.FlowDirection.LeftToRight ?
-                TitleBar.RightInset : TitleBar.LeftInset;
+            //var dragRegion = this.FindControl<Panel>("CustomDragRegion");
+            //dragRegion.MinWidth = FlowDirection == Avalonia.Media.FlowDirection.LeftToRight ?
+            //    TitleBar.RightInset : TitleBar.LeftInset;
         }
     }
 
-    private void TabView_TabItemsChanged(TabView sender, NotifyCollectionChangedEventArgs args)
+    private void TabView_TabItemsChanged(FATabView sender, NotifyCollectionChangedEventArgs args)
     {
-        // If TabItem count hits zero - close the window
-        // Note that this event ONLY fires based on a INCC change action and not when changing the
-        // items source. i.e., if you set the source to null, you won't get this event and you'll have
-        // to then manually close the window (if that is applicable)
-        // It also won't fire if the TabView is in dragging (an item from its collection is the current drag source)
-        if (sender.TabItems.Count() == 0)
-        {
-            Close();
-        }
+        //// If TabItem count hits zero - close the window
+        //// Note that this event ONLY fires based on a INCC change action and not when changing the
+        //// items source. i.e., if you set the source to null, you won't get this event and you'll have
+        //// to then manually close the window (if that is applicable)
+        //// It also won't fire if the TabView is in dragging (an item from its collection is the current drag source)
+        //if (sender.TabItems.Count() == 0)
+        //{
+        //    Close();
+        //}
     }
 
-    private void AddTabButtonClick(TabView sender, EventArgs args)
+    private void AddTabButtonClick(FATabView sender, EventArgs args)
     {
-        (sender.TabItems as IList).Add(
-            new TabViewItem
+        (sender.TabItemsSource as IList).Add(
+            new FATabViewItem
             {
                 Header = "New Item",
-                IconSource = new SymbolIconSource { Symbol = Symbol.Document },
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Document },
                 Content = new TabViewWindowSampleContent("New item content")
             });
     }
 
-    private void TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+    private void TabCloseRequested(FATabView sender, FATabViewTabCloseRequestedEventArgs args)
     {
         (sender.TabItems as IList).Remove(args.Tab);
     }
 
-    private void TabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
+    private void TabDragStarting(FATabView sender, FATabViewTabDragStartingEventArgs args)
     {
-        // Set the data payload to the drag args
-        args.Data.SetData(DataIdentifier, args.Tab);
+        //// Set the data payload to the drag args
+        //args.Data.SetData(DataIdentifier, args.Tab);
 
-        // Indicate we can move
-        args.Data.RequestedOperation = DragDropEffects.Move;
+        //// Indicate we can move
+        //args.Data.RequestedOperation = DragDropEffects.Move;
     }
 
     private void TabStripDrop(object sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataIdentifier) && e.Data.Get(DataIdentifier) is TabViewItem tvi)
-        {
-            var destinationTabView = sender as TabView;
+        //if (e.Data.Contains(DataIdentifier) && e.Data.Get(DataIdentifier) is TabViewItem tvi)
+        //{
+        //    var destinationTabView = sender as TabView;
 
-            // While the TabView's internal ListView handles placing an insertion point gap, it 
-            // doesn't actually hold that position upon drop - meaning you now must calculate
-            // the approximate position of where to insert the tab
-            int index = -1;
+        //    // While the TabView's internal ListView handles placing an insertion point gap, it 
+        //    // doesn't actually hold that position upon drop - meaning you now must calculate
+        //    // the approximate position of where to insert the tab
+        //    int index = -1;
 
-            for (int i = 0; i < destinationTabView.TabItems.Count(); i++)
-            {
-                var item = destinationTabView.ContainerFromIndex(i) as TabViewItem;
+        //    for (int i = 0; i < destinationTabView.TabItems.Count(); i++)
+        //    {
+        //        var item = destinationTabView.ContainerFromIndex(i) as TabViewItem;
 
-                if (e.GetPosition(item).X - item.Bounds.Width < 0)
-                {
-                    index = i;
-                    break;
-                }
-            }
+        //        if (e.GetPosition(item).X - item.Bounds.Width < 0)
+        //        {
+        //            index = i;
+        //            break;
+        //        }
+        //    }
 
-            // Now remove the item from the source TabView
-            var srcTabView = tvi.FindAncestorOfType<TabView>();
-            var srcIndex = srcTabView.IndexFromContainer(tvi);
-            (srcTabView.TabItems as IList).RemoveAt(srcIndex);
+        //    // Now remove the item from the source TabView
+        //    var srcTabView = tvi.FindAncestorOfType<TabView>();
+        //    var srcIndex = srcTabView.IndexFromContainer(tvi);
+        //    (srcTabView.TabItems as IList).RemoveAt(srcIndex);
 
-            // Now add it to the new TabView
-            if (index < 0)
-            {
-                (destinationTabView.TabItems as IList).Add(tvi);
-            }
-            else if (index < destinationTabView.TabItems.Count())
-            {
-                (destinationTabView.TabItems as IList).Insert(index, tvi);
-            }
+        //    // Now add it to the new TabView
+        //    if (index < 0)
+        //    {
+        //        (destinationTabView.TabItems as IList).Add(tvi);
+        //    }
+        //    else if (index < destinationTabView.TabItems.Count())
+        //    {
+        //        (destinationTabView.TabItems as IList).Insert(index, tvi);
+        //    }
 
-            destinationTabView.SelectedItem = tvi;
-            e.Handled = true;
+        //    destinationTabView.SelectedItem = tvi;
+        //    e.Handled = true;
 
-            // Remember, TabItemsChanged won't fire during DragDrop so we need to check
-            // here if we should close the window if TabItems.Count() == 0
-            if (srcTabView.TabItems.Count() == 0)
-            {
-                var wnd = srcTabView.FindAncestorOfType<AppWindow>();
-                wnd.Close();
-            }
-        }
+        //    // Remember, TabItemsChanged won't fire during DragDrop so we need to check
+        //    // here if we should close the window if TabItems.Count() == 0
+        //    if (srcTabView.TabItems.Count() == 0)
+        //    {
+        //        var wnd = srcTabView.FindAncestorOfType<AppWindow>();
+        //        wnd.Close();
+        //    }
+        //}
     }
 
     private void TabStripDragOver(object sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataIdentifier))
-        {
-            // For dragover, use the standard DragEffects property
-            e.DragEffects = DragDropEffects.Move;
-        }
+        //if (e.Data.Contains(DataIdentifier))
+        //{
+        //    // For dragover, use the standard DragEffects property
+        //    e.DragEffects = DragDropEffects.Move;
+        //}
     }
 
-    private void TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
+    private void TabDroppedOutside(FATabView sender, FATabViewTabDroppedOutsideEventArgs args)
     {
         // In this case, the tab was dropped outside of any tabstrip, let's move it to
         // a new window

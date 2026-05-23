@@ -9,39 +9,39 @@ namespace FluentAvalonia.UI.Controls;
 /// <summary>
 /// Element factory for the ItemsRepeaters in a NavigationView
 /// </summary>
-internal class NavigationViewItemsFactory : ElementFactory
+internal class NavigationViewItemsFactory : FAElementFactory
 {
-    public NavigationViewItemBase SettingsItem { set => _settingsItem = value; }
+    public FANavigationViewItemBase SettingsItem { set => _settingsItem = value; }
 
     public void UserElementFactory(object newValue)
     {
-        _itemTemplateWrapper = newValue as IElementFactory;
+        _itemTemplateWrapper = newValue as IFAElementFactory;
         if (_itemTemplateWrapper == null)
         {
             // ItemTemplate set does not implement IElementFactoryShim. We also 
             // want to support DataTemplate and DataTemplateSelectors automagically.
             if (newValue is IDataTemplate dt)
             {
-                _itemTemplateWrapper = new ItemTemplateWrapper(dt);
+                _itemTemplateWrapper = new FAItemTemplateWrapper(dt);
             }
-            else if (newValue is DataTemplateSelector dts)
+            else if (newValue is FADataTemplateSelector dts)
             {
-                _itemTemplateWrapper = new ItemTemplateWrapper(dts);
+                _itemTemplateWrapper = new FAItemTemplateWrapper(dts);
             }
         }
 
-        _navViewPool = new List<NavigationViewItem>(4);
+        _navViewPool = new List<FANavigationViewItem>(4);
     }
 
     // Retrieve the element that will be displayed for a specific data item.
     // If the resolved element is not derived from NavigationViewItemBase, wrap in a NavigationViewItem before returning.
-    protected override Control GetElementCore(ElementFactoryGetArgs args)
+    protected override Control GetElementCore(FAElementFactoryGetArgs args)
     {
         object newContent = args.Data;
         if (_settingsItem != null && _settingsItem == args.Data)
         {
             //This is the settings item, return it directly
-            return args.Data as NavigationViewItem;
+            return args.Data as FANavigationViewItem;
         }
 
         if (_itemTemplateWrapper != null)
@@ -50,7 +50,7 @@ internal class NavigationViewItemsFactory : ElementFactory
         }
 
         // Element is already of expected type, just return it
-        if (newContent is NavigationViewItemBase nvib)
+        if (newContent is FANavigationViewItemBase nvib)
         {
             return nvib;
         }
@@ -58,10 +58,10 @@ internal class NavigationViewItemsFactory : ElementFactory
         //If no template is provided _navViewPool will never initialize
         //check here in case
         if (_navViewPool == null)
-            _navViewPool = new List<NavigationViewItem>();
+            _navViewPool = new List<FANavigationViewItem>();
 
         // Get or create a wrapping container for the data
-        NavigationViewItem nvi;
+        FANavigationViewItem nvi;
         if (_navViewPool.Count > 0)
         {
             nvi = _navViewPool[_navViewPool.Count - 1];
@@ -69,16 +69,16 @@ internal class NavigationViewItemsFactory : ElementFactory
         }
         else
         {
-            nvi = new NavigationViewItem();
+            nvi = new FANavigationViewItem();
         }
 
         nvi.CreatedByNavigationViewItemsFactory = true;
 
         if (_itemTemplateWrapper != null)
         {
-            if (_itemTemplateWrapper is ItemTemplateWrapper itw)
+            if (_itemTemplateWrapper is FAItemTemplateWrapper itw)
             {
-                var tempArgs = new ElementFactoryRecycleArgs();
+                var tempArgs = new FAElementFactoryRecycleArgs();
                 tempArgs.Element = newContent as Control;
                 _itemTemplateWrapper.RecycleElement(tempArgs);
 
@@ -92,11 +92,11 @@ internal class NavigationViewItemsFactory : ElementFactory
         return nvi;
     }
 
-    protected override void RecycleElementCore(ElementFactoryRecycleArgs args)
+    protected override void RecycleElementCore(FAElementFactoryRecycleArgs args)
     {
         if (args.Element != null)
         {
-            if (args.Element is NavigationViewItem nvi)
+            if (args.Element is FANavigationViewItem nvi)
             {
                 // Check whether we wrapped the element in a NavigationViewItem ourselves.
                 // If yes, we are responsible for recycling it.
@@ -131,7 +131,7 @@ internal class NavigationViewItemsFactory : ElementFactory
         }
     }
 
-    private void UnlinkElementFromParent(ElementFactoryRecycleArgs args)
+    private void UnlinkElementFromParent(FAElementFactoryRecycleArgs args)
     {
         // We want to unlink the containers from the parent repeater
         // in case we are required to move it to a different repeater.
@@ -141,9 +141,9 @@ internal class NavigationViewItemsFactory : ElementFactory
         }
     }
 
-    private IElementFactory _itemTemplateWrapper;
-    private NavigationViewItemBase _settingsItem;
-    private List<NavigationViewItem> _navViewPool;
+    private IFAElementFactory _itemTemplateWrapper;
+    private FANavigationViewItemBase _settingsItem;
+    private List<FANavigationViewItem> _navViewPool;
 }
 
 

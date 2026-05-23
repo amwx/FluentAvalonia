@@ -10,7 +10,7 @@
         <ctrls:DesignColorSection Header="System"
                                    Description="Used for accent fills on controls">
 
-            <ui:InfoBar Title="Title" IsOpen="True" 
+            <ui:FAInfoBar Title="Title" IsOpen="True" 
                         Message="This is body text."
                         Severity="Error" />
 

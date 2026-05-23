@@ -3,30 +3,30 @@ using Avalonia.Controls.Templates;
 
 namespace FluentAvalonia.UI.Controls;
 
-internal class BreadcrumbElementFactory : ElementFactory
+internal class BreadcrumbElementFactory : FAElementFactory
 {
     public void UserElementFactory(object newValue)
     {
         if (newValue is IDataTemplate template)
         {
-            _itemTemplateWrapper = new ItemTemplateWrapper(template);
+            _itemTemplateWrapper = new FAItemTemplateWrapper(template);
         }
-        else if (newValue is DataTemplateSelector dts)
+        else if (newValue is FADataTemplateSelector dts)
         {
-            _itemTemplateWrapper = new ItemTemplateWrapper(dts);
+            _itemTemplateWrapper = new FAItemTemplateWrapper(dts);
         }
-        else if (newValue is IElementFactory ef)
+        else if (newValue is IFAElementFactory ef)
         {
             _itemTemplateWrapper = ef;
         }
     }
 
-    protected override Control GetElementCore(ElementFactoryGetArgs args)
+    protected override Control GetElementCore(FAElementFactoryGetArgs args)
     {
         var newContent = GetNewContent(_itemTemplateWrapper, args);
 
         // Element is already a BreadcrumbBarItem, so we just return it.
-        if (newContent is BreadcrumbBarItem bcbItem)
+        if (newContent is FABreadcrumbBarItem bcbItem)
         {
             // When the list has not changed the returned item is still a BreadcrumbBarItem but the
             // item is not reset, so we set the content here
@@ -34,23 +34,23 @@ internal class BreadcrumbElementFactory : ElementFactory
             return bcbItem;
         }
 
-        var newItem = new BreadcrumbBarItem
+        var newItem = new FABreadcrumbBarItem
         {
             Content = newContent
         };
 
         // If a user provided item template exists, we pass the template down
         // to the ContentPresenter of the BreadcrumbBarItem.
-        if (_itemTemplateWrapper is ItemTemplateWrapper wrapper)
+        if (_itemTemplateWrapper is FAItemTemplateWrapper wrapper)
         {
             newItem.ContentTemplate = wrapper.Template;
         }
 
         return newItem;
 
-        static object GetNewContent(IElementFactory factory, ElementFactoryGetArgs args0)
+        static object GetNewContent(IFAElementFactory factory, FAElementFactoryGetArgs args0)
         {
-            if (args0.Data is BreadcrumbBarItem item)
+            if (args0.Data is FABreadcrumbBarItem item)
             {
                 return item;
             }
@@ -64,14 +64,14 @@ internal class BreadcrumbElementFactory : ElementFactory
         }
     }
 
-    protected override void RecycleElementCore(ElementFactoryRecycleArgs args)
+    protected override void RecycleElementCore(FAElementFactoryRecycleArgs args)
     {
         if (args.Element is Control c)
         {
             bool isEllipsisDropDownItem = false; // Use of isEllipsisDropDownItem is workaround for
             // crashing bug when attempting to show ellipsis dropdown after clicking one of its items.
 
-            if (c is BreadcrumbBarItem bcbItem)
+            if (c is FABreadcrumbBarItem bcbItem)
             {
                 bcbItem.ResetVisualProperties();
                 isEllipsisDropDownItem = bcbItem.IsEllipsisDropDownItem();
@@ -84,5 +84,5 @@ internal class BreadcrumbElementFactory : ElementFactory
         }
     }
 
-    private IElementFactory _itemTemplateWrapper;
+    private IFAElementFactory _itemTemplateWrapper;
 }

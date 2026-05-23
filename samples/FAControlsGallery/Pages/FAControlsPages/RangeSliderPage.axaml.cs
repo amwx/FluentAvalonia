@@ -9,6 +9,6 @@ public partial class RangeSliderPage : ControlsPageBase
     {
         InitializeComponent();
 
-        TargetType = typeof(RangeSlider);
+        TargetType = typeof(FARangeSlider);
     }
 }

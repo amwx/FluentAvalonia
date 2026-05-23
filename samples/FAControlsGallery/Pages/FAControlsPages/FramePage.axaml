@@ -10,8 +10,8 @@
              x:DataType="pg:FramePage">
 
     <StackPanel Spacing="8">
-        <ctrls:ControlExample TargetType="ui:Frame"
-                              Header="Frame API in Action"
+        <ctrls:ControlExample TargetType="ui:FAFrame"
+                              Header="FAFrame API in Action"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/Frame.xaml.txt"
                               CSharpSource="avares://FAControlsGallery/Pages/SampleCode/Frame.cs.txt">
 
@@ -26,7 +26,7 @@
                 </ListBox>
 
                 <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
-                    <ui:Frame Name="TestFrame" MaxWidth="500" MaxHeight="500"
+                    <ui:FAFrame Name="TestFrame" MaxWidth="500" MaxHeight="500"
                               MinWidth="250" MinHeight="250"/>
                 </Border>
             </StackPanel>
@@ -66,7 +66,7 @@
 
             <ctrls:ControlExample.UsageNotes>
                 <x:String xml:space="preserve">
-When implementing INavigationPageFactory, you don't have to provide an implementation for both methods. If you only need GetPageFromObject(object) (Frame.NavigateFromObject), you can safely return null in GetPage(Type), and vice versa.
+When implementing IFANavigationPageFactory, you don't have to provide an implementation for both methods. If you only need GetPageFromObject(object) (FAFrame.NavigateFromObject), you can safely return null in GetPage(Type), and vice versa.
                 </x:String>
             </ctrls:ControlExample.UsageNotes>
         </ctrls:ControlExample>

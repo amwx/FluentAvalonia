@@ -44,26 +44,26 @@ public partial class DesignPage : UserControl
         vm.LastSelectedIndex = TabStrip1.SelectedIndex;
     }
 
-    private SlideNavigationTransitionEffect GetEffect(int oldIndex, int index)
+    private FASlideNavigationTransitionEffect GetEffect(int oldIndex, int index)
     {
         if (oldIndex < 0)
-            return SlideNavigationTransitionEffect.FromBottom;
+            return FASlideNavigationTransitionEffect.FromBottom;
 
         if (oldIndex > index)
-            return SlideNavigationTransitionEffect.FromRight;
+            return FASlideNavigationTransitionEffect.FromRight;
         else
-            return SlideNavigationTransitionEffect.FromLeft;
+            return FASlideNavigationTransitionEffect.FromLeft;
     }
 
-    private NavigationTransitionInfo GetTransitionInfo(int oldIndex, int newIndex)
+    private FANavigationTransitionInfo GetTransitionInfo(int oldIndex, int newIndex)
     {
         if (oldIndex == -1)
         {
-            return new SuppressNavigationTransitionInfo();
+            return new FASuppressNavigationTransitionInfo();
         }
         else
         {
-            return new SlideNavigationTransitionInfo
+            return new FASlideNavigationTransitionInfo
             {
                 Effect = GetEffect(oldIndex, newIndex),
                 FromHorizontalOffset = 70

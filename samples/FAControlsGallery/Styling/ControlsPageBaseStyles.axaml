@@ -75,7 +75,7 @@
                                         </Transitions>
                                     </Border.Transitions>
                                     <Viewbox Margin="12" ClipToBounds="False">
-                                        <ui:IconSourceElement Name="PreviewImageElement" IconSource="{TemplateBinding PreviewImage}" />
+                                        <ui:FAIconSourceElement Name="PreviewImageElement" IconSource="{TemplateBinding PreviewImage}" />
                                     </Viewbox>
                                 </Border>
                                 <StackPanel Margin="130 0 0 0"
@@ -125,7 +125,7 @@
                                     <Panel>
                                         <Viewbox Width="16" Height="16"
                                                  HorizontalAlignment="Left">
-                                            <ui:IconSourceElement IconSource="{StaticResource SwapThemeIcon}" />
+                                            <ui:FAIconSourceElement IconSource="{StaticResource SwapThemeIcon}" />
                                         </Viewbox>
                                         <TextBlock Text="Toggle Theme"
                                                    VerticalAlignment="Center"
@@ -141,21 +141,21 @@
                                         Name="OptionsButton">
                                     <DropDownButton.Flyout>
                                         <ui:FAMenuFlyout Placement="BottomEdgeAlignedRight">
-                                            <ui:MenuFlyoutItem Text="WinUI Documentation"
+                                            <ui:FAMenuFlyoutItem Text="WinUI Documentation"
                                                                Name="WinUIDocsItem"
                                                                IconSource="{StaticResource PageIconDocs}"/>
-                                            <ui:MenuFlyoutItem Text="WinUI Guidelines"
+                                            <ui:FAMenuFlyoutItem Text="WinUI Guidelines"
                                                                Name="WinUIGuidelinesItem"
                                                                IconSource="{StaticResource ListIcon}"/>
-                                            <ui:MenuFlyoutSeparator Name="Sep1" />
-                                            <ui:MenuFlyoutItem Name="XamlSourceItem"
+                                            <ui:FAMenuFlyoutSeparator Name="Sep1" />
+                                            <ui:FAMenuFlyoutItem Name="XamlSourceItem"
                                                                Text="Page Source (xaml)"
                                                                IconSource="{StaticResource CodeIcon}"/>
-                                            <ui:MenuFlyoutItem Name="CSharpSourceItem"
+                                            <ui:FAMenuFlyoutItem Name="CSharpSourceItem"
                                                                Text="Page Source (csharp)"
                                                                IconSource="{StaticResource CSharpIcon}" />
-                                            <ui:MenuFlyoutSeparator Name="Sep2" />
-                                            <ui:MenuFlyoutItem Name="ShowDefItem"
+                                            <ui:FAMenuFlyoutSeparator Name="Sep2" />
+                                            <ui:FAMenuFlyoutItem Name="ShowDefItem"
                                                                Text="Show Control Definition"
                                                                IconSource="{StaticResource CodeIconBraces}"/>
                                         </ui:FAMenuFlyout>
@@ -226,7 +226,7 @@
                                             </Transitions>
                                         </Border.Transitions>
                                         <Viewbox Margin="12">
-                                            <ui:IconSourceElement IconSource="{TemplateBinding PreviewImage}" />
+                                            <ui:FAIconSourceElement IconSource="{TemplateBinding PreviewImage}" />
                                         </Viewbox>
                                     </Border>
                                     <StackPanel Margin="130 0 0 0"
@@ -275,7 +275,7 @@
                                         <Panel>
                                             <Viewbox Width="16" Height="16"
                                                      HorizontalAlignment="Left">
-                                                <ui:IconSourceElement IconSource="{StaticResource SwapThemeIcon}" />
+                                                <ui:FAIconSourceElement IconSource="{StaticResource SwapThemeIcon}" />
                                             </Viewbox>
                                             <TextBlock Text="Toggle Theme"
                                                        VerticalAlignment="Center"
@@ -291,21 +291,21 @@
                                             Name="OptionsButton">
                                         <DropDownButton.Flyout>
                                             <ui:FAMenuFlyout Placement="BottomEdgeAlignedRight">
-                                                <ui:MenuFlyoutItem Text="WinUI Documentation"
+                                                <ui:FAMenuFlyoutItem Text="WinUI Documentation"
                                                                    Name="WinUIDocsItem"
                                                                    IconSource="{StaticResource PageIconDocs}"/>
-                                                <ui:MenuFlyoutItem Text="WinUI Guidelines"
+                                                <ui:FAMenuFlyoutItem Text="WinUI Guidelines"
                                                                    Name="WinUIGuidelinesItem"
                                                                    IconSource="{StaticResource ListIcon}"/>
-                                                <ui:MenuFlyoutSeparator Name="Sep1" />
-                                                <ui:MenuFlyoutItem Name="XamlSourceItem"
+                                                <ui:FAMenuFlyoutSeparator Name="Sep1" />
+                                                <ui:FAMenuFlyoutItem Name="XamlSourceItem"
                                                                    Text="Page Source (xaml)"
                                                                    IconSource="{StaticResource CodeIcon}"/>
-                                                <ui:MenuFlyoutItem Name="CSharpSourceItem"
+                                                <ui:FAMenuFlyoutItem Name="CSharpSourceItem"
                                                                    Text="Page Source (csharp)"
                                                                    IconSource="{StaticResource CSharpIcon}" />
-                                                <ui:MenuFlyoutSeparator Name="Sep2" />
-                                                <ui:MenuFlyoutItem Name="ShowDefItem"
+                                                <ui:FAMenuFlyoutSeparator Name="Sep2" />
+                                                <ui:FAMenuFlyoutItem Name="ShowDefItem"
                                                                    Text="Show Control Definition"
                                                                    IconSource="{StaticResource CodeIconBraces}"/>
                                             </ui:FAMenuFlyout>

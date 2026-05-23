@@ -6,19 +6,19 @@
 /// Indicates to a page that it is being navigated away from. Takes the place of 
 /// Microsoft.UI.Xaml.Controls.Page.OnNavigatingFrom() method
 /// </summary>
-RoutedEvent<NavigatingCancelEventArgs> NavigatingFromEvent;
+RoutedEvent<FANavigatingCancelEventArgs> NavigatingFromEvent;
 
 /// <summary>
 /// Indiates to a page that it has been navigated away from. Takes the place of
 /// Microsoft.UI.Xaml.Controls.Page.OnNavigatedFrom() method
 /// </summary>
-RoutedEvent<NavigationEventArgs> NavigatedFromEvent;
+RoutedEvent<FANavigationEventArgs> NavigatedFromEvent;
 
 /// <summary>
 /// Indiates to a page that it is being navigated to. Takes the place of
 /// Microsoft.UI.Xaml.Controls.Page.OnNavigatedTo() method
 /// </summary>
-RoutedEvent<NavigationEventArgs> NavigatedToEvent;
+RoutedEvent<FANavigationEventArgs> NavigatedToEvent;
 
 // --------------
 
@@ -27,13 +27,13 @@ RoutedEvent<NavigationEventArgs> NavigatedToEvent;
 public MyPage()
 {
     // NOTE: Make sure the routing strategy is Direct
-    AddHandler(Frame.NavigatingFromEvent, OnNavigatingFrom, RoutingStrategies.Direct);
-    AddHandler(Frame.NavigatedFromEvent, OnNavigatedFrom, RoutingStrategies.Direct);
-    AddHandler(Frame.NavigatedToEvent, OnNavigatedTo, RoutingStrategies.Direct);
+    AddHandler(Frame.FANavigatingFromEvent, OnNavigatingFrom, RoutingStrategies.Direct);
+    AddHandler(Frame.FANavigatedFromEvent, OnNavigatedFrom, RoutingStrategies.Direct);
+    AddHandler(Frame.FANavigatedToEvent, OnNavigatedTo, RoutingStrategies.Direct);
 }
 
-private void OnNavigatingFrom(object sender, NavigatingCancelEventArgs args) { }
+private void OnNavigatingFrom(object sender, FANavigatingCancelEventArgs args) { }
 
-private void OnNavigatedFrom(object sender, NavigationEventArgs args) { }
+private void OnNavigatedFrom(object sender, FANavigationEventArgs args) { }
 
-private void OnNavigatedTo(object sender, NavigationEventArgs args) { }
+private void OnNavigatedTo(object sender, FANavigationEventArgs args) { }

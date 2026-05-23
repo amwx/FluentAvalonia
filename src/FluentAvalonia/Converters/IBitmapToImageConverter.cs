@@ -5,6 +5,7 @@ using Avalonia.Media.Imaging;
 
 namespace FluentAvalonia.Converters;
 
+// TODO v3 (used for NativeMenuBarStyles - not needed anymore?)
 internal class IBitmapToImageConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

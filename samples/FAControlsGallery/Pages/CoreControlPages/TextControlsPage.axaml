@@ -76,7 +76,7 @@
             <ctrls:ControlExample.Options>
                 <StackPanel Spacing="4" MaxWidth="250">
                     <TextBlock Text="MinimumPrefixLength" />
-                    <ui:NumberBox Minimum="1" Maximum="5"
+                    <ui:FANumberBox Minimum="1" Maximum="5"
                                   Value="{Binding #TargetAutoCompleteBox.MinimumPrefixLength}"
                                   SpinButtonPlacementMode="Inline"
                                   HorizontalAlignment="Stretch"/>

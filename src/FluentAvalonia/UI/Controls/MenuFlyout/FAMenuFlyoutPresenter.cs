@@ -23,21 +23,21 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
     protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
     {
-        recycleKey = typeof(MenuFlyoutItem);
-        return !(item is MenuFlyoutItemBase);
+        recycleKey = typeof(FAMenuFlyoutItem);
+        return !(item is FAMenuFlyoutItemBase);
     }
 
     protected override Control CreateContainerForItemOverride(object item, int index, object recycleKey)
     {
         var cont = this.FindDataTemplate(item, ItemTemplate)?.Build(item);
 
-        if (cont is MenuFlyoutItemBase mfib)
+        if (cont is FAMenuFlyoutItemBase mfib)
         {
             mfib.IsContainerFromTemplate = true;
             return mfib;
         }
 
-        return new MenuFlyoutItem()
+        return new FAMenuFlyoutItem()
         {
             Text = item.ToString()
         };
@@ -45,7 +45,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
     protected override void PrepareContainerForItemOverride(Control element, object item, int index)
     {
-        var mfib = element as MenuFlyoutItemBase;
+        var mfib = element as FAMenuFlyoutItemBase;
 
         if (!mfib.IsContainerFromTemplate)
             base.PrepareContainerForItemOverride(element, item, index);
@@ -53,7 +53,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
         mfib.InternalParent = this;
         var iconCount = _iconCount;
         var toggleCount = _toggleCount;
-        if (element is ToggleMenuFlyoutItem tmfi)
+        if (element is FAToggleMenuFlyoutItem tmfi)
         {
             if (tmfi.IconSource != null)
             {
@@ -62,7 +62,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             toggleCount++;
         }
-        else if (element is RadioMenuFlyoutItem rmfi)
+        else if (element is FARadioMenuFlyoutItem rmfi)
         {
             if (rmfi.IconSource != null)
             {
@@ -71,14 +71,14 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             toggleCount++;
         }
-        else if (element is MenuFlyoutItem mfi)
+        else if (element is FAMenuFlyoutItem mfi)
         {
             if (mfi.IconSource != null)
             {
                 iconCount++;
             }
         }
-        else if (element is MenuFlyoutSubItem mfsi)
+        else if (element is FAMenuFlyoutSubItem mfsi)
         {
             if (mfsi.IconSource != null)
             {
@@ -105,7 +105,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
         var iconCount = _iconCount;
         var toggleCount = _toggleCount;
 
-        if (element is ToggleMenuFlyoutItem tmfi)
+        if (element is FAToggleMenuFlyoutItem tmfi)
         {
             if (tmfi.IconSource != null)
             {
@@ -114,7 +114,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             toggleCount--;
         }
-        else if (element is RadioMenuFlyoutItem rmfi)
+        else if (element is FARadioMenuFlyoutItem rmfi)
         {
             if (rmfi.IconSource != null)
             {
@@ -123,14 +123,14 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             toggleCount--;
         }
-        else if (element is MenuFlyoutItem mfi)
+        else if (element is FAMenuFlyoutItem mfi)
         {
             if (mfi.IconSource != null)
             {
                 iconCount--;
             }
         }
-        else if (element is MenuFlyoutSubItem mfsi)
+        else if (element is FAMenuFlyoutSubItem mfsi)
         {
             if (mfsi.IconSource != null)
             {
@@ -157,7 +157,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
             case Key.Down:
                 {
                     var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
-                    if (current is MenuFlyoutItemBase mfib)
+                    if (current is FAMenuFlyoutItemBase mfib)
                     {
                         var index = IndexFromContainer(mfib);
                         if (index == -1)
@@ -170,7 +170,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
                                 index = 0;
 
                             var cont = ContainerFromIndex(index);
-                            if (cont != null && !(cont is MenuFlyoutSeparator) &&
+                            if (cont != null && !(cont is FAMenuFlyoutSeparator) &&
                                 cont.Focusable && cont.IsEffectivelyEnabled)
                             {
                                 cont.Focus(NavigationMethod.Directional);
@@ -190,7 +190,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
             case Key.Up:
                 {
                     var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
-                    if (current is MenuFlyoutItemBase mfib)
+                    if (current is FAMenuFlyoutItemBase mfib)
                     {
                         var index = IndexFromContainer(mfib);
                         if (index == -1)
@@ -203,7 +203,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
                                 index = ItemCount - 1;
 
                             var cont = ContainerFromIndex(index);
-                            if (cont != null && !(cont is MenuFlyoutSeparator) &&
+                            if (cont != null && !(cont is FAMenuFlyoutSeparator) &&
                                 cont.Focusable && cont.IsEffectivelyEnabled)
                             {
                                 cont.Focus(NavigationMethod.Directional);
@@ -222,7 +222,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             case Key.Right:
                 {
-                    if (item is MenuFlyoutSubItem mfsi)
+                    if (item is FAMenuFlyoutSubItem mfsi)
                     {
                         mfsi.Open(true);
                         args.Handled = true;
@@ -232,7 +232,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             case Key.Left:
                 {
-                    if (InternalParent is MenuFlyoutSubItem mfsi)
+                    if (InternalParent is FAMenuFlyoutSubItem mfsi)
                     {
                         // NOTE: Order matters here for some reason, focus the MFSI FIRST,
                         // then close it. Otherwise the focus adorner isn't shown
@@ -246,15 +246,15 @@ public class FAMenuFlyoutPresenter : ItemsControl
             case Key.Enter:
                 {
                     var current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
-                    if (current is MenuFlyoutItemBase mfib && mfib.Focusable && mfib.IsEffectivelyEnabled)
+                    if (current is FAMenuFlyoutItemBase mfib && mfib.Focusable && mfib.IsEffectivelyEnabled)
                     {
-                        if (mfib is MenuFlyoutSubItem mfsi)
+                        if (mfib is FAMenuFlyoutSubItem mfsi)
                         {
                             mfsi.Open(true);
                         }
                         else
                         {
-                            (mfib as MenuFlyoutItem)?.RaiseClick();
+                            (mfib as FAMenuFlyoutItem)?.RaiseClick();
                             CloseMenu();
                         }
                         args.Handled = true;
@@ -264,7 +264,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
             case Key.Escape:
                 {
-                    if (InternalParent is MenuFlyoutSubItem mfsi)
+                    if (InternalParent is FAMenuFlyoutSubItem mfsi)
                     {
                         // NOTE: Order matters here for some reason, focus the MFSI FIRST,
                         // then close it. Otherwise the focus adorner isn't shown
@@ -290,7 +290,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
 
         // MenuFlyoutSubItem doesn't support click, so we don't raise it there
         // Toggle and Radio MFIs derive from MenuFlyoutItem so this handles everything
-        if (item is MenuFlyoutItem mfi)
+        if (item is FAMenuFlyoutItem mfi)
         {
             mfi.RaiseClick();
             CloseMenu();
@@ -298,9 +298,9 @@ public class FAMenuFlyoutPresenter : ItemsControl
         }
     }
 
-    internal void PointerEnteredItem(MenuFlyoutItemBase item)
+    internal void PointerEnteredItem(FAMenuFlyoutItemBase item)
     {
-        if (item is MenuFlyoutSubItem mfsi)
+        if (item is FAMenuFlyoutSubItem mfsi)
         {
             if (mfsi == _openedItem)
             {
@@ -339,7 +339,7 @@ public class FAMenuFlyoutPresenter : ItemsControl
         }
     }
 
-    internal void PointerExitedItem(MenuFlyoutItemBase item)
+    internal void PointerExitedItem(FAMenuFlyoutItemBase item)
     {
         if (_openingItem == item)
         {
@@ -371,14 +371,14 @@ public class FAMenuFlyoutPresenter : ItemsControl
         _openingItem = null;
     }
 
-    private MenuFlyoutItemBase GetMenuItem(object src)
+    private FAMenuFlyoutItemBase GetMenuItem(object src)
     {
-        return ((Visual)src).FindAncestorOfType<MenuFlyoutItemBase>(true);
+        return ((Visual)src).FindAncestorOfType<FAMenuFlyoutItemBase>(true);
     }
 
     internal void CloseMenu()
     {
-        if (InternalParent is MenuFlyoutSubItem mfsi)
+        if (InternalParent is FAMenuFlyoutSubItem mfsi)
         {
             mfsi.Close(true);
         }
@@ -402,8 +402,8 @@ public class FAMenuFlyoutPresenter : ItemsControl
         }
     }
 
-    private MenuFlyoutItemBase _openingItem;
-    private MenuFlyoutSubItem _openedItem;
+    private FAMenuFlyoutItemBase _openingItem;
+    private FAMenuFlyoutSubItem _openedItem;
     private IDisposable _closingCancelDisp;
 
     private int _iconCount = 0;

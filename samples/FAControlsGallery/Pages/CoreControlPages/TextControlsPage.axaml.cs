@@ -12,7 +12,7 @@ public partial class TextControlsPage : ControlsPageBase
         InitializeComponent();
         ControlName = "Text Controls";
         App.Current.Resources.TryGetResource("TextPageIcon", null, out var icon);
-        PreviewImage = (IconSource)icon;
+        PreviewImage = (FAIconSource)icon;
 
         DataContext = new TextControlsPageViewModel();
     }

@@ -11,7 +11,7 @@
     Reordering in a TabView is handled automatically,
     DragDrop must be implemented manually 
     -->
-    <ui:TabView Name="TabView"
+    <ui:FATabView Name="TabView"
                 VerticalAlignment="Stretch"
                 AddTabButtonClick="AddTabButtonClick"
                 TabCloseRequested="TabCloseRequested"
@@ -22,7 +22,7 @@
                 TabStripDragOver="TabStripDragOver"
                 TabDragStarting="TabDragStarting"
                 TabStripDrop="TabStripDrop">
-        <ui:TabView.TabStripFooter>
+        <ui:FATabView.TabStripFooter>
             <!-- 
             Use this so we can set the margin in the tabstrip so it
             doesn't end up underneath the caption buttons
@@ -32,6 +32,6 @@
             system titlebar
             -->
             <Panel Name="CustomDragRegion" Background="Transparent" />
-        </ui:TabView.TabStripFooter>
-    </ui:TabView>
+        </ui:FATabView.TabStripFooter>
+    </ui:FATabView>
 </Window>

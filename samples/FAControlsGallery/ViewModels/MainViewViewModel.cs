@@ -67,7 +67,7 @@ public class MainViewViewModel : ViewModelBase
     }
 }
 
-public class NavigationFactory : INavigationPageFactory
+public class NavigationFactory : IFANavigationPageFactory
 {
     public NavigationFactory(MainViewViewModel owner)
     {
@@ -150,7 +150,7 @@ public class NavigationFactory : INavigationPageFactory
                "https://github.com/amwx/FluentAvalonia/tree/master/samples/FAControlsGallery/Pages/FAControlsPages";
 
             pg.GithubPrefixString = faPageGithub;
-            pg.PreviewImage = Application.Current.FindResource(dc.IconResourceKey) as IconSource;
+            pg.PreviewImage = Application.Current.FindResource(dc.IconResourceKey) as FAIconSource;
             pg.ControlName = dc.Header;
             pg.ControlNamespace = dc.Namespace;
             pg.Description = dc.Description;

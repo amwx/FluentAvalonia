@@ -31,19 +31,19 @@
          if you want an MS store like NavView, this will NOT
          be an officially supported thing in the main library
     -->
-    <Style Selector="ui|NavigationView.SampleAppNav">
+    <Style Selector="ui|FANavigationView.SampleAppNav">
         <Setter Property="IsPaneToggleButtonVisible" Value="False" />
         <Setter Property="OpenPaneLength" Value="72" />
         <Setter Property="IsPaneOpen" Value="True" />
     </Style>
-    <Style Selector="ui|NavigationView.SampleAppNav /template/ Button#NavigationViewBackButton">
+    <Style Selector="ui|FANavigationView.SampleAppNav /template/ Button#NavigationViewBackButton">
         <Setter Property="Width" Value="{DynamicResource NavigationBackButtonWidth}" />
     </Style>
-    <Style Selector="ui|NavigationView.SampleAppNav[IsBackButtonVisible=False] SplitView /template/ ContentPresenter#PART_PanePresenter">
+    <Style Selector="ui|FANavigationView.SampleAppNav[IsBackButtonVisible=False] SplitView /template/ ContentPresenter#PART_PanePresenter">
         <Setter Property="Margin" Value="0 40 0 0" />
     </Style>
 
-    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter">
+    <Style Selector="ui|FANavigationViewItem.SampleAppNav uip|FANavigationViewItemPresenter">
         <Setter Property="Width" Value="72" />
         <Setter Property="MinHeight" Value="60" />
         <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
@@ -102,24 +102,24 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#ContentPresenter">
+    <Style Selector="ui|FANavigationViewItem.SampleAppNav uip|FANavigationViewItemPresenter:pointerover /template/ ContentPresenter#ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
     </Style>
-    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#Icon">
+    <Style Selector="ui|FANavigationViewItem.SampleAppNav uip|FANavigationViewItemPresenter:pointerover /template/ ContentPresenter#Icon">
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
     </Style>
 
-    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pressed /template/ ContentPresenter#ContentPresenter">
+    <Style Selector="ui|FANavigationViewItem.SampleAppNav uip|FANavigationViewItemPresenter:pressed /template/ ContentPresenter#ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
     </Style>
-    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:pressed /template/ ContentPresenter#Icon">
+    <Style Selector="ui|FANavigationViewItem.SampleAppNav uip|FANavigationViewItemPresenter:pressed /template/ ContentPresenter#Icon">
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
     </Style>
 
-    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:selected /template/ ContentPresenter#ContentPresenter">
+    <Style Selector="ui|FANavigationViewItem.SampleAppNav uip|FANavigationViewItemPresenter:selected /template/ ContentPresenter#ContentPresenter">
         <Setter Property="IsVisible" Value="False" />
     </Style>
-    <Style Selector="ui|NavigationViewItem.SampleAppNav uip|NavigationViewItemPresenter:selected /template/ ContentPresenter#Icon">
+    <Style Selector="ui|FANavigationViewItem.SampleAppNav uip|FANavigationViewItemPresenter:selected /template/ ContentPresenter#Icon">
         <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
     </Style>
 

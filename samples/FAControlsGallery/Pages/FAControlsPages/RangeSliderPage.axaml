@@ -14,7 +14,7 @@
             <ctrls:ControlExample Header="A simple RangeSlider"
                                   XamlSource="avares://FAControlsGallery/Pages/SampleCode/RangeSlider1.xaml.txt">
                 <StackPanel Spacing="8">
-                    <ui:RangeSlider Name="RangeSlider1" />
+                    <ui:FARangeSlider Name="RangeSlider1" />
 
                     <TextBlock Text="{Binding #RangeSlider1.RangeStart, StringFormat='RangeStart: {0}'}" />
                     <TextBlock Text="{Binding #RangeSlider1.RangeEnd, StringFormat='RangeEnd: {0}'}" />
@@ -23,17 +23,17 @@
                 <ctrls:ControlExample.Options>
                     <StackPanel Spacing="8">
                         <TextBlock Text="Minimum" />
-                        <ui:NumberBox Minimum="-1000" Maximum="1000"
+                        <ui:FANumberBox Minimum="-1000" Maximum="1000"
                                       Value="{Binding #RangeSlider1.Minimum}"
                                       SpinButtonPlacementMode="Inline"/>
 
                         <TextBlock Text="Maximum" />
-                        <ui:NumberBox Minimum="-1000" Maximum="1000"
+                        <ui:FANumberBox Minimum="-1000" Maximum="1000"
                                       Value="{Binding #RangeSlider1.Maximum}"
                                       SpinButtonPlacementMode="Inline"/>
 
                         <TextBlock Text="Step Frequency" />
-                        <ui:NumberBox Minimum="1" Maximum="10"
+                        <ui:FANumberBox Minimum="1" Maximum="10"
                                       Value="{Binding #RangeSlider1.StepFrequency}"
                                       SpinButtonPlacementMode="Inline"/>
                         
@@ -50,7 +50,7 @@
                 </ctrls:ControlExample.Substitutions>
             </ctrls:ControlExample>
             
-            <ui:InfoBar IsOpen="True"
+            <ui:FAInfoBar IsOpen="True"
                         Title="NOTE"
                         Severity="Warning"
                         IsClosable="False"
@@ -64,18 +64,18 @@
                                DockPanel.Dock="Top"
                                TextWrapping="Wrap"
                                Margin="0 10"/>
-                    <ui:RangeSlider Name="RangeSlider2" />
+                    <ui:FARangeSlider Name="RangeSlider2" />
                 </DockPanel>
 
                 <ctrls:ControlExample.Options>
                     <StackPanel Spacing="8">
                         <TextBlock Text="MinimumRange" />
-                        <ui:NumberBox Minimum="0" Maximum="30"
+                        <ui:FANumberBox Minimum="0" Maximum="30"
                                       Value="{Binding #RangeSlider2.MinimumRange}"
                                       SpinButtonPlacementMode="Inline"/>
 
                         <TextBlock Text="Step Frequency" />
-                        <ui:NumberBox Minimum="1" Maximum="10"
+                        <ui:FANumberBox Minimum="1" Maximum="10"
                                       Value="{Binding #RangeSlider2.StepFrequency}"
                                       SpinButtonPlacementMode="Inline"/>
                     </StackPanel>
@@ -88,13 +88,13 @@
             </ctrls:ControlExample>
 
             <ctrls:ControlExample Header="RangeSlider custom ToolTip string format">
-                <ui:RangeSlider Minimum="0"
+                <ui:FARangeSlider Minimum="0"
                                 Maximum="1"
                                 StepFrequency="0.01"
                                 ToolTipStringFormat="P0"/>
 
                 <ctrls:ControlExample.XamlSource>
-                    <x:String xml:space="preserve">&lt;ui:RangeSlider Minimum="0" Maximimum="1" StepFrequency="0.01" ToolTipStringFormat="P0" /></x:String>
+                    <x:String xml:space="preserve">&lt;ui:FARangeSlider Minimum="0" Maximimum="1" StepFrequency="0.01" ToolTipStringFormat="P0" /></x:String>
                 </ctrls:ControlExample.XamlSource>                
             </ctrls:ControlExample>
 

@@ -3,6 +3,7 @@ using Avalonia.Data.Converters;
 
 namespace FluentAvalonia.Converters;
 
+// TODO v3 - NativeMenuBar Styles - not needed?
 internal class InverseBooleanValueConverter : IValueConverter
 {
     public bool Default { get; set; }

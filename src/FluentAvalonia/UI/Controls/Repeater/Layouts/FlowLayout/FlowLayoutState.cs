@@ -14,7 +14,7 @@ internal class FlowLayoutState
 
     internal double TotalItemsPerLine => _totalItemsPerLine;
 
-    public void InitializeForContext(VirtualizingLayoutContext context,
+    public void InitializeForContext(FAVirtualizingLayoutContext context,
         IFlowLayoutAlgorithmDelegates callbacks)
     {
         _flowAlgorithm.InitializeForContext(context, callbacks);
@@ -28,12 +28,12 @@ internal class FlowLayoutState
         context.LayoutStateCore = this;
     }
 
-    public void UninitializeForContext(VirtualizingLayoutContext context)
+    public void UninitializeForContext(FAVirtualizingLayoutContext context)
     {
         _flowAlgorithm.UninitializeForContext(context);
     }
 
-    public void OnLineArranged(int startIndex, int countInLine, double lineSize, VirtualizingLayoutContext context)
+    public void OnLineArranged(int startIndex, int countInLine, double lineSize, FAVirtualizingLayoutContext context)
     {
         // If we do not have any estimation information, use the line for estimation. 
         // If we do have some estimation information, don't account for the last line which is quite likely

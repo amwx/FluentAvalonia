@@ -116,10 +116,10 @@
             <TabStripItem Content="Signal" Classes="right" />
         </TabStrip>
 
-        <ui:Frame Grid.Row="3" Name="ColorsPageFrame"
+        <ui:FAFrame Grid.Row="3" Name="ColorsPageFrame"
                   IsNavigationStackEnabled="False">
             
-        </ui:Frame>
+        </ui:FAFrame>
     </Grid>
     
 </UserControl>

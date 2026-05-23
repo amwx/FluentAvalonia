@@ -25,6 +25,12 @@
                 <Rectangle Name="Pill"
                            Theme="{StaticResource ComboBoxItemPill}"
                            />
+
+                <ComboBox IsEditable="True">
+                    <ComboBoxItem>Item1</ComboBoxItem>
+                    <ComboBoxItem>Item2</ComboBoxItem>
+                    <ComboBoxItem>Item3</ComboBoxItem>
+                </ComboBox>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -87,20 +93,9 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
-                    <Grid RowDefinitions="Auto, *, Auto"
-                          ColumnDefinitions="*,32">
+                    <Grid ColumnDefinitions="*,32">
                         
-                        <!-- Disabling since Avalonia doesn't have Header property here
-                        <ContentPresenter x:Name="HeaderContentPresenter"
-                                          Grid.Row="0"
-                                          Grid.Column="0"
-                                          Grid.ColumnSpan="2"
-                                          IsVisible="False"
-                                          FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
-                                          Margin="{DynamicResource ComboBoxTopHeaderMargin}"
-                                          VerticalAlignment="Top" />-->
-                        <Border x:Name="Background"
-                                Grid.Row="1"
+                        <Border Name="Background"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
                                 Background="{TemplateBinding Background}"
@@ -109,8 +104,7 @@
                                 MinWidth="{DynamicResource ComboBoxThemeMinWidth}"
                                 CornerRadius="{TemplateBinding CornerRadius}"/>
 
-                        <Border x:Name="HighlightBackground"
-                                Grid.Row="1"
+                        <Border Name="HighlightBackground"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
                                 BorderThickness="{DynamicResource ComboBoxBackgroundBorderThicknessFocused}"
@@ -121,30 +115,50 @@
                         <Border Name="Pill"
                                 Classes="ComboBoxItemPill"
                                 Margin="1 0 0 0"
-                                Grid.Row="1"
                                 Opacity="0"/>
 
                         <TextBlock x:Name="PlaceholderTextBlock"
-                                   Grid.Row="1"
                                    Grid.Column="0"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    Margin="{TemplateBinding Padding}"
                                    Text="{TemplateBinding PlaceholderText}"
-                                   Foreground="{TemplateBinding PlaceholderForeground}"
-                                   IsVisible="{TemplateBinding SelectionBoxItem, Converter={x:Static ObjectConverters.IsNull}}" />
+                                   Foreground="{TemplateBinding PlaceholderForeground}">
+                            <TextBlock.IsVisible>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <Binding Path="SelectionBoxItem" RelativeSource="{RelativeSource TemplatedParent}" Converter="{x:Static ObjectConverters.IsNull}" />
+                                    <Binding Path="!IsEditable" RelativeSource="{RelativeSource TemplatedParent}" />
+                                </MultiBinding>
+                            </TextBlock.IsVisible>
+                        </TextBlock>
 
-                        <ContentPresenter x:Name="ContentPresenter"
+                        <ContentPresenter Name="ContentPresenter"
                                           Content="{TemplateBinding SelectionBoxItem}"
                                           ContentTemplate="{TemplateBinding ItemTemplate}"
-                                          Grid.Row="1"
                                           Grid.Column="0"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
 
-                        <Border x:Name="DropDownOverlay"
-                                Grid.Row="1"
+                        <TextBox Name="PART_EditableTextBox"
+                                 Grid.Column="0"
+                                 Padding="{TemplateBinding Padding}"
+                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                 Foreground="{TemplateBinding Foreground}"
+                                 Background="Transparent"
+                                 Text="{TemplateBinding Text, Mode=TwoWay}"
+                                 PlaceholderText="{TemplateBinding PlaceholderText}"
+                                 BorderThickness="0"
+                                 IsVisible="{TemplateBinding IsEditable}">
+                            <TextBox.Resources>
+                                <SolidColorBrush x:Key="TextControlBackgroundFocused">Transparent</SolidColorBrush>
+                                <SolidColorBrush x:Key="TextControlBackgroundPointerOver">Transparent</SolidColorBrush>
+                                <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+                            </TextBox.Resources>
+                        </TextBox>
+
+                        <Border Name="DropDownOverlay"
                                 Grid.Column="1"
                                 Background="Transparent"
                                 Margin="-4,4,4,4"
@@ -152,18 +166,18 @@
                                 IsVisible="False"
                                 HorizontalAlignment="Right" />
 
-                        <ui:FontIcon Name="DropDownGlyph"
-                                     Foreground="{DynamicResource ComboBoxDropDownGlyphForeground}"
-                                     MinHeight="{DynamicResource ComboBoxMinHeight}"
-                                     Grid.Row="1"
-                                     Grid.Column="1"
-                                     IsHitTestVisible="False"
-                                     Margin="0 0 14 0"
-                                     FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                     FontSize="12"
-                                     Glyph="&#xE70D;"
-                                     HorizontalAlignment="Right"
-                                     VerticalAlignment="Center" />
+                        <ui:FAFontIcon Name="DropDownGlyph"
+                                       Foreground="{DynamicResource ComboBoxDropDownGlyphForeground}"
+                                       MinHeight="{DynamicResource ComboBoxMinHeight}"
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       IsHitTestVisible="False"
+                                       Margin="0 0 14 0"
+                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                       FontSize="12"
+                                       Glyph="&#xE70D;"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" />
 
                         <Popup Name="PART_Popup"
                                WindowManagerAddShadowHint="False"
@@ -173,7 +187,7 @@
                                PlacementTarget="Background"
                                IsLightDismissEnabled="True"
                                InheritsTransform="True">
-                            <Border x:Name="PopupBorder"
+                            <Border Name="PopupBorder"
                                     Background="{DynamicResource ComboBoxDropDownBackground}"
                                     BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
                                     BorderThickness="{DynamicResource ComboBoxDropdownBorderThickness}"
@@ -231,7 +245,7 @@
                 <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundDisabled}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrushDisabled}" />
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#DropDownGlyph">
+            <Style Selector="^ /template/ ui|FAFontIcon#DropDownGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundDisabled}" />
             </Style>
         </Style>
@@ -246,7 +260,7 @@
             <Style Selector="^ /template/ TextBlock#PlaceholderTextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxPlaceHolderForegroundFocused}" />
             </Style>
-            <Style Selector="^ /template/ ui|FontIcon#DropDownGlyph">
+            <Style Selector="^ /template/ ui|FAFontIcon#DropDownGlyph">
                 <Setter Property="Foreground" Value="{DynamicResource ComboBoxDropDownGlyphForegroundFocused}" />
             </Style>
         </Style>

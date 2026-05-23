@@ -46,7 +46,7 @@ public class IconElementConverter : TypeConverter
 {
     public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
     {
-        if (sourceType == typeof(string) || sourceType == typeof(Symbol) || sourceType == typeof(IconSource))
+        if (sourceType == typeof(string) || sourceType == typeof(FASymbol) || sourceType == typeof(FAIconSource))
         {
             return true;
         }
@@ -54,39 +54,39 @@ public class IconElementConverter : TypeConverter
     }
     public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
     {
-        if (value is Symbol symbol)
+        if (value is FASymbol symbol)
         {
-            return new SymbolIcon { Symbol = symbol };
+            return new FASymbolIcon { Symbol = symbol };
         }
-        else if (value is IconSource ico)
+        else if (value is FAIconSource ico)
         {
-            if (ico is FontIconSource fis)
+            if (ico is FAFontIconSource fis)
             {
-                return IconHelpers.CreateFontIconFromFontIconSource(fis);
+                return FAIconHelpers.CreateFontIconFromFontIconSource(fis);
             }
-            else if (ico is SymbolIconSource sis)
+            else if (ico is FASymbolIconSource sis)
             {
-                return IconHelpers.CreateSymbolIconFromSymbolIconSource(sis);
+                return FAIconHelpers.CreateSymbolIconFromSymbolIconSource(sis);
             }
-            else if (ico is PathIconSource pis)
+            else if (ico is FAPathIconSource pis)
             {
-                return IconHelpers.CreatePathIconFromPathIconSource(pis);
+                return FAIconHelpers.CreatePathIconFromPathIconSource(pis);
             }
-            else if (ico is BitmapIconSource bis)
+            else if (ico is FABitmapIconSource bis)
             {
-                return IconHelpers.CreateBitmapIconFromBitmapIconSource(bis);
+                return FAIconHelpers.CreateBitmapIconFromBitmapIconSource(bis);
             }
         }
         else if (value is IImage img)
         {
-            return new ImageIcon { Source = img };
+            return new FAImageIcon { Source = img };
         }
         else if (value is string val)
         {
             //First we try if the text is a valid Symbol
-            if (Enum.TryParse<Symbol>(val, out Symbol sym))
+            if (Enum.TryParse<FASymbol>(val, out FASymbol sym))
             {
-                return new SymbolIcon() { Symbol = sym };
+                return new FASymbolIcon() { Symbol = sym };
             }
 
             //Try a PathIcon
@@ -99,14 +99,14 @@ public class IconElementConverter : TypeConverter
             {
                 if (Uri.TryCreate(val, UriKind.RelativeOrAbsolute, out Uri result))
                 {
-                    return new BitmapIcon() { UriSource = result };
+                    return new FABitmapIcon() { UriSource = result };
                 }
             }
             catch { }
 
             // If we've reached this point, we'll make a FontIcon
             // Glyph can be anything (sort of), so we don't need to Try/Catch
-            return new FontIcon() { Glyph = val };
+            return new FAFontIcon() { Glyph = val };
 
         }
         return base.ConvertFrom(context, culture, value);

@@ -23,7 +23,7 @@ internal class ElementManager
     public int LastRealizedIndex =>
         _firstRealizedDataIndex + _realizedElements.Count - 1;
 
-    public void SetContext(VirtualizingLayoutContext virtualContext)
+    public void SetContext(FAVirtualizingLayoutContext virtualContext)
     {
         _context = virtualContext;
     }
@@ -74,7 +74,7 @@ internal class ElementManager
                 Log.Debug("Creating element for sentinal with data index {Index}", dataIndex);
 #endif
                 element = _context.GetOrCreateElementAt(dataIndex,
-                    ElementRealizationOptions.ForceCreate | ElementRealizationOptions.SuppressAutoRecycle);
+                    FAElementRealizationOptions.ForceCreate | FAElementRealizationOptions.SuppressAutoRecycle);
                 _realizedElements[realizedIndex] = element;
             }
             else
@@ -85,7 +85,7 @@ internal class ElementManager
         else
         {
             element = _context.GetOrCreateElementAt(realizedIndex,
-                ElementRealizationOptions.ForceCreate | ElementRealizationOptions.SuppressAutoRecycle);
+                FAElementRealizationOptions.ForceCreate | FAElementRealizationOptions.SuppressAutoRecycle);
         }
 
         return element;
@@ -221,7 +221,7 @@ internal class ElementManager
         return IsVirtualizingContext() ?
             GetAt(GetRealizedRangeIndexFromDataIndex(dataIndex)) :
             _context.GetOrCreateElementAt(dataIndex,
-                ElementRealizationOptions.ForceCreate | ElementRealizationOptions.SuppressAutoRecycle);
+                FAElementRealizationOptions.ForceCreate | FAElementRealizationOptions.SuppressAutoRecycle);
     }
 
     public void EnsureElementRealized(bool forward, int dataIndex, string layoutId)
@@ -229,7 +229,7 @@ internal class ElementManager
         if (IsDataIndexRealized(dataIndex) == false)
         {
             var element = _context.GetOrCreateElementAt(dataIndex,
-                ElementRealizationOptions.ForceCreate | ElementRealizationOptions.SuppressAutoRecycle);
+                FAElementRealizationOptions.ForceCreate | FAElementRealizationOptions.SuppressAutoRecycle);
 
             if (forward)
             {
@@ -495,5 +495,5 @@ internal class ElementManager
     private List<Control> _realizedElements = new List<Control>();
     private List<Rect> _realizedElementLayoutBounds = new List<Rect>();
     private int _firstRealizedDataIndex = -1;
-    private VirtualizingLayoutContext _context = null;
+    private FAVirtualizingLayoutContext _context = null;
 }

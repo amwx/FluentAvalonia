@@ -45,7 +45,7 @@
                             HorizontalAlignment="Right"
                             AutomationProperties.Name="Copy sample code"
                             ToolTip.Tip="Copy sample code">
-                        <ui:SymbolIcon Symbol="ClipboardCode" FontSize="20" />
+                        <ui:FASymbolIcon Symbol="ClipboardCode" FontSize="20" />
                     </Button>
                     
                     <!--<ui:TeachingTip Name="ConfirmCopyTeachingTip"
@@ -76,7 +76,7 @@
                                 Margin="8"
                                 HorizontalAlignment="Right"
                                 Name="MoreButton">
-                            <ui:SymbolIcon Symbol="More" FontSize="18" />
+                            <ui:FASymbolIcon Symbol="More" FontSize="18" />
                         </Button>
 
                         <ContentPresenter Name="HeaderPresenter"
@@ -155,7 +155,7 @@
                                                     DockPanel.Dock="Right"
                                                     Margin="6 0 0 0"
                                                     IsVisible="False">
-                                                <ui:SymbolIcon Name="OptionsChevron"
+                                                <ui:FASymbolIcon Name="OptionsChevron"
                                                                Symbol="ChevronDown" />
                                             </Button>
                                         </DockPanel>
@@ -185,7 +185,7 @@
                                 <Viewbox Width="20" Height="20" 
                                          Stretch="Uniform"
                                          HorizontalAlignment="Left">
-                                    <ui:ImageIcon>
+                                    <ui:FAImageIcon>
                                         <DrawingImage>
                                             <DrawingGroup>
                                                 <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
@@ -194,7 +194,7 @@
                                                                  Geometry="M 15.344371,39.275058 29.644335,7.3750199 C 30.017235,6.5434859 30.993375,6.1715759 31.824975,6.5443219 32.587276,6.8860259 32.963256,7.7348519 32.733576,8.5144448 L 32.655696,8.7249188 18.355645,40.624979 C 17.982899,41.45658 17.006604,41.82838 16.17507,41.4557 15.412813,41.114039 15.036789,40.265059 15.266535,39.485599 L 15.344371,39.275058 29.644335,7.3750199 Z" />
                                             </DrawingGroup>
                                         </DrawingImage>
-                                    </ui:ImageIcon>
+                                    </ui:FAImageIcon>
                                 </Viewbox>
                                 <TextBlock Text="Example source code" 
                                            Margin="32 0 0 0" />
@@ -317,7 +317,7 @@
             </Style>            
         </Style>
 
-        <Style Selector="^:optionsfull /template/ ui|SymbolIcon#OptionsChevron">
+        <Style Selector="^:optionsfull /template/ ui|FASymbolIcon#OptionsChevron">
             <Setter Property="Symbol" Value="ChevronUp" />
         </Style>
         
