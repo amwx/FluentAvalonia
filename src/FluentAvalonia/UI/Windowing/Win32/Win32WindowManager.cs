@@ -70,6 +70,7 @@ internal unsafe class Win32WindowManager
         {
             var sysMenu = GetSystemMenu((HWND)Hwnd, false);
             bool isMax = _window.WindowState == WindowState.Maximized;
+            bool isDialog = _window.ShowAsDialog;
 
             var mii = new MENUITEMINFO
             {
@@ -78,18 +79,20 @@ internal unsafe class Win32WindowManager
                 fState = MFS_ENABLED
             };
             // Always enabled
-            SetMenuItemInfo(sysMenu, (uint)SC_MINIMIZE, false, &mii);
-            SetMenuItemInfo(sysMenu, (uint)SC_CLOSE, false, &mii);
+            SetMenuItemInfo(sysMenu, SC_CLOSE, false, &mii);
 
+            mii.fState = (uint)(isDialog ? MFS_DISABLED : MFS_ENABLED);
+            SetMenuItemInfo(sysMenu, SC_MINIMIZE, false, &mii);
+            
             // Restore only enabled if maximized
-            mii.fState = (uint)(isMax ? MFS_ENABLED : MFS_DISABLED);
-            SetMenuItemInfo(sysMenu, (uint)SC_RESTORE, false, &mii);
+            mii.fState = (uint)((isMax && !isDialog) ? MFS_ENABLED : MFS_DISABLED);
+            SetMenuItemInfo(sysMenu, SC_RESTORE, false, &mii);
 
             // Only available if normal state
-            mii.fState = (uint)(isMax ? MFS_DISABLED : MFS_ENABLED);
-            SetMenuItemInfo(sysMenu, (uint)SC_MOVE, false, &mii);
-            SetMenuItemInfo(sysMenu, (uint)SC_SIZE, false, &mii);
-            SetMenuItemInfo(sysMenu, (uint)SC_MAXIMIZE, false, &mii);
+            mii.fState = (uint)((isMax || isDialog) ? MFS_DISABLED : MFS_ENABLED);
+            SetMenuItemInfo(sysMenu, SC_MOVE, false, &mii);
+            SetMenuItemInfo(sysMenu, SC_SIZE, false, &mii);
+            SetMenuItemInfo(sysMenu, SC_MAXIMIZE, false, &mii);
 
             SetMenuDefaultItem(sysMenu, uint.MaxValue, 0);
 
