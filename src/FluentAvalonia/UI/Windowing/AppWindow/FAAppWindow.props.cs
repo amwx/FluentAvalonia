@@ -55,6 +55,8 @@ public partial class FAAppWindow : Window
         {
             _hideSizeButtons = value;
             PseudoClasses.Set(":dialog", value);
+            CanMinimize = !value;
+            CanMaximize = !value;
         }
     }
 
