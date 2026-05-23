@@ -120,10 +120,12 @@ public partial class FAAppWindow : Window
         if (isExtended)
         {
             TemplateSettings.IsTitleBarContentVisible = false;
+            TemplateSettings.ContentMargin = new Thickness();
         }
         else
         {
             TemplateSettings.IsTitleBarContentVisible = true;
+            TemplateSettings.ContentMargin = new Thickness(0, _titleBar.Height, 0, 0);
         }
     }
 
