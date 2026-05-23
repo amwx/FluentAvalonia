@@ -80,14 +80,14 @@
                     <WindowDrawnDecorationsContent.Underlay>
                         <Panel Name="PART_UnderlayWrapper">
                             <Border Name="PART_WindowBorder"
-                                    Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                                    Background="Transparent"
                                     BorderThickness="{TemplateBinding FrameThickness}"
                                     BorderBrush="{DynamicResource AccentFillColorDefaultBrush}"
                                     IsHitTestVisible="False" />
                             <!-- Titlebar: background, title text, and drag area live in underlay -->
                             <Panel Name="PART_TitleBar" VerticalAlignment="Top"
                                    Height="{TemplateBinding TitleBarHeight}"
-                                   Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                                   Background="Transparent"
                                    IsVisible="{TemplateBinding HasTitleBar}"
                                    WindowDecorationProperties.ElementRole="TitleBar" />
 
@@ -150,7 +150,7 @@
                     <WindowDrawnDecorationsContent.FullscreenPopover>
                         <Panel Height="{TemplateBinding DefaultTitleBarHeight}"
                                VerticalAlignment="Top"
-                               Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                               Background="Transparent"
                                WindowDecorationProperties.ElementRole="TitleBar">
                             <TextBlock Text="{TemplateBinding Title}"
                                        VerticalAlignment="Center"
