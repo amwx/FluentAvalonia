@@ -27,6 +27,9 @@ public partial class FATabViewItem : FASelectorItem
     public FATabViewItem()
     {
         TabViewTemplateSettings = new FATabViewItemTemplateSettings();
+
+        Loaded += OnLoaded;
+        SizeChanged += OnSizeChanged;
     }
 
     static FATabViewItem()
