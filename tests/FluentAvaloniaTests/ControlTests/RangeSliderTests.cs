@@ -40,7 +40,7 @@ public class RangeSliderTests : IDisposable
     [InlineData(190, 110, 100, 100)]
     public void RangeValuesAreConstrainedProperly(double rStart, double rEnd, double expectedRStart, double expectedREnd)
     {
-        var rs = new RangeSlider
+        var rs = new FARangeSlider
         {
             RangeStart = rStart,
             RangeEnd = rEnd,
@@ -61,7 +61,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void DraggingRangeStartThumbWorks()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();
@@ -94,7 +94,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void DraggingRangeEndThumbWorks()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var maxThumb = rs.GetTemplateChildren().Where(x => x.Name == "MaxThumb").First();
@@ -129,7 +129,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void DraggingRangeStartThumbWorksWithStepFrequency()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();
@@ -166,7 +166,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void DraggingRangeEndThumbWorksWithStepFrequency()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var maxThumb = rs.GetTemplateChildren().Where(x => x.Name == "MaxThumb").First();
@@ -206,7 +206,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void LeftAndRightKeysMovesRangeStartThumb()
     {
-        var rs = new RangeSlider()
+        var rs = new FARangeSlider()
         {
             RangeStart = 50
         };
@@ -226,7 +226,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void LeftAndRightKeyMovesRangeEndThumb()
     {
-        var rs = new RangeSlider()
+        var rs = new FARangeSlider()
         {
             RangeEnd = 50
         };
@@ -246,7 +246,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void DraggingRangeStartThumbShowsToolTip()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();
@@ -261,7 +261,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void DraggingRangeEndThumbShowsToolTip()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var maxThumb = rs.GetTemplateChildren().Where(x => x.Name == "MaxThumb").First();
@@ -276,7 +276,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public async Task UsingLeftRightShowsToolTipAndAutoHides()
     {
-        var rs = new RangeSlider()
+        var rs = new FARangeSlider()
         {
             RangeStart = 50
         };
@@ -301,7 +301,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void CanDragRange()
     {
-        var rs = new RangeSlider()
+        var rs = new FARangeSlider()
         {
             RangeStart = 25,
             RangeEnd = 75
@@ -326,7 +326,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void CanHideToolTip()
     {
-        var rs = new RangeSlider()
+        var rs = new FARangeSlider()
         {
             ShowValueToolTip = false
         };
@@ -344,7 +344,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void ValueChangedOnlyFiresOnceWhenDragging()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();
@@ -367,7 +367,7 @@ public class RangeSliderTests : IDisposable
     [AvaloniaFact]
     public void ValueChangedFiresWhenProgrammaticallySet()
     {
-        var rs = new RangeSlider();
+        var rs = new FARangeSlider();
         _window.Content = rs;
         _window.UpdateLayout();
         var minThumb = rs.GetTemplateChildren().Where(x => x.Name == "MinThumb").First();

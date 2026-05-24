@@ -85,7 +85,7 @@ public partial class FABitmapIcon : FAIconElement
 
             skDC.Clear(new SKColor(0, 0, 0, 0));
 
-            var finalBmp = _bitmap.Resize(new SKImageInfo(wid, hei), SKFilterQuality.High);
+            var finalBmp = _bitmap.Resize(new SKImageInfo(wid, hei), new SKSamplingOptions(SKCubicResampler.Mitchell));
 
             if (ShowAsMonochrome)
             {

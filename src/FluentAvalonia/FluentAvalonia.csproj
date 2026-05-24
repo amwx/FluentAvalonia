@@ -45,10 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="FluentAvaloniaTests"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <InternalsVisibleTo Include="FAControlsGallery"/>
   </ItemGroup>
 

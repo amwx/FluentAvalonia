@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Automation;
@@ -41,15 +40,10 @@ public partial class FATeachingTip : ContentControl
         _acceleratorKeyActivatedRevoker?.Dispose();
         //m_previewKeyDownForF6Revoker
         //_effectiveViewportChangedRevoker?.Revoke();
-        _contentSizeChangedRevoker?.Dispose();
-        if (_closeButton != null)
-            _closeButton.Click -= OnCloseButtonClicked;
-
-        if (_alternateCloseButton != null)
-            _alternateCloseButton.Click -= OnCloseButtonClicked;
-
-        if (_actionButton != null)
-            _actionButton.Click -= OnActionButtonClicked;
+        _tailOcclusionGrid?.SizeChanged -= OnContentSizeChanged;
+        _closeButton?.Click -= OnCloseButtonClicked;
+        _alternateCloseButton?.Click -= OnCloseButtonClicked;
+        _actionButton?.Click -= OnActionButtonClicked;
 
         //_windowSizeChangedRevoker.Revoke();
 
@@ -77,7 +71,7 @@ public partial class FATeachingTip : ContentControl
         // right place and order. 
         _container.Child = null;
 
-        _contentSizeChangedRevoker = _tailOcclusionGrid.GetObservable(BoundsProperty).Subscribe(OnContentSizeChanged);
+        _tailOcclusionGrid.SizeChanged += OnContentSizeChanged;
 
         // We don't have LocalizedLandmarkType property, so skip this...
         //AutomationProperties.SetLocalizedLandmarkType(_contentRootGrid, ...)
@@ -102,8 +96,6 @@ public partial class FATeachingTip : ContentControl
         UpdateButtonAutomationProperties(_actionButton, ActionButtonContent);
         UpdateButtonAutomationProperties(_closeButton, CloseButtonContent);
 
-        EstablishShadows();
-
         _isTemplateApplied = true;
     }
 
@@ -118,15 +110,9 @@ public partial class FATeachingTip : ContentControl
         else if (change.Property == TargetProperty)
         {
             var (oldVal, newVal) = change.GetOldAndNewValue<Control>();
-            if (oldVal != null)
-            {
-                oldVal.Unloaded -= ClosePopupOnUnloadEvent;
-            }
+            oldVal?.Unloaded -= ClosePopupOnUnloadEvent;
+            newVal?.Unloaded += ClosePopupOnUnloadEvent;
 
-            if (newVal != null)
-            {
-                newVal.Unloaded += ClosePopupOnUnloadEvent;
-            }
             OnTargetChanged();
         }
         else if (change.Property == PlacementMarginProperty)
@@ -1062,6 +1048,7 @@ public partial class FATeachingTip : ContentControl
         {
             CreateLightDismissIndiatorPopup();
         }
+
         OnIsLightDismissEnabledChanged();
 
         if (_contractAnimation == null)
@@ -1116,12 +1103,19 @@ public partial class FATeachingTip : ContentControl
                     // UpdatePopupRequestedTheme(); // TODO:??
                     _popup.Child = _rootElement;
 
-                    if (_lightDismissIndicatorPopup != null)
-                    {
-                        _lightDismissIndicatorPopup.IsOpen = true;
-                    }
-
+                    _lightDismissIndicatorPopup?.IsOpen = true;
                     _popup.IsOpen = true;
+
+                    if (FAUISettings.AreAnimationsEnabled())
+                    {
+                        StartExpandToOpen();
+                    }
+                    else
+                    {
+                        // We won't be playing an animation so we're immediately idle.
+                        SetIsIdle(true);
+                        Opened?.Invoke(this, new FATeachingTipOpenedEventArgs());
+                    }
                 }
                 else
                 {
@@ -1254,17 +1248,14 @@ public partial class FATeachingTip : ContentControl
 
     private void OnShouldConstrainToRootBoundsChanged()
     {
-        // FA: This kind of requires support from the underlying Popup API rather than try to hack this together
-        // here. So this property is unsupported for now.
-
-        throw new NotSupportedException("ShouldConstrainToRootBounds property is not supported at this time");
-
         // ShouldConstrainToRootBounds is a property that can only be set on a popup before it is opened.
         // If we have opened the tip's popup and then this property changes we will need to discard the old popup
         // and replace it with a new popup.  This variable indicates this state.
 
-        //The underlying popup api is only available on 19h1 plus, if we aren't on that no opt.
-        // ...
+        if (_popup != null)
+        {
+            _createNewPopupOnOpen = true;
+        }
     }
 
     private void OnHeroContentPlacementChanged()
@@ -1293,7 +1284,7 @@ public partial class FATeachingTip : ContentControl
         }
     }
 
-    private void OnContentSizeChanged(Rect rc)
+    private void OnContentSizeChanged(object sender, SizeChangedEventArgs args)
     {
         UpdateSizeBasedTemplateSettings();
         // Reset the currentEffectivePlacementMode so that the tail will be updated for the new size as well.
@@ -1304,15 +1295,17 @@ public partial class FATeachingTip : ContentControl
             PositionPopup();
         }
 
+        var width = (float)args.NewSize.Width;
+        var height = (float)args.NewSize.Height;
         if (_expandAnimation != null)
         {
-            _expandAnimation.SetScalarParameter("Width", (float)rc.Width);
-            _expandAnimation.SetScalarParameter("Height", (float)rc.Height);
+            _expandAnimation.SetScalarParameter("Width", (float)width);
+            _expandAnimation.SetScalarParameter("Height", (float)height);
         }
         if (_contractAnimation != null)
         {
-            _contractAnimation.SetScalarParameter("Width", (float)rc.Width);
-            _contractAnimation.SetScalarParameter("Height", (float)rc.Height);
+            _contractAnimation.SetScalarParameter("Width", (float)width);
+            _contractAnimation.SetScalarParameter("Height", (float)height);
         }
     }
 
@@ -1408,31 +1401,51 @@ public partial class FATeachingTip : ContentControl
 
     private void OnPopupOpened(object sender, EventArgs args)
     {
-        _currentXamlRootSize = TopLevel.GetTopLevel(this).ClientSize;
-        if (TopLevel.GetTopLevel(this) is Control c)
+        var xamlRoot = TopLevel.GetTopLevel(this);
+        if (xamlRoot != null)
         {
-            _xamlRootChangedRevoker = c.GetObservable(BoundsProperty).Subscribe(XamlRootChanged);
+            _currentXamlRootSize = xamlRoot.ClientSize;
+            // In WinUI, they listen for XamlRoot changed, which would be changing the TopLevel in Avalonia
+            // which is more than I want to do for a scenario that probably doesn't happen. However my old 
+            // code listened for bounds change, so I'm going to keep that as is
+            _xamlRootChangedRevoker = xamlRoot.GetObservable(BoundsProperty).Subscribe(XamlRootChanged);
+
+            if (ControlAutomationPeer.FromElement(this) is FATeachingTipAutomationPeer p)
+            {
+                //var notificationString = Application.Current.Name;
+                //var local = FALocalizationHelper.Instance;
+
+                //if (!string.IsNullOrEmpty(notificationString))
+                //{
+                //    notificationString =
+                //        $"{local.GetLocalizedStringResource(SR_TeachingTipNotification)} {notificationString} " +
+                //        $"{AutomationProperties.GetName(_popup)}";
+                //}
+                //else
+                //{
+                //    notificationString =
+                //        $"{local.GetLocalizedStringResource(SR_TeachingTipNotificationWithoutAppName)} " +
+                //        $"{AutomationProperties.GetName(_popup)}";
+                //}
+
+                p.RaiseWindowOpenedEvent(/*notificationString*/);
+            }
         }
 
-        if (FAUISettings.AreAnimationsEnabled())
-            StartExpandToOpen();
-        else
-            SetIsIdle(true);
-
-        // TODO: Automation stuff...
+        if (IsLightDismissEnabled)
+        {
+            var focusable = FocusManager.FindFirstFocusableElement(_rootElement);
+            focusable?.Focus(NavigationMethod.Unspecified);
+        }
     }
 
     private void OnPopupClosed(object sender, EventArgs args)
     {
         _xamlRootChangedRevoker?.Dispose();
 
-        if (_lightDismissIndicatorPopup != null)
-            _lightDismissIndicatorPopup.IsOpen = false;
+        _lightDismissIndicatorPopup?.IsOpen = false;
 
-        if (_popup != null)
-        {
-            _popup.Child = null;
-        }
+        _popup?.Child = null;
 
         var cArgs = new FATeachingTipClosedEventArgs(_lastCloseReason);
         Closed?.Invoke(this, cArgs);
@@ -1445,7 +1458,10 @@ public partial class FATeachingTip : ContentControl
         }
         _previouslyFocusedElement = null;
 
-        // TODO: AutomationPeer stuff
+        if (ControlAutomationPeer.FromElement(this) is FATeachingTipAutomationPeer p)
+        {
+            p.RaiseWindowClosedEvent();
+        }
     }
 
     private void ClosePopupOnUnloadEvent(object sender, RoutedEventArgs e)
@@ -1498,7 +1514,7 @@ public partial class FATeachingTip : ContentControl
 
     private void ClosePopupWithAnimationIfAvailable()
     {
-        if (_popup?.IsOpen == true)
+        if (_popup != null && _popup.IsOpen == true)
         {
             if (FAUISettings.AreAnimationsEnabled())
                 StartContractToClose();
@@ -1516,11 +1532,8 @@ public partial class FATeachingTip : ContentControl
 
     private void ClosePopup()
     {
-        if (_popup != null)
-            _popup.IsOpen = false;
-
-        if (_lightDismissIndicatorPopup != null)
-            _lightDismissIndicatorPopup.IsOpen = false;
+        _popup?.IsOpen = false;
+        _lightDismissIndicatorPopup?.IsOpen = false;
 
         if (_tailOcclusionGrid != null)
         {
@@ -1530,10 +1543,7 @@ public partial class FATeachingTip : ContentControl
             // small scale.
 
             var ev = ElementComposition.GetElementVisual(_tailOcclusionGrid);
-            if (ev != null)
-            {
-                ev.Scale = Vector3.One;
-            }
+            ev?.Scale = Vector3.One;
         }
     }
 
@@ -1593,14 +1603,19 @@ public partial class FATeachingTip : ContentControl
 
         _target = Target;
 
+        bool isTargetLoaded = false;
         if (_target != null)
         {
-            _target.Loaded += OnTargetLoaded;
+            // We need to check if the target is loaded before registering for its 
+            // loaded event. This is because the act of registering for the loaded event
+            // will cause the target to report that it is not loaded.
+            isTargetLoaded = _target.IsLoaded;
+            _target?.Loaded += OnTargetLoaded;
         }
 
         if (IsOpen)
         {
-            if (_target != null)
+            if (_target != null && isTargetLoaded)
             {
                 _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
                     .TransformToAABB(_target.TransformToVisual(TopLevel.GetTopLevel(this) as Visual).Value);
@@ -1608,6 +1623,12 @@ public partial class FATeachingTip : ContentControl
                 SetViewportChangedEvent(_target);
             }
             PositionPopup();
+
+            // if we have a target that is not yet loaded, skip positioning the flayout for now, that will happen once the target loads.
+            if (_target == null || (_target != null && isTargetLoaded))
+            {
+                PositionPopup();
+            }
         }
         else
         {
@@ -1635,8 +1656,7 @@ public partial class FATeachingTip : ContentControl
 
     private void RevokeViewportChangedEvent()
     {
-        if (_target != null)
-            _target.EffectiveViewportChanged -= OnTargetLayoutUpdated;
+        _target?.EffectiveViewportChanged -= OnTargetLayoutUpdated;
 
         //_effectiveViewportChangedRevoker?.Revoke();
     }
@@ -1681,7 +1701,6 @@ public partial class FATeachingTip : ContentControl
 
     private void CreateExpandAnimation()
     {
-        // WinUI uses winrt::Window::Current().Compositor()
         var compositor = ElementComposition.GetElementVisual(this)?.Compositor;
 
         if (compositor == null)
@@ -2271,74 +2290,17 @@ public partial class FATeachingTip : ContentControl
         priorityList[0] = (byte)preferredPlacement;
     }
 
-    private void EstablishShadows()
-    {
-        // TODO: Don't really have a nice way to do shadows right now
-    }
+    // Skip EstablishShadows
 
     private void TrySetCenterPoint(Control element, double x, double y)
     {
         if (element == null)
             return;
 
-        // TODO:
         var visual = ElementComposition.GetElementVisual(element);
-        if (visual != null)
-            visual.CenterPoint = new Vector3((float)x, (float)y, 1);
+        visual?.CenterPoint = new Vector3((float)x, (float)y, 1);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private double TailLongSideActualLength() =>
-        _tailPolygon != null ? Math.Max(_tailPolygon.Bounds.Height, _tailPolygon.Bounds.Width) : 0;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private double TailLongSideLength() =>
-        TailLongSideActualLength() - (2 * s_tailOcclusionAmount);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private double TailShortSideLength() =>
-        _tailPolygon != null ? Math.Min(_tailPolygon.Bounds.Height, _tailPolygon.Bounds.Width) : 0;
-
-    private double MinimumTipEdgeToTailEdgeMargin()
-    {
-        if (_tailOcclusionGrid != null)
-        {
-            return _tailOcclusionGrid.ColumnDefinitions.Count > 1 ?
-                _tailOcclusionGrid.ColumnDefinitions[1].ActualWidth + s_tailOcclusionAmount
-                : 0;
-        }
-
-        return 0;
-    }
-
-    private double MinimumTipEdgeToTailCenter()
-    {
-        if (_tailOcclusionGrid != null && _tailPolygon != null)
-        {
-            if (_tailOcclusionGrid.ColumnDefinitions.Count > 1)
-            {
-                return _tailOcclusionGrid.ColumnDefinitions[0].ActualWidth +
-                    _tailOcclusionGrid.ColumnDefinitions[1].ActualWidth +
-                    (Math.Max(_tailPolygon.Bounds.Height, _tailPolygon.Bounds.Width) / 2);
-            }
-        }
-
-        return 0;
-    }
-
-
-    private CornerRadius GetTeachingTipCornerRadius() => CornerRadius;
-
-    private void SetIsIdle(bool idle) => _isIdle = idle;
-
-
-    double TopLeftCornerRadius() => GetTeachingTipCornerRadius().TopLeft;
-
-    double TopRightCornerRadius() => GetTeachingTipCornerRadius().TopRight;
-
-
-
-    private IDisposable _contentSizeChangedRevoker;
     private IDisposable _acceleratorKeyActivatedRevoker;
     // This doesn't appear to be needed anymore?
     //private EffectiveViewportRevoker _effectiveViewportChangedRevoker;
@@ -2415,85 +2377,8 @@ public partial class FATeachingTip : ContentControl
     private bool _isIdle = true;
     private Control _target;
 
-    // Helper functions
-    static bool IsPlacementTop(FATeachingTipPlacementMode p) =>
-        p == FATeachingTipPlacementMode.Top ||
-        p == FATeachingTipPlacementMode.TopLeft ||
-        p == FATeachingTipPlacementMode.TopRight;
-
-    static bool IsPlacementBottom(FATeachingTipPlacementMode p) =>
-        p == FATeachingTipPlacementMode.Bottom ||
-        p == FATeachingTipPlacementMode.BottomLeft ||
-        p == FATeachingTipPlacementMode.BottomRight;
-
-    static bool IsPlacementLeft(FATeachingTipPlacementMode p) =>
-        p == FATeachingTipPlacementMode.Left ||
-        p == FATeachingTipPlacementMode.TopLeft ||
-        p == FATeachingTipPlacementMode.TopRight;
-
-    static bool IsPlacementRight(FATeachingTipPlacementMode p) =>
-        p == FATeachingTipPlacementMode.Right ||
-        p == FATeachingTipPlacementMode.RightTop ||
-        p == FATeachingTipPlacementMode.RightBottom;
-
-    // These values are shifted by one because this is the 1px highlight that sits adjacent to the tip border.
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness BottomPlacementTopRightHighlightMargin(double width, double height) =>
-        new Thickness(width / 2 + (TailShortSideLength() - 1f), 0, TopRightCornerRadius() - 1f, 0);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness BottomRightPlacementTopRightHighlightMargin(double width, double height) =>
-        new Thickness(MinimumTipEdgeToTailEdgeMargin() + (TailLongSideLength() - 1f), 0, TopRightCornerRadius() - 1f, 0);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness BottomLeftPlacementTopRightHighlightMargin(double width, double height) =>
-        new Thickness(width - (MinimumTipEdgeToTailEdgeMargin() + 1f), 0, TopRightCornerRadius() - 1f, 0);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness OtherPlacementTopRightHighlightMargin(double width, double height) => new Thickness();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness BottomPlacementTopLeftHighlightMargin(double width, double height) =>
-        new Thickness(TopLeftCornerRadius() - 1, 0, (width / 2) + (TailShortSideLength() - 1f), 0);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness BottomRightPlacementTopLeftHighlightMargin(double width, double height) =>
-        new Thickness(TopLeftCornerRadius() - 1f, 0, width - (MinimumTipEdgeToTailEdgeMargin() + 1f), 0);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness BottomLeftPlacementTopLeftHighlightMargin(double width, double height) =>
-        new Thickness(TopLeftCornerRadius() - 1f, 0, MinimumTipEdgeToTailEdgeMargin() + TailLongSideLength() - 1f, 0);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness TopEdgePlacementTopLeftHighlightMargin(double width, double height) =>
-        new Thickness(TopLeftCornerRadius() - 1f, 1, TopRightCornerRadius() - 1f, 0);
-
-    // Shifted by one since the tail edge's border is not accounted for automatically.
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness LeftEdgePlacementTopLeftHighlightMargin(double width, double height) =>
-        new Thickness(TopLeftCornerRadius() - 1f, 1, TopRightCornerRadius() - 2f, 0);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    Thickness RightEdgePlacementTopLeftHighlightMargin(double width, double height) =>
-        new Thickness(TopLeftCornerRadius() - 2f, 1, TopRightCornerRadius() - 1f, 0);
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static double UntargetedTipFarPlacementOffset(double farWindowCoordinateInCoreWindowSpace, double tipSize, double offset) =>
-        farWindowCoordinateInCoreWindowSpace - (tipSize + s_untargetedTipWindowEdgeMargin + offset);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static double UntargetedTipCenterPlacementOffset(double nearWindowCoordinateInCoreWindowSpace, double farWindowCoordinateInCoreWindowSpace,
-        double tipSize, double nearOffset, double farOffset) =>
-        ((nearWindowCoordinateInCoreWindowSpace + farWindowCoordinateInCoreWindowSpace) / 2) - (tipSize / 2) + nearOffset - farOffset;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static double UntargetedTipNearPlacementOffset(double nearWindowCoordinateInCoreWindowSpace, double offset) =>
-        s_untargetedTipWindowEdgeMargin + nearWindowCoordinateInCoreWindowSpace + offset;
-
-
     private static readonly string s_ScaleTargetName = "Scale";
-   // [Unused] private static readonly string s_translationTargetName = "Translation";
+    // [Unused] private static readonly string s_translationTargetName = "Translation";
 
     // [Unused] private static readonly string s_teachingTipHighlightBrushName = "TeachingTipTopHighlightBrush";
 
@@ -2507,10 +2392,6 @@ public partial class FATeachingTip : ContentControl
     // These will just use the s_pc[] naming, but preserve these for reference from upstream
     // private static readonly string s_TitleTextVisibleStateName = ":showTitle";
     // private static readonly string s_SubTitleTextVisibleStateName = ":showSubtitle";
-
-    private static readonly string SR_TeachingTipAlternateCloseButtonName = "TeachingTipAlternateCloseButtonName";
-    private static readonly string SR_TeachingTipAlternateCloseButtonTooltip = "TeachingTipAlternateCloseButtonTooltip";
-
     
 
     private class ScopedBatchHelper

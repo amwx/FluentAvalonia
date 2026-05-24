@@ -38,7 +38,9 @@ internal class BreadcrumbIterable : IEnumerable
             get
             {
                 if (_currentIndex == 0)
+                {
                     return null;
+                }
                 else if (HasCurrent())
                 {
                     return _itemsSource.GetAt(_currentIndex - 1);

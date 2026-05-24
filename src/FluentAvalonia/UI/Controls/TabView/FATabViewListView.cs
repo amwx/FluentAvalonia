@@ -178,6 +178,16 @@ public sealed class FATabViewListView : ListBox
         // WinUI b/c they don't have to do this.
         if (container == item || tvi.IsContainerFromTemplate)
         {
+            // PrepareContainerForItemOverride will set the ContentTemplate of the item, but it will default
+            // to ItemTemplate, which only should be applied to the header (since its a TVI). In this case,
+            // undo that and search elsewhere for an appropriate template without defaulting to the
+            // ItemTemplate passed down from the TabView - fixes GH 739
+            var template = ItemTemplate;
+            if (tvi.ContentTemplate == template)
+            {
+                tvi.ContentTemplate = this.FindDataTemplate(item);
+            }
+
             base.ContainerForItemPreparedOverride(container, item, index);
             return;
         }
@@ -245,6 +255,11 @@ public sealed class FATabViewListView : ListBox
             {
                 _initialPoint = currentPoint.Position;
                 _dragItem = (args.Source as Visual).FindAncestorOfType<FATabViewItem>(true);
+
+                // Clicking in empty space of tab row will still fire this.
+                if (_dragItem == null)
+                    return;
+
                 _dragIndex = IndexFromContainer(_dragItem);
                 _isDragItemFocused = _dragItem.IsFocused;
                 _isDragItemSelected = _dragItem.IsSelected;
@@ -298,9 +313,7 @@ public sealed class FATabViewListView : ListBox
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
-        _parent?.RemoveHandler(DragDrop.DragLeaveEvent, OnParentDragEnter);
-        _parent = null;
+        //FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
     }
 
     private async void BeginDragReorder()
@@ -841,7 +854,6 @@ public sealed class FATabViewListView : ListBox
     private bool _isInDrag = false;
     private bool _isInReorder = false;
     private IDisposable _dragItemOpacitySub;
-    private bool _processReorder;
     private Point? _initialPoint;
     private double _cxDrag = double.NaN;
     private double _cyDrag = double.NaN;
@@ -850,11 +862,7 @@ public sealed class FATabViewListView : ListBox
     // True if there is a drag drop operation started by this listview
     private bool _isDraggingOverSelf;
 
-    private LiveReorderHelper _liveReorderHelper;
-    //private LiveReorderIndices _liveReorderIndices = new LiveReorderIndices(-1,-1,-1);
-    private DispatcherTimer _liveReorderTimer;
-    //private readonly MovedItems _movedItems = new MovedItems();
-    //private List<Rect> _cachedContainerBounds;
+    private LiveReorderHelper _liveReorderHelper;    
     private Point? _lastDragOverPoint;
 
     // For 12.0/v3 - Avalonia has decided to make the decision that the lowest common denominator

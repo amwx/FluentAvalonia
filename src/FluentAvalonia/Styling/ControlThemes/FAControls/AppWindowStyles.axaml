@@ -58,7 +58,7 @@
                                Name="Icon"/>
 
                         <TextBlock Name="TitleText"
-                                   Text="Title"
+                                   Text="{TemplateBinding Title}"
                                    Margin="12 0 0 0"
                                    FontSize="12"
                                    IsVisible="{Binding TemplateSettings.IsTitleBarContentVisible, RelativeSource={RelativeSource TemplatedParent}}"

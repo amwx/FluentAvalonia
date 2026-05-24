@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls.Primitives;
 /// <remarks>
 /// This control is specific to the <see cref="FAInfoBar"/> and generally should not be used elsewhere
 /// </remarks>
-public partial class FAInfoBarPanel : Panel
+public sealed partial class FAInfoBarPanel : Panel
 {
     protected override Size MeasureOverride(Size availableSize)
     {

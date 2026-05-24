@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -64,6 +65,7 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         _appliedTemplate = false;
+        _restoreToExpandedState = false;
 
         UnhookEventsAndClearFields();
 
@@ -75,10 +77,7 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
         if (_rootGrid != null)
         {
             var flyout = FlyoutBase.GetAttachedFlyout(_rootGrid) as PopupFlyoutBase;
-            if (flyout != null)
-            {
-                flyout.Closing += OnFlyoutClosing;
-            }
+            flyout?.Closing += OnFlyoutClosing;
         }
 
         var navView = GetNavigationView;
@@ -97,13 +96,11 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
         var splitView = GetSplitView;
         if (splitView != null)
         {
-            _splitViewRevokers = new FACompositeDisposable(
-                splitView.GetPropertyChangedObservable(SplitView.IsPaneOpenProperty).Subscribe(OnSplitViewPropertyChanged),
-                splitView.GetPropertyChangedObservable(SplitView.DisplayModeProperty).Subscribe(OnSplitViewPropertyChanged),
-                splitView.GetPropertyChangedObservable(SplitView.CompactPaneLengthProperty).Subscribe(OnSplitViewPropertyChanged));
-
-            UpdateCompactPaneLength();
-            UpdateIsClosedCompact();
+            PrepNavigationViewItem(splitView);
+        }
+        else
+        {
+            Loaded += HandleLoaded;
         }
 
         //var navView = GetNavigationView;
@@ -199,6 +196,7 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
         {
             UpdateIsClosedCompact();
             ReparentRepeater();
+            HandleExpansionStateMemory();
         }
     }
 
@@ -280,7 +278,7 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
 
     protected virtual void OnIsExpandedPropertyChanged()
     {
-        //Added this...
+        _restoreToExpandedState = false;
         UpdateVisualStateForChevron();
     }
 
@@ -369,6 +367,7 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
 
             case NavigationViewRepeaterPosition.TopPrimary:
             case NavigationViewRepeaterPosition.TopFooter:
+                _restoreToExpandedState = false;
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcLeftNav, false);
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcTopNav, true);
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcTopOverflow, false);
@@ -382,6 +381,7 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
                 break;
 
             case NavigationViewRepeaterPosition.TopOverflow:
+                _restoreToExpandedState = false;
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcLeftNav, false);
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcTopNav, false);
                 PseudoClasses.Set(FASharedPseudoclasses.s_pcTopOverflow, true);
@@ -604,6 +604,67 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
         return Content?.ToString() ?? "NavigationViewItem";
     }
 
+    private void PrepNavigationViewItem(SplitView splitView)
+    {
+        _splitViewRevokers = new FACompositeDisposable(
+            splitView.GetPropertyChangedObservable(SplitView.IsPaneOpenProperty).Subscribe(OnSplitViewPropertyChanged),
+            splitView.GetPropertyChangedObservable(SplitView.DisplayModeProperty).Subscribe(OnSplitViewPropertyChanged),
+            splitView.GetPropertyChangedObservable(SplitView.CompactPaneLengthProperty).Subscribe(OnSplitViewPropertyChanged));
+
+        UpdateCompactPaneLength();
+        UpdateIsClosedCompact();
+    }
+
+    private void HandleLoaded(object sender, RoutedEventArgs args)
+    {
+        if (GetSplitView is SplitView sv)
+        {
+            PrepNavigationViewItem(sv);
+        }
+
+        UpdateVisualStateForChevron();
+        Loaded -= HandleLoaded;
+    }
+
+    // NavigationView needs to force collapse top level items when the pane closes.
+    // This is done to avoid a compact state with children showing.
+    // This is done in a way that allows the control to restore the expanded
+    // state when the pane is opened again.
+    private void HandleExpansionStateMemory()
+    {
+        if (IsTopLevelItem)
+        {
+            if (GetSplitView is SplitView sv)
+            {
+                if (sv.IsPaneOpen)
+                {
+                    RestoreExpandedState();
+                }
+                else
+                {
+                    ForceCollapse();
+                }
+            }
+        }
+    }
+
+    private void ForceCollapse()
+    {
+        if (IsExpanded)
+        {
+            IsExpanded = false;
+            _restoreToExpandedState = true;
+        }
+    }
+
+    private void RestoreExpandedState()
+    {
+        if (_restoreToExpandedState)
+        {
+            IsExpanded = true;
+            _restoreToExpandedState = false;
+        }
+    }
 
     private FACompositeDisposable _splitViewRevokers;
     private FANavigationViewItemPresenter _presenter;
@@ -616,4 +677,5 @@ public partial class FANavigationViewItem : FANavigationViewItemBase
     private bool _appliedTemplate;
     //private bool _hasKeyboardFocus;//TODO: needed?
     private bool _isRepeaterParentedToFlyout;
+    private bool _restoreToExpandedState;
 }

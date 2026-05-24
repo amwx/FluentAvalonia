@@ -5,6 +5,8 @@ using FluentAvalonia.Core;
 
 namespace FluentAvalonia.UI.Controls;
 
+// InfoBadge is up to date with WinUI as of 5/9/26
+
 /// <summary>
 /// Represents a control for indicating notifications, alerts, new content, 
 /// or to attract focus to an area within an app.
@@ -14,6 +16,7 @@ public partial class FAInfoBadge : TemplatedControl
     public FAInfoBadge()
     {
         TemplateSettings = new FAInfoBadgeTemplateSettings();
+        SizeChanged += HandleSizeChanged;
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -48,10 +51,6 @@ public partial class FAInfoBadge : TemplatedControl
         {
             OnDisplayKindPropertiesChanged();
         }
-        else if (change.Property == BoundsProperty)
-        {
-            OnBoundsChanged(change);
-        }
     }
 
     private void OnDisplayKindPropertiesChanged()
@@ -85,10 +84,9 @@ public partial class FAInfoBadge : TemplatedControl
         }
     }
 
-    private void OnBoundsChanged(AvaloniaPropertyChangedEventArgs e)
+    private void HandleSizeChanged(object sender, SizeChangedEventArgs args)
     {
-        var rc = (Rect)e.NewValue;
-        var cornerRadiusValue = rc.Height / 2;
+        var cornerRadiusValue = args.NewSize.Height * 0.5;
         if (!IsSet(CornerRadiusProperty))
         {
             TemplateSettings.InfoBadgeCornerRadius = new CornerRadius(cornerRadiusValue);

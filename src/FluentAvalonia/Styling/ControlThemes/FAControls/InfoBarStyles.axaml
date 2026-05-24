@@ -94,7 +94,11 @@
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type ui:FAInfoBar}" TargetType="ui:FAInfoBar">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="CloseButtonTheme" Value="{StaticResource InfoBarCloseButtonStyle}" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource InfoBarBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource InfoBarBorderThickness}" />
         <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
         <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="Template">
@@ -127,9 +131,9 @@
                                          Margin="{StaticResource InfoBarIconMargin}"/>
 
                                 <ui:FAFontIcon VerticalAlignment="Top"
-                                             FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                             Name="StandardIcon"
-                                             Margin="{DynamicResource InfoBarIconMargin}"/>
+                                               FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                               Name="StandardIcon"
+                                               Margin="{DynamicResource InfoBarIconMargin}"/>
                             </Panel>
 
                             <Viewbox Name="UserIconBox"
@@ -180,14 +184,21 @@
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               HorizontalContentAlignment="Stretch"
                                               VerticalContentAlignment="Stretch"
-                                              Name="ContentPresenter"/>
+                                              Name="ContentPresenter">
+                                <ContentPresenter.Styles>
+                                    <Style Selector="HyperlinkButton">
+                                        <Setter Property="Margin" Value="{DynamicResource InfoBarHyperlinkButtonMargin}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource InfoBarHyperlinkeButtonForeground}" />
+                                    </Style>
+                                </ContentPresenter.Styles>
+                            </ContentPresenter>
 
                             <Button Name="CloseButton"
-                                       VerticalAlignment="Center"
-                                       Grid.Column="2"
-                                       Command="{TemplateBinding CloseButtonCommand}"
-                                       CommandParameter="{TemplateBinding CloseButtonCommandParameter}"
-                                       Theme="{StaticResource InfoBarCloseButtonStyle}">
+                                    VerticalAlignment="Center"
+                                    Grid.Column="2"
+                                    Command="{TemplateBinding CloseButtonCommand}"
+                                    CommandParameter="{TemplateBinding CloseButtonCommandParameter}"
+                                    Theme="{TemplateBinding CloseButtonTheme}">
 
                                 <Viewbox Width="{StaticResource InfoBarCloseButtonGlyphSize}"
                                          Height="{StaticResource InfoBarCloseButtonGlyphSize}"
@@ -297,6 +308,10 @@
             <Style Selector="^ /template/ TextBlock#Message">
                 <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
             </Style>
+        </Style>
+
+        <Style Selector="^:noBannerContent /template/ ContentPresenter#ContentPresenter">
+            <Setter Property="Grid.Row" Value="0" />
         </Style>
         
     </ControlTheme>

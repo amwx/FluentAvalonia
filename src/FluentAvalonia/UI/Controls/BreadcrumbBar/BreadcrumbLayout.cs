@@ -33,7 +33,7 @@ internal class BreadcrumbLayout : FANonVirtualizingLayout
     public int GetItemCount(FANonVirtualizingLayoutContext context) =>
         context.Children.Count;
 
-    Control GetElementAt(FANonVirtualizingLayoutContext context, int index) =>
+    public Control GetElementAt(FANonVirtualizingLayoutContext context, int index) =>
         context.Children[index];
 
     // Measuring is performed in a single step, every element is measured, including the ellipsis
@@ -198,8 +198,6 @@ internal class BreadcrumbLayout : FANonVirtualizingLayout
 
         return maxHeight;
     }
-
-
 
     private Size _availableSize;
     private FABreadcrumbBarItem _ellipsisButton;

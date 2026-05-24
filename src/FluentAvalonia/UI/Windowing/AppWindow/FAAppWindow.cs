@@ -120,10 +120,12 @@ public partial class FAAppWindow : Window
         if (isExtended)
         {
             TemplateSettings.IsTitleBarContentVisible = false;
+            TemplateSettings.ContentMargin = new Thickness();
         }
         else
         {
             TemplateSettings.IsTitleBarContentVisible = true;
+            TemplateSettings.ContentMargin = new Thickness(0, _titleBar.Height, 0, 0);
         }
     }
 
@@ -289,6 +291,4 @@ public partial class FAAppWindow : Window
         PseudoClasses.Set(":splashOpen", false);
         _splashContext.HasShownSplashScreen = true;
     }
-
-    private bool _hasShown;
 }

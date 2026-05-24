@@ -4,9 +4,9 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
+using Avalonia.Styling;
 using FluentAvalonia.Core;
 using System.Collections;
-using System.Collections.Specialized;
 
 namespace FluentAvalonia.UI.Controls;
 
@@ -174,7 +174,10 @@ public partial class FANavigationView : HeaderedContentControl
     /// Defines the <see cref="MenuItemTemplate"/> property
     /// </summary>
     public static readonly StyledProperty<FADataTemplateSelector> MenuItemTemplateSelectorProperty =
-    AvaloniaProperty.Register<FANavigationView, FADataTemplateSelector>(nameof(MenuItemTemplateSelector));
+        AvaloniaProperty.Register<FANavigationView, FADataTemplateSelector>(nameof(MenuItemTemplateSelector));
+
+    public static readonly StyledProperty<ControlTheme> MenuItemContainerThemeProperty =
+        AvaloniaProperty.Register<FANavigationView, ControlTheme>(nameof(MenuItemContainerTheme));
 
     /// <summary>
     /// Defines the <see cref="OpenPaneLength"/> property
@@ -408,6 +411,15 @@ public partial class FANavigationView : HeaderedContentControl
     }
 
     /// <summary>
+    /// Gets or sets the ControlTheme applied to MenuItems
+    /// </summary>
+    public ControlTheme MenuItemContainerTheme
+    {
+        get => GetValue(MenuItemContainerThemeProperty);
+        set => SetValue(MenuItemContainerThemeProperty, value);
+    }
+
+    /// <summary>
     /// Gets the collection of menu items displayed in the NavigationView.
     /// </summary>
     public IList<object> MenuItems
@@ -593,8 +605,8 @@ public partial class FANavigationView : HeaderedContentControl
     /// Property that stores disposables to each NavigationViewItem when their created in the ItemsRepeater,
     /// so they can be disposed when the item is removed
     /// </summary>
-    internal static readonly AttachedProperty<FACompositeDisposable> NavigationViewItemRevokersProperty =
-        AvaloniaProperty.RegisterAttached<FANavigationView, FANavigationViewItem, FACompositeDisposable>("NavigationViewItemRevokers");
+    internal static readonly AttachedProperty<FACompositeDisposable> NavigationViewItemBaseRevokersProperty =
+        AvaloniaProperty.RegisterAttached<FANavigationView, FANavigationViewItemBase, FACompositeDisposable>("NavigationViewItemBaseRevokers");
 
     private object _selectedItem;
     private IList<object> _menuItems;

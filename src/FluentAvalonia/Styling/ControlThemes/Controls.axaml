@@ -142,8 +142,27 @@
         <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="wnd|FAAppWindow:noFullScreen WindowDrawnDecorations /template/ Button#PART_FullScreenButton">
-        <Setter Property="IsVisible" Value="False" />
+        <!--Don't set IsVisible = false, it causes issues, see #3 on GH740-->
+        <Setter Property="Opacity" Value="0" />        
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Width" Value="0" />
     </Style>
+
+    <Style Selector="wnd|FAAppWindow:dialog">
+        <Style Selector="^ WindowDrawnDecorations /template/ Button#PART_MinimizeButton">
+            <!--Don't set IsVisible = false, it causes issues, see #3 on GH740-->
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="Width" Value="0" />
+        </Style>
+        <Style Selector="^ WindowDrawnDecorations /template/ Button#PART_MaximizeButton">
+            <!--Don't set IsVisible = false, it causes issues, see #3 on GH740-->
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="Width" Value="0" />
+        </Style>
+    </Style>
+    
 
     <!--
     Amendments to CommandBar buttons which before ControlThemes used these styles to control their 

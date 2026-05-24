@@ -742,7 +742,7 @@ public partial class FAItemsRepeater : Panel
 
     // Bug in framework's reference tracking causes crash during
     // UIAffinityQueue cleanup. To avoid that bug, take a strong ref
-    private IFAElementFactory _itemTemplate;
+    //private IFAElementFactory _itemTemplate;
 
     // Bug where DataTemplate with no content causes a crash.
     // See: https://github.com/microsoft/microsoft-ui-xaml/issues/776

@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+using Avalonia.Styling;
 using FluentAvalonia.Core;
 using System.Windows.Input;
 
@@ -15,8 +16,9 @@ namespace FluentAvalonia.UI.Controls;
 [PseudoClasses(FASharedPseudoclasses.s_pcHidden, s_pcCloseHidden)]
 [PseudoClasses(s_pcSuccess, s_pcWarning, s_pcError, s_pcInformational)]
 [PseudoClasses(FASharedPseudoclasses.s_pcIcon, s_pcStandardIcon)]
-[PseudoClasses(s_pcForegroundSet)]
+[PseudoClasses(s_pcForegroundSet, s_pcNoBannerContent)]
 [TemplatePart(s_tpCloseButton, typeof(Button))]
+[TemplatePart(s_tpStandardIcon, typeof(FAFontIcon))]
 public partial class FAInfoBar : ContentControl
 {
     /// <summary>
@@ -78,6 +80,12 @@ public partial class FAInfoBar : ContentControl
     /// </summary>
     public static readonly StyledProperty<Control> ActionButtonProperty =
         AvaloniaProperty.Register<FAInfoBar, Control>(nameof(ActionButton));
+
+    /// <summary>
+    /// Defines the <see cref="CloseButtonTheme"/> property
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme> CloseButtonThemeProperty =
+        AvaloniaProperty.Register<FAInfoBadge, ControlTheme>(nameof(CloseButtonTheme));
 
     /// <summary>
     /// Gets or sets a value that indicates whether the InfoBar is open.
@@ -171,6 +179,15 @@ public partial class FAInfoBar : ContentControl
     }
 
     /// <summary>
+    /// Gets or sets the <see cref="ControlTheme"/> for the InfoBar's CloseButton
+    /// </summary>
+    public ControlTheme CloseButtonTheme
+    {
+        get => GetValue(CloseButtonThemeProperty);
+        set => SetValue(CloseButtonThemeProperty, value);
+    }
+
+    /// <summary>
     /// Occurs after the close button is clicked in the InfoBar.
     /// </summary>
     public event TypedEventHandler<FAInfoBar, EventArgs> CloseButtonClick;
@@ -185,10 +202,27 @@ public partial class FAInfoBar : ContentControl
     /// </summary>
     public event TypedEventHandler<FAInfoBar, FAInfoBarClosedEventArgs> Closed;
 
+    /// <summary>
+    /// Occurs after the InfoBar is opened
+    /// </summary>
+    public event TypedEventHandler<FAInfoBar, FAInfoBarOpenedEventArgs> Opened;
+
 
     private const string SR_InfoBarCloseButtonTooltip = "InfoBarCloseButtonTooltip";
+    private const string SR_InfoBarCloseButtonName = "InfoBarCloseButtonName";
+    private const string SR_InfoBarOpenedNotification = "InfoBarOpenedNotification";
+    private const string SR_InfoBarClosedNotification = "InfoBarClosedNotification";
+    private const string SR_InfoBarSeverityInformationalName = "InfoBarSeverityInformationalName";
+    private const string SR_InfoBarSeveritySuccessName = "InfoBarSeveritySuccessName";
+    private const string SR_InfoBarSeverityWarningName = "InfoBarSeverityWarningName";
+    private const string SR_InfoBarSeverityErrorName = "InfoBarSeverityErrorName";
+    private const string SR_InfoBarIconSeverityInformationalName = "InfoBarIconSeverityInformationalName";
+    private const string SR_InfoBarIconSeveritySuccessName = "InfoBarIconSeveritySuccessName";
+    private const string SR_InfoBarIconSeverityWarningName = "InfoBarIconSeverityWarningName";
+    private const string SR_InfoBarIconSeverityErrorName = "InfoBarIconSeverityErrorName";
 
     private const string s_tpCloseButton = "CloseButton";
+    private const string s_tpStandardIcon = "StandardIcon";
 
     private const string s_pcSuccess = ":success";
     private const string s_pcWarning = ":warning";
@@ -197,4 +231,5 @@ public partial class FAInfoBar : ContentControl
     private const string s_pcStandardIcon = ":standardIcon";
     private const string s_pcCloseHidden = ":closehidden";
     private const string s_pcForegroundSet = ":foregroundset";
+    private const string s_pcNoBannerContent = ":noBannerContent";
 }

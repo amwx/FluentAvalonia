@@ -289,11 +289,16 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         {
             if (_popup?.IsInsidePopup(src) == true)
             {
-                if (UpdateSelectionFromEventSource(e.Source))
+                var container = GetContainerFromEventSource(e.Source);
+                if (container != null)
                 {
-                    _popup.Close();
-                    e.Handled = true;
-                }
+                    var result = UpdateSelectionFromEvent(container, e);
+                    if (result) //UpdateSelectionFromEvent(container, e))
+                    {
+                        _popup.Close();
+                        e.Handled = true;
+                    }
+                }                
             }
             else
             {
@@ -398,6 +403,28 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     protected override AutomationPeer OnCreateAutomationPeer()
     {
         return new FAComboBoxAutomationPeer(this);
+    }
+
+    protected override bool ShouldTriggerSelection(Visual selectable, PointerEventArgs eventArgs)
+    {
+        // Avalonia still does not seem to understand that selection/input should happen on RELEASE
+        // not pressed for all pointer types & not just pen/touch. So we need to override that behavior
+        // here to ensure selection happens on pointer release for mouse...LIKE ITS SUPPOSED TO
+        var baseResult = base.ShouldTriggerSelection(selectable, eventArgs);
+
+        if (!baseResult)
+        {
+            if (eventArgs is PointerReleasedEventArgs args)
+            {
+                var pt = args.GetCurrentPoint(this);
+                if (pt.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
+                {
+                    baseResult = true;
+                }
+            }
+        }
+
+        return baseResult;
     }
 
     internal void ItemFocused(FAComboBoxItem item)

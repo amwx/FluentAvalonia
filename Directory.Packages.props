@@ -9,7 +9,6 @@
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
-    <!--<PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />-->
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
@@ -19,14 +18,13 @@
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
     <PackageVersion Include="AvaloniaEdit.TextMate" Version="12.0.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.203" />
     <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-    <PackageVersion Include="Moq" Version="4.16.1" />
-    <PackageVersion Include="xunit" Version="2.4.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" />
-    <PackageVersion Include="coverlet.collector" Version="3.0.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.0" />
     <!-- Begin Android -->
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1" />
     <!-- End   Android -->
