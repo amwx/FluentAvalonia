@@ -37,12 +37,19 @@ public partial class TabViewPage : ControlsPageBase
 
     private void TabView_AddButtonClick(FATabView sender, EventArgs args)
     {
-        (sender.TabItems as IList).Add(CreateNewTab(sender.TabItems.Count()));
+        if (DataContext is TabViewPageViewModel vm)
+        {
+            vm.APIInActionItems.Add(
+                new TestItem { Header = "New Tab", Content = new NVSamplePage5(), IconSource = new FASymbolIconSource { Symbol = FASymbol.NewFolder } });
+        }
     }
 
     private void TabView_TabCloseRequested(FATabView sender, FATabViewTabCloseRequestedEventArgs args)
     {
-        (sender.TabItems as IList).Remove(args.Tab);
+        if (DataContext is TabViewPageViewModel vm)
+        {
+            vm.APIInActionItems.Remove(args.Item as TestItem);
+        }
     }
 
     private FATabViewItem CreateNewTab(int index)

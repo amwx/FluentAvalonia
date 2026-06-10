@@ -37,6 +37,8 @@ public class ViewModelBase : INotifyPropertyChanged
 
 public class MainPageViewModelBase : ViewModelBase
 {
+    public MainViewViewModel Parent { get; set; }
+
     public string NavHeader { get; set; }
 
     public string IconKey { get; set; }

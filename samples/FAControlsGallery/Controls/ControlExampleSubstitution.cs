@@ -5,7 +5,7 @@ using FluentAvalonia.Core;
 namespace FAControlsGallery.Controls;
 
 // From WinUI XamlControlsGallery
-public class ControlExampleSubstitution : AvaloniaObject
+public sealed class ControlExampleSubstitution : AvaloniaObject
 {
     public static readonly DirectProperty<ControlExampleSubstitution, bool> IsEnabledProperty =
         AvaloniaProperty.RegisterDirect<ControlExampleSubstitution, bool>(nameof(IsEnabled),

@@ -11,7 +11,7 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        await BuildAvaloniaApp().StartBrowserAppAsync("out");
+        await BuildAvaloniaApp().StartBrowserAppAsync("out", new BrowserPlatformOptions());
     }
 
     public static AppBuilder BuildAvaloniaApp() =>

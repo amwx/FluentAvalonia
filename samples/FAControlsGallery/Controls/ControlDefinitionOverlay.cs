@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
+﻿using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -14,7 +8,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using Avalonia.OpenGL;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
@@ -26,7 +19,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Controls;
 
-public class ControlDefinitionOverlay : TemplatedControl
+public sealed class ControlDefinitionOverlay : TemplatedControl
 {
     public ControlDefinitionOverlay()
     {

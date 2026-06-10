@@ -1,11 +1,11 @@
-﻿<ui:TabView AddTabButtonCommand="{Binding AddDocumentCommand}"
+﻿<ui:FATabView AddTabButtonCommand="{Binding AddDocumentCommand}"
             AddTabButtonCommandParameter="Keyboard"
             TabCloseRequested="TabView_TabCloseRequested"
             TabItems="{Binding KeyBindingDocuments}"
             MinHeight="350"
             SelectedItem="{Binding KeyBindingSelectedDocument}">
 
-    <ui:TabView.KeyBindings>
+    <ui:FATabView.KeyBindings>
         <KeyBinding Gesture="Ctrl+T" Command="{Binding KeyBindingCommand}"
                     CommandParameter="Add" />
         <KeyBinding Gesture="Ctrl+W" Command="{Binding KeyBindingCommand}"
@@ -29,13 +29,13 @@
                     CommandParameter="8" />
         <KeyBinding Gesture="Ctrl+D9" Command="{Binding KeyBindingCommand}"
                     CommandParameter="9" />
-    </ui:TabView.KeyBindings>
+    </ui:FATabView.KeyBindings>
 
-    <ui:TabView.TabItemTemplate>
+    <ui:FATabView.TabItemTemplate>
         <DataTemplate x:DataType="vm:DocumentItem">
-            <ui:TabViewItem Header="{Binding Header}"
-                            Content="{Binding Content}"
-                            IconSource="{Binding IconSource}" />
+            <ui:FATabViewItem Header="{Binding Header}"
+                              Content="{Binding Content}"
+                              IconSource="{Binding IconSource}" />
         </DataTemplate>
-    </ui:TabView.TabItemTemplate>
-</ui:TabView>
+    </ui:FATabView.TabItemTemplate>
+</ui:FATabView>

@@ -6,31 +6,28 @@
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:vm="using:FAControlsGallery.ViewModels"
              xmlns:wnd="using:FluentAvalonia.UI.Windowing"
+             xmlns:md="using:Markdown.Avalonia"
              mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="2400"
              x:Class="FAControlsGallery.Pages.AppWindowPage">
     
     <ScrollViewer Padding="{StaticResource SampleAppPageMargin}">
         <StackPanel Spacing="8">
-            <ui:FAInfoBar IsOpen="True" IsClosable="False"
-                        Title="WARNING"
-                        Severity="Warning"
-                        IconSource="ImportantFilled">
-                <ui:FAInfoBar.Message>
-                    <x:String>When using AppWindow, you should not use any of the extended window frame/decorations stuff (ExtentClientAreaToDecorationsHint, for example) as it may break how AppWindow works. In addition, do not set the window to be transparent (Mica or acrylic is ok) as a transparent window will reveal the DWM titlebar that cannot be hidden.</x:String>
-                </ui:FAInfoBar.Message>
-            </ui:FAInfoBar>
-
+            <Expander Header="About FAAppWindow">
+                <md:MarkdownScrollViewer Source="avares://FAControlsGallery/Assets/InfoPages/AppWindowInfo.md" />
+            </Expander>
+            
             <ctrls:ControlExample Header="Extend content into TitleBar"
                                   TargetType="wnd:FAAppWindowTitleBar"
                                   EnableShowDefinitionLink="True">
                 <TextBlock TextWrapping="Wrap">
-                    <x:String>
-To extend your app content into the titlebar area, use the ExtendsContentIntoTitleBar property on the AppWindow's TitleBar
+                    <x:String xml:space="preserve">
+To extend your app content into the titlebar area or provide a custom titlebar, use the ExtendsContentIntoTitleBar property on the AppWindow's TitleBar
+This setting only applies on Windows.
                     </x:String>
                 </TextBlock>
 
                 <ctrls:ControlExample.CSharpSource>
-                    <x:String>
+                    <x:String xml:space="preserve">
 public class MainWindow : FAAppWindow
 {
     public MainWindow()
@@ -40,6 +37,68 @@ public class MainWindow : FAAppWindow
 }
                     </x:String>                   
                 </ctrls:ControlExample.CSharpSource>
+            </ctrls:ControlExample>
+
+            <ctrls:ControlExample Header="Custom TitleBars"
+                      TargetType="wnd:FAAppWindowTitleBar"
+                      EnableShowDefinitionLink="True">
+                <md:MarkdownScrollViewer>
+                    <x:String xml:space="preserve">
+To provide a custom TitleBar, you must set `TitleBar.ExtendsContentIntoTitleBar` to true. This will disable FA's default titlebar.
+To provide your own, simply add a control to your window and add whatever content you need.
+
+NOTES:
+- When providing a custom titlebar, be sure to mark your titlebar container with `WindowDecorationProperties.ElementRole="TitleBar"` so Avalonia knows that's the titlebar region.
+- Interactive content in the titlebar should be marked with `WindowDecorationProperties.ElementRole="User"` to ensure it remains interactive. Otherwise, window dragging behavior takes precedence.
+- Controls like `FATabView` and `FANavigationView`, which are usually extended into the TitleBar, be sure to set the element role to User on these controls so they remain interactive.
+- In previous versions of FA, `TitleBar` would also report the width of the caption buttons via `RightInsetWidth`. This is no longer available. The default total width of the caption buttons is 138 device independent pixels (dip), or 46 dip each.
+                    </x:String>
+                </md:MarkdownScrollViewer>
+
+                <ctrls:ControlExample.CSharpSource>
+                    <x:String xml:space="preserve">
+public class MainWindow : FAAppWindow
+{
+    public MainWindow()
+    {
+        TitleBar.ExtendsContentIntoTitleBar = true
+    }
+}
+                    </x:String>
+                </ctrls:ControlExample.CSharpSource>
+                <ctrls:ControlExample.XamlSource>
+                    <x:String xml:space="preserve">
+&lt;Window&gt;
+&lt;Grid Name="TitleBarHost"
+         Background="Transparent"
+         WindowDecorationProperties.ElementRole="TitleBar"&gt;
+            &lt;Image Margin="12 4"
+               IsHitTestVisible="False"
+               Source="/Assets/FAIcon.ico"
+               Width="18" Height="18"
+               DockPanel.Dock="Left"
+               Name="WindowIcon"
+               RenderOptions.BitmapInterpolationMode="HighQuality"/&gt;
+
+            &lt;TextBlock Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                   FontSize="12"
+                   IsHitTestVisible="False"
+                   VerticalAlignment="Center"
+                   Grid.Column="1" /&gt;
+            
+            &lt;Border Grid.Column="2" Padding="6">
+                &lt;AutoCompleteBox Name="SearchBox"
+                             MaxWidth="500"
+                             Watermark="Search"
+                             Classes="SampleApp"
+                             ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"
+                             ItemsSource="{Binding SearchTerms}"
+                             WindowDecorationProperties.ElementRole="User" /&gt;
+            &lt;/Border&gt;
+        &lt;/Grid&gt;
+&lt;/Window&gt;
+                    </x:String>                   
+                </ctrls:ControlExample.XamlSource>
             </ctrls:ControlExample>
 
             <ctrls:ControlExample Header="TitleBar colors"
@@ -57,37 +116,6 @@ public class MainWindow : FAAppWindow
                             If ExtendsContentIntoTitleBar is true, only the caption buttons can be customized as you are now responsible for the design of the rest of the titlebar area.
                         </ui:FAInfoBar.Message>
                     </ui:FAInfoBar>
-                </StackPanel>
-            </ctrls:ControlExample>
-
-            <ctrls:ControlExample Header="Window drag region"
-                                  TargetType="wnd:FAAppWindowTitleBar"
-                                  CSharpSource="avares://FAControlsGallery/Pages/SampleCode/AppWindow1.cs.txt">
-                <StackPanel Spacing="8">
-                    <TextBlock TextWrapping="Wrap">
-                        <Run>
-                            <x:String>By default, AppWindow retains the top part of the window as the titlebar hit testing region for dragging, even with ExtendsContentIntoTitleBar = true. The size of this is determined by the Height property, which defaults to 32 DIP</x:String>
-                        </Run>
-                        <LineBreak />
-                        <Run>
-                            <x:String>There are 3 ways you can customize this behavior</x:String>
-                        </Run>
-                    </TextBlock>
-
-                    <TextBlock TextWrapping="Wrap"
-                               Margin="18 0 0 0">
-                        <Run>
-                            <x:String>    1. TitleBar.SetDragRectangles(Rect[] values)</x:String>
-                        </Run>
-                        <LineBreak />
-                        <Run>
-                            <x:String>    2. AllowInteractionInTitleBar attached property</x:String>
-                        </Run>
-                        <LineBreak />
-                        <Run>
-                            <x:String>    2. TitleBar.TitleBarHitTestType property</x:String>
-                        </Run>
-                    </TextBlock>
                 </StackPanel>
             </ctrls:ControlExample>
 

@@ -3,14 +3,15 @@
     "Header": "Windowing",
     "Controls": [
       {
-        "Header": "AppWindow",
+        "Header": "FAAppWindow",
         "Description": "A modern window style for Windows with a graceful fallback on Mac/Linux",
         "IconResourceKey": "AppWindowIcon",
         "PageKey": "AppWindow",
         "SearchKeywords": [
-          "AppWindow"
+          "AppWindow",
+          "FAAppWindow"
         ],
-        "Namespace": "FluentAvalonia.UI.Windowing.AppWindow"
+        "Namespace": "FluentAvalonia.UI.Windowing.FAAppWindow"
       }
     ]
   },
@@ -18,14 +19,15 @@
     "Header": "Basic Input Controls",
     "Controls": [
       {
-        "Header": "NumberBox",
+        "Header": "FANumberBox",
         "Description": "A text control used for numeric input and evaluation of algebraic equations.",
         "IconResourceKey": "NumberBoxIcon",
         "PageKey": "NumberBox",
         "SearchKeywords": [
-          "NumberBox"
+          "NumberBox",
+          "FANumberBox"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.NumberBox",
+        "Namespace": "FluentAvalonia.UI.Controls.FANumberBox",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.NumberBox",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.numberbox",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/number-box"
@@ -44,27 +46,29 @@
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/combo-box"
       },
       {
-        "Header": "RangeSlider",
+        "Header": "FARangeSlider",
         "Description": "An slider that features two thumbs for selecting a range instead of a single value",
         "IconResourceKey": "RangeSliderIcon",
         "PageKey": "RangeSlider",
         "SearchKeywords": [
-          "RangeSlider"
+          "RangeSlider",
+          "FARangeSlider"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.RangeSlider",
+        "Namespace": "FluentAvalonia.UI.Controls.FARangeSlider",
         "WinUINamespace": null,
         "WinUIDocsLink": null,
         "WinUIGuidelinesLink": null
       },
       {
-        "Header": "ProgressRing",
+        "Header": "FAProgressRing",
         "Description": "Shows the app's progress on a task, or that the app is performing ongoing work that does block user interaction",
         "IconResourceKey": "ProgressRingIcon",
         "PageKey": "ProgressRing",
         "SearchKeywords": [
-          "ProgressRing"
+          "ProgressRing",
+          "FAProgressRing"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.ProgressRing",
+        "Namespace": "FluentAvalonia.UI.Controls.FAProgressRing",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.ProgressRing",
         "WinUIDocsLink": null,
         "WinUIGuidelinesLink": null
@@ -75,47 +79,51 @@
     "Header": "Dialogs and Flyouts",
     "Controls": [
       {
-        "Header": "TaskDialog",
+        "Header": "FATaskDialog",
         "Description": "An advanced dialog box",
         "IconResourceKey": "TaskDialogIcon",
         "PageKey": "TaskDialog",
         "SearchKeywords": [
-          "TaskDialog"
+          "TaskDialog",
+          "FATaskDialog"
         ],
-        "Namespace" : "FluentAvalonia.UI.Controls.TaskDialog"
+        "Namespace" : "FluentAvalonia.UI.Controls.FATaskDialog"
       },
       {
-        "Header": "ContentDialog",
+        "Header": "FAContentDialog",
         "Description": "A dialog box that can be customized to contain any XAML content",
         "IconResourceKey": "ContentDialogIcon",
         "PageKey": "ContentDialog",
         "SearchKeywords": [
-          "ContentDialog"
+          "ContentDialog",
+          "FAContentDialog"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.ContentDialog",
+        "Namespace": "FluentAvalonia.UI.Controls.FAContentDialog",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.ContentDialog",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.contentdialog",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/dialogs-and-flyouts/dialogs"
       },
       {
-        "Header": "PickerFlyoutBase",
+        "Header": "FAPickerFlyoutBase",
         "Description": "Base class of a special flyout that presents with confirm/dismiss buttons",
         "IconResourceKey": "PickerFlyoutBaseIcon",
         "PageKey": "PickerFlyoutBase",
         "SearchKeywords": [
-          "PickerFlyoutBase"
+          "PickerFlyoutBase",
+          "FAPickerFlyoutBase"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.Primitives.PickerFlyoutBase"
+        "Namespace": "FluentAvalonia.UI.Controls.Primitives.FAPickerFlyoutBase"
       },
       {
-        "Header": "TeachingTip",
+        "Header": "FATeachingTip",
         "Description": "A content-rich flyout for guiding users and enabling teaching moments",
         "PageKey": "TeachingTip",
         "IconResourceKey": "TeachingTipIcon",
         "SearchKeywords": [
-          "TeachingTip"
+          "TeachingTip",
+          "FATeachingTip"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.TeachingTip",
+        "Namespace": "FluentAvalonia.UI.Controls.FATeachingTip",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.TeachingTip",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.teachingtip",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/dialogs-and-flyouts/teaching-tip"
@@ -126,12 +134,26 @@
     "Header": "Icons",
     "Controls": [
       {
-        "Header": "FAIconElement/IconSource",
+        "Header": "FAIconElement/FAIconSource",
         "Description": "Icons that use different image types as its content",
         "IconResourceKey": "IconsIcon",
         "PageKey": "Icons",
         "SearchKeywords": [
-          "Icons"
+          "Icons",
+          "IconElement",
+          "IconSource",
+          "FAIconElement",
+          "FAIconSource",
+          "SymbolIcon",
+          "FASymbolIcon",
+          "FontIcon",
+          "FAFontIcon",
+          "BitmapIcon",
+          "FABitmapIcon",
+          "ImageIcon",
+          "FAImageIcon",
+          "IconSourceElement",
+          "FAIconSourceElement"
         ],
         "Namespace": "FluentAvalonia.UI.Controls.FAIconElement",
         "WinUIDocsLink": null,
@@ -143,52 +165,62 @@
     "Header": "Navigation Controls",
     "Controls": [
       {
-        "Header": "NavigationView",
+        "Header": "FANavigationView",
         "Description": "Common vertical layout for top-level areas of your app via a collapsible navigation menu",
         "IconResourceKey": "NavigationViewIcon",
         "PageKey": "NavigationView",
         "SearchKeywords": [
-          "NavigationView"
+          "NavigationView",
+          "FANavigationView",
+          "NavigationViewItem",
+          "FANavigationViewItem"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.NavigationView",
-        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ComboBox",
-        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.Controls.NavigationView",
+        "Namespace": "FluentAvalonia.UI.Controls.FANavigationView",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.NavigationView",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.NavigationView",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview"
       },
       {
-        "Header": "Frame",
+        "Header": "FAFrame",
         "Description": "Displays Page instances, supports navigation to new pages, and maintains a navigation history to support forward and backward navigation.",
         "IconResourceKey": "FrameIcon",
         "PageKey": "Frame",
         "SearchKeywords": [
-          "Frame"
+          "Frame",
+          "FAFrame"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.Frame",
+        "Namespace": "FluentAvalonia.UI.Controls.FAFrame",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.Frame",
         "WinUIDocsLink": "https://docs.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.frame?view=winui-3.0"
       },
       {
-        "Header": "TabView",
-        "Description": "TabView provides the user with a collection of tabs that can be used to display several documents",
+        "Header": "FATabView",
+        "Description": "FATabView provides the user with a collection of tabs that can be used to display several documents",
         "PageKey": "TabView",
         "IconResourceKey": "TabViewIcon",
         "SearchKeywords": [
-          "TabView"
+          "TabView",
+          "FATabView",
+          "TabViewItem",
+          "FATabViewItem"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.TabView",
+        "Namespace": "FluentAvalonia.UI.Controls.FATabView",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.TabView",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.tabview",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/tab-view"
       },
       {
-        "Header": "BreadcrumbBar",
+        "Header": "FABreadcrumbBar",
         "Description": "Shows the trail of navigation taken to the current location",
         "PageKey": "BreadcrumbBar",
         "IconResourceKey": "BreadcrumbBarIcon",
         "SearchKeywords": [
-          "BreadcrumbBar"
+          "BreadcrumbBar",
+          "FABreadcrumbBar",
+          "BreadcrumbBarItem",
+          "FABreadcrumbBarItem"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.BreadcrumbBar",
+        "Namespace": "FluentAvalonia.UI.Controls.FABreadcrumbBar",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.BreadcrumbBar",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.breadcrumbbar?view=winui-2.8",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/breadcrumbbar"
@@ -205,11 +237,11 @@
         "PageKey": "FAMenuFlyout",
         "SearchKeywords": [
           "FAMenuFlyout",
-          "MenuFlyoutItem",
-          "MenuFlyoutSubItem",
-          "ToggleMenuFlyoutItem",
-          "RadioMenuFlyoutItem",
-          "MenuFlyoutSeparator"
+          "FAMenuFlyoutItem",
+          "FAMenuFlyoutSubItem",
+          "FAToggleMenuFlyoutItem",
+          "FARadioMenuFlyoutItem",
+          "FAMenuFlyoutSeparator"
         ],
         "Namespace": "FluentAvalonia.UI.Controls.FAMenuFlyout",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.MenuFlyout",
@@ -217,16 +249,16 @@
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/menus"
       },
       {
-        "Header": "CommandBar",
+        "Header": "FACommandBar",
         "Description": "A toolbar for displaying application-specific commands that handles layout and resizing of its contents",
         "IconResourceKey": "CommandBarIcon",
         "PageKey": "CommandBar",
         "SearchKeywords": [
-          "CommandBar",
-          "CommandBarButton",
-          "CommandBarToggleButton",
-          "CommandBarSeparator",
-          "CommandBarElementContainer"
+          "FACommandBar",
+          "FACommandBarButton",
+          "FACommandBarToggleButton",
+          "FACommandBarSeparator",
+          "FACommandBarElementContainer"
         ],
         "Namespace": "FluentAvalonia.UI.Controls.FACommandBar",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.CommandBar",
@@ -234,33 +266,33 @@
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/command-bar"
       },
       {
-        "Header": "CommandBarFlyout",
+        "Header": "FACommandBarFlyout",
         "Description": "A mini-toolbar displaying proactive commands, and an optional menu of commands",
         "IconResourceKey": "CommandBarFlyoutIcon",
         "PageKey": "CommandBarFlyout",
         "SearchKeywords": [
-          "CommandBarFlyout",
-          "CommandBar",
-          "CommandBarButton",
-          "CommandBarToggleButton",
-          "CommandBarSeparator",
-          "CommandBarElementContainer"
+          "FACommandBarFlyout",
+          "FACommandBar",
+          "FACommandBarButton",
+          "FACommandBarToggleButton",
+          "FACommandBarSeparator",
+          "FACommandBarElementContainer"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.CommandBarFlyout",
+        "Namespace": "FluentAvalonia.UI.Controls.FACommandBarFlyout",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.CommandBarFlyout",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.commandbarflyout",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/command-bar-flyout"
       },
       {
-        "Header": "XamlUICommand",
+        "Header": "FAXamlUICommand",
         "Description": "An object which is used to define the look and feel of a given command",
         "IconResourceKey": "XamlUICommandIcon",
         "PageKey": "XamlUICommand",
         "SearchKeywords": [
-          "XamlUICommand",
-          "StandardUICommand"
+          "FAXamlUICommand",
+          "FAStandardUICommand"
         ],
-        "Namespace": "FluentAvalonia.UI.Input.XamlUICommand",
+        "Namespace": "FluentAvalonia.UI.Input.FAXamlUICommand",
         "WinUINamespace": "Microsoft.UI.Xaml.Input.XamlUICommand",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.xamluicommand",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/commanding#command-experiences-using-the-xamluicommand-class"
@@ -268,30 +300,51 @@
     ]
   },
   {
+    "Header": "List Controls",
+    "Controls": [
+      {
+        "Header": "FAItemsRepeater",
+        "Description": "A flexible, primitive control for data-driven layouts",
+        "IconResourceKey": "ItemsRepeaterIcon",
+        "PageKey": "ItemsRepeater",
+        "SearchKeywords": [
+          "FAItemsRepeater",
+          "ItemsRepeater"
+        ],
+        "Namespace": "FluentAvalonia.UI.Controls.FAItemsRepeater",
+        "WinUINamespace": "Microsoft.UI.Xaml.Controls.ItemsRepeater",
+        "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemsrepeater",
+        "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/items-repeater"
+      }
+    ]
+  },
+  {
     "Header": "Information / Alert Controls",
     "Controls": [
       {
-        "Header": "InfoBar",
+        "Header": "FAInfoBar",
         "Description": "An inline message to display app-wide status change information",
         "IconResourceKey": "InfoBarIcon",
         "PageKey": "InfoBar",
         "SearchKeywords": [
-          "InfoBar"
+          "InfoBar",
+          "FAInfoBar"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.InfoBar",
+        "Namespace": "FluentAvalonia.UI.Controls.FAInfoBar",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.InfoBar",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.infobar",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/apps/design/controls/infobar"
       },
       {
-        "Header": "InfoBadge",
+        "Header": "FAInfoBadge",
         "Description": "A non-intrusive UI to display notifications or bring focus to an area",
         "IconResourceKey": "InfoBadgeIcon",
         "PageKey": "InfoBadge",
         "SearchKeywords": [
-          "InfoBadge"
+          "InfoBadge",
+          "FAInfoBadge"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.InfoBadge",
+        "Namespace": "FluentAvalonia.UI.Controls.FAInfoBadge",
         "WinUINamespace": "Microsoft.UI.Xaml.Controls.InfoBadge",
         "WinUIDocsLink": "https://learn.microsoft.com/en-us/windows/winui/api/microsoft.ui.xaml.controls.infobadge?view=winui-2.8",
         "WinUIGuidelinesLink": "https://learn.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/infobadge"
@@ -302,15 +355,16 @@
     "Header": "View Controls",
     "Controls": [
       {
-        "Header": "SettingsExpander",
+        "Header": "FASettingsExpander",
         "Description": "An expandable container that can be used to organize and present app settings",
         "IconResourceKey": "SettingsExpanderIcon",
         "PageKey": "SettingsExpander",
         "SearchKeywords": [
           "SettingsExpander",
-          "Expander"
+          "Expander",
+          "FASettingsExpander"
         ],
-        "Namespace": "FluentAvalonia.UI.Controls.SettingsExpander"
+        "Namespace": "FluentAvalonia.UI.Controls.FASettingsExpander"
       }
     ]
   }

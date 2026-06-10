@@ -1,7 +1,7 @@
 ﻿[
   {
     "Header": "Basic Input Controls",
-    "Description": "Button, ToggleButton, RepeatButton, RadioButton, CheckBox, ToggleSwitch, SplitButton, DropDownButton, Hyperlink Button",
+    "Description": "Button, ToggleButton, RepeatButton, RadioButton, CheckBox, ToggleSwitch, SplitButton, DropDownButton, HyperlinkButton",
     "IconResourceKey": "BasicInputPageIcon",
     "PageKey": "BasicInput",
     "SearchKeywords": [
@@ -68,18 +68,19 @@
   },
   {
     "Header": "Menu Controls",
-    "Description": "Menu, MenuItem, MenuFlyout",
+    "Description": "Menu, MenuItem, MenuFlyout, CommandBar",
     "IconResourceKey": "MenusPageIcon",
     "PageKey": "Menu",
     "SearchKeywords": [
       "Menu",
       "MenuItem",
-      "MenuFlyout"
+      "MenuFlyout",
+      "CommandBar"
     ]
   },
   {
     "Header": "View Controls",
-    "Description": "TabControl, TabStrip, TabStripItem, Expander, SplitView",
+    "Description": "TabControl, TabStrip, TabStripItem, Expander, SplitView, PipsPager",
     "IconResourceKey": "ViewPageIcon",
     "PageKey": "View",
     "SearchKeywords": [
@@ -88,7 +89,8 @@
       "TabStrip",
       "TabStripItem",
       "Expander",
-      "SplitView"
+      "SplitView",
+      "PipsPager"
     ]
   },
   {
@@ -102,7 +104,7 @@
   },
   {
     "Header": "Miscellaneous Controls",
-    "Description": "Flyout, GridSplitter, ScrollViewer, ScrollBar, ToolTip, ColorPicker",
+    "Description": "Flyout, GridSplitter, ScrollViewer, ScrollBar, ToolTip, ColorPicker, GroupBox",
     "IconResourceKey": "MiscPageIcon",
     "PageKey": "Misc",
     "SearchKeywords": [
@@ -111,7 +113,8 @@
       "ScrollBar",
       "ScrollViewer",
       "ToolTip",
-      "ColorPicker"
+      "ColorPicker",
+      "GroupBox"
     ]
   }
 ]

@@ -26,7 +26,7 @@ public partial class CoreControlsPage : UserControl
 
     private void OnNavigatedTo(object sender, FANavigationEventArgs e)
     {
-        if (_connectedAnimationSource == -1)
+        if (_connectedAnimationSource == -1 || OperatingSystem.IsBrowser())
             return;
 
         var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
@@ -69,7 +69,7 @@ public partial class CoreControlsPage : UserControl
 
     private void OnNavigatingFrom(object sender, FANavigatingCancelEventArgs e)
     {
-        if (_connectedAnimationSource == -1)
+        if (_connectedAnimationSource == -1 || OperatingSystem.IsBrowser())
             return;
 
         // We're not navigating to a control page, don't set up the animation & clear

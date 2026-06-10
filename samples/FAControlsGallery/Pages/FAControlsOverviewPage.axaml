@@ -75,8 +75,8 @@
         <ScrollViewer>
             <StackPanel Spacing="25"
                         Margin="0 0 0 30">
-                <local:PageHeaderControl TextType="FAControls"
-                                         Classes="smaller"/>
+                <local:PageHeaderControl Header="FluentAvalonia"
+                                         SubTitle="Controls"/>
 
                 <ItemsControl ItemsSource="{Binding ControlGroups}"
                               Padding="{StaticResource SampleAppPageMargin}" 

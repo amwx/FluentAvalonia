@@ -1,0 +1,28 @@
+﻿<!-- Note: Control Example uses a style class to adjust Horizontal/Vertical scrollbar visiblity based on orientation. See source for details -->
+
+<ScrollViewer Height="400"
+              Name="FlowLayoutScrollViewer">
+                
+    <ui:FAItemsRepeater Name="Repeater3"
+                        ItemsSource="{Binding Numbers}">
+
+        <ui:FAItemsRepeater.ItemTemplate>
+            <DataTemplate DataType="sys:Int32">
+                <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        Padding="20">
+                    <TextBlock Text="{Binding }"
+                                FontSize="20" />
+                </Border>
+            </DataTemplate>
+        </ui:FAItemsRepeater.ItemTemplate>
+                    
+        <ui:FAItemsRepeater.Layout>
+            <ui:FAFlowLayout Orientation="$(Orientation)"
+                             MinColumnSpacing="$(ColSpacing)"
+                             MinRowSpacing="$(RowSpacing)" 
+                             LineAlignment="$(LineAlignment)" />
+        </ui:FAItemsRepeater.Layout>
+    </ui:FAItemsRepeater>
+</ScrollViewer>

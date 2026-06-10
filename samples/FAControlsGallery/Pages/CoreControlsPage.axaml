@@ -22,8 +22,8 @@
         <StackPanel Spacing="25"
                     Margin="0 0 0 30"
                     ClipToBounds="False">
-            <local:PageHeaderControl TextType="CoreControls"
-                                     Classes="smaller"/>
+            <local:PageHeaderControl Header="FluentAvalonia"
+                                     SubTitle="Core Avalonia Controls" />
 
             <TextBlock Text="Controls included with Avalonia"
                        Theme="{StaticResource SubtitleTextBlockStyle}"

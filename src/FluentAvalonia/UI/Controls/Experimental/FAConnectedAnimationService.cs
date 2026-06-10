@@ -27,6 +27,9 @@ public class FAConnectedAnimationService
 
     public static FAConnectedAnimationService GetForView(TopLevel topLevel)
     {
+        if (topLevel == null)
+            return null;
+
         var service = topLevel.GetValue(ConnectedAnimationServiceProperty);
 
         if (service == null)

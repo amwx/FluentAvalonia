@@ -1,0 +1,354 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ctrls="using:FAControlsGallery.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels"
+             xmlns:pg="clr-namespace:FAControlsGallery.Pages;assembly=FAControlsGallery"
+             xmlns:sys="using:System"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="4000"
+             x:Class="FAControlsGallery.Pages.ItemsRepeaterPage"
+             x:DataType="vm:ItemsRepeaterPageViewModel">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="HorizontalBarTemplate" DataType="vm:Bar">
+            <Border Width="{Binding MaxLength}" Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}">
+                <Rectangle Width="{Binding Length}"
+                           Height="24"
+                           HorizontalAlignment="Left"
+                           Fill="{DynamicResource SystemAccentColor}" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="VerticalBarTemplate" DataType="vm:Bar">
+            <Border Height="{Binding MaxHeight}" Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+                <Rectangle Width="48"
+                           Height="{Binding Height}"
+                           VerticalAlignment="Top"
+                           Fill="{DynamicResource SystemAccentColor}" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NormalItemTemplate"
+                      DataType="sys:Int32">
+            <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                    MaxWidth="100" MaxHeight="100">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding }" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AccentItemTemplate" 
+                      DataType="sys:Int32">
+            <Border Background="{DynamicResource AccentFillColorDefaultBrush}"
+                    MaxWidth="100" MaxHeight="100">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                           Text="{Binding }" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StringDataTemplate"
+              DataType="sys:String">
+            <Border Margin="10" Background="{DynamicResource AccentFillColorDefaultBrush}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding }"
+                           Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                           Padding="10"
+                           TextWrapping="Wrap"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IntDataTemplate"
+                      DataType="sys:Int32">
+            <Border Margin="10" Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding }"
+                           FontSize="48"
+                           Padding="10" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CategoryTemplate" DataType="vm:NestedCategory">
+            <StackPanel>
+                <TextBlock Text="{Binding CategoryName}"
+                           Theme="{StaticResource TitleTextBlockStyle}"
+                           Padding="8" />
+                <ui:FAItemsRepeater Name="InnerRepeater"
+                                    ItemTemplate="{StaticResource StringDataTemplate}"
+                                    ItemsSource="{Binding CategoryItems}">
+                    <ui:FAItemsRepeater.Layout>
+                        <ui:FAStackLayout Orientation="Horizontal" />
+                    </ui:FAItemsRepeater.Layout>
+                </ui:FAItemsRepeater>
+            </StackPanel>
+        </DataTemplate>
+
+        <ui:FAStackLayout x:Key="VerticalStackLayout"
+                          Orientation="Vertical"
+                          Spacing="8" />
+        <ui:FAStackLayout x:Key="HorizontalStackLayout"
+                          Orientation="Horizontal"
+                          Spacing="8" />
+        <ui:FAUniformGridLayout  x:Key="UniformGridLayout"
+                                MinColumnSpacing="8"
+                                MinRowSpacing="8" />
+        
+        <ui:FAUniformGridLayout x:Key="UniformGridLayout2"
+                                MinColumnSpacing="12"
+                                MinItemHeight="108"
+                                MinItemWidth="108"
+                                MinRowSpacing="12" />
+
+        <vm:MyDataTemplateSelector x:Key="MyDataTemplateSelector"
+                                   Accent="{StaticResource AccentItemTemplate}"
+                                   Normal="{StaticResource NormalItemTemplate}" />
+        <vm:StringOrIntTemplateSelector x:Key="StringOrIntTemplateSelector"
+                                        IntTemplate="{StaticResource IntDataTemplate}"
+                                        StringTemplate="{StaticResource StringDataTemplate}" />
+    </UserControl.Resources>
+    
+    <StackPanel Spacing="8">
+        <ctrls:ControlExample Header="FAItemsRepeater - StackLayout"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/ItemsRepeater1.xaml.txt">
+            <ScrollViewer Height="400"
+                          Width="400"
+                          HorizontalScrollBarVisibility="Auto">
+                <ScrollViewer.Styles>
+                    <Style Selector="ui|FAItemsRepeater">
+                        <Setter Property="Layout" Value="{StaticResource VerticalStackLayout}" />
+                        <Setter Property="ItemTemplate" Value="{StaticResource HorizontalBarTemplate}" />
+                    </Style>
+                    <Style Selector="ui|FAItemsRepeater.horizontal">
+                        <Setter Property="Layout" Value="{StaticResource HorizontalStackLayout}" />
+                        <Setter Property="ItemTemplate" Value="{StaticResource VerticalBarTemplate}" />
+                    </Style>
+                </ScrollViewer.Styles>
+                <ui:FAItemsRepeater Name="Repeater1"
+                                    ItemsSource="{Binding BarItems}"
+                                    Classes.horizontal="{Binding #HStackBtn.IsChecked}">
+                    
+                </ui:FAItemsRepeater>
+            </ScrollViewer>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <RadioButton Name="VStackBtn"
+                                 Content="Vertical"
+                                 IsChecked="True"
+                                 Tag="VerticalStackLayout"
+                                 GroupName="StackLayoutType"/>
+                    <RadioButton Name="HStackBtn"
+                                 Content="Horizontal"
+                                 Tag="HorizontalStackLayout"
+                                 GroupName="StackLayoutType"/>
+                    <ui:FANumberBox Minimum="0"
+                                    Maximum="100"
+                                    Name="StackLayoutSpacingNB"
+                                    Value="0"
+                                    Header="Spacing"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}" />
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Spacing" Value="{Binding #StackLayoutSpacingNB.Value}" IsEnabled="True" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="FAItemsRepeater - UniformGridLayout"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/ItemsRepeater2.xaml.txt">
+            <ScrollViewer Height="500"
+                          Padding="0 0 16 0"
+                          HorizontalScrollBarVisibility="Auto">
+                <ui:FAItemsRepeater Name="Repeater2"
+                                    Margin="0 0 12 0"
+                                    ItemsSource="{Binding Numbers}"
+                                    ItemTemplate="{StaticResource MyDataTemplateSelector}">
+                    <ui:FAItemsRepeater.Layout>
+                        <ui:FAUniformGridLayout ItemsJustification="{Binding #JustificationCB.SelectedItem}"
+                                                ItemsStretch="{Binding #StretchCB.SelectedItem}" 
+                                                MaximumRowsOrColumns="{Binding #MaxRowsColsNB.Value}"
+                                                Orientation="{Binding #OrientationCB.SelectedItem}"
+                                                MinItemWidth="{Binding #WidthNB.Value}"
+                                                MinItemHeight="{Binding #HeightNB.Value}"
+                                                MinColumnSpacing="{Binding #ColSpaceNB.Value}"
+                                                MinRowSpacing="{Binding #RowSpaceNB.Value}"/>
+                    </ui:FAItemsRepeater.Layout>
+                </ui:FAItemsRepeater>
+            </ScrollViewer>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="8">
+                    <ui:FAComboBox Header="Orientation"
+                                   HorizontalAlignment="Stretch"
+                                   ItemsSource="{Binding OrientationItems}"
+                                   SelectedIndex="0"
+                                   Name="OrientationCB"/>
+                    <ui:FANumberBox Header="MaximumRowsOrColumns"
+                                    Minimum="1" Maximum="10"
+                                    Value="5"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}"
+                                    Name="MaxRowsColsNB"/>
+                    <ui:FANumberBox Header="MinItemWidth"
+                                    Minimum="1" Maximum="300"
+                                    Value="150"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}"
+                                    Name="WidthNB"/>
+                    <ui:FANumberBox Header="MinItemHeight"
+                                    Minimum="1" Maximum="300"
+                                    Value="150"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}"
+                                    Name="HeightNB"/>
+                    <ui:FANumberBox Header="MinRowSpacing"
+                                    Minimum="0" Maximum="20"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}"
+                                    Name="RowSpaceNB"/>
+                    <ui:FANumberBox Header="MinColSpacing"
+                                    Minimum="0" Maximum="20"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}"
+                                    Name="ColSpaceNB"/>
+                    <ui:FAComboBox Header="ItemsStretch"
+                                   HorizontalAlignment="Stretch"
+                                   ItemsSource="{Binding ItemsStretchItems}"
+                                   SelectedIndex="0"
+                                   Name="StretchCB"/>
+                    <ui:FAComboBox Header="ItemsJustification"
+                                   HorizontalAlignment="Stretch"
+                                   ItemsSource="{Binding ItemsJustificationItems}"
+                                   SelectedIndex="0"
+                                   Name="JustificationCB"/>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Justification" Value="{Binding #JustificationCB.SelectedItem}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="Stretch" Value="{Binding #StretchCB.SelectedItem}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="Max" Value="{Binding #MaxRowsColsNB.Value}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="Orientation" Value="{Binding #OrientationCB.SelectedItem}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="Width" Value="{Binding #WidthNB.Value}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="Height" Value="{Binding #HeightNB.Value}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="ColSpace" Value="{Binding #RowSpaceNB.Value}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="RowSpace" Value="{Binding #ColSpaceNB.Value}" IsEnabled="True" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="FAItemsRepeater - FlowLayout"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/ItemsRepeater3.xaml.txt">
+            <ctrls:ControlExample.Styles>
+                <Style Selector="ScrollViewer">
+                    <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                    <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                </Style>
+                <Style Selector="ScrollViewer.horizontal">
+                    <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+                    <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+                </Style>
+            </ctrls:ControlExample.Styles>
+            <ScrollViewer Height="400"
+                          Name="FlowLayoutScrollViewer">
+                
+                <ui:FAItemsRepeater Name="Repeater3"
+                                    ItemsSource="{Binding Numbers}">
+
+                    <ui:FAItemsRepeater.ItemTemplate>
+                        <DataTemplate DataType="sys:Int32">
+                            <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    Padding="20">
+                                <TextBlock Text="{Binding }"
+                                           FontSize="20" />
+                            </Border>
+                        </DataTemplate>
+                    </ui:FAItemsRepeater.ItemTemplate>
+                    
+                    <ui:FAItemsRepeater.Layout>
+                        <ui:FAFlowLayout Orientation="{Binding #FlowOrientationCB.SelectedItem}"
+                                         MinColumnSpacing="{Binding #FlowRowSpaceNB.Value}"
+                                         MinRowSpacing="{Binding #FlowColSpaceNB.Value}" 
+                                         LineAlignment="{Binding #LineAlignCB.SelectedItem}" />
+                    </ui:FAItemsRepeater.Layout>
+                </ui:FAItemsRepeater>
+            </ScrollViewer>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="4">
+                    <ui:FAComboBox Header="Orientation"
+                                   HorizontalAlignment="Stretch"
+                                   ItemsSource="{Binding OrientationItems}"
+                                   SelectedIndex="0"
+                                   Name="FlowOrientationCB"/>
+
+                    <ui:FANumberBox Header="MinRowSpacing"
+                                    Minimum="0" Maximum="20"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}"
+                                    Name="FlowRowSpaceNB"/>
+                    <ui:FANumberBox Header="MinColSpacing"
+                                    Minimum="0" Maximum="20"
+                                    HorizontalAlignment="Stretch"
+                                    Theme="{StaticResource CompactNumberBoxStyle}"
+                                    Name="FlowColSpaceNB"/>
+
+                    <ui:FAComboBox Header="LineAlignment"
+                                   HorizontalAlignment="Stretch"
+                                   ItemsSource="{Binding LineAlignmentItems}"
+                                   SelectedIndex="0"
+                                   Name="LineAlignCB"/>
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="Orientation" Value="{Binding #FlowOrientationCB.SelectedItem}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="LineAlignment" Value="{Binding #LineAlignCB.SelectedItem}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="RowSpacing" Value="{Binding #FlowRowSpaceNB.Value}" IsEnabled="True" />
+                <ctrls:ControlExampleSubstitution Key="ColSpacing" Value="{Binding #FlowColSpaceNB.Value}" IsEnabled="True" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+        
+        <ctrls:ControlExample Header="ItemsRepeater with mixed-type collection"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/ItemsRepeater4.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/ItemsRepeater4.cs.txt">
+            <StackPanel>
+                <TextBlock Text="This is an ItemsRepeater that displays both integer and string items. It uses a DataTemplateSelector to choose the correct layout for each of its items."
+                           TextWrapping="Wrap" />
+                <ScrollViewer>
+                    <ui:FAItemsRepeater Name="MixedTypeRepeater"
+                                        Margin="0 0 12 0"
+                                        ItemTemplate="{StaticResource StringOrIntTemplateSelector}"
+                                        ItemsSource="{Binding MixedDataSource}">
+                        <ui:FAItemsRepeater.Layout>
+                            <ui:FAUniformGridLayout MinItemHeight="200"
+                                                    MinItemWidth="200" />
+                        </ui:FAItemsRepeater.Layout>
+                    </ui:FAItemsRepeater>
+                </ScrollViewer>
+            </StackPanel>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="Nested ItemsRepeaters"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/ItemsRepeater5.xaml.txt"
+                              CSharpSource="avares://FAControlsGallery/Pages/SampleCode/ItemsRepeater5.cs.txt">
+            <ScrollViewer>
+                <ui:FAItemsRepeater Name="OuterRepeater"
+                                    VerticalAlignment="Top"
+                                    ItemTemplate="{StaticResource CategoryTemplate}"
+                                    ItemsSource="{Binding NestedCategories}"> 
+                </ui:FAItemsRepeater>
+            </ScrollViewer>
+        </ctrls:ControlExample>
+
+    </StackPanel>
+</UserControl>

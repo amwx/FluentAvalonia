@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
@@ -8,10 +7,8 @@ using FluentAvalonia.Styling;
 
 namespace FAControlsGallery.ViewModels;
 
-public class SettingsPageViewModel : MainPageViewModelBase
+public sealed class SettingsPageViewModel : MainPageViewModelBase
 {
-
-
     public SettingsPageViewModel()
     {
         GetPredefColors();
