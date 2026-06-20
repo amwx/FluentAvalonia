@@ -11,7 +11,7 @@ using Avalonia.Rendering.Composition.Animations;
 
 namespace FAControlsGallery.Controls;
 
-public class ControlExample : HeaderedContentControl
+public sealed class ControlExample : HeaderedContentControl
 {
     public ControlExample()
     {
@@ -91,8 +91,7 @@ public class ControlExample : HeaderedContentControl
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
-        if (_expandOptionsButton != null)
-            _expandOptionsButton.Click -= OnExpandOptionsClick;
+        _expandOptionsButton?.Click -= OnExpandOptionsClick;
 
         base.OnApplyTemplate(e);
 
@@ -105,7 +104,9 @@ public class ControlExample : HeaderedContentControl
         if (_moreButton != null)
         {
             BuildMoreButtonMenu();
-        }        
+        }
+
+        _optionsHost = e.NameScope.Find<Border>("OptionsHost");
 
         bool hasXaml = XamlSource != null;
         bool hasCSharp = CSharpSource != null;
@@ -248,7 +249,11 @@ public class ControlExample : HeaderedContentControl
         var link = $"https://docs.avaloniaui.net/docs/controls/{TargetType.Name.ToLower()}";
         try
         {
-            Process.Start(new ProcessStartInfo(link) { UseShellExecute = true, Verb = "open" });
+            var launcher = TopLevel.GetTopLevel(this)?.Launcher;
+            if (launcher != null)
+            {
+                await launcher.LaunchUriAsync(new Uri(link));
+            }
         }
         catch
         {
@@ -260,7 +265,6 @@ public class ControlExample : HeaderedContentControl
     {
         NavigationService.Instance.ShowControlDefinitionOverlay(TargetType);
     }
-
 
     private IList<ControlExampleSubstitution> _substitutions;
     public static Flyout _copiedNoticeFlyout;

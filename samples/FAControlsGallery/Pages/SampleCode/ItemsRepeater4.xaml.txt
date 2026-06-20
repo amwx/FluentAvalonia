@@ -1,0 +1,40 @@
+﻿<ScrollViewer>
+    <ui:FAItemsRepeater Name="MixedTypeRepeater"
+                        Margin="0 0 12 0"
+                        ItemTemplate="{StaticResource StringOrIntTemplateSelector}"
+                        ItemsSource="{Binding MixedDataSource}">
+        <ui:FAItemsRepeater.Layout>
+            <ui:FAUniformGridLayout MinItemHeight="200"
+                                    MinItemWidth="200" />
+        </ui:FAItemsRepeater.Layout>
+    </ui:FAItemsRepeater>
+</ScrollViewer>
+
+<!-- DataTemplate Resources -->
+<vm:StringOrIntTemplateSelector x:Key="StringOrIntTemplateSelector"
+                                IntTemplate="{StaticResource IntDataTemplate}"
+                                StringTemplate="{StaticResource StringDataTemplate}" />
+
+<DataTemplate x:Key="StringDataTemplate"
+              DataType="sys:String">
+    <Border Margin="10" Background="{DynamicResource AccentFillColorDefaultBrush}">
+        <TextBlock HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{Binding }"
+                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                    Padding="10"
+                    TextWrapping="Wrap"/>
+    </Border>
+</DataTemplate>
+
+<DataTemplate x:Key="IntDataTemplate"
+              DataType="sys:Int32">
+    <Border Margin="10" Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}">
+        <TextBlock HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{Binding }"
+                    FontSize="48"
+                    Padding="10" />
+    </Border>
+</DataTemplate>
+

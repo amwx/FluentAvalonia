@@ -1,0 +1,19 @@
+﻿<ScrollViewer Height="500"
+              Padding="0 0 16 0"
+              HorizontalScrollBarVisibility="Auto">
+    <ui:FAItemsRepeater Name="Repeater2"
+                        Margin="0 0 12 0"
+                        ItemsSource="{Binding Numbers}"
+                        ItemTemplate="{StaticResource MyDataTemplateSelector}">
+        <ui:FAItemsRepeater.Layout>
+            <ui:FAUniformGridLayout ItemsJustification="$(Justification)"
+                                    ItemsStretch="$(Stretch)" 
+                                    MaximumRowsOrColumns="$(Max)"
+                                    Orientation="$(Orientation)"
+                                    MinItemWidth="$(Width)"
+                                    MinItemHeight="$(Height)"
+                                    MinColumnSpacing="$(ColSpace)"
+                                    MinRowSpacing="$(RowSpace)"/>
+        </ui:FAItemsRepeater.Layout>
+    </ui:FAItemsRepeater>
+</ScrollViewer>

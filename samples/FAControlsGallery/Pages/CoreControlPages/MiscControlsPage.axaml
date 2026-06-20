@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ctrls="using:FAControlsGallery.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1200"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="2200"
              x:Class="FAControlsGallery.Pages.MiscControlsPage">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="Flyout"
@@ -84,5 +84,17 @@
 
         </ctrls:ControlExample>
 
+        <ctrls:ControlExample Header="GroupBox"
+                              TargetType="GroupBox"
+                              EnableShowDefinitionLink="True"
+                              EnableShowDocsLink="True">
+            <GroupBox Header="Header">
+                <StackPanel>
+                    <CheckBox Content="Check 1" />
+                    <CheckBox Content="Check 2" />
+                    <CheckBox Content="Check 3" />
+                </StackPanel>
+            </GroupBox>
+        </ctrls:ControlExample>
     </StackPanel>
 </UserControl>

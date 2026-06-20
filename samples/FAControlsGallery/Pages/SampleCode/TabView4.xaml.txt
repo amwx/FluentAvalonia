@@ -1,0 +1,19 @@
+﻿<ui:FATabView AddTabButtonClick="TabView_AddButtonClick"
+                TabCloseRequested="TabView_TabCloseRequested"
+                Name="APIInActionTabView"
+                TabItemsSource="{Binding APIInActionItems}"
+                TabWidthMode="$(TabWidthMode)"
+                CloseButtonOverlayMode="$(CloseButtonMode)"
+                TabStripLocation="$(TabStripLocation)"
+                TabStripHeader="$(TabHeader)"
+                TabStripFooter="$(TabFooter)"
+                CanReorderTabs="$(CanReorder)">
+                Height="400">
+    <ui:FATabView.TabItemTemplate>
+        <DataTemplate DataType="vm:TestItem">
+            <ui:FATabViewItem Header="{Binding Header}"
+                                Content="{Binding Content}"
+                                IconSource="{Binding IconSource}" />
+        </DataTemplate>
+    </ui:FATabView.TabItemTemplate>                
+</ui:FATabView>

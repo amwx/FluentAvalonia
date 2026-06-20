@@ -1,0 +1,152 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ae="using:AvaloniaEdit"
+             xmlns:aee="using:AvaloniaEdit.Editing"
+             xmlns:md="using:Markdown.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FAControlsGallery.Pages.PlaygroundPage">
+
+    <UserControl.Resources>
+        <ControlTheme x:Key="{x:Type ae:TextEditor}"
+                      TargetType="ae:TextEditor">
+            <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThickness}" />
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+            <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                            Name="Root">
+                        <ScrollViewer Focusable="False"
+                                      Name="PART_ScrollViewer"
+                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                      VerticalContentAlignment="Top"
+                                      HorizontalContentAlignment="Left"
+                                      Padding="{TemplateBinding Padding}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#Root">
+                <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushPointerOver}"/>
+                <Setter Property="Background" Value="{DynamicResource TextControlBackgroundPointerOver}" />
+            </Style>
+
+            <Style Selector="^:focus-within">
+                <Style Selector="^ /template/ Border#Root">
+                    <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushFocused}"/>
+                    <Setter Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThicknessFocused}" />
+                </Style>
+            </Style>
+
+            <Style Selector="^:disabled /template/ Border#Root">
+                <Setter Property="Background" Value="{DynamicResource TextControlBackgroundDisabled}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushDisabled}" />
+            </Style>
+        </ControlTheme>
+
+        <ControlTheme x:Key="{x:Type aee:TextArea}"
+                      TargetType="aee:TextArea">
+            <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+            <Setter Property="SelectionForeground" Value="{DynamicResource TextOnAccentFillColorSelectedTextBrush}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DockPanel Focusable="False">
+                        <ItemsControl DockPanel.Dock="Left"
+                                      Focusable="False"
+                                      ItemsSource="{TemplateBinding LeftMargins}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <ContentPresenter Name="PART_CP" Cursor="IBeam"
+                                          Focusable="False" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <DockPanel>
+            <Grid ColumnDefinitions="*,Auto"
+                  DockPanel.Dock="Top">
+                <TextBlock Text="FluentAvalonia XAML Playground"
+                           Theme="{StaticResource TitleTextBlockStyle}"
+                           Margin="18 18 12 12" />
+
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1">
+                    <Button Name="SwapThemeButton">
+                        <ui:FAIconSourceElement IconSource="{StaticResource SwapThemeIcon}"
+                                                Width="16"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Expander DockPanel.Dock="Top"
+                      Header="Notes (Read before first use)"
+                      Margin="12 0">
+                <md:MarkdownScrollViewer Source="avares://FAControlsGallery/Assets/InfoPages/PlaygroundInfo.md" />
+            </Expander>
+
+            <ThemeVariantScope DockPanel.Dock="Top"
+                               Margin="12 12 12 0"
+                               Name="ThemeScope">
+                <Border Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4 4 0 0">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  MaxHeight="500"
+                                  MinHeight="250"
+                                  Name="HostScrollViewer">
+
+                    </ScrollViewer>
+                </Border>
+            </ThemeVariantScope>
+
+            <Border Background="{DynamicResource LayerFillColorDefaultBrush}"
+                    CornerRadius="0 0 4 4"
+                    Margin="12 0 12 12"
+                    MaxHeight="400">
+                <Grid ColumnDefinitions="3*,*" RowDefinitions="Auto,*">
+                    <ui:FAInfoBar Name="ErrorMessage"
+                                  Grid.ColumnSpan="2"
+                                  Severity="Error"
+                                  Title="Xaml Error"
+                                  IsClosable="False"
+                                  Margin="6"/>
+
+                    <ae:TextEditor Name="TextEditorHost" Grid.Row="1"
+                                   Margin="12 12 6 12"
+                                   WordWrap="True" Padding="4"/>
+
+                    <StackPanel Spacing="8"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="6 12 12 12">
+                        <Button Name="LoadButton"
+                                Content="Load"
+                                Classes="accent"
+                                HorizontalAlignment="Stretch"/>
+                        <Button Name="ResetButton"
+                                Content="Reset"
+                                HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DockPanel>
+    </ScrollViewer>
+</UserControl>

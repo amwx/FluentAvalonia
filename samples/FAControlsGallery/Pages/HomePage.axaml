@@ -11,6 +11,8 @@
              x:DataType="vm:HomePageViewModel"
              x:CompileBindings="True">
     <UserControl.Resources>
+        <conv:ResourceKeyToIconConverter x:Key="ResKeyToIconConv" />
+
         <ControlTheme x:Key="NavButtonStyle"
                       TargetType="Button"
                       BasedOn="{StaticResource {x:Type Button}}">
@@ -30,13 +32,15 @@
     </UserControl.Resources>
     
     <ScrollViewer>
-        <StackPanel Spacing="-75">
-            <local:PageHeaderControl />
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+            <local:PageHeaderControl Header="FluentAvalonia"
+                                     SubTitle="{Binding CurrentVersion, StringFormat='v {0}'}"/>
             
             <ItemsControl ItemsSource="{Binding Pages}"
                           Name="TileItemsControl"
-                          ClipToBounds="False"
-                          Margin="{StaticResource SampleAppPageMargin}">
+                          ClipToBounds="False"                          
+                          Grid.Row="1"
+                          Margin="12 -65 12 20">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
@@ -57,13 +61,117 @@
                                 </Border>
                                 <TextBlock Text="{Binding Title}"
                                            FontWeight="SemiBold"
-                                           Margin="12"
+                                           VerticalAlignment="Center"
+                                           Margin="12 0"
                                            Grid.Row="1" />
                             </Grid>
                         </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+
+            <DockPanel Grid.Row="2" IsVisible="{Binding HasFavorites}"
+                       Margin="{StaticResource SampleAppPageMargin}">
+                <TextBlock Text="Favorites"
+                           Theme="{StaticResource BodyStrongTextBlockStyle}"
+                           FontSize="16"
+                           DockPanel.Dock="Top" />
+
+                <ui:FAItemsRepeater ItemsSource="{Binding Favorites}"
+                                    Margin="0 8">
+                    <ui:FAItemsRepeater.Layout>
+                        <ui:FAFlowLayout MinRowSpacing="4"
+                                         MinColumnSpacing="4"
+                                         Orientation="Horizontal"/>
+                    </ui:FAItemsRepeater.Layout>
+
+                    <ui:FAItemsRepeater.ItemTemplate>
+                        <DataTemplate DataType="vm:RecentItemViewModel">
+                            <ListBoxItem Padding="0">
+                                <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="{StaticResource ControlCornerRadius}"
+                                        BackgroundSizing="OuterBorderEdge"
+                                        Width="350" Height="100">
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <Viewbox Width="60"
+                                                 Height="60"
+                                                 Margin="12 8"
+                                                 VerticalAlignment="Center"
+                                                 Name="IconHost">
+                                            <ui:FAIconSourceElement IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}" />
+                                        </Viewbox>
+
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="12 8"
+                                                    Spacing="4"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Header}"
+                                                       Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                                            <TextBlock Text="{Binding Description}"
+                                                       Theme="{StaticResource CaptionTextBlockStyle}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       IsVisible="{Binding Description, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </ListBoxItem>
+                        </DataTemplate>
+                    </ui:FAItemsRepeater.ItemTemplate>
+                </ui:FAItemsRepeater>
+            </DockPanel>
+
+            <DockPanel Grid.Row="3" IsVisible="{Binding HasRecentItems}"
+                       Margin="{StaticResource SampleAppPageMargin}">
+                <TextBlock Text="Recently Visited"
+                           Theme="{StaticResource BodyStrongTextBlockStyle}"
+                           FontSize="16"
+                           DockPanel.Dock="Top" />
+
+                <ui:FAItemsRepeater ItemsSource="{Binding RecentItems}"
+                                    Margin="0 8">
+                    <ui:FAItemsRepeater.Layout>
+                        <ui:FAFlowLayout MinRowSpacing="4"
+                                         MinColumnSpacing="4"
+                                         Orientation="Horizontal"/>
+                    </ui:FAItemsRepeater.Layout>
+
+                    <ui:FAItemsRepeater.ItemTemplate>
+                        <DataTemplate DataType="vm:RecentItemViewModel">
+                            <ListBoxItem Padding="0">
+                                <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="{StaticResource ControlCornerRadius}"
+                                        BackgroundSizing="OuterBorderEdge"
+                                        Width="350" Height="100">
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <Viewbox Width="60"
+                                                 Height="60"
+                                                 Margin="12 8"
+                                                 VerticalAlignment="Center"
+                                                 Name="IconHost">
+                                            <ui:FAIconSourceElement IconSource="{Binding IconResourceKey, Converter={StaticResource ResKeyToIconConv}}" />
+                                        </Viewbox>
+
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="12 8"
+                                                    Spacing="4"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Header}"
+                                                       Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                                            <TextBlock Text="{Binding Description}"
+                                                       Theme="{StaticResource CaptionTextBlockStyle}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </ListBoxItem>
+                        </DataTemplate>
+                    </ui:FAItemsRepeater.ItemTemplate>
+                </ui:FAItemsRepeater>
+            </DockPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>

@@ -1,12 +1,13 @@
 ﻿using System.Text.Json;
+using FAControlsGallery.Services;
 
 namespace FAControlsGallery.ViewModels;
 
 public class FAControlsOverviewPageViewModel : MainPageViewModelBase
 {
-    public FAControlsOverviewPageViewModel(string controlsJson)
+    public FAControlsOverviewPageViewModel()
     {
-        ControlGroups = JsonSerializer.Deserialize(controlsJson, FAControlsJsonSerializerContext.Default.ListFAControlsGroupItem);
+        ControlGroups = ControlInformation.GetFAControlInfo();
 
         for (int i = 0; i < ControlGroups.Count; i++)
         {

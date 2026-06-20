@@ -18,3 +18,9 @@ public class DocumentItem
 
     public string Content { get; set; }
 }
+
+// Handling TabCloseRequested
+private void BindingTabView_TabCloseRequested(FATabView sender, FATabViewTabCloseRequestedEventArgs args)
+{
+    (DataContext as TabViewPageViewModel).Documents.Remove(args.Item as DocumentItem);
+}

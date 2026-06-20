@@ -1,0 +1,15 @@
+﻿public sealed class ViewModel
+{
+    public List<NestedCategory> NestedCategories { get; }
+}
+
+public sealed class NestedCategory
+{
+    public string CategoryName { get; set; }
+    public ObservableCollection<string> CategoryItems { get; set; }
+    public NestedCategory(string catName, ObservableCollection<string> catItems)
+    {
+        CategoryName = catName;
+        CategoryItems = catItems;
+    }
+}

@@ -8,7 +8,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Controls;
 
-public class ColorTile : TemplatedControl
+public sealed class ColorTile : TemplatedControl
 {
     public static readonly StyledProperty<string> ColorNameProperty =
         AvaloniaProperty.Register<ColorTile, string>(nameof(ColorName));

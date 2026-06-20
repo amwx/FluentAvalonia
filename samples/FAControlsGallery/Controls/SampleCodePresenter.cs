@@ -23,7 +23,7 @@ public enum SampleCodePresenterType
     Text
 }
 
-public class SampleCodePresenter : HeaderedContentControl
+public sealed partial class SampleCodePresenter : HeaderedContentControl
 {
     public static readonly StyledProperty<string> CodeProperty =
         AvaloniaProperty.Register<SampleCodePresenter, string>(nameof(Code));
@@ -187,7 +187,7 @@ public class SampleCodePresenter : HeaderedContentControl
         // Also trim out spaces at the end of each line
         sampleString = string.Join('\n', sampleString.Split('\n').Select(s => s.TrimEnd()));
 
-        sampleString = SubstitutionPattern.Replace(sampleString, match =>
+        sampleString = SubstitutionPattern().Replace(sampleString, match =>
         {
             foreach (var substitution in Substitutions)
             {
@@ -257,10 +257,13 @@ public class SampleCodePresenter : HeaderedContentControl
         return _darkTheme;
     }
 
+    [GeneratedRegex(@"\$\(([^\)]+)\)")]
+    private static partial Regex SubstitutionPattern();
+
     private Button _copyCodeButton;
     private static Flyout _confirmCopiedFlyout;
 
-    private static readonly Regex SubstitutionPattern = new Regex(@"\$\(([^\)]+)\)");
+    //private static readonly Regex SubstitutionPattern = new Regex(@"\$\(([^\)]+)\)");
     private IList<ControlExampleSubstitution> _substitutions;
     private bool _hasRegisteredSubstitutions;
 

@@ -49,7 +49,19 @@ public class NavigationService
     public void ClearOverlay()
     {
         _overlayHost?.Children.Clear();
+    }
 
+    public async Task<bool> LaunchURI(Uri uri)
+    {
+        var tl = TopLevel.GetTopLevel(_frame);
+        if (tl != null)
+        {
+            var launcher = tl.Launcher;
+
+            return await launcher.LaunchUriAsync(uri);
+        }
+
+        return false;
     }
 
     private FAFrame _frame;

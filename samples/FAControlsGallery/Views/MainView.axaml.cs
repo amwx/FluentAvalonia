@@ -1,10 +1,8 @@
-using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using FAControlsGallery.Pages;
@@ -25,39 +23,14 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
 
-        SearchBox.KeyUp += (s, e) =>
-        {
-            if (e.Key == Key.Enter)
-            {
-                var acb = (s as AutoCompleteBox);
-                if (acb.SelectedItem != null)
-                {
-                    var item = acb.SelectedItem as MainAppSearchItem;
-                    NavigationService.Instance.NavigateFromContext(item.ViewModel,
-                        new FAEntranceNavigationTransitionInfo());
-                }
-                else
-                {
-                    var items = (DataContext as MainViewViewModel).SearchTerms;
-                    foreach (var item in items)
-                    {
-                        if (string.Equals(item.Header, acb.Text, StringComparison.OrdinalIgnoreCase))
-                        {
-                            NavigationService.Instance.NavigateFromContext(item.ViewModel,
-                                new FAEntranceNavigationTransitionInfo());
-                            break;
-                        }
-                    }
-                }
-                e.Handled = true;
-            }
-        };
+        SearchBox.KeyUp += HandleSearchBoxKeyUp;
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
 
+        StorageService.Create(TopLevel.GetTopLevel(this));
         ClipboardService.Owner = TopLevel.GetTopLevel(this);
         // Simple check - all desktop versions of this app will have a window as the TopLevel
         // Mobile and WASM will have something else
@@ -92,62 +65,66 @@ public partial class MainView : UserControl
 
         if (TopLevel.GetTopLevel(this) is FAAppWindow aw)
         {
-            //TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
+            // Prior to v3 when AppWindow took care of all the caption button drawing we reported the width
+            // of the caption buttons via TitleBar.RightInset. Now we use Avalonia's WindowDrawnDecorations
+            // which doesn't report that. However, the default size used in the template I put was
+            // to make the buttons 46 dip, so x3 = 138. We'll use 140 for 2 extra padding
+            TitleBarHost.ColumnDefinitions[3].Width = new GridLength(140, GridUnitType.Pixel);
         }
     }
 
     public void InitializeNavigationPages()
     {
-        string GetControlsList(string name)
-        {
-            using (var stream = AssetLoader.Open(new Uri(name)))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
-        var coreControls = GetControlsList("avares://FAControlsGallery/Assets/CoreControlsGroups.json");
-        var faControls = GetControlsList("avares://FAControlsGallery/Assets/FAControlsGroups.json");
-
-        var mainPages = new MainPageViewModelBase[]
-        {
-            new HomePageViewModel
-            {
-                NavHeader = "Home",
-                IconKey = "HomeIcon"
-            },
-            new CoreControlsPageViewModel(coreControls)
-            {
-                NavHeader = "Core Controls",
-                IconKey = "CoreControlsIcon"
-            },
-            new FAControlsOverviewPageViewModel(faControls)
-            {
-                NavHeader = "FA Controls",
-                IconKey = "FAControlsIcon"
-            },
-            new DesignPageViewModel
-            {
-                NavHeader = "Design",
-                IconKey = "DesignIcon",
-                ShowsInFooter = true
-            },
-            new SettingsPageViewModel
-            {
-                NavHeader = "Settings",
-                IconKey = "SettingsIcon",
-                ShowsInFooter = true
-            }
-        };
-
-        var menuItems = new List<FANavigationViewItemBase>(4);
-        var footerItems = new List<FANavigationViewItemBase>(2);
-
-        bool inDesign = Design.IsDesignMode;
-        
         Dispatcher.UIThread.Post(() =>
         {
+            var mainPages = new MainPageViewModelBase[]
+            {
+                new HomePageViewModel
+                {
+                    NavHeader = "Home",
+                    IconKey = "HomeIcon",
+                    Parent = DataContext as MainViewViewModel
+                },
+                new CoreControlsPageViewModel()
+                {
+                    NavHeader = "Core Controls",
+                    IconKey = "CoreControlsIcon",
+                    Parent = DataContext as MainViewViewModel
+                },
+                new FAControlsOverviewPageViewModel()
+                {
+                    NavHeader = "FA Controls",
+                    IconKey = "FAControlsIcon",
+                    Parent = DataContext as MainViewViewModel
+                },
+                new PlaygroundPageViewModel()
+                {
+                    NavHeader = "Playground",
+                    IconKey = "PlaygroundIcon",
+                    Parent = DataContext as MainViewViewModel
+                },
+                new DesignPageViewModel
+                {
+                    NavHeader = "Design",
+                    IconKey = "DesignIcon",
+                    ShowsInFooter = true,
+                    Parent = DataContext as MainViewViewModel
+                },
+                new SettingsPageViewModel
+                {
+                    NavHeader = "Settings",
+                    IconKey = "SettingsIcon",
+                    ShowsInFooter = true,
+                    Parent = DataContext as MainViewViewModel
+                }
+            };
+
+            var menuItems = new List<FANavigationViewItemBase>(4);
+            var footerItems = new List<FANavigationViewItemBase>(2);
+
+            bool inDesign = Design.IsDesignMode;
+
+            var dc = DataContext as MainViewViewModel;
             for (int i = 0; i < mainPages.Length; i++)
             {
                 var pg = mainPages[i];
@@ -155,7 +132,7 @@ public partial class MainView : UserControl
                 {
                     Content = pg.NavHeader,
                     Tag = pg,
-                    IconSource = (FAIconSource)this.FindResource(pg.IconKey)
+                    IconSource = this.FindResource(pg.IconKey) as FAIconSource
                 };
 
                 //ToolTip.SetTip(nvi, pg.NavHeader);
@@ -172,13 +149,16 @@ public partial class MainView : UserControl
 
                 if (!inDesign)
                 {
-                    (DataContext as MainViewViewModel).BuildSearchTerms(pg);
+                    dc.BuildSearchTerms(pg);
                 }
             }
 
+            dc.MainNavPages = mainPages;
+            dc.BuildSearchTerms2();
+
             NavView.MenuItemsSource = menuItems;
             NavView.FooterMenuItemsSource = footerItems;
-
+            
             if (_isDesktop || OperatingSystem.IsBrowser())
             {
                 NavView.Classes.Add("SampleAppNav");
@@ -208,6 +188,59 @@ public partial class MainView : UserControl
         }
 
         base.OnPointerReleased(e);
+    }
+
+    private void HandleSearchBoxKeyUp(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            var acb = SearchBox;
+            MainAppSearchItem source = null;
+            ViewModelBase viewModel = null;
+            if (acb.SelectedItem != null)
+            {
+                var item = acb.SelectedItem as MainAppSearchItem;
+                viewModel = item.ViewModel;
+                source = item;
+            }
+            else
+            {
+                var items = (DataContext as MainViewViewModel).SearchTerms;
+                foreach (var item in items)
+                {
+                    if (string.Equals(item.Header, acb.Text, StringComparison.OrdinalIgnoreCase))
+                    {
+                        source = item;
+                        viewModel = item.ViewModel;
+                        break;
+                    }
+                }
+            }
+
+            if (viewModel != null)
+            {
+                if (viewModel is DesignPageViewModel dpvm)
+                {
+                    if (source.Header == DesignPageViewModel.TypographyKey)
+                    {
+                        dpvm.CurrentIndex = 0;
+                    }
+                    else if (source.Header == DesignPageViewModel.IconsKey)
+                    {
+                        dpvm.CurrentIndex = 1;
+                    }
+                    else if (source.Header == DesignPageViewModel.ColorsKey)
+                    {
+                        dpvm.CurrentIndex = 2;
+                    }
+                }
+
+                NavigationService.Instance.NavigateFromContext(viewModel,
+                    new FAEntranceNavigationTransitionInfo());
+            }
+
+            e.Handled = true;
+        }
     }
 
     private void OnNavigationViewBackRequested(object sender, FANavigationViewBackRequestedEventArgs e)
@@ -325,6 +358,11 @@ public partial class MainView : UserControl
         else if (t is DesignPageViewModel)
         {
             item.IconSource = this.TryFindResource(selected ? "DesignIconFilled" : "DesignIcon", out var value) ?
+                (FAIconSource)value : null;
+        }
+        else if (t is PlaygroundPageViewModel)
+        {
+            item.IconSource = this.TryFindResource(selected ? "PlaygroundIconFilled" : "PlaygroundIcon", out var value) ?
                 (FAIconSource)value : null;
         }
         else if (t is SettingsPageViewModel)

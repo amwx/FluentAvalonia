@@ -5,10 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
 using Avalonia.Styling;
-using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FAControlsGallery.Controls;
 using FAControlsGallery.Services;
@@ -60,6 +58,13 @@ public class ControlsPageBase : UserControl
 
     public static readonly StyledProperty<bool> ShowToggleThemeButtonProperty =
         AvaloniaProperty.Register<ControlsPageBase, bool>(nameof(ShowToggleThemeButton),
+            defaultValue: true);
+
+    public static readonly StyledProperty<bool> IsFavoritedProperty =
+        AvaloniaProperty.Register<ControlsPageBase, bool>(nameof(IsFavorited));
+
+    public static readonly StyledProperty<bool> AllowFavoritesProperty =
+        AvaloniaProperty.Register<ControlsPageBase, bool>(nameof(AllowFavorites),
             defaultValue: true);
 
     public string ControlName
@@ -131,6 +136,18 @@ public class ControlsPageBase : UserControl
         }
     }
 
+    public bool IsFavorited
+    {
+        get => GetValue(IsFavoritedProperty);
+        set => SetValue(IsFavoritedProperty, value);
+    }
+
+    public bool AllowFavorites
+    {
+        get => GetValue(AllowFavoritesProperty);
+        set => SetValue(AllowFavoritesProperty, value);
+    }
+
     public PageBaseViewModel CreationContext { get; set; }
 
     public bool ShowToggleThemeButton
@@ -195,6 +212,20 @@ public class ControlsPageBase : UserControl
         _sep2.IsVisible = _showDefItem.IsVisible;
     }
 
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsFavoritedProperty)
+        {
+            if (_ignoreFavChange || Design.IsDesignMode)
+                return;
+
+            var value = change.GetNewValue<bool>();
+            RecentFavoriteService.Instance.SetFavorite(ControlName, value);
+        }
+    }
+
     private void MoreOptionsItemClick(object sender, RoutedEventArgs e)
     {
         if (sender is FAMenuFlyoutItem mfi)
@@ -224,11 +255,25 @@ public class ControlsPageBase : UserControl
         }
     }
 
-    protected override void OnLoaded(RoutedEventArgs e)
+    protected override async void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
         _hasLoaded = true;
         SetDetailsAnimation();
+
+        if (!Design.IsDesignMode)
+        {
+            RecentFavoriteService.Instance.AddRecentItem(ControlName);
+
+            var favorites = await RecentFavoriteService.Instance.GetFavoriteItems();
+            var name = ControlName;
+            if (name != null && favorites != null)
+            {
+                _ignoreFavChange = true;
+                IsFavorited = favorites.Contains(name, StringComparer.OrdinalIgnoreCase);
+                _ignoreFavChange = false;
+            }
+        }
     }
 
     protected override void OnUnloaded(RoutedEventArgs e)
@@ -363,6 +408,9 @@ public class ControlsPageBase : UserControl
     private void FrameNavigatedTo(object sender, FANavigationEventArgs e)
     {
         var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
+        if (svc == null)
+            return;
+
         var animation = svc.GetAnimation("ForwardAnimation");
 
         if (animation != null)
@@ -384,6 +432,7 @@ public class ControlsPageBase : UserControl
     private bool _isSmallWidth2;
     private CancellationTokenSource _cts;
     private bool _hasLoaded;
+    private bool _ignoreFavChange;
 
     private Button _toggleThemeButton;
     private Panel _detailsPanel;

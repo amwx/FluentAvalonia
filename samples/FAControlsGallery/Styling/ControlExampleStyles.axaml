@@ -29,17 +29,14 @@
         </Border>
     </Design.PreviewWith>
 
+    <StreamGeometry x:Key="CodeGeometry1">M 13,13 C 12.577726,13 12.156163,13.160231 11.833984,13.482422 L 2.4824219,22.833984 2.3242188,23.017578 C 1.8449479,23.663499 1.896627,24.580156 2.4824219,25.166016 L 11.833984,34.517578 12.017578,34.675781 C 12.663521,35.155161 13.580222,35.103438 14.166016,34.517578 14.810375,33.873198 14.810375,32.827755 14.166016,32.183594 L 5.984375,24 14.166016,15.816406 14.326172,15.630859 C 14.805443,14.984917 14.751811,14.068194 14.166016,13.482422 13.843837,13.160231 13.422274,13 13,13 Z M 34.884766,13.003906 C 34.501635,13.030534 34.126804,13.189524 33.833984,13.482422 33.189603,14.12678 33.189603,15.172026 33.833984,15.816406 L 42.015625,24 33.833984,32.183594 33.673828,32.369141 C 33.194448,33.015062 33.248123,33.931938 33.833984,34.517578 34.478364,35.161958 35.521636,35.161958 36.166016,34.517578 L 45.517578,25.166016 45.675781,24.982422 C 46.155162,24.336502 46.103439,23.419624 45.517578,22.833984 L 36.166016,13.482422 35.982422,13.324219 C 35.659461,13.084572 35.267896,12.977278 34.884766,13.003906 Z</StreamGeometry>
+    <StreamGeometry x:Key="CodeGeometry2">M 15.344371,39.275058 29.644335,7.3750199 C 30.017235,6.5434859 30.993375,6.1715759 31.824975,6.5443219 32.587276,6.8860259 32.963256,7.7348519 32.733576,8.5144448 L 32.655696,8.7249188 18.355645,40.624979 C 17.982899,41.45658 17.006604,41.82838 16.17507,41.4557 15.412813,41.114039 15.036789,40.265059 15.266535,39.485599 L 15.344371,39.275058 29.644335,7.3750199 Z</StreamGeometry>
     
     <ControlTheme x:Key="{x:Type local:SampleCodePresenter}"
                   TargetType="local:SampleCodePresenter">
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="Auto,*">
-                    <ContentPresenter Name="HeaderPresenter"
-                                      Content="{TemplateBinding Header}"
-                                      FontWeight="SemiBold"
-                                      VerticalAlignment="Top"/>
-
                     <Button Name="CopyCodeButton"
                             Padding="4"
                             HorizontalAlignment="Right"
@@ -48,16 +45,11 @@
                         <ui:FASymbolIcon Symbol="ClipboardCode" FontSize="20" />
                     </Button>
                     
-                    <!--<ui:TeachingTip Name="ConfirmCopyTeachingTip"
-                                    IsLightDismissEnabled="True"
-                                    Subtitle="Copied!"
-                                    Target="{Binding #CopyCodeButton}"
-                                    IsVisible="False" />-->
-
                     <!-- AvaloniaEdit text box here -->
                     <aedit:TextEditor Name="TextHost"
                                       IsReadOnly="True"
-                                      Grid.Row="1"/>
+                                      Grid.Row="1"
+                                      MaxHeight="500"/>
                 </Grid>
             </ControlTemplate>
         </Setter>
@@ -174,14 +166,13 @@
 
                     <!-- Code Preview -->
                     <Expander CornerRadius="0 0 8 8"
+                              Padding="4"
                               Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
                               Name="SourcePreviewArea"
                               IsVisible="False">
 
                         <Expander.Header>
                             <Panel>
-                                <!--<ui:IconSourceElement IconSource="{StaticResource SourceCodeIcon}"
-                                                      Width="20" Height="20"/>-->
                                 <Viewbox Width="20" Height="20" 
                                          Stretch="Uniform"
                                          HorizontalAlignment="Left">
@@ -189,9 +180,9 @@
                                         <DrawingImage>
                                             <DrawingGroup>
                                                 <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                                                                 Geometry="M 13,13 C 12.577726,13 12.156163,13.160231 11.833984,13.482422 L 2.4824219,22.833984 2.3242188,23.017578 C 1.8449479,23.663499 1.896627,24.580156 2.4824219,25.166016 L 11.833984,34.517578 12.017578,34.675781 C 12.663521,35.155161 13.580222,35.103438 14.166016,34.517578 14.810375,33.873198 14.810375,32.827755 14.166016,32.183594 L 5.984375,24 14.166016,15.816406 14.326172,15.630859 C 14.805443,14.984917 14.751811,14.068194 14.166016,13.482422 13.843837,13.160231 13.422274,13 13,13 Z M 34.884766,13.003906 C 34.501635,13.030534 34.126804,13.189524 33.833984,13.482422 33.189603,14.12678 33.189603,15.172026 33.833984,15.816406 L 42.015625,24 33.833984,32.183594 33.673828,32.369141 C 33.194448,33.015062 33.248123,33.931938 33.833984,34.517578 34.478364,35.161958 35.521636,35.161958 36.166016,34.517578 L 45.517578,25.166016 45.675781,24.982422 C 46.155162,24.336502 46.103439,23.419624 45.517578,22.833984 L 36.166016,13.482422 35.982422,13.324219 C 35.659461,13.084572 35.267896,12.977278 34.884766,13.003906 Z" />
+                                                                 Geometry="{StaticResource CodeGeometry1}" />
                                                 <GeometryDrawing Brush="{DynamicResource AccentFillColorDefaultBrush}"
-                                                                 Geometry="M 15.344371,39.275058 29.644335,7.3750199 C 30.017235,6.5434859 30.993375,6.1715759 31.824975,6.5443219 32.587276,6.8860259 32.963256,7.7348519 32.733576,8.5144448 L 32.655696,8.7249188 18.355645,40.624979 C 17.982899,41.45658 17.006604,41.82838 16.17507,41.4557 15.412813,41.114039 15.036789,40.265059 15.266535,39.485599 L 15.344371,39.275058 29.644335,7.3750199 Z" />
+                                                                 Geometry="{StaticResource CodeGeometry2}" />
                                             </DrawingGroup>
                                         </DrawingImage>
                                     </ui:FAImageIcon>
@@ -202,39 +193,29 @@
                         </Expander.Header>
 
                         <StackPanel>
-
-                            <!-- Xaml source first -->
-                           <local:SampleCodePresenter Header="XAML"
-                                                      Code="{TemplateBinding XamlSource}"
-                                                      Substitutions="{TemplateBinding Substitutions}"
-                                                      SampleType="XAML"
-                                                      Name="XamlPresenter"
-                                                      IsVisible="False"/>
-                            
-                            <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
-                                       Height="1"
-                                       IsVisible="{Binding #XamlPresenter.IsVisible}"
-                                       Margin="0 0 0 8" />
-
-                             <local:SampleCodePresenter Header="C#"
-                                                        Code="{TemplateBinding CSharpSource}"
-                                                        Substitutions="{TemplateBinding Substitutions}"
-                                                        SampleType="CSharp"
-                                                        Name="CSharpPresenter"
-                                                        IsVisible="False"/>
-
-                            <Rectangle Fill="{DynamicResource DividerStrokeColorDefaultBrush}"
-                                       Height="1" 
-                                       IsVisible="{Binding #CSharpPresenter.IsVisible}"
-                                       Margin="0 0 0 8" />
- 
-                            <local:SampleCodePresenter Header="Additional Notes"
-                                                       Code="{TemplateBinding UsageNotes}"
-                                                       Substitutions="{TemplateBinding Substitutions}"
-                                                       SampleType="Text"
-                                                       Name="NotesPresenter"
-                                                       IsVisible="False"/>
-                            
+                            <TabControl Name="CodePreviewOptions">
+                                <TabItem Header="XAML" FontSize="14" Name="XamlOption"
+                                         IsVisible="False">
+                                    <local:SampleCodePresenter Code="{TemplateBinding XamlSource}"
+                                                               Substitutions="{TemplateBinding Substitutions}"
+                                                               SampleType="XAML"
+                                                               Name="XamlPresenter"/>
+                                </TabItem>
+                                <TabItem Header="C#" FontSize="14" Name="CSharpOption"
+                                         IsVisible="False">
+                                    <local:SampleCodePresenter Code="{TemplateBinding CSharpSource}"
+                                                               Substitutions="{TemplateBinding Substitutions}"
+                                                               SampleType="CSharp"
+                                                               Name="CSharpPresenter"/>
+                                </TabItem>
+                                <TabItem Header="Notes" FontSize="14" Name="NotesOption"
+                                         IsVisible="False">
+                                    <local:SampleCodePresenter Code="{TemplateBinding UsageNotes}"
+                                                               Substitutions="{TemplateBinding Substitutions}"
+                                                               SampleType="Text"
+                                                               Name="NotesPresenter"/>
+                                </TabItem>
+                            </TabControl>
                         </StackPanel>                        
                     </Expander>                    
                 </StackPanel>
@@ -254,13 +235,13 @@
                 <Setter Property="BorderThickness" Value="1 1 1 0" />
             </Style>
 
-            <Style Selector="^:xamlsource /template/ local|SampleCodePresenter#XamlPresenter">
+            <Style Selector="^:xamlsource /template/ TabItem#XamlOption">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
-            <Style Selector="^:csharpsource /template/ local|SampleCodePresenter#CSharpPresenter">
+            <Style Selector="^:csharpsource /template/ TabItem#CSharpOption">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
-            <Style Selector="^:usagenotes /template/ local|SampleCodePresenter#NotesPresenter">
+            <Style Selector="^:usagenotes /template/ TabItem#NotesOption">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
         </Style>

@@ -10,56 +10,15 @@
              x:Class="FAControlsGallery.Pages.TabViewPage"
              x:DataType="vm:TabViewPageViewModel">
     <StackPanel Spacing="8">
-        <ctrls:ControlExample Name="FirstExample"
-                              Header="A Basic FATabView with Support for Adding, Closing, and Rearranging Tabs">
-
-            <ui:FATabView AddTabButtonClick="TabView_AddButtonClick"
-                        TabCloseRequested="TabView_TabCloseRequested"
-                          CanReorderTabs="False" CanDragTabs="False">
-                <ui:FATabViewItem Header="Document 0"
-                                IconSource="Document">
-                    <spg:NVSamplePage2 />
-                </ui:FATabViewItem>
-                <ui:FATabViewItem Header="Document 1"
-                               IconSource="Document">
-                    <spg:NVSamplePage3 />
-                </ui:FATabViewItem>
-                <ui:FATabViewItem Header="Document 2"
-                               IconSource="Document">
-                    <spg:NVSamplePage6 />
-                </ui:FATabViewItem>
-            </ui:FATabView>
-
-            <ctrls:ControlExample.XamlSource>
-                <x:String xml:space="preserve">
-&lt;ui:FATabView AddTabButtonClick="TabView_AddButtonClick" TabCloseRequested="TabView_TabCloseRequested" AttachedToVisualTree="TabView_Loaded" /&gt;
-                </x:String>
-            </ctrls:ControlExample.XamlSource>
-
-            <ctrls:ControlExample.CSharpSource>
-                <x:String xml:spacing="preserve">
-private void TabView_AddButtonClick(FATabView sender, EventArgs args)
-{
-    (sender.TabItems as IList).Add(CreateNewTab(sender.TabItems.Count()));
-}
-
-private void TabView_TabCloseRequested(FATabView sender, FATabViewTabCloseRequestedEventArgs args)
-{
-    (sender.TabItems as IList).Remove(args.Tab);
-}
-                </x:String>
-            </ctrls:ControlExample.CSharpSource>
-            
-        </ctrls:ControlExample>
-
-        <ctrls:ControlExample Header="An FATabView Bound to a Collection of Items"
+        <ctrls:ControlExample Header="Simple FATabView Example"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/TabView1.xaml.txt"
                               CSharpSource="avares://FAControlsGallery/Pages/SampleCode/TabView1.cs.txt">
 
             <ui:FATabView AddTabButtonCommand="{Binding AddDocumentCommand}"
                           AddTabButtonCommandParameter="Normal"
                           TabCloseRequested="BindingTabView_TabCloseRequested"
-                          TabItemsSource="{Binding Documents}">
+                          TabItemsSource="{Binding Documents}"
+                          CanReorderTabs="True" CanDragTabs="False">
                 <ui:FATabView.TabItemTemplate>
                     <DataTemplate DataType="vm:DocumentItem">
                         <ui:FATabViewItem Header="{Binding Header}"
@@ -122,26 +81,75 @@ private void TabView_TabCloseRequested(FATabView sender, FATabViewTabCloseReques
             </StackPanel>
         </ctrls:ControlExample>
 
-        <ctrls:ControlExample Header="FATabView API in Action"
+        <ctrls:ControlExample Header="Vertical Tabs"
                               XamlSource="avares://FAControlsGallery/Pages/SampleCode/TabView3.xaml.txt">
+            <Grid RowDefinitions="Auto,*">
+                <ui:FAInfoBar Title="The Vertical Pane has built-in support for resizing the pane. Try it below!"
+                              IsOpen="True" IsClosable="False" 
+                              Grid.Row="0"
+                              Margin="0 8"/>
+                <ui:FATabView CanReorderTabs="False" CanDragTabs="False"
+                              TabStripLocation="Left"
+                              Grid.Row="1"
+                              IsVerticalPaneOpen="{Binding #VerticalPaneCheck.IsChecked}"
+                              MinimumVerticalOpenPaneLength="{Binding #MinPaneLength.Value}"
+                              MaximumVerticalOpenPaneLength="{Binding #MaxPaneLength.Value}"
+                              VerticalPaneDisplayMode="{Binding #DisplayModeBox.SelectedItem}"
+                              IsAddTabButtonVisible="{Binding #AddTabVisibleCheck.IsChecked}"
+                              Background="{DynamicResource LayerFillColorDefaultBrush}">
+                    <ui:FATabViewItem Header="Tab Item 1" IconSource="Document" Content="Tab Content 1" />
+                    <ui:FATabViewItem Header="Tab Item 2" IconSource="Document" Content="Tab Content 2" />
+                    <ui:FATabViewItem Header="Tab Item 3" IconSource="Document" Content="Tab Content 3" />
+                </ui:FATabView>
+            </Grid>
+
+            <ctrls:ControlExample.Options>
+                <StackPanel Spacing="8">
+                    <CheckBox Content="IsVerticalPaneOpen"
+                              IsChecked="True"
+                              Name="VerticalPaneCheck" />
+                    <CheckBox Content="IsAddTabButtonVisible"
+                              IsChecked="False"
+                              Name="AddTabVisibleCheck" />
+                    <ui:FANumberBox Name="MinPaneLength"
+                                    Minimum="50" Maximum="1000"
+                                    Value="100" Header="MinimumVerticalOpenPaneLength" />
+                    <ui:FANumberBox Name="MaxPaneLength"
+                                    Minimum="200" Maximum="1000"
+                                    Value="100" Header="MaximumVerticalOpenPaneLength" />
+                    <ui:FAComboBox Name="DisplayModeBox"
+                                   ItemsSource="{Binding DisplayModes}"
+                                   SelectedIndex="0"
+                                   Header="VerticalPaneDisplayMode" />
+                </StackPanel>
+            </ctrls:ControlExample.Options>
+
+            <ctrls:ControlExample.Substitutions>
+                <ctrls:ControlExampleSubstitution Key="IsPaneOpen" Value="{Binding #VerticalPaneCheck.IsChecked}" />
+                <ctrls:ControlExampleSubstitution Key="MinPaneLength" Value="{Binding #MinPaneLength.Value}" />
+                <ctrls:ControlExampleSubstitution Key="MaxPaneLength" Value="{Binding #MaxPaneLength.Value}" />
+                <ctrls:ControlExampleSubstitution Key="DisplayMode" Value="{Binding #DisplayModeBox.SelectedItem}" />
+            </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+        
+        <ctrls:ControlExample Header="FATabView API in Action"
+                              XamlSource="avares://FAControlsGallery/Pages/SampleCode/TabView4.xaml.txt">
 
             <ui:FATabView AddTabButtonClick="TabView_AddButtonClick"
                           TabCloseRequested="TabView_TabCloseRequested"
                           Name="APIInActionTabView"
-                          TabWidthMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=TabModeBox}"
-                          CloseButtonOverlayMode="{Binding ((ComboBoxItem)SelectedItem).Content, ElementName=CloseButtonBox}">
-                <ui:FATabViewItem Header="Document 0"
-                                IconSource="Document">
-                    <spg:NVSamplePage2 />
-                </ui:FATabViewItem>
-                <ui:FATabViewItem Header="Document 1"
-                               IconSource="Document">
-                    <spg:NVSamplePage3 />
-                </ui:FATabViewItem>
-                <ui:FATabViewItem Header="Document 2"
-                               IconSource="Document">
-                    <spg:NVSamplePage6 />
-                </ui:FATabViewItem>
+                          TabItemsSource="{Binding APIInActionItems}"
+                          TabWidthMode="{Binding #TabModeBox.SelectedItem}"
+                          CloseButtonOverlayMode="{Binding #CloseButtonBox.SelectedItem}"
+                          TabStripLocation="{Binding #LocationBox.SelectedItem}"
+                          Height="400">
+                <ui:FATabView.TabItemTemplate>
+                    <DataTemplate DataType="vm:TestItem">
+                        <ui:FATabViewItem Header="{Binding Header}"
+                                          Content="{Binding Content}"
+                                          IconSource="{Binding IconSource}" />
+                    </DataTemplate>
+                </ui:FATabView.TabItemTemplate>                
             </ui:FATabView>
 
             <ctrls:ControlExample.Options>
@@ -155,21 +163,27 @@ private void TabView_TabCloseRequested(FATabView sender, FATabViewTabCloseReques
                         </StackPanel>
                     </Expander>
                     
-                    <TextBlock Text="TabWidthMode" />
-                    <ComboBox MinWidth="125" Name="TabModeBox" SelectedIndex="0">
-                        <ComboBoxItem Content="{x:Static ui:FATabViewWidthMode.Equal}" />
-                        <ComboBoxItem Content="{x:Static ui:FATabViewWidthMode.SizeToContent}" />
-                        <ComboBoxItem Content="{x:Static ui:FATabViewWidthMode.Compact}" />
-                    </ComboBox>
+                    <ui:FAComboBox Header="TabWidthMode" 
+                                   MinWidth="125" 
+                                   Name="TabModeBox" 
+                                   ItemsSource="{Binding WidthModes}"
+                                   SelectedIndex="0">
+                    </ui:FAComboBox>
 
-                    <TextBlock Text="CloseButtonOverlayMode" />
-                    <ComboBox MinWidth="125" Name="CloseButtonBox" SelectedIndex="0">
-                        <ComboBoxItem Content="{x:Static ui:FATabViewCloseButtonOverlayMode.Always}" />
-                        <ComboBoxItem Content="{x:Static ui:FATabViewCloseButtonOverlayMode.OnPointerOver}" />
-                    </ComboBox>
+                    <ui:FAComboBox Header="CloseButtonOverlayMode" 
+                                   MinWidth="125" 
+                                   Name="CloseButtonBox"
+                                   ItemsSource="{Binding CloseModes}"
+                                   SelectedIndex="0">
+                    </ui:FAComboBox>
                     
                     <CheckBox Content="CanReorderTabs"
                               IsChecked="{Binding #APIInActionTabView.CanReorderTabs}" />
+                    
+                    <ui:FAComboBox Header="TabStrip Location"
+                                   ItemsSource="{Binding TabStripLocations}"
+                                   SelectedIndex="0"
+                                   Name="LocationBox" />
                 </StackPanel>
             </ctrls:ControlExample.Options>
 
@@ -179,15 +193,33 @@ private void TabView_TabCloseRequested(FATabView sender, FATabViewTabCloseReques
                 <ctrls:ControlExampleSubstitution Key="TabHeader" Value="{Binding #APIInActionTabView.TabStripHeader}" />
                 <ctrls:ControlExampleSubstitution Key="TabFooter" Value="{Binding #APIInActionTabView.TabStripFooter}" />
                 <ctrls:ControlExampleSubstitution Key="CanReorder" Value="{Binding #APIInActionTabView.CanReorderTabs}" />
+                <ctrls:ControlExampleSubstitution Key="TabStripLocation" Value="{Binding #APIInActionTabView.TabStripLocation}" />
             </ctrls:ControlExample.Substitutions>
         </ctrls:ControlExample>
-
-        <!-- TODO v3: Reenable this-->
+        
         <ctrls:ControlExample Header="TabView Windowing Sample"
-                              IsEnabled="False"
-                              UsageNotes="See the TabViewWindowingSample source code for how this is implemented.">
-            <Button Content="Click to launch"
-                    Click="LaunchWindowingSample"/>
+                              IsEnabled="False">
+            <DockPanel>
+                <ui:FAInfoBar Title="NOTE: This sample is currently disabled until further notice."
+                              Severity="Warning"
+                              IsOpen="True" IsClosable="False"
+                              DockPanel.Dock="Top"
+                              Margin="12"/>
+                <ui:FAInfoBar Title="See the FATabView WindowingSample source code for how this is implemented"
+                              IsOpen="True" IsClosable="False"
+                              DockPanel.Dock="Top"
+                              Margin="12"/>
+
+                <Button Click="LaunchWindowingSample">
+                    <Button.Content>
+                        <OnFormFactor Desktop="Click to launch!" Default="Windowing sample is only available on desktop platforms" />
+                    </Button.Content>
+
+                    <Button.IsEnabled>
+                        <OnFormFactor Desktop="True" Default="False" />
+                    </Button.IsEnabled>
+                </Button>
+            </DockPanel>
         </ctrls:ControlExample>
     </StackPanel>
 </UserControl>

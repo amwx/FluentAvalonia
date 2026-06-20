@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1450"
              x:Class="FAControlsGallery.Pages.MenuControlsPage">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="Menu / MenuItem"
@@ -57,6 +57,51 @@
                 </DropDownButton.Flyout>
             </DropDownButton>
 
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="CommandBar"
+                              TargetType="CommandBar"
+                              EnableShowDefinitionLink="True"
+                              EnableShowDocsLink="True">
+            <CommandBar DefaultLabelPosition="Right">
+                <CommandBar.PrimaryCommands>
+                    <CommandBarButton Label="Button">
+                        <CommandBarButton.Icon>
+                            <ui:FASymbolIcon Symbol="Accept" />
+                        </CommandBarButton.Icon>
+                    </CommandBarButton>
+                    <CommandBarToggleButton Label="Toggle Button">
+                        <CommandBarToggleButton.Icon>
+                            <ui:FASymbolIcon Symbol="Ruler" />
+                        </CommandBarToggleButton.Icon>
+                    </CommandBarToggleButton>
+                    <CommandBarSeparator />
+                    <CommandBarButton Label="Test">
+                        <CommandBarButton.Icon>
+                            <ui:FASymbolIcon Symbol="Games" />
+                        </CommandBarButton.Icon>
+                    </CommandBarButton>
+                </CommandBar.PrimaryCommands>
+
+                <CommandBar.SecondaryCommands>
+                    <CommandBarButton Label="Secondary Button">
+                        <CommandBarButton.Icon>
+                            <ui:FASymbolIcon Symbol="Accept" />
+                        </CommandBarButton.Icon>
+                    </CommandBarButton>
+                    <CommandBarToggleButton Label="Secondary Toggle Button">
+                        <CommandBarToggleButton.Icon>
+                            <ui:FASymbolIcon Symbol="Ruler" />
+                        </CommandBarToggleButton.Icon>
+                    </CommandBarToggleButton>
+                    <CommandBarSeparator />
+                    <CommandBarButton Label="Secondary Test">
+                        <CommandBarButton.Icon>
+                            <ui:FASymbolIcon Symbol="Games" />
+                        </CommandBarButton.Icon>
+                    </CommandBarButton>
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
         </ctrls:ControlExample>
     </StackPanel>
 </UserControl>
