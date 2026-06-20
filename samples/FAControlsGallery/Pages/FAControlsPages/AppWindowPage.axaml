@@ -89,7 +89,7 @@ public class MainWindow : FAAppWindow
             &lt;Border Grid.Column="2" Padding="6">
                 &lt;AutoCompleteBox Name="SearchBox"
                              MaxWidth="500"
-                             Watermark="Search"
+                             PlaceholderText="Search"
                              Classes="SampleApp"
                              ValueMemberBinding="{Binding Header, DataType=vm:MainAppSearchItem}"
                              ItemsSource="{Binding SearchTerms}"

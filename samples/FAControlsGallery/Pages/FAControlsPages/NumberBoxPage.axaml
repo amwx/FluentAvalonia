@@ -19,7 +19,7 @@
                 </x:String>
             </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>
-
+        
         <ctrls:ControlExample Header="A NumberBox with spin buttons">
             <ui:FANumberBox Name="NumBox2"
                           MinWidth="150"
@@ -48,6 +48,19 @@
                 <ctrls:ControlExampleSubstitution Key="SpinPlacement" Value="{Binding #NumBox2.SpinButtonPlacementMode}" />
                 <ctrls:ControlExampleSubstitution Key="Value" Value="{Binding #NumBox2.Value}" />
             </ctrls:ControlExample.Substitutions>
+        </ctrls:ControlExample>
+
+        <ctrls:ControlExample Header="A NumberBox with compact style">
+            <StackPanel Spacing="18">
+                <TextBlock Text="Use this compact style on desktop platforms to enlarge the horizontal area of the text box" />
+                <ui:FANumberBox Theme="{StaticResource CompactNumberBoxStyle}" Width="150" />
+            </StackPanel>
+
+            <ctrls:ControlExample.XamlSource>
+                <x:String xml:space="preserve">
+&lt;ui:FANumberBox Theme="{StaticResource CompactNumberBoxStyle}" /&gt;                    
+                </x:String>
+            </ctrls:ControlExample.XamlSource>
         </ctrls:ControlExample>
 
         <ctrls:ControlExample Header="A Formatted NumberBox using SimpleNumberFormat">
