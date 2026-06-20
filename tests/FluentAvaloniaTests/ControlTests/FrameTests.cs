@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
@@ -14,10 +14,48 @@ public class FrameTests
     [AvaloniaFact]
     public void NavigateWorks()
     {
-        var Context = GetTestContext();
+        using var Context = GetTestContext();
         Context.Frame.Navigate(typeof(TestPage1));
 
         Assert.IsType<TestPage1>(Context.Frame.Content);
+        Assert.Equal(typeof(TestPage1), Context.Frame.SourcePageType);
+    }
+
+    [AvaloniaFact]
+    public void SettingSourcePageTypeNavigates()
+    {
+        var Context = GetTestContext();
+
+        Context.Frame.SourcePageType = typeof(TestPage1);
+
+        Assert.IsType<TestPage1>(Context.Frame.Content);
+        Assert.Equal(typeof(TestPage1), Context.Frame.SourcePageType);
+    }
+
+    [AvaloniaFact]
+    public void ClearingContentClearsCurrentEntry()
+    {
+        var Context = GetTestContext();
+
+        Context.Frame.Navigate(typeof(TestPage1));
+
+        Assert.NotNull(Context.Frame.CurrentEntry);
+
+        Context.Frame.Content = null;
+
+        Assert.Null(Context.Frame.CurrentEntry);
+    }
+
+    [AvaloniaFact]
+    public void SettingSourcePageTypeToNullThrows()
+    {
+        var Context = GetTestContext();
+
+        Context.Frame.SourcePageType = typeof(TestPage1);
+
+        var ex = Assert.Throws<InvalidOperationException>(() => Context.Frame.SourcePageType = null);
+
+        Assert.Equal("SourcePageType cannot be null. Use Content instead.", ex.Message);
     }
 
     [AvaloniaFact]
