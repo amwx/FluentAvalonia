@@ -512,14 +512,6 @@ public partial class FAFrame : ContentControl
                         ForwardStack.Clear();
                         if (prevEntry != null)
                         {
-                            if (BackStack.Count == CacheSize)
-                            {
-                                if (BackStack.Count > 0)
-                                {
-                                    BackStack.RemoveAt(0);
-                                }
-                            }
-
                             BackStack.Add(prevEntry);
                         }
                         break;
