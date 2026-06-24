@@ -465,7 +465,15 @@ public partial class FAFrame : ContentControl
             if (!wasPageSet)
             {
                 // Check if we already have an instance of the page in the cache
-                entry.Instance = CheckCacheAndGetPage(entry.SourcePageType);
+                // Context will not be null if NavigateCore is called from GoBack/GoForward and the entry was created from NavigateFromObject
+                if (entry.Context != null)
+                {
+                    entry.Instance = CheckCacheAndGetPage(null, entry.Context);
+                }
+                else
+                {
+                    entry.Instance = CheckCacheAndGetPage(entry.SourcePageType, null);
+                }
             }
 
             if (entry.Instance == null)
