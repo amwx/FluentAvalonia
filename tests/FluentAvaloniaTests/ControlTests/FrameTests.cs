@@ -175,30 +175,35 @@ public class FrameTests
     }
 
     [AvaloniaFact]
-    public void PagesAreCachedWhenNavigatingIfUsingNavigationStack()
+    public void PagesAreDiscardedFromCacheWhenExceedingCacheSize()
     {
         var Context = GetTestContext();
 
         Assert.True(Context.Frame.IsNavigationStackEnabled);
 
+        Context.Frame.CacheSize = 2;
+
         Context.Frame.Navigate(typeof(TestPage1));
+        var page1 = Context.Frame.Content;
+
         Context.Frame.Navigate(typeof(TestPage2));
+        var page2 = Context.Frame.Content;
+
+        // Cause the cache to discard page 1
         Context.Frame.Navigate(typeof(TestPage3));
 
-        Assert.Equal(2, Context.Frame.BackStackDepth);
-
-        Assert.IsType<TestPage2>(Context.Frame.BackStack[1].Instance);
-        Assert.IsType<TestPage1>(Context.Frame.BackStack[0].Instance);
-
-        var prevPage = Context.Frame.BackStack[1].Instance;
-
+        // Test page are cached
         Context.Frame.GoBack();
+        Assert.Same(page2, Context.Frame.Content);
 
-        Assert.Equal(prevPage, Context.Frame.Content);
+        // Test cache size is respected
+        Context.Frame.GoBack();
+        Assert.NotSame(page1, Context.Frame.Content);
+        Assert.IsType<TestPage1>(Context.Frame.Content);
     }
 
     [AvaloniaFact]
-    public void DisablingNavigationStackPreventsPageCaching()
+    public void DisablingNavigationStackPreventsPageNavigation()
     {
         var Context = GetTestContext();
 
