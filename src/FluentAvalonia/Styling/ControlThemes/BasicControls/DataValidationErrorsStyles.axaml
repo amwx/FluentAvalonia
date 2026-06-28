@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="using:System"
+                    xmlns:collections="clr-namespace:System.Collections;assembly=System.Runtime"
                     x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Padding="20">
@@ -98,7 +99,7 @@
                         </Style>
                     </Panel.Styles>
                     <ToolTip.Tip>
-                        <ItemsControl ItemsSource="{ReflectionBinding}" />
+                        <ItemsControl ItemsSource="{Binding}" x:DataType="collections:IEnumerable" />
                     </ToolTip.Tip>
                     <Path Width="14"
                           Height="14"

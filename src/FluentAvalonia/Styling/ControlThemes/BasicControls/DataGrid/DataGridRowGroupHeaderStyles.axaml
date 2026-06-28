@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:collections="using:Avalonia.Collections"
                     xmlns:ui="using:FluentAvalonia.UI.Controls">
 
     <ControlTheme TargetType="ToggleButton" x:Key="DataGridRowGroupHeaderButtonStyle">
@@ -31,7 +32,7 @@
         <Setter Property="FontSize" Value="15" />
         <Setter Property="MinHeight" Value="32" />
         <Setter Property="Template">
-            <ControlTemplate>
+            <ControlTemplate x:DataType="collections:DataGridCollectionViewGroup">
                 <DataGridFrozenGrid Name="PART_Root"
                                     Background="{TemplateBinding Background}"
                                     MinHeight="{TemplateBinding MinHeight}"
@@ -62,7 +63,7 @@
                                    IsVisible="{TemplateBinding IsPropertyNameVisible}"
                                    Foreground="{TemplateBinding Foreground}" />
                         <TextBlock Margin="4,0,0,0"
-                                   Text="{ReflectionBinding Key}"
+                                   Text="{Binding Key}"
                                    Foreground="{TemplateBinding Foreground}" />
                         <TextBlock Name="PART_ItemCountElement"
                                    Margin="4,0,0,0"
