@@ -10,116 +10,102 @@ namespace FluentAvalonia.Interop;
 
 internal static unsafe partial class Win32Interop
 {
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL GetWindowRect(HWND hWnd, RECT* lpRect);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL GetWindowRect(HWND hWnd, RECT* lpRect);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL GetClientRect(HWND hWnd, RECT* lpRect);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL GetClientRect(HWND hWnd, RECT* lpRect);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL AdjustWindowRectEx(RECT* lpRect, uint dwStyle, BOOL bMenu, uint dwExStyle);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL AdjustWindowRectExForDpi(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi);
 
-    [DllImport(s_user32, SetLastError = true)]
-    private static extern int GetSystemMetrics(int smIndex);
+    // Re-introduced SystemMetrics P/Invokes used by fallbacks
+    [LibraryImport(s_user32, SetLastError = true)]
+    private static partial int GetSystemMetrics(int smIndex);
 
-    [DllImport(s_user32, SetLastError = true)]
-    private static extern int GetSystemMetricsForDpi(int nIndex, uint dpi);
+    [LibraryImport(s_user32, SetLastError = true)]
+    private static partial int GetSystemMetricsForDpi(int nIndex, uint dpi);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
-
-    [DllImport(s_user32, SetLastError = true)]
-    private static extern BOOL AdjustWindowRectExForDpi(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
     
-    [DllImport(s_user32, SetLastError = true)]
-    private static extern bool AdjustWindowRectEx(RECT* lpRect, int dwStyle, bool bMenu, int dwExStyle);
+    // Non-DPI AdjustWindowRectEx used by fallback
+    [LibraryImport(s_user32, SetLastError = true)]
+    private static partial BOOL AdjustWindowRectEx(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle);
     
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern LRESULT DefWindowProcW(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial LRESULT DefWindowProcW(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern LRESULT CallWindowProcW(nint lpPrevWndProc, HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial LRESULT CallWindowProcW(nint lpPrevWndProc, HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL PostMessage(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL PostMessage(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial HMENU GetSystemMenu(HWND hWnd, BOOL bRevert);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern HMENU GetSystemMenu(HWND hWnd, BOOL bRevert);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL SetMenuItemInfo(HMENU hMenu, uint item, BOOL fByPosition, MENUITEMINFO* lpmii);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL SetMenuItemInfo(HMENU hMenu, uint item, bool fByPosition, MENUITEMINFO* lpmii);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL SetMenuDefaultItem(HMENU hMenu, uint uItem, uint fByPos);
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL SetMenuDefaultItem(HMENU hMenu, uint uItem, uint fByPos);
-
-    [DllImport(s_user32, SetLastError = true)]
-    public static extern BOOL TrackPopupMenu(HMENU hMenu, uint uFlags,
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static partial BOOL TrackPopupMenu(HMENU hMenu, uint uFlags,
         int x, int y, int nReserved, HWND hWnd, RECT* prcRect);
 
-    [DllImport(s_user32)]
-    public static extern int GetWindowLongW(HWND hWnd, int nIndex);
+    [LibraryImport(s_user32)]
+    public static partial int GetWindowLongW(HWND hWnd, int nIndex);
 
-    [DllImport(s_user32)]
-    public static extern int SetWindowLongW(HWND hWnd, int nIndex, int dwNewLong);
+    [LibraryImport(s_user32)]
+    public static partial int SetWindowLongW(HWND hWnd, int nIndex, int dwNewLong);
 
-    // Below is adapted from TerraFX.Interop.Windows, MIT License
-    public static delegate*<HWND, int, nint> GetWindowLongPtr => &GetWindowLongPtrW;
+    // Top-level native entry points for pointer-sized window long APIs (no local/libraryimport inside methods)
+    [LibraryImport(s_user32, EntryPoint = "GetWindowLongPtrW")]
+    private static partial nint GetWindowLongPtrW_native(HWND hWnd, int nIndex);
 
-    public static int GetSystemMetricsWithFallback(int nIndex, uint dpi)
-    {
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 14393)) // 1607
-            return GetSystemMetricsForDpi(nIndex, dpi);
-        return GetSystemMetrics(nIndex);
-    }
+    [LibraryImport(s_user32, EntryPoint = "SetWindowLongPtrW")]
+    private static partial nint SetWindowLongPtrW_native(HWND hWnd, int nIndex, nint dwNewLong);
     
-    public static void AdjustWindowRectExWithFallback(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi)
-    {
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 14393)) // 1607
-        {
-            AdjustWindowRectExForDpi(lpRect, dwStyle, bMenu, dwExStyle, dpi);
-            return;
-        }
-        AdjustWindowRectEx(lpRect, dwStyle, bMenu, dwExStyle);
-    }
+    // Public wrappers that choose the correct function depending on process bitness
+    public static nint GetWindowLongPtr(HWND hWnd, int nIndex) => GetWindowLongPtrW(hWnd, nIndex);
     
     public static nint GetWindowLongPtrW(HWND hWnd, int nIndex)
     {
         if (sizeof(nint) == 4)
         {
+            // 32-bit process -> use GetWindowLong
             return GetWindowLongW(hWnd, nIndex);
         }
         else
         {
-            [DllImport(s_user32, EntryPoint = "GetWindowLongPtrW")]
-            static extern nint _GetWindowLongPtrW(HWND hWnd, int nIndex);
-
-            return _GetWindowLongPtrW(hWnd, nIndex);
+            // 64-bit process -> call native GetWindowLongPtrW
+            return GetWindowLongPtrW_native(hWnd, nIndex);
         }
     }
 
-    public static delegate*<HWND, int, nint, nint> SetWindowLongPtr => &SetWindowLongPtrW;
+    public static nint SetWindowLongPtr(HWND hWnd, int nIndex, nint dwNewLong) => SetWindowLongPtrW(hWnd, nIndex, dwNewLong);
 
     public static nint SetWindowLongPtrW(HWND hWnd, int nIndex, nint dwNewLong)
     {
         if (sizeof(nint) == 4)
         {
+            // 32-bit process -> use SetWindowLong
             return SetWindowLongW(hWnd, nIndex, (int)dwNewLong);
         }
         else
         {
-            [DllImport(s_user32, EntryPoint = "SetWindowLongPtrW")]
-            static extern nint _SetWindowLongPtr(HWND hWnd, int nIndex, nint dwNewLong);
-
-            return _SetWindowLongPtr(hWnd, nIndex, dwNewLong);
+            // 64-bit process -> call native SetWindowLongPtrW
+            return SetWindowLongPtrW_native(hWnd, nIndex, dwNewLong);
         }
     }
 
-    [DllImport(s_dwmapi, SetLastError = true)]
-    public static extern HRESULT DwmExtendFrameIntoClientArea(HWND hWnd, MARGINS* margins);
+    [LibraryImport(s_dwmapi, SetLastError = true)]
+    public static partial HRESULT DwmExtendFrameIntoClientArea(HWND hWnd, MARGINS* margins);
 
-    [DllImport(s_ole32, ExactSpelling = true)]
-    public static extern HRESULT CoCreateInstance(Guid* rclsid, void* pUnkOuter,
+    [LibraryImport(s_ole32)]
+    public static partial HRESULT CoCreateInstance(Guid* rclsid, void* pUnkOuter,
         int dwClsContext, Guid* riid, void** ppv);
 
     internal unsafe static T CreateInstance<T>(Guid clsid, Guid iid) where T : IUnknown
@@ -134,28 +120,41 @@ internal static unsafe partial class Win32Interop
         return MicroComRuntime.QueryInterface<T>(unk);
     }
 
+    [LibraryImport(s_dwmapi, SetLastError = true)]
+    public static partial int DwmSetWindowAttribute(nint hWnd, DWMWINDOWATTRIBUTE attr, void* value, int attrSize);
 
-    [DllImport(s_dwmapi, SetLastError = true)]
-    public static extern int DwmSetWindowAttribute(nint hWnd, DWMWINDOWATTRIBUTE attr, void* value, int attrSize);
+    [LibraryImport(s_user32, SetLastError = true)]
+    public static unsafe partial int SetWindowCompositionAttribute(IntPtr hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
 
-    
+    [LibraryImport(s_uxtheme, EntryPoint = "#104", SetLastError = true)]
+    public static partial void fnRefreshImmersiveColorPolicyState();
 
-    [DllImport(s_user32, SetLastError = true)]
-    public static unsafe extern int SetWindowCompositionAttribute(IntPtr hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
+    [LibraryImport(s_uxtheme, EntryPoint = "#135", SetLastError = true)]
+    public static partial PreferredAppMode fnSetPreferredAppMode(IntPtr hwnd, PreferredAppMode appMode);
 
-    [DllImport(s_uxtheme, EntryPoint = "#104", SetLastError = true)]
-    public static extern void fnRefreshImmersiveColorPolicyState();
-
-    [DllImport(s_uxtheme, EntryPoint = "#135", SetLastError = true)]
-    public static extern PreferredAppMode fnSetPreferredAppMode(IntPtr hwnd, PreferredAppMode appMode);
-
-    [DllImport(s_uxtheme, EntryPoint = "#135")]
-    public static extern bool fnAllowDarkModeForApp(IntPtr hwnd, bool allow);
-
+    [LibraryImport(s_uxtheme, EntryPoint = "#135")]
+    public static partial BOOL fnAllowDarkModeForApp(IntPtr hwnd, BOOL allow);
 
     [SecurityCritical]
-    [DllImport(s_ntdll, SetLastError = true, CharSet = CharSet.Unicode)]
-    internal static unsafe extern int RtlGetVersion(OSVERSIONINFOEX* versionInfo);
+    [LibraryImport(s_ntdll, SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
+    internal static unsafe partial int RtlGetVersion(OSVERSIONINFOEX* versionInfo);
+
+    public static int GetSystemMetricsWithFallback(int nIndex, uint dpi)
+    {
+        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 14393)) // 1607
+            return GetSystemMetricsForDpi(nIndex, dpi);
+        return GetSystemMetrics(nIndex);
+    }
+
+    public static void AdjustWindowRectExWithFallback(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi)
+    {
+        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 14393)) // 1607
+        {
+            AdjustWindowRectExForDpi(lpRect, dwStyle, bMenu, dwExStyle, dpi);
+            return;
+        }
+        AdjustWindowRectEx(lpRect, dwStyle, bMenu, dwExStyle);
+    }
 
     public static bool ApplyTheme(IntPtr hwnd, bool useDark)
     {
