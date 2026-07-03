@@ -64,6 +64,7 @@ internal static partial class WinRTInterop
     }
 
     private static bool _initialized;
+
     private static void EnsureRoInitialized()
     {
         if (_initialized)

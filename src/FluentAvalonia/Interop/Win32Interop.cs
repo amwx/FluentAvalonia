@@ -28,16 +28,17 @@ internal static unsafe partial class Win32Interop
 
     [LibraryImport(s_user32, SetLastError = true)]
     public static partial BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
-    
+
     // Non-DPI AdjustWindowRectEx used by fallback
     [LibraryImport(s_user32, SetLastError = true)]
     private static partial BOOL AdjustWindowRectEx(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle);
-    
+
     [LibraryImport(s_user32, SetLastError = true)]
     public static partial LRESULT DefWindowProcW(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
     [LibraryImport(s_user32, SetLastError = true)]
-    public static partial LRESULT CallWindowProcW(nint lpPrevWndProc, HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
+    public static partial LRESULT
+        CallWindowProcW(nint lpPrevWndProc, HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
     [LibraryImport(s_user32, SetLastError = true)]
     public static partial BOOL PostMessage(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
@@ -67,10 +68,10 @@ internal static unsafe partial class Win32Interop
 
     [LibraryImport(s_user32, EntryPoint = "SetWindowLongPtrW")]
     private static partial nint SetWindowLongPtrW_native(HWND hWnd, int nIndex, nint dwNewLong);
-    
+
     // Public wrappers that choose the correct function depending on process bitness
     public static nint GetWindowLongPtr(HWND hWnd, int nIndex) => GetWindowLongPtrW(hWnd, nIndex);
-    
+
     public static nint GetWindowLongPtrW(HWND hWnd, int nIndex)
     {
         if (sizeof(nint) == 4)
@@ -85,7 +86,8 @@ internal static unsafe partial class Win32Interop
         }
     }
 
-    public static nint SetWindowLongPtr(HWND hWnd, int nIndex, nint dwNewLong) => SetWindowLongPtrW(hWnd, nIndex, dwNewLong);
+    public static nint SetWindowLongPtr(HWND hWnd, int nIndex, nint dwNewLong) =>
+        SetWindowLongPtrW(hWnd, nIndex, dwNewLong);
 
     public static nint SetWindowLongPtrW(HWND hWnd, int nIndex, nint dwNewLong)
     {
@@ -116,6 +118,7 @@ internal static unsafe partial class Win32Interop
         {
             throw new COMException("CreateInstance", hresult);
         }
+
         using var unk = MicroComRuntime.CreateProxyFor<IUnknown>(pUnk, true);
         return MicroComRuntime.QueryInterface<T>(unk);
     }
@@ -141,27 +144,28 @@ internal static unsafe partial class Win32Interop
 
     public static int GetSystemMetricsWithFallback(int nIndex, uint dpi)
     {
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 14393)) // 1607
+        if (OSVersionHelper.IsAtLeastWindows10_1607())
             return GetSystemMetricsForDpi(nIndex, dpi);
         return GetSystemMetrics(nIndex);
     }
 
     public static void AdjustWindowRectExWithFallback(RECT* lpRect, int dwStyle, BOOL bMenu, int dwExStyle, int dpi)
     {
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 14393)) // 1607
+        if (OSVersionHelper.IsAtLeastWindows10_1607())
         {
             AdjustWindowRectExForDpi(lpRect, dwStyle, bMenu, dwExStyle, dpi);
             return;
         }
+
         AdjustWindowRectEx(lpRect, dwStyle, bMenu, dwExStyle);
     }
 
     public static bool ApplyTheme(IntPtr hwnd, bool useDark)
     {
-        if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763)) // 1809
+        if (!OSVersionHelper.IsAtLeastWindows10_1809())
             return false;
 
-        if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 18362)) //1903
+        if (!OSVersionHelper.IsAtLeastWindows10_1903())
         {
             var res = fnAllowDarkModeForApp(hwnd, useDark);
             if (res == false)
@@ -191,10 +195,11 @@ internal static unsafe partial class Win32Interop
 
                 success = SetWindowCompositionAttribute(hwnd, &data);
             }
+
             if (success == 0)
                 return false;
         }
-        
+
         // Try to get the window to redraw to reflect the changes
         SetWindowPos((HWND)hwnd, HWND.NULL, 0, 0, 0, 0,
             SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
