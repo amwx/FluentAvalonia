@@ -397,6 +397,8 @@ public partial class FAFrame : ContentControl
 
             if (addCurrentEntryToBackStack)
             {
+                // Set Instance to null to allow GC to collect it
+                CurrentEntry.Instance = null;
                 BackStack.Add(CurrentEntry);
                 CurrentEntry = null;
             }
@@ -458,13 +460,20 @@ public partial class FAFrame : ContentControl
             }
 
             // Navigate to new page
-            var prevEntry = CurrentEntry;
             bool wasPageSet = entry.Instance != null;
 
-            if (mode == FANavigationMode.New && !wasPageSet)
+            if (!wasPageSet)
             {
                 // Check if we already have an instance of the page in the cache
-                entry.Instance = CheckCacheAndGetPage(entry.SourcePageType);
+                // Context will not be null if NavigateCore is called from GoBack/GoForward and the entry was created from NavigateFromObject
+                if (entry.Context != null)
+                {
+                    entry.Instance = CheckCacheAndGetPage(null, entry.Context);
+                }
+                else
+                {
+                    entry.Instance = CheckCacheAndGetPage(entry.SourcePageType, null);
+                }
             }
 
             if (entry.Instance == null)
@@ -488,7 +497,7 @@ public partial class FAFrame : ContentControl
             CurrentEntry = entry;
 
             var navEA = new FluentAvalonia.UI.Navigation.FANavigationEventArgs(
-                CurrentEntry.Instance,
+                entry.Instance,
                 mode, entry.NavigationTransitionInfo,
                 entry.Parameter,
                 entry.SourcePageType);
@@ -498,6 +507,10 @@ public partial class FAFrame : ContentControl
             {
                 navEA.RoutedEvent = NavigatedFromEvent;
                 oldEntry.Instance.RaiseEvent(navEA);
+
+                // Set Instance to null to allow GC to collect it
+                // The page will still be retained in the cache if caching is enabled
+                oldEntry.Instance = null;
             }
 
             SetContentAndAnimate(entry);
@@ -510,28 +523,20 @@ public partial class FAFrame : ContentControl
                 {
                     case FANavigationMode.New:
                         ForwardStack.Clear();
-                        if (prevEntry != null)
+                        if (oldEntry != null)
                         {
-                            if (BackStack.Count == CacheSize)
-                            {
-                                if (BackStack.Count > 0)
-                                {
-                                    BackStack.RemoveAt(0);
-                                }
-                            }
-
-                            BackStack.Add(prevEntry);
+                            BackStack.Add(oldEntry);
                         }
                         break;
 
                     case FANavigationMode.Back:
-                        ForwardStack.Add(prevEntry);
-                        BackStack.Remove(CurrentEntry);
+                        ForwardStack.Add(oldEntry);
+                        BackStack.Remove(entry);
                         break;
 
                     case FANavigationMode.Forward:
-                        BackStack.Add(prevEntry);
-                        ForwardStack.Remove(CurrentEntry);
+                        BackStack.Add(oldEntry);
+                        ForwardStack.Remove(entry);
                         break;
 
                     case FANavigationMode.Refresh:
