@@ -136,7 +136,7 @@ public sealed class FAProgressRingAnimatedVisual : Control
             _max = (float)maximum;
             _value = (float)value;
             _active = isActive;
-            
+
             if (background is ISolidColorBrush scb)
             {
                 _background = scb.Color.ToSKColor();
@@ -155,6 +155,8 @@ public sealed class FAProgressRingAnimatedVisual : Control
                 StrokeCap = SKStrokeCap.Round
             };
 
+            _layerPaint = new SKPaint();
+
             _path = new SKPath();
         }
 
@@ -168,6 +170,17 @@ public sealed class FAProgressRingAnimatedVisual : Control
 
             var dc = lease.SkCanvas;
 
+            // Ensure opacity is clamped between 0.0 and 1.0
+            double opacity = Math.Clamp(lease.CurrentOpacity, 0d, 1d);
+            bool needsOpacityLayer = opacity < 1d;
+
+            if (needsOpacityLayer)
+            {
+                _layerPaint.Color = SKColors.White.WithAlpha((byte)(255 * opacity));
+                // Save the current canvas state and create a new layer
+                dc.SaveLayer(_layerPaint);
+            }
+
             if (_background.HasValue)
             {
                 _paint.Color = _background.Value;
@@ -176,6 +189,12 @@ public sealed class FAProgressRingAnimatedVisual : Control
             
             _paint.Color = _foreground;
             dc.DrawPath(_path, _paint);
+
+            if (needsOpacityLayer)
+            {
+                // Restore the canvas to apply the layer with the specified opacity
+                dc.Restore();
+            }
         }
 
         public override void OnAnimationFrameUpdate()
@@ -367,6 +386,7 @@ public sealed class FAProgressRingAnimatedVisual : Control
         private float _duration = 2;
         private readonly SKPaint _paint;
         private readonly SKPath _path;
+        private readonly SKPaint _layerPaint;
         private readonly SKRect _visualBounds = new SKRect(10, 10, 70, 70);
 
         private SKColor? _background;
