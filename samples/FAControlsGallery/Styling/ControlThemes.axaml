@@ -5,8 +5,7 @@
                     xmlns:sty="using:FluentAvalonia.Styling">
 
     <Design.PreviewWith>
-        <!---->
-        <ThemeVariantScope RequestedThemeVariant="Light">
+        <ThemeVariantScope RequestedThemeVariant="Dark">
             <StackPanel Spacing="10" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
                     Margin="50" Width="500">
                 <local:PageHeaderControl Classes="smaller" />
@@ -29,7 +28,7 @@
             </LinearGradientBrush>
 
             <ImageBrush x:Key="PageHeaderBackgroundBrush"
-               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground_Dark.png"
+               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground26.jpg"
                AlignmentY="Center"
                Stretch="UniformToFill">
                 <!--<RenderOptions.BitmapInterpolationMode>
@@ -53,7 +52,7 @@
             </LinearGradientBrush>
 
             <ImageBrush x:Key="PageHeaderBackgroundBrush"
-               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground.png"
+               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground26.jpg"
                AlignmentY="Center"
                Stretch="UniformToFill">
                 <!--<RenderOptions.BitmapInterpolationMode>
@@ -72,7 +71,7 @@
             </LinearGradientBrush>
 
             <ImageBrush x:Key="PageHeaderBackgroundBrush"
-               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground.png"
+               Source="avares://FAControlsGallery/Assets/Images/FAHeaderBackground26.jpg"
                AlignmentY="Center"
                Stretch="UniformToFill">
                 <!--<RenderOptions.BitmapInterpolationMode>
@@ -97,47 +96,29 @@
                             OpacityMask="{DynamicResource HeaderOpacityMaskBrush}" />
                     
                     <Panel>
-                        <Image Name="TitleTextImageHost"
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Left"
-                               MaxWidth="400"
-                               Margin="30 50 0 0"
-                               MinWidth="150"
-                               IsVisible="True"
-                               RenderOptions.BitmapInterpolationMode="HighQuality">
-                            <Image.Transitions>
-                                <Transitions>
-                                    <ThicknessTransition Duration="00:00:00.25"
-                                                         Property="Margin"
-                                                         Easing="0,0 0,1" />
-                                </Transitions>
-                            </Image.Transitions>
-                        </Image>
+                        <Viewbox MaxWidth="300"
+                                 Margin="30"
+                                 MinWidth="150"
+                                 VerticalAlignment="Top"
+                                 HorizontalAlignment="Left">
+                            <StackPanel>
+                                <TextBlock Text="{TemplateBinding Header}"
+                                           Foreground="Black"
+                                           Theme="{StaticResource TitleLargeTextBlockStyle}" />
+                                <TextBlock Text="{TemplateBinding SubTitle}"
+                                           Foreground="Black"
+                                           FontSize="18"
+                                           Name="SubTitleText"
+                                           IsVisible="False" />
+                            </StackPanel>
+                        </Viewbox>                        
                     </Panel>
                 </Panel>
             </ControlTemplate>
         </Setter>
 
-        <Setter Property="Transitions">
-            <Transitions>
-                <DoubleTransition Property="Height"
-                                  Duration="00:00:00.25"
-                                  Easing="0,0 0,1" />
-            </Transitions>
-        </Setter>
-
-        <Style Selector="^.smaller">
-            <Setter Property="Height" Value="200" />
-            <Style Selector="^ /template/ Image#TitleTextImageHost">
-                <Setter Property="Margin" Value="30 25 0 0" />
-            </Style>
-        </Style>
-        <Style Selector="^:small">
-            <Setter Property="Height" Value="150" />
-
-            <Style Selector="^ /template/ Image#TitleTextImageHost">
-                <Setter Property="Margin" Value="30 25 0 25" />
-            </Style>
+        <Style Selector="^:subtitle /template/ TextBlock#SubTitleText">
+            <Setter Property="IsVisible" Value="True" />
         </Style>
     </ControlTheme>
 

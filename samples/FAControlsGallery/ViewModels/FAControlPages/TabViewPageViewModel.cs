@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using Avalonia.Controls;
+using FAControlsGallery.Pages.NVSamplePages;
 using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.ViewModels;
@@ -21,6 +23,18 @@ public class TabViewPageViewModel : ViewModelBase
 
         AddDocumentCommand = new FACommand(AddDocumentExecute);
         KeyBindingCommand = new FACommand(KeyBindingInvoked);
+
+        DisplayModes = Enum.GetValues<SplitViewDisplayMode>();
+        WidthModes = Enum.GetValues<FATabViewWidthMode>();
+        CloseModes = Enum.GetValues<FATabViewCloseButtonOverlayMode>();
+        TabStripLocations = Enum.GetValues<FATabViewTabStripLocation>();
+
+        APIInActionItems = new ObservableCollection<TestItem>
+        {
+            new TestItem { Header = "Document 0", Content = new NVSamplePage1(), IconSource = new FASymbolIconSource { Symbol = FASymbol.Document } },
+            new TestItem { Header = "Document 1", Content = new NVSamplePage2(), IconSource = new FASymbolIconSource { Symbol = FASymbol.Document } },
+            new TestItem { Header = "Document 2", Content = new NVSamplePage3(), IconSource = new FASymbolIconSource { Symbol = FASymbol.Document } }
+        };
     }
 
     public ObservableCollection<DocumentItem> Documents { get; }
@@ -33,11 +47,21 @@ public class TabViewPageViewModel : ViewModelBase
         set => RaiseAndSetIfChanged(ref _keybindingSelectedDocument, value);
     }
 
+    public ObservableCollection<TestItem> APIInActionItems { get; }
+
     public FACommand AddDocumentCommand { get; }
 
     public FACommand KeyBindingCommand { get; }
 
     public string KeyBindingText { get; set; }
+
+    public SplitViewDisplayMode[] DisplayModes { get; }
+
+    public FATabViewWidthMode[] WidthModes { get; }
+
+    public FATabViewCloseButtonOverlayMode[] CloseModes { get; }
+
+    public FATabViewTabStripLocation[] TabStripLocations { get; }
 
     private void AddDocumentExecute(object obj)
     {
@@ -78,7 +102,7 @@ public class TabViewPageViewModel : ViewModelBase
         }
     }
 
-    private DocumentItem AddDocument(int index)
+    private static DocumentItem AddDocument(int index)
     {
         var tab = new DocumentItem
         {
@@ -109,11 +133,20 @@ public class TabViewPageViewModel : ViewModelBase
     private DocumentItem _keybindingSelectedDocument;
 }
 
-public class DocumentItem
+public sealed class DocumentItem
 {
     public string Header { get; set; }
 
     public FAIconSource IconSource { get; set; }
 
     public string Content { get; set; }
+}
+
+public sealed class TestItem
+{
+    public string Header { get; set; }
+
+    public FAIconSource IconSource { get; set; }
+
+    public object Content { get; set; }
 }

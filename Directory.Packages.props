@@ -8,11 +8,14 @@
   <ItemGroup>
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="12.0.0" />
     <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="LiveMarkdown" Version="1.1.2" />
+    <PackageVersion Include="Markdown.Avalonia" Version="12.0.0-a3" />
     <PackageVersion Include="MicroCom.CodeGenerator.MSBuild" Version="0.11.5" />
     <PackageVersion Include="MicroCom.Runtime" Version="0.11.5" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />

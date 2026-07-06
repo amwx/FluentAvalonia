@@ -1,0 +1,36 @@
+﻿<!-- Minimal Example -->
+<ScrollViewer>
+    <ui:FAItemsRepeater Name="Repeater1"
+                        ItemsSource="{Binding BarItems}">
+        <ui:FAItemsRepeater.Layout>
+            <ui:FAStackLayout Orientation="Vertical" Spacing="$(Spacing)"/>
+        </ui:FAItemsRepeater.Layout>
+
+        <ui:FAItemsRepeater.ItemTemplate>
+            <DataTemplate DataType="vm:Bar">
+                <!-- Define your data template here -->
+            </DataTemplate>
+        </ui:FAItemsRepeater.ItemTemplate>
+    </ui:FAItemsRepeater>
+</ScrollViewer>
+
+<!-- This Example uses a Style class to auto switch between horizontal and vertical -->
+<ScrollViewer Height="400"
+              Width="400"
+              HorizontalScrollBarVisibility="Auto">
+    <ScrollViewer.Styles>
+        <Style Selector="ui|FAItemsRepeater">
+            <Setter Property="Layout" Value="{StaticResource VerticalStackLayout}" />
+            <Setter Property="ItemTemplate" Value="{StaticResource HorizontalBarTemplate}" />
+        </Style>
+        <Style Selector="ui|FAItemsRepeater.horizontal">
+            <Setter Property="Layout" Value="{StaticResource HorizontalStackLayout}" />
+            <Setter Property="ItemTemplate" Value="{StaticResource VerticalBarTemplate}" />
+        </Style>
+    </ScrollViewer.Styles>
+
+    <!-- HStackBtn is the RadioButton in the options panel -->
+    <ui:FAItemsRepeater Name="Repeater1"
+                        ItemsSource="{Binding BarItems}"
+                        Classes.horizontal="{Binding #HStackBtn.IsChecked}" />
+</ScrollViewer>

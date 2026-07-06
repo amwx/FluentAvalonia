@@ -21,7 +21,8 @@
                 TabDroppedOutside="TabDroppedOutside"
                 TabStripDragOver="TabStripDragOver"
                 TabDragStarting="TabDragStarting"
-                TabStripDrop="TabStripDrop">
+                TabStripDrop="TabStripDrop"
+                  WindowDecorationProperties.ElementRole="User">
         <ui:FATabView.TabStripFooter>
             <!-- 
             Use this so we can set the margin in the tabstrip so it

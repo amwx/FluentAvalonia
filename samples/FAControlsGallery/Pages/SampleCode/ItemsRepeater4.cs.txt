@@ -1,0 +1,36 @@
+﻿public sealed class StringOrIntTemplateSelector : AvaloniaObject, IDataTemplate
+{
+    public static readonly StyledProperty<IDataTemplate> StringTemplateProperty =
+        AvaloniaProperty.Register<MyDataTemplateSelector, IDataTemplate>(nameof(StringTemplate));
+
+    public static readonly StyledProperty<IDataTemplate> IntTemplateProperty =
+        AvaloniaProperty.Register<MyDataTemplateSelector, IDataTemplate>(nameof(IntTemplate));
+
+    public IDataTemplate StringTemplate
+    {
+        get => GetValue(StringTemplateProperty);
+        set => SetValue(StringTemplateProperty, value);
+    }
+
+    public IDataTemplate IntTemplate
+    {
+        get => GetValue(IntTemplateProperty);
+        set => SetValue(IntTemplateProperty, value);
+    }
+
+    public Control Build(object param)
+    {
+        if (param is string)
+        {
+            return StringTemplate.Build(param);
+        }
+        else if (param is int)
+        {
+            return IntTemplate.Build(param);
+        }
+
+        return null;
+    }
+
+    public bool Match(object data) => true;
+}

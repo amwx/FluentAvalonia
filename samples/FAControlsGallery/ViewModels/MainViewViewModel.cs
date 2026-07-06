@@ -7,12 +7,14 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.ViewModels;
 
-public class MainViewViewModel : ViewModelBase
+public sealed class MainViewViewModel : ViewModelBase
 {
     public MainViewViewModel()
     {
         NavigationFactory = new NavigationFactory(this);
     }
+
+    public IList<MainPageViewModelBase> MainNavPages { get; set; }
 
     public NavigationFactory NavigationFactory { get; }
 
@@ -62,12 +64,22 @@ public class MainViewViewModel : ViewModelBase
                     ViewModel = item,
                     Namespace = ctrlNamespace
                 });
-            }            
+            }
         }
     }
+
+    public void BuildSearchTerms2()
+    {
+        var designPage = MainNavPages.FirstOrDefault(x => x is DesignPageViewModel) as DesignPageViewModel;
+
+        SearchTerms.Add(new MainAppSearchItem { Header = DesignPageViewModel.TypographyKey, ViewModel = designPage });
+        SearchTerms.Add(new MainAppSearchItem { Header = DesignPageViewModel.IconsKey, ViewModel = designPage });
+        SearchTerms.Add(new MainAppSearchItem { Header = DesignPageViewModel.ColorsKey, ViewModel = designPage });
+    }
+
 }
 
-public class NavigationFactory : IFANavigationPageFactory
+public sealed class NavigationFactory : IFANavigationPageFactory
 {
     public NavigationFactory(MainViewViewModel owner)
     {
@@ -100,6 +112,13 @@ public class NavigationFactory : IFANavigationPageFactory
         else if (target is FAControlsOverviewPageViewModel)
         {
             return new FAControlsOverviewPage
+            {
+                DataContext = target
+            };
+        }
+        else if (target is PlaygroundPageViewModel)
+        {
+            return new PlaygroundPage
             {
                 DataContext = target
             };
@@ -207,11 +226,12 @@ public class NavigationFactory : IFANavigationPageFactory
         { "SettingsExpander", () => new SettingsExpanderPage() },
         { "RangeSlider", () => new RangeSliderPage() },
         { "ProgressRing", () => new ProgressRingPage() },
-        { "BreadcrumbBar", () => new BreadcrumbBarPage() }
+        { "BreadcrumbBar", () => new BreadcrumbBarPage() },
+        { "ItemsRepeater", () => new ItemsRepeaterPage() },
     };
 }
 
-public class MainAppSearchItem
+public sealed class MainAppSearchItem
 {
     public MainAppSearchItem() { }
 
@@ -223,7 +243,7 @@ public class MainAppSearchItem
 
     public string Header { get; set; }
 
-    public PageBaseViewModel ViewModel { get; set; }
+    public ViewModelBase ViewModel { get; set; }
 
     public string Namespace { get; set; }
 

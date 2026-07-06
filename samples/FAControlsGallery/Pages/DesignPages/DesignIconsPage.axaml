@@ -79,7 +79,7 @@
                  Grid.Row="3"
                  MinWidth="170"
                  HorizontalAlignment="Right"
-                 Watermark="Search Icons"
+                 PlaceholderText="Search Icons"
                  Margin="12">
             <TextBox.InnerRightContent>
                 <ui:FASymbolIcon Symbol="Find"

@@ -59,7 +59,6 @@ public class FAItemsSourceView
         GetAtCore(index);
 
     /// <summary>
-    /// /// <summary>
     /// Retrieves the index of the item that has the specified unique identifier (key).
     /// </summary>
     public string KeyFromIndex(int index) =>

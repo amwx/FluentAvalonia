@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ctrls="using:FAControlsGallery.Controls"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1400"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="2400"
              x:Class="FAControlsGallery.Pages.ViewControlsPage">
     <StackPanel Spacing="8">
         <ctrls:ControlExample Header="TabControl"
@@ -159,5 +159,11 @@
 
         </ctrls:ControlExample>
 
+        <ctrls:ControlExample Header="PipsPager"
+                              TargetType="PipsPager"
+                              EnableShowDefinitionLink="True"
+                              EnableShowDocsLink="True">
+            <PipsPager NumberOfPages="20" />
+        </ctrls:ControlExample>
     </StackPanel>
 </UserControl>

@@ -1,105 +1,41 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
-using Avalonia.Styling;
 
 namespace FAControlsGallery.Controls;
 
-public enum PageHeaderTextType
-{
-    Main,
-    CoreControls,
-    FAControls,
-}
-
-public class PageHeaderControl : TemplatedControl
+public sealed class PageHeaderControl : TemplatedControl
 {
     public PageHeaderControl()
     {
-        SizeChanged += OnSizeChanged;
-        ActualThemeVariantChanged += OnActualThemeVariantChanged;
+
     }
 
-    public static readonly DirectProperty<PageHeaderControl, PageHeaderTextType> TextTypeProperty =
-        AvaloniaProperty.RegisterDirect<PageHeaderControl, PageHeaderTextType>(nameof(TextType),
-            x => x.TextType, (x, v) => x.TextType = v);
+    public static readonly StyledProperty<string> HeaderProperty =
+        AvaloniaProperty.Register<PageHeaderControl, string>(nameof(Header));
 
-    public PageHeaderTextType TextType
+    public static readonly StyledProperty<string> SubTitleProperty =
+        AvaloniaProperty.Register<PageHeaderControl, string>(nameof(SubTitle));
+      
+    public string Header
     {
-        get => _textType;
-        set => SetAndRaise(TextTypeProperty, ref _textType, value);
+        get => GetValue(HeaderProperty);
+        set => SetValue(HeaderProperty, value);
     }
 
-    public static readonly DirectProperty<PageHeaderControl, Uri> TitleTextImageProperty =
-        AvaloniaProperty.RegisterDirect<PageHeaderControl, Uri>(nameof(TitleTextImage),
-            x => x.TitleTextImage, (x, v) => x.TitleTextImage = v);
-
-    public Uri TitleTextImage
+    public string SubTitle
     {
-        get => _titleTextImage;
-        set => SetAndRaise(TitleTextImageProperty, ref _titleTextImage, value);
+        get => GetValue(SubTitleProperty);
+        set => SetValue(SubTitleProperty, value);
     }
 
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        base.OnApplyTemplate(e);
+        base.OnPropertyChanged(change);
 
-        _text1 = e.NameScope.Get<Image>("TitleTextImageHost");
-        UpdateTitleText();
-    }
-
-    private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        var wid = e.NewSize.Width;
-        if (wid < 630)
+        if (change.Property == SubTitleProperty)
         {
-            var delta = 630 - wid;
-
-            _text1.Width = 400 - delta;
+            PseudoClasses.Set(":subtitle", change.GetNewValue<string>() != null);
         }
-        else
-        {
-            _text1.Width = double.NaN;
-        }
-
-        PseudoClasses.Set(":small", wid < 450);
     }
-
-    private void UpdateTitleText()
-    {
-        if (_text1 == null)
-            return;
-
-        var theme = ActualThemeVariant;
-
-        const string asset = "avares://FAControlsGallery/Assets/Images/";
-
-        var header = TextType switch
-        {
-            PageHeaderTextType.CoreControls => "FAHeader_CoreControls",
-            PageHeaderTextType.FAControls => "FAHeader_NewControls",
-            _ => "FAHeader2"
-        };
-
-        if (theme == ThemeVariant.Light)
-        {
-            header += "_Dark";
-        }
-
-        header += ".png";
-
-        using var s = AssetLoader.Open(new Uri($"{asset}{header}"));
-        _text1.Source = new Bitmap(s);
-    }
-
-    private void OnActualThemeVariantChanged(object sender, EventArgs e)
-    {
-        UpdateTitleText();
-    }
-
-    private Uri _titleTextImage;
-    private Image _text1;
-    private PageHeaderTextType _textType;
 }

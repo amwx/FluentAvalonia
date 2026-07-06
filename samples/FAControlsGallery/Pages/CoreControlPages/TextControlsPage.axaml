@@ -36,8 +36,8 @@
                     <CheckBox Content="Clear Button" Name="ToggleClearButton" />
                     <CheckBox Content="WrapText" IsChecked="{Binding WrapTextBoxText}" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="Watermark" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding Watermark, ElementName=TargetTextBox}"
+                        <TextBlock Text="PlaceholderText" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding PlaceholderText, ElementName=TargetTextBox}"
                                  HorizontalAlignment="Stretch" MinWidth="90" MaxLength="1"/>
                     </StackPanel>
                 </StackPanel>

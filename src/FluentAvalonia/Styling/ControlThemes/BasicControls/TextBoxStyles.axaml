@@ -281,7 +281,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
         </Style>
 
-        <Style Selector="^[UseFloatingWatermark=true]:not(:empty) /template/ TextBlock#PART_FloatingPlaceholder">
+        <Style Selector="^[UseFloatingPlaceholder=true]:not(:empty) /template/ TextBlock#PART_FloatingPlaceholder">
             <Setter Property="IsVisible" Value="True" />
         </Style>
 

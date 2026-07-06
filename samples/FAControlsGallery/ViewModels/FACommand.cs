@@ -19,5 +19,10 @@ public class FACommand : ICommand
         _executeMethod.Invoke(parameter);
     }
 
+    public void Invalidate()
+    {
+        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     private Action<object> _executeMethod;
 }

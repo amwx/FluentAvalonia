@@ -6,7 +6,7 @@ using FluentAvalonia.UI.Controls;
 
 namespace FAControlsGallery.Controls;
 
-public class DesignColorSection : HeaderedContentControl
+public sealed class DesignColorSection : HeaderedContentControl
 {
     public static readonly StyledProperty<string> DescriptionProperty =
         FASettingsExpander.DescriptionProperty.AddOwner<DesignColorSection>();

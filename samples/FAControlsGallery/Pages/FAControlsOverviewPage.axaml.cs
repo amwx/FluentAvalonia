@@ -33,8 +33,7 @@ public partial class FAControlsOverviewPage : UserControl
             if (lbi != null && lbi.DataContext is FAControlsPageItem fci)
             {
                 var item = lbi.GetVisualDescendants()
-                    .Where(x => x is Viewbox && x.Name == "IconHost")
-                    .FirstOrDefault();
+                    .FirstOrDefault(x => x is Viewbox && x.Name == "IconHost");
                 _animationPage = fci;
 
                 NavigationService.Instance.NavigateFromContext(fci);
@@ -44,7 +43,7 @@ public partial class FAControlsOverviewPage : UserControl
 
     private void OnNavigatedTo(object sender, FANavigationEventArgs e)
     {
-        if (_animationPage == null)
+        if (_animationPage == null || OperatingSystem.IsBrowser())
             return;
 
         var svc = FAConnectedAnimationService.GetForView(TopLevel.GetTopLevel(this));
@@ -54,11 +53,9 @@ public partial class FAControlsOverviewPage : UserControl
             return;
 
         var item = this.GetVisualDescendants()
-                    .Where(x => x is ListBoxItem && x.DataContext == _animationPage)
-                    .FirstOrDefault()
+                    .FirstOrDefault(x => x is ListBoxItem && x.DataContext == _animationPage)
                     .GetVisualDescendants()
-                    .Where(x => x is Viewbox && x.Name == "IconHost")
-                    .FirstOrDefault();
+                    .FirstOrDefault(x => x is Viewbox && x.Name == "IconHost");
         var presenter = item;// GetAnimationSource();
 
         // In WinUI, ConnectedAnimation is somehow exempt from all clipping behaviors
@@ -80,7 +77,7 @@ public partial class FAControlsOverviewPage : UserControl
 
     private void OnNavigatingFrom(object sender, FANavigatingCancelEventArgs e)
     {
-        if (_animationPage == null)
+        if (_animationPage == null || OperatingSystem.IsBrowser())
             return;
 
         // We're not navigating to a control page, don't set up the animation & clear

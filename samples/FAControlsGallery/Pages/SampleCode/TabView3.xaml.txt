@@ -1,21 +1,12 @@
-﻿<ui:TabView AddTabButtonClick="TabView_AddButtonClick"
-            TabCloseRequested="TabView_TabCloseRequested"
-            Name="APIInActionTabView"
-            TabWidthMode="$(TabWidthMode)"
-            CloseButtonOverlayMode="$(CloseButtonMode)"
-            TabStripHeader="$(TabHeader)"
-            TabStripFooter="$(TabFooter)"
-            CanReorderTabs="$(CanReorder)">
-    <ui:TabViewItem Header="Document 0"
-                    IconSource="Document">
-        <spg:NVSamplePage2 />
-    </ui:TabViewItem>
-    <ui:TabViewItem Header="Document 1"
-                    IconSource="Document">
-        <spg:NVSamplePage3 />
-    </ui:TabViewItem>
-    <ui:TabViewItem Header="Document 2"
-                    IconSource="Document">
-        <spg:NVSamplePage6 />
-    </ui:TabViewItem>
-</ui:TabView>
+﻿<ui:FATabView CanReorderTabs="False" CanDragTabs="False"
+                TabStripLocation="Left"
+                Grid.Row="1"
+                IsVerticalPaneOpen="$(IsPaneOpen)"
+                MinimumVerticalOpenPaneLength="$(MinPaneLength)"
+                MaximumVerticalOpenPaneLength="$(MaxPaneLength)"
+                VerticalPaneDisplayMode="$(DisplayMode)"
+                Background="{DynamicResource LayerFillColorDefaultBrush}">
+    <ui:FATabViewItem Header="Tab Item 1" IconSource="Document" Content="Tab Content 1" />
+    <ui:FATabViewItem Header="Tab Item 2" IconSource="Document" Content="Tab Content 2" />
+    <ui:FATabViewItem Header="Tab Item 3" IconSource="Document" Content="Tab Content 3" />
+</ui:FATabView>

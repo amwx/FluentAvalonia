@@ -13,7 +13,7 @@
                                  WinUINamespace="Microsoft.UI.Xaml.Controls.Control"
                                  ControlNamespace="FluentAvalonia.UI.Controls.Control">
                 <ctrls:ControlExample Header="A hyperlink button that handles a Click event">
-                    <ui:HyperlinkButton Content="Go to Settings"
+                    <HyperlinkButton Content="Go to Settings"
                                         Name="TargetClickHyperlinkButton"/>
 
                     <ctrls:ControlExample.XamlSource>
@@ -35,6 +35,29 @@
             </pg:ControlsPageBase>
         </Border>
     </Design.PreviewWith>
+
+    <Style Selector="ToggleButton.fav">
+        <Setter Property="Theme" Value="{StaticResource TransparentToggleButton}" />
+        <Setter Property="ToolTip.Tip" Value="Add to Favorites" />
+        <Setter Property="Content">
+            <Template>
+                <ui:FAFontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                               FontSize="20"
+                               Glyph="&#xE734;" />
+            </Template>
+        </Setter>
+
+        <Style Selector="^:checked">
+            <Setter Property="Theme" Value="{StaticResource TransparentToggleButton}" />
+            <Setter Property="Content">
+                <Template>
+                    <ui:FAFontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                   FontSize="20"
+                                   Glyph="&#xE735;" />
+                </Template>
+            </Setter>
+        </Style>
+    </Style>
 
     <Style Selector="pg|ControlsPageBase">
         <Setter Property="Background" Value="Transparent" />
@@ -133,6 +156,12 @@
                                                    Margin="28 4 0 4" />
                                     </Panel>
                                 </Button>
+                                
+                                <ToggleButton Name="FavoritesButton"
+                                              Classes="fav"
+                                              IsChecked="{TemplateBinding IsFavorited, Mode=TwoWay}"
+                                              IsVisible="{TemplateBinding AllowFavorites}"/>
+                                
                                 <DropDownButton Content="&#xE712;"
                                         FontSize="20"
                                         Padding="8"
@@ -283,6 +312,7 @@
                                                        Margin="28 4 0 4" />
                                         </Panel>
                                     </Button>
+
                                     <DropDownButton Content="&#xE712;"
                                             FontSize="20"
                                             Padding="8"

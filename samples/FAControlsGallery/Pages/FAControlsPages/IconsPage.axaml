@@ -293,7 +293,7 @@ In addition, a FontSize property has been added to SymbolIcon / SymbolIconSource
                          HorizontalAlignment="Right"
                          Width="170"
                          Margin="12 6"
-                         Watermark="Search Symbols"
+                         PlaceholderText="Search Symbols"
                          Text="{Binding FilterText}">
                     <TextBox.InnerRightContent>
                         <ui:FASymbolIcon Symbol="Find"

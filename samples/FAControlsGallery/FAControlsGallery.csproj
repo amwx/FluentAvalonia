@@ -15,7 +15,9 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.AvaloniaEdit" />
+    <PackageReference Include="Avalonia.Markup.Xaml.Loader" />
     <PackageReference Include="AvaloniaEdit.TextMate" />
+    <PackageReference Include="Markdown.Avalonia" />
   </ItemGroup>
   <ItemGroup>    
     <ProjectReference Include="..\..\src\FluentAvalonia\FluentAvalonia.csproj" />

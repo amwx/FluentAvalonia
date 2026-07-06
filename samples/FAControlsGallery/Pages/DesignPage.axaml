@@ -3,8 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:FAControlsGallery.ViewModels.DesignPages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FAControlsGallery.Pages.DesignPage">
+             x:Class="FAControlsGallery.Pages.DesignPage"
+             x:DataType="vm:DesignPageViewModel">
 
     <UserControl.Resources>
         <ControlTheme x:Key="TabItemStyle"
@@ -81,7 +83,8 @@
                   Name="TabStrip1"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Top"
-                  ZIndex="100">
+                  ZIndex="100"
+                  SelectedIndex="{Binding CurrentIndex}">
             <TabStrip.ItemsPanel>
                 <OnFormFactor Default="{StaticResource DefaultPanel}">
                     <On Options="Mobile">

@@ -1,8 +1,14 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Rendering.Composition;
 using Avalonia.Rendering.Composition.Animations;
+using Avalonia.VisualTree;
+using FAControlsGallery.Services;
 using FAControlsGallery.ViewModels;
+using FAControlsGallery.ViewModels.DesignPages;
+using FluentAvalonia.UI.Media.Animation;
 
 namespace FAControlsGallery.Pages;
 public partial class HomePage : UserControl
@@ -15,6 +21,19 @@ public partial class HomePage : UserControl
         AddHandler(Button.ClickEvent, OnNavButtonClick);
 
         TileItemsControl.Loaded += ItemsControlLoaded;
+
+        Tapped += HomePageTapped;
+    }
+
+    protected override void OnLoaded(RoutedEventArgs e)
+    {
+        base.OnLoaded(e);
+
+        if (DataContext is HomePageViewModel hp && !Design.IsDesignMode)
+        {
+            hp.RefreshRecentItems();
+            hp.RefreshFavorites();
+        }
     }
 
     private void OnNavButtonClick(object sender, RoutedEventArgs args)
@@ -38,6 +57,32 @@ public partial class HomePage : UserControl
             var item = panel.Children[i];
             var vis = ElementComposition.GetElementVisual(item);
             vis.ImplicitAnimations = _animations;
+        }
+    }
+
+    private void HomePageTapped(object sender, TappedEventArgs e)
+    {
+        if (e.Source is Visual v && v.FindAncestorOfType<ListBoxItem>(true) is ListBoxItem lbi &&
+            lbi.DataContext is RecentItemViewModel ri && ri.Page != null)
+        {
+            if (ri.Page is DesignPageViewModel dpvm)
+            {
+                if (ri.Header.Equals("Typography"))
+                {
+                    dpvm.CurrentIndex = 0;
+                }
+                else if (ri.Header.Equals("Icons"))
+                {
+                    dpvm.CurrentIndex = 1;
+                }
+                else if (ri.Header.Equals("Colors"))
+                {
+                    dpvm.CurrentIndex = 2;
+                }
+            }
+
+            NavigationService.Instance.NavigateFromContext(ri.Page,
+                new FADrillInNavigationTransitionInfo());
         }
     }
 

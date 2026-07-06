@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -16,6 +14,19 @@ public partial class SettingsPage : UserControl
         InitializeComponent();
 
         LaunchRepoLinkItem.Click += LaunchRepoLinkItemClick;
+
+        ClearFavoritesButton.Click += ClearFavoritesButtonClick;
+        ClearRecentsButton.Click += ClearRecentsButtonClick;
+    }
+
+    private void ClearRecentsButtonClick(object sender, RoutedEventArgs e)
+    {
+        RecentFavoriteService.Instance.ClearRecentItems();
+    }
+
+    private void ClearFavoritesButtonClick(object sender, RoutedEventArgs e)
+    {
+        RecentFavoriteService.Instance.ClearFavorites();
     }
 
     protected override void OnLoaded(RoutedEventArgs e)
@@ -35,10 +46,10 @@ public partial class SettingsPage : UserControl
     private async void LaunchRepoLinkItemClick(object sender, RoutedEventArgs e)
     {
         var uri = new Uri("https://github.com/amwx/FluentAvalonia");
+
         try
         {
-            Process.Start(new ProcessStartInfo(uri.ToString())
-            { UseShellExecute = true, Verb = "open" });
+            await TopLevel.GetTopLevel(this)?.Launcher.LaunchUriAsync(uri);            
         }
         catch
         {
