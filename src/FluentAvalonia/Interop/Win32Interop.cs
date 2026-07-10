@@ -40,13 +40,13 @@ internal static unsafe partial class Win32Interop
     public static partial LRESULT
         CallWindowProcW(nint lpPrevWndProc, HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
-    [LibraryImport(s_user32, SetLastError = true)]
+    [LibraryImport(s_user32, EntryPoint = "PostMessageW", SetLastError = true)]
     public static partial BOOL PostMessage(HWND hWnd, uint msg, WPARAM wParam, LPARAM lParam);
 
     [LibraryImport(s_user32, SetLastError = true)]
     public static partial HMENU GetSystemMenu(HWND hWnd, BOOL bRevert);
 
-    [LibraryImport(s_user32, SetLastError = true)]
+    [LibraryImport(s_user32, EntryPoint = "SetMenuItemInfoW", SetLastError = true)]
     public static partial BOOL SetMenuItemInfo(HMENU hMenu, uint item, BOOL fByPosition, MENUITEMINFO* lpmii);
 
     [LibraryImport(s_user32, SetLastError = true)]
