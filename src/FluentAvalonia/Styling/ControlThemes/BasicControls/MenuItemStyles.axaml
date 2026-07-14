@@ -119,6 +119,7 @@
 
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Stretch"
                                               Grid.Column="2"
