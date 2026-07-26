@@ -831,7 +831,7 @@ internal class ViewManager
 #endif
 
             _pinnedPool.Add(new PinnedElementInfo(element, virtInfo));
-            virtInfo.MoveOwnershipToLayoutFromPinnedPool();
+            virtInfo.MoveOwnershipToPinnedPool();
         }
 
         return moveToPinnedPool;
