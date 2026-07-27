@@ -878,9 +878,14 @@ public partial class FATabView : TemplatedControl
                 
                 if (shouldMoveFocusToNewTab)
                 {
-                    var focusable = TopLevel.GetTopLevel(this)?.FocusManager?.FindNextElement(NavigationDirection.Next,
-                        new FindNextElementOptions { SearchRoot = _tabContentPresenter });
-                    
+                    // FindNextElement(Next, ...) cannot be scoped: FindNextElementOptions is only
+                    // honoured for directional navigation, so SearchRoot was ignored here and the
+                    // search ran from whatever held focus anywhere in the window. Besides picking
+                    // the wrong element, that walk hangs outright when the current focus sits
+                    // inside a KeyboardNavigationMode.Once container. See the same fix in
+                    // FAContentDialog.SetupDialog.
+                    var focusable = FocusManager.FindFirstFocusableElement(_tabContentPresenter);
+
                     // If there is nothing focusable in the new tab, just move focus to the TabViewItem itself.
                     focusable ??= tvi;
 

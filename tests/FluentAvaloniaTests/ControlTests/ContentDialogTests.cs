@@ -39,6 +39,39 @@ public class ContentDialogTests : IDisposable
         _window.Content = null;
     }
 
+    [AvaloniaFact(Timeout = 5000)]
+    public async Task DialogWithNoDefaultButtonDoesNotHangWhenFocusIsInsideAOnceContainer()
+    {
+        // Regression test. With no DefaultButton, SetupDialog picks the initial focus target
+        // itself. It used to ask FindNextElement(Next, new FindNextElementOptions
+        // { SearchRoot = this }), but FindNextElementOptions is ignored for Next/Previous, so
+        // the search actually started from whatever held focus outside the dialog. With that
+        // element nested inside a KeyboardNavigationMode.Once container, Avalonia's tab stop
+        // walk never terminates and showing the dialog hung the UI thread outright.
+        var outside = new Button { Content = "outside" };
+        _window.Content = new StackPanel
+        {
+            [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Once,
+            Children = { new StackPanel { Children = { outside } } }
+        };
+        outside.Focus();
+
+        var dlg = new FAContentDialog { CloseButtonText = "Close" };
+
+        bool opened = false;
+        dlg.Opened += (_, __) =>
+        {
+            opened = true;
+            dlg.Hide();
+        };
+
+        // Before the fix this never completed - SetupDialog spun inside Avalonia's tab stop
+        // walk and the test would hit the timeout instead of failing an assertion.
+        await dlg.ShowAsync(_window);
+
+        Assert.True(opened);
+    }
+
     [AvaloniaFact]
     public void SettingPrimaryButtonTextShowsPrimaryButton()
     {

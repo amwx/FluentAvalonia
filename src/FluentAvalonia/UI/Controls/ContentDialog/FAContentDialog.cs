@@ -434,10 +434,19 @@ public partial class FAContentDialog : ContentControl, ICustomKeyboardNavigation
                 // ContentDialog itself to pull focus away from the main visual tree so weird things don't happen
                 // The latter shouldn't happen in 99% of cases as either something in the user content will be able
                 // to take focus OR there should always be at least one button which can take focus
-                var mgr = TopLevel.GetTopLevel(this).FocusManager;
-                // TODO: v3 - does this work?
-                var next = mgr.FindNextElement(NavigationDirection.Next, new FindNextElementOptions { SearchRoot = this });
-                next?.Focus();
+                //
+                // Do NOT go back to FindNextElement(NavigationDirection.Next, new FindNextElementOptions
+                // { SearchRoot = this }) here. Per the WinUI contract Avalonia mirrors, FindNextElementOptions
+                // is only honoured for directional navigation and is silently ignored for Next/Previous, so
+                // SearchRoot scoped nothing: the search started from whatever held focus outside the dialog and
+                // walked the whole window. FindFirstFocusableElement is both correctly scoped and the operation
+                // actually wanted here - the first focusable element inside the dialog, not the tab stop
+                // following some unrelated element.
+                var next = FocusManager.FindFirstFocusableElement(this);
+                if (next is not null)
+                    next.Focus();
+                else
+                    Focus();
 
 #if DEBUG
                 Logger.TryGet(LogEventLevel.Debug, "ContentDialog")?.Log("SetupDialog", "Set initial focus to {next}", next);
