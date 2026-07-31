@@ -5,6 +5,13 @@ Please open an issue before submitting a PR to ensure the feature or bug fix you
 
 NOTE: If the fix you want to supply is a small change (like typo or other single-line issues), then you may skip the issue. If you are unsure, just open the issue.
 
+## AI Warning
+All code submitted to FluentAvalonia MUST be written by a human. I have no issues with using AI to help problem solving, but please do not submit code fixes or improvements that have been authored by ChatGPT, CoPilot, Claude, Gemini, or any other AI. If an LLM is used in the construction of your code, the LLM must NOT be a co-author on the PR. You will be asked to resubmit your PR without the AI agent if this is case.
+
+Please remember that you are responsible for the contributions you provide to FluentAvalonia. If an issue arises the LLM can't tell me what it was thinking when it wrote it since it is in your personal chat history - it will only tell me what it thinks the code does (if I even bother to ask it, unlikely). 
+
+If you generate a PR or issue/description using AI, please review it as best you can to ensure the AI text is correct and aligns with your intentions. AI is garbage, please use it responsibly. Let's work together to keep critical thinking alive!
+
 ## Code Style
 Note FA does not follow all the most recent guidelines from .net. Some yes, but not all. I'm stuck in my ways, sorry in advance.
 
@@ -23,11 +30,11 @@ Note FA does not follow all the most recent guidelines from .net. Some yes, but 
 - Use of `var` or Type of left-hand side of assignment is up to you. But, do not use var in a traditional for-loop
 - Do NOT enable nullable reference types.
   
-Ensure maximum readility and understanding by not hiding details behind the compiler. Operate under the assumption that tooltips and intellisense aren't available:
-- Do NOT use `new()` syntax (e.g., `x = new MyClass()`). Always include the type on the right-hand side of assignment expressions.
+Ensure maximum readability and understanding by not hiding details behind the compiler. Operate under the assumption that tooltips and intellisense aren't available:
+- Do NOT use `new()` syntax (e.g., `x = new()`). Always include the type on the right-hand side of assignment expressions.
 - Do not use primary constructors for non `record` items. (I don't even like it there, but it is what it is)
 - Do not use collection expressions. Please make sure an explicit collection type is on the right-hand side of assignment expressions.
-  - Instead use Collection initializers, which are far superior and ensure maximum readibility
+  - Instead use Collection initializers, which are far superior and ensure maximum readability
 - Avoid using the `field` keyword. Just add the field, it's not that hard.
   - I won't reject new additions with this, but I will reject changes to existing files for this.
 
