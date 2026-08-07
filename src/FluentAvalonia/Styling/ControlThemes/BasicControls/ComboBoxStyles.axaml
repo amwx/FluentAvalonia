@@ -10,6 +10,7 @@
                     <ComboBoxItem Content="Item2" />
                     <ComboBoxItem Content="Item3" />
                 </ComboBox>
+                
                 <ComboBox PlaceholderText="Placeholder">
                     <ComboBoxItem Content="Item1" />
                     <ComboBoxItem Content="Item2" />
@@ -27,6 +28,19 @@
                            />
 
                 <ComboBox IsEditable="True">
+                    <ComboBoxItem>Item1</ComboBoxItem>
+                    <ComboBoxItem>Item2</ComboBoxItem>
+                    <ComboBoxItem>Item3</ComboBoxItem>
+                </ComboBox>
+                
+                <ComboBox SelectedIndex="0">
+                    <ComboBox.SelectionBoxItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="20" BorderBrush="Red" BorderThickness="1">
+                                <TextBlock Text="{ReflectionBinding}"/>
+                            </Border>
+                        </DataTemplate>
+                    </ComboBox.SelectionBoxItemTemplate>
                     <ComboBoxItem>Item1</ComboBoxItem>
                     <ComboBoxItem>Item2</ComboBoxItem>
                     <ComboBoxItem>Item3</ComboBoxItem>
@@ -134,7 +148,7 @@
 
                         <ContentPresenter Name="ContentPresenter"
                                           Content="{TemplateBinding SelectionBoxItem}"
-                                          ContentTemplate="{TemplateBinding ItemTemplate}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                           Grid.Column="0"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
