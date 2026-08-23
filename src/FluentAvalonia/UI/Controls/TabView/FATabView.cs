@@ -137,7 +137,7 @@ public partial class FATabView : TemplatedControl
             _addButton.KeyDown += OnAddButtonKeyDown;
         }
 
-        var handle = e.NameScope.Get<Border>(s_tpPaneResizeHandle);
+        var handle = e.NameScope.Find<Border>(s_tpPaneResizeHandle);
         if (handle != null) // Null in Top/Bottom modes
         {
             handle.PointerPressed += OnPaneResizeHandlePointerPressed;
@@ -504,7 +504,7 @@ public partial class FATabView : TemplatedControl
             UpdateTabContent();
         }
 
-        if (_itemsPresenter != null)
+        if (_listView != null)
         {
             _itemsPresenter = _listView.Presenter;
             _itemsPresenter.SizeChanged += OnItemsPresenterSizeChanged;
