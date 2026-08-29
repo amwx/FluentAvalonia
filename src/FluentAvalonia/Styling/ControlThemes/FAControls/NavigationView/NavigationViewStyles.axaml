@@ -49,6 +49,7 @@
                             <Button Name="TogglePaneButton"
                                     Theme="{StaticResource PaneToggleButtonStyle}"
                                     HorizontalAlignment="Center"
+                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.PaneToggleButtonWidth}"
                                     IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.PaneToggleButtonVisibility}"
                                     MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.SmallerPaneToggleButtonWidth}">
                                 <TextBlock Name="PaneTitleTextBlock"

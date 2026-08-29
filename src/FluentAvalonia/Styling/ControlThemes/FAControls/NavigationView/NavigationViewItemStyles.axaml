@@ -14,6 +14,7 @@
 
 
     <ControlTheme x:Key="{x:Type ui:FANavigationViewItem}" TargetType="ui:FANavigationViewItem">
+        <Setter Property="Padding" Value="4,0,0,0"/>
         <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
         <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
