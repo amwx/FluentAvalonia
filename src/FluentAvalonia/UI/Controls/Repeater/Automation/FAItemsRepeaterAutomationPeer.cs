@@ -16,7 +16,7 @@ public class FAItemsRepeaterAutomationPeer : ControlAutomationPeer
     protected override IReadOnlyList<AutomationPeer> GetChildrenCore()
     {
         var repeater = Owner;
-        var childrenPeers = base.GetChildrenCore();
+        var childrenPeers = base.GetChildrenCore() ?? Array.Empty<AutomationPeer>();
         var peerCount = childrenPeers.Count;
 
         List<(int, AutomationPeer)> realizedPeers = new List<(int, AutomationPeer)>(peerCount);
