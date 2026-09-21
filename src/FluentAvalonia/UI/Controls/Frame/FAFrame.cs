@@ -88,18 +88,21 @@ public partial class FAFrame : ContentControl
 
         if (TopLevel.GetTopLevel(this) is TopLevel tl)
         {
-            tl.BackRequested += OnTopLevelBackRequested;
+            _subscribedTopLevel = tl;
+            _subscribedTopLevel.BackRequested += OnTopLevelBackRequested;
         }
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
-
-        if (TopLevel.GetTopLevel(this) is TopLevel tl)
+        // TopLevel.GetTopLevel(this) will be null here
+        if (_subscribedTopLevel is not null)
         {
-            tl.BackRequested -= OnTopLevelBackRequested;
+            _subscribedTopLevel.BackRequested -= OnTopLevelBackRequested;
+            _subscribedTopLevel = null;
         }
+
+        base.OnDetachedFromVisualTree(e);
     }
 
     /// <summary>
@@ -731,6 +734,7 @@ public partial class FAFrame : ContentControl
     //private readonly List<(Type pageSrcType, Control page)> _cache = new List<(Type, Control)>(10);
     private readonly List<NavigationCacheItem> _pageCache = new List<NavigationCacheItem>(10);
     private bool _isNavigating = false;
+    private TopLevel? _subscribedTopLevel;
 
     private const string s_tpContentPresenter = "ContentPresenter";
 
